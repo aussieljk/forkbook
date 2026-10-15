@@ -1,5 +1,5 @@
 // @ts-expect-error this is just a mock file
-import preview from '#.storybook/preview';
+import preview from '#.forkbook/preview';
 
 const meta = preview.meta({
   title: 'MyComponent',

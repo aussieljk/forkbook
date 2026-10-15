@@ -1,12 +1,12 @@
 import type {
   CompatibleString,
   StorybookConfig as StorybookConfigBase,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions, StorybookConfigVite } from 'storybook/builder-vite';
+import type { BuilderOptions, StorybookConfigVite } from '@aussieljk/forkbook/builder-vite';
 
-type FrameworkName = CompatibleString<'storybook/react-vite'>;
-type BuilderName = CompatibleString<'storybook/builder-vite'>;
+type FrameworkName = CompatibleString<'@aussieljk/forkbook/react-vite'>;
+type BuilderName = CompatibleString<'@aussieljk/forkbook/builder-vite'>;
 
 export type FrameworkOptions = {
   builder?: BuilderOptions;
@@ -38,7 +38,7 @@ type StorybookConfigFramework = {
   };
 };
 
-/** The interface for Storybook configuration in `main.ts` files. */
+/** The interface for Forkbook configuration in `main.ts` files. */
 export type StorybookConfig = Omit<
   StorybookConfigBase,
   keyof StorybookConfigVite | keyof StorybookConfigFramework

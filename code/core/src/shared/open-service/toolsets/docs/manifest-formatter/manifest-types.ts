@@ -1,7 +1,7 @@
 /**
  * The component/docs manifest format, as schemas.
  *
- * Storybook writes one of two formats, distinguished by the top-level `v` field on
+ * Forkbook writes one of two formats, distinguished by the top-level `v` field on
  * `components.json` / `docs.json`:
  *
  * - v0 — inline/legacy: every component carries its docgen, stories array and attached docs (with
@@ -12,7 +12,7 @@
  *   resolved from the open services instead.
  *
  * These are valibot schemas rather than plain types because manifests fetched from a hosted
- * Storybook are untrusted input and are validated on arrival. In-process callers build the same
+ * Forkbook are untrusted input and are validated on arrival. In-process callers build the same
  * shapes directly and skip validation; the `$ref` fields are optional, so an in-process row is a
  * valid instance of the same type.
  */

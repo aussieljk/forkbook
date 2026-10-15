@@ -4,14 +4,14 @@ import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { BUNProxy } from './BUNProxy.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
     getPreferredStdio: vi.fn(() => 'inherit'),
@@ -79,7 +79,7 @@ describe('BUN Proxy', () => {
         await Promise.resolve(fn());
       });
       const originalError = new Error(
-        'error: storybook/react@10.4.0-alpha.17 blocked by minimum-release-age'
+        'error: @aussieljk/forkbook/react@10.4.0-alpha.17 blocked by minimum-release-age'
       );
       mockedExecuteCommand.mockRejectedValueOnce(originalError);
 
@@ -96,7 +96,7 @@ describe('BUN Proxy', () => {
   });
 
   describe('precheckStorybookPackageInstall', () => {
-    it('updates minimumReleaseAgeExcludes in non-interactive mode when bun would block Storybook', async () => {
+    it('updates minimumReleaseAgeExcludes in non-interactive mode when bun would block Forkbook', async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2025-01-10T00:00:00.000Z'));
       vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue('minimumReleaseAge = 3600\n');
@@ -167,15 +167,15 @@ describe('BUN Proxy', () => {
         );
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
-      expect(error?.message).toContain('npx storybook@10.3.9 init');
+      expect(error?.message).toContain('npx @aussieljk/forkbook@10.3.9 init');
     });
 
-    it('skips the precheck when Storybook packages are already excluded', async () => {
+    it('skips the precheck when Forkbook packages are already excluded', async () => {
       vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue(
         [
           '[install]',
           'minimumReleaseAge = 3600',
-          'minimumReleaseAgeExcludes = ["storybook", "@storybook/*", "eslint-plugin-storybook"]',
+          'minimumReleaseAgeExcludes = ["@aussieljk/forkbook", "@storybook/*", "eslint-plugin-storybook"]',
           '',
         ].join('\n')
       );
@@ -217,7 +217,7 @@ describe('BUN Proxy', () => {
             '[install]',
             'minimumReleaseAge = 900000',
             'minimumReleaseAgeExcludes = [',
-            '  "storybook",',
+            '  "@aussieljk/forkbook",',
             '  "@storybook/*",',
             '  "eslint-plugin-storybook",',
             ']',

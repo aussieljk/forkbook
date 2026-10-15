@@ -46,7 +46,7 @@ vi.mock('../../../../utils/module.ts', () => ({
   importMetaResolve: vi.fn(() => 'file:///C:/fake/storybook/docgen-worker.js'),
 }));
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const loadModule = async () => import('./docgen-worker-client.ts');
 
@@ -89,7 +89,7 @@ describe('createDocgenWorkerClient', () => {
   });
 
   it('forwards the current log level in the init request', async () => {
-    const { logger } = await import('storybook/internal/node-logger');
+    const { logger } = await import('@aussieljk/forkbook/internal/node-logger');
     vi.mocked(logger.getLogLevel).mockReturnValueOnce('debug');
 
     const { createDocgenWorkerClient } = await loadModule();

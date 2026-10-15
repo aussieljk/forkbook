@@ -1,9 +1,9 @@
 // Tests the headless Vite ChangeDetectionAdapter used by consumers without a dev server (the
-// `storybook tools` CLI): resolve config comes from Vite's server-less config resolution over the
+// `forkbook tools` CLI): resolve config comes from Vite's server-less config resolution over the
 // same assembly (commonConfig + viteFinal) the dev server uses, and file watching is a no-op.
 import { describe, expect, it, vi } from 'vitest';
 
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { createHeadlessViteChangeDetectionAdapter } from './headless.ts';
 

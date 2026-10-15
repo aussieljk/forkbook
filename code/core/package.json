@@ -1,36 +1,28 @@
 {
-  "name": "storybook",
-  "version": "11.0.0-alpha.6",
-  "description": "Storybook: Develop, document, and test UI components in isolation",
+  "name": "@aussieljk/forkbook",
+  "version": "0.0.1-0",
+  "description": "Forkbook: a small, fast fork of Storybook for React with Vite, Next.js with Vite and React Native",
   "keywords": [
+    "forkbook",
     "storybook",
     "component",
     "components",
     "design-systems",
     "component-testing",
     "react",
+    "vite",
     "next",
     "next.js",
-    "react-native",
-    "react-native-web",
-    "vue",
-    "angular",
-    "svelte",
-    "sveltekit",
-    "web-components"
+    "react-native"
   ],
-  "homepage": "https://storybook.js.org",
+  "homepage": "https://forkbook.ljk.dev",
   "bugs": {
-    "url": "https://github.com/storybookjs/storybook/issues"
+    "url": "https://github.com/aussieljk/forkbook/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/storybook.git",
+    "url": "git+https://github.com/aussieljk/forkbook.git",
     "directory": "code/core"
-  },
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
   "sideEffects": [
@@ -677,7 +669,9 @@
       "default": "./dist/viewport/index.js"
     }
   },
-  "bin": "./dist/bin/dispatcher.js",
+  "bin": {
+    "forkbook": "./dist/bin/dispatcher.js"
+  },
   "files": [
     "dist/**/*",
     "assets/**/*",

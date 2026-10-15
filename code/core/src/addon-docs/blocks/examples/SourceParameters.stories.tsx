@@ -1,7 +1,7 @@
-import { SourceType } from 'storybook/internal/docs-tools';
-import type { StoryContext } from 'storybook/internal/types';
+import { SourceType } from '@aussieljk/forkbook/internal/docs-tools';
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { dedent } from 'ts-dedent';
 

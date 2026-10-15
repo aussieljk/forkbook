@@ -319,7 +319,7 @@ export default {
     'ZoomResetIcon',
     'iconList',
   ],
-  'storybook/manager-api': [
+  '@aussieljk/forkbook/manager-api': [
     'ActiveTabs',
     'Consumer',
     'ManagerContext',
@@ -369,7 +369,7 @@ export default {
     'useStorybookApi',
     'useStorybookState',
   ],
-  'storybook/theming': [
+  '@aussieljk/forkbook/theming': [
     'ThemeProvider',
     'background',
     'color',
@@ -389,8 +389,8 @@ export default {
     'typography',
     'useTheme',
   ],
-  'storybook/theming/create': ['create', 'themes'],
-  'storybook/test': [
+  '@aussieljk/forkbook/theming/create': ['create', 'themes'],
+  '@aussieljk/forkbook/test': [
     'buildQueries',
     'clearAllMocks',
     'configure',
@@ -477,7 +477,7 @@ export default {
     'waitForElementToBeRemoved',
     'within',
   ],
-  'storybook/internal/channels': [
+  '@aussieljk/forkbook/internal/channels': [
     'Channel',
     'HEARTBEAT_INTERVAL',
     'PostMessageTransport',
@@ -491,8 +491,8 @@ export default {
     'requireChannel',
     'setChannel',
   ],
-  'storybook/internal/client-logger': ['deprecate', 'logger', 'once', 'pretty'],
-  'storybook/internal/components': [
+  '@aussieljk/forkbook/internal/client-logger': ['deprecate', 'logger', 'once', 'pretty'],
+  '@aussieljk/forkbook/internal/components': [
     'A',
     'AbstractToolbar',
     'ActionBar',
@@ -584,7 +584,7 @@ export default {
     'useTabsState',
     'withReset',
   ],
-  'storybook/internal/core-events': [
+  '@aussieljk/forkbook/internal/core-events': [
     'AI_PROMPT_NUDGE',
     'AI_SETUP_ANALYTICS_REQUEST',
     'AI_SETUP_ANALYTICS_RESPONSE',
@@ -650,7 +650,7 @@ export default {
     'UPDATE_QUERY_PARAMS',
     'UPDATE_STORY_ARGS',
   ],
-  'storybook/internal/manager-errors': [
+  '@aussieljk/forkbook/internal/manager-errors': [
     'Category',
     'OpenServiceStaticSnapshotInvalidError',
     'OpenServiceStaticSnapshotLoadError',
@@ -659,7 +659,7 @@ export default {
     'UncaughtManagerError',
     'UniversalStoreFollowerTimeoutError',
   ],
-  'storybook/internal/router': [
+  '@aussieljk/forkbook/internal/router': [
     'BaseLocationProvider',
     'DEEPLY_EQUAL',
     'Link',
@@ -676,7 +676,7 @@ export default {
     'stringifyQuery',
     'useNavigate',
   ],
-  'storybook/internal/types': [
+  '@aussieljk/forkbook/internal/types': [
     'Addon_TypesEnum',
     'CHANGE_DETECTION_STATUS_TYPE_ID',
     'Feature',

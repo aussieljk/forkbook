@@ -2,9 +2,9 @@ import React from 'react';
 
 import { LinkIcon, LinuxIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
+import { action } from '@aussieljk/forkbook/actions';
 
 import { TooltipLinkList } from './TooltipLinkList.tsx';
 import { WithTooltip } from './WithTooltip.tsx';

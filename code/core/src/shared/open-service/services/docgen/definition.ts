@@ -1,14 +1,14 @@
-import type { StrictArgTypes } from 'storybook/internal/types';
+import type { StrictArgTypes } from '@aussieljk/forkbook/internal/types';
 
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 import type { ServiceInstanceOf } from '../../types.ts';
 import type { DocgenPayload } from './types.ts';
 import { docgenQueryStaticPath } from './paths.ts';
 
 const docgenInputSchema = v.object({ id: v.string() });
-// Typed as `StrictArgTypes` (a static Storybook construct) but validated loosely: spelling out the
+// Typed as `StrictArgTypes` (a static Forkbook construct) but validated loosely: spelling out the
 // full recursive valibot shape is deferred, so this only checks "is a plain object" at runtime
 // while keeping the payload's `argTypes` typed for consumers.
 const argTypesSchema = v.custom<StrictArgTypes>(

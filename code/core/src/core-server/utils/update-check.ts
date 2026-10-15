@@ -1,12 +1,12 @@
-import { cache } from 'storybook/internal/common';
-import { colors } from 'storybook/internal/node-logger';
-import type { VersionCheck } from 'storybook/internal/types';
+import { cache } from '@aussieljk/forkbook/internal/common';
+import { colors } from '@aussieljk/forkbook/internal/node-logger';
+import type { VersionCheck } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 import semver from 'semver';
 import { dedent } from 'ts-dedent';
 
-const { STORYBOOK_VERSION_BASE = 'https://storybook.js.org', CI } = process.env;
+const { FORKBOOK_VERSION_BASE = 'https://storybook.js.org', CI } = process.env;
 
 export const updateCheck = async (version: string): Promise<VersionCheck> => {
   let result;
@@ -17,7 +17,7 @@ export const updateCheck = async (version: string): Promise<VersionCheck> => {
     // if last check was more then 24h ago
     if (time - 86400000 > fromCache.time && !CI) {
       const fromFetch: any = await Promise.race([
-        fetch(`${STORYBOOK_VERSION_BASE}/versions.json?current=${version}`),
+        fetch(`${FORKBOOK_VERSION_BASE}/versions.json?current=${version}`),
         // if fetch is too slow, we won't wait for it
         new Promise((res, rej) => global.setTimeout(rej, 1500)),
       ]);

@@ -1,11 +1,17 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Button, Link, TabList, TabPanel, useTabsState } from 'storybook/internal/components';
+import {
+  Button,
+  Link,
+  TabList,
+  TabPanel,
+  useTabsState,
+} from '@aussieljk/forkbook/internal/components';
 
 import { CheckIcon, CopyIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { useCopyButton } from '../../../shared/useCopyButton.ts';
 import styles from './UpgradeBlock.module.css';
@@ -58,12 +64,12 @@ export const UpgradeBlock: FC<UpgradeBlockProps> = ({ onNavigateToWhatsNew }) =>
 
   return (
     <div className={styles.container}>
-      <strong>You are on Storybook {api.getCurrentVersion().version}</strong>
+      <strong>You are on Forkbook {api.getCurrentVersion().version}</strong>
       <p>Run the following script to check for updates and upgrade to the latest version.</p>
       <TabList state={tabsState} />
       <TabPanel state={tabsState} hasScrollbar={false} />
       {onNavigateToWhatsNew && (
-        <Link onClick={onNavigateToWhatsNew}>See what's new in Storybook</Link>
+        <Link onClick={onNavigateToWhatsNew}>See what's new in Forkbook</Link>
       )}
     </div>
   );

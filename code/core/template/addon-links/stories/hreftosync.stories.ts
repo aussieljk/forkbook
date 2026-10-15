@@ -1,4 +1,4 @@
-import { hrefToSync } from 'storybook/addon-links';
+import { hrefToSync } from '@aussieljk/forkbook/addon-links';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Html,

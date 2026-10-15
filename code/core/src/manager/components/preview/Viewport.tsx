@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { ActionList } from 'storybook/internal/components';
+import { ActionList } from '@aussieljk/forkbook/internal/components';
 
 import { TransferIcon, UndoIcon } from '@storybook/icons';
 

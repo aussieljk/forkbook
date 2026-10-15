@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Button, Separator } from 'storybook/internal/components';
-import type { Addon_BaseType } from 'storybook/internal/types';
+import { Button, Separator } from '@aussieljk/forkbook/internal/components';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { MenuIcon } from '@storybook/icons';
 
-import { Consumer, types } from 'storybook/manager-api';
-import type { Combo } from 'storybook/manager-api';
+import { Consumer, types } from '@aussieljk/forkbook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
 
 import { focusableUIElements } from '../../../../manager-api/modules/layout.ts';
 

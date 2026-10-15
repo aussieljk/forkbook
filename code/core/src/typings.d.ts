@@ -6,26 +6,24 @@ declare var LOGLEVEL: 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent' |
 declare var REFS: any;
 declare var VERSIONCHECK: any;
 
-declare var STORYBOOK_WEBSOCKET_TOKEN: string;
+declare var FORKBOOK_WEBSOCKET_TOKEN: string;
 
-declare var STORYBOOK_ADDON_STATE: Record<string, any>;
-declare var STORYBOOK_BUILDER: import('./types/modules/builders').SupportedBuilder | undefined;
-declare var STORYBOOK_FRAMEWORK:
-  | import('./types/modules/frameworks').SupportedFramework
-  | undefined;
-declare var STORYBOOK_RENDERER: import('./types/modules/renderers').SupportedRenderer | undefined;
-declare var STORYBOOK_HOOKS_CONTEXT: any;
-declare var STORYBOOK_CURRENT_TASK_LOG: undefined | null | Array<any>;
+declare var FORKBOOK_ADDON_STATE: Record<string, any>;
+declare var FORKBOOK_BUILDER: import('./types/modules/builders').SupportedBuilder | undefined;
+declare var FORKBOOK_FRAMEWORK: import('./types/modules/frameworks').SupportedFramework | undefined;
+declare var FORKBOOK_RENDERER: import('./types/modules/renderers').SupportedRenderer | undefined;
+declare var FORKBOOK_HOOKS_CONTEXT: any;
+declare var FORKBOOK_CURRENT_TASK_LOG: undefined | null | Array<any>;
 declare var SB_TELEMETRY_STATE: 'enabled' | 'disabled' | undefined;
 declare var SB_TELEMETRY_QUEUE: Array<import('./telemetry').QueuedEvent>;
 declare var PAYLOAD_ERROR_HANDLER: import('./telemetry').PayloadErrorHandler | undefined;
 
-declare var STORYBOOK_LAST_EVENTS: Record<
+declare var FORKBOOK_LAST_EVENTS: Record<
   import('./telemetry').EventType,
   import('./telemetry').CacheEntry
 >;
-declare var STORYBOOK_SESSION_ID: string | undefined;
-declare var STORYBOOK_NETWORK_ADDRESS: string | undefined;
+declare var FORKBOOK_SESSION_ID: string | undefined;
+declare var FORKBOOK_NETWORK_ADDRESS: string | undefined;
 
 declare var __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__: any;
 declare var __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__: any;
@@ -44,7 +42,7 @@ declare module 'ansi-to-html';
 declare module 'lazy-universal-dotenv';
 declare module 'react-inspector';
 // CLI-only entry with no "types" condition in package.json exports.
-declare module 'storybook/internal/bin/loader' {
+declare module '@aussieljk/forkbook/internal/bin/loader' {
   type LoadHookSync = (url: string, context: any, nextLoad: any) => any;
   const load: LoadHookSync;
   export { load };
@@ -57,7 +55,7 @@ declare var INSECURE_IFRAME_MESSAGING: boolean | undefined;
 declare var DOCS_OPTIONS: any;
 declare var TAGS_OPTIONS: import('./types/modules/core-common').StorybookConfigRaw['tags'];
 
-// To enable user code to detect if it is running in Storybook
+// To enable user code to detect if it is running in Forkbook
 declare var IS_STORYBOOK: boolean;
 
 // ClientApi (and StoreStore) are really singletons. However they are not created until the

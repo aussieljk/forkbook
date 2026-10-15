@@ -2,8 +2,8 @@ import { join } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { normalizeStoriesEntry } from 'storybook/internal/common';
-import { type StoriesEntry } from 'storybook/internal/types';
+import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
+import { type StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
 import { glob as globOriginal } from 'glob';
@@ -52,7 +52,7 @@ describe('remove-mdx-stories', () => {
 
     await expect(() => removeMDXEntries(Object.keys(list), { configDir })).rejects
       .toThrowErrorMatchingInlineSnapshot(`
-    [SB_CORE-COMMON_0004 (InvalidStoriesEntryError): Storybook could not index your stories.
+    [SB_CORE-COMMON_0004 (InvalidStoriesEntryError): Forkbook could not index your stories.
 Your main configuration does not contain a 'stories' field, or it resolved to an empty array.
 
 Please check your main configuration file and make sure it exports a 'stories' field that is not an empty array.

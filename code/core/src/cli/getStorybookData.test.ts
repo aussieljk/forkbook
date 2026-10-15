@@ -2,24 +2,24 @@ import { dirname, resolve } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { PackageManagerName } from 'storybook/internal/common';
-import { once, logger } from 'storybook/internal/node-logger';
+import { PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { once, logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { getStorybookData, getWorkingDir } from './getStorybookData.ts';
 
 describe('getWorkingDir', () => {
   it.each([
     ['.', process.cwd()],
-    ['.storybook', process.cwd()],
-    ['./.storybook', process.cwd()],
-    ['packages/foo/.storybook', resolve(process.cwd(), 'packages/foo')],
-    ['./apps/web/.storybook', resolve(process.cwd(), 'apps/web')],
+    ['.forkbook', process.cwd()],
+    ['./.forkbook', process.cwd()],
+    ['packages/foo/.forkbook', resolve(process.cwd(), 'packages/foo')],
+    ['./apps/web/.forkbook', resolve(process.cwd(), 'apps/web')],
   ])('resolves relative configDir %j to %j', (configDir, expected) => {
     expect(getWorkingDir(configDir)).toBe(expected);
   });
 
   it('uses the parent directory for absolute config dirs', () => {
-    const configDir = resolve('/projects/foo/.storybook');
+    const configDir = resolve('/projects/foo/.forkbook');
     expect(getWorkingDir(configDir)).toBe(dirname(configDir));
   });
 });
@@ -29,7 +29,7 @@ const mocks = vi.hoisted(() => ({
   getPackageManagerMock: vi.fn(),
 }));
 
-vi.mock(import('storybook/internal/common'), async (importOriginal) => {
+vi.mock(import('@aussieljk/forkbook/internal/common'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
@@ -39,20 +39,20 @@ vi.mock(import('storybook/internal/common'), async (importOriginal) => {
     }),
   };
 });
-vi.mock('storybook/internal/core-server', { spy: true });
-vi.mock('storybook/internal/csf-tools', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/csf-tools', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const storybookInfo = {
   mainConfig: { stories: [] },
-  mainConfigPath: '/fake/project/.storybook/main.ts',
-  configDir: '.storybook',
+  mainConfigPath: '/fake/project/.forkbook/main.ts',
+  configDir: '.forkbook',
   previewConfigPath: undefined,
   versionSpecifier: '9.0.0',
-  frameworkPackage: 'storybook/react-vite',
-  rendererPackage: 'storybook/react',
+  frameworkPackage: '@aussieljk/forkbook/react-vite',
+  rendererPackage: '@aussieljk/forkbook/react',
   renderer: 'react',
-  builderPackage: 'storybook/builder-vite',
+  builderPackage: '@aussieljk/forkbook/builder-vite',
   addons: [],
 };
 
@@ -72,8 +72,8 @@ describe('getStorybookData', () => {
   it('warns once for Yarn 1 across repeated project-data collections in one process', async () => {
     mocks.getPackageManagerMock.mockReturnValue(createPackageManager(PackageManagerName.YARN1));
 
-    await getStorybookData({ configDir: '.storybook' });
-    await getStorybookData({ configDir: '.storybook' });
+    await getStorybookData({ configDir: '.forkbook' });
+    await getStorybookData({ configDir: '.forkbook' });
 
     expect(vi.mocked(logger.warn)).toHaveBeenCalledTimes(1);
     expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
@@ -92,7 +92,7 @@ describe('getStorybookData', () => {
   ])('does not emit the Yarn 1 warning for %s', async (packageManagerType) => {
     mocks.getPackageManagerMock.mockReturnValue(createPackageManager(packageManagerType));
 
-    await getStorybookData({ configDir: '.storybook' });
+    await getStorybookData({ configDir: '.forkbook' });
 
     expect(vi.mocked(logger.warn)).not.toHaveBeenCalled();
   });

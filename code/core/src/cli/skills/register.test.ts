@@ -1,6 +1,6 @@
-import { optionalEnvToBoolean } from 'storybook/internal/common';
-import { withTelemetry } from 'storybook/internal/core-server';
-import { telemetry } from 'storybook/internal/telemetry';
+import { optionalEnvToBoolean } from '@aussieljk/forkbook/internal/common';
+import { withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -13,11 +13,11 @@ import { runSkillsCommand } from './run.ts';
 
 vi.mock('./run.ts', { spy: true });
 vi.mock('./record-setup-run.ts', () => ({ recordSetupRun: vi.fn() }));
-vi.mock('storybook/internal/core-server', () => ({
+vi.mock('@aussieljk/forkbook/internal/core-server', () => ({
   withTelemetry: vi.fn(async (_event, _options, run: () => Promise<unknown>) => run()),
   experimental_loadStorybook: vi.fn(),
 }));
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 function buildProgram() {
   const program = new Command();
@@ -28,11 +28,11 @@ function buildProgram() {
 
   const skillsCommand = program
     .command('skills')
-    .description('Agent skills served by the target Storybook configuration')
+    .description('Agent skills served by the target Forkbook configuration')
     .option(
       '--disable-telemetry',
       'Disable sending telemetry data',
-      optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY)
+      optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY)
     )
     .option('--logfile [path]', 'Write all debug logs to the specified file')
     .exitOverride();
@@ -103,9 +103,9 @@ describe('registerSkillsCommand', () => {
   });
 
   it('records the setup run when the setup skill was served', async () => {
-    const setupRun = { projectInfo: { configDir: '.storybook' } as ProjectInfo, prompt: 'setup' };
+    const setupRun = { projectInfo: { configDir: '.forkbook' } as ProjectInfo, prompt: 'setup' };
     vi.mocked(runSkillsCommand).mockResolvedValue({
-      output: '# Storybook Setup',
+      output: '# Forkbook Setup',
       exitCode: 0,
       skill: 'setup',
       setupRun,

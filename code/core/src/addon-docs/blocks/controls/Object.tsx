@@ -1,7 +1,7 @@
 import type { ComponentProps, FC, FocusEvent, SyntheticEvent } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Button, Form, ToggleButton } from 'storybook/internal/components';
+import { Button, Form, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
 import { AddIcon, EditIcon, SubtractIcon } from '@storybook/icons';
 

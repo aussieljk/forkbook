@@ -1,7 +1,7 @@
 import { existsSync, realpathSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   JsPackageManagerFactory,
   type RemoveAddonOptions,
@@ -14,11 +14,11 @@ import {
   normalizeStories,
   optionalEnvToBoolean,
   removeAddon as removeAddonBase,
-} from 'storybook/internal/common';
-import { StoryIndexGenerator } from 'storybook/internal/core-server';
-import { loadCsf } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
-import { telemetry } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import {
   type CoreConfig,
   type DocgenProviderDescriptor,
@@ -28,7 +28,7 @@ import {
   type PresetPropertyFn,
   type StoryDocsProvider,
   type StorybookConfigRaw,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { OpenServiceServicesAppliedTwiceError } from '../../server-errors.ts';
 import {
@@ -225,9 +225,9 @@ export const core = async (existing: CoreConfig, options: Options): Promise<Core
     ...(options.configType === 'DEVELOPMENT' ? { wsToken: getWsToken() } : {}),
   },
   disableTelemetry:
-    options.disableTelemetry || optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY),
+    options.disableTelemetry || optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY),
   enableCrashReports:
-    options.enableCrashReports || optionalEnvToBoolean(process.env.STORYBOOK_ENABLE_CRASH_REPORTS),
+    options.enableCrashReports || optionalEnvToBoolean(process.env.FORKBOOK_ENABLE_CRASH_REPORTS),
 });
 
 const babelPresetEnvMajor = getBabelPresetEnvMajor();
@@ -332,7 +332,10 @@ export const resolvedReact = async (existing: any) => {
 
 export const managerEntries = async (existing: any) => {
   return [
-    pathe.join(resolvePackageDir('storybook'), 'dist/core-server/presets/common-manager.js'),
+    pathe.join(
+      resolvePackageDir('@aussieljk/forkbook'),
+      'dist/core-server/presets/common-manager.js'
+    ),
     ...(existing || []),
   ];
 };
@@ -357,13 +360,13 @@ async function getHeadlessChangeDetectionAdapter(options: Options) {
 // Started from `experimental_devServer`: the attached tools CLI also applies `services`.
 const devServerSubscriptions: Array<() => void> = [];
 
-globalThis.STORYBOOK_SERVICES_LOADED = globalThis.STORYBOOK_SERVICES_LOADED ?? false;
+globalThis.FORKBOOK_SERVICES_LOADED = globalThis.FORKBOOK_SERVICES_LOADED ?? false;
 
 export const services = async (_value: void, options: Options): Promise<void> => {
-  if (globalThis.STORYBOOK_SERVICES_LOADED) {
+  if (globalThis.FORKBOOK_SERVICES_LOADED) {
     throw new OpenServiceServicesAppliedTwiceError();
   }
-  globalThis.STORYBOOK_SERVICES_LOADED = true;
+  globalThis.FORKBOOK_SERVICES_LOADED = true;
 
   const getIndex = () =>
     options.presets
@@ -457,7 +460,7 @@ export const services = async (_value: void, options: Options): Promise<void> =>
   }
 
   // Registration-based selection between the docgen services and the inline manifests, shared
-  // with addon-mcp's composed local source so both read this Storybook the same way.
+  // with addon-mcp's composed local source so both read this Forkbook the same way.
   const localDocsAccess = createLocalDocsAccess({
     storyIndex,
     getManifests: () => loadManifests(options.presets),

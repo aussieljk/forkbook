@@ -1,5 +1,8 @@
-import type { Channel } from 'storybook/internal/channels';
-import { STORY_HOT_UPDATED, STORY_RENDER_PHASE_CHANGED } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import {
+  STORY_HOT_UPDATED,
+  STORY_RENDER_PHASE_CHANGED,
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 

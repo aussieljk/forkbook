@@ -2,21 +2,21 @@
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/next/code/addons/docs/docs/media/hero.png" width="100%" />
 </center>
 
-# Storybook Docs
+# Forkbook Docs
 
-> migration guide: This page documents the method to configure Storybook introduced recently in 7.0.0, consult the [migration guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) if you want to migrate to this format of configuring Storybook.
+> migration guide: This page documents the method to configure Forkbook introduced recently in 7.0.0, consult the [migration guide](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md) if you want to migrate to this format of configuring Forkbook.
 
-Storybook Docs transforms your Storybook stories into world-class component documentation.
+Forkbook Docs transforms your Forkbook stories into world-class component documentation.
 
 **DocsPage.** Out of the box, all your stories get a `DocsPage`. `DocsPage` is a zero-config aggregation of your component stories, text descriptions, docgen comments, props tables, and code examples into clean, readable pages.
 
-**MDX.** If you want more control, `MDX` allows you to write long-form markdown documentation and include stories in one file. You can also use it to write pure documentation pages and embed them inside your Storybook alongside your stories.
+**MDX.** If you want more control, `MDX` allows you to write long-form markdown documentation and include stories in one file. You can also use it to write pure documentation pages and embed them inside your Forkbook alongside your stories.
 
 Docs supports React with Vite and Next.js with Vite.
 
 Read on to learn more:
 
-- [Storybook Docs](#storybook-docs)
+- [Forkbook Docs](#storybook-docs)
   - [DocsPage](#docspage)
   - [MDX](#mdx)
   - [Framework support](#framework-support)
@@ -46,7 +46,7 @@ Here's an example file:
 <!-- prettier-ignore-start -->
 
 ```md
-import { Meta, Story, Canvas } from 'storybook/addon-docs/blocks';
+import { Meta, Story, Canvas } from '@aussieljk/forkbook/addon-docs/blocks';
 import * as CheckboxStories from './Checkbox.stories';
 
 <Meta title="MDX/Checkbox" of={CheckboxStories} />
@@ -63,7 +63,7 @@ markdown documentation.
 
 <!-- prettier-ignore-end -->
 
-And here's how that's rendered in Storybook:
+And here's how that's rendered in Forkbook:
 
 <center>
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/next/code/addons/docs/docs/media/mdx-simple.png" width="100%" />
@@ -73,14 +73,14 @@ For more information on `MDX`, see the [`MDX` reference](https://github.com/stor
 
 ## Framework support
 
-Storybook Docs supports React with Vite and Next.js with Vite. It does not support React Native.
+Forkbook Docs supports React with Vite and Next.js with Vite. It does not support React Native.
 
 ## Installation
 
 First add the package. Make sure that the versions for your `@storybook/*` packages match:
 
 ```sh
-yarn add -D storybook/addon-docs
+yarn add -D @aussieljk/forkbook/addon-docs
 ```
 
 Docs has peer dependencies on `react`. If you want to write stories in MDX, you may need to add this dependency as well:
@@ -89,7 +89,7 @@ Docs has peer dependencies on `react`. If you want to write stories in MDX, you 
 yarn add -D react
 ```
 
-Then add the following to your `.storybook/main.js`:
+Then add the following to your `.forkbook/main.js`:
 
 ```js
 export default {
@@ -98,7 +98,7 @@ export default {
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
-    'storybook/addon-docs', // 👈 Also add this
+    '@aussieljk/forkbook/addon-docs', // 👈 Also add this
   ],
 };
 ```
@@ -111,7 +111,7 @@ The `addon-docs` preset has a few configuration options that can be used to conf
 export default {
   addons: [
     {
-      name: 'storybook/addon-docs',
+      name: '@aussieljk/forkbook/addon-docs',
       options: {
         csfPluginOptions: null,
         mdxPluginOptions: {},
@@ -124,7 +124,7 @@ export default {
 `csfPluginOptions` configures the CSF source enrichment used by addon-docs. When set to `null`,
 addon-docs does not enrich CSF files.
 
-> With the release of version 7.0, it is no longer possible to import `.md` files directly into Storybook using the `transcludeMarkdown` [option](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#importing-plain-markdown-files-with-transcludemarkdown-has-changed). Instead, we recommend using the [`Markdown`](https://storybook.js.org/docs/api/doc-blocks/doc-block-markdown?ref=readme) Doc Block for importing Markdown files into your Storybook documentation.
+> With the release of version 7.0, it is no longer possible to import `.md` files directly into Forkbook using the `transcludeMarkdown` [option](https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#importing-plain-markdown-files-with-transcludemarkdown-has-changed). Instead, we recommend using the [`Markdown`](https://storybook.js.org/docs/api/doc-blocks/doc-block-markdown?ref=readme) Doc Block for importing Markdown files into your Forkbook documentation.
 
 ## TypeScript configuration
 
@@ -132,10 +132,10 @@ As of SB6 [TypeScript is zero-config](https://storybook.js.org/docs/configure/in
 
 ## More resources
 
-Want to learn more? Here are some more articles on Storybook Docs:
+Want to learn more? Here are some more articles on Forkbook Docs:
 
 - References: [DocsPage](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/docspage.md) / [MDX](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/mdx.md) / [FAQ](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/faq.md) / [Recipes](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/recipes.md) / [Theming](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/theming.md) / [Props](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/props-tables.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
+- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { ToolbarManager } from './components/ToolbarManager.tsx';
 import { TOOLBAR_ID } from './constants.ts';

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import EnvironmentVariables from './EnvironmentVariables';
 

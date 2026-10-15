@@ -21,7 +21,7 @@ export type SkillInputs = ToolAvailability & {
 
 const isTypeScriptFile = (path: string) => /\.[cm]?tsx?$/.test(path);
 
-async function resolvePreview(configDir = '.storybook') {
+async function resolvePreview(configDir = '.forkbook') {
   const previewPath = findConfigFile('preview', configDir);
   const typescript = isTypeScriptFile(previewPath ?? findConfigFile('main', configDir) ?? '');
   const path = previewPath ?? `${configDir}/preview.${typescript ? 'ts' : 'js'}`;
@@ -40,7 +40,7 @@ async function resolvePreview(configDir = '.storybook') {
 
 /**
  * The one probing path for skill-content assembly: everything the pure builders need, resolved
- * from the target Storybook's presets. Both the skills CLI and addon-mcp fill builder inputs from
+ * from the target Forkbook's presets. Both the skills CLI and addon-mcp fill builder inputs from
  * this, so the two channels cannot drift.
  */
 export async function resolveSkillInputs(options: Options): Promise<SkillInputs> {

@@ -1,5 +1,5 @@
-import type { Builder_EnvsRaw } from 'storybook/internal/types';
-import type { Options } from 'storybook/internal/types';
+import type { Builder_EnvsRaw } from '@aussieljk/forkbook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type { Plugin } from 'vite';
 
@@ -10,7 +10,7 @@ export interface StorybookRuntimePluginOptions {
   envs?: Builder_EnvsRaw;
 }
 
-/** A composite Vite plugin that injects environment variables for Storybook's runtime. */
+/** A composite Vite plugin that injects environment variables for Forkbook's runtime. */
 export async function storybookSanitizeEnvs(options: Options): Promise<Plugin[]> {
   const plugins: Plugin[] = [];
   const envs = await options.presets.apply<Builder_EnvsRaw>('env');

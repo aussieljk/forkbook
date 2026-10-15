@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
 
-import { generate, parser, types as t } from 'storybook/internal/babel';
-import { logger } from 'storybook/internal/node-logger';
-import { telemetry } from 'storybook/internal/telemetry';
-import type { CoreConfig } from 'storybook/internal/types';
+import { generate, parser, types as t } from '@aussieljk/forkbook/internal/babel';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
 import { transformSync } from 'esbuild';
 import { walk } from 'estree-walker';
@@ -28,7 +28,7 @@ export type MockCall = {
 interface ExtractMockCallsOptions {
   /** The absolute path to the preview.tsx file where mocks are defined. */
   previewConfigPath: string;
-  /** The absolute path to the Storybook config directory. */
+  /** The absolute path to the Forkbook config directory. */
   coreOptions?: CoreConfig;
   /** Configuration directory */
   configDir: string;

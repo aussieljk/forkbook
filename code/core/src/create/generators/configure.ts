@@ -1,8 +1,8 @@
 import { stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import { logger } from 'storybook/internal/node-logger';
-import { Feature, SupportedLanguage, SupportedRenderer } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { Feature, SupportedLanguage, SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 

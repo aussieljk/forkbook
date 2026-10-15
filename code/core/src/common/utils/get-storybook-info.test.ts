@@ -9,7 +9,7 @@ import { findConfigFile } from './get-storybook-info.ts';
 
 vi.mock('node:fs', { spy: true });
 
-const configDir = join('/project', '.storybook');
+const configDir = join('/project', '.forkbook');
 
 describe('findConfigFile', () => {
   beforeEach(() => {

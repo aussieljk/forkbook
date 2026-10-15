@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Button, PopoverProvider, TooltipLinkList } from 'storybook/internal/components';
+import { Button, PopoverProvider, TooltipLinkList } from '@aussieljk/forkbook/internal/components';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
+import { action } from '@aussieljk/forkbook/actions';
 
 import { Shortcut } from '../components/Shortcut.tsx';
 

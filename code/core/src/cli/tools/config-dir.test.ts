@@ -5,8 +5,8 @@ import { describe, expect, it } from 'vitest';
 import { resolveStorybookConfigDir } from './config-dir.ts';
 
 describe('resolveStorybookConfigDir', () => {
-  it('defaults to .storybook under the target cwd', () => {
-    expect(resolveStorybookConfigDir({ cwd: '/repo' })).toBe(resolve('/repo/.storybook'));
+  it('defaults to .forkbook under the target cwd', () => {
+    expect(resolveStorybookConfigDir({ cwd: '/repo' })).toBe(resolve('/repo/.forkbook'));
   });
 
   it('resolves relative config dirs from the target cwd', () => {
@@ -16,8 +16,8 @@ describe('resolveStorybookConfigDir', () => {
   });
 
   it('keeps absolute config dirs unchanged', () => {
-    expect(resolveStorybookConfigDir({ cwd: '/repo', configDir: '/custom/.storybook' })).toBe(
-      '/custom/.storybook'
+    expect(resolveStorybookConfigDir({ cwd: '/repo', configDir: '/custom/.forkbook' })).toBe(
+      '/custom/.forkbook'
     );
   });
 });

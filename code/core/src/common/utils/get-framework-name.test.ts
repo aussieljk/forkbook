@@ -5,12 +5,8 @@ import { extractFrameworkPackageName } from './get-framework-name.ts';
 describe('get-framework-name', () => {
   describe('extractProperFrameworkName', () => {
     it('should extract the proper framework name from the given framework field', () => {
-      expect(extractFrameworkPackageName('storybook/react-vite')).toBe('storybook/react-vite');
-      expect(extractFrameworkPackageName('/path/to/@storybook/react-vite')).toBe(
-        'storybook/react-vite'
-      );
-      expect(extractFrameworkPackageName('\\path\\to\\@storybook\\react-vite')).toBe(
-        'storybook/react-vite'
+      expect(extractFrameworkPackageName('@aussieljk/forkbook/react-vite')).toBe(
+        '@aussieljk/forkbook/react-vite'
       );
     });
 

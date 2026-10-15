@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { STORY_FINISHED, STORY_PREPARED } from 'storybook/internal/core-events';
-import type { ArgTypes, DocgenPayload, StoryId } from 'storybook/internal/types';
+import { STORY_FINISHED, STORY_PREPARED } from '@aussieljk/forkbook/internal/core-events';
+import type { ArgTypes, DocgenPayload, StoryId } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -16,8 +16,8 @@ import {
   useServiceQuery,
   useStorybookApi,
   useStorybookState,
-} from 'storybook/manager-api';
-import type { DocgenService } from 'storybook/open-service';
+} from '@aussieljk/forkbook/manager-api';
+import type { DocgenService } from '@aussieljk/forkbook/open-service';
 import {
   ArgsTable,
   type SortType,
@@ -167,7 +167,7 @@ function DocgenQuery({
 //
 // In a static build there is no bundling to contend with and docgen is precomputed JSON, so the gate
 // is open from the start. In dev it opens once the story reaches a safe point in its lifecycle:
-// STORY_FINISHED by default, or — with the STORYBOOK_DOCGEN_STORY_PREPARED env var — the earlier
+// STORY_FINISHED by default, or — with the FORKBOOK_DOCGEN_STORY_PREPARED env var — the earlier
 // STORY_PREPARED (the story module has been delivered to the browser, before it mounts and paints),
 // trading a slice of the first-render budget for an earlier Controls population. The server reads the
 // env var and injects it into the manager as the DOCGEN_STORY_PREPARED global so it can be evaluated

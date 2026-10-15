@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 export * from './root.tsx';
 export { Tag } from '../shared/constants/tags.ts';

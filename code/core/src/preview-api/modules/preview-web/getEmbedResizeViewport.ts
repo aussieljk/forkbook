@@ -1,4 +1,4 @@
-import type { Renderer } from 'storybook/internal/types';
+import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { PARAM_KEY } from '../../../viewport/constants.ts';
 import { MINIMAL_VIEWPORTS } from '../../../viewport/defaults.ts';

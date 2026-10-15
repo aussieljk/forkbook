@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import { FORCE_REMOUNT } from 'storybook/internal/core-events';
-import type { Addon_BaseType } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import { FORCE_REMOUNT } from '@aussieljk/forkbook/internal/core-events';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { SyncIcon } from '@storybook/icons';
 
-import { Consumer, types } from 'storybook/manager-api';
-import type { Combo } from 'storybook/manager-api';
+import { Consumer, types } from '@aussieljk/forkbook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
 
 import styles from './remount.module.css';
 

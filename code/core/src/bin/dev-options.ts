@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import { HandledError } from 'storybook/internal/common';
+import { HandledError } from '@aussieljk/forkbook/internal/common';
 
 import { isClaudePreviewLaunch, type AgentEnvironment } from '../shared/utils/agent-environment.ts';
 

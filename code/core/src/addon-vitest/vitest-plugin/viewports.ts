@@ -1,8 +1,8 @@
-import type { Globals, Parameters } from 'storybook/internal/csf';
-import { UnsupportedViewportDimensionError } from 'storybook/internal/preview-errors';
+import type { Globals, Parameters } from '@aussieljk/forkbook/internal/csf';
+import { UnsupportedViewportDimensionError } from '@aussieljk/forkbook/internal/preview-errors';
 
-import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
-import type { ViewportMap } from 'storybook/viewport';
+import { MINIMAL_VIEWPORTS } from '@aussieljk/forkbook/viewport';
+import type { ViewportMap } from '@aussieljk/forkbook/viewport';
 
 declare global {
   var __vitest_browser__: boolean;

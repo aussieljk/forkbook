@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 
-import { ActionList, Button, Link, ScrollArea } from 'storybook/internal/components';
+import { ActionList, Button, Link, ScrollArea } from '@aussieljk/forkbook/internal/components';
 
 import { ArrowLeftIcon, GithubIcon, ShareAltIcon, StorybookIcon } from '@storybook/icons';
 
@@ -105,7 +105,7 @@ export const MobileAbout: FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Storybook Community
+              Forkbook Community
             </Link>
           </div>
         </div>

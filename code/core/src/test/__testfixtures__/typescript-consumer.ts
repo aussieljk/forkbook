@@ -9,9 +9,9 @@ import {
   type MockInstance,
   type MockResult,
   type MockSettledResult,
-} from 'storybook/test';
+} from '@aussieljk/forkbook/test';
 
-declare module 'storybook/test' {
+declare module '@aussieljk/forkbook/test' {
   interface Assertion<T> {
     toBeEven(): Promise<void>;
   }

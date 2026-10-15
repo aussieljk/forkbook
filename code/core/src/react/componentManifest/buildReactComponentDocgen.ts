@@ -1,16 +1,16 @@
-import { getComponentIdFromEntry } from 'storybook/internal/common';
+import { getComponentIdFromEntry } from '@aussieljk/forkbook/internal/common';
 import {
   buildImportStatements,
   createStoryReferenceResolver,
   extractComponentDescription,
   extractDescription,
-} from 'storybook/internal/csf-tools';
+} from '@aussieljk/forkbook/internal/csf-tools';
 import type {
   ComponentManifest,
   ComponentSubcomponentManifest,
   IndexEntry,
   StoryDocsPayload,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import path from 'pathe';
 

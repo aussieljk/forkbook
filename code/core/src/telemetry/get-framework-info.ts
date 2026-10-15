@@ -1,5 +1,5 @@
-import { getStorybookInfo } from 'storybook/internal/common';
-import type { StorybookConfig } from 'storybook/internal/types';
+import { getStorybookInfo } from '@aussieljk/forkbook/internal/common';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { cleanPaths } from './sanitize.ts';
 

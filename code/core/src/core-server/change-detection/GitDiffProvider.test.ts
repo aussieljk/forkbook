@@ -6,13 +6,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // eslint-disable-next-line depend/ban-dependencies
 import { execa } from 'execa';
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { ChangeDetectionFailureError, ChangeDetectionUnavailableError } from './errors.ts';
 import { GitDiffProvider } from './GitDiffProvider.ts';
 
 vi.mock('execa', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 type ExecaMockResult = { stdout: string } | { error: Error };
 type MockWatcherRecord = {

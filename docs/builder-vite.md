@@ -1,4 +1,4 @@
-# Storybook builder for Vite <!-- omit in toc -->
+# Forkbook builder for Vite <!-- omit in toc -->
 
 Build your stories with [vite](https://vitejs.dev/) for fast startup times and near-instant HMR.
 
@@ -6,7 +6,7 @@ Build your stories with [vite](https://vitejs.dev/) for fast startup times and n
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Getting started with Vite and Storybook (on a new project)](#getting-started-with-vite-and-storybook-on-a-new-project)
+  - [Getting started with Vite and Forkbook (on a new project)](#getting-started-with-vite-and-storybook-on-a-new-project)
   - [Customize Vite config](#customize-vite-config)
   - [TypeScript](#typescript)
   - [Docgen](#docgen)
@@ -20,18 +20,18 @@ Requirements:
 
 - Vite 3.0 or newer (4.X recommended)
 
-When installing Storybook, use the `--builder=vite` flag if you do not have a `vite.config` file at your project root (if you do, the vite builder is chosen automatically).
+When installing Forkbook, use the `--builder=vite` flag if you do not have a `vite.config` file at your project root (if you do, the vite builder is chosen automatically).
 
 ## Usage
 
-The builder supports both development mode in Storybook and building a static production version.
+The builder supports both development mode in Forkbook and building a static production version.
 
-Your `vite.config` file will be used by Storybook. If you need to customize the Vite config for Storybook, you have two choices:
+Your `vite.config` file will be used by Forkbook. If you need to customize the Vite config for Forkbook, you have two choices:
 
 1. Set values in your `vite.config` conditionally, based on an environment variable, for example.
-2. Add a `viteFinal` config to your `.storybook/main.js` file. See [Customize Vite config](#customize-vite-config) for details.
+2. Add a `viteFinal` config to your `.forkbook/main.js` file. See [Customize Vite config](#customize-vite-config) for details.
 
-### Getting started with Vite and Storybook (on a new project)
+### Getting started with Vite and Forkbook (on a new project)
 
 See https://vitejs.dev/guide/#scaffolding-your-first-vite-project,
 
@@ -46,14 +46,14 @@ The builder _will_ read your `vite.config.js` file, though it may change some of
 It looks for the Vite config in the CWD. If your config is located elsewhere, specify the path using the `viteConfigPath` builder option:
 
 ```javascript
-// .storybook/main.mjs
+// .forkbook/main.mjs
 
 const config = {
   framework: {
-    name: 'storybook/react-vite', // Your framework name here.
+    name: '@aussieljk/forkbook/react-vite', // Your framework name here.
     options: {
       builder: {
-        viteConfigPath: '.storybook/customViteConfig.js',
+        viteConfigPath: '.forkbook/customViteConfig.js',
       },
     },
   },
@@ -72,7 +72,7 @@ const config = {
   async viteFinal(config, { configType }) {
     // Be sure to return the customized config
     return mergeConfig(config, {
-      // Customize the Vite config for Storybook
+      // Customize the Vite config for Forkbook
       resolve: {
         alias: { foo: 'bar' },
       },
@@ -92,10 +92,10 @@ The function should return the updated Vite configuration.
 
 ### TypeScript
 
-Configure your `.storybook/main.ts` to use TypeScript:
+Configure your `.forkbook/main.ts` to use TypeScript:
 
 ```typescript
-import type { StorybookConfig } from 'storybook/react-vite';
+import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
 // (or whatever framework you are using)
 
@@ -113,13 +113,13 @@ See [Customize Vite config](#customize-vite-config) for details about using `vit
 
 ### Docgen
 
-Docgen gives the data for the props table in docs view, the controls panel and some other addons. For React, the Storybook server reads the props with the TypeScript 7 native compiler (`tsgo`). You do not need to configure it.
+Docgen gives the data for the props table in docs view, the controls panel and some other addons. For React, the Forkbook server reads the props with the TypeScript 7 native compiler (`tsgo`). You do not need to configure it.
 
 ### Note about working directory
 
 The builder will by default enable Vite's [server.fs.strict](https://vitejs.dev/config/#server-fs-strict)
 option, for increased security. The default project `root` is set to the parent directory of the
-Storybook configuration directory. This can be overridden in [viteFinal](https://storybook.js.org/docs/api/main-config-vite-final?ref=readme).
+Forkbook configuration directory. This can be overridden in [viteFinal](https://storybook.js.org/docs/api/main-config-vite-final?ref=readme).
 
 ## Known issues
 
@@ -134,4 +134,4 @@ feel free to create an issue or send a pull request!
 
 Please read the [How to contribute](/CONTRIBUTING.md) guide.
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

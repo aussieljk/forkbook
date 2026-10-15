@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor } from '@aussieljk/forkbook/test';
 
 import * as StoryComponentStories from '../components/Story.stories';
 import * as ButtonStories from '../examples/Button.stories';

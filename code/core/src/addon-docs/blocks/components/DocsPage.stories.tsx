@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 import { ArgsTable, Source } from '.';
 import { Markdown as MarkdownComponent } from '../blocks/Markdown';

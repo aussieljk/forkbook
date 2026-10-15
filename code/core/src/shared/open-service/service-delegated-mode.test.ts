@@ -211,7 +211,7 @@ describe('delegated command dispatch', () => {
     const error = await promise.catch((caught: unknown) => caught);
     expect(error).toBeInstanceOf(OpenServiceRemoteCommandConfigDriftError);
     expect((error as Error).message).toBe(
-      'The Storybook this runtime is attached to reported it has no handler for remote command "internal-fixture/delegated-local-implementation.doThing". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Storybook with a configuration matching this process.'
+      'The Forkbook this runtime is attached to reported it has no handler for remote command "internal-fixture/delegated-local-implementation.doThing". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Forkbook with a configuration matching this process.'
     );
   });
 
@@ -230,7 +230,7 @@ describe('delegated command dispatch', () => {
     const error = await failure;
     expect(error).toBeInstanceOf(OpenServiceRemoteCommandUnhandledError);
     expect((error as Error).message).toBe(
-      'The Storybook this runtime is attached to did not acknowledge remote command "internal-fixture/delegated-local-implementation.doThing" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.'
+      'The Forkbook this runtime is attached to did not acknowledge remote command "internal-fixture/delegated-local-implementation.doThing" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.'
     );
   });
 

@@ -2,16 +2,19 @@ import { McpServer } from 'tmcp';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { HttpTransport } from '@tmcp/transport-http';
 import pkgJson from '../../package.json' with { type: 'json' };
-import type { Source } from 'storybook/internal/toolsets-docs';
-import type { Options } from 'storybook/internal/types';
+import type { Source } from '@aussieljk/forkbook/internal/toolsets-docs';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { buffer } from 'node:stream/consumers';
 import { collectTelemetry } from './telemetry.ts';
-import type { DocsAccess } from 'storybook/internal/toolsets-docs';
+import type { DocsAccess } from '@aussieljk/forkbook/internal/toolsets-docs';
 import type { AddonContext, AddonOptionsOutput } from './types.ts';
-import { logger } from 'storybook/internal/node-logger';
-import { getEffectiveToolAvailability, getToolAvailability } from 'storybook/internal/core-server';
-import { buildServerInstructions } from 'storybook/internal/skills';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import {
+  getEffectiveToolAvailability,
+  getToolAvailability,
+} from '@aussieljk/forkbook/internal/core-server';
+import { buildServerInstructions } from '@aussieljk/forkbook/internal/skills';
 import type { CompositionAuth } from './auth/index.ts';
 import { DEFAULT_MCP_ENDPOINT } from './constants.ts';
 import { registerAddonMcpTools } from './tools/tool-registry.ts';
@@ -89,7 +92,7 @@ type McpServerHandlerParams = {
   addonOptions: AddonOptionsOutput;
   /**
    * The MCP endpoint path (e.g. `/mcp` or a user-configured override).
-   * Used to derive the Storybook root from the incoming request URL inside
+   * Used to derive the Forkbook root from the incoming request URL inside
    * tools like `review-create`. Optional for backwards compatibility with
    * external callers; defaults to {@link DEFAULT_MCP_ENDPOINT}.
    */
@@ -105,7 +108,7 @@ type McpServerHandlerParams = {
   /**
    * Optional in-process single-entry resolver for `docgenServer` mode.
    * Selected (alongside `manifestProvider`) by the caller; the doc tools only consult
-   * it for the local source. Undefined on older Storybook versions / when the feature is off.
+   * it for the local source. Undefined on older Forkbook versions / when the feature is off.
    */
   localAccess?: DocsAccess;
   /** Composition auth handler for multi-source mode */

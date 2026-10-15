@@ -6,4 +6,4 @@ export default {
   component: StorybookLogo,
 };
 
-export const Normal = () => <StorybookLogo alt="Storybook logo" />;
+export const Normal = () => <StorybookLogo alt="Forkbook logo" />;

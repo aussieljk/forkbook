@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Bar } from './Bar.tsx';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (

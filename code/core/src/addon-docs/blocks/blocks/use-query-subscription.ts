@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 
-import { type Query, type QueryState, seedQueryState } from 'storybook/open-service';
+import { type Query, type QueryState, seedQueryState } from '@aussieljk/forkbook/open-service';
 
 import { useSyncExternalStoreShim } from './useSyncExternalStoreShim.ts';
 

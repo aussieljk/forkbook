@@ -31,7 +31,7 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
 
   it('returns undefined when storybook has no version', () => {
     expect(
-      getStorybookVersionSpecifierFromAncestry([{ command: 'npx storybook init' }])
+      getStorybookVersionSpecifierFromAncestry([{ command: 'npx forkbook init' }])
     ).toBeUndefined();
   });
 

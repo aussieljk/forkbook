@@ -1,13 +1,13 @@
 import React, { type SyntheticEvent, useMemo } from 'react';
 
-import { Button, ToggleButton } from 'storybook/internal/components';
+import { Button, ToggleButton } from '@aussieljk/forkbook/internal/components';
 import type {
   API_PreparedIndexEntry,
   StatusesByStoryIdAndTypeId,
   StatusValue,
   StoryIndex,
   Tag,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { UndoIcon } from '@storybook/icons';
 
@@ -15,7 +15,7 @@ import {
   experimental_useStatusStore,
   useStorybookApi,
   useStorybookState,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import { computeStatusFilterFn } from '../../../manager-api/modules/statuses.ts';
 import { computeTagsFilterFn } from '../../../manager-api/modules/tags.ts';

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { StoryContext } from 'storybook/react';
+import type { StoryContext } from '@aussieljk/forkbook/react';
 
-import { expect, fn } from 'storybook/test';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
 import preview from './preview';
 

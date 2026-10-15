@@ -3,10 +3,10 @@
 // is the only way to achieve it actually being a singleton
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore we must ignore types here as during compilation they are not generated yet
-import { headers } from 'storybook/nextjs-vite/headers.mock';
+import { headers } from '@aussieljk/forkbook/nextjs-vite/headers.mock';
 
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies/index.js';
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 class RequestCookiesMock extends RequestCookies {
   get = fn(super.get.bind(this)).mockName('next/headers::cookies().get');

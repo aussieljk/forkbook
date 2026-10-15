@@ -2,7 +2,7 @@ import { join } from 'node:path';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { normalizeStoriesEntry } from 'storybook/internal/common';
+import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
 
 import { subscribe } from '@parcel/watcher';
 
@@ -15,7 +15,7 @@ vi.mock('@parcel/watcher', () => ({
 describe('watchStorySpecifiers', () => {
   const workingDir = join(__dirname, '__mockdata__');
   const options = {
-    configDir: join(workingDir, '.storybook'),
+    configDir: join(workingDir, '.forkbook'),
     workingDir,
   };
 

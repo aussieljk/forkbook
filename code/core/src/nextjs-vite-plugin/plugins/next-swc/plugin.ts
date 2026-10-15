@@ -48,11 +48,11 @@ export function vitePluginNextSwc(
       const serverWatchIgnored = config.server?.watch?.ignored;
       const isServerWatchIgnoredArray = Array.isArray(serverWatchIgnored);
 
-      // Default to browser-mode (Storybook preview / Vite dev).
+      // Default to browser-mode (Forkbook preview / Vite dev).
       isServerEnvironment = false;
 
       // In Vitest, default to server-mode unless browser mode is explicitly enabled.
-      // This avoids Next/SWC folding `typeof window` to `"undefined"` in Storybook's browser preview
+      // This avoids Next/SWC folding `typeof window` to `"undefined"` in Forkbook's browser preview
       // when `config.test` is absent.
       if (isVitestEnv) {
         isServerEnvironment =

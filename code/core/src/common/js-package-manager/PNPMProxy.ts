@@ -1,11 +1,11 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   FindPackageVersionsError,
   MinimumReleaseAgeHandledError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
@@ -24,13 +24,13 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
-  STORYBOOK_RERUN_INSTRUCTION,
+  FORKBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
   hasStorybookMinimumAgeExclusions,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
   parseReleaseTime,
-  STORYBOOK_PACKAGE_PATTERNS,
+  FORKBOOK_PACKAGE_PATTERNS,
 } from './util.ts';
 
 type PnpmDependency = {
@@ -137,7 +137,7 @@ export class PNPMProxy extends JsPackageManager {
     args: string[];
     useRemotePkg?: boolean;
   }): ResultPromise {
-    // On pnpm 11+, Storybook-owned `dlx` can hang on approve-builds for esbuild.
+    // On pnpm 11+, Forkbook-owned `dlx` can hang on approve-builds for esbuild.
     // Pass `--allow-build` only here — not on `add`, which persists `allowBuilds`
     // into the user's project config.
     const pnpmArgs = useRemotePkg
@@ -420,7 +420,7 @@ export class PNPMProxy extends JsPackageManager {
       return;
     }
 
-    const publishedAt = await this.getPackageReleaseTime('storybook', storybookVersion);
+    const publishedAt = await this.getPackageReleaseTime('@aussieljk/forkbook', storybookVersion);
 
     if (!publishedAt) {
       return;
@@ -432,7 +432,7 @@ export class PNPMProxy extends JsPackageManager {
     }
 
     const compatibleVersion = await this.getLatestStableVersionAdheringToMinimumReleaseAge(
-      'storybook',
+      '@aussieljk/forkbook',
       minimumReleaseAge
     );
 
@@ -440,7 +440,7 @@ export class PNPMProxy extends JsPackageManager {
       await this.updateMinimumReleaseAgeExclude();
       logger.info(
         dedent`
-          pnpm minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Storybook updated minimumReleaseAgeExclude for this project automatically.
+          pnpm minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Forkbook updated minimumReleaseAgeExclude for this project automatically.
 
           Added patterns: storybook, @storybook/*, eslint-plugin-storybook
 
@@ -468,13 +468,13 @@ export class PNPMProxy extends JsPackageManager {
         message: 'How would you like to proceed?',
         options: [
           {
-            label: 'Update pnpm config to exclude Storybook packages',
+            label: 'Update pnpm config to exclude Forkbook packages',
             value: 'exclude',
           },
           {
             label: compatibleVersion
               ? `Stop now and rerun with the most recent allowed release: storybook@${compatibleVersion}`
-              : 'Stop now and rerun with an older stable Storybook release later',
+              : 'Stop now and rerun with an older stable Forkbook release later',
             value: 'rerun',
           },
         ],
@@ -672,7 +672,7 @@ export class PNPMProxy extends JsPackageManager {
     return dedent`
       pnpm minimumReleaseAge blocked storybook@${currentVersion} from being installed.
 
-      ${STORYBOOK_RERUN_INSTRUCTION}
+      ${FORKBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:
@@ -683,7 +683,7 @@ export class PNPMProxy extends JsPackageManager {
   private async updateMinimumReleaseAgeExclude(): Promise<void> {
     const currentMinimumReleaseAgeExclude = await this.getMinimumReleaseAgeExclude();
     const nextMinimumReleaseAgeExclude = Array.from(
-      new Set([...currentMinimumReleaseAgeExclude, ...STORYBOOK_PACKAGE_PATTERNS])
+      new Set([...currentMinimumReleaseAgeExclude, ...FORKBOOK_PACKAGE_PATTERNS])
     );
 
     await prompt.executeTaskWithSpinner(

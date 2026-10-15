@@ -1,7 +1,7 @@
 import type { CSSProperties, ChangeEvent, FC, FocusEvent } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Button, Form, PopoverProvider } from 'storybook/internal/components';
+import { Button, Form, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
 import { MarkupIcon } from '@storybook/icons';
 

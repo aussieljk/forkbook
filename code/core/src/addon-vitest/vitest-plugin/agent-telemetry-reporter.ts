@@ -1,11 +1,11 @@
 import type { SerializedError, TaskMeta } from 'vitest';
 import type { Reporter, TestCase, TestModule, Vitest } from 'vitest/node';
 
-import type { Report } from 'storybook/preview-api';
-import { analyzeTestResults, toStoryTestResult } from 'storybook/internal/core-server';
-import type { StoryTestResult } from 'storybook/internal/core-server';
-import { isExampleStoryId, telemetry } from 'storybook/internal/telemetry';
-import type { AgentInfo } from 'storybook/internal/telemetry';
+import type { Report } from '@aussieljk/forkbook/preview-api';
+import { analyzeTestResults, toStoryTestResult } from '@aussieljk/forkbook/internal/core-server';
+import type { StoryTestResult } from '@aussieljk/forkbook/internal/core-server';
+import { isExampleStoryId, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { AgentInfo } from '@aussieljk/forkbook/internal/telemetry';
 
 import { mergeAndWriteStoryHistory } from './agent-story-history-cache.ts';
 import { getAiSetupRunId } from '../../shared/utils/ai-checklist-flags.ts';

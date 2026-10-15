@@ -1,4 +1,4 @@
-import type { StorybookConfig } from 'storybook/internal/types';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { normalizePath } from './normalize-path.ts';
 

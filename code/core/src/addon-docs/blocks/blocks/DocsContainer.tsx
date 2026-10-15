@@ -1,10 +1,10 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useMemo } from 'react';
 
-import type { Renderer } from 'storybook/internal/types';
+import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
-import type { ThemeVars } from 'storybook/theming';
-import { ensure as ensureTheme, ThemeProvider } from 'storybook/theming';
+import type { ThemeVars } from '@aussieljk/forkbook/theming';
+import { ensure as ensureTheme, ThemeProvider } from '@aussieljk/forkbook/theming';
 
 import { DocsPageWrapper } from '../components';
 import { TableOfContents } from '../components/TableOfContents';

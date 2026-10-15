@@ -1,10 +1,10 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/client-logger';
-import type { NavigateFunction } from 'storybook/internal/router';
-import type { StoryIndex } from 'storybook/internal/types';
-import type { API } from 'storybook/manager-api';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { NavigateFunction } from '@aussieljk/forkbook/internal/router';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import { clearChannel, installNoopChannel } from '../../../channels/channel-slot.ts';
 import { clearRegistry, getService } from '../../../shared/open-service/server.ts';

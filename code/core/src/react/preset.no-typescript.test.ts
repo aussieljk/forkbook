@@ -5,5 +5,5 @@ vi.mock('typescript', () => {
 });
 
 test('loads the React preset without TypeScript installed', async () => {
-  await expect(import('storybook/react/preset')).resolves.toBeDefined();
+  await expect(import('@aussieljk/forkbook/react/preset')).resolves.toBeDefined();
 });

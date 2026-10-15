@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { NumberControl } from './Number';
 

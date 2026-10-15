@@ -10,8 +10,8 @@ import {
   getService,
   prepareHeadlessUniversalStores,
   type StoryIndexGenerator,
-} from 'storybook/internal/core-server';
-import { CHANGE_DETECTION_STATUS_TYPE_ID, type Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-server';
+import { CHANGE_DETECTION_STATUS_TYPE_ID, type Options } from '@aussieljk/forkbook/internal/types';
 
 import { clearRegistry } from '../../../shared/open-service/service-registry.ts';
 import type {
@@ -37,7 +37,7 @@ export type ToolsRuntime = {
 /**
  * Stand up the toolset runtime in this process, fully disconnected from any dev server.
  *
- * Loading the Storybook configuration applies the `services` preset exactly once, which registers
+ * Loading the Forkbook configuration applies the `services` preset exactly once, which registers
  * every open service and toolset — including any an addon contributes — as a consequence of normal
  * configuration loading, not via CLI-specific machinery.
  *

@@ -3,9 +3,9 @@ import os from 'node:os';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { getProjectRoot } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
@@ -16,8 +16,8 @@ import { AddonVitestService, canInstallLatestVitest } from './AddonVitestService
 
 vi.mock('node:fs/promises', { spy: true });
 vi.mock('node:os', { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('empathic/find', { spy: true });
 
 describe('AddonVitestService', () => {
@@ -100,7 +100,7 @@ describe('AddonVitestService', () => {
       expect(deps.every((d) => !d.includes('nextjs-vite'))).toBe(true);
     });
 
-    it('should not add storybook/nextjs-vite for non-Next.js frameworks', async () => {
+    it('should not add @aussieljk/forkbook/nextjs-vite for non-Next.js frameworks', async () => {
       const deps = await service.collectDependencies();
 
       expect(deps.every((d) => !d.includes('nextjs-vite'))).toBe(true);
@@ -408,7 +408,7 @@ describe('AddonVitestService', () => {
       const result = await service.validateCompatibility({
         framework: SupportedFramework.REACT_VITE,
         builder: SupportedBuilder.VITE,
-        projectRoot: '.storybook',
+        projectRoot: '.forkbook',
       });
 
       expect(result.compatible).toBe(false);
@@ -523,7 +523,7 @@ describe('AddonVitestService', () => {
           expect.stringContaining('installed without system dependencies')
         );
         expect(logger.warn).toHaveBeenCalledWith(
-          expect.stringContaining('run Storybook Test from the Storybook UI')
+          expect.stringContaining('run Forkbook Test from the Forkbook UI')
         );
       } finally {
         if (originalCI !== undefined) {
@@ -656,7 +656,7 @@ describe('AddonVitestService', () => {
     it('should return compatible when no config files found', async () => {
       vi.mocked(find.any).mockReturnValue(undefined);
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(true);
     });
@@ -665,7 +665,7 @@ describe('AddonVitestService', () => {
       vi.mocked(find.any).mockReset();
       vi.mocked(find.any).mockReturnValueOnce('vitest.config.cts'); // config
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(false);
       expect(result.reasons).toBeDefined();
@@ -676,7 +676,7 @@ describe('AddonVitestService', () => {
     it('should reject CommonJS config files (.cjs)', async () => {
       vi.mocked(find.any).mockReturnValueOnce('vitest.config.cjs'); // config
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(false);
       expect(result.reasons!.some((r) => r.includes('CommonJS config'))).toBe(true);
@@ -686,7 +686,7 @@ describe('AddonVitestService', () => {
       vi.mocked(find.any).mockReturnValueOnce('vitest.config.ts'); // config
       vi.mocked(fs.readFile).mockResolvedValue('export default defineConfig({ test: {} })');
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(true);
     });
@@ -695,7 +695,7 @@ describe('AddonVitestService', () => {
       vi.mocked(find.any).mockReturnValueOnce('vitest.config.ts'); // config
       vi.mocked(fs.readFile).mockResolvedValue('export default {}');
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(true);
     });
@@ -714,7 +714,7 @@ export default defineConfig(({ mode }) => {
 })`
       );
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(false);
       expect(result.reasons!.some((r) => r.includes('invalid Vitest config'))).toBe(true);
@@ -726,7 +726,7 @@ export default defineConfig(({ mode }) => {
         'export default defineConfig({ test: { projects: [] } })'
       );
 
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
 
       expect(result.compatible).toBe(true);
     });
@@ -736,7 +736,7 @@ export default defineConfig(({ mode }) => {
       vi.mocked(fs.readFile).mockResolvedValue(
         'export default mergeConfig(viteConfig, { test: { name: "node" } })'
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -745,7 +745,7 @@ export default defineConfig(({ mode }) => {
       vi.mocked(fs.readFile).mockResolvedValue(
         'export default mergeConfig(viteConfig, defineConfig({ test: { name: "node" } }))'
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -754,7 +754,7 @@ export default defineConfig(({ mode }) => {
       vi.mocked(fs.readFile).mockResolvedValue(
         'export default mergeConfig({ test: {} }, { plugins: [] })'
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -770,7 +770,7 @@ export default defineConfig(({ mode }) => {
           })
         )`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -787,7 +787,7 @@ export default defineConfig(({ mode }) => {
           }) satisfies ViteUserConfig
         )`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -802,7 +802,7 @@ export default defineConfig(({ mode }) => {
           test: { name: 'node' },
         }) as ViteUserConfig`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -815,7 +815,7 @@ export default defineConfig(({ mode }) => {
         const test = { name: 'node', environment: 'happy-dom' };
         export default mergeConfig(viteConfig, { test })`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -828,7 +828,7 @@ export default defineConfig(({ mode }) => {
         const vitestConfig = { test: { name: 'node' } };
         export default mergeConfig(viteConfig, vitestConfig)`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -844,7 +844,7 @@ export default defineConfig(({ mode }) => {
         );
         export default config`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
 
@@ -857,7 +857,7 @@ export default defineConfig(({ mode }) => {
           test: { name: 'node', environment: 'happy-dom' },
         })`
       );
-      const result = await service.validateConfigFiles('.storybook');
+      const result = await service.validateConfigFiles('.forkbook');
       expect(result.compatible).toBe(true);
     });
   });

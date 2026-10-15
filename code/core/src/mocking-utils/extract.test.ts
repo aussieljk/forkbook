@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { parse } from '@babel/parser';
 import { readFileSync } from 'fs';
-import { telemetry } from 'storybook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import * as extractModule from './extract.ts';
 import * as resolveModule from './resolve.ts';
@@ -37,7 +37,7 @@ vi.mock('./resolve', async () => {
   };
 });
 
-vi.mock('storybook/internal/telemetry', () => ({
+vi.mock('@aussieljk/forkbook/internal/telemetry', () => ({
   telemetry: vi.fn(),
 }));
 
@@ -55,8 +55,8 @@ describe('isModuleDirectory', () => {
 });
 
 describe('extractMockCalls', () => {
-  const previewConfigPath = '/project/.storybook/preview.tsx';
-  const configDir = '/project/.storybook';
+  const previewConfigPath = '/project/.forkbook/preview.tsx';
+  const configDir = '/project/.forkbook';
   const root = '/project';
   const coreOptions = { disableTelemetry: true };
 

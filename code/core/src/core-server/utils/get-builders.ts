@@ -2,8 +2,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-import { MissingBuilderError } from 'storybook/internal/server-errors';
-import type { Builder, Options } from 'storybook/internal/types';
+import { MissingBuilderError } from '@aussieljk/forkbook/internal/server-errors';
+import type { Builder, Options } from '@aussieljk/forkbook/internal/types';
 
 import { resolveModulePath } from 'exsolve';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../.storybook/preview.tsx';
+import preview from '../../../../.forkbook/preview.tsx';
 import { results } from '../results.mock.ts';
 import { type EnhancedResults, RuleType } from '../types.ts';
 import { A11YPanel } from './A11YPanel.tsx';

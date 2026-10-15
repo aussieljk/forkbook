@@ -7,18 +7,18 @@ import {
   generate,
   types as t,
   traverse,
-} from 'storybook/internal/babel';
-import type { ArgTypes } from 'storybook/internal/csf';
+} from '@aussieljk/forkbook/internal/babel';
+import type { ArgTypes } from '@aussieljk/forkbook/internal/csf';
 
 import {
-  STORYBOOK_FN_PLACEHOLDER,
+  FORKBOOK_FN_PLACEHOLDER,
   generateDummyArgsFromArgTypes,
 } from '../../core-server/utils/get-dummy-args-from-argtypes.ts';
 import { createTestGuardDeclaration } from './transformer.ts';
 
 const VITEST_IMPORT_SOURCE = 'vitest';
-const TEST_UTILS_IMPORT_SOURCE = 'storybook/addon-vitest/internal/test-utils';
-const STORYBOOK_TEST_IMPORT_SOURCE = 'storybook/test';
+const TEST_UTILS_IMPORT_SOURCE = '@aussieljk/forkbook/addon-vitest/internal/test-utils';
+const FORKBOOK_TEST_IMPORT_SOURCE = '@aussieljk/forkbook/test';
 
 type ComponentExport = {
   exportedName: string;
@@ -321,13 +321,13 @@ export const componentTransform = async ({
 
   // Detect whether argTypes contains fn placeholders that need replacing with an actual function expression. Done ahead of time for performance reasons.
   const hasFunctionPlaceholder = (value: unknown): boolean => {
-    return JSON.stringify(value).includes(STORYBOOK_FN_PLACEHOLDER);
+    return JSON.stringify(value).includes(FORKBOOK_FN_PLACEHOLDER);
   };
 
   /**
    * When argTypes relate to handlers like onClick, they will have a string value like
-   * [[STORYBOOK_FN_PLACEHOLDER]] In those cases we need to replace them with an actual fn() call
-   * from storybook/test
+   * [[FORKBOOK_FN_PLACEHOLDER]] In those cases we need to replace them with an actual fn() call
+   * from @aussieljk/forkbook/test
    */
   const valueToNodeRecursive = (value: unknown, replaceFnCalls: boolean): t.Expression => {
     // When there are no function placeholders, no need to recurse - just use valueToNode
@@ -335,7 +335,7 @@ export const componentTransform = async ({
       return t.valueToNode(value) as t.Expression;
     }
 
-    if (value === STORYBOOK_FN_PLACEHOLDER) {
+    if (value === FORKBOOK_FN_PLACEHOLDER) {
       return t.callExpression(fnId, []);
     }
 
@@ -431,7 +431,7 @@ export const componentTransform = async ({
   }
 
   if (hasAnyFunctionPlaceholders) {
-    dedupeImports(ast.program, STORYBOOK_TEST_IMPORT_SOURCE, [
+    dedupeImports(ast.program, FORKBOOK_TEST_IMPORT_SOURCE, [
       t.importSpecifier(fnId, t.identifier('fn')),
     ]);
   }

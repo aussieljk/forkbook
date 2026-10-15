@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import {
   CURRENT_STORY_WAS_SET,
   DOCS_PREPARED,
@@ -16,13 +16,13 @@ import {
   STORY_THREW_EXCEPTION,
   STORY_UNCHANGED,
   UPDATE_QUERY_PARAMS,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   CalledPreviewMethodBeforeInitializationError,
   EmptyIndexError,
   MdxFileWithNoCsfReferencesError,
   NoStoryMatchError,
-} from 'storybook/internal/preview-errors';
+} from '@aussieljk/forkbook/internal/preview-errors';
 import type {
   Args,
   Globals,
@@ -32,7 +32,7 @@ import type {
   StoryId,
   StoryIndex,
   ViewMode,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import invariant from 'tiny-invariant';
 

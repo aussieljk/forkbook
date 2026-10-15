@@ -1,12 +1,12 @@
-import { logger } from 'storybook/internal/client-logger';
-import { Addon_TypesEnum } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 import type {
   API_StateMerger,
   Addon_BaseType,
   Addon_Collection,
   Addon_Types,
   Addon_TypesMapping,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { ModuleFn } from '../lib/types.tsx';
 import type { Options } from '../store.ts';
@@ -135,7 +135,7 @@ export const init: ModuleFn<SubAPI, SubState> = ({ provider, store, fullAPI }): 
         .then(() => api.getAddonState(addonId));
     },
     getAddonState: (addonId) => {
-      return store.getState().addons[addonId] || globalThis?.STORYBOOK_ADDON_STATE[addonId];
+      return store.getState().addons[addonId] || globalThis?.FORKBOOK_ADDON_STATE[addonId];
     },
   };
 

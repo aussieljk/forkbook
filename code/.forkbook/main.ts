@@ -1,8 +1,8 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { defineMain } from 'storybook/react-vite/node';
-import type { Options } from 'storybook/internal/types';
+import { defineMain } from '@aussieljk/forkbook/react-vite/node';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import react from '@vitejs/plugin-react';
 import type { InlineConfig } from 'vite';
@@ -112,12 +112,12 @@ const config = defineMain({
     },
   ],
   addons: [
-    'storybook/addon-themes',
-    'storybook/addon-docs',
-    'storybook/addon-vitest',
-    'storybook/addon-a11y',
-    'storybook/addon-mcp',
-    'storybook/addon-pseudo-states',
+    '@aussieljk/forkbook/addon-themes',
+    '@aussieljk/forkbook/addon-docs',
+    '@aussieljk/forkbook/addon-vitest',
+    '@aussieljk/forkbook/addon-a11y',
+    '@aussieljk/forkbook/addon-mcp',
+    '@aussieljk/forkbook/addon-pseudo-states',
     './services-preset.ts',
   ],
   previewAnnotations: [
@@ -133,7 +133,7 @@ const config = defineMain({
     },
   },
   framework: {
-    name: 'storybook/react-vite',
+    name: '@aussieljk/forkbook/react-vite',
     options: {},
   },
   refs: {
@@ -159,18 +159,18 @@ const config = defineMain({
         alias:
           configType === 'DEVELOPMENT'
             ? {
-                'storybook/internal/components': componentsPath,
-                'storybook/manager-api': managerApiPath,
-                'storybook/preview-api': previewApiPath,
-                'storybook/theming/create': themingCreatePath,
-                'storybook/theming': themingPath,
+                '@aussieljk/forkbook/internal/components': componentsPath,
+                '@aussieljk/forkbook/manager-api': managerApiPath,
+                '@aussieljk/forkbook/preview-api': previewApiPath,
+                '@aussieljk/forkbook/theming/create': themingCreatePath,
+                '@aussieljk/forkbook/theming': themingPath,
               }
             : {
                 // The components dist bundle inlines Base UI; resolving to source keeps the
                 // preview on a single Base UI copy so focus traps can nest across modules.
-                'storybook/internal/components': componentsPath,
-                'storybook/manager-api': managerApiPath,
-                'storybook/preview-api': previewApiPath,
+                '@aussieljk/forkbook/internal/components': componentsPath,
+                '@aussieljk/forkbook/manager-api': managerApiPath,
+                '@aussieljk/forkbook/preview-api': previewApiPath,
               },
       },
       plugins: [react()],
@@ -181,7 +181,7 @@ const config = defineMain({
       },
       server: {
         watch: {
-          // Something odd happens with tsconfig and nx which causes Storybook to keep reloading, so we ignore them
+          // Something odd happens with tsconfig and nx which causes Forkbook to keep reloading, so we ignore them
           ignored: [
             '**/.nx/cache/**',
             '**/tsconfig.json',

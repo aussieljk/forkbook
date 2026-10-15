@@ -1,6 +1,6 @@
-import type { Channel } from 'storybook/internal/channels';
-import { logger } from 'storybook/internal/client-logger';
-import { SET_CONFIG } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { SET_CONFIG } from '@aussieljk/forkbook/internal/core-events';
 import type {
   Addon_BaseType,
   Addon_Collection,
@@ -13,8 +13,8 @@ import type {
   Addon_Types,
   Addon_TypesMapping,
   Addon_WrapperType,
-} from 'storybook/internal/types';
-import { Addon_TypesEnum } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import {
   getChannel as readInstalledChannel,

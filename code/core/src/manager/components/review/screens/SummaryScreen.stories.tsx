@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import { IconSymbols } from '../../sidebar/IconSymbols.tsx';
 import type { ReviewState } from '../review-state.ts';
 import type { StoryInfo } from '../review-types.ts';
@@ -53,7 +53,7 @@ const largeCascade: ReviewState = {
   collections: [
     ...full.collections,
     {
-      title: 'Storybook manager surfaces',
+      title: 'Forkbook manager surfaces',
       rationale:
         'Manager views consume shared typography, spacing, and theming tokens that can shift subtly.',
       storyIds: [
@@ -188,7 +188,7 @@ const atomicChange: ReviewState = {
 const manyCollections: ReviewState = {
   title: 'Large review surface: many collections and stories',
   description:
-    'Stress-test the Summary screen with many collections and many story previews using real stories from the internal Storybook.',
+    'Stress-test the Summary screen with many collections and many story previews using real stories from the internal Forkbook.',
   collections: [
     {
       title: 'Collection 01 — Button core',
@@ -373,7 +373,7 @@ const titleCase = (value: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 
-// Stand-in for the Storybook index: every story referenced by a fixture resolves
+// Stand-in for the Forkbook index: every story referenced by a fixture resolves
 // to a title + name so the grid renders it (stories with no entry are skipped).
 const demoStoryInfo: Record<string, StoryInfo> = {};
 for (const state of [minimal, full, largeCascade, pagesAndBench, atomicChange, manyCollections]) {
@@ -530,7 +530,7 @@ export const LargeCascade = meta.story({
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(await canvas.findByText('Theme token cascade review')).toBeInTheDocument();
-    await expect(await canvas.findByText('Storybook manager surfaces')).toBeInTheDocument();
+    await expect(await canvas.findByText('Forkbook manager surfaces')).toBeInTheDocument();
   },
 });
 

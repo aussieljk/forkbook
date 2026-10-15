@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/client-logger';
-import type { PreparedStory } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 

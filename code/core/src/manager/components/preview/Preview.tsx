@@ -1,14 +1,17 @@
 import type { FC } from 'react';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 
-import { Loader } from 'storybook/internal/components';
-import { PREVIEW_BUILDER_PROGRESS, SET_CURRENT_STORY } from 'storybook/internal/core-events';
-import type { Addon_WrapperType } from 'storybook/internal/types';
+import { Loader } from '@aussieljk/forkbook/internal/components';
+import {
+  PREVIEW_BUILDER_PROGRESS,
+  SET_CURRENT_STORY,
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Addon_WrapperType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
 import { Helmet } from 'react-helmet-async';
-import { Consumer, addons, type Combo } from 'storybook/manager-api';
+import { Consumer, addons, type Combo } from '@aussieljk/forkbook/manager-api';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { isReviewCollectionStoryRoute } from '../../../shared/review/routes.ts';

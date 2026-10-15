@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren, ReactChild, ReactElement, ReactNode } from 'react';
 import React, { Children, forwardRef } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
-import type { Addon_RenderOptions } from 'storybook/internal/types';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
+import type { Addon_RenderOptions } from '@aussieljk/forkbook/internal/types';
 
 import type { TabsProps } from './Tabs.tsx';
 

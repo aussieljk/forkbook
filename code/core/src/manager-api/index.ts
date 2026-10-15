@@ -20,7 +20,7 @@ export {
 
 export { Tag } from '../shared/constants/tags.ts';
 
-/** OPEN SERVICE API (manager relay hub + React hooks; types on `storybook/open-service`) */
+/** OPEN SERVICE API (manager relay hub + React hooks; types on `@aussieljk/forkbook/open-service`) */
 export {
   getService,
   registerService,

@@ -1,10 +1,10 @@
 import React, { useMemo, useRef, type SyntheticEvent } from 'react';
 
-import { ActionList, Card } from 'storybook/internal/components';
+import { ActionList, Card } from '@aussieljk/forkbook/internal/components';
 
 import { CloseAltIcon, WandIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useReviewContext } from '../review/review-context.ts';

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { destroyAnnouncer } from 'storybook/internal/components';
-import { type TestProviderState } from 'storybook/internal/types';
+import { destroyAnnouncer } from '@aussieljk/forkbook/internal/components';
+import { type TestProviderState } from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext, addons } from 'storybook/manager-api';
-import { expect, fn, waitFor } from 'storybook/test';
+import { ManagerContext, addons } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, waitFor } from '@aussieljk/forkbook/test';
 
 import { ADDON_ID as A11Y_ADDON_ID } from '../../addon-a11y/constants.ts';
 import { storeOptions } from '../constants.ts';

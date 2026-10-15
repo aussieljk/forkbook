@@ -2,14 +2,17 @@
  * Shared memfs mock setup for tests that use in-memory filesystem.
  *
  * Usage in test files: vi.mock('node:fs'); vi.mock('node:fs/promises'); vi.mock(import('./utils'),
- * { spy: true }); vi.mock('storybook/internal/common', { spy: true }); vi.mock('empathic/find', {
+ * { spy: true }); vi.mock('@aussieljk/forkbook/internal/common', { spy: true }); vi.mock('empathic/find', {
  * spy: true }); vi.mock('tsconfig-paths', { spy: true });
  *
  * BeforeEach(() => { setupMemfsMocks(); });
  */
 import { vi } from 'vitest';
 
-import { type JsPackageManager, JsPackageManagerFactory } from 'storybook/internal/common';
+import {
+  type JsPackageManager,
+  JsPackageManagerFactory,
+} from '@aussieljk/forkbook/internal/common';
 
 import { vol } from 'memfs';
 import path from 'pathe';

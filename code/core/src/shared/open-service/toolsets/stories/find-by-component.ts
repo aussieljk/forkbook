@@ -1,4 +1,4 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import type { FindByComponentOutput } from './definition.ts';
 import {
@@ -80,7 +80,7 @@ export async function findStoriesByComponent({
   if (!lookup.available) {
     return {
       available: false,
-      reason: lookup.reason ?? "Storybook's story module graph is unavailable.",
+      reason: lookup.reason ?? "Forkbook's story module graph is unavailable.",
     };
   }
 

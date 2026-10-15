@@ -1,5 +1,5 @@
-import { CLI_COLORS, logger } from 'storybook/internal/node-logger';
-import type { VersionCheck } from 'storybook/internal/types';
+import { CLI_COLORS, logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { VersionCheck } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 import prettyTime from 'pretty-hrtime';
@@ -51,7 +51,7 @@ export function outputStartupInformation(options: {
 
   logger.logBox(
     dedent`
-      Storybook ready!
+      Forkbook ready!
 
       ${serverMessages.join('\n')}${updateMessage ? `\n\n${updateMessage}` : ''}
     `,

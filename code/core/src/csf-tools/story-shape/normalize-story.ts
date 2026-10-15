@@ -1,4 +1,4 @@
-import type { NodePath, types as t } from 'storybook/internal/babel';
+import type { NodePath, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { isCanonicalCsf2BindCall, isCsfFactoryCall, resolveIdentifierInit } from './utils.ts';
 

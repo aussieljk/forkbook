@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, waitFor, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { LayoutProvider, useLayout } from '../../layout/LayoutProvider.tsx';
 import { MobileAbout } from './MobileAbout.tsx';
@@ -58,7 +58,7 @@ export const Default: Story = {
     await waitFor(() => expect(canvas.getByRole('link', { name: 'GitHub' })).toBeVisible());
     await expect(canvas.getByRole('link', { name: 'Documentation' })).toBeVisible();
     await expect(canvas.getByRole('link', { name: 'Chromatic' })).toBeVisible();
-    await expect(canvas.getByRole('link', { name: 'Storybook Community' })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: 'Forkbook Community' })).toBeVisible();
   },
 };
 export const Dark: Story = {

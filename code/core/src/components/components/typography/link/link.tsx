@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ElementType, MouseEvent } from 'react';
 import React, { forwardRef } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { ChevronRightIcon } from '@storybook/icons';
 
@@ -66,7 +66,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ) => {
     if (isButton !== undefined) {
       deprecate(
-        'Link: `isButton` is deprecated and will be removed in Storybook 11. Links without a `href` are automatically rendered as buttons.'
+        'Link: `isButton` is deprecated and will be removed in Forkbook 11. Links without a `href` are automatically rendered as buttons.'
       );
     }
 

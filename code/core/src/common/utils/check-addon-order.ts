@@ -1,9 +1,9 @@
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   CoreCommon_AddonEntry,
   CoreCommon_AddonInfo,
   CoreCommon_OptionsEntry,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 interface Options {
   before: CoreCommon_AddonInfo;
@@ -41,7 +41,7 @@ export const checkAddonOrder = async ({ before, after, configFile, getConfig }: 
     const config = await getConfig(configFile);
 
     if (!config?.addons) {
-      logger.warn(`Unable to find 'addons' config in main Storybook config`);
+      logger.warn(`Unable to find 'addons' config in main Forkbook config`);
       return;
     }
 
@@ -50,7 +50,7 @@ export const checkAddonOrder = async ({ before, after, configFile, getConfig }: 
       const beforeText = `'${before.name}'${before.inEssentials ? orEssentials : ''}`;
       const afterText = `'${after.name}'${after.inEssentials ? orEssentials : ''}`;
       logger.warn(
-        `Expected ${beforeText} to be listed before ${afterText} in main Storybook config.`
+        `Expected ${beforeText} to be listed before ${afterText} in main Forkbook config.`
       );
     }
   } catch (e) {

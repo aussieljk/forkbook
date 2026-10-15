@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { mkdir, readFile } from 'node:fs/promises';
 
-import { executeCommand, resolvePathInStorybookCache } from 'storybook/internal/common';
+import { executeCommand, resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
 
 import { join } from 'pathe';
 
@@ -36,7 +36,7 @@ export async function runStoryTests(
     try {
       // Execute the test runner command with specific story files.
       //
-      // STORYBOOK_INTERNAL_TEST_RUN marks this as a dev-server-initiated run
+      // FORKBOOK_INTERNAL_TEST_RUN marks this as a dev-server-initiated run
       // (ghost-stories or ai-setup-final-scoring) so the vitest plugin can
       // skip telemetry meant for agent-driven external runs. Without this,
       // ghost-stories runs would trigger `ai-setup-self-healing-scoring`
@@ -55,8 +55,8 @@ export async function runStoryTests(
         cwd,
         stdio: 'pipe',
         env: {
-          STORYBOOK_INTERNAL_TEST_RUN: '1',
-          ...(options?.ghostRun ? { STORYBOOK_COMPONENT_PATHS: componentFilePaths.join(';') } : {}),
+          FORKBOOK_INTERNAL_TEST_RUN: '1',
+          ...(options?.ghostRun ? { FORKBOOK_COMPONENT_PATHS: componentFilePaths.join(';') } : {}),
         },
       });
 

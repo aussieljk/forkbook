@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { HandledError, type JsPackageManager } from 'storybook/internal/common';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
-import { Feature } from 'storybook/internal/types';
+import { HandledError, type JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import { DependencyCollector } from '../dependency-collector.ts';
 import { DependencyInstallationCommand } from './DependencyInstallationCommand.ts';

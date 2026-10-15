@@ -1,13 +1,13 @@
-import { recast } from 'storybook/internal/babel';
-import { extractDeclaredSubcomponents } from 'storybook/internal/common';
-import { storyNameFromExport } from 'storybook/internal/csf/csf-utils';
-import type { ImportRef, StoryReferences } from 'storybook/internal/csf-tools';
+import { recast } from '@aussieljk/forkbook/internal/babel';
+import { extractDeclaredSubcomponents } from '@aussieljk/forkbook/internal/common';
+import { storyNameFromExport } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import type { ImportRef, StoryReferences } from '@aussieljk/forkbook/internal/csf-tools';
 import {
   createStoryArgsResolver,
   extractStoryJSDocInfo,
   loadCsf,
   unresolvedWarning,
-} from 'storybook/internal/csf-tools';
+} from '@aussieljk/forkbook/internal/csf-tools';
 
 import { getCodeSnippet } from './generateCodeSnippet.ts';
 import { type ComponentRef, getComponents } from './getComponentImports.ts';

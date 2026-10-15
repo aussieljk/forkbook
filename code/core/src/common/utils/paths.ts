@@ -14,8 +14,8 @@ export const getProjectRoot = () => {
   }
 
   // Allow manual override in cases where auto-detect doesn't work
-  if (process.env.STORYBOOK_PROJECT_ROOT) {
-    return process.env.STORYBOOK_PROJECT_ROOT;
+  if (process.env.FORKBOOK_PROJECT_ROOT) {
+    return process.env.FORKBOOK_PROJECT_ROOT;
   }
 
   try {

@@ -36,7 +36,7 @@
  * 5. .sb-unstyled is an escape hatch that allows the user to opt-out of the default styles by wrapping
  *    their content in an element with the 'sb-unstyled' class or the <Unstyled /> block.
  *
- * Most Storybook doc blocks has the sb-unstyled class to opt-out of the default styles.
+ * Most Forkbook doc blocks has the sb-unstyled class to opt-out of the default styles.
  */
 .docsContent {
   --docs-code-border: var(--sb-color-mediumlight);

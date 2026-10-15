@@ -1,1 +1,1 @@
-declare var FEATURES: import('storybook/internal/types').StorybookConfigRaw['features'];
+declare var FEATURES: import('@aussieljk/forkbook/internal/types').StorybookConfigRaw['features'];

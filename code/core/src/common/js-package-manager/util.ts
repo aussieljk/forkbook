@@ -3,8 +3,8 @@ import { gt, prerelease, valid } from 'semver';
 import type { JsPackageManager } from './JsPackageManager.ts';
 import { PackageManagerName } from './JsPackageManager.ts';
 
-export const STORYBOOK_PACKAGE_PATTERNS = [
-  'storybook',
+export const FORKBOOK_PACKAGE_PATTERNS = [
+  '@aussieljk/forkbook',
   '@storybook/*',
   'eslint-plugin-storybook',
 ] as const;
@@ -15,7 +15,7 @@ const packagePatternToRegex = (pattern: string) =>
   new RegExp(`^${escapePatternForRegex(pattern).replace(/\\\*/g, '.*')}$`);
 
 export const hasStorybookMinimumAgeExclusions = (configuredPatterns: string[]) => {
-  return STORYBOOK_PACKAGE_PATTERNS.every((storybookPattern) =>
+  return FORKBOOK_PACKAGE_PATTERNS.every((storybookPattern) =>
     configuredPatterns.some((configuredPattern) =>
       packagePatternToRegex(configuredPattern).test(storybookPattern)
     )
@@ -128,12 +128,12 @@ export function getMswInitCommand(packageManager: JsPackageManager) {
   return packageManager.getPackageCommand(['msw', 'init', './public', '--save']);
 }
 
-export const STORYBOOK_RERUN_INSTRUCTION = 'Please rerun Storybook creation with:';
+export const FORKBOOK_RERUN_INSTRUCTION = 'Please rerun Forkbook creation with:';
 
 export const getStorybookRerunCommand = (compatibleVersion: string | null) =>
   compatibleVersion
-    ? `npx storybook@${compatibleVersion} init`
-    : 'npx storybook@<compatible-version> init';
+    ? `npx @aussieljk/forkbook@${compatibleVersion} init`
+    : 'npx @aussieljk/forkbook@<compatible-version> init';
 
 export const getErrorLogs = (error: unknown): string => {
   if (typeof error === 'string') {

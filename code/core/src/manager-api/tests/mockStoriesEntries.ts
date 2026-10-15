@@ -1,4 +1,4 @@
-import type { API_PreparedStoryIndex, StoryIndex } from 'storybook/internal/types';
+import type { API_PreparedStoryIndex, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 export const mockEntries: StoryIndex['entries'] = {
   'component-a--docs': {

@@ -1,11 +1,11 @@
-import { type Meta, type Story, isMeta, isStory } from 'storybook/internal/csf';
+import { type Meta, type Story, isMeta, isStory } from '@aussieljk/forkbook/internal/csf';
 import type {
   Args,
   ComponentAnnotations,
   LegacyStoryAnnotationsOrFn,
   ProjectAnnotations,
   Renderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 export function getCsfFactoryAnnotations<
   TRenderer extends Renderer = Renderer,

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { Tag } from 'storybook/internal/core-server';
-import type { DocsIndexEntry, IndexEntry, StoryIndex } from 'storybook/internal/types';
+import { Tag } from '@aussieljk/forkbook/internal/core-server';
+import type { DocsIndexEntry, IndexEntry, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { buildStaticFiles, clearRegistry } from '../../shared/open-service/server.ts';
 import { registerMdxService } from './server.ts';

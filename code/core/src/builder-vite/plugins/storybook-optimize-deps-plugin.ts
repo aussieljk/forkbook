@@ -1,7 +1,11 @@
-import { loadPreviewOrConfigFile } from 'storybook/internal/common';
-import type { StoryIndexGenerator } from 'storybook/internal/core-server';
-import { babelParser, extractMockCalls, findMockRedirect } from 'storybook/internal/mocking-utils';
-import type { Options, PreviewAnnotation, StoryIndex } from 'storybook/internal/types';
+import { loadPreviewOrConfigFile } from '@aussieljk/forkbook/internal/common';
+import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import {
+  babelParser,
+  extractMockCalls,
+  findMockRedirect,
+} from '@aussieljk/forkbook/internal/mocking-utils';
+import type { Options, PreviewAnnotation, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { resolve } from 'pathe';
 import { type Plugin } from 'vite';
@@ -33,7 +37,7 @@ export function getMockRedirectIncludeEntries(
   );
 }
 
-/** A Vite plugin that configures dependency optimization for Storybook's dev server. */
+/** A Vite plugin that configures dependency optimization for Forkbook's dev server. */
 export function storybookOptimizeDepsPlugin(options: Options): Plugin {
   return {
     name: 'storybook:optimize-deps-plugin',
@@ -91,7 +95,7 @@ export function storybookOptimizeDepsPlugin(options: Options): Plugin {
             ...getUniqueImportPaths(index).map(escapeGlobPath),
             ...previewAnnotationEntries.map(escapeGlobPath),
           ],
-          // Extra deps explicitly included by Storybook presets (e.g. framework-specific packages).
+          // Extra deps explicitly included by Forkbook presets (e.g. framework-specific packages).
           include: [...extraOptimizeDeps, ...(config.optimizeDeps?.include ?? [])],
         },
       };

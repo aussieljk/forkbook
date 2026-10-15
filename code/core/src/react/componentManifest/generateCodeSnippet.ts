@@ -1,4 +1,4 @@
-import { type NodePath, types as t } from 'storybook/internal/babel';
+import { type NodePath, types as t } from '@aussieljk/forkbook/internal/babel';
 import {
   collectImportBindings,
   createStoryArgsResolver,
@@ -11,7 +11,7 @@ import {
   type RenderResolution,
   resolveRenderFunction,
   type StoryArgsResolver,
-} from 'storybook/internal/csf-tools';
+} from '@aussieljk/forkbook/internal/csf-tools';
 
 import { invariant } from './utils.ts';
 

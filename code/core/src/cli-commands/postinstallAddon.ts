@@ -50,7 +50,7 @@ export const postinstallAddon = async (addonName: string, options: PostinstallOp
       modulePath = import.meta.resolve(hookPath);
     } catch {
       logger.warn(
-        `Could not resolve the postinstall hook of ${addonName}, skipping its configuration. Run \`npx storybook add ${addonName}\` to set it up manually.`
+        `Could not resolve the postinstall hook of ${addonName}, skipping its configuration. Run \`npx forkbook add ${addonName}\` to set it up manually.`
       );
       return;
     }
@@ -73,7 +73,7 @@ export const postinstallAddon = async (addonName: string, options: PostinstallOp
     logger.warn(
       `Could not load the postinstall hook of ${addonName} (${String(
         e
-      )}), skipping its configuration. Run \`npx storybook add ${addonName}\` to set it up manually.`
+      )}), skipping its configuration. Run \`npx forkbook add ${addonName}\` to set it up manually.`
     );
     return;
   }

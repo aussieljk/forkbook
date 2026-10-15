@@ -15,8 +15,8 @@ import { randomUUID } from 'crypto';
  * presets have access to the same token without creating this circular dependency.
  */
 export const getWsToken = () => {
-  if (!globalThis.STORYBOOK_WEBSOCKET_TOKEN) {
-    globalThis.STORYBOOK_WEBSOCKET_TOKEN = randomUUID();
+  if (!globalThis.FORKBOOK_WEBSOCKET_TOKEN) {
+    globalThis.FORKBOOK_WEBSOCKET_TOKEN = randomUUID();
   }
-  return globalThis.STORYBOOK_WEBSOCKET_TOKEN;
+  return globalThis.FORKBOOK_WEBSOCKET_TOKEN;
 };

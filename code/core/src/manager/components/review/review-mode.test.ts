@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { StatusValue } from 'storybook/internal/types';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import {
   enterReviewMode,

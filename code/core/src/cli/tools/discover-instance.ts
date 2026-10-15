@@ -7,11 +7,11 @@ import { selectInstances } from './instances/resolve.ts';
 import type { StorybookInstanceRecord } from './instances/types.ts';
 
 export type ToolsTarget = {
-  /** Project directory of the target Storybook; defaults to `process.cwd()`. */
+  /** Project directory of the target Forkbook; defaults to `process.cwd()`. */
   cwd?: string;
-  /** Directory where to load Storybook configuration from; relative paths resolve from `cwd`. */
+  /** Directory where to load Forkbook configuration from; relative paths resolve from `cwd`. */
   configDir?: string;
-  /** Port of a running Storybook; a known port targets that instance without cwd or config dir. */
+  /** Port of a running Forkbook; a known port targets that instance without cwd or config dir. */
   port?: number;
 };
 
@@ -23,12 +23,12 @@ export type InstanceDiscovery = {
 };
 
 /**
- * Find a running `storybook dev` instance for the targeted project via the runtime instance
+ * Find a running `forkbook dev` instance for the targeted project via the runtime instance
  * registry the dev server writes.
  *
  * Applies the shared matching rules (cwd/config-dir keys, agent buckets, recency, pid liveness)
  * but ignores the record's MCP status: the tools CLI only needs a live origin for its URLs, so any
- * running Storybook counts — with or without `storybook/addon-mcp` installed.
+ * running Forkbook counts — with or without `@aussieljk/forkbook/addon-mcp` installed.
  */
 export async function discoverRunningInstance(
   target: ToolsTarget,

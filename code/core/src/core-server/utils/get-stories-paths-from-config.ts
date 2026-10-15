@@ -1,5 +1,5 @@
-import { normalizeStories } from 'storybook/internal/common';
-import type { StorybookConfigRaw } from 'storybook/internal/types';
+import { normalizeStories } from '@aussieljk/forkbook/internal/common';
+import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { StoryIndexGenerator } from './StoryIndexGenerator.ts';
 
@@ -11,7 +11,7 @@ import { StoryIndexGenerator } from './StoryIndexGenerator.ts';
  * ```typescript
  * const storiesPaths = await getStoriesPathsFromConfig({
  *   stories: ['src\/**\/*.stories.tsx'],
- *   configDir: '/path/to/.storybook',
+ *   configDir: '/path/to/.forkbook',
  *   workingDir: '/path/to/project',
  * });
  * ```

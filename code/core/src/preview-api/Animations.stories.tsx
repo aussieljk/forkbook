@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { within } from 'storybook/test';
+import { within } from '@aussieljk/forkbook/test';
 import { clsx } from 'clsx';
 
 import styles from './Animations.module.css';

@@ -1,3 +1,3 @@
-# Storybook React renderer
+# Forkbook React renderer
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

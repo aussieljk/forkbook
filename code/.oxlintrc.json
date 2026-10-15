@@ -89,7 +89,7 @@
             "patterns": [
               {
                 "group": ["**/core-server/**"],
-                "message": "`cli/skills/content` is the pure `storybook/internal/skills` entry; probing and anything server-side belongs in `cli/skills/` outside `content/`."
+                "message": "`cli/skills/content` is the pure `@aussieljk/forkbook/internal/skills` entry; probing and anything server-side belongs in `cli/skills/` outside `content/`."
               }
             ]
           }
@@ -143,34 +143,34 @@
     {
       "files": ["**/*.stories.*"],
       "rules": {
-        "storybook/await-interactions": "error",
-        "storybook/context-in-play-function": "error",
-        "storybook/default-exports": "error",
-        "storybook/hierarchy-separator": "warn",
-        "storybook/no-redundant-story-name": "warn",
-        "storybook/no-renderer-packages": "error",
-        "storybook/prefer-pascal-case": "warn",
-        "storybook/story-exports": "error",
-        "storybook/use-storybook-expect": "error",
-        "storybook/use-storybook-testing-library": "error"
+        "@aussieljk/forkbook/await-interactions": "error",
+        "@aussieljk/forkbook/context-in-play-function": "error",
+        "@aussieljk/forkbook/default-exports": "error",
+        "@aussieljk/forkbook/hierarchy-separator": "warn",
+        "@aussieljk/forkbook/no-redundant-story-name": "warn",
+        "@aussieljk/forkbook/no-renderer-packages": "error",
+        "@aussieljk/forkbook/prefer-pascal-case": "warn",
+        "@aussieljk/forkbook/story-exports": "error",
+        "@aussieljk/forkbook/use-storybook-expect": "error",
+        "@aussieljk/forkbook/use-storybook-testing-library": "error"
       }
     },
     {
       "files": ["**/renderers/**/*.stories.*", "**/core/template/**/*.stories.*"],
       "rules": {
-        "storybook/no-renderer-packages": "off"
+        "@aussieljk/forkbook/no-renderer-packages": "off"
       }
     },
     {
       "files": ["core/**/*.stories.*"],
       "rules": {
-        "storybook/use-storybook-expect": "off"
+        "@aussieljk/forkbook/use-storybook-expect": "off"
       }
     },
     {
-      "files": ["**/.storybook/main.*"],
+      "files": ["**/.forkbook/main.*"],
       "rules": {
-        "storybook/no-uninstalled-addons": "error"
+        "@aussieljk/forkbook/no-uninstalled-addons": "error"
       }
     },
     {

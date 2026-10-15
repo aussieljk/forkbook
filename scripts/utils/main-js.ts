@@ -8,10 +8,10 @@ import type { ConfigFile } from '../../code/core/src/csf-tools/index.ts';
 import { readConfig as csfReadConfig } from '../../code/core/src/csf-tools/ConfigFile.ts';
 
 export async function readConfig({ fileName, cwd }: { fileName: string; cwd: string }) {
-  const configDir = join(cwd, '.storybook');
+  const configDir = join(cwd, '.forkbook');
   if (!existsSync(configDir)) {
     throw new Error(
-      `Unable to find the Storybook folder in "${configDir}". Are you sure it exists? Or maybe this folder uses a custom Storybook config directory?`
+      `Unable to find the Forkbook folder in "${configDir}". Are you sure it exists? Or maybe this folder uses a custom Forkbook config directory?`
     );
   }
 

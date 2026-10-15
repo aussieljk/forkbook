@@ -1,19 +1,19 @@
 import type { FC, ReactNode } from 'react';
 import React, { Fragment, useCallback, useState } from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import {
   Button,
   ErrorFormatter,
   Link,
   PopoverProvider,
   Spaced,
-} from 'storybook/internal/components';
+} from '@aussieljk/forkbook/internal/components';
 
 import { global } from '@storybook/global';
 import { ChevronDownIcon, LockIcon, SweepIcon, SyncIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import { Contained, Loader } from './Loader.tsx';
@@ -56,7 +56,7 @@ export const AuthBlock: FC<{ loginUrl: string; id: string }> = ({ loginUrl, id }
           <Fragment>
             <Text>
               Authentication on <strong>{loginUrl}</strong> concluded. Refresh the page to fetch
-              this Storybook.
+              this Forkbook.
             </Text>
             <div>
               <Button ariaLabel={false} size="small" variant="outline" onClick={refresh}>
@@ -67,7 +67,7 @@ export const AuthBlock: FC<{ loginUrl: string; id: string }> = ({ loginUrl, id }
           </Fragment>
         ) : (
           <Fragment>
-            <Text>Sign in to browse this Storybook.</Text>
+            <Text>Sign in to browse this Forkbook.</Text>
             <div>
               <Button size="small" variant="outline" onClick={open}>
                 <LockIcon />
@@ -87,7 +87,7 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
     <Contained>
       <Spaced>
         <div className={styles.textStyle}>
-          Oh no! Something went wrong loading this Storybook.
+          Oh no! Something went wrong loading this Forkbook.
           <br />
           <PopoverProvider
             ariaLabel="Error details"
@@ -153,7 +153,7 @@ export const EmptyBlock = ({
             </NoResults>
           ) : isMain ? (
             <Text>
-              Oh no! Your Storybook is empty. This can happen when:
+              Oh no! Your Forkbook is empty. This can happen when:
               <ul>
                 <li>
                   Your{' '}
@@ -181,7 +181,7 @@ export const EmptyBlock = ({
             </Text>
           ) : (
             <Text>
-              This composed Storybook is empty. Perhaps no stories match your selected filters.
+              This composed Forkbook is empty. Perhaps no stories match your selected filters.
             </Text>
           )}
         </Spaced>

@@ -1,9 +1,9 @@
 import type { ComponentProps, FC } from 'react';
 import React, { useContext, useMemo } from 'react';
 
-import { SourceType } from 'storybook/internal/docs-tools';
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
-import type { Args, ModuleExport, StoryId } from 'storybook/internal/types';
+import { SourceType } from '@aussieljk/forkbook/internal/docs-tools';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { Args, ModuleExport, StoryId } from '@aussieljk/forkbook/internal/types';
 
 import type { SourceCodeProps } from '../components/Source';
 import { Source as PureSource, SourceError } from '../components/Source';
@@ -23,7 +23,7 @@ export type SourceParameters = SourceCodeProps & {
     code: string,
     storyContext: ReturnType<DocsContextProps['getStoryContext']>
   ) => string | Promise<string>;
-  /** Internal: set by our CSF loader (`enrichCsf` in `storybook/internal/csf-tools`). */
+  /** Internal: set by our CSF loader (`enrichCsf` in `@aussieljk/forkbook/internal/csf-tools`). */
   originalSource?: string;
 };
 
@@ -32,7 +32,7 @@ export type SourceProps = SourceParameters & {
    * Pass the export defining a story to render its source
    *
    * ```jsx
-   * import { Source } from 'storybook/addon-docs/blocks';
+   * import { Source } from '@aussieljk/forkbook/addon-docs/blocks';
    * import * as ButtonStories from './Button.stories';
    *
    * <Source of={ButtonStories.Primary} />;

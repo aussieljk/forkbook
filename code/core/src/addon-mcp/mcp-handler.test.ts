@@ -206,7 +206,7 @@ describe('mcpServerHandler', () => {
   beforeEach(async () => {
     // Reset modules and get fresh handler for each test to avoid state pollution
     vi.resetModules();
-    // The `services` preset hook does this in a real Storybook, before the MCP server boots.
+    // The `services` preset hook does this in a real Forkbook, before the MCP server boots.
     registerCoreToolsetsForTest();
     const handler = await import('./mcp-handler.ts');
     mcpServerHandler = handler.mcpServerHandler;
@@ -319,7 +319,7 @@ describe('mcpServerHandler', () => {
           tools: { listChanged: true },
         },
         serverInfo: {
-          name: 'storybook/addon-mcp',
+          name: '@aussieljk/forkbook/addon-mcp',
           description: 'Help agents automatically write and test stories for your UI components',
         },
       },
@@ -327,7 +327,7 @@ describe('mcpServerHandler', () => {
     expect(parsedResponse.result.serverInfo.version).toBeDefined();
     expect(parsedResponse.result.instructions).toBeDefined();
     expect(parsedResponse.result.instructions).toContain(
-      'Follow these workflows when working with UI and/or Storybook.'
+      'Follow these workflows when working with UI and/or Forkbook.'
     );
     expect(parsedResponse.result.instructions).toContain(
       '## UI Building and Story Writing Workflow'
@@ -385,7 +385,7 @@ describe('mcpServerHandler', () => {
     const parsedResponse = JSON.parse(responseText);
 
     expect(parsedResponse.result.instructions).toContain(
-      'Follow these workflows when working with UI and/or Storybook.'
+      'Follow these workflows when working with UI and/or Forkbook.'
     );
     expect(parsedResponse.result.instructions).toContain('## Documentation Workflow');
     expect(parsedResponse.result.instructions).toContain(
@@ -401,7 +401,7 @@ describe('mcpServerHandler', () => {
   });
 
   it('should respect disableTelemetry setting', async () => {
-    const { telemetry } = await import('storybook/internal/telemetry');
+    const { telemetry } = await import('@aussieljk/forkbook/internal/telemetry');
     vi.mocked(telemetry).mockClear();
 
     const mockOptions = createMockOptions({

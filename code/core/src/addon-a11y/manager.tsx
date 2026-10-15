@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Badge } from 'storybook/internal/components';
+import { Badge } from '@aussieljk/forkbook/internal/components';
 
-import { addons, types, useAddonState, useStorybookApi } from 'storybook/manager-api';
+import { addons, types, useAddonState, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { A11YPanel } from './components/A11YPanel.tsx';
 import { A11yContextProvider } from './components/A11yContext.tsx';

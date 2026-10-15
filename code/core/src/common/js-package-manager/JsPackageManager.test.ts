@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import { JsPackageManager } from './JsPackageManager.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const mockVersions = vi.hoisted(() => ({
   '@storybook/react': '8.3.0',
@@ -51,7 +51,7 @@ describe('JsPackageManager', () => {
       expect(result).toEqual(['@storybook/new-addon@^next']);
     });
 
-    it('should map pkg.pr.new create-storybook specifiers to Storybook packages', async () => {
+    it('should map pkg.pr.new create-storybook specifiers to Forkbook packages', async () => {
       const result = await jsPackageManager.getVersionedPackages(['@storybook/react'], {
         storybookVersionSpecifier: 'https://pkg.pr.new/create-storybook@abc123',
       });
@@ -60,7 +60,7 @@ describe('JsPackageManager', () => {
       expect(mockLatestVersion).not.toHaveBeenCalled();
     });
 
-    it('should map repo-scoped pkg.pr.new specifiers to Storybook packages', async () => {
+    it('should map repo-scoped pkg.pr.new specifiers to Forkbook packages', async () => {
       const result = await jsPackageManager.getVersionedPackages(['@storybook/react'], {
         storybookVersionSpecifier: 'https://pkg.pr.new/storybookjs/storybook/storybook@deadbeef',
       });
@@ -86,7 +86,7 @@ describe('JsPackageManager', () => {
       ).resolves.toEqual(['@storybook/react@8.3.0']);
     });
 
-    it('should return the package name as is if it is not a Storybook package', async () => {
+    it('should return the package name as is if it is not a Forkbook package', async () => {
       const result = await jsPackageManager.getVersionedPackages(['some-other-package']);
 
       expect(result).toEqual(['some-other-package']);

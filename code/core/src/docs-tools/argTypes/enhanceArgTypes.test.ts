@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ArgTypes, StrictInputType } from 'storybook/internal/types';
+import type { ArgTypes, StrictInputType } from '@aussieljk/forkbook/internal/types';
 
 import { enhanceArgTypes } from './enhanceArgTypes.ts';
 

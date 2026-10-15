@@ -454,7 +454,7 @@ export type ServiceDefinition<
   /**
    * When true, hides this service from `listServices()` output and requires
    * `getService(id, { internal: true })` to resolve it. Defaults to false.
-   * Internal services are unstable: Storybook may break their ids, state, and operations without
+   * Internal services are unstable: Forkbook may break their ids, state, and operations without
    * a public semver bump. Prefer public toolsets (`defineToolset`) for MCP/CLI surfaces.
    */
   internal?: boolean;

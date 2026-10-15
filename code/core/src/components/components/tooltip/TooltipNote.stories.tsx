@@ -1,6 +1,6 @@
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { TooltipNote } from './TooltipNote.tsx';
 import { TooltipProvider } from './TooltipProvider.tsx';
 

@@ -1,9 +1,9 @@
 import React, { forwardRef, useRef, useState } from 'react';
 
-import { action } from 'storybook/actions';
-import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { expect, fn, screen, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Button } from '../Button/Button.tsx';
 import { Modal } from './Modal.tsx';
 

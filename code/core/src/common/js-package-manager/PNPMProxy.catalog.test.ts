@@ -11,7 +11,7 @@ import { PNPMProxy } from './PNPMProxy.ts';
 vi.mock('node:fs', { spy: true });
 vi.mock('empathic/find', { spy: true });
 vi.mock('../utils/paths.ts', { spy: true });
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logger: { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn() },
   prompt: { getPreferredStdio: vi.fn(() => 'inherit') },
 }));

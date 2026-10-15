@@ -5,13 +5,13 @@
  * it exposes only registration with no React dependencies. Use `.subscribe()` on queries to react
  * to state changes in your renderer.
  *
- * Define services with `storybook/open-service`. The manager entrypoint (`./manager.ts`) adds
+ * Define services with `@aussieljk/forkbook/open-service`. The manager entrypoint (`./manager.ts`) adds
  * `useServiceQuery` and `useServiceCommand` on top of relay registration.
  *
  * Quick start:
  *
  * ```ts
- * import { registerService } from 'storybook/preview-api';
+ * import { registerService } from '@aussieljk/forkbook/preview-api';
  *
  * const service = registerService(myServiceDef);
  *

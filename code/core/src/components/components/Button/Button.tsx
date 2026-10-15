@@ -1,11 +1,14 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { useRender } from '@base-ui/react/use-render';
 import { clsx } from 'clsx';
-import { shortcutToAriaKeyshortcuts, type API_KeyCollection } from 'storybook/manager-api';
+import {
+  shortcutToAriaKeyshortcuts,
+  type API_KeyCollection,
+} from '@aussieljk/forkbook/manager-api';
 import type { PopperPlacement } from '../shared/overlayHelpers.tsx';
 
 import { InteractiveTooltipWrapper } from './helpers/InteractiveTooltipWrapper.tsx';
@@ -103,10 +106,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (!readOnly && (ariaLabel === undefined || ariaLabel === '')) {
       deprecated = 'ariaLabel';
       deprecate(
-        `The 'ariaLabel' prop on 'Button' will become mandatory in Storybook 11. Buttons with text content should set 'ariaLabel={false}' to indicate that they are accessible as-is. Buttons without text content must provide a meaningful 'ariaLabel' for accessibility. The button content is: ${props.children}.`
+        `The 'ariaLabel' prop on 'Button' will become mandatory in Forkbook 11. Buttons with text content should set 'ariaLabel={false}' to indicate that they are accessible as-is. Buttons without text content must provide a meaningful 'ariaLabel' for accessibility. The button content is: ${props.children}.`
       );
 
-      // TODO in Storybook 11
+      // TODO in Forkbook 11
       // throw new Error(
       //   'Button requires an ARIA label to be accessible. Please provide a valid ariaLabel prop.'
       // );
@@ -115,7 +118,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (active !== undefined) {
       deprecated = 'active';
       deprecate(
-        'The `active` prop on `Button` is deprecated and will be removed in Storybook 11. Use specialized components like `ToggleButton` or `Select` instead.'
+        'The `active` prop on `Button` is deprecated and will be removed in Forkbook 11. Use specialized components like `ToggleButton` or `Select` instead.'
       );
     }
 
@@ -187,9 +190,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
-  deprecate(
-    '`IconButton` is deprecated and will be removed in Storybook 11, use `Button` instead.'
-  );
+  deprecate('`IconButton` is deprecated and will be removed in Forkbook 11, use `Button` instead.');
 
   return <Button ref={ref} {...props} data-deprecated="IconButton" />;
 });

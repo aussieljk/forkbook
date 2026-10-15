@@ -25,7 +25,7 @@ vi.mock('@storybook/global', () => ({
   },
 }));
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 
 function createMockStore() {
   let state = {
@@ -46,7 +46,7 @@ function createMockStore() {
   };
 }
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 
 const latest = {
   current: { version: '7.6.1' },
@@ -152,7 +152,7 @@ describe('versions API', () => {
 
   describe('METHOD: getDocsUrl()', () => {
     beforeEach(() => {
-      global.STORYBOOK_RENDERER = undefined;
+      global.FORKBOOK_RENDERER = undefined;
     });
 
     it('returns the latest url when current version is latest', async () => {
@@ -222,7 +222,7 @@ describe('versions API', () => {
 
       await init();
 
-      global.STORYBOOK_RENDERER = 'vue';
+      global.FORKBOOK_RENDERER = 'vue';
 
       expect(api.getDocsUrl({ renderer: true })).toEqual(
         'https://storybook.js.org/docs/?renderer=vue&ref=ui'

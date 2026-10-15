@@ -1,11 +1,11 @@
 // @vitest-environment happy-dom
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { init as initShortcuts } from '../modules/shortcuts';
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 
 function createMockStore() {
   let state = {};
@@ -363,7 +363,7 @@ describe('keydown match gating', () => {
     expect(api.handleKeydownEvent({ key: 'F', altKey: true })).toBe('fullScreen');
   });
 
-  it('reports no match for an escape binding persisted by an older Storybook, so overlays receive the key', () => {
+  it('reports no match for an escape binding persisted by an older Forkbook, so overlays receive the key', () => {
     const store = createMockStore();
     const fullAPI = { getNavAvailability: () => 'shown' };
     const { api, state } = initShortcuts({ store, provider: {}, fullAPI });

@@ -17,7 +17,7 @@ const DEBUG_LOG_FILE_NAME = 'debug-storybook.log';
 const DEFAULT_LOG_FILE_PATH = join(process.cwd(), DEBUG_LOG_FILE_NAME);
 
 /**
- * Tracks and manages logs for Storybook CLI operations. Provides functionality to collect, store
+ * Tracks and manages logs for Forkbook CLI operations. Provides functionality to collect, store
  * and write logs to a file.
  */
 class LogTracker {

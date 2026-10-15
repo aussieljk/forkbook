@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button, Modal, PopoverProvider } from 'storybook/internal/components';
+import { Button, Modal, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
 import { CloseAltIcon } from '@storybook/icons';
 
-import { screen } from 'storybook/test';
-import { fn } from 'storybook/test';
+import { screen } from '@aussieljk/forkbook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Popover } from './Popover.tsx';
 
 const SampleTooltip = () => 'Lorem ipsum dolor sit amet';

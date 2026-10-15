@@ -1,6 +1,6 @@
-# Storybook Controls
+# Forkbook Controls
 
-This directory contains the core Controls functionality for Storybook, which was previously in the `@storybook/addon-controls` package.
+This directory contains the core Controls functionality for Forkbook, which was previously in the `@storybook/addon-controls` package.
 
 Controls gives you a graphical UI to interact with a component's arguments dynamically, without needing to code. It creates an addon panel next to your component examples ("stories"), so you can edit them live.
 
@@ -19,4 +19,4 @@ Controls gives you a graphical UI to interact with a component's arguments dynam
 
 ## Migration Status
 
-This code was migrated from the `@storybook/addon-controls` package as part of the effort to consolidate core functionality into the main Storybook package.
+This code was migrated from the `@storybook/addon-controls` package as part of the effort to consolidate core functionality into the main Forkbook package.

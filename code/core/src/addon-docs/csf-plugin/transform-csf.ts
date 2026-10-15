@@ -1,8 +1,8 @@
 import { readFile } from 'node:fs/promises';
 
-import type { EnrichCsfOptions } from 'storybook/internal/csf-tools';
-import { enrichCsf, formatCsf, loadCsf } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
+import type { EnrichCsfOptions } from '@aussieljk/forkbook/internal/csf-tools';
+import { enrichCsf, formatCsf, loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { STORIES_REGEX } from './constants.ts';
 

@@ -26,7 +26,7 @@ const DEBUG_BANNER_RE = /^\n(?:\x1B\[\d+m)?Click to debug\b[^\n]*\n\n/;
 /**
  * Extracts a clean single-line error message from a Vitest error.
  *
- * Strips the Storybook "Click to debug" banner if present, then returns the first line of the
+ * Strips the Forkbook "Click to debug" banner if present, then returns the first line of the
  * message (falling back to the first line of the stack, or `'unknown error'`).
  */
 export function extractErrorMessage(

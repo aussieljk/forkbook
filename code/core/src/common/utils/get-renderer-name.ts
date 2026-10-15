@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { frameworkToRenderer } from './framework.ts';
 import { extractFrameworkPackageName, getFrameworkName } from './get-framework-name.ts';
@@ -25,7 +25,7 @@ export async function getRendererName(options: Options) {
  * @example
  *
  * ```ts
- * extractRenderer('storybook/react'); // => 'react'
+ * extractRenderer('@aussieljk/forkbook/react'); // => 'react'
  * extractRenderer('@third-party/framework'); // => null
  * ```
  *

@@ -1,9 +1,9 @@
-import { RESET_STORY_ARGS, STORY_ARGS_UPDATED } from 'storybook/internal/core-events';
+import { RESET_STORY_ARGS, STORY_ARGS_UPDATED } from '@aussieljk/forkbook/internal/core-events';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { addons } from 'storybook/preview-api';
-import { expect, fireEvent, fn, waitFor, within } from 'storybook/test';
+import { addons } from '@aussieljk/forkbook/preview-api';
+import { expect, fireEvent, fn, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { BooleanControl } from './Boolean';
 

@@ -1,6 +1,6 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
-import { instrument } from 'storybook/internal/instrumenter';
-import type { PlayFunction, StepLabel, StoryContext } from 'storybook/internal/types';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
+import { instrument } from '@aussieljk/forkbook/internal/instrumenter';
+import type { PlayFunction, StepLabel, StoryContext } from '@aussieljk/forkbook/internal/types';
 
 const { step } = instrument(
   {

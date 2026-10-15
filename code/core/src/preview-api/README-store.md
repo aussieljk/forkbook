@@ -1,4 +1,4 @@
-# Storybook Store
+# Forkbook Store
 
 The store is responsible for loading a story from a CSF file and preparing into a `Story` type, which is our internal format.
 
@@ -29,9 +29,9 @@ Not all annotations can be set at every level but most can.
 
 ## Parameters
 
-The story parameters is a static, serializable object of data that provides details about the story. Those details can be used by addons or Storybook itself to render UI or provide defaults about the story rendering.
+The story parameters is a static, serializable object of data that provides details about the story. Those details can be used by addons or Forkbook itself to render UI or provide defaults about the story rendering.
 
-Parameters _cannot change_ and are synchronized to the manager once when the story is loaded (note over the lifetime of a development Storybook a story can be loaded several times due to hot module reload, so the parameters technically can change for that reason).
+Parameters _cannot change_ and are synchronized to the manager once when the story is loaded (note over the lifetime of a development Forkbook a story can be loaded several times due to hot module reload, so the parameters technically can change for that reason).
 
 Usually addons will read from a single key of `parameters` namespaced by the name of that addon. For instance the configuration of the `backgrounds` addon is driven by the `parameters.backgrounds` namespace.
 
@@ -95,11 +95,11 @@ Arg types add type information and metadata about args that are used to control 
 
 To add a argTypes enhancer, `export const argTypesEnhancers = []` from `preview.js` or and addon
 
-There is a default enhancer that ensures that each `arg` in a story has a baseline `argType`. This value can be improved by subsequent enhancers, e.g. those provided by `storybook/addon-docs`.
+There is a default enhancer that ensures that each `arg` in a story has a baseline `argType`. This value can be improved by subsequent enhancers, e.g. those provided by `@aussieljk/forkbook/addon-docs`.
 
 ## Globals
 
-Globals are rendering information that is global across stories. They are used for things like themes and internationalization (i18n) in stories, where you want Storybook to "remember" your setting as you browse between stories.
+Globals are rendering information that is global across stories. They are used for things like themes and internationalization (i18n) in stories, where you want Forkbook to "remember" your setting as you browse between stories.
 
 They can be accessed in stories and decorators in the `context.globals` key.
 

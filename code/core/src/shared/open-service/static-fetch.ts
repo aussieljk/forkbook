@@ -1,7 +1,7 @@
 /**
  * Browser-side loader for prebuilt open-service static snapshots.
  *
- * Active in static Storybook builds. In the dev server, the runtime runs query `load` hooks against
+ * Active in static Forkbook builds. In the dev server, the runtime runs query `load` hooks against
  * the live server instead.
  */
 

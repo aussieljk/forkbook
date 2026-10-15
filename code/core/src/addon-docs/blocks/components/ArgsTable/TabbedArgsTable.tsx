@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { TabsView } from 'storybook/internal/components';
+import { TabsView } from '@aussieljk/forkbook/internal/components';
 
 import type { ArgsTableProps } from './ArgsTable';
 import { ArgsTable } from './ArgsTable';

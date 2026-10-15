@@ -1,6 +1,6 @@
 import { dedent } from 'ts-dedent';
 
-import { once } from 'storybook/internal/node-logger';
+import { once } from '@aussieljk/forkbook/internal/node-logger';
 
 import { Tag } from '../../shared/constants/tags.ts';
 import type { DocsIndexEntry, IndexEntry } from '../../types/modules/indexer.ts';

@@ -1,5 +1,5 @@
-import { cache } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { cache } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { dedent } from 'ts-dedent';
 
@@ -13,13 +13,14 @@ let called = false;
  * changes are ever made.
  */
 export const notify = async () => {
-  if (!called) {
+  // Without a telemetry server, nothing is sent, so there is nothing to tell.
+  if (!called && process.env.FORKBOOK_TELEMETRY_URL) {
     called = true;
 
     if (!(await cache.get(TELEMETRY_KEY_NOTIFY_DATE, null))) {
       cache.set(TELEMETRY_KEY_NOTIFY_DATE, Date.now());
       logger.info(
-        "Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry"
+        'Forkbook sends anonymous usage telemetry to FORKBOOK_TELEMETRY_URL. To stop it, remove that environment variable.'
       );
     }
   }

@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
-// The Storybook Vitest project excludes `blocks/**`, so the docs blocks are covered here.
+// The Forkbook Vitest project excludes `blocks/**`, so the docs blocks are covered here.
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { DocsContextProps } from 'storybook/internal/types';
+import type { DocsContextProps } from '@aussieljk/forkbook/internal/types';
 
-import { ThemeProvider, convert, themes } from 'storybook/theming';
+import { ThemeProvider, convert, themes } from '@aussieljk/forkbook/theming';
 
 import { ArgTypes } from './ArgTypes.tsx';
 import { DocsContext } from './DocsContext.ts';

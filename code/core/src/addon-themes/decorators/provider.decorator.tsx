@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { DecoratorFunction, Renderer } from 'storybook/internal/types';
+import type { DecoratorFunction, Renderer } from '@aussieljk/forkbook/internal/types';
 
-import { useMemo } from 'storybook/preview-api';
+import { useMemo } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from '../constants.ts';
 import { initializeThemeState, pluckThemeFromContext } from './helpers.ts';

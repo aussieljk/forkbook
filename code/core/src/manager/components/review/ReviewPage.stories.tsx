@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState, type ReactNode } from 'react';
 
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import {
   Location,
@@ -8,16 +8,16 @@ import {
   parsePath,
   queryFromLocation,
   useNavigate,
-} from 'storybook/internal/router';
-import type { API_Notification } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/router';
+import type { API_Notification } from '@aussieljk/forkbook/internal/types';
 import {
   ManagerContext,
   internal_fullStatusStore,
   type API,
   type State,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { LayoutProvider } from '../layout/LayoutProvider.tsx';
 import { NotificationList } from '../notifications/NotificationList.tsx';
 import { ReviewNotification } from './components/ReviewNotification.tsx';
@@ -303,7 +303,7 @@ const meta = preview.meta({
     internal_fullStatusStore.set([
       {
         storyId: 'manager-settings-checklist--default',
-        typeId: 'storybook/change-detection',
+        typeId: '@aussieljk/forkbook/change-detection',
         value: 'status-value:new',
         title: 'Change Detection',
         description: '',

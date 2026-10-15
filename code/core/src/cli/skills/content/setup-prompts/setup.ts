@@ -10,7 +10,7 @@
  * Update this header when iterating: bump the iteration number and link the
  * latest eval run so reviewers can compare variants without spelunking git.
  */
-import { getVitestStorybookRunCommand } from 'storybook/internal/common';
+import { getVitestStorybookRunCommand } from '@aussieljk/forkbook/internal/common';
 
 import { dedent } from 'ts-dedent';
 
@@ -26,7 +26,7 @@ function getPreviewDecoratorExample(projectInfo: ProjectInfo): string {
       // ${configDir}/preview.tsx
       import '../src/index.css'; // import global styles
 
-      import { definePreview } from 'storybook/preview';
+      import { definePreview } from '@aussieljk/forkbook/preview';
 
       export default definePreview({
         decorators: [
@@ -72,7 +72,7 @@ function getSimpleStoryExample(projectInfo: ProjectInfo): string {
   if (projectInfo.hasCsfFactoryPreview) {
     return dedent`
       \`\`\`tsx
-      import preview from '#.storybook/preview';
+      import preview from '#.forkbook/preview';
       import { Button } from './Button';
 
       const meta = preview.meta({
@@ -158,12 +158,12 @@ export function instructions(projectInfo: ProjectInfo): string {
   const { packageManager } = projectInfo;
   const vitestRunFile = getVitestStorybookRunCommand(packageManager, '<path-to-story-file>');
   const vitestRunAll = getVitestStorybookRunCommand(packageManager);
-  const storybookBuild = packageManager.getPackageCommand(['storybook', 'build']);
+  const storybookBuild = packageManager.getPackageCommand(['forkbook', 'build']);
 
   return dedent`
-    Attention: The following instructions must be followed in order to successfully set up Storybook in this project. Do not skip steps or attempt to do them out of order.
+    Attention: The following instructions must be followed in order to successfully set up Forkbook in this project. Do not skip steps or attempt to do them out of order.
 
-    Your goal is to make Storybook fully functional in this project by analyzing the codebase,
+    Your goal is to make Forkbook fully functional in this project by analyzing the codebase,
     configuring the preview with the right decorators, and writing example stories for 9 components.
 
     Work through these steps in order. After each story file, run Vitest to verify it renders.
@@ -179,7 +179,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     - Identify global CSS or style imports required for components to look correct.
     - Note any path aliases configured in tsconfig or bundler config.
     - Read \`${configDir}/main.ts\` (or \`main.js\`) to find the \`stories\` glob patterns.
-      Your story files must match those patterns to be picked up by Storybook.
+      Your story files must match those patterns to be picked up by Forkbook.
 
     ### Step 2: Configure \`${configDir}/preview.tsx\` with decorators
 
@@ -200,7 +200,7 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     Pick 9 real components from the codebase, 3 of each complexity level.
     Use the title prefix \`AI Generated/<Complexity>/<ComponentName>\` so they are grouped
-    together in the Storybook sidebar.
+    together in the Forkbook sidebar.
 
     **Simple (3 components)** — Presentational with few props, no internal state.
     Examples: Button, Badge, Avatar, Icon, Label, Chip.
@@ -264,7 +264,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     ${vitestRunAll}
     \`\`\`
 
-    Once all stories pass, run a full Storybook build as a final check:
+    Once all stories pass, run a full Forkbook build as a final check:
 
     \`\`\`bash
     ${storybookBuild}

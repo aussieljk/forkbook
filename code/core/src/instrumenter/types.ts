@@ -1,4 +1,4 @@
-import type { StoryId } from 'storybook/internal/types';
+import type { StoryId } from '@aussieljk/forkbook/internal/types';
 
 import type { RenderPhase } from '../preview-api/modules/preview-web/render/StoryRender.ts';
 

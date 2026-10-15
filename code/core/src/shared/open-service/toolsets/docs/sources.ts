@@ -1,5 +1,5 @@
 /**
- * Composed Storybook sources.
+ * Composed Forkbook sources.
  *
  * A composition serves several Storybooks through one MCP endpoint: the local one plus every
  * `refs` entry. Each source is read independently, so one unreachable or private source degrades
@@ -8,13 +8,13 @@
 
 import type { AllManifests } from './manifest-formatter/manifest-types.ts';
 
-/** One Storybook in a composition. The local source has no `url`. */
+/** One Forkbook in a composition. The local source has no `url`. */
 export type Source = {
   /** Stable identifier, used as the `storybookId` tool input. */
   id: string;
   /** Human-readable title, used as the section header when listing. */
   title: string;
-  /** Remote URL; undefined for the local Storybook. */
+  /** Remote URL; undefined for the local Forkbook. */
   url?: string;
 };
 
@@ -44,7 +44,7 @@ export function getSourceMcpEndpoint(source: SourceWithUrl): string {
 }
 
 /**
- * A private composed Storybook cannot be proxied — its credentials belong to the user, not to this
+ * A private composed Forkbook cannot be proxied — its credentials belong to the user, not to this
  * server — so the answer is the address the agent should talk to instead.
  */
 export function formatRequiresOwnMcpNotice(
@@ -61,7 +61,7 @@ export function formatRequiresOwnMcpNotice(
   }
 
   parts.push(
-    'This composed Storybook is private and cannot be read through the local Storybook MCP proxy.'
+    'This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.'
   );
   parts.push('');
   parts.push("Use this source's own MCP endpoint instead:");

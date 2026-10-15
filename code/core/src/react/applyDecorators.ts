@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { DecoratorFunction, LegacyStoryFn } from 'storybook/internal/types';
+import type { DecoratorFunction, LegacyStoryFn } from '@aussieljk/forkbook/internal/types';
 
-import { defaultDecorateStory } from 'storybook/preview-api';
+import { defaultDecorateStory } from '@aussieljk/forkbook/preview-api';
 
 import type { ReactRenderer } from './types.ts';
 

@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useRef } from 'react';
 
-import { ActionBar, ScrollArea } from 'storybook/internal/components';
+import { ActionBar, ScrollArea } from '@aussieljk/forkbook/internal/components';
 
 import { Inspector } from 'react-inspector';
-import { useTheme } from 'storybook/theming';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import type { ActionDisplay } from '../../models/index.ts';
 import styles from './index.module.css';

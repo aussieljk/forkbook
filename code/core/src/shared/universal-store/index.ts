@@ -188,7 +188,7 @@ export class UniversalStore<
   }
 
   /**
-   * The current state of the store, that signals both if the store is prepared by Storybook and
+   * The current state of the store, that signals both if the store is prepared by Forkbook and
    * also - in the case of a follower - if the state has been synced with the leader's state.
    */
   public get status(): StatusType {
@@ -211,7 +211,7 @@ export class UniversalStore<
 
   /**
    * A promise that resolves when the store is fully ready. A leader will be ready when the store
-   * has been prepared by Storybook, which is almost instantly.
+   * has been prepared by Forkbook, which is almost instantly.
    *
    * A follower will be ready when the state has been synced with the leader's state, within a few
    * hundred milliseconds.
@@ -363,7 +363,7 @@ export class UniversalStore<
     }
     if (!isFirstPartyStoreId(options.id)) {
       throw new TypeError(
-        `UniversalStore is internal to Storybook and cannot create a store with id "${options.id}"`
+        `UniversalStore is internal to Forkbook and cannot create a store with id "${options.id}"`
       );
     }
     if (options.debug) {
@@ -388,7 +388,7 @@ export class UniversalStore<
   }
 
   /**
-   * Used by Storybook to set the channel for all instances of UniversalStore in the given
+   * Used by Forkbook to set the channel for all instances of UniversalStore in the given
    * environment.
    *
    * @internal

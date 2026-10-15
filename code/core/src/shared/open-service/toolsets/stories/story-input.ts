@@ -8,7 +8,7 @@ import { toMcpToolName } from '../../toolset-names.ts';
  * The prose predates the toolsets and is eval-tuned, so it is kept verbatim. It names sibling
  * capabilities by their MCP tool names rather than through `getToolName`, because valibot descriptions
  * are static strings with no per-consumer rendering. One of them, `get-storybook-story-instructions`,
- * is an `storybook/addon-mcp` tool with no toolset method;
+ * is an `@aussieljk/forkbook/addon-mcp` tool with no toolset method;
  * a CLI consumer would need this sentence rewritten rather than re-rendered.
  */
 const storyInputProps = {
@@ -20,7 +20,7 @@ You can look up the component's documentation using the get-storybook-story-inst
   ),
   globals: v.pipe(
     v.optional(v.record(v.string(), v.any())),
-    v.description(`Optional Storybook globals to set for the story preview. Globals are used for things like theme, locale, viewport, and other cross-cutting concerns.
+    v.description(`Optional Forkbook globals to set for the story preview. Globals are used for things like theme, locale, viewport, and other cross-cutting concerns.
 Common globals include 'theme' (e.g., 'dark', 'light'), 'locale' (e.g., 'en', 'fr'), and 'backgrounds' (e.g., { value: '#000' }).`)
   ),
 };
@@ -59,7 +59,7 @@ Otherwise don't set this.`
     storyId: v.pipe(
       v.string(),
       v.description(
-        `The full Storybook story ID (for example "button--primary").
+        `The full Forkbook story ID (for example "button--primary").
 Prefer this shape whenever you are not already working in a specific story file.
 Use IDs discovered from ${toMcpToolName('docs.list')} (withStoryIds=true) or ${toMcpToolName('docs.show')}.`
       )

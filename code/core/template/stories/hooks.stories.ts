@@ -1,9 +1,9 @@
-import type { PartialStoryFn, StoryContext } from 'storybook/internal/types';
+import type { PartialStoryFn, StoryContext } from '@aussieljk/forkbook/internal/types';
 
 import { global as globalThis } from '@storybook/global';
 
-import { useEffect, useState } from 'storybook/preview-api';
-import { userEvent, within } from 'storybook/test';
+import { useEffect, useState } from '@aussieljk/forkbook/preview-api';
+import { userEvent, within } from '@aussieljk/forkbook/test';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,
@@ -30,7 +30,7 @@ export const UseState = {
     await userEvent.click(button);
     await within(canvasElement).findByText('Clicked 1 times');
   },
-  // TODO VITEST INTEGRATION: remove this once we support Storybook hooks in portable stories
+  // TODO VITEST INTEGRATION: remove this once we support Forkbook hooks in portable stories
   tags: ['!vitest'],
 };
 

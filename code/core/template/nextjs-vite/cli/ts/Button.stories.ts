@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { Button } from './Button';
 

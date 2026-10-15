@@ -1,9 +1,9 @@
 /** Custom docs page: {@link ./ArgTypes.mdx} (attached via `<Meta of={...} />`). */
-import type { PlayFunctionContext } from 'storybook/internal/csf';
+import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/csf';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import * as ExampleStories from '../examples/ArgTypesParameters.stories';
 import * as SubcomponentsExampleStories from '../examples/ArgTypesWithSubcomponentsParameters.stories';

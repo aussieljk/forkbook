@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { action } from 'storybook/actions';
+import { action } from '@aussieljk/forkbook/actions';
 
 import { ActionBar } from './ActionBar.tsx';
 

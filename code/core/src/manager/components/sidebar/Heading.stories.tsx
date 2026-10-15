@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { Meta, StoryFn, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryFn, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import { screen } from 'storybook/test';
-import { ThemeProvider, useTheme } from 'storybook/theming';
+import { action } from '@aussieljk/forkbook/actions';
+import { screen } from '@aussieljk/forkbook/test';
+import { ThemeProvider, useTheme } from '@aussieljk/forkbook/theming';
 
 import { Heading } from './Heading.tsx';
 

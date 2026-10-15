@@ -1,5 +1,5 @@
-import type { StatusValue } from 'storybook/internal/types';
-import type { API } from 'storybook/manager-api';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import { REVIEW_NAMESPACE } from '../../../shared/review/index.ts';
 import { REVIEWING_STATUS_VALUE } from './review-status.ts';

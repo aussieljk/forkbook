@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { Decorator } from 'storybook/react-vite';
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
 
-import { actions as makeActions } from 'storybook/actions';
+import { actions as makeActions } from '@aussieljk/forkbook/actions';
 
 import { defaultShortcuts } from './defaultShortcuts.tsx';
 import { ShortcutsScreen } from './shortcuts.tsx';

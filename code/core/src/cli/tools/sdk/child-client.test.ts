@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { telemetry } from 'storybook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { serializeError } from '../../../shared/open-service/service-error-serialization.ts';
 import { spawnChildHost } from './child-client.ts';
@@ -10,15 +10,15 @@ import { SpawnFailedError, ToolsRuntimeError, AttachUnavailableError } from './e
 import type { StorybookInstanceRecord } from '../instances/types.ts';
 import type { CreateToolsOptions, ToolsClientInfo, ToolsMode } from './types.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 const RECORD: StorybookInstanceRecord = {
   schemaVersion: 1,
   instanceId: 'abc',
   pid: 123,
   cwd: '/repo',
-  configDir: '/repo/.storybook',
+  configDir: '/repo/.forkbook',
   url: 'http://localhost:6006',
   port: 6006,
   token: 'secret',
@@ -26,8 +26,8 @@ const RECORD: StorybookInstanceRecord = {
   mcp: { status: 'ready' },
 };
 
-const OPTIONS: CreateToolsOptions = { mode: 'attached', configDir: '/repo/.storybook' };
-const LOCAL_OPTIONS: CreateToolsOptions = { mode: 'local', configDir: '/repo/.storybook' };
+const OPTIONS: CreateToolsOptions = { mode: 'attached', configDir: '/repo/.forkbook' };
+const LOCAL_OPTIONS: CreateToolsOptions = { mode: 'local', configDir: '/repo/.forkbook' };
 const CLIENT: Required<ToolsClientInfo> = {
   name: 'storybook-tools-sdk',
   version: '10.3.0',
@@ -39,7 +39,7 @@ const HELLO = {
   version: CHILD_HOST_PROTOCOL_VERSION,
   storybook: {
     version: '10.2.0',
-    configDir: '/repo/.storybook',
+    configDir: '/repo/.forkbook',
     url: 'http://localhost:6006',
     pid: 123,
   },
@@ -145,7 +145,7 @@ describe('spawnChildHost', () => {
 
     await expect(failure).rejects.toThrow(SpawnFailedError);
     await expect(failure).rejects.toThrow('/npx-cache/node_modules/storybook');
-    await expect(failure).rejects.toThrow('restart Storybook');
+    await expect(failure).rejects.toThrow('restart Forkbook');
     expect(fork).not.toHaveBeenCalled();
   });
 
@@ -183,8 +183,8 @@ describe('spawnChildHost', () => {
         cwd: '/repo',
         stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
         env: expect.objectContaining({
-          STORYBOOK_TOOLS_CHILD_HOST: 'true',
-          STORYBOOK_ATTACHED_TOOLS: 'true',
+          FORKBOOK_TOOLS_CHILD_HOST: 'true',
+          FORKBOOK_ATTACHED_TOOLS: 'true',
         }),
       })
     );
@@ -201,7 +201,7 @@ describe('spawnChildHost', () => {
     );
   });
 
-  it('forks a local child host without STORYBOOK_ATTACHED_TOOLS', async () => {
+  it('forks a local child host without FORKBOOK_ATTACHED_TOOLS', async () => {
     const tools = await spawn(LOCAL_OPTIONS);
 
     expect(fork).toHaveBeenCalledWith(
@@ -210,7 +210,7 @@ describe('spawnChildHost', () => {
       expect.objectContaining({
         cwd: '/repo',
         env: expect.not.objectContaining({
-          STORYBOOK_ATTACHED_TOOLS: 'true',
+          FORKBOOK_ATTACHED_TOOLS: 'true',
         }),
       })
     );
@@ -448,7 +448,7 @@ describe('spawnChildHost', () => {
     );
 
     await expect(failure).rejects.toThrow(SpawnFailedError);
-    await expect(failure).rejects.toThrow('storybook/internal/tools/child-host');
+    await expect(failure).rejects.toThrow('@aussieljk/forkbook/internal/tools/child-host');
     expect(fork).not.toHaveBeenCalled();
   });
 
@@ -517,7 +517,7 @@ describe('spawnChildHost', () => {
               new AttachUnavailableError({
                 reason: 'no-instance',
                 instances: [],
-                remediation: 'No running Storybook was found for this project.',
+                remediation: 'No running Forkbook was found for this project.',
               })
             ),
           })
@@ -529,7 +529,7 @@ describe('spawnChildHost', () => {
     const failure = spawn();
 
     await expect(failure).rejects.toBeInstanceOf(AttachUnavailableError);
-    await expect(failure).rejects.toThrow('No running Storybook was found');
+    await expect(failure).rejects.toThrow('No running Forkbook was found');
     expect(child.kill).toHaveBeenCalled();
   });
 

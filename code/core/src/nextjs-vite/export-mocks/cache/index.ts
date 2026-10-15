@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type Callback = (...args: any[]) => Promise<any>;

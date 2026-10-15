@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 const require = createRequire(import.meta.url);
 
@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
  * project, at runtime.
  *
  * We can't rely on `@babel/core`'s exported `version`: it is a different package whose version can
- * diverge from `@babel/preset-env`, and it gets resolved when Storybook is bundled rather than from
+ * diverge from `@babel/preset-env`, and it gets resolved when Forkbook is bundled rather than from
  * the user's project. We instead resolve and read preset-env's own `package.json`. This must stay
  * synchronous because some call sites (e.g. the Next.js babel preset factory and the swc loader
  * transform) are synchronous.

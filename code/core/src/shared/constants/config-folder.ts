@@ -2,9 +2,10 @@ import { dirname, join, normalize, relative, resolve } from 'pathe';
 
 import { storybookConfigExtensions } from './extensions.ts';
 
-/** Default React Native on-device Storybook config directory name. */
+/** Default React Native on-device Forkbook config directory name. */
 export const RN_STORYBOOK_DIR = '.rnstorybook';
 
+// The import name that the React Native Storybook docs use.
 export const DOCUMENTED_PREVIEW_IMPORT = '#.storybook/preview';
 
 export function isReactNativeStorybookPath(fileOrDir?: string): boolean {
@@ -30,7 +31,7 @@ export function webPreviewCandidates(nativeConfigPath: string): string[] {
 
   const projectDir = parts.slice(0, index).join('/');
   return storybookConfigExtensions.map((extension) =>
-    join(projectDir, '.storybook', `preview${extension}`)
+    join(projectDir, '.forkbook', `preview${extension}`)
   );
 }
 

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { loadCsf, printCsf } from './CsfFile.ts';
 import { loadConfig } from './ConfigFile.ts';

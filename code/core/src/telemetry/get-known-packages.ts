@@ -1,4 +1,4 @@
-import type { PackageJson } from 'storybook/internal/types';
+import type { PackageJson } from '@aussieljk/forkbook/internal/types';
 
 import semver from 'semver';
 
@@ -22,7 +22,7 @@ export type KnownPackagesList = {
   bundlerPackages?: PackageGroupResult;
   /**
    * Installed versions of the active renderer's UI framework runtime packages. Unlike the other
-   * groups, this is keyed off the detected Storybook renderer rather than the project's declared
+   * groups, this is keyed off the detected Forkbook renderer rather than the project's declared
    * dependencies, so monorepos don't report sibling frameworks.
    */
   rendererPackages?: PackageGroupResult;

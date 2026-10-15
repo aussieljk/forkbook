@@ -4,8 +4,8 @@ import {
   loadMainConfig,
   isCI,
   loadAllPresets,
-} from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   ErrorCollector,
   getPrecedingUpgrade,
@@ -14,9 +14,9 @@ import {
   onPayloadError,
   setTelemetryEnabled,
   telemetry,
-} from 'storybook/internal/telemetry';
-import type { EventType } from 'storybook/internal/telemetry';
-import type { CLIOptions, StorybookConfigRaw } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { EventType } from '@aussieljk/forkbook/internal/telemetry';
+import type { CLIOptions, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { StorybookError } from '../storybook-error.ts';
 
@@ -36,7 +36,7 @@ const promptCrashReports = async () => {
 
   const enableCrashReports = await prompt.confirm({
     message:
-      'Would you like to send anonymous crash reports to improve Storybook and fix bugs faster?',
+      'Would you like to send anonymous crash reports to improve Forkbook and fix bugs faster?',
     initialValue: true,
   });
 
@@ -172,8 +172,7 @@ async function resolveTelemetryState(options: TelemetryOptions) {
   }
 
   let mainConfig;
-  const configDir =
-    options.cliOptions.configDir ?? options.presetOptions?.configDir ?? '.storybook';
+  const configDir = options.cliOptions.configDir ?? options.presetOptions?.configDir ?? '.forkbook';
   try {
     mainConfig = (await loadMainConfig({ configDir })) as StorybookConfigRaw;
   } catch {}

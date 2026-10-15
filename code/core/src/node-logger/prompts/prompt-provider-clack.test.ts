@@ -45,7 +45,7 @@ describe('ClackPromptProvider', () => {
   // Vitest workers do not write to a terminal, so the provider assumes 80 columns.
   it('drops the colors of a task log line only when they push it onto an extra terminal row', () => {
     const cyan = (text: string) => `\x1b[36m${text}\x1b[39m`;
-    const nearlyFull = `${'x'.repeat(51)} ${cyan('.storybook/preview')}`;
+    const nearlyFull = `${'x'.repeat(51)} ${cyan('.forkbook/preview')}`;
     const short = cyan('✔ addon-mcp');
 
     const log = provider.taskLog({ id: 'task', title: 'Task' });
@@ -58,7 +58,7 @@ describe('ClackPromptProvider', () => {
     log.message(`${short}\n${nearlyFull}`);
     log.success('done');
 
-    expect(task.message).toHaveBeenCalledWith(`${short}\n${'x'.repeat(51)} .storybook/preview`);
+    expect(task.message).toHaveBeenCalledWith(`${short}\n${'x'.repeat(51)} .forkbook/preview`);
   });
 
   it('awaits an async onCancel handler before returning', async () => {

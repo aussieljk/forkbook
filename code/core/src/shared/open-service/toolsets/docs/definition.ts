@@ -32,12 +32,12 @@ const DOCS_METHOD_REFS = {
  * Which Storybooks these tools serve — exactly one of the two.
  *
  * Modelled as an exclusive union so neither "no access at all" nor "both, one silently winning" can
- * be constructed: a composition takes a `storybookId` on every lookup and a single Storybook must
+ * be constructed: a composition takes a `storybookId` on every lookup and a single Forkbook must
  * not ask for one, and that difference is decided here.
  */
 export type CreateDocsToolsetOptions =
   | {
-      /** Reads the one Storybook these tools serve. */
+      /** Reads the one Forkbook these tools serve. */
       docsAccess: DocsAccess;
       sources?: never;
     }
@@ -78,7 +78,7 @@ export type DocsShowStoryOutput = {
 /**
  * The manifests a listing should be reported against.
  *
- * Reporting predates composition and describes one Storybook, so a composed listing is reported
+ * Reporting predates composition and describes one Forkbook, so a composed listing is reported
  * against the first source that produced one. Nothing is returned when no source did — a listing of
  * nothing but errors is not a usage signal.
  */
@@ -165,7 +165,7 @@ function resolveShowStory(data: DocsShowStoryOutput): ShowStoryResolution {
  * Whether `docs.show` failed: an unusable source, or an id that resolved to nothing.
  *
  * The handlers encode this in the outcome tag; the predicate stays exported because it is part of
- * the frozen `storybook/mcp` API.
+ * the frozen `@aussieljk/forkbook/mcp` API.
  */
 export function isDocsShowError(output: DocsShowOutput): boolean {
   const { kind } = resolveShow(output);
@@ -179,7 +179,7 @@ export function isDocsShowStoryError(output: DocsShowStoryOutput): boolean {
 }
 
 function describeList(ctx: ToolsetCtx): string {
-  return `List all available UI components and documentation entries from the Storybook, returning the IDs the other documentation tools take as input. Call this first for any UI task — before writing a new component, check what the design system already provides and build on it instead of hand-rolling a duplicate; before answering any question about props, API, or usage, discover the relevant IDs here rather than reading component source. Then fetch the entries with ${getToolName(ctx)(DOCS_METHOD_REFS.show)}, referencing only IDs returned here — never guess IDs. When multiple Storybook sources are configured, entries from every source are included; scope follow-up calls to one source via their storybookId input. Pass withStoryIds: true when you need story IDs for other tools.`;
+  return `List all available UI components and documentation entries from the Forkbook, returning the IDs the other documentation tools take as input. Call this first for any UI task — before writing a new component, check what the design system already provides and build on it instead of hand-rolling a duplicate; before answering any question about props, API, or usage, discover the relevant IDs here rather than reading component source. Then fetch the entries with ${getToolName(ctx)(DOCS_METHOD_REFS.show)}, referencing only IDs returned here — never guess IDs. When multiple Forkbook sources are configured, entries from every source are included; scope follow-up calls to one source via their storybookId input. Pass withStoryIds: true when you need story IDs for other tools.`;
 }
 
 function describeShow(ctx: ToolsetCtx): string {
@@ -260,7 +260,7 @@ const storybookIdField = {
     v.pipe(
       v.string(),
       v.description(
-        'The ID of the Storybook source to query (e.g., "local", "design-system"). Defaults to "local", this Storybook.'
+        'The ID of the Forkbook source to query (e.g., "local", "design-system"). Defaults to "local", this Forkbook.'
       )
     ),
     'local'
@@ -303,7 +303,7 @@ function selectSource(
   const match = sources.find(({ source }) => source.id === storybookId);
   if (!match) {
     return {
-      sourceError: `Storybook source not found: "${storybookId}". Available sources: ${available}. ${listRef}`,
+      sourceError: `Forkbook source not found: "${storybookId}". Available sources: ${available}. ${listRef}`,
     };
   }
 
@@ -314,7 +314,7 @@ function selectSource(
  * Creates the public docs API over an injected {@link DocsAccess}.
  *
  * The toolset never reads services or manifests itself, so the same definition serves the dev
- * server (open services or the built manifests), a hosted Storybook (manifest files over any
+ * server (open services or the built manifests), a hosted Forkbook (manifest files over any
  * provider), and a composition of several of those.
  */
 export function createDocsToolset(options: CreateDocsToolsetOptions) {
@@ -327,7 +327,7 @@ export function createDocsToolset(options: CreateDocsToolsetOptions) {
     throw new Error('createDocsToolset requires a docsAccess or at least one source.');
   }
 
-  // A composition lets the caller name the Storybook, defaulting to this one; a single one must
+  // A composition lets the caller name the Forkbook, defaulting to this one; a single one must
   // not ask.
   const showSchema = multiSource
     ? v.strictObject({
@@ -372,7 +372,7 @@ export function createDocsToolset(options: CreateDocsToolsetOptions) {
 
   return defineToolset({
     id: DOCS_TOOLSET_ID,
-    description: 'Storybook component and docs documentation.',
+    description: 'Forkbook component and docs documentation.',
     methods: {
       [DOCS_METHOD_NAMES.list]: {
         input: v.strictObject({

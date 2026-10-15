@@ -1,7 +1,7 @@
 import type { TestError } from 'vitest';
 import type { TestResult, TestState } from 'vitest/node';
 
-import type { internal_UniversalStore } from 'storybook/internal/core-server';
+import type { internal_UniversalStore } from '@aussieljk/forkbook/internal/core-server';
 import type {
   Options,
   PreviewAnnotation,
@@ -9,12 +9,12 @@ import type {
   StatusValue,
   StoryIndex,
   TestProviderStoreById,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
 
 import { throttle } from 'es-toolkit/function';
-import type { Report } from 'storybook/preview-api';
+import type { Report } from '@aussieljk/forkbook/preview-api';
 
 import { STATUS_TYPE_ID_A11Y, STATUS_TYPE_ID_COMPONENT_TEST, storeOptions } from '../constants.ts';
 import type {
@@ -43,11 +43,11 @@ export type TestManagerOptions = {
 
 /** Matches the banner that vitest-plugin/setup-file.ts prepends to the message of failed stories. */
 const DEBUG_BANNER_RE =
-  /\n?(?:\x1B\[\d+m)?Click to debug the error directly in Storybook: [^\n]*\n+/g;
+  /\n?(?:\x1B\[\d+m)?Click to debug the error directly in Forkbook: [^\n]*\n+/g;
 
 /**
- * `error.stack` holds the raw browser stack, pointing at the Vite URLs of Storybook's pre-bundled
- * internals. Vitest replaces it with `error.stacks`: source-mapped frames with Storybook's
+ * `error.stack` holds the raw browser stack, pointing at the Vite URLs of Forkbook's pre-bundled
+ * internals. Vitest replaces it with `error.stacks`: source-mapped frames with Forkbook's
  * instrumentation filtered out, matching what its own terminal output shows.
  */
 function formatError(error: TestError): string {

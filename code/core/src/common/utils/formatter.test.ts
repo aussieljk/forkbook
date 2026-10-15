@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 
 import { formatCode, formatFileContent } from './formatter.ts';
 
-const content = `import type { Meta } from "storybook/react-vite"
+const content = `import type { Meta } from "@aussieljk/forkbook/react-vite"
   const meta = { component: "a" } satisfies Meta
 export default meta
 `;
@@ -15,7 +15,7 @@ describe('formatFileContent', () => {
     const filePath = resolve(__dirname, '__tests-formatter__', 'withConfig', 'testFile.ts');
 
     expect(await formatFileContent(filePath, content)).toMatchInlineSnapshot(`
-      "import type { Meta } from 'storybook/react-vite';
+      "import type { Meta } from '@aussieljk/forkbook/react-vite';
       const meta = { component: 'a' } satisfies Meta;
       export default meta;
       "

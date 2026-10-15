@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { recast, types as t } from 'storybook/internal/babel';
+import { recast, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { dedent } from 'ts-dedent';
 
@@ -66,7 +66,7 @@ describe('normalizeStoryDeclaration', () => {
   it('unwraps the config argument from CSF4 factory stories', () => {
     expect(
       printedShape(dedent`
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ title: 'Button' });
         export const A = meta.story({ args: {} });
       `)
@@ -81,7 +81,7 @@ describe('normalizeStoryDeclaration', () => {
   it('normalizes empty CSF4 factory calls to emptyConfig', () => {
     expect(
       printedShape(dedent`
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ title: 'Button' });
         export const A = meta.story();
       `)
@@ -210,7 +210,7 @@ describe('normalizeStoryDeclaration', () => {
   it('throws for factory calls with more than one argument', () => {
     expect(() =>
       normalize(dedent`
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ title: 'Button' });
         export const A = meta.story({}, {});
       `)

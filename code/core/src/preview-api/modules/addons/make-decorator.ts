@@ -2,7 +2,7 @@ import type {
   Addon_LegacyStoryFn,
   Addon_StoryContext,
   Addon_StoryWrapper,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 export type MakeDecoratorResult = (...args: any) => any;
 
@@ -14,7 +14,7 @@ export interface MakeDecoratorOptions {
 }
 
 /**
- * Creates a Storybook decorator function that can be used to wrap stories with additional
+ * Creates a Forkbook decorator function that can be used to wrap stories with additional
  * functionality.
  *
  * @example
@@ -39,7 +39,7 @@ export interface MakeDecoratorOptions {
  * @param {Addon_StoryWrapper} options.wrapper - The function that will be used to wrap the story.
  * @param {boolean} [options.skipIfNoParametersOrOptions=false] - Whether to skip the decorator if
  *   no options or parameters are provided. Default is `false`
- * @returns {MakeDecoratorResult} A function that can be used as a Storybook decorator.
+ * @returns {MakeDecoratorResult} A function that can be used as a Forkbook decorator.
  */
 export const makeDecorator = ({
   name,

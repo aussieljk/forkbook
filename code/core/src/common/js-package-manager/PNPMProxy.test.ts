@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { executeCommand, executeCommandSync } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { PNPMProxy } from './PNPMProxy.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
     getPreferredStdio: vi.fn(() => 'inherit'),
@@ -36,7 +36,7 @@ const mockPnpmVersion = (version: string) => {
 const expectedMinimumReleaseAgeExcludePackages = [
   'react',
   'webpack',
-  'storybook',
+  '@aussieljk/forkbook',
   '@storybook/*',
   'eslint-plugin-storybook',
 ];
@@ -236,7 +236,7 @@ describe('PNPM Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         };
       });
@@ -247,7 +247,7 @@ describe('PNPM Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -295,22 +295,24 @@ describe('PNPM Proxy', () => {
   });
 
   describe('getVersion', () => {
-    it('with a Storybook package listed in versions.json it returns the version', async () => {
-      const storybookReactViteVersion = (await import('../versions.ts')).default['storybook'];
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
+    it('with a Forkbook package listed in versions.json it returns the version', async () => {
+      const storybookReactViteVersion = (await import('../versions.ts')).default[
+        '@aussieljk/forkbook'
+      ];
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '0.0.0' } as any);
 
-      const version = await pnpmProxy.getVersion('storybook');
+      const version = await pnpmProxy.getVersion('@aussieljk/forkbook');
 
       expect(executeCommandSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           command: 'pnpm',
-          args: ['info', 'storybook', 'version'],
+          args: ['info', '@aussieljk/forkbook', 'version'],
         })
       );
       expect(version).toEqual(`^${storybookReactViteVersion}`);
     });
 
-    it('with a Storybook package not listed in versions.json it returns the latest version', async () => {
+    it('with a Forkbook package not listed in versions.json it returns the latest version', async () => {
       const packageVersion = '5.3.19';
       const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
         stdout: `${packageVersion}`,
@@ -523,7 +525,7 @@ describe('PNPM Proxy', () => {
       vi.useRealTimers();
     });
 
-    it('should update minimumReleaseAgeExclude in non-interactive mode when minimumReleaseAge blocks Storybook', async () => {
+    it('should update minimumReleaseAgeExclude in non-interactive mode when minimumReleaseAge blocks Forkbook', async () => {
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({ stdout: JSON.stringify(['react', 'webpack']) } as any)
@@ -584,7 +586,7 @@ describe('PNPM Proxy', () => {
         expect.objectContaining({
           options: expect.arrayContaining([
             expect.objectContaining({
-              label: 'Update pnpm config to exclude Storybook packages',
+              label: 'Update pnpm config to exclude Forkbook packages',
             }),
             expect.objectContaining({
               label: 'Stop now and rerun with the most recent allowed release: storybook@10.3.2',
@@ -596,7 +598,7 @@ describe('PNPM Proxy', () => {
         })
       );
       expect(vi.mocked(logger.info)).not.toHaveBeenCalledWith(
-        'Added Storybook core packages to pnpm minimumReleaseAgeExclude for this project.'
+        'Added Forkbook core packages to pnpm minimumReleaseAgeExclude for this project.'
       );
 
       expect(mockedExecuteCommand).toHaveBeenLastCalledWith(
@@ -628,11 +630,11 @@ describe('PNPM Proxy', () => {
       });
 
       await expect(rerunPromise).rejects.toThrow(
-        /Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/
+        /Please rerun Forkbook creation with:[\s\S]*npx @aussieljk\/forkbook@10\.3\.2 init/
       );
 
       await expect(rerunPromise).rejects.not.toThrow(
-        /choose one of these options|Update pnpm to exclude Storybook packages/
+        /choose one of these options|Update pnpm to exclude Forkbook packages/
       );
     });
 
@@ -652,7 +654,9 @@ describe('PNPM Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
+      ).rejects.toThrow(
+        /Please rerun Forkbook creation with:[\s\S]*npx @aussieljk\/forkbook@10\.3\.2 init/
+      );
     });
 
     describe('release-time checks', () => {
@@ -700,12 +704,16 @@ describe('PNPM Proxy', () => {
       );
     });
 
-    it('should skip the precheck when Storybook packages are already excluded', async () => {
+    it('should skip the precheck when Forkbook packages are already excluded', async () => {
       const updateSpy = vi.spyOn(pnpmProxy as any, 'updateMinimumReleaseAgeExclude');
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({
-          stdout: JSON.stringify(['storybook', '@storybook/*', 'eslint-plugin-storybook']),
+          stdout: JSON.stringify([
+            '@aussieljk/forkbook',
+            '@storybook/*',
+            'eslint-plugin-storybook',
+          ]),
         } as any);
 
       await expect(

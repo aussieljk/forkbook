@@ -7,12 +7,12 @@ import { InvalidChannelPageError } from '../../preview-errors.ts';
 import type { ChannelHandler, Config } from '../types.ts';
 import { KEY, PostMessageTransport } from './index.ts';
 
-vi.mock('storybook/internal/client-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/client-logger', () => ({
   logger: { warn: vi.fn(), error: vi.fn() },
   pretty: { debug: vi.fn(), error: vi.fn() },
 }));
 
-const { logger } = await import('storybook/internal/client-logger');
+const { logger } = await import('@aussieljk/forkbook/internal/client-logger');
 
 const OWN_ORIGIN = globalThis.location.origin;
 const EVIL_ORIGIN = 'https://evil.example.com';
@@ -271,7 +271,7 @@ describe('PostMessageTransport origin validation', () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it('accepts a channel message from a registered iframe on another origin in a built Storybook', () => {
+    it('accepts a channel message from a registered iframe on another origin in a built Forkbook', () => {
       const contentWindow = registerStorybookIframe();
       createTransport('manager', { configType: 'PRODUCTION' });
 
@@ -293,7 +293,7 @@ describe('PostMessageTransport origin validation', () => {
       expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining(EVIL_ORIGIN));
     });
 
-    it('drops channel messages from unregistered windows in a built Storybook too', () => {
+    it('drops channel messages from unregistered windows in a built Forkbook too', () => {
       registerStorybookIframe();
       createTransport('manager', { configType: 'PRODUCTION' });
 
@@ -393,7 +393,7 @@ describe('PostMessageTransport origin validation', () => {
       expect(postMessage).toHaveBeenCalledWith(expect.any(String), 'https://ref.example.com');
     });
 
-    it('sends to a preview iframe with "*" in a built Storybook', () => {
+    it('sends to a preview iframe with "*" in a built Forkbook', () => {
       const iframe = document.createElement('iframe');
       iframe.setAttribute('data-is-storybook', 'true');
       iframe.setAttribute('data-is-loaded', 'true');

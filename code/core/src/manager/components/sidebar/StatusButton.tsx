@@ -1,11 +1,11 @@
 import type { ComponentProps, CSSProperties } from 'react';
 import React, { forwardRef } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import type { StatusValue } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import { clsx } from 'clsx';
-import { useTheme } from 'storybook/theming';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { getStatus } from '../../utils/status.tsx';
 import styles from './StatusButton.module.css';

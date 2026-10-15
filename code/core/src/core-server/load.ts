@@ -1,15 +1,20 @@
 import { fileURLToPath } from 'node:url';
 
-import { Channel, setChannel } from 'storybook/internal/channels';
+import { Channel, setChannel } from '@aussieljk/forkbook/internal/channels';
 import {
   getProjectRoot,
   loadAllPresets,
   loadMainConfig,
   resolveAddonName,
   validateFrameworkName,
-} from 'storybook/internal/common';
-import { oneWayHash } from 'storybook/internal/telemetry';
-import type { BuilderOptions, CLIOptions, LoadOptions, Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { oneWayHash } from '@aussieljk/forkbook/internal/telemetry';
+import type {
+  BuilderOptions,
+  CLIOptions,
+  LoadOptions,
+  Options,
+} from '@aussieljk/forkbook/internal/types';
 import { applyServicesPresetOnce } from './utils/apply-services-preset-once.ts';
 
 import { global } from '@storybook/global';
@@ -26,7 +31,7 @@ export async function loadStorybook(
       previewConfigPath?: string;
       /**
        * The channel handed to every preset. Callers that prepared state on a channel of their own
-       * (the `storybook tools` CLI prepares the UniversalStore singleton on one) must pass it here,
+       * (the `forkbook tools` CLI prepares the UniversalStore singleton on one) must pass it here,
        * so addon hooks that answer requests over `options.channel` share the caller's bus.
        */
       channel?: Channel;
@@ -63,7 +68,8 @@ export async function loadStorybook(
   let presets = await loadAllPresets({
     corePresets,
     overridePresets: [
-      import.meta.resolve('storybook/internal/core-server/presets/common-override-preset'),
+      import.meta
+        .resolve('@aussieljk/forkbook/internal/core-server/presets/common-override-preset'),
     ],
     ...options,
     isCritical: true,
@@ -76,7 +82,7 @@ export async function loadStorybook(
   const builderName = typeof builder === 'string' ? builder : builder?.name;
 
   if (builderName) {
-    /* builderName can be a bare package name (e.g. 'storybook/builder-vite') or an already-resolved
+    /* builderName can be a bare package name (e.g. '@aussieljk/forkbook/builder-vite') or an already-resolved
        file URL / absolute path (e.g. 'file:///.../.../dist/index.js'). For bare package names, we
        need to resolve the package directory first; for already-resolved paths, dirname works directly.
     */
@@ -96,12 +102,13 @@ export async function loadStorybook(
 
   presets = await loadAllPresets({
     corePresets: [
-      join(resolvePackageDir('storybook'), 'dist/core-server/presets/common-preset.js'),
+      join(resolvePackageDir('@aussieljk/forkbook'), 'dist/core-server/presets/common-preset.js'),
       ...(resolvedRenderer ? [resolvedRenderer] : []),
       ...corePresets,
     ],
     overridePresets: [
-      import.meta.resolve('storybook/internal/core-server/presets/common-override-preset'),
+      import.meta
+        .resolve('@aussieljk/forkbook/internal/core-server/presets/common-override-preset'),
     ],
     ...options,
     channel,

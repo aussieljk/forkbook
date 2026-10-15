@@ -3,9 +3,9 @@ import { join, resolve } from 'node:path';
 
 import { afterAll, describe, expect, it } from 'vitest';
 
-import type { Renderer, StoryContextForEnhancers } from 'storybook/internal/types';
+import type { Renderer, StoryContextForEnhancers } from '@aussieljk/forkbook/internal/types';
 
-import { inferControls } from 'storybook/preview-api';
+import { inferControls } from '@aussieljk/forkbook/preview-api';
 
 import { ComponentMetaManager } from './componentManifest/componentMeta/ComponentMetaManager.ts';
 import { extractArgTypesFromComponentMeta } from './docgen/buildDocgen.ts';

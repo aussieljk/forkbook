@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { spyOn } from 'storybook/test';
+import { spyOn } from '@aussieljk/forkbook/test';
 
 const meta = {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

@@ -13,15 +13,19 @@ import {
   optionalEnvToBoolean,
   resolvePathInStorybookCache,
   validateConfigurationFiles,
-} from 'storybook/internal/common';
+} from '@aussieljk/forkbook/internal/common';
 import {
   StoryIndexGenerator,
   Tag,
   experimental_loadStorybook,
   mapStaticDir,
-} from 'storybook/internal/core-server';
-import { componentTransform, readConfig, vitestTransform } from 'storybook/internal/csf-tools';
-import { MainFileMissingError } from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/core-server';
+import {
+  componentTransform,
+  readConfig,
+  vitestTransform,
+} from '@aussieljk/forkbook/internal/csf-tools';
+import { MainFileMissingError } from '@aussieljk/forkbook/internal/server-errors';
 import {
   detectAgent,
   isTelemetryModuleEnabled,
@@ -29,8 +33,8 @@ import {
   oneWayHash,
   telemetry,
   setTelemetryEnabled,
-} from 'storybook/internal/telemetry';
-import type { Presets } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
 import { match } from 'micromatch';
 import { join, normalize, relative, resolve, sep } from 'pathe';
@@ -43,10 +47,10 @@ import type { PluginOption } from 'vite';
 // Shared plugins from builder-vite (relative import to prebundle without adding a package dependency)
 import { withoutVitePlugins } from '../../builder-vite/utils/without-vite-plugins.ts';
 import {
-  STORYBOOK_CORE_GHOST_STORIES_PROVIDE_KEY,
-  STORYBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY,
-  STORYBOOK_TEST_FEATURES_PROVIDE_KEY,
-  STORYBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY,
+  FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY,
+  FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY,
+  FORKBOOK_TEST_FEATURES_PROVIDE_KEY,
+  FORKBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY,
 } from '../constants.ts';
 import type { InternalOptions, UserOptions } from './types.ts';
 import { AgentTelemetryReporter } from './agent-telemetry-reporter.ts';
@@ -56,7 +60,7 @@ const WORKING_DIR = process.cwd();
 
 const defaultOptions = {
   storybookScript: undefined,
-  configDir: resolve(join(WORKING_DIR, '.storybook')),
+  configDir: resolve(join(WORKING_DIR, '.forkbook')),
   storybookUrl: 'http://localhost:6006',
   disableAddonDocs: true,
   initialGlobals: {},
@@ -128,7 +132,7 @@ const mdxStubPlugin: Plugin = {
 // Transforming components and extracting args can be expensive because of docgen
 // so we pass the paths via env variable and use as filter to only transform the files we need
 const getComponentTestPaths = (): string[] => {
-  const envPaths = process.env.STORYBOOK_COMPONENT_PATHS;
+  const envPaths = process.env.FORKBOOK_COMPONENT_PATHS;
 
   if (!envPaths) {
     return [];
@@ -157,7 +161,7 @@ const createComponentTestTransformPlugin = (presets: Presets, configDir: string)
             resolvedId.endsWith(testPath)
         );
 
-        // We only transform paths included in STORYBOOK_COMPONENT_PATHS
+        // We only transform paths included in FORKBOOK_COMPONENT_PATHS
         if (!matches) {
           return code;
         }
@@ -222,8 +226,8 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
   process.env.__STORYBOOK_URL__ = finalOptions.storybookUrl;
   process.env.__STORYBOOK_SCRIPT__ = finalOptions.storybookScript;
 
-  // We signal the test runner that we are not running it via Storybook
-  // We are overriding the environment variable to 'true' if vitest runs via storybook/addon-vitest's backend
+  // We signal the test runner that we are not running it via Forkbook
+  // We are overriding the environment variable to 'true' if vitest runs via @aussieljk/forkbook/addon-vitest's backend
   const isVitestStorybook = optionalEnvToBoolean(process.env.VITEST_STORYBOOK);
 
   const directories = {
@@ -372,8 +376,8 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
           },
 
           setupFiles: [
-            'storybook/addon-vitest/internal/setup-file',
-            'storybook/addon-vitest/internal/setup-file-with-project-annotations',
+            '@aussieljk/forkbook/addon-vitest/internal/setup-file',
+            '@aussieljk/forkbook/addon-vitest/internal/setup-file-with-project-annotations',
 
             // if the existing setupFiles is a string, we have to include it otherwise we're overwriting it
             typeof nonMutableInputConfig.test?.setupFiles === 'string' &&
@@ -384,7 +388,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
             ? {
                 globalSetup: [
                   fileURLToPath(
-                    import.meta.resolve('storybook/addon-vitest/internal/global-setup')
+                    import.meta.resolve('@aussieljk/forkbook/addon-vitest/internal/global-setup')
                   ),
                 ],
               }
@@ -410,11 +414,11 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
           },
 
           provide: {
-            [STORYBOOK_TEST_FEATURES_PROVIDE_KEY]: features,
-            [STORYBOOK_CORE_GHOST_STORIES_PROVIDE_KEY]: !!process.env.STORYBOOK_COMPONENT_PATHS,
-            [STORYBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY]:
-              !!process.env.STORYBOOK_COMPONENT_PATHS || withinAgenticSetupSession,
-            [STORYBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY]: finalOptions.initialGlobals,
+            [FORKBOOK_TEST_FEATURES_PROVIDE_KEY]: features,
+            [FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY]: !!process.env.FORKBOOK_COMPONENT_PATHS,
+            [FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY]:
+              !!process.env.FORKBOOK_COMPONENT_PATHS || withinAgenticSetupSession,
+            [FORKBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY]: finalOptions.initialGlobals,
           },
 
           include: [...includeStories, ...getComponentTestPaths()],
@@ -433,7 +437,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
               : {}),
 
             // Inject the cursor reset command we use to prevent accidental hover states when running
-            // Storybook tests in Chromium on Linux. There is a known race condition / special code path
+            // Forkbook tests in Chromium on Linux. There is a known race condition / special code path
             // in Chromium causing it to sometimes apply :hover to the element under the mouse cursor even
             // when there was no mouse movement.
             commands: {
@@ -449,14 +453,14 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
         optimizeDeps: {
           include: [
-            'storybook/addon-vitest/internal/setup-file',
-            'storybook/addon-vitest/internal/setup-file.browser.4',
-            'storybook/addon-vitest/internal/global-setup',
-            'storybook/addon-vitest/internal/test-utils',
-            'storybook/preview-api',
+            '@aussieljk/forkbook/addon-vitest/internal/setup-file',
+            '@aussieljk/forkbook/addon-vitest/internal/setup-file.browser.4',
+            '@aussieljk/forkbook/addon-vitest/internal/global-setup',
+            '@aussieljk/forkbook/addon-vitest/internal/test-utils',
+            '@aussieljk/forkbook/preview-api',
             // imported by the setup files; without pinning, its CJS-only deps (via
             // @testing-library/dom) reach the browser raw on hoisted node_modules layouts
-            'storybook/test',
+            '@aussieljk/forkbook/test',
             ...(frameworkName?.includes('react') || frameworkName?.includes('nextjs')
               ? ['react-dom/test-utils']
               : []),
@@ -477,9 +481,9 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
         nonMutableInputConfig.test.include = [];
         console.log(
           picocolors.yellow(dedent`
-            Warning: Starting in Storybook 8.5.0-alpha.18, the "test.include" option in Vitest is discouraged in favor of just using the "stories" field in your Storybook configuration.
+            Warning: Starting in Forkbook 8.5.0-alpha.18, the "test.include" option in Vitest is discouraged in favor of just using the "stories" field in your Forkbook configuration.
 
-            The values you passed to "test.include" will be ignored, please remove them from your Vitest configuration where the Storybook plugin is applied.
+            The values you passed to "test.include" will be ignored, please remove them from your Vitest configuration where the Forkbook plugin is applied.
 
             More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#addon-test-indexing-behavior-of-storybookaddon-test-is-changed
           `)
@@ -496,7 +500,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
       if (isBrowserModeEnabled) {
         const browserSetupFile = fileURLToPath(
-          import.meta.resolve('storybook/addon-vitest/internal/setup-file.browser.4')
+          import.meta.resolve('@aussieljk/forkbook/addon-vitest/internal/setup-file.browser.4')
         );
 
         if (!context.project.config.setupFiles.includes(browserSetupFile)) {
@@ -534,13 +538,13 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
         // When an agent is running vitest via CLI, inject a reporter that sends
         // detailed test result telemetry (pass/fail, error analysis, empty renders).
         //
-        // STORYBOOK_INTERNAL_TEST_RUN is set by the dev server when it spawns
+        // FORKBOOK_INTERNAL_TEST_RUN is set by the dev server when it spawns
         // vitest internally (ghost-stories, ai-setup-final-scoring). Those runs
         // are not part of the agent's iterative self-healing loop, so we skip
         // installing the reporter to avoid emitting `ai-setup-self-healing-scoring`
         // events whose results would misleadingly attribute ghost-stories /
         // final-scoring outcomes to the self-healing loop.
-        if (agent && withinAgenticSetupSession && !process.env.STORYBOOK_INTERNAL_TEST_RUN) {
+        if (agent && withinAgenticSetupSession && !process.env.FORKBOOK_INTERNAL_TEST_RUN) {
           context.vitest.config.reporters.push(
             new AgentTelemetryReporter({
               configDir: finalOptions.configDir,
@@ -591,7 +595,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
   plugins.push(storybookTestPlugin);
 
-  // When running tests via the Storybook UI, we need
+  // When running tests via the Forkbook UI, we need
   // to find the right project to run, thus we override
   // with a unique identifier using the path to the config dir
   if (isVitestStorybook) {

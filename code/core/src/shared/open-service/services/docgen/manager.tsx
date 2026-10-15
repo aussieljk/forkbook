@@ -1,4 +1,4 @@
-import { addons } from 'storybook/manager-api';
+import { addons } from '@aussieljk/forkbook/manager-api';
 
 import { registerService } from '../../manager.ts';
 import { docgenServiceDef } from './definition.ts';

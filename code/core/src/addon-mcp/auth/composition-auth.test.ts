@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CompositionAuth, extractBearerToken } from './composition-auth.ts';

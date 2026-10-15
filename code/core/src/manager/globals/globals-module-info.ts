@@ -23,13 +23,13 @@ import { globalPackages, globalsNameReferenceMap } from './globals.ts';
  */
 
 const duplicatedKeys = [
-  'storybook/theming',
-  'storybook/theming/create',
-  'storybook/manager-api',
-  'storybook/test',
-  'storybook/actions',
-  'storybook/highlight',
-  'storybook/viewport',
+  '@aussieljk/forkbook/theming',
+  '@aussieljk/forkbook/theming/create',
+  '@aussieljk/forkbook/manager-api',
+  '@aussieljk/forkbook/test',
+  '@aussieljk/forkbook/actions',
+  '@aussieljk/forkbook/highlight',
+  '@aussieljk/forkbook/viewport',
 ];
 
 export const globalsModuleInfoMap = globalPackages.reduce(
@@ -42,7 +42,7 @@ export const globalsModuleInfoMap = globalPackages.reduce(
     };
 
     if (duplicatedKeys.includes(key)) {
-      acc[key.replace('storybook', 'storybook/internal') as typeof key] = {
+      acc[key.replace('@aussieljk/forkbook', '@aussieljk/forkbook/internal') as typeof key] = {
         type: 'esm',
         varName: globalsNameReferenceMap[key],
         namedExports: Exports[key],

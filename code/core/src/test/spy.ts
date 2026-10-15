@@ -20,7 +20,7 @@ export { isMockFunction, mocks };
  * Global registry for module mock spies created by `sb.mock('...', { spy: true })`.
  *
  * These spies are created by the module mocker (via `__vitest_mocker__.mockObject()`) and may use a
- * different `@vitest/spy` instance than the one bundled with storybook/test. This means they won't
+ * different `@vitest/spy` instance than the one bundled with @aussieljk/forkbook/test. This means they won't
  * appear in the `mocks` Set that `clearAllMocks`/`resetAllMocks`/`restoreAllMocks` iterate over.
  *
  * The automock code generation registers spies here so they can be properly cleared between

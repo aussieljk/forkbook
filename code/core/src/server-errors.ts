@@ -12,7 +12,7 @@ export { StorybookError } from './storybook-error.ts';
 /**
  * If you can't find a suitable category for your error, create one based on the package name/file
  * path of which the error is thrown. For instance: If it's from `@storybook/node-logger`, then
- * NODE-LOGGER If it's from a package that is too broad, e.g. storybook/internal/cli-commands in the init command,
+ * NODE-LOGGER If it's from a package that is too broad, e.g. @aussieljk/forkbook/internal/cli-commands in the init command,
  * then use a combination like CLI_INIT
  */
 export enum Category {
@@ -43,8 +43,8 @@ export class NxProjectDetectedError extends StorybookError {
       code: 1,
       documentation: 'https://nx.dev/nx-api/storybook#generating-storybook-configuration',
       message: dedent`
-        We have detected Nx in your project. Nx has its own Storybook initializer, so please use it instead.
-        Run "nx g @nx/storybook:configuration <your-project-name>" to add Storybook to a given Nx app or lib.`,
+        We have detected Nx in your project. Nx has its own Forkbook initializer, so please use it instead.
+        Run "nx g @nx/storybook:configuration <your-project-name>" to add Forkbook to a given Nx app or lib.`,
     });
   }
 }
@@ -58,9 +58,9 @@ export class MissingFrameworkFieldError extends StorybookError {
       documentation:
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-framework-api',
       message: dedent`
-        Could not find a 'framework' field in Storybook config.
+        Could not find a 'framework' field in Forkbook config.
         
-        Set it to 'storybook/react-vite' or 'storybook/nextjs-vite'.`,
+        Set it to '@aussieljk/forkbook/react-vite' or '@aussieljk/forkbook/nextjs-vite'.`,
     });
   }
 }
@@ -74,9 +74,9 @@ export class InvalidFrameworkNameError extends StorybookError {
       documentation:
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-framework-api',
       message: dedent`
-        Invalid value of '${data.frameworkName}' in the 'framework' field of Storybook config.
+        Invalid value of '${data.frameworkName}' in the 'framework' field of Forkbook config.
         
-        Set it to 'storybook/react-vite' or 'storybook/nextjs-vite'.
+        Set it to '@aussieljk/forkbook/react-vite' or '@aussieljk/forkbook/nextjs-vite'.
       `,
     });
   }
@@ -90,7 +90,7 @@ export class CouldNotEvaluateFrameworkError extends StorybookError {
       code: 3,
       documentation: '',
       message: dedent`
-        Could not evaluate the '${data.frameworkName}' package from the 'framework' field of Storybook config.
+        Could not evaluate the '${data.frameworkName}' package from the 'framework' field of Forkbook config.
         
         Are you sure it's a valid package and is installed?`,
     });
@@ -108,9 +108,9 @@ export class ConflictingStaticDirConfigError extends StorybookError {
       documentation:
         'https://storybook.js.org/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration',
       message: dedent`
-        Storybook encountered a conflict when trying to serve statics. You have configured both:
-        * Storybook's option in the config file: 'staticDirs'
-        * Storybook's (deprecated) CLI flag: '--staticDir' or '-s'
+        Forkbook encountered a conflict when trying to serve statics. You have configured both:
+        * Forkbook's option in the config file: 'staticDirs'
+        * Forkbook's (deprecated) CLI flag: '--staticDir' or '-s'
         
         Please remove the CLI flag from your storybook script and use only the 'staticDirs' option instead.`,
     });
@@ -126,7 +126,7 @@ export class InvalidStoriesEntryError extends StorybookError {
       documentation:
         'https://storybook.js.org/docs/faq#can-i-have-a-storybook-with-no-local-stories',
       message: dedent`
-        Storybook could not index your stories.
+        Forkbook could not index your stories.
         Your main configuration does not contain a 'stories' field, or it resolved to an empty array.
         
         Please check your main configuration file and make sure it exports a 'stories' field that is not an empty array.`,
@@ -249,8 +249,8 @@ export class OpenServiceMissingChannelError extends StorybookError {
       category: Category.CORE_COMMON,
       code: 13,
       message: data.serviceId
-        ? `Cannot register service "${data.serviceId}": the Storybook addons channel is not installed in this runtime.`
-        : 'The Storybook addons channel is not installed in this runtime.',
+        ? `Cannot register service "${data.serviceId}": the Forkbook addons channel is not installed in this runtime.`
+        : 'The Forkbook addons channel is not installed in this runtime.',
     });
   }
 }
@@ -273,7 +273,7 @@ export class OpenServiceRemoteCommandUnhandledError extends StorybookError {
       category: Category.CORE_COMMON,
       code: 15,
       message: data.delegated
-        ? `The Storybook this runtime is attached to did not acknowledge remote command "${data.serviceId}.${data.commandName}" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.`
+        ? `The Forkbook this runtime is attached to did not acknowledge remote command "${data.serviceId}.${data.commandName}" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.`
         : `No runtime acknowledged remote command "${data.serviceId}.${data.commandName}"; its handler is not implemented in any connected runtime.`,
     });
   }
@@ -285,7 +285,7 @@ export class OpenServiceRemoteCommandConfigDriftError extends StorybookError {
       name: 'OpenServiceRemoteCommandConfigDriftError',
       category: Category.CORE_COMMON,
       code: 30,
-      message: `The Storybook this runtime is attached to reported it has no handler for remote command "${data.serviceId}.${data.commandName}". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Storybook with a configuration matching this process.`,
+      message: `The Forkbook this runtime is attached to reported it has no handler for remote command "${data.serviceId}.${data.commandName}". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Forkbook with a configuration matching this process.`,
     });
   }
 }
@@ -331,7 +331,7 @@ export class OpenServiceMissingOriginError extends StorybookError {
       name: 'OpenServiceMissingOriginError',
       category: Category.CORE_COMMON,
       code: 17,
-      message: `Method "${data.toolsetId}.${data.methodName}" requires a Storybook server origin. Run it against a live Storybook so the adapter can provide ctx.origin.`,
+      message: `Method "${data.toolsetId}.${data.methodName}" requires a Forkbook server origin. Run it against a live Forkbook so the adapter can provide ctx.origin.`,
     });
   }
 }
@@ -342,7 +342,7 @@ export class OpenServiceMissingOriginError extends StorybookError {
  */
 export function describeUnknownStoryIds(unknownIds: string[]): string {
   const plural = unknownIds.length === 1 ? 'ID is' : 'IDs are';
-  return `Refusing to publish review: ${unknownIds.length} story ${plural} not backed by a story entry in the live Storybook index (docs entries cannot be review slots):`;
+  return `Refusing to publish review: ${unknownIds.length} story ${plural} not backed by a story entry in the live Forkbook index (docs entries cannot be review slots):`;
 }
 
 export class OpenServiceUnknownStoryIdsError extends StorybookError {
@@ -364,7 +364,7 @@ export class OpenServiceTestRunTimeoutError extends StorybookError {
       name: 'OpenServiceTestRunTimeoutError',
       category: Category.CORE_COMMON,
       code: 21,
-      message: `Timed out after ${data.timeoutMs}ms waiting for addon-vitest response to test run "${data.requestId}". Ensure storybook/addon-vitest is installed and responding.`,
+      message: `Timed out after ${data.timeoutMs}ms waiting for addon-vitest response to test run "${data.requestId}". Ensure @aussieljk/forkbook/addon-vitest is installed and responding.`,
     });
   }
 }
@@ -502,9 +502,9 @@ export class CriticalPresetLoadError extends StorybookError {
       code: 2,
       documentation: '',
       message: dedent`
-        Storybook failed to load the following preset: ${data.presetName}.
+        Forkbook failed to load the following preset: ${data.presetName}.
         
-        Please check whether your setup is correct, the Storybook dependencies (and their peer dependencies) are installed correctly and there are no package version clashes.
+        Please check whether your setup is correct, the Forkbook dependencies (and their peer dependencies) are installed correctly and there are no package version clashes.
         
         If you believe this is a bug, please open an issue on Github.
         
@@ -521,11 +521,11 @@ export class MissingBuilderError extends StorybookError {
       code: 3,
       documentation: 'https://github.com/storybookjs/storybook/issues/24071',
       message: dedent`
-        Storybook could not find a builder configuration for your project. 
-        Builders normally come from a framework package e.g. 'storybook/react-vite', or from builder packages e.g. 'storybook/builder-vite'.
+        Forkbook could not find a builder configuration for your project. 
+        Builders normally come from a framework package e.g. '@aussieljk/forkbook/react-vite', or from builder packages e.g. '@aussieljk/forkbook/builder-vite'.
         
         - Does your main config file contain a 'framework' field configured correctly?
-        - Is the Storybook framework package installed correctly?
+        - Is the Forkbook framework package installed correctly?
         - If you don't use a framework, does your main config contain a 'core.builder' configured correctly?
         - Are you in a monorepo and perhaps the framework package is hoisted incorrectly?
         
@@ -572,14 +572,14 @@ export class NoMatchingExportError extends StorybookError {
       code: 4,
       documentation: '',
       message: dedent`
-        There was an exports mismatch error when trying to build Storybook.
-        Please check whether the versions of your Storybook packages match whenever possible, as this might be the cause.
+        There was an exports mismatch error when trying to build Forkbook.
+        Please check whether the versions of your Forkbook packages match whenever possible, as this might be the cause.
         
         Problematic example:
-        { "storybook/react": "7.5.3", "storybook/react-vite": "7.4.5", "storybook": "7.3.0" }
+        { "@aussieljk/forkbook/react": "7.5.3", "@aussieljk/forkbook/react-vite": "7.4.5", "@aussieljk/forkbook": "7.3.0" }
         
         Correct example:
-        { "storybook/react": "7.5.3", "storybook/react-vite": "7.5.3", "storybook": "7.5.3" }`,
+        { "@aussieljk/forkbook/react": "7.5.3", "@aussieljk/forkbook/react-vite": "7.5.3", "@aussieljk/forkbook": "7.5.3" }`,
     });
   }
 }
@@ -589,7 +589,7 @@ export class MainFileMissingError extends StorybookError {
     const map = {
       storybook: {
         helperMessage:
-          'You can pass a --config-dir flag to tell Storybook, where your main.js|ts file is located at.',
+          'You can pass a --config-dir flag to tell Forkbook, where your main.js|ts file is located at.',
         documentation: 'https://storybook.js.org/docs/configure?ref=error',
       },
       vitest: {
@@ -607,7 +607,7 @@ export class MainFileMissingError extends StorybookError {
       documentation,
       message: dedent`
         No configuration files have been found in your configDir: ${picocolors.yellow(data.location)}.
-        Storybook needs a "main.js|ts" file, please add it.
+        Forkbook needs a "main.js|ts" file, please add it.
         
         ${helperMessage}`,
     });
@@ -625,7 +625,7 @@ export class MainFileEvaluationError extends StorybookError {
       category: Category.CORE_SERVER,
       code: 7,
       message: dedent`
-        Storybook couldn't evaluate your ${picocolors.yellow(data.location)} file.
+        Forkbook couldn't evaluate your ${picocolors.yellow(data.location)} file.
         
         Original error:
         ${errorText}`,
@@ -661,9 +661,9 @@ export class NoFreePortError extends StorybookError {
       // Note: 17 is taken by OxcParseError in ../oxc-parser/errors.ts
       code: 18,
       message: dedent`
-        Unable to find a free port for Storybook's dev server${data.requestedPort ? ` (requested port: ${data.requestedPort})` : ''}.
-        Your environment appears to block Storybook from listening on network ports.
-        If you are running Storybook in a sandboxed or restricted shell, allow binding to localhost ports and try again.`,
+        Unable to find a free port for Forkbook's dev server${data.requestedPort ? ` (requested port: ${data.requestedPort})` : ''}.
+        Your environment appears to block Forkbook from listening on network ports.
+        If you are running Forkbook in a sandboxed or restricted shell, allow binding to localhost ports and try again.`,
     });
   }
 }
@@ -675,7 +675,7 @@ export class StorybookDevServerDisconnectedError extends StorybookError {
       category: Category.CORE_SERVER,
       code: 19,
       message: dedent`
-        Storybook dev server disconnected${data.code ? ` (close code ${data.code}${data.reason ? `: ${data.reason}` : ''})` : ''}.
+        Forkbook dev server disconnected${data.code ? ` (close code ${data.code}${data.reason ? `: ${data.reason}` : ''})` : ''}.
         Any request that was still in flight has been abandoned.
         Make sure the dev server is still running, then try again.`,
     });
@@ -723,7 +723,7 @@ function createMinimumReleaseAgeHandledErrorMessage(data: MinimumReleaseAgeHandl
 
   const followUp = data.minimumReleaseAgeExclusionsConfigName
     ? `To fix this, either wait for the configured age window to pass and rerun the command, or add the blocked packages to ${data.packageManagerName}'s ${data.minimumReleaseAgeExclusionsConfigName} setting.`
-    : 'To fix this, either wait for the configured age window to pass and rerun the command, or rerun Storybook with an older compatible release.';
+    : 'To fix this, either wait for the configured age window to pass and rerun the command, or rerun Forkbook with an older compatible release.';
 
   return dedent`
     ${data.packageManagerName} blocked package installation because your project uses ${data.minimumReleaseAgeConfigName}.
@@ -1020,7 +1020,7 @@ export class PackageManagerBinaryNotFoundError extends StorybookError {
       code: 15,
       cause: data.cause,
       message: dedent`
-        Storybook could not find the "${data.command}" command on your PATH.
+        Forkbook could not find the "${data.command}" command on your PATH.
 
         ${formatExecaFailureDetails(data)}`,
     });

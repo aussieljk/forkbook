@@ -1,17 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { ActionList } from 'storybook/internal/components';
-import { STORIES_COLLAPSE_ALL } from 'storybook/internal/core-events';
+import { ActionList } from '@aussieljk/forkbook/internal/components';
+import { STORIES_COLLAPSE_ALL } from '@aussieljk/forkbook/internal/core-events';
 
-import {
-  CheckIcon,
-  CommandIcon,
-  DocumentIcon,
-  InfoIcon,
-  ShareAltIcon,
-} from '@storybook/icons';
+import { CheckIcon, CommandIcon, DocumentIcon, InfoIcon, ShareAltIcon } from '@storybook/icons';
 
-import type { API } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import type { NormalLink } from '../../components/components/tooltip/TooltipLinkList.tsx';
 import { Shortcut } from '../components/Shortcut.tsx';
@@ -39,7 +33,7 @@ export const useMenu = ({
   const about = useMemo(
     () => ({
       id: 'about',
-      title: 'About your Storybook',
+      title: 'About your Forkbook',
       onClick: () => api.changeSettingsTab('about'),
       href: './?path=/settings/about',
       internal: true,
@@ -188,10 +182,7 @@ export const useMenu = ({
   return useMemo(
     () =>
       [
-        [
-          about,
-          ...(enableShortcuts ? [shortcuts] : []),
-        ],
+        [about, ...(enableShortcuts ? [shortcuts] : [])],
         [sidebarToggle, toolbarToogle, addonsToggle, up, down, prev, next, collapse],
         getAddonsShortcuts(),
         [documentation],

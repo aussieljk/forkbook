@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
 import { BottomBarIcon, CloseIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import { expect, spyOn } from 'storybook/test';
-import { userEvent } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { expect, spyOn } from '@aussieljk/forkbook/test';
+import { userEvent } from '@aussieljk/forkbook/test';
 
 import { TabWrapper, Tabs, TabsState } from './Tabs.tsx';
 import type { ChildrenList } from './Tabs.helpers.tsx';

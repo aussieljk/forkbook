@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import type { PreparedStory, Renderer, StoryId } from 'storybook/internal/types';
+import type { PreparedStory, Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
 
 import type { DocsContextProps } from './DocsContext';
 

@@ -4,9 +4,9 @@ import type {
   StoryIndexEntry,
   StatusesByStoryIdAndTypeId,
   StatusValue,
-} from 'storybook/internal/types';
-import type { Meta, StoryObj } from 'storybook/react-vite';
-import { expect, within } from 'storybook/test';
+} from '@aussieljk/forkbook/internal/types';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
+import { expect, within } from '@aussieljk/forkbook/test';
 import type { API } from '../../../manager-api/index.ts';
 import { REVIEW_STATUS_TYPE_ID } from '../../../shared/status-store/index.ts';
 

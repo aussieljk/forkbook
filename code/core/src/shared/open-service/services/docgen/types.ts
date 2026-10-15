@@ -1,5 +1,5 @@
 // From the defining module, not the `types/modules/csf.ts` barrel: that barrel re-exports through
-// the bare `storybook/internal/csf` specifier, which the portable `toolsets-docs` d.ts (this file
+// the bare `@aussieljk/forkbook/internal/csf` specifier, which the portable `toolsets-docs` d.ts (this file
 // is in its closure) must not reference — its guard allows no `storybook/*` imports.
 import type { StrictArgTypes } from '../../../../csf/story.ts';
 import type { IndexEntry } from '../../../../types/modules/indexer.ts';
@@ -9,7 +9,7 @@ import type { IndexEntry } from '../../../../types/modules/indexer.ts';
  *
  * `entry` is the authoritative story-index entry for the requested component, selected with the
  * same rules as the React component manifest generator (`selectComponentEntriesByComponentId` in
- * `storybook/internal/common`): eligible story entries and attached docs, with story entries
+ * `@aussieljk/forkbook/internal/common`): eligible story entries and attached docs, with story entries
  * preferred over attached docs for the same component id.
  */
 export interface DocgenProviderInput {

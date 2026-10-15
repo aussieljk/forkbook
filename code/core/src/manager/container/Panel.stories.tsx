@@ -7,7 +7,7 @@ export default {
 export const AllAddons = () => <div>By default all addon panels are rendered</div>;
 
 /*
-TODO: this story currently breaks the whole Storybook UI (including the manager).
+TODO: this story currently breaks the whole Forkbook UI (including the manager).
 Current findings:
 - Only happens when actions below are disabled, not when a11y is.
 - Is related to panels and addon tabs.

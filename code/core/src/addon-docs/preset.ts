@@ -1,9 +1,13 @@
 import { isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { StoryIndexGenerator } from 'storybook/internal/core-server';
-import type { EnrichCsfOptions } from 'storybook/internal/csf-tools';
-import type { Options, PresetProperty, StorybookConfigRaw } from 'storybook/internal/types';
+import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import type { EnrichCsfOptions } from '@aussieljk/forkbook/internal/csf-tools';
+import type {
+  Options,
+  PresetProperty,
+  StorybookConfigRaw,
+} from '@aussieljk/forkbook/internal/types';
 
 import { resolvePackageDir } from '../shared/utils/module';
 import { csfPlugin } from './csf-plugin/index.ts';
@@ -125,9 +129,9 @@ export const services = async (_value: void, options: Options): Promise<void> =>
 };
 
 const optimizeViteDeps = [
-  'storybook/addon-docs',
-  'storybook/addon-docs/blocks',
-  'storybook/addon-docs > @mdx-js/react',
+  '@aussieljk/forkbook/addon-docs',
+  '@aussieljk/forkbook/addon-docs/blocks',
+  '@aussieljk/forkbook/addon-docs > @mdx-js/react',
   'react-dom/client',
   'react/jsx-runtime',
   'react',

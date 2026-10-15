@@ -1,8 +1,8 @@
 import React, { useSyncExternalStore } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fireEvent, waitFor } from 'storybook/test';
+import { expect, fireEvent, waitFor } from '@aussieljk/forkbook/test';
 
 import { OPEN_SERVICE_DEMO_PARAM_KEY } from '../addon/constants.ts';
 import { createDemoStore } from '../demo-store.ts';
@@ -23,8 +23,8 @@ function LocalCommandDemo() {
         updated state to the other peers.
       </p>
       <p style={{ lineHeight: 1.5, margin: '0 0 16px' }}>
-        Unlike the remote-command sibling, this story can run in Storybook Vitest because the
-        command handler is part of the shared definition.
+        Unlike the remote-command sibling, this story can run in Forkbook Vitest because the command
+        handler is part of the shared definition.
       </p>
 
       <label style={{ display: 'grid', gap: 6 }}>

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
+import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { MemoryRouter } from 'storybook/internal/router';
-import { ManagerContext, internal_fullStatusStore } from 'storybook/manager-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { MemoryRouter } from '@aussieljk/forkbook/internal/router';
+import { ManagerContext, internal_fullStatusStore } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { ReviewProvider } from '../review/components/ReviewProvider.tsx';
 import { reviewServiceForStories as reviewService } from '../review/review-service-story-helpers.ts';

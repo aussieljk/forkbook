@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { STORY_CHANGED } from 'storybook/internal/core-events';
+import { STORY_CHANGED } from '@aussieljk/forkbook/internal/core-events';
 
 import { dequal as deepEqual } from 'dequal';
-import type { API } from 'storybook/manager-api';
-import { useParameter } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
+import { useParameter } from '@aussieljk/forkbook/manager-api';
 
 import { ActionLogger as ActionLoggerComponent } from '../../components/ActionLogger/index.tsx';
 import { CLEAR_ID, EVENT_ID, PARAM_KEY } from '../../constants.ts';

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
-import { cacheLife, cacheTag } from 'storybook/nextjs-vite/cache.mock';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+import { cacheLife, cacheTag } from '@aussieljk/forkbook/nextjs-vite/cache.mock';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import CacheComponent from './Cache';
 

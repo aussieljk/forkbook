@@ -1,5 +1,5 @@
-import { readConfig, writeConfig } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
+import { readConfig, writeConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { dedent } from 'ts-dedent';
 
@@ -19,7 +19,7 @@ export type RemoveAddonOptions = {
  * @example
  *
  * ```sh
- * sb remove storybook/addon-links
+ * sb remove @aussieljk/forkbook/addon-links
  * ```
  */
 export async function removeAddon(addon: string, options: RemoveAddonOptions) {

@@ -7,9 +7,9 @@ import {
   getAutomockCode,
   getRealPath,
   rewriteSbMockImportCalls,
-} from 'storybook/internal/mocking-utils';
-import { logger } from 'storybook/internal/node-logger';
-import type { CoreConfig } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/mocking-utils';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
 import { normalize } from 'pathe';
 import type { Plugin, ResolvedConfig } from 'vite';
@@ -19,14 +19,14 @@ import { type MockCall, getCleanId, invalidateAllRelatedModules } from './utils.
 export interface MockPluginOptions {
   /** The absolute path to the preview.tsx file where mocks are defined. */
   previewConfigPath: string;
-  /** The absolute path to the Storybook config directory. */
+  /** The absolute path to the Forkbook config directory. */
   coreOptions?: CoreConfig;
   /** Configuration directory */
   configDir: string;
 }
 
 /**
- * Vite plugin for Storybook module mocking manifest generation.
+ * Vite plugin for Forkbook module mocking manifest generation.
  *
  * Scans the preview config for sb.mock() calls, processes them, and emits a manifest for runtime
  * use.

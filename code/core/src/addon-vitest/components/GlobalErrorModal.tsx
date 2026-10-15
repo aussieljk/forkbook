@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
-import { Button, Modal } from 'storybook/internal/components';
+import { Button, Modal } from '@aussieljk/forkbook/internal/components';
 
 import { SyncIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { DOCUMENTATION_FATAL_ERROR_LINK } from '../constants.ts';
 import type { ErrorLike, StoreState } from '../types.ts';
@@ -112,9 +112,9 @@ export function GlobalErrorModal({ onRerun, storeState }: GlobalErrorModalProps)
   ) : null;
 
   return (
-    <Modal ariaLabel="Storybook Test Error Details" onOpenChange={setModalOpen} open={isModalOpen}>
+    <Modal ariaLabel="Forkbook Test Error Details" onOpenChange={setModalOpen} open={isModalOpen}>
       <div className={styles.bar}>
-        <Modal.Title className={styles.title}>Storybook Test Error Details</Modal.Title>
+        <Modal.Title className={styles.title}>Forkbook Test Error Details</Modal.Title>
         <div className={styles.actionBar}>
           <Button onClick={onRerun} variant="ghost" ariaLabel={false}>
             <SyncIcon />

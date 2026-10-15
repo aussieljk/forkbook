@@ -1,6 +1,6 @@
-<h1>Storybook manager's UI</h1>
+<h1>Forkbook manager's UI</h1>
 
-Storybook manager is the core UI of [Storybook](https://storybook.js.org).
+Forkbook manager is the core UI of [Forkbook](https://storybook.js.org).
 It's a React based UI which you can initialize with a function.
 You can configure it by providing a provider API.
 
@@ -124,7 +124,7 @@ class ReactProvider extends Provider {
 
 ## Hacking Guide
 
-If you like to add features to the Storybook UI or fix bugs, this is the guide you need to follow.
+If you like to add features to the Forkbook UI or fix bugs, this is the guide you need to follow.
 
 First of all, familiarize yourself with code used. Check the [source](./src/) folder for the source code.
 
@@ -177,7 +177,7 @@ TODO: state we use reach/router customized to query params
 
 ### Story Order
 
-Stories are sorted in the order in which they were imported. This can be overridden with `storySorts` in `.storybook/main.js`:
+Stories are sorted in the order in which they were imported. This can be overridden with `storySorts` in `.forkbook/main.js`:
 
 ```js
 export default {

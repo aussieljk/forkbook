@@ -1,5 +1,5 @@
 /** Core-owned namespace for review channel events. */
-export const REVIEW_NAMESPACE = 'storybook/review';
+export const REVIEW_NAMESPACE = '@aussieljk/forkbook/review';
 
 /**
  * Channel events between the review tabs and core-server. Review state itself flows through the

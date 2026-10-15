@@ -1,8 +1,8 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { Fragment } from 'react';
 
-import { Addon_TypesEnum } from 'storybook/internal/types';
-import type { Addon_WrapperType } from 'storybook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
+import type { Addon_WrapperType } from '@aussieljk/forkbook/internal/types';
 
 import type { ApplyWrappersProps } from './utils/types.tsx';
 import styles from './Wrappers.module.css';

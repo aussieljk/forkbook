@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType } from 'storybook/internal/cli';
-import { logger } from 'storybook/internal/node-logger';
-import { SupportedRenderer } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { GeneratorRegistry } from './GeneratorRegistry.ts';
 import type { GeneratorModule } from './types.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 describe('GeneratorRegistry', () => {
   let registry: GeneratorRegistry;

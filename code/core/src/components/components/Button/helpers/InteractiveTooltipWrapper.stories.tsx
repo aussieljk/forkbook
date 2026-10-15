@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import { POPPER_PLACEMENTS } from '../../shared/overlayHelpers.tsx';
 import { InteractiveTooltipWrapper } from './InteractiveTooltipWrapper.tsx';
 

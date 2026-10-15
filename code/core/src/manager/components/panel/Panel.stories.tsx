@@ -1,13 +1,13 @@
 import type { EventHandler, FocusEvent, MouseEvent } from 'react';
 import React, { useCallback, useRef, useState } from 'react';
 
-import { Badge, Spaced } from 'storybook/internal/components';
-import type { Addon_BaseType, Addon_Collection } from 'storybook/internal/types';
-import { Addon_TypesEnum } from 'storybook/internal/types';
+import { Badge, Spaced } from '@aussieljk/forkbook/internal/components';
+import type { Addon_BaseType, Addon_Collection } from '@aussieljk/forkbook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import { BellIcon } from '@storybook/icons';
 
-import { action } from 'storybook/actions';
+import { action } from '@aussieljk/forkbook/actions';
 
 import { defaultShortcuts } from '../../settings/defaultShortcuts.tsx';
 import { AddonPanel } from './Panel.tsx';

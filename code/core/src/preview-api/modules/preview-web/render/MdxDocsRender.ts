@@ -1,9 +1,9 @@
-import type { Channel } from 'storybook/internal/channels';
-import { DOCS_RENDERED } from 'storybook/internal/core-events';
-import type { Renderer, StoryId } from 'storybook/internal/types';
-import type { CSFFile, ModuleExports, PreparedStory } from 'storybook/internal/types';
-import type { IndexEntry } from 'storybook/internal/types';
-import type { RenderContextCallbacks } from 'storybook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { DOCS_RENDERED } from '@aussieljk/forkbook/internal/core-events';
+import type { Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
+import type { CSFFile, ModuleExports, PreparedStory } from '@aussieljk/forkbook/internal/types';
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
+import type { RenderContextCallbacks } from '@aussieljk/forkbook/internal/types';
 
 import { Tag } from '../../../../shared/constants/tags.ts';
 import { isMdxEntry } from '../../../../shared/utils/story-index-filters.ts';
@@ -140,7 +140,7 @@ export class MdxDocsRender<TRenderer extends Renderer> implements Render<TRender
 
     if (!baseDocsParameter) {
       throw new Error(
-        `Cannot render a story in viewMode=docs if \`storybook/addon-docs\` is not installed`
+        `Cannot render a story in viewMode=docs if \`@aussieljk/forkbook/addon-docs\` is not installed`
       );
     }
 

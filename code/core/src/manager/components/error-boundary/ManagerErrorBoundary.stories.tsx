@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { expect, fn, spyOn } from 'storybook/test';
+import { expect, fn, spyOn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { ManagerErrorBoundary } from './ManagerErrorBoundary.tsx';
 
 // Mocks for play assertions: set by decorator, asserted in play functions
@@ -111,7 +111,7 @@ export const WithError = meta.story({
     ).toBeInTheDocument();
 
     await expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Storybook Manager UI Error:',
+      'Forkbook Manager UI Error:',
       expect.any(Error)
     );
     await expect(consoleErrorSpy).toHaveBeenCalledWith('Component Stack:', expect.any(String));

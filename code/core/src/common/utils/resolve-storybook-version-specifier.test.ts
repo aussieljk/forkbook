@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  STORYBOOK_VERSION_SPECIFIER_ENV,
+  FORKBOOK_VERSION_SPECIFIER_ENV,
   resolveStorybookVersionSpecifier,
 } from './resolve-storybook-version-specifier.ts';
 
@@ -16,7 +16,7 @@ describe('resolveStorybookVersionSpecifier', () => {
           },
         ],
         {
-          [STORYBOOK_VERSION_SPECIFIER_ENV]:
+          [FORKBOOK_VERSION_SPECIFIER_ENV]:
             'https://pkg.pr.new/storybookjs/storybook/storybook@from-env',
         }
       )

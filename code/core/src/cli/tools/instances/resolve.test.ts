@@ -69,30 +69,30 @@ describe('selectInstances', () => {
   });
 
   it('matches a record by configDir when the cwds differ (monorepo root dev, leaf CLI)', () => {
-    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.storybook' });
+    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.forkbook' });
     const result = selectInstances([r], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
     });
     expect(result).toEqual({ kind: 'match', matches: [r] });
   });
 
   it('matches a record by cwd when the DEFAULTED configDir differs', () => {
     const r = record('/repo/packages/ui', 'ready', {
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
     });
     const result = selectInstances([r], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/.storybook',
+      configDir: '/repo/.forkbook',
     });
     expect(result).toEqual({ kind: 'match', matches: [r] });
   });
 
   it('does NOT fall back to cwd matching when an EXPLICIT configDir differs', () => {
-    const r = record('/repo', 'ready', { configDir: '/repo/.storybook' });
+    const r = record('/repo', 'ready', { configDir: '/repo/.forkbook' });
     const result = selectInstances([r], {
       cwd: '/repo',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       configDirExplicit: true,
     });
     expect(result).toEqual({ kind: 'no-instance', records: [r] });
@@ -100,16 +100,16 @@ describe('selectInstances', () => {
 
   it('selects by an EXPLICIT configDir among same-cwd instances serving different configs', () => {
     const packageA = record('/repo', 'ready', {
-      configDir: '/repo/packages/a/.storybook',
+      configDir: '/repo/packages/a/.forkbook',
       startedAt: '2026-06-09T10:00:00.000Z',
     });
     const newerPackageB = record('/repo', 'ready', {
-      configDir: '/repo/packages/b/.storybook',
+      configDir: '/repo/packages/b/.forkbook',
       startedAt: '2026-06-09T11:00:00.000Z',
     });
     const result = selectInstances([packageA, newerPackageB], {
       cwd: '/repo',
-      configDir: '/repo/packages/a/.storybook',
+      configDir: '/repo/packages/a/.forkbook',
       configDirExplicit: true,
     });
     expect(result).toEqual({ kind: 'match', matches: [packageA] });
@@ -119,26 +119,26 @@ describe('selectInstances', () => {
     const legacy = record('/repo/packages/ui');
     const result = selectInstances([legacy], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       configDirExplicit: true,
     });
     expect(result).toEqual({ kind: 'no-instance', records: [legacy] });
   });
 
   it('normalizes trailing slashes and dot segments in configDirs before matching', () => {
-    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.storybook' });
+    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.forkbook' });
     const result = selectInstances([r], {
       cwd: '/elsewhere',
-      configDir: '/repo/packages/ui/./.storybook/',
+      configDir: '/repo/packages/ui/./.forkbook/',
     });
     expect(result).toEqual({ kind: 'match', matches: [r] });
   });
 
   it('does NOT match by configDir prefix (exact only)', () => {
-    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.storybook' });
+    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.forkbook' });
     const result = selectInstances([r], {
       cwd: '/elsewhere',
-      configDir: '/repo/packages/ui/.storybook/subdir',
+      configDir: '/repo/packages/ui/.forkbook/subdir',
     });
     expect(result).toEqual({ kind: 'no-instance', records: [r] });
   });
@@ -147,13 +147,13 @@ describe('selectInstances', () => {
     const r = record('/repo');
     const result = selectInstances([r], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
     });
     expect(result).toEqual({ kind: 'no-instance', records: [r] });
   });
 
   it('does NOT match a recorded configDir when the target has no configDir', () => {
-    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.storybook' });
+    const r = record('/repo', 'ready', { configDir: '/repo/packages/ui/.forkbook' });
     const result = selectInstances([r], { cwd: '/repo/packages/ui' });
     expect(result).toEqual({ kind: 'no-instance', records: [r] });
   });
@@ -164,13 +164,13 @@ describe('selectInstances', () => {
       startedAt: '2026-06-09T10:00:00.000Z',
     });
     const byConfigDir = record('/repo', 'ready', {
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       pid: 200,
       startedAt: '2026-06-09T11:00:00.000Z',
     });
     const result = selectInstances([byCwd, byConfigDir], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
     });
     expect(result).toEqual({ kind: 'match', matches: [byConfigDir, byCwd] });
   });
@@ -374,12 +374,12 @@ describe('selectInstances', () => {
 
   it('returns port-mismatch when the configDir matches but no instance is on the port', () => {
     const r = record('/repo', 'ready', {
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       port: 6006,
     });
     const result = selectInstances([r], {
       cwd: '/repo/packages/ui',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       port: 9999,
     });
     expect(result).toEqual({ kind: 'port-mismatch', port: 9999, candidates: [r] });
@@ -397,14 +397,14 @@ describe('selectInstances', () => {
   });
 
   it('restricts port matching to the explicit --config-dir when both are supplied', () => {
-    const ui = record('/repo', 'ready', { configDir: '/repo/packages/ui/.storybook', port: 6006 });
+    const ui = record('/repo', 'ready', { configDir: '/repo/packages/ui/.forkbook', port: 6006 });
     const docs = record('/repo', 'ready', {
-      configDir: '/repo/packages/docs/.storybook',
+      configDir: '/repo/packages/docs/.forkbook',
       port: 6007,
     });
     const result = selectInstances([ui, docs], {
       cwd: '/repo',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
       configDirExplicit: true,
       port: 6007,
     });
@@ -434,10 +434,10 @@ describe('Windows instance matching', () => {
   });
 
   it('matches configDir across Windows drive-letter case when cwds differ', () => {
-    const r = record('C:/repo', 'ready', { configDir: 'C:/repo/packages/ui/.storybook' });
+    const r = record('C:/repo', 'ready', { configDir: 'C:/repo/packages/ui/.forkbook' });
     const result = selectInstances([r], {
       cwd: 'c:/elsewhere',
-      configDir: 'c:\\repo\\packages\\ui\\.storybook',
+      configDir: 'c:\\repo\\packages\\ui\\.forkbook',
     });
     expect(result).toEqual({ kind: 'match', matches: [r] });
   });

@@ -4,9 +4,9 @@ import {
   withThemeByClassName,
   withThemeByDataAttribute,
   withThemeFromJSXProvider,
-} from 'storybook/addon-themes';
+} from '@aussieljk/forkbook/addon-themes';
 
-import { useEffect } from 'storybook/preview-api';
+import { useEffect } from '@aussieljk/forkbook/preview-api';
 
 const cleanup = () => {
   const existing = globalThis.document.querySelector('style[data-theme-css]');

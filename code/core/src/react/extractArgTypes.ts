@@ -1,6 +1,10 @@
-import type { ArgTypesExtractor, ExtractedProp, PropDef } from 'storybook/internal/docs-tools';
-import { createSummaryValue, extractComponentProps } from 'storybook/internal/docs-tools';
-import type { StrictArgTypes } from 'storybook/internal/types';
+import type {
+  ArgTypesExtractor,
+  ExtractedProp,
+  PropDef,
+} from '@aussieljk/forkbook/internal/docs-tools';
+import { createSummaryValue, extractComponentProps } from '@aussieljk/forkbook/internal/docs-tools';
+import type { StrictArgTypes } from '@aussieljk/forkbook/internal/types';
 
 import { createDefaultValue } from './docs/lib/defaultValues/index.ts';
 

@@ -36,7 +36,7 @@ describe('new-story-docgen', () => {
         MOCK_DATE.toLocaleDateString()
       );
       expect(generateDummyValueFromSBType({ name: 'string' }, 'imageUrl')).toBe(
-        'https://placehold.co/600x400?text=Storybook'
+        'https://placehold.co/600x400?text=Forkbook'
       );
       expect(generateDummyValueFromSBType({ name: 'string' }, 'websiteUrl')).toBe(
         'https://example.com'
@@ -61,7 +61,7 @@ describe('new-story-docgen', () => {
 
     it('generates functions as placeholders', () => {
       expect(generateDummyValueFromSBType({ name: 'function' })).toBe(
-        '[[STORYBOOK_FN_PLACEHOLDER]]'
+        '[[FORKBOOK_FN_PLACEHOLDER]]'
       );
     });
 
@@ -76,7 +76,7 @@ describe('new-story-docgen', () => {
 
       expect(generateDummyValueFromSBType(type)).toEqual({
         count: 0,
-        onClick: '[[STORYBOOK_FN_PLACEHOLDER]]',
+        onClick: '[[FORKBOOK_FN_PLACEHOLDER]]',
       });
     });
 
@@ -124,7 +124,7 @@ describe('new-story-docgen', () => {
 
     it('generates other values conservatively', () => {
       expect(generateDummyValueFromSBType({ name: 'other', value: 'ReactMouseEvent' })).toBe(
-        '[[STORYBOOK_FN_PLACEHOLDER]]'
+        '[[FORKBOOK_FN_PLACEHOLDER]]'
       );
       expect(generateDummyValueFromSBType({ name: 'other', value: 'Foo' })).toBeNull();
       expect(generateDummyValueFromSBType({ name: 'other', value: 'null' })).toBeNull();
@@ -144,7 +144,7 @@ describe('new-story-docgen', () => {
 
       // With skipUrlGeneration: false (default behavior)
       const resultWithUrls = generateDummyArgsFromArgTypes(argTypes, { skipUrlGeneration: false });
-      expect(resultWithUrls.optional.imageUrl).toBe('https://placehold.co/600x400?text=Storybook');
+      expect(resultWithUrls.optional.imageUrl).toBe('https://placehold.co/600x400?text=Forkbook');
       expect(resultWithUrls.optional.websiteUrl).toBe('https://example.com');
 
       // With skipUrlGeneration: true

@@ -2,14 +2,14 @@ import { join } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { normalizeStoriesEntry } from 'storybook/internal/common';
-import type { NormalizedStoriesSpecifier } from 'storybook/internal/types';
+import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
+import type { NormalizedStoriesSpecifier } from '@aussieljk/forkbook/internal/types';
 
 import { Tag } from '../../../shared/constants/tags.ts';
 import type { StoryIndexGeneratorOptions } from '../StoryIndexGenerator.ts';
 import { StoryIndexGenerator } from '../StoryIndexGenerator.ts';
 
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 
 const options: StoryIndexGeneratorOptions = {
   configDir: join(__dirname, '..', '__mockdata__'),

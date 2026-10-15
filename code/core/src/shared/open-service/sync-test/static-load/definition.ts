@@ -8,7 +8,7 @@
 
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 
 const entryInputSchema = v.object({ id: v.string() });
 
@@ -20,7 +20,7 @@ export type StaticLoadDemoState = {
 const initialState: StaticLoadDemoState = { entries: {}, unbacked: null };
 
 export const staticLoadSyncServiceDef = defineService({
-  id: 'storybook/internal/open-service-static-load-demo',
+  id: '@aussieljk/forkbook/internal/open-service-static-load-demo',
   description:
     'Internal demo service for validating static JSON loading and unhandled remote commands.',
   initialState,

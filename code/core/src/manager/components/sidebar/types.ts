@@ -1,7 +1,7 @@
-import type { StatusValue, StatusesByStoryIdAndTypeId } from 'storybook/internal/types';
+import type { StatusValue, StatusesByStoryIdAndTypeId } from '@aussieljk/forkbook/internal/types';
 
 import type { ControllerStateAndHelpers } from 'downshift';
-import type { State, StoriesHash } from 'storybook/manager-api';
+import type { State, StoriesHash } from '@aussieljk/forkbook/manager-api';
 
 export type Refs = State['refs'];
 export type RefType = Refs[keyof Refs] & { allStatuses?: StatusesByStoryIdAndTypeId };

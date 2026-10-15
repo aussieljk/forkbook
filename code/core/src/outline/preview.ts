@@ -1,4 +1,4 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
 import { PARAM_KEY } from './constants.ts';
 import type { OutlineTypes } from './types.ts';

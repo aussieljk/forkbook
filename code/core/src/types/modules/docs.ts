@@ -1,4 +1,4 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 
 import type { Parameters, Renderer, StoryContext, StoryId, StoryName } from './csf.ts';
 import type {
@@ -108,7 +108,7 @@ export interface DocsContextProps<TRenderer extends Renderer = Renderer> {
     options: StoryRenderOptions
   ) => () => Promise<void>;
 
-  /** Storybook channel -- use for low level event watching/emitting */
+  /** Forkbook channel -- use for low level event watching/emitting */
   channel: Channel;
 
   /** Project annotations -- can be read to get the project's global annotations */

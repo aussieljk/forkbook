@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 
-import { definePreview as definePreviewBase } from 'storybook/internal/csf';
+import { definePreview as definePreviewBase } from '@aussieljk/forkbook/internal/csf';
 import type {
   AddonTypes,
   InferTypes,
@@ -13,7 +13,7 @@ import type {
   PreviewAddon,
   PreviewAddonEntry,
   Story,
-} from 'storybook/internal/csf';
+} from '@aussieljk/forkbook/internal/csf';
 import type {
   Args,
   ArgsStoryFn,
@@ -21,7 +21,7 @@ import type {
   DecoratorFunction,
   ProjectAnnotations,
   StoryAnnotations,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { Simplify } from 'type-fest';
 
@@ -40,8 +40,8 @@ import type { ReactTypes } from './types.ts';
  * @example
  *
  * ```ts
- * // .storybook/preview.ts
- * import { definePreview } from 'storybook/react';
+ * // .forkbook/preview.ts
+ * import { definePreview } from '@aussieljk/forkbook/react';
  *
  * export const preview = definePreview({
  *   addons: [],

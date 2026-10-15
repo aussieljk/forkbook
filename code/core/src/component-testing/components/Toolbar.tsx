@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Button, P, Separator, Toolbar as SharedToolbar } from 'storybook/internal/components';
+import {
+  Button,
+  P,
+  Separator,
+  Toolbar as SharedToolbar,
+} from '@aussieljk/forkbook/internal/components';
 
 import {
   FastForwardIcon,
@@ -10,8 +15,8 @@ import {
   SyncIcon,
 } from '@storybook/icons';
 
-import { type API } from 'storybook/manager-api';
-import { useTheme } from 'storybook/theming';
+import { type API } from '@aussieljk/forkbook/manager-api';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { type ControlStates } from '../../instrumenter/types.ts';
 import type { Controls } from './InteractionsPanel.tsx';

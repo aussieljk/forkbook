@@ -1,4 +1,4 @@
-import { STORY_HOT_UPDATED } from 'storybook/internal/core-events';
+import { STORY_HOT_UPDATED } from '@aussieljk/forkbook/internal/core-events';
 
 import { dedent } from 'ts-dedent';
 
@@ -34,7 +34,7 @@ export async function generateModernIframeScriptCode() {
   
   setup();
   
-  import { PreviewWeb } from 'storybook/preview-api';
+  import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
   import { importFn } from '${SB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE}';
   import { getProjectAnnotations } from '${PROJECT_ANNOTATIONS_VIRTUAL_ID}';
     

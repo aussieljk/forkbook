@@ -1,7 +1,7 @@
 import { cp, rm, writeFile } from 'node:fs/promises';
 
-import { stringifyProcessEnvs } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { stringifyProcessEnvs } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
 import { resolveModulePath } from 'exsolve';
@@ -27,7 +27,7 @@ import { getTemplatePath, renderHTML } from './utils/template.ts';
 
 export { BROWSER_TARGETS, NODE_TARGET } from '../shared/constants/environments-support.ts';
 
-const CORE_DIR_ORIGIN = join(resolvePackageDir('storybook'), 'dist/manager');
+const CORE_DIR_ORIGIN = join(resolvePackageDir('@aussieljk/forkbook'), 'dist/manager');
 
 const isRootPath = /^\/($|\?)/;
 let compilation: Compilation;
@@ -108,7 +108,7 @@ export const getConfig: ManagerBuilder['getConfig'] = async (options) => {
       js: 'try{',
     },
     footer: {
-      js: '}catch(e){ console.error("[Storybook] One of your manager-entries failed: " + import.meta.url, e); }',
+      js: '}catch(e){ console.error("[Forkbook] One of your manager-entries failed: " + import.meta.url, e); }',
     },
 
     define: {

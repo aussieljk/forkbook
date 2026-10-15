@@ -1,6 +1,6 @@
 import { draftMode as originalDraftMode } from 'next/dist/server/request/draft-mode';
 import * as headersModule from 'next/dist/server/request/headers';
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 // mock utilities/overrides (as of Next v14.2.0)
 export { headers } from './headers.ts';

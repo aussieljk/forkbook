@@ -1,5 +1,5 @@
-import { ProjectType } from 'storybook/internal/cli';
-import { SupportedLanguage, SupportedRenderer } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { SupportedLanguage, SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { defineGeneratorModule } from '../modules/GeneratorModule.ts';
 

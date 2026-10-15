@@ -2,8 +2,8 @@ import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { normalizeStoriesEntry } from 'storybook/internal/common';
-import { STORY_INDEX_INVALIDATED } from 'storybook/internal/core-events';
+import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
+import { STORY_INDEX_INVALIDATED } from '@aussieljk/forkbook/internal/core-events';
 
 import { debounce } from 'es-toolkit/function';
 import type { Polka, Request, Response } from 'polka';
@@ -19,7 +19,7 @@ vi.mock('@parcel/watcher', () => ({
   subscribe: vi.fn(async () => ({ unsubscribe: vi.fn() })),
 }));
 vi.mock('es-toolkit/function', { spy: true });
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 
 vi.mock('../utils/constants', () => {
   return {

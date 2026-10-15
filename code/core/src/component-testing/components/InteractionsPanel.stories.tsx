@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 
-import { isChromatic } from '../../../../.storybook/isChromatic.ts';
+import { isChromatic } from '../../../../.forkbook/isChromatic.ts';
 import { CallStates } from '../../instrumenter/types.ts';
 import { destroyAnnouncer } from '../../shared/announce.ts';
 import { getCalls, getInteractions } from '../mocks/index.ts';

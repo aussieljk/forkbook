@@ -5,12 +5,12 @@ import * as pkg from 'empathic/package';
 import versions from '../versions.ts';
 
 /**
- * Get the path of the file or directory with input name inside the Storybook cache directory:
+ * Get the path of the file or directory with input name inside the Forkbook cache directory:
  *
  * - `node_modules/.cache/storybook/{version}/{directoryName}` in a Node.js project or npm package
  * - `.cache/storybook/{version}/{directoryName}` otherwise
  *
- * The cache directory includes the Storybook version to ensure that upgrading Storybook
+ * The cache directory includes the Forkbook version to ensure that upgrading Forkbook
  * automatically invalidates the cache, preventing stale cache issues.
  *
  * @param fileOrDirectoryName {string} Name of the file or directory
@@ -23,7 +23,7 @@ export function resolvePathInStorybookCache(fileOrDirectoryName: string, sub = '
 
   // Include the storybook version in the cache path to automatically invalidate
   // cache when upgrading to a new version
-  const version = versions.storybook || 'unknown';
+  const version = versions['@aussieljk/forkbook'] || 'unknown';
 
   return join(cacheDirectory, version, sub, fileOrDirectoryName);
 }

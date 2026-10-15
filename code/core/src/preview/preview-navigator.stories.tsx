@@ -1,8 +1,8 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, within } from '@aussieljk/forkbook/test';
 
 import { setupPreviewNavigator, teardownPreviewNavigator } from './preview-navigator.ts';
 

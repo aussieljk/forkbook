@@ -71,7 +71,7 @@ describe('docs.list', () => {
     const resolvedCli = typeof describe_ === 'function' ? describe_(cliCtx) : describe_;
 
     expect(resolved).toContain('docs-show');
-    expect(resolvedCli).toContain('npx storybook tools docs show');
+    expect(resolvedCli).toContain('npx forkbook tools docs show');
   });
 });
 
@@ -92,7 +92,7 @@ describe('docs.show', () => {
     expect(outcome.markdown).toContain('Guide');
   });
 
-  it('answers unknown ids with a failure carrying the storybook/mcp miss message', async () => {
+  it('answers unknown ids with a failure carrying the @aussieljk/forkbook/mcp miss message', async () => {
     const outcome = await toolset.methods.show.handler({ id: 'nope' }, mcpCtx);
 
     expect(outcome.ok).toBe(false);
@@ -103,7 +103,7 @@ describe('docs.show', () => {
 
     const cliOutcome = await toolset.methods.show.handler({ id: 'nope' }, cliCtx);
     expect(cliOutcome.markdown).toContain(
-      'Use the npx storybook tools docs list tool to see available components'
+      'Use the npx forkbook tools docs list tool to see available components'
     );
   });
 });
@@ -156,7 +156,7 @@ describe('docs.showStory', () => {
       cliCtx
     );
     expect(cliOutcome.markdown).toContain(
-      'Use the npx storybook tools docs list tool to see available components'
+      'Use the npx forkbook tools docs list tool to see available components'
     );
   });
 
@@ -205,7 +205,7 @@ describe('docs.showStory', () => {
       cliCtx
     );
     expect(cliOutcome.markdown).toContain(
-      'Use the npx storybook tools docs list tool with `withStoryIds: true`'
+      'Use the npx forkbook tools docs list tool with `withStoryIds: true`'
     );
   });
 
@@ -268,7 +268,7 @@ describe('docs.showStory in a composition', () => {
     );
 
     expect(outcome.ok).toBe(false);
-    expect(outcome.markdown).toContain('Storybook source not found: "elsewhere"');
+    expect(outcome.markdown).toContain('Forkbook source not found: "elsewhere"');
   });
 });
 
@@ -289,7 +289,7 @@ describe('a composed source that requires its own MCP', () => {
   const notice = `# Private
 id: private
 
-This composed Storybook is private and cannot be read through the local Storybook MCP proxy.
+This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.
 
 Use this source's own MCP endpoint instead:
 https://private.example.com/mcp`;

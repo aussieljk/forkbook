@@ -16,14 +16,14 @@ import {
   Title,
   Unstyled,
   Wrapper,
-} from 'storybook/addon-docs/blocks';
+} from '@aussieljk/forkbook/addon-docs/blocks';
 import * as ComponentOverrideStories from './component-overrides.stories.tsx';
 
 <Meta of={ComponentOverrideStories} name="MDX" />
 
 # Component override verification
 
-Every block below should render its `override:*` marker rather than the default Storybook block UI.
+Every block below should render its `override:*` marker rather than the default Forkbook block UI.
 The `Title` override intentionally renders `<Title />` again, so it also proves recursive composition does not loop infinitely.
 `Meta` is intentionally excluded because it is not overridable.
 

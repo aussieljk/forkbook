@@ -1,16 +1,16 @@
-import { SELECT_STORY, STORY_CHANGED } from 'storybook/internal/core-events';
-import { toId } from 'storybook/internal/csf';
+import { SELECT_STORY, STORY_CHANGED } from '@aussieljk/forkbook/internal/core-events';
+import { toId } from '@aussieljk/forkbook/internal/csf';
 import type {
   Addon_MakeDecoratorResult,
   ComponentTitle,
   StoryId,
   StoryKind,
   StoryName,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
-import { addons, makeDecorator } from 'storybook/preview-api';
+import { addons, makeDecorator } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from './constants.ts';
 

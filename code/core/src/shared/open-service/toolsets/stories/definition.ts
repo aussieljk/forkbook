@@ -1,4 +1,4 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import * as v from 'valibot';
 
@@ -137,7 +137,7 @@ export type StoriesGitAccess = {
 };
 
 export type StorybookDirsAccess = {
-  /** Absolute path of the Storybook config directory. */
+  /** Absolute path of the Forkbook config directory. */
   configDir: string;
   /** Absolute paths of the configured static directories. */
   getStaticDirs: () => Promise<string[]>;
@@ -172,11 +172,11 @@ function reasonForChangeDetectionReadiness(
 ): string {
   switch (readiness.status) {
     case 'unavailable':
-      return `Storybook change detection is unavailable: ${readiness.reason}.`;
+      return `Forkbook change detection is unavailable: ${readiness.reason}.`;
     case 'error':
-      return `Storybook change detection failed: ${readiness.error.message}`;
+      return `Forkbook change detection failed: ${readiness.error.message}`;
     case 'pending':
-      return 'Storybook change detection has not finished its initial scan.';
+      return 'Forkbook change detection has not finished its initial scan.';
     default: {
       const exhaustive: never = readiness;
       throw exhaustive;
@@ -191,12 +191,12 @@ function isGitUnusableReadiness(readiness: ChangeDetectionReadinessResult): bool
 function describePreview(ctx: ToolsetCtx): string {
   // No "include the URLs in your final response" and no "when available" hedge: both let agents
   // end visual work at preview links.
-  return `Use this tool to get Storybook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
+  return `Use this tool to get Forkbook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
 Do not end visual work or browse requests with these links — publish a curated review with ${getToolName(ctx)('review.create')} instead (passing changedFiles: [] when no code changed) and link that.`;
 }
 
 function describeChanged(ctx: ToolsetCtx): string {
-  return `Get Storybook stories marked as new, modified, or related. Returns story metadata only (no URLs).
+  return `Get Forkbook stories marked as new, modified, or related. Returns story metadata only (no URLs).
 
 The result reflects the cumulative working-tree diff, not just your latest edit — after multiple edits in one session, a non-empty result may cover an earlier sub-change and miss your most recent one. Check that every file you touched is represented; for any that isn't, find its consumer components and pass their paths to ${getToolName(ctx)('stories.findByComponent')} instead. The response surfaces this gap with a "coverage sanity check" hint when it detects unreachable working-tree files.`;
 }
@@ -204,7 +204,7 @@ The result reflects the cumulative working-tree diff, not just your latest edit 
 function describeFindByComponent(ctx: ToolsetCtx): string {
   const ref = getToolName(ctx);
 
-  return `Map component source files to the stories that render them, returning grounded storyId values from the live Storybook index; hand these to ${ref('stories.preview')} or ${ref('review.create')} instead of guessing. When the result says a component has no stories found, it has none yet: say so, never fabricate IDs.
+  return `Map component source files to the stories that render them, returning grounded storyId values from the live Forkbook index; hand these to ${ref('stories.preview')} or ${ref('review.create')} instead of guessing. When the result says a component has no stories found, it has none yet: say so, never fabricate IDs.
 
 Use it whenever you need story IDs: files you just edited, a feature/domain/topic the user named, a query like "all consumers of X", or an autonomous review after a UI change. First resolve the input to absolute component file paths yourself (grep / Glob / find, code reading); this tool starts there. Shared infrastructure (theme or design token, util, hook, CSS module) is not a component: grep for its consumers and pass their paths. If the symbol is one of a related group (sibling tokens, neighboring exports), widen to the whole group; a too-narrow grep silently drops stories. For "I just edited X", try ${ref('stories.changed')} first; for any touched file missing from its response, treat it as shared infrastructure and pass its consumers here.
 
@@ -237,7 +237,7 @@ function moduleGraphAccessFromCtx(
   };
 }
 
-/** Creates the public stories API with request-local access to Storybook runtime dependencies. */
+/** Creates the public stories API with request-local access to Forkbook runtime dependencies. */
 export function createStoriesToolset({
   storyIndex,
   git,
@@ -372,7 +372,7 @@ Use { absoluteStoryPath + exportName } only when you're already working in a spe
             v.description(
               `Absolute paths to component source files (e.g. "/repo/src/Button.tsx").
 Pass the components you actually want stories for — typically files you just read, edited, or that the user mentioned.
-Relative paths are also accepted and resolved against the Storybook working directory, but absolute paths are preferred for unambiguous results.
+Relative paths are also accepted and resolved against the Forkbook working directory, but absolute paths are preferred for unambiguous results.
 Story files (\`*.stories.*\`) are accepted too: they appear at distance 0 as self-matches, plus any reverse-graph hits (other stories that import them).`
             )
           ),

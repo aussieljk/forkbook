@@ -64,8 +64,8 @@ function hasChanged(location: string) {
 
 async function run() {
   const packages = (await getCodeWorkspaces())
-    .filter(({ name }) => name !== '@storybook/code')
-    .sort((a) => (a.name === 'storybook' ? -1 : 0)); // Place main package first in option list
+    .filter(({ name }) => name !== 'forkbook-code')
+    .sort((a) => (a.name === '@aussieljk/forkbook' ? -1 : 0)); // Place main package first in option list
 
   const tasks: Record<
     string,
@@ -78,13 +78,9 @@ async function run() {
     }
   > = packages
     .map((pkg) => {
-      let suffix = pkg.name.replace('@storybook/', '');
-      if (pkg.name === 'storybook/internal/cli-commands') {
-        suffix = 'sb-cli';
-      }
       return {
         ...pkg,
-        suffix,
+        suffix: pkg.name,
         defaultValue: false,
       };
     })
@@ -251,7 +247,7 @@ async function run() {
 
   // Other packages bundle against core's dist, so core must finish first. In watch mode core
   // never finishes, so all packages start together.
-  const core = selection.find((v) => v.name === 'storybook');
+  const core = selection.find((v) => v.name === '@aussieljk/forkbook');
   const others = selection.filter((v) => v !== core);
   const results: boolean[] = [];
   if (core && !watchMode) {

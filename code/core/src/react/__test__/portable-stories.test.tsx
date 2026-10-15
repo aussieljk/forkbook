@@ -4,10 +4,10 @@ import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { Meta } from 'storybook/react';
+import type { Meta } from '@aussieljk/forkbook/react';
 
 import { expectTypeOf } from 'expect-type';
-import { addons, useEffect } from 'storybook/preview-api';
+import { addons, useEffect } from '@aussieljk/forkbook/preview-api';
 
 import { composeStories, composeStory, setProjectAnnotations } from '../index.ts';
 import type { Button } from './Button.tsx';

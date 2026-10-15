@@ -1,9 +1,9 @@
 /**
  * Composition support for the docs toolset.
  *
- * A composed Storybook is not a different kind of docs engine — it is several of the same one. So
+ * A composed Forkbook is not a different kind of docs engine — it is several of the same one. So
  * composition is modelled as a set of {@link DocsAccess} instances, one per source, rather than a
- * parallel implementation: whatever backs a single Storybook (manifests over HTTP, the open
+ * parallel implementation: whatever backs a single Forkbook (manifests over HTTP, the open
  * services in-process) backs one source of a composition unchanged.
  *
  * What composition does add is per-source failure isolation when listing; routing a lookup to the
@@ -30,7 +30,7 @@ export type CompositionDocsSourcesOptions = {
   manifestProvider?: ManifestProvider;
   getRequest?: () => Request | undefined;
   /**
-   * Reads the local Storybook — the source with no `url` — instead of fetching manifests from it.
+   * Reads the local Forkbook — the source with no `url` — instead of fetching manifests from it.
    * The dev server passes its service-backed access here when `docgenServer` is on,
    * where the local `/manifests/*.json` are deliberately 404'd and the data lives in the services.
    */
@@ -45,7 +45,7 @@ export type CompositionDocsSourcesOptions = {
 /**
  * Builds one access per composed source.
  *
- * Remote sources are read through the same provider access a single hosted Storybook uses, which is
+ * Remote sources are read through the same provider access a single hosted Forkbook uses, which is
  * what lets a composition reuse that implementation rather than a parallel one. The local source
  * may instead be handed a ready-made access, so the dev server reads itself the same way in a
  * composition as it does alone.

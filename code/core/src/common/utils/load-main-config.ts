@@ -1,9 +1,9 @@
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { join, parse, relative, resolve } from 'node:path';
 
-import { logger } from 'storybook/internal/node-logger';
-import { MainFileEvaluationError } from 'storybook/internal/server-errors';
-import type { StorybookConfig } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { MainFileEvaluationError } from '@aussieljk/forkbook/internal/server-errors';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -12,7 +12,7 @@ import { getInterpretedFile } from './interpret-files.ts';
 import { validateConfigurationFiles } from './validate-configuration-files.ts';
 
 export async function loadMainConfig({
-  configDir = '.storybook',
+  configDir = '.forkbook',
   cwd,
   skipCache,
 }: {
@@ -36,7 +36,7 @@ export async function loadMainConfig({
         'Loading main config failed as the file does not seem to be valid ESM. Trying a temporary fix, please ensure the main config is valid ESM.'
       );
       const comment =
-        '// end of Storybook 10 migration assistant header, you can delete the above code';
+        '// end of Forkbook 10 migration assistant header, you can delete the above code';
       const content = await readFile(mainPath, 'utf-8');
 
       if (!content.includes(comment)) {

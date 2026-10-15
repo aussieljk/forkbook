@@ -1,2 +1,2 @@
 // auto generated file, do not edit
-export default { storybook: '11.0.0-alpha.6' };
+export default { '@aussieljk/forkbook': '0.0.1-0' };

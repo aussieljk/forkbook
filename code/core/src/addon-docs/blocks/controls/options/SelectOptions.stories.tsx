@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent } from '@aussieljk/forkbook/test';
 
 import { OptionsControl } from './Options';
 

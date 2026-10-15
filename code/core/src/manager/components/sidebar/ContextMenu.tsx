@@ -1,19 +1,19 @@
 import type { ComponentProps, FC, MouseEvent, ReactElement, SyntheticEvent } from 'react';
 import React, { useMemo, useState } from 'react';
 
-import { PopoverProvider, TooltipLinkList } from 'storybook/internal/components';
+import { PopoverProvider, TooltipLinkList } from '@aussieljk/forkbook/internal/components';
 import {
   type API_HashEntry,
   type Addon_Collection,
   type Addon_TestProviderType,
   Addon_TypesEnum,
   type StatusValue,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { CopyIcon, EditorIcon, EllipsisIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
-import type { API } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import { useCopyButton } from '../../../shared/useCopyButton.ts';

@@ -162,7 +162,7 @@ export class DependencyCollector {
    * @param pkg - Package string (e.g., 'react@18.0.0' or 'react')
    */
   private parsePackage(pkg: string): PackageInfo {
-    // Handle scoped packages like storybook/react@1.0.0
+    // Handle scoped packages like @aussieljk/forkbook/react@1.0.0
     const scopedMatch = pkg.match(/^(@[^@]+\/[^@]+)(?:@(.+))?$/);
     if (scopedMatch) {
       return {

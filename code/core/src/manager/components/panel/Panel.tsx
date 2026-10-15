@@ -9,12 +9,12 @@ import {
   StatelessTabList,
   StatelessTabPanel,
   StatelessTabsView,
-} from 'storybook/internal/components';
-import type { Addon_BaseType } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/components';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { BottomBarIcon, CloseIcon, DocumentIcon, SidebarAltIcon } from '@storybook/icons';
 
-import type { State } from 'storybook/manager-api';
+import type { State } from '@aussieljk/forkbook/manager-api';
 
 import { focusableUIElements } from '../../../manager-api/modules/layout.ts';
 import { useLandmark } from '../../hooks/useLandmark.ts';
@@ -53,7 +53,7 @@ class TabErrorBoundary extends Component<ErrorBoundaryProps, { hasError: boolean
       return (
         <EmptyTabContent
           title="This addon has errors"
-          description="Check your browser logs and addon code to pinpoint what went wrong. This issue was not caused by Storybook."
+          description="Check your browser logs and addon code to pinpoint what went wrong. This issue was not caused by Forkbook."
         />
       );
     }
@@ -90,9 +90,9 @@ export const AddonPanel = React.memo<{
 
   const emptyState = (
     <EmptyTabContent
-      title="Storybook add-ons"
+      title="Forkbook add-ons"
       description={
-        <>Integrate your tools with Storybook to connect workflows and unlock advanced features.</>
+        <>Integrate your tools with Forkbook to connect workflows and unlock advanced features.</>
       }
       footer={
         <Link href={'https://storybook.js.org/addons?ref=ui'} target="_blank" withArrow>

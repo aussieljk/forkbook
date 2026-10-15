@@ -6,7 +6,7 @@ import { REVIEW_CHANGES_URL } from './constants.ts';
 
 export { REVIEW_COLLECTION_QUERY_PARAM, isReviewSummaryPath };
 
-/** Fallback display name when the Storybook index has not resolved a title. */
+/** Fallback display name when the Forkbook index has not resolved a title. */
 export const prettifyComponentId = (componentId: string) =>
   componentId
     .split(/[-/]/)
@@ -23,15 +23,15 @@ export interface ReviewNavEntry {
 export const buildReviewChangesSummaryHref = () => `?path=${REVIEW_CHANGES_URL}`;
 
 /** Default back target when no story has been visited yet. */
-export const STORYBOOK_ROOT_HREF = '/';
+export const FORKBOOK_ROOT_HREF = '/';
 
 export const buildSummaryBackHref = (returnSearch: string | null | undefined): string =>
-  returnSearch || STORYBOOK_ROOT_HREF;
+  returnSearch || FORKBOOK_ROOT_HREF;
 
 /** Marks summary-header back links for SPA navigation in useReviewNavigationInterceptor. */
 export const REVIEW_SUMMARY_BACK_ATTR = 'data-review-summary-back';
 
-/** Storybook router navigate target for a review story (no `?path=` wrapper). */
+/** Forkbook router navigate target for a review story (no `?path=` wrapper). */
 export const buildReviewStoryTarget = (entry: ReviewNavEntry): string =>
   `/story/${entry.storyId}&${REVIEW_COLLECTION_QUERY_PARAM}=${entry.collectionIndex}`;
 

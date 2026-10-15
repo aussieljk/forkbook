@@ -12,7 +12,7 @@ import {
   type ManifestProvider,
   type Source,
   type SourceListing,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 import type { SourceManifests } from '../types.ts';
 

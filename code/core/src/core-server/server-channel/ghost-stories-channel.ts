@@ -1,7 +1,14 @@
-import type { Channel } from 'storybook/internal/channels';
-import { GHOST_STORIES_REQUEST, GHOST_STORIES_RESPONSE } from 'storybook/internal/core-events';
-import { getLastEvents, getStorybookMetadata, telemetry } from 'storybook/internal/telemetry';
-import type { Options } from 'storybook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import {
+  GHOST_STORIES_REQUEST,
+  GHOST_STORIES_RESPONSE,
+} from '@aussieljk/forkbook/internal/core-events';
+import {
+  getLastEvents,
+  getStorybookMetadata,
+  telemetry,
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { getComponentCandidates } from '../utils/ghost-stories/get-candidates.ts';
 import { runStoryTests } from '../utils/ghost-stories/run-story-tests.ts';
@@ -54,11 +61,11 @@ export function initGhostStoriesChannel(channel: Channel, options: Options) {
           }
 
           const metadata = await getStorybookMetadata(options.configDir);
-          const isReactStorybook = metadata?.renderer?.includes('storybook/react');
+          const isReactStorybook = metadata?.renderer?.includes('@aussieljk/forkbook/react');
           const hasVitestAddon =
             !!metadata?.addons &&
             Object.keys(metadata.addons).some((addonKey) =>
-              addonKey.includes('storybook/addon-vitest')
+              addonKey.includes('@aussieljk/forkbook/addon-vitest')
             );
 
           // For now this is gated by React + Vitest

@@ -1,4 +1,4 @@
-import { globalSettings } from 'storybook/internal/cli';
+import { globalSettings } from '@aussieljk/forkbook/internal/cli';
 import {
   HandledError,
   JsPackageManagerFactory,
@@ -6,10 +6,10 @@ import {
   optionalEnvToBoolean,
   removeAddon as remove,
   versions,
-} from 'storybook/internal/common';
-import { withTelemetry } from 'storybook/internal/core-server';
-import { CLI_COLORS, logTracker, logger } from 'storybook/internal/node-logger';
-import { addToGlobalContext, telemetry } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { CLI_COLORS, logTracker, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { addToGlobalContext, telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { Option, program } from 'commander';
 import envinfo from 'envinfo';
@@ -19,7 +19,7 @@ import picocolors from 'picocolors';
 import { version } from '../../../package.json';
 import { add } from '../add.ts';
 
-addToGlobalContext('cliVersion', versions.storybook);
+addToGlobalContext('cliVersion', versions['@aussieljk/forkbook']);
 
 // Return a failed exit code but write the logs to a file first
 const handleCommandFailure =
@@ -43,7 +43,7 @@ const command = (name: string) =>
     .option(
       '--disable-telemetry',
       'Disable sending telemetry data',
-      optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY)
+      optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY)
     )
     .option('--debug', 'Get more logs in debug mode', false)
     .option('--enable-crash-reports', 'Enable sending crash reports to telemetry data')
@@ -83,30 +83,30 @@ const command = (name: string) =>
     });
 
 command('init')
-  .description('Initialize Storybook into your project')
-  .option('-f --force', 'Force add Storybook')
+  .description('Initialize Forkbook into your project')
+  .option('-f --force', 'Force add Forkbook')
   .option('-s --skip-install', 'Skip installing deps')
   .addOption(
     new Option('--package-manager <type>', 'Force package manager for installing deps').choices(
       Object.values(PackageManagerName)
     )
   )
-  .option('-t --type <type>', 'Add Storybook for a specific project type')
+  .option('-t --type <type>', 'Add Forkbook for a specific project type')
   .option('-y --yes', 'Answer yes to all prompts')
   .option('--dev', 'Launch the development server after completing initialization')
   .option(
     '--no-dev',
-    'Do not launch the Storybook development server after completing initialization (default)'
+    'Do not launch the Forkbook development server after completing initialization (default)'
   );
 
 command('add <addon>')
-  .description('Add an addon to your Storybook')
+  .description('Add an addon to your Forkbook')
   .addOption(
     new Option('--package-manager <type>', 'Force package manager for installing deps').choices(
       Object.values(PackageManagerName)
     )
   )
-  .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
+  .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option('--skip-install', 'Skip installing deps')
   .option('-s --skip-postinstall', 'Skip package specific postinstall config modifications')
   .option('-y --yes', 'Skip prompting the user')
@@ -122,17 +122,17 @@ command('add <addon>')
   });
 
 command('remove <addon>')
-  .description('Remove an addon from your Storybook')
+  .description('Remove an addon from your Forkbook')
   .addOption(
     new Option('--package-manager <type>', 'Force package manager for installing deps').choices(
       Object.values(PackageManagerName)
     )
   )
-  .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
+  .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option('-s --skip-install', 'Skip installing deps')
   .action((addonName: string, options: any) =>
     withTelemetry('remove', { cliOptions: options }, async () => {
-      logger.intro(`Removing ${addonName} from your Storybook`);
+      logger.intro(`Removing ${addonName} from your Forkbook`);
       const packageManager = JsPackageManagerFactory.getPackageManager({
         configDir: options.configDir,
         force: options.packageManager,

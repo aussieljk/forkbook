@@ -1,38 +1,62 @@
-<p align="center">
-  <a href="https://storybook.js.org/?ref=readme">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/263385/199832481-bbbf5961-6a26-481d-8224-51258cce9b33.png">
-      <img src="https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png" alt="Storybook" width="400" />
-    </picture>
-    
-  </a>
-  
-</p>
+# Forkbook
 
-<p align="center">Build bulletproof UI components faster</p>
+[![npm](https://img.shields.io/npm/v/@aussieljk/forkbook?label=npm)](https://www.npmjs.com/package/@aussieljk/forkbook)
+[![Docs](https://img.shields.io/badge/docs-forkbook.ljk.dev-0F766E)](https://forkbook.ljk.dev)
 
-<br/>
+Forkbook is a small, fast fork of [Storybook](https://github.com/storybookjs/storybook). Use it to develop, document and test UI components in isolation.
 
-<p align="center">
-Storybook is a frontend workshop for building UI components and pages in isolation. Thousands of teams use it for UI development, testing, and documentation. Find out more at <a href="https://storybook.js.org/?ref=readme">storybook.js.org</a>!
-</p>
+- npm: [`@aussieljk/forkbook`](https://www.npmjs.com/package/@aussieljk/forkbook)
+- Docs: [forkbook.ljk.dev](https://forkbook.ljk.dev)
 
-<center>
-  <img src="https://raw.githubusercontent.com/storybookjs/storybook/refs/heads/release-6-5/media/storybook-intro.gif" width="100%" />
-</center>
+## What is different
 
----
+- It is one package. The renderer, the frameworks, the Vite builder, the addons and the CLI are subpaths of `@aussieljk/forkbook`.
+- It supports only React with Vite and Next.js with Vite.
+- The CLI is `forkbook`, and the config folder is `.forkbook`.
+- It sends no telemetry.
 
-# Storybook
+## Start
 
-The `storybook` package contains Storybook's core. It includes:
+```sh
+bun add -d @aussieljk/forkbook
+bunx forkbook init
+bunx forkbook dev
+```
 
-- Storybook's CLI and development server
-- Storybook's main UI (aka "the manager")
-- Core functionality including component controls, toolbar controls, action logging, viewport control, and interaction debugger
-- User-facing utility libraries such as `storybook/test`, `theming`, and `viewport`
-- Libraries used by Storybook's ecosystem of frameworks, addons, and builders
+`.forkbook/main.ts`:
 
-It also contains a variety of other libraries and utilities under the `storybook/internal` namespace, such as utilities for CSF, MDX & Docs.
+```ts
+import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+const config: StorybookConfig = {
+  stories: ['../src/**/*.stories.tsx'],
+  framework: '@aussieljk/forkbook/react-vite',
+  addons: ['@aussieljk/forkbook/addon-docs', '@aussieljk/forkbook/addon-a11y'],
+};
+
+export default config;
+```
+
+## Subpaths
+
+| Subpath | Use |
+|---|---|
+| `@aussieljk/forkbook/react-vite` | React with Vite (framework) |
+| `@aussieljk/forkbook/nextjs-vite` | Next.js with Vite (framework) |
+| `@aussieljk/forkbook/react` | React renderer and types |
+| `@aussieljk/forkbook/addon-docs` | Docs pages and MDX |
+| `@aussieljk/forkbook/addon-a11y` | Accessibility checks |
+| `@aussieljk/forkbook/addon-vitest` | Run stories as Vitest tests |
+| `@aussieljk/forkbook/addon-themes` | Theme switcher |
+| `@aussieljk/forkbook/addon-links` | Links between stories |
+| `@aussieljk/forkbook/addon-pseudo-states` | Hover, focus and active states |
+| `@aussieljk/forkbook/addon-mcp` | MCP server for agents |
+| `@aussieljk/forkbook/test` | `fn`, `expect` and `userEvent` |
+
+## Develop
+
+See [CLAUDE.md](./CLAUDE.md) for the commands. `bun run verify` builds, type-checks and tests the repo.
+
+## Licence
+
+MIT. Forkbook is a fork of Storybook. See [LICENSE](./LICENSE).

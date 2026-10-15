@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import type { StoryContext } from 'storybook/react-vite';
+import type { StoryContext } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fireEvent, fn, screen, waitFor, within } from 'storybook/test';
+import { expect, fireEvent, fn, screen, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import { Zoom } from './zoom.tsx';
 
 const openDialog = async (context: StoryContext<typeof Zoom>) => {

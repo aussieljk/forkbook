@@ -1,8 +1,8 @@
 import type { FunctionComponent, ReactNode } from 'react';
 import React from 'react';
 
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
-import type { ComponentTitle } from 'storybook/internal/types';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { ComponentTitle } from '@aussieljk/forkbook/internal/types';
 
 import { Title as PureTitle } from '../components';
 import type { Of } from './useOf';

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { EmptyTabContent, Link } from 'storybook/internal/components';
+import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
 import { DocumentIcon } from '@storybook/icons';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import { DOCUMENTATION_PLAY_FUNCTION_LINK } from '../constants.ts';
 import styles from './EmptyState.module.css';
 

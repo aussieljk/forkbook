@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { TabsView } from 'storybook/internal/components';
+import { TabsView } from '@aussieljk/forkbook/internal/components';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
 import * as ArgRow from './ArgRow.stories';
 import { ArgsTable } from './ArgsTable';

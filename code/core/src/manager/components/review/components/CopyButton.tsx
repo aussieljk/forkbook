@@ -5,7 +5,7 @@ import {
   type ButtonProps,
   type UseCopyButtonOptions,
   useCopyButton,
-} from 'storybook/internal/components';
+} from '@aussieljk/forkbook/internal/components';
 
 export type CopyButtonProps = Omit<ButtonProps, 'children' | 'onClick' | 'ariaLabel' | 'theme'> &
   UseCopyButtonOptions<ReactNode>;

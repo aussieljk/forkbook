@@ -1,14 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { prompt } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { logger } from '../../node-logger/index.ts';
 import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { Yarn2Proxy } from './Yarn2Proxy.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
     getPreferredStdio: vi.fn(() => 'inherit'),
@@ -69,7 +69,7 @@ describe('Yarn 2 Proxy', () => {
         await Promise.resolve(fn());
       });
       const originalError = new Error(
-        '➤ YN0016: │ storybook/react-vite@npm:10.4.0-alpha.17: All versions satisfying "10.4.0-alpha.17" are quarantined'
+        '➤ YN0016: │ @aussieljk/forkbook/react-vite@npm:10.4.0-alpha.17: All versions satisfying "10.4.0-alpha.17" are quarantined'
       );
       mockedExecuteCommand.mockRejectedValueOnce(originalError);
 
@@ -131,7 +131,7 @@ describe('Yarn 2 Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         };
       });
@@ -142,7 +142,7 @@ describe('Yarn 2 Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -266,7 +266,7 @@ describe('Yarn 2 Proxy', () => {
       vi.useRealTimers();
     });
 
-    it('should update npmPreapprovedPackages in non-interactive mode when npmMinimalAgeGate blocks Storybook', async () => {
+    it('should update npmPreapprovedPackages in non-interactive mode when npmMinimalAgeGate blocks Forkbook', async () => {
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({ stdout: '[]\n' } as any)
@@ -300,13 +300,13 @@ describe('Yarn 2 Proxy', () => {
             'set',
             'npmPreapprovedPackages',
             '--json',
-            JSON.stringify(['storybook', '@storybook/*', 'eslint-plugin-storybook']),
+            JSON.stringify(['@aussieljk/forkbook', '@storybook/*', 'eslint-plugin-storybook']),
           ],
         })
       );
       expect(vi.mocked(logger.info)).toHaveBeenCalledWith(
         expect.stringContaining(
-          'Storybook updated npmPreapprovedPackages for this project automatically'
+          'Forkbook updated npmPreapprovedPackages for this project automatically'
         )
       );
     });
@@ -351,7 +351,7 @@ describe('Yarn 2 Proxy', () => {
         expect.objectContaining({
           options: expect.arrayContaining([
             expect.objectContaining({
-              label: 'Update yarn config to preapprove Storybook packages',
+              label: 'Update yarn config to preapprove Forkbook packages',
             }),
             expect.objectContaining({
               label: 'Stop now and rerun with the most recent allowed release: storybook@10.3.2',
@@ -373,7 +373,7 @@ describe('Yarn 2 Proxy', () => {
             JSON.stringify([
               'foo',
               '@storybook/preset-react-webpack',
-              'storybook',
+              '@aussieljk/forkbook',
               '@storybook/*',
               'eslint-plugin-storybook',
             ]),
@@ -415,7 +415,9 @@ describe('Yarn 2 Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
+      ).rejects.toThrow(
+        /Please rerun Forkbook creation with:[\s\S]*npx @aussieljk\/forkbook@10\.3\.2 init/
+      );
     });
 
     it('should show the same rerun guidance when the prompt is cancelled', async () => {
@@ -445,15 +447,18 @@ describe('Yarn 2 Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
+      ).rejects.toThrow(
+        /Please rerun Forkbook creation with:[\s\S]*npx @aussieljk\/forkbook@10\.3\.2 init/
+      );
     });
 
-    it('should skip the precheck when Storybook packages are already preapproved', async () => {
+    it('should skip the precheck when Forkbook packages are already preapproved', async () => {
       const updateSpy = vi.spyOn(yarn2Proxy as any, 'updatePreapprovedPackages');
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({
-          stdout: "[\n  'storybook',\n  '@storybook/*',\n  'eslint-plugin-storybook',\n]\n",
+          stdout:
+            "[\n  '@aussieljk/forkbook',\n  '@storybook/*',\n  'eslint-plugin-storybook',\n]\n",
         } as any);
 
       await expect(

@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useRef } from 'react';
 
-import type { API_Layout } from 'storybook/internal/types';
+import type { API_Layout } from '@aussieljk/forkbook/internal/types';
 
 import {
   MINIMUM_CONTENT_WIDTH_PX,

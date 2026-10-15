@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'storybook/internal/components';
+import { Link } from '@aussieljk/forkbook/internal/components';
 
 import { PANEL_ID } from '../constants.ts';
 import styles from './DetachedDebuggerMessage.module.css';
@@ -15,7 +15,7 @@ export const DetachedDebuggerMessage = ({ storyUrl }: { storyUrl: string }) => {
         rel="noopener noreferrer"
         withArrow
       >
-        Open in external Storybook
+        Open in external Forkbook
       </Link>
     </div>
   );

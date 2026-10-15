@@ -1,9 +1,9 @@
 export const EVENTS = {
-  CALL: 'storybook/instrumenter/call',
-  SYNC: 'storybook/instrumenter/sync',
-  START: 'storybook/instrumenter/start',
-  BACK: 'storybook/instrumenter/back',
-  GOTO: 'storybook/instrumenter/goto',
-  NEXT: 'storybook/instrumenter/next',
-  END: 'storybook/instrumenter/end',
+  CALL: '@aussieljk/forkbook/instrumenter/call',
+  SYNC: '@aussieljk/forkbook/instrumenter/sync',
+  START: '@aussieljk/forkbook/instrumenter/start',
+  BACK: '@aussieljk/forkbook/instrumenter/back',
+  GOTO: '@aussieljk/forkbook/instrumenter/goto',
+  NEXT: '@aussieljk/forkbook/instrumenter/next',
+  END: '@aussieljk/forkbook/instrumenter/end',
 };

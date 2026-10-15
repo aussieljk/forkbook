@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { LocationProvider } from 'storybook/internal/router';
+import { LocationProvider } from '@aussieljk/forkbook/internal/router';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import * as itemStories from './NotificationItem.stories.tsx';
 import { NotificationList } from './NotificationList.tsx';

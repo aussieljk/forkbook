@@ -2,7 +2,7 @@ import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
-import { SupportedRenderer } from 'storybook/internal/types';
+import { SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
@@ -40,9 +40,9 @@ describe('getStorybookInfo React Native framework inference', () => {
     expect(info.renderer).toBe(SupportedRenderer.REACT_NATIVE);
   });
 
-  it('does not infer RN framework for a plain .storybook without framework', async () => {
+  it('does not infer RN framework for a plain .forkbook without framework', async () => {
     dir = join(tmpdir(), `sb-web-info-${Date.now()}`);
-    mkdirSync(join(dir, '.storybook'), { recursive: true });
+    mkdirSync(join(dir, '.forkbook'), { recursive: true });
     writeFileSync(
       join(dir, 'package.json'),
       JSON.stringify({
@@ -51,9 +51,9 @@ describe('getStorybookInfo React Native framework inference', () => {
         devDependencies: { storybook: '10.5.3' },
       })
     );
-    writeFileSync(join(dir, '.storybook/main.js'), `module.exports = { stories: [] };`);
+    writeFileSync(join(dir, '.forkbook/main.js'), `module.exports = { stories: [] };`);
 
-    const info = await getStorybookInfo(join(dir, '.storybook'), dir);
+    const info = await getStorybookInfo(join(dir, '.forkbook'), dir);
 
     expect(info.frameworkPackage).toBeUndefined();
   });

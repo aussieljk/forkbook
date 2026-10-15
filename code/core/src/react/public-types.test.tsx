@@ -5,12 +5,12 @@ import { describe, it } from 'vitest';
 import type { KeyboardEventHandler, ReactElement, ReactNode } from 'react';
 import React from 'react';
 
-import type { Canvas } from 'storybook/internal/csf';
-import type { Args, StoryAnnotations, StrictArgs } from 'storybook/internal/types';
+import type { Canvas } from '@aussieljk/forkbook/internal/csf';
+import type { Args, StoryAnnotations, StrictArgs } from '@aussieljk/forkbook/internal/types';
 
 import { expectTypeOf } from 'expect-type';
-import { fn } from 'storybook/test';
-import type { Mock } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
+import type { Mock } from '@aussieljk/forkbook/test';
 import type { SetOptional } from 'type-fest';
 
 import type { Decorator, Meta, StoryObj } from './public-types.ts';

@@ -17,7 +17,7 @@ const other: StorybookInstanceRecord = {
   instanceId: 'other',
   pid: 11,
   cwd: '/apps/web',
-  configDir: '/apps/web/.storybook',
+  configDir: '/apps/web/.forkbook',
   url: 'http://localhost:6006',
   port: 6006,
   token: 't',
@@ -31,7 +31,7 @@ const sibling: StorybookInstanceRecord = {
   instanceId: 'sibling',
   pid: 12,
   cwd: '/apps/ui',
-  configDir: '/apps/ui/.storybook',
+  configDir: '/apps/ui/.forkbook',
   url: 'http://localhost:6007',
   port: 6007,
 };
@@ -41,25 +41,25 @@ const mismatch = {
   callerVersion: '10.5.2',
   instancePath: '/home/user/.npm/_npx/a1b2c3/node_modules/storybook',
   instanceVersion: '10.7.0',
-  configDir: '/work/my app/.storybook',
+  configDir: '/work/my app/.forkbook',
 };
 
 describe('attach failure messages', () => {
-  it('tells the caller how to start Storybook and lists the running instances that did not match', () => {
+  it('tells the caller how to start Forkbook and lists the running instances that did not match', () => {
     expect(formatNoInstance([])).toMatchInlineSnapshot(`
-      "No running Storybook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`."
+      "No running Forkbook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`."
     `);
     expect(formatNoInstance([other])).toMatchInlineSnapshot(`
-      "No running Storybook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`.
+      "No running Forkbook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`.
 
-      Running Storybook instances that did not match this project — target one by re-running this command from its project directory, or with \`--config-dir <dir>\`:
-      - http://localhost:6006 (cwd \`/apps/web\`; configDir \`/apps/web/.storybook\`)"
+      Running Forkbook instances that did not match this project — target one by re-running this command from its project directory, or with \`--config-dir <dir>\`:
+      - http://localhost:6006 (cwd \`/apps/web\`; configDir \`/apps/web/.forkbook\`)"
     `);
   });
 
   it('names the running ports and the --port that selects one on a port mismatch', () => {
     expect(formatPortMismatch(9999, [other, sibling])).toMatchInlineSnapshot(`
-      "No running Storybook instance is on port 9999. Retry with one of the running instances below, or omit \`--port\` to match on the project's cwd/config dir instead:
+      "No running Forkbook instance is on port 9999. Retry with one of the running instances below, or omit \`--port\` to match on the project's cwd/config dir instead:
       - http://localhost:6006 (port \`6006\`, cwd \`/apps/web\`)
       - http://localhost:6007 (port \`6007\`, cwd \`/apps/ui\`)"
     `);
@@ -72,22 +72,22 @@ describe('attach failure messages', () => {
         port: 6007,
         pid: 123,
         cwd: '/apps/web',
-        configDir: '/apps/web/.storybook',
+        configDir: '/apps/web/.forkbook',
         siblings: [
           {
             url: 'http://localhost:6006',
             port: 6006,
             pid: 456,
             cwd: '/apps/web',
-            configDir: '/apps/web/.storybook',
+            configDir: '/apps/web/.forkbook',
           },
         ],
       })
     ).toMatchInlineSnapshot(`
-      "Warning: Multiple Storybook instances match this project. This command used http://localhost:6007 (port \`6007\`, pid \`123\`, cwd \`/apps/web\`, config dir \`/apps/web/.storybook\`).
+      "Warning: Multiple Forkbook instances match this project. This command used http://localhost:6007 (port \`6007\`, pid \`123\`, cwd \`/apps/web\`, config dir \`/apps/web/.forkbook\`).
 
       Other matching instances — target one with \`--port <port>\`:
-      - http://localhost:6006 (port \`6006\`, pid \`456\`, cwd \`/apps/web\`, config dir \`/apps/web/.storybook\`)
+      - http://localhost:6006 (port \`6006\`, pid \`456\`, cwd \`/apps/web\`, config dir \`/apps/web/.forkbook\`)
 
       If results look unexpected, ask the user whether they want to stop the other instance(s)."
     `);
@@ -95,22 +95,22 @@ describe('attach failure messages', () => {
 
   it('names the version that must be restarted to enable attach', () => {
     expect(formatOldServer('10.2.0')).toMatchInlineSnapshot(
-      `"Restart Storybook (v10.2.0+) to enable attach. The running instance was started with an older Storybook that does not publish a channel token."`
+      `"Restart Forkbook (v10.2.0+) to enable attach. The running instance was started with an older Forkbook that does not publish a channel token."`
     );
   });
 
-  it('points at the unreachable URL and how to start Storybook again', () => {
+  it('points at the unreachable URL and how to start Forkbook again', () => {
     expect(formatConnectionFailed(other)).toMatchInlineSnapshot(
-      `"Could not connect to the Storybook at http://localhost:6006. The instance registry may be stale — if that Storybook is no longer running, start it again (for example \`npm run storybook\`) and retry."`
+      `"Could not connect to the Forkbook at http://localhost:6006. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run storybook\`) and retry."`
     );
   });
 
   it('shows both installations with their versions and the instance config dir on a mismatch', () => {
     expect(formatInstallationMismatch(mismatch)).toMatchInlineSnapshot(`
-      "The running Storybook and this CLI are different \`storybook\` installations:
-      - running instance: \`/home/user/.npm/_npx/a1b2c3/node_modules/storybook\` (version 10.7.0; config dir \`/work/my app/.storybook\`)
+      "The running Forkbook and this CLI are different \`storybook\` installations:
+      - running instance: \`/home/user/.npm/_npx/a1b2c3/node_modules/storybook\` (version 10.7.0; config dir \`/work/my app/.forkbook\`)
       - this CLI: \`/work/my app/node_modules/storybook\` (version 10.5.2)
-      They must be the same installation. From your project directory, restart Storybook (for example \`npx storybook dev\`) and re-run this command from there."
+      They must be the same installation. From your project directory, restart Forkbook (for example \`npx forkbook dev\`) and re-run this command from there."
     `);
   });
 
@@ -122,26 +122,26 @@ describe('attach failure messages', () => {
         instancePath: mismatch.instancePath,
       })
     ).toMatchInlineSnapshot(`
-      "The running Storybook and this CLI are different \`storybook\` installations:
+      "The running Forkbook and this CLI are different \`storybook\` installations:
       - running instance: \`/home/user/.npm/_npx/a1b2c3/node_modules/storybook\` (version unknown)
       - this CLI: \`/work/my app/node_modules/storybook\` (version 10.5.2)
-      They must be the same installation. From your project directory, restart Storybook (for example \`npx storybook dev\`) and re-run this command from there."
+      They must be the same installation. From your project directory, restart Forkbook (for example \`npx forkbook dev\`) and re-run this command from there."
     `);
   });
 
   it('tells the caller to restart when the record does not prove the installations match', () => {
     expect(formatUnknownInstallation()).toMatchInlineSnapshot(
-      `"Could not verify that the running Storybook and this CLI are the same \`storybook\` installation. From your project directory, restart Storybook (for example \`npx storybook dev\`) and re-run this command from there."`
+      `"Could not verify that the running Forkbook and this CLI are the same \`storybook\` installation. From your project directory, restart Forkbook (for example \`npx forkbook dev\`) and re-run this command from there."`
     );
   });
 
   it('names the local fallback after the gate message', () => {
     expect(
-      formatAttachFallback('Restart Storybook (v10.2.0+) to enable attach.')
+      formatAttachFallback('Restart Forkbook (v10.2.0+) to enable attach.')
     ).toMatchInlineSnapshot(
-      `"Restart Storybook (v10.2.0+) to enable attach.
+      `"Restart Forkbook (v10.2.0+) to enable attach.
 
-Falling back to loading this project's Storybook configuration."`
+Falling back to loading this project's Forkbook configuration."`
     );
   });
 

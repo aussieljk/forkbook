@@ -1,18 +1,26 @@
 import { mkdir } from 'node:fs/promises';
 
-import type { Channel } from 'storybook/internal/channels';
-import { resolvePathInStorybookCache } from 'storybook/internal/common';
-import { type StoryIndexGenerator, registerToolset } from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
-import { cleanPaths, oneWayHash, sanitizeError, telemetry } from 'storybook/internal/telemetry';
-import type { Options, PresetPropertyFn, StoryId } from 'storybook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import {
+  type StoryIndexGenerator,
+  registerToolset,
+} from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import {
+  cleanPaths,
+  oneWayHash,
+  sanitizeError,
+  telemetry,
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { Options, PresetPropertyFn, StoryId } from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
 
 import {
   COVERAGE_DIRECTORY,
   STORE_CHANNEL_EVENT_NAME,
-  STORYBOOK_ADDON_TEST_CHANNEL,
+  FORKBOOK_ADDON_TEST_CHANNEL,
 } from './constants.ts';
 import { runTestRunner, sendStoryIndexToTestRunner } from './node/boot-test-runner.ts';
 import {
@@ -58,7 +66,7 @@ type Event =
  *
  * The responder is wired here too — adjacent to the registration, behind the same gate — so every
  * consumer that can offer the tool can also answer it, dev server or not: this is what lets
- * `storybook tools test run` work without a running Storybook. The listener is cheap; the runner
+ * `forkbook tools test run` work without a running Forkbook. The listener is cheap; the runner
  * machinery boots on first request.
  */
 export const services = async (_value: void, options: Options): Promise<void> => {
@@ -131,7 +139,7 @@ export const experimental_serverChannel = async (channel: Channel, options: Opti
   });
   const enableCrashReports = core?.enableCrashReports || options.enableCrashReports;
 
-  channel.on(STORYBOOK_ADDON_TEST_CHANNEL, (event: Event) => {
+  channel.on(FORKBOOK_ADDON_TEST_CHANNEL, (event: Event) => {
     if (event.type !== 'test-run-completed') {
       telemetry('addon-test', () => ({
         ...event,

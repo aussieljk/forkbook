@@ -21,7 +21,7 @@ module.exports = {
         const isInCLI = !!fileName.includes(path.join('code', 'lib', 'cli') + path.sep);
         const isInCodemod = !!fileName.includes(path.join('code', 'lib', 'codemod'));
         const isInCreateStorybook = !!fileName.includes(
-          path.join('code', 'lib', 'storybook/internal/create')
+          path.join('code', 'lib', '@aussieljk/forkbook/internal/create')
         );
         const isInCore = !!fileName.includes(path.join('code', 'core'));
 
@@ -33,11 +33,11 @@ module.exports = {
           !isInCreateStorybook
         ) {
           const newPath = node.source.value
-            .replace('@storybook/core', 'storybook/internal')
+            .replace('@storybook/core', '@aussieljk/forkbook/internal')
             .replace('/src', '');
           context.report({
             node: node,
-            message: `Cannot import from @storybook/core in this package. Use storybook/internal instead.`,
+            message: `Cannot import from @storybook/core in this package. Use @aussieljk/forkbook/internal instead.`,
             fix: (fixer) => {
               return fixer.replaceText(node.source, `'${newPath}'`);
             },
@@ -49,11 +49,11 @@ module.exports = {
           (isInCore || isInCLI || isInCodemod || isInCreateStorybook)
         ) {
           const newPath = node.source.value
-            .replace('@storybook/core', 'storybook/internal')
+            .replace('@storybook/core', '@aussieljk/forkbook/internal')
             .replace('/src', '');
           context.report({
             node: node,
-            message: `Cannot import from @storybook/core in this package. Use storybook/internal instead.`,
+            message: `Cannot import from @storybook/core in this package. Use @aussieljk/forkbook/internal instead.`,
             fix: (fixer) => {
               return fixer.replaceText(node.source, `'${newPath}'`);
             },

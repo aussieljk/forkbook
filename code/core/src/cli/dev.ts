@@ -1,7 +1,7 @@
-import { cache } from 'storybook/internal/common';
-import { buildDevStandalone, withTelemetry } from 'storybook/internal/core-server';
-import { logger, instance as npmLog } from 'storybook/internal/node-logger';
-import type { CLIOptions, PackageJson } from 'storybook/internal/types';
+import { cache } from '@aussieljk/forkbook/internal/common';
+import { buildDevStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { logger, instance as npmLog } from '@aussieljk/forkbook/internal/node-logger';
+import type { CLIOptions, PackageJson } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -38,14 +38,14 @@ export const dev = async (cliOptions: CLIOptions) => {
   const { env } = process;
   env.NODE_ENV = env.NODE_ENV || 'development';
 
-  const { default: packageJson } = await import('storybook/package.json', {
+  const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
     with: { type: 'json' },
   });
   type Options = Parameters<typeof buildDevStandalone>[0];
 
   const options = {
     ...cliOptions,
-    configDir: cliOptions.configDir || './.storybook',
+    configDir: cliOptions.configDir || './.forkbook',
     configType: 'DEVELOPMENT',
     cache: cache as any,
     packageJson: packageJson,

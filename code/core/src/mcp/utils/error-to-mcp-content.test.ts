@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ManifestGetError } from 'storybook/internal/toolsets-docs';
+import { ManifestGetError } from '@aussieljk/forkbook/internal/toolsets-docs';
 
 import { errorToMCPContent } from './error-to-mcp-content.ts';
 

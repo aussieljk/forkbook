@@ -1,12 +1,12 @@
-# Storybook Core-Client
+# Forkbook Core-Client
 
 This package contains browser-side functionality shared amongst the frameworks (React, React Native) in the old "v6" story store back-compatibility layer.
 
 A framework calls the `start(renderToCanvas, { render, decorateStory })` function and provides:
 
-- The `renderToCanvas` function, which tells Storybook how to render the result of a story function to the DOM
+- The `renderToCanvas` function, which tells Forkbook how to render the result of a story function to the DOM
 - The `render` function, which is a default mapping of `args` to a story result in CSFv3
-- The `decorateStory` function, which tells Storybook how to combine decorators in the framework.
+- The `decorateStory` function, which tells Forkbook how to combine decorators in the framework.
 
 The `start` function will return a `configure()` function, which can be re-exported to be used in `preview.js` (deprecated), or automatically by the `main.js:stories` field to:
 

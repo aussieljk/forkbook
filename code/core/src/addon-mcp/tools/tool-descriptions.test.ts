@@ -1,5 +1,5 @@
-import type { ToolAvailability } from 'storybook/internal/core-server';
-import { registerToolset } from 'storybook/open-service';
+import type { ToolAvailability } from '@aussieljk/forkbook/internal/core-server';
+import { registerToolset } from '@aussieljk/forkbook/open-service';
 import { describe, expect, it } from 'vitest';
 
 import { createTestToolset } from '../../addon-vitest/node/toolset/definition.ts';

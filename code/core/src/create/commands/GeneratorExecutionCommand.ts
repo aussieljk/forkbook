@@ -1,6 +1,6 @@
-import type { ProjectType } from 'storybook/internal/cli';
-import { type JsPackageManager } from 'storybook/internal/common';
-import { type Feature, type SupportedLanguage } from 'storybook/internal/types';
+import type { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { type JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { type Feature, type SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import type { DependencyCollector } from '../dependency-collector.ts';
 import { generatorRegistry } from '../generators/GeneratorRegistry.ts';
@@ -26,7 +26,7 @@ type ExecuteProjectGeneratorOptions = {
  * - Get generator module from registry
  * - Call generator's configure() to get framework-specific options
  * - Execute baseGenerator with complete configuration
- * - Determine Storybook command
+ * - Determine Forkbook command
  */
 export class GeneratorExecutionCommand {
   /** Execute generator for the detected project type */
@@ -53,7 +53,7 @@ export class GeneratorExecutionCommand {
       language,
     });
 
-    // Determine Storybook command
+    // Determine Forkbook command
 
     return {
       ...generatorResult,
@@ -61,7 +61,7 @@ export class GeneratorExecutionCommand {
       storybookCommand:
         generatorResult.storybookCommand !== undefined
           ? generatorResult.storybookCommand
-          : this.jsPackageManager.getRunCommand('storybook'),
+          : this.jsPackageManager.getRunCommand('forkbook'),
       /**
        * Hook to run after dependencies are installed. Optional — only the generators that need to do
        * something after `installDependencies` will set this.

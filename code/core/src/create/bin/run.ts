@@ -1,8 +1,8 @@
-import { ProjectType } from 'storybook/internal/cli';
-import { PackageManagerName, optionalEnvToBoolean } from 'storybook/internal/common';
-import { logTracker, logger } from 'storybook/internal/node-logger';
-import { addToGlobalContext } from 'storybook/internal/telemetry';
-import { Feature, SupportedBuilder } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { PackageManagerName, optionalEnvToBoolean } from '@aussieljk/forkbook/internal/common';
+import { logTracker, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { addToGlobalContext } from '@aussieljk/forkbook/internal/telemetry';
+import { Feature, SupportedBuilder } from '@aussieljk/forkbook/internal/types';
 
 import { Option, program } from 'commander';
 
@@ -20,21 +20,21 @@ addToGlobalContext('cliVersion', version);
  * the legacy version of the app.
  */
 const createStorybookProgram = program
-  .name('Initialize Storybook into your project.')
+  .name('Initialize Forkbook into your project.')
   .option(
     '--disable-telemetry',
     'Disable sending telemetry data',
-    optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY)
+    optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY)
   )
   .addOption(
-    new Option('--features <list...>', 'Storybook features')
+    new Option('--features <list...>', 'Forkbook features')
       .choices(Object.values(Feature))
       .default(undefined)
   )
   .option('--no-features', 'Disable all features (overrides --features)')
   .option('--debug', 'Get more logs in debug mode')
   .option('--enable-crash-reports', 'Enable sending crash reports to telemetry data')
-  .option('-f --force', 'Force add Storybook')
+  .option('-f --force', 'Force add Forkbook')
   .option('-s --skip-install', 'Skip installing deps')
   .addOption(
     new Option('--package-manager <type>', 'Force package manager for installing deps').choices(
@@ -51,7 +51,7 @@ const createStorybookProgram = program
     ])
   )
   .addOption(
-    new Option('--type <type>', 'Add Storybook for a specific project type').choices(
+    new Option('--type <type>', 'Add Forkbook for a specific project type').choices(
       Object.values(ProjectType).filter(
         (type) => ![ProjectType.UNDETECTED, ProjectType.UNSUPPORTED, ProjectType.NX].includes(type)
       )
@@ -70,7 +70,7 @@ const createStorybookProgram = program
   )
   .option(
     '--no-dev',
-    'Complete the initialization of Storybook without launching the Storybook development server'
+    'Complete the initialization of Forkbook without launching the Forkbook development server'
   )
   .option('--agent', 'Force agent mode (non-interactive, logs AI setup instructions)')
   .option('--no-agent', 'Force disable agent mode even when an AI agent is detected')

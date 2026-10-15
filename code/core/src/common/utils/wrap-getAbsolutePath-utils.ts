@@ -1,5 +1,5 @@
-import { types as t } from 'storybook/internal/babel';
-import type { ConfigFile } from 'storybook/internal/csf-tools';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
+import type { ConfigFile } from '@aussieljk/forkbook/internal/csf-tools';
 
 const PREFERRED_GET_ABSOLUTE_PATH_WRAPPER_NAME = 'getAbsolutePath';
 const ALTERNATIVE_GET_ABSOLUTE_PATH_WRAPPER_NAME = 'wrapForPnp';
@@ -33,12 +33,12 @@ export function doesVariableOrFunctionDeclarationExist(node: t.Node, name: strin
  * ```ts
  * // Before
  * {
- *   framework: 'storybook/react-vite';
+ *   framework: '@aussieljk/forkbook/react-vite';
  * }
  *
  * // After
  * {
- *   framework: getAbsolutePath('storybook/react-vite');
+ *   framework: getAbsolutePath('@aussieljk/forkbook/react-vite');
  * }
  * ```
  */

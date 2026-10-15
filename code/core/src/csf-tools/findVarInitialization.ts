@@ -1,4 +1,4 @@
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 
 export const findVarInitialization = (identifier: string, program: t.Program): t.Expression => {
   let init: t.Expression = null as any;

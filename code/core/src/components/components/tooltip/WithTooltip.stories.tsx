@@ -1,9 +1,9 @@
 import type { ComponentProps, FunctionComponent } from 'react';
 import React from 'react';
 
-import type { StoryObj } from 'storybook/react-vite';
+import type { StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, screen } from 'storybook/test';
+import { expect, screen } from '@aussieljk/forkbook/test';
 
 import { TooltipMessage } from './TooltipMessage.tsx';
 import { WithToolTipState as WithTooltip } from './WithTooltip.tsx';

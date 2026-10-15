@@ -1,14 +1,17 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ChannelTransport } from 'storybook/internal/channels';
-import { Channel } from 'storybook/internal/channels';
-import { GHOST_STORIES_REQUEST, GHOST_STORIES_RESPONSE } from 'storybook/internal/core-events';
-import type { Options } from 'storybook/internal/types';
+import type { ChannelTransport } from '@aussieljk/forkbook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import {
+  GHOST_STORIES_REQUEST,
+  GHOST_STORIES_RESPONSE,
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { initGhostStoriesChannel } from './ghost-stories-channel.ts';
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return {
     ...actual,
     cache: {
@@ -20,8 +23,8 @@ vi.mock('storybook/internal/common', async (importOriginal) => {
   };
 });
 
-vi.mock('storybook/internal/telemetry', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/telemetry')>();
+vi.mock('@aussieljk/forkbook/internal/telemetry', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/telemetry')>();
   return {
     ...actual,
     getLastEvents: vi.fn(),
@@ -65,8 +68,8 @@ vi.mock('node:fs/promises', async (importOriginal) => {
   };
 });
 
-const mockCommon = await import('storybook/internal/common');
-const mockTelemetry = await import('storybook/internal/telemetry');
+const mockCommon = await import('@aussieljk/forkbook/internal/common');
+const mockTelemetry = await import('@aussieljk/forkbook/internal/telemetry');
 const mockStoryGeneration = await import('../utils/ghost-stories/get-candidates.ts');
 
 const expectGhostStoriesTelemetryPayload = async (expectedPayload: unknown) => {
@@ -137,8 +140,8 @@ describe('ghostStoriesChannel', () => {
 
       // Has React + Vitest
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
 
       // Has valid candidates for story files
@@ -197,8 +200,8 @@ describe('ghostStoriesChannel', () => {
         ],
         stdio: 'pipe',
         env: {
-          STORYBOOK_INTERNAL_TEST_RUN: '1',
-          STORYBOOK_COMPONENT_PATHS: 'component1.tsx;component2.tsx',
+          FORKBOOK_INTERNAL_TEST_RUN: '1',
+          FORKBOOK_COMPONENT_PATHS: 'component1.tsx;component2.tsx',
         },
       } as any);
 
@@ -236,8 +239,8 @@ describe('ghostStoriesChannel', () => {
 
       // Has React + Vitest
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
 
       // Has valid candidates for story files
@@ -296,8 +299,8 @@ describe('ghostStoriesChannel', () => {
         ],
         stdio: 'pipe',
         env: {
-          STORYBOOK_INTERNAL_TEST_RUN: '1',
-          STORYBOOK_COMPONENT_PATHS: 'component1.tsx;component2.tsx',
+          FORKBOOK_INTERNAL_TEST_RUN: '1',
+          FORKBOOK_COMPONENT_PATHS: 'component1.tsx;component2.tsx',
         },
       } as any);
 
@@ -403,8 +406,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
 
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
-          addons: { 'storybook/addon-vitest': {} },
+          renderer: '@aussieljk/forkbook/react',
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
 
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
@@ -436,7 +439,7 @@ describe('ghostStoriesChannel', () => {
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
           renderer: '@storybook/vue',
-          addons: { 'storybook/addon-vitest': {} },
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
 
         initGhostStoriesChannel(mockChannel, {} as Options);
@@ -460,7 +463,7 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
+          renderer: '@aussieljk/forkbook/react',
           addons: {},
         } as any);
 
@@ -487,8 +490,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
-          addons: { 'storybook/addon-vitest': {} },
+          renderer: '@aussieljk/forkbook/react',
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: [],
@@ -526,8 +529,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
-          addons: { 'storybook/addon-vitest': {} },
+          renderer: '@aussieljk/forkbook/react',
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: [],
@@ -566,8 +569,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
-          addons: { 'storybook/addon-vitest': {} },
+          renderer: '@aussieljk/forkbook/react',
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: ['component1.tsx'],
@@ -609,8 +612,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: 'storybook/react',
-          addons: { 'storybook/addon-vitest': {} },
+          renderer: '@aussieljk/forkbook/react',
+          addons: { '@aussieljk/forkbook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: ['component1.tsx'],

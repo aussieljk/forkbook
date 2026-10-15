@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Popover, TooltipNote } from 'storybook/internal/components';
+import { Popover, TooltipNote } from '@aussieljk/forkbook/internal/components';
 
-import { expect, fn, screen } from 'storybook/test';
+import { expect, fn, screen } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { OverlayTriggerDecorator, Trigger } from '../shared/overlayHelpers.tsx';
 import { TooltipProvider } from './TooltipProvider.tsx';
 
@@ -96,7 +96,7 @@ export const Placements = meta.story({
   ),
 });
 
-/** TooltipNote is the recommended Tooltip to use within Storybook. */
+/** TooltipNote is the recommended Tooltip to use within Forkbook. */
 export const WithTooltipNote = meta.story({
   args: {
     tooltip: SampleTooltipNote(),

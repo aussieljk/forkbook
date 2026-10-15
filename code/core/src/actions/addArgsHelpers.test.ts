@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { StoryContextForEnhancers } from 'storybook/internal/types';
+import type { StoryContextForEnhancers } from '@aussieljk/forkbook/internal/types';
 
 import { addActionsFromArgTypes, inferActionsFromArgTypesRegex } from './addArgsHelpers.ts';
 

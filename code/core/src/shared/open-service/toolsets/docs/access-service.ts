@@ -9,7 +9,7 @@
  * component never triggers docgen extraction for every component.
  */
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { getComponentIdFromEntry } from '../../../../common/utils/component-id.ts';
 import { selectComponentEntriesByComponentId } from '../../../../common/utils/select-component-entry.ts';

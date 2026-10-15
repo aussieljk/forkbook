@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { Options } from 'storybook/internal/types';
-import { getToolAvailability } from 'storybook/internal/core-server';
+import type { Options } from '@aussieljk/forkbook/internal/types';
+import { getToolAvailability } from '@aussieljk/forkbook/internal/core-server';
 import { experimental_devServer } from './preset.ts';
 import * as mcpHandlerModule from './mcp-handler.ts';
 import { registerCoreToolsetsForTest } from './test-support/register-core-toolsets.ts';
 
-// `getToolAvailability` now lives in core (`storybook/internal/core-server`) and composes its own
+// `getToolAvailability` now lives in core (`@aussieljk/forkbook/internal/core-server`) and composes its own
 // sub-probes internally, so tests that need to force one gate (e.g. module-graph support) mock the
 // composed result at this seam rather than an addon-local probe.
-vi.mock('storybook/internal/core-server', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 
 describe('experimental_devServer', () => {
   let mockApp: any;
@@ -16,7 +16,7 @@ describe('experimental_devServer', () => {
   let mcpHandler: any;
 
   beforeEach(() => {
-    // The `services` preset hook does this in a real Storybook before the dev server mounts /mcp.
+    // The `services` preset hook does this in a real Forkbook before the dev server mounts /mcp.
     registerCoreToolsetsForTest();
     vi.restoreAllMocks();
 
@@ -473,7 +473,7 @@ describe('experimental_devServer', () => {
     expect(html).not.toMatch(/\{\{[A-Z_]+\}\}/);
   });
 
-  it('should show Storybook version requirement for addon-vitest and a manual manifest link', async () => {
+  it('should show Forkbook version requirement for addon-vitest and a manual manifest link', async () => {
     // No addon-vitest preset key is registered by this fixture's `apply` mock, so the real
     // (now core-internal) `isAddonVitestEnabled` probe resolves falsy on its own — nothing to mock.
     const manifestEnabledOptions = {
@@ -512,7 +512,7 @@ describe('experimental_devServer', () => {
     await getMcpHandler(mockReq, mockRes);
 
     expect(mockRes.end).toHaveBeenCalledWith(
-      expect.stringContaining('This toolset requires Storybook 10.3.0+ with')
+      expect.stringContaining('This toolset requires Forkbook 10.3.0+ with')
     );
     expect(mockRes.end).toHaveBeenCalledWith(
       expect.stringContaining(

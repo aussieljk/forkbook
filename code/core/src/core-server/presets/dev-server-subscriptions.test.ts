@@ -1,4 +1,4 @@
-import type { Options, StoryIndex } from 'storybook/internal/types';
+import type { Options, StoryIndex } from '@aussieljk/forkbook/internal/types';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import { clearRegistry, getService } from '../../shared/open-service/server.ts';
@@ -53,7 +53,7 @@ beforeEach(async () => {
   } as unknown as Options;
   clearRegistry();
   clearToolsetRegistry();
-  vi.stubGlobal('STORYBOOK_SERVICES_LOADED', false);
+  vi.stubGlobal('FORKBOOK_SERVICES_LOADED', false);
   now = 1_000;
   vi.spyOn(Date, 'now').mockImplementation(() => now);
 }, 60_000);

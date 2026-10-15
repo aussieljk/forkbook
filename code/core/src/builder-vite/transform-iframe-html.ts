@@ -1,5 +1,10 @@
-import { normalizeStories } from 'storybook/internal/common';
-import type { DocsOptions, Options, SecurityConfig, TagsOptions } from 'storybook/internal/types';
+import { normalizeStories } from '@aussieljk/forkbook/internal/common';
+import type {
+  DocsOptions,
+  Options,
+  SecurityConfig,
+  TagsOptions,
+} from '@aussieljk/forkbook/internal/types';
 
 import { SB_VIRTUAL_FILES } from './virtual-file-names.ts';
 

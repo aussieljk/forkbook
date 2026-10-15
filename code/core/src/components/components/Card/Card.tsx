@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import { clsx } from 'clsx';
-import type { StorybookTheme } from 'storybook/theming';
+import type { StorybookTheme } from '@aussieljk/forkbook/theming';
 
 import styles from './Card.module.css';
 

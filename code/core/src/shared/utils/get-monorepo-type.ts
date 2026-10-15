@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import type { PackageJson } from 'storybook/internal/types';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import type { PackageJson } from '@aussieljk/forkbook/internal/types';
 
 export const monorepoConfigs = {
   Nx: 'nx.json',

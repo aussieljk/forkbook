@@ -7,7 +7,7 @@
   width: 100%;
   min-height: 40px;
   flex-shrink: 0;
-  /* TODO in Storybook 11: Apply background regardless of border. */
+  /* TODO in Forkbook 11: Apply background regardless of border. */
   scrollbar-color: var(--sb-bar-text-color) transparent;
   scrollbar-width: thin;
   overflow: hidden;

@@ -7,20 +7,20 @@ export const globalsNameReferenceMap = {
   'react-dom/client': '__REACT_DOM_CLIENT__',
   '@storybook/icons': '__STORYBOOK_ICONS__',
 
-  'storybook/manager-api': '__STORYBOOK_API__',
+  '@aussieljk/forkbook/manager-api': '__STORYBOOK_API__',
 
-  'storybook/theming': '__STORYBOOK_THEMING__',
-  'storybook/theming/create': '__STORYBOOK_THEMING_CREATE__',
+  '@aussieljk/forkbook/theming': '__STORYBOOK_THEMING__',
+  '@aussieljk/forkbook/theming/create': '__STORYBOOK_THEMING_CREATE__',
 
-  'storybook/test': '__STORYBOOK_TEST__',
+  '@aussieljk/forkbook/test': '__STORYBOOK_TEST__',
 
-  'storybook/internal/channels': '__STORYBOOK_CHANNELS__',
-  'storybook/internal/client-logger': '__STORYBOOK_CLIENT_LOGGER__',
-  'storybook/internal/components': '__STORYBOOK_COMPONENTS__',
-  'storybook/internal/core-events': '__STORYBOOK_CORE_EVENTS__',
-  'storybook/internal/manager-errors': '__STORYBOOK_CORE_EVENTS_MANAGER_ERRORS__',
-  'storybook/internal/router': '__STORYBOOK_ROUTER__',
-  'storybook/internal/types': '__STORYBOOK_TYPES__',
+  '@aussieljk/forkbook/internal/channels': '__STORYBOOK_CHANNELS__',
+  '@aussieljk/forkbook/internal/client-logger': '__STORYBOOK_CLIENT_LOGGER__',
+  '@aussieljk/forkbook/internal/components': '__STORYBOOK_COMPONENTS__',
+  '@aussieljk/forkbook/internal/core-events': '__STORYBOOK_CORE_EVENTS__',
+  '@aussieljk/forkbook/internal/manager-errors': '__STORYBOOK_CORE_EVENTS_MANAGER_ERRORS__',
+  '@aussieljk/forkbook/internal/router': '__STORYBOOK_ROUTER__',
+  '@aussieljk/forkbook/internal/types': '__STORYBOOK_TYPES__',
 } as const;
 
 export const globalPackages = Object.keys(globalsNameReferenceMap) as Array<

@@ -10,7 +10,7 @@ export type ProcessAncestryEntry = {
 const stripQuotedUrls = (command: string) => command.replace(/['"](https?:\/\/[^'"]+)['"]/g, '$1');
 
 /**
- * Read a Storybook version specifier from process ancestry.
+ * Read a Forkbook version specifier from process ancestry.
  *
  * Prefers a pkg.pr.new CLI URL in the command so `npx --yes https://pkg.pr.new/.../storybook@sha`
  * and `npx storybook@https://pkg.pr.new/...` resolve to the same source. Falls back to

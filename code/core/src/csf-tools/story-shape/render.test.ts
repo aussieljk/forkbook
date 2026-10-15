@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { recast } from 'storybook/internal/babel';
+import { recast } from '@aussieljk/forkbook/internal/babel';
 
 import { dedent } from 'ts-dedent';
 

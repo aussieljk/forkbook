@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import type { StoryObj } from 'storybook/react';
+import type { StoryObj } from '@aussieljk/forkbook/react';
 
 const Button: FC<{ label?: string; disabled?: boolean }> = (props) => {
   return <button disabled={props.disabled}>{props.label}</button>;

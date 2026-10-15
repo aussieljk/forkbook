@@ -15,7 +15,7 @@ describe('generateModernIframeScriptCode', () => {
 
       setup();
 
-      import { PreviewWeb } from 'storybook/preview-api';
+      import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
@@ -45,7 +45,7 @@ describe('generateModernIframeScriptCode', () => {
 
       setup();
 
-      import { PreviewWeb } from 'storybook/preview-api';
+      import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
@@ -75,7 +75,7 @@ describe('generateModernIframeScriptCode', () => {
 
       setup();
 
-      import { PreviewWeb } from 'storybook/preview-api';
+      import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
@@ -105,7 +105,7 @@ describe('generateModernIframeScriptCode', () => {
 
       setup();
 
-      import { PreviewWeb } from 'storybook/preview-api';
+      import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
@@ -129,11 +129,11 @@ describe('generateModernIframeScriptCode', () => {
   it('imports setup from the builder-context-resolved runtime path (SB-1981 regression guard)', async () => {
     const result = await generateModernIframeScriptCode();
 
-    // A bare `storybook/internal/preview/runtime` specifier resolves from the user's project
+    // A bare `@aussieljk/forkbook/internal/preview/runtime` specifier resolves from the user's project
     // root, which can hold a different `storybook` copy than the builder in multi-version
     // monorepos. The generated entry must import the builder-context-resolved absolute path.
     expect(result).toContain(`import { setup } from '${previewRuntimePath}';`);
-    expect(result).not.toContain('storybook/internal/preview/runtime');
+    expect(result).not.toContain('@aussieljk/forkbook/internal/preview/runtime');
   });
 });
 
@@ -181,8 +181,8 @@ describe('optimizeDeps coverage for virtual module imports', () => {
     // previews, addon previews) that ARE added as optimizeDeps entries, so Vite discovers
     // them via entry crawling. No explicit optimizeViteDeps entry is required.
     const discoveredViaEntries = new Set([
-      'storybook/preview-api', // Imported in many renderer/addon preview files
-      'storybook/internal/channels', // Imported in addon preview files
+      '@aussieljk/forkbook/preview-api', // Imported in many renderer/addon preview files
+      '@aussieljk/forkbook/internal/channels', // Imported in addon preview files
     ]);
 
     const notCovered = packageImports.filter(

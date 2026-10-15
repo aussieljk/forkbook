@@ -40,14 +40,14 @@ export abstract class StorybookError extends Error {
   /**
    * Specifies the documentation for the error.
    *
-   * - If `true`, links to a documentation page on the Storybook website (make sure it exists before
+   * - If `true`, links to a documentation page on the Forkbook website (make sure it exists before
    *   enabling) – This is not implemented yet.
    * - If a string, uses the provided URL for documentation (external or FAQ links).
    * - If `false` (default), no documentation link is added.
    */
   public readonly documentation: boolean | string | string[];
 
-  /** Flag used to easily determine if the error originates from Storybook. */
+  /** Flag used to easily determine if the error originates from Forkbook. */
   readonly fromStorybook: true = true as const;
 
   /**

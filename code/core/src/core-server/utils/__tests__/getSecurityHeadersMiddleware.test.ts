@@ -18,7 +18,7 @@ describe('getSecurityHeadersMiddleware', () => {
   it.each([
     ['security is not configured', undefined],
     ['insecureRemoteIframeEmbed is false', { insecureRemoteIframeEmbed: false }],
-  ])('restricts framing to Storybook and loopback pages when %s', (_, security) => {
+  ])('restricts framing to Forkbook and loopback pages when %s', (_, security) => {
     const { res, next } = run(security);
     expect(res.appendHeader).toHaveBeenCalledWith(
       'Content-Security-Policy',

@@ -1,7 +1,7 @@
 import { basename } from 'node:path';
 
-import { getRefs } from 'storybook/internal/common';
-import type { Options } from 'storybook/internal/types';
+import { getRefs } from '@aussieljk/forkbook/internal/common';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { executor, getConfig } from '../index.ts';
 import { readTemplate } from './template.ts';

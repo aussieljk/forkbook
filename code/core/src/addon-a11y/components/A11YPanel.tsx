@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Badge, Button } from 'storybook/internal/components';
+import { Badge, Button } from '@aussieljk/forkbook/internal/components';
 
 import { SyncIcon } from '@storybook/icons';
 

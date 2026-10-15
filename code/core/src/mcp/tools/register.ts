@@ -1,9 +1,9 @@
 /**
- * Registers the docs tools of a hosted Storybook from the shared core toolset.
+ * Registers the docs tools of a hosted Forkbook from the shared core toolset.
  *
  * Everything an MCP client observes — the frozen tool names, the descriptions, the schemas and the
  * rendered text — comes from the toolset. This module contributes only what is specific to serving
- * a hosted Storybook: building the per-request access over the manifest provider, composing one
+ * a hosted Forkbook: building the per-request access over the manifest provider, composing one
  * access per source, and the telemetry callbacks this package's embedders rely on.
  */
 
@@ -25,7 +25,7 @@ import {
   type DocsToolset,
   type ToolsetCtx,
   type ToolsetOutcome,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 import type { StorybookContext } from '../types.ts';
 import { errorToMCPContent } from '../utils/error-to-mcp-content.ts';
@@ -41,15 +41,15 @@ type ToolEnabled = Parameters<Server['tool']>[0]['enabled'];
 const ctx: ToolsetCtx = {
   transport: 'mcp',
   getService: () => {
-    throw new Error('Open services are not available in a hosted Storybook.');
+    throw new Error('Open services are not available in a hosted Forkbook.');
   },
 };
 
 /**
- * The composed sources this request serves, or nothing when this Storybook stands alone.
+ * The composed sources this request serves, or nothing when this Forkbook stands alone.
  *
  * Only the "is this a composition" test is hosted-specific — a configured source without a URL is
- * this Storybook itself. Building the accesses is the shared helper's job, so hosted and dev-server
+ * this Forkbook itself. Building the accesses is the shared helper's job, so hosted and dev-server
  * compositions cannot drift apart.
  */
 function getSources(context: StorybookContext | undefined): DocsSource[] | undefined {

@@ -1,14 +1,14 @@
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   getProjectRoot,
   loadAllPresets,
   loadMainConfig,
   resolveAddonName,
   validateFrameworkName,
-} from 'storybook/internal/common';
-import { oneWayHash } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { oneWayHash } from '@aussieljk/forkbook/internal/telemetry';
 
 import { dirname, join } from 'pathe';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -17,8 +17,8 @@ import { resolvePackageDir, safeResolveModule } from '../shared/utils/module.ts'
 import { loadStorybook } from './load.ts';
 import { applyServicesPresetOnce } from './utils/apply-services-preset-once.ts';
 
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 vi.mock('../shared/utils/module.ts', { spy: true });
 vi.mock('./utils/apply-services-preset-once.ts', { spy: true });
 
@@ -37,7 +37,7 @@ beforeEach(() => {
   vi.mocked(validateFrameworkName).mockImplementation(() => {});
   vi.mocked(resolveAddonName).mockReturnValue(undefined);
   vi.mocked(resolvePackageDir).mockImplementation((packageName) =>
-    packageName === 'storybook' ? '/storybook' : '/builder'
+    packageName === '@aussieljk/forkbook' ? '/storybook' : '/builder'
   );
   vi.mocked(applyServicesPresetOnce).mockResolvedValue();
 

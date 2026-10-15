@@ -1,7 +1,7 @@
 import { CheckIcon, EllipsisIcon, PlayAllHollowIcon } from '@storybook/icons';
 
 import { Badge, Form, ProgressSpinner } from '../../index.ts';
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Shortcut } from '../../../manager/components/Shortcut.tsx';
 import { ActionList } from './ActionList.tsx';
 

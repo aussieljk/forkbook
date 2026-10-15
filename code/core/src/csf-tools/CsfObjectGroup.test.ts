@@ -8,7 +8,7 @@ import { loadCsf, printCsf } from './CsfFile.ts';
 const callOptions = {
   importedName: 'addons',
   methodName: 'setConfig',
-  moduleNames: ['storybook/manager-api'],
+  moduleNames: ['@aussieljk/forkbook/manager-api'],
 };
 
 describe('CsfObject.group', () => {
@@ -206,7 +206,7 @@ describe('CsfObject.group', () => {
 
 describe('ConfigFile.callArguments', () => {
   it('exposes the shared read and mutation methods and tracks file changes', () => {
-    const config = loadConfig(`import { addons } from 'storybook/manager-api';
+    const config = loadConfig(`import { addons } from '@aussieljk/forkbook/manager-api';
       addons.setConfig({ width: 1, obsolete: false });`).parse();
     const [object] = config.callArguments(callOptions);
 
@@ -227,7 +227,7 @@ describe('ConfigFile.callArguments', () => {
   it.each(['config', '...configs', 'getConfig()'])(
     'reports an unsupported argument: %s',
     (argument) => {
-      const source = `import { addons } from 'storybook/manager-api'; addons.setConfig(${argument});`;
+      const source = `import { addons } from '@aussieljk/forkbook/manager-api'; addons.setConfig(${argument});`;
       const config = loadConfig(source).parse();
 
       expect(config.callArguments(callOptions)).toEqual([]);
@@ -243,7 +243,7 @@ describe('ConfigFile.callArguments', () => {
   );
 
   it('rejects a reassigned CommonJS binding', () => {
-    const config = loadConfig(`let { addons } = require('storybook/manager-api');
+    const config = loadConfig(`let { addons } = require('@aussieljk/forkbook/manager-api');
       addons = other;
       addons.setConfig({ width: 1 });`).parse();
 
@@ -253,7 +253,7 @@ describe('ConfigFile.callArguments', () => {
 
   it('ignores calls without arguments', () => {
     const config = loadConfig(
-      `import { addons } from 'storybook/manager-api'; addons.setConfig();`
+      `import { addons } from '@aussieljk/forkbook/manager-api'; addons.setConfig();`
     ).parse();
 
     expect(config.callArguments(callOptions)).toEqual([]);

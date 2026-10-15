@@ -4,10 +4,10 @@ import {
   SET_CURRENT_STORY,
   STORY_ARGS_UPDATED,
   UPDATE_QUERY_PARAMS,
-} from 'storybook/internal/core-events';
-import { buildArgsParam, queryFromLocation } from 'storybook/internal/router';
-import type { NavigateOptions } from 'storybook/internal/router';
-import type { API_Layout, API_UI, API_ViewMode, Args } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import { buildArgsParam, queryFromLocation } from '@aussieljk/forkbook/internal/router';
+import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
+import type { API_Layout, API_UI, API_ViewMode, Args } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -268,7 +268,7 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
 
       const pathname = location.pathname || '/';
       const originAddress = global.window.location.origin + pathname;
-      const networkAddress = global.STORYBOOK_NETWORK_ADDRESS ?? originAddress;
+      const networkAddress = global.FORKBOOK_NETWORK_ADDRESS ?? originAddress;
       const managerBase =
         base === 'origin' ? originAddress : base === 'network' ? networkAddress : pathname;
       const previewBaseUrl = base ? managerBase : global.document?.baseURI || originAddress;

@@ -18,8 +18,8 @@ export type ToolsetGetService = {
 export type ToolsetCtx = {
   transport: ToolsetTransport;
   /**
-   * Storybook UI base URL, including any deployment subpath. Absent when running from a CLI
-   * without a live Storybook.
+   * Forkbook UI base URL, including any deployment subpath. Absent when running from a CLI
+   * without a live Forkbook.
    */
   origin?: string;
   getService: ToolsetGetService;
@@ -37,7 +37,7 @@ export type ToolsetTelemetryReport = { payload: Record<string, unknown> };
  * A method description, resolved per transport.
  *
  * The function form exists because descriptions cross-reference sibling methods, and each surface
- * spells those differently (`stories-changed` on MCP, `npx storybook tools stories changed` on
+ * spells those differently (`stories-changed` on MCP, `npx forkbook tools stories changed` on
  * the CLI, dotted `toolsetId.methodName` in the SDK). Use `getToolName(ctx)` to render a reference
  * rather than hardcoding a spelling.
  */
@@ -115,9 +115,9 @@ export type ToolsetMethod<
    */
   output?: ToolsetObjectOutputSchema;
   /**
-   * Marks a method that can only do its job against a running Storybook dev server — because it
+   * Marks a method that can only do its job against a running Forkbook dev server — because it
    * needs a live origin for its URLs or reads state only the dev server owns. Consumers that run
-   * without one (the `storybook tools` CLI) surface these methods behind one uniform contract:
+   * without one (the `forkbook tools` CLI) surface these methods behind one uniform contract:
    * start the dev server first. Adapters that always have a dev server (MCP) ignore the trait.
    */
   requiresDevServer?: true;

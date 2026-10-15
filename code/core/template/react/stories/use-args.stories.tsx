@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useArgs } from 'storybook/preview-api';
+import { useArgs } from '@aussieljk/forkbook/preview-api';
 
 // Each story's button flags a distinct `clicked<Name>` arg on its own story via useArgs,
 // and renders which markers are present. A scoping leak shows up as the page's primary

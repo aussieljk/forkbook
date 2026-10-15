@@ -1,4 +1,4 @@
-import type { PreviewAnnotation } from 'storybook/internal/types';
+import type { PreviewAnnotation } from '@aussieljk/forkbook/internal/types';
 
 import { isAbsolute, normalize, resolve } from 'pathe';
 

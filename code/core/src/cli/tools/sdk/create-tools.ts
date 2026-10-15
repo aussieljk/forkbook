@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 
-import { versions } from 'storybook/internal/common';
+import { versions } from '@aussieljk/forkbook/internal/common';
 
 import { StorybookDevServerDisconnectedError } from '../../../server-errors.ts';
 import { formatIssues } from '../../../shared/open-service/errors.ts';
@@ -67,13 +67,13 @@ export type CreateToolsDeps = {
 };
 
 /**
- * Resolve a host for the tools the target Storybook configuration registers.
+ * Resolve a host for the tools the target Forkbook configuration registers.
  *
- * `local` loads that configuration without a running Storybook. When this process is already in
+ * `local` loads that configuration without a running Forkbook. When this process is already in
  * the target directory, it loads in-process. Otherwise it spawns a child host from the `storybook`
  * package resolved under that directory. It never changes `process.cwd()`.
  *
- * `attached` joins a running Storybook over its channel and never changes `process.cwd()`. Two
+ * `attached` joins a running Forkbook over its channel and never changes `process.cwd()`. Two
  * processes never attach across `storybook` installations: when this process is the instance's
  * installation (compared by the package root each side derives from its own module location), it
  * joins in-process; when it is a different installation, it spawns a child host from the
@@ -107,7 +107,7 @@ export async function createTools(
   const mode: ToolsMode = options.mode ?? 'auto';
   const clientInfo: Required<ToolsClientInfo> = {
     name: options.clientInfo?.name ?? 'storybook-tools-sdk',
-    version: options.clientInfo?.version ?? versions.storybook,
+    version: options.clientInfo?.version ?? versions['@aussieljk/forkbook'],
     kind: options.clientInfo?.kind ?? 'sdk',
   };
 
@@ -163,10 +163,10 @@ async function createAttachedTools(
   clientInfo: Required<ToolsClientInfo>,
   requestedMode: ToolsMode
 ): Promise<AttachedTools> {
-  process.env.STORYBOOK_ATTACHED_TOOLS = 'true';
+  process.env.FORKBOOK_ATTACHED_TOOLS = 'true';
   // local-runtime pulls core-server at import, which must not run before the attached channel is prepared.
   const { bootstrapAttachedRuntime } = await import('./attached-runtime.ts');
-  const isChildHost = process.env.STORYBOOK_TOOLS_CHILD_HOST === 'true';
+  const isChildHost = process.env.FORKBOOK_TOOLS_CHILD_HOST === 'true';
   const autoSpawn = isChildHost ? false : (options.autoSpawn ?? true);
   const attached = await (
     deps.attach ?? ((target) => bootstrapAttachedRuntime({ ...target, autoSpawn }))
@@ -204,7 +204,7 @@ async function createAttachedTools(
     runtime: inProcess.runtime,
     clientInfo,
     storybook: {
-      version: versions.storybook,
+      version: versions['@aussieljk/forkbook'],
       configDir: inProcess.runtime.configDir,
       url: inProcess.record.url,
       pid: inProcess.record.pid,
@@ -235,16 +235,16 @@ async function createLocalTools(
   requestedMode: ToolsMode,
   fallback?: { fallbackNotice?: string; fallbackReason?: ToolsAttachGateReason }
 ): Promise<LocalTools> {
-  delete process.env.STORYBOOK_ATTACHED_TOOLS;
+  delete process.env.FORKBOOK_ATTACHED_TOOLS;
   const cwd = resolve(options.cwd ?? process.cwd());
-  const isChildHost = process.env.STORYBOOK_TOOLS_CHILD_HOST === 'true';
+  const isChildHost = process.env.FORKBOOK_TOOLS_CHILD_HOST === 'true';
   const autoSpawn = isChildHost ? false : (options.autoSpawn ?? true);
 
   if (!projectPathsEqual(cwd, process.cwd())) {
     if (!autoSpawn) {
       throw new ToolsRuntimeError({
         reason: 'mode-unavailable',
-        message: `This process is running from ${process.cwd()}, but the target Storybook is at ${cwd}. Re-run from that directory, or omit \`autoSpawn: false\` so a child host can load the project.`,
+        message: `This process is running from ${process.cwd()}, but the target Forkbook is at ${cwd}. Re-run from that directory, or omit \`autoSpawn: false\` so a child host can load the project.`,
       });
     }
     const child = await (deps.spawnChild ?? spawnChildHost)({
@@ -266,7 +266,7 @@ async function createLocalTools(
   } catch (error) {
     throw new ToolsRuntimeError({
       reason: 'config-load-failed',
-      message: `Could not load the Storybook configuration for this project: ${
+      message: `Could not load the Forkbook configuration for this project: ${
         error instanceof Error ? error.message : String(error)
       }`,
       cause: error,
@@ -280,7 +280,7 @@ async function createLocalTools(
     ...fallback,
     runtime,
     clientInfo,
-    storybook: { version: versions.storybook, configDir: runtime.configDir },
+    storybook: { version: versions['@aussieljk/forkbook'], configDir: runtime.configDir },
   });
 }
 
@@ -385,7 +385,7 @@ function createToolsHost(args: {
       throw new AttachUnavailableError({
         reason: 'no-instance',
         instances: [],
-        remediation: `\`${ref}\` needs a running Storybook dev server, and this tools host loaded the project's configuration on its own. Start Storybook (for example \`npm run storybook\`), then retry.`,
+        remediation: `\`${ref}\` needs a running Forkbook dev server, and this tools host loaded the project's configuration on its own. Start Forkbook (for example \`npm run storybook\`), then retry.`,
       });
     }
 
@@ -520,7 +520,7 @@ function findToolset(runtime: ToolsRuntime, toolsetId: string): AnyToolsetDefini
   if (!toolset) {
     throw new ToolsRuntimeError({
       reason: 'unknown-toolset',
-      message: `Unknown toolset \`${toolsetId}\`. The Storybook configuration at ${
+      message: `Unknown toolset \`${toolsetId}\`. The Forkbook configuration at ${
         runtime.configDir
       } provides: ${runtime.toolsets.map((candidate) => candidate.id).join(', ')}.`,
     });

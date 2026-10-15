@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Tag } from 'storybook/internal/core-server';
-import type { DocsIndexEntry, IndexEntry } from 'storybook/internal/types';
+import { Tag } from '@aussieljk/forkbook/internal/core-server';
+import type { DocsIndexEntry, IndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import { vol } from 'memfs';
 
@@ -17,14 +17,14 @@ beforeEach(() => {
   vi.spyOn(process, 'cwd').mockReturnValue('/app');
   vol.fromJSON(
     {
-      './Example.mdx': `import { Meta } from 'storybook/addon-docs/blocks';
+      './Example.mdx': `import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 <Meta summary="An example documentation page" />
 
 # Example
 
 This is example documentation.`,
-      './Standalone.mdx': `import { Meta } from 'storybook/addon-docs/blocks';
+      './Standalone.mdx': `import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 <Meta summary="A standalone documentation page" />
 

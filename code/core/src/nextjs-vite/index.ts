@@ -3,17 +3,17 @@ import type {
   InferTypes,
   PreviewAddon,
   PreviewAddonEntry,
-} from 'storybook/internal/csf';
-import type { ProjectAnnotations } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/csf';
+import type { ProjectAnnotations } from '@aussieljk/forkbook/internal/types';
 
-import type { ReactPreview } from 'storybook/react';
-import { __definePreview } from 'storybook/react';
-import type { ReactTypes } from 'storybook/react';
+import type { ReactPreview } from '@aussieljk/forkbook/react';
+import { __definePreview } from '@aussieljk/forkbook/react';
+import type { ReactTypes } from '@aussieljk/forkbook/react';
 
 import * as nextPreview from './preview.tsx';
 import type { NextJsTypes } from './types.ts';
 
-export * from 'storybook/react';
+export * from '@aussieljk/forkbook/react';
 // @ts-expect-error (double exports)
 export * from './portable-stories.ts';
 export * from './types.ts';

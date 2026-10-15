@@ -6,7 +6,7 @@ import { StorybookError } from './storybook-error.ts';
 
 /**
  * If you can't find a suitable category for your error, create one based on the package name/file
- * path of which the error is thrown. For instance: If it's from `storybook/internal/client-logger`,
+ * path of which the error is thrown. For instance: If it's from `@aussieljk/forkbook/internal/client-logger`,
  * then CLIENT-LOGGER
  *
  * Categories are prefixed by a logical grouping, e.g. PREVIEW_ or FRAMEWORK_ to prevent manager and
@@ -67,9 +67,9 @@ export class ImplicitActionsDuringRendering extends StorybookError {
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#using-implicit-actions-during-rendering-is-deprecated-for-example-in-the-play-function',
       message: dedent`
         We detected that you use an implicit action arg while ${data.phase} of your story.  
-        ${data.deprecated ? `\nThis is deprecated and won't work in Storybook 8 anymore.\n` : ``}
+        ${data.deprecated ? `\nThis is deprecated and won't work in Forkbook 8 anymore.\n` : ``}
         Please provide an explicit spy to your args like this:
-          import { fn } from 'storybook/test';
+          import { fn } from '@aussieljk/forkbook/test';
           ... 
           args: {
            ${data.name}: fn()
@@ -101,7 +101,7 @@ export class MissingRenderToCanvasError extends StorybookError {
       message: dedent`
         Expected your framework's preset to export a \`renderToCanvas\` field.
 
-        Perhaps it needs to be upgraded for Storybook 7.0?`,
+        Perhaps it needs to be upgraded for Forkbook 7.0?`,
       documentation:
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field',
     });
@@ -137,10 +137,10 @@ export class StoryIndexFetchError extends StorybookError {
         
         ${data.text}
 
-        If you are in development, this likely indicates a problem with your Storybook process,
+        If you are in development, this likely indicates a problem with your Forkbook process,
         check the terminal for errors.
 
-        If you are in a deployed Storybook, there may have been an issue deploying the full Storybook
+        If you are in a deployed Forkbook, there may have been an issue deploying the full Forkbook
         build.`,
     });
   }
@@ -156,7 +156,7 @@ export class MdxFileWithNoCsfReferencesError extends StorybookError {
         Tried to render docs entry ${data.storyId} but it is a MDX file that has no CSF
         references, or autodocs for a CSF file that some doesn't refer to itself.
         
-        This likely is an internal error in Storybook's indexing, or you've attached the
+        This likely is an internal error in Forkbook's indexing, or you've attached the
         \`attached-mdx\` tag to an MDX file that is not attached.`,
     });
   }
@@ -169,7 +169,7 @@ export class EmptyIndexError extends StorybookError {
       category: Category.PREVIEW_API,
       code: 8,
       message: dedent`
-        Couldn't find any stories in your Storybook.
+        Couldn't find any stories in your Forkbook.
 
         - Please check your stories field of your main.js config: does it match correctly?
         - Also check the browser console and terminal for error messages.`,
@@ -221,7 +221,7 @@ export class StoryStoreAccessedBeforeInitializationError extends StorybookError 
       message: dedent`
         Cannot access the Story Store until the index is ready.
 
-        It is not recommended to use methods directly on the Story Store anyway, in Storybook 9 we will
+        It is not recommended to use methods directly on the Story Store anyway, in Forkbook 9 we will
         remove access to the store entirely`,
     });
   }
@@ -241,11 +241,11 @@ export class MountMustBeDestructuredError extends StorybookError {
       To use mount in the play function, you must satisfy the following two requirements: 
       
       1. You *must* destructure the mount property from the \`context\` (the argument passed to your play function). 
-         This makes sure that Storybook does not start rendering the story before the play function begins.
+         This makes sure that Forkbook does not start rendering the story before the play function begins.
       
-      2. Your Storybook framework or builder must be configured to transpile to ES2017 or newer. 
+      2. Your Forkbook framework or builder must be configured to transpile to ES2017 or newer. 
          This is because destructuring statements and async/await usages are otherwise transpiled away, 
-         which prevents Storybook from recognizing your usage of \`mount\`.
+         which prevents Forkbook from recognizing your usage of \`mount\`.
       
       More info: https://storybook.js.org/docs/writing-tests/interaction-testing?ref=error#run-code-before-the-component-gets-rendered
       
@@ -375,9 +375,9 @@ export class UnknownArgTypesError extends StorybookError {
         There was a failure when generating detailed ArgTypes in ${data.language} for:
         ${JSON.stringify(data.type, null, 2)} 
         
-        Storybook will fall back to use a generic type description instead.
+        Forkbook will fall back to use a generic type description instead.
 
-        This type is either not supported or it is a bug in the docgen generation in Storybook.
+        This type is either not supported or it is a bug in the docgen generation in Forkbook.
         If you think this is a bug, please detail it as much as possible in the Github issue.
       `,
     });
@@ -406,7 +406,7 @@ export class UnsupportedViewportDimensionError extends StorybookError {
       message: dedent`
         Encountered an unsupported value "${data.value}" when setting the viewport ${data.dimension} dimension.
         
-        The Storybook plugin only supports values in the following units:
+        The Forkbook plugin only supports values in the following units:
         - px, vh, vw, em, rem and %.
         
         You can either change the viewport for this story to use one of the supported units or skip the test by adding '!test' to the story's tags per https://storybook.js.org/docs/writing-stories/tags
@@ -424,11 +424,11 @@ export class ProjectAnnotationsAlreadyAppliedError extends StorybookError {
       documentation:
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files',
       message: dedent`
-        setProjectAnnotations() was called from a Vitest setup file, but storybook/addon-vitest applies your project annotations itself: your .storybook/preview file and the previews of the addons registered in .storybook/main. Calling it again replaces those annotations, so the call has to go:
+        setProjectAnnotations() was called from a Vitest setup file, but @aussieljk/forkbook/addon-vitest applies your project annotations itself: your .forkbook/preview file and the previews of the addons registered in .forkbook/main. Calling it again replaces those annotations, so the call has to go:
 
-        - If it only passes your .storybook/preview annotations, delete the call.
-        - If it passes an addon's annotations, register that addon in the "addons" field of .storybook/main instead.
-        - If it passes custom annotations, move them into .storybook/preview.
+        - If it only passes your .forkbook/preview annotations, delete the call.
+        - If it passes an addon's annotations, register that addon in the "addons" field of .forkbook/main instead.
+        - If it passes custom annotations, move them into .forkbook/preview.
         - If the setup file is shared with a Vitest project that uses portable stories directly, list it only in that project's "setupFiles".
       `,
     });

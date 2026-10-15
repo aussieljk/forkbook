@@ -2,9 +2,9 @@ import React from 'react';
 
 import { TabletIcon } from '@storybook/icons';
 
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { SelectOption } from './SelectOption.tsx';
 import { Listbox } from './helpers.tsx';
 

@@ -1,7 +1,7 @@
 import type { ComponentProps, FC, MouseEventHandler, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useMemo } from 'react';
 
-import { Button, PopoverProvider, Select, Spaced } from 'storybook/internal/components';
+import { Button, PopoverProvider, Select, Spaced } from '@aussieljk/forkbook/internal/components';
 
 import { global } from '@storybook/global';
 import {
@@ -15,8 +15,8 @@ import {
 } from '@storybook/icons';
 
 import { clsx } from 'clsx';
-import { useStorybookApi } from 'storybook/manager-api';
-import { useTheme } from 'storybook/theming';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import type { NormalLink } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import type { getStateType } from '../../utils/tree.ts';
@@ -94,7 +94,7 @@ export const RefIndicator = React.memo(
       return (
         <div className={styles.indicatorPlacement} ref={forwardedRef}>
           <PopoverProvider
-            ariaLabel="Composed Storybook status"
+            ariaLabel="Composed Forkbook status"
             placement={isMobile ? 'bottom' : 'bottom-start'}
             padding={0}
             popover={() => (
@@ -174,7 +174,7 @@ const ReadyMessage: FC<{
     <Message href={url.replace(/\/?$/, '/index.html')}>
       <GlobeIcon color={theme.color.secondary} />
       <div>
-        <MessageTitle>View external Storybook</MessageTitle>
+        <MessageTitle>View external Forkbook</MessageTitle>
         <div>
           Explore {componentCount} components and {leafCount} stories in a new browser tab.
         </div>
@@ -227,7 +227,7 @@ const LoginRequiredMessage: FC<RefType> = ({ loginUrl, id }) => {
       <LockIcon color={theme.color.gold} />
       <div>
         <MessageTitle>Log in required</MessageTitle>
-        <div>You need to authenticate to view this Storybook's components.</div>
+        <div>You need to authenticate to view this Forkbook's components.</div>
       </div>
     </Message>
   );
@@ -255,7 +255,7 @@ const ErrorOccurredMessage: FC<{ url: string }> = ({ url }) => {
       <AlertIcon color={theme.color.negative} />
       <div>
         <MessageTitle>Something went wrong</MessageTitle>
-        <div>This external Storybook didn't load. Debug it in a new tab now.</div>
+        <div>This external Forkbook didn't load. Debug it in a new tab now.</div>
       </div>
     </Message>
   );
@@ -269,7 +269,7 @@ const LoadingMessage: FC<{ url: string }> = ({ url }) => {
       <TimeIcon color={theme.color.secondary} />
       <div>
         <MessageTitle>Please wait</MessageTitle>
-        <div>This Storybook is loading.</div>
+        <div>This Forkbook is loading.</div>
       </div>
     </Message>
   );

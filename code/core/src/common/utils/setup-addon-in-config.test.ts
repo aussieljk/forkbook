@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ConfigFile } from 'storybook/internal/csf-tools';
-import * as csfTools from 'storybook/internal/csf-tools';
-import type { StorybookConfigRaw } from 'storybook/internal/types';
+import type { ConfigFile } from '@aussieljk/forkbook/internal/csf-tools';
+import * as csfTools from '@aussieljk/forkbook/internal/csf-tools';
+import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import * as loadMainConfigModule from './load-main-config.ts';
 import { setupAddonInConfig } from './setup-addon-in-config.ts';
 import * as syncModule from './sync-main-preview-addons.ts';
 import * as wrapUtils from './wrap-getAbsolutePath-utils.ts';
 
-vi.mock('storybook/internal/csf-tools', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/csf-tools', { spy: true });
 vi.mock('./sync-main-preview-addons', { spy: true });
 vi.mock('./wrap-getAbsolutePath-utils', { spy: true });
 vi.mock('./load-main-config', { spy: true });
@@ -42,24 +42,27 @@ describe('setupAddonInConfig', () => {
     vi.mocked(wrapUtils.getAbsolutePathWrapperName).mockReturnValue(null);
 
     await setupAddonInConfig({
-      addonName: 'storybook/addon-docs',
+      addonName: '@aussieljk/forkbook/addon-docs',
       mainConfigCSFFile: mockMain,
-      previewConfigPath: '.storybook/preview.ts',
-      configDir: '.storybook',
+      previewConfigPath: '.forkbook/preview.ts',
+      configDir: '.forkbook',
     });
 
-    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(['addons'], 'storybook/addon-docs');
+    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(
+      ['addons'],
+      '@aussieljk/forkbook/addon-docs'
+    );
     expect(mockMain.appendNodeToArray).not.toHaveBeenCalled();
     expect(wrapUtils.wrapValueWithGetAbsolutePathWrapper).not.toHaveBeenCalled();
     expect(csfTools.writeConfig).toHaveBeenCalledWith(mockMain);
     expect(loadMainConfigModule.loadMainConfig).toHaveBeenCalledWith({
-      configDir: '.storybook',
+      configDir: '.forkbook',
       skipCache: true,
     });
     expect(syncModule.syncStorybookAddons).toHaveBeenCalledWith(
       mockMainConfig,
-      '.storybook/preview.ts',
-      '.storybook'
+      '.forkbook/preview.ts',
+      '.forkbook'
     );
   });
 
@@ -72,13 +75,13 @@ describe('setupAddonInConfig', () => {
     vi.mocked(wrapUtils.wrapValueWithGetAbsolutePathWrapper).mockImplementation(() => {});
 
     await setupAddonInConfig({
-      addonName: 'storybook/addon-docs',
+      addonName: '@aussieljk/forkbook/addon-docs',
       mainConfigCSFFile: mockMain,
-      previewConfigPath: '.storybook/preview.ts',
-      configDir: '.storybook',
+      previewConfigPath: '.forkbook/preview.ts',
+      configDir: '.forkbook',
     });
 
-    expect(mockMain.valueToNode).toHaveBeenCalledWith('storybook/addon-docs');
+    expect(mockMain.valueToNode).toHaveBeenCalledWith('@aussieljk/forkbook/addon-docs');
     expect(mockMain.appendNodeToArray).toHaveBeenCalledWith(['addons'], mockAddonNode);
     expect(wrapUtils.wrapValueWithGetAbsolutePathWrapper).toHaveBeenCalledWith(
       mockMain,
@@ -87,13 +90,13 @@ describe('setupAddonInConfig', () => {
     expect(mockMain.appendValueToArray).not.toHaveBeenCalled();
     expect(csfTools.writeConfig).toHaveBeenCalledWith(mockMain);
     expect(loadMainConfigModule.loadMainConfig).toHaveBeenCalledWith({
-      configDir: '.storybook',
+      configDir: '.forkbook',
       skipCache: true,
     });
     expect(syncModule.syncStorybookAddons).toHaveBeenCalledWith(
       mockMainConfig,
-      '.storybook/preview.ts',
-      '.storybook'
+      '.forkbook/preview.ts',
+      '.forkbook'
     );
   });
 
@@ -101,13 +104,16 @@ describe('setupAddonInConfig', () => {
     vi.mocked(mockMain.getFieldNode).mockReturnValue(undefined);
 
     await setupAddonInConfig({
-      addonName: 'storybook/addon-docs',
+      addonName: '@aussieljk/forkbook/addon-docs',
       mainConfigCSFFile: mockMain,
-      previewConfigPath: '.storybook/preview.ts',
-      configDir: '.storybook',
+      previewConfigPath: '.forkbook/preview.ts',
+      configDir: '.forkbook',
     });
 
-    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(['addons'], 'storybook/addon-docs');
+    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(
+      ['addons'],
+      '@aussieljk/forkbook/addon-docs'
+    );
     expect(csfTools.writeConfig).toHaveBeenCalledWith(mockMain);
   });
 
@@ -117,10 +123,10 @@ describe('setupAddonInConfig', () => {
 
     await expect(
       setupAddonInConfig({
-        addonName: 'storybook/addon-docs',
+        addonName: '@aussieljk/forkbook/addon-docs',
         mainConfigCSFFile: mockMain,
-        previewConfigPath: '.storybook/preview.ts',
-        configDir: '.storybook',
+        previewConfigPath: '.forkbook/preview.ts',
+        configDir: '.forkbook',
       })
     ).resolves.not.toThrow();
 
@@ -132,13 +138,16 @@ describe('setupAddonInConfig', () => {
     vi.mocked(mockMain.getFieldNode).mockReturnValue(undefined);
 
     await setupAddonInConfig({
-      addonName: 'storybook/addon-docs',
+      addonName: '@aussieljk/forkbook/addon-docs',
       mainConfigCSFFile: mockMain,
       previewConfigPath: undefined,
-      configDir: '.storybook',
+      configDir: '.forkbook',
     });
 
-    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(['addons'], 'storybook/addon-docs');
+    expect(mockMain.appendValueToArray).toHaveBeenCalledWith(
+      ['addons'],
+      '@aussieljk/forkbook/addon-docs'
+    );
     expect(csfTools.writeConfig).toHaveBeenCalledWith(mockMain);
     // syncStorybookAddons will be called with undefined, which is fine
   });

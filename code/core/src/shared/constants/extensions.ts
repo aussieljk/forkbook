@@ -11,7 +11,7 @@ export const jsModuleExtensions = ['.mjs', '.js', '.cjs'] as const;
 export const jsTsSourceExtensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'] as const;
 
 /**
- * Storybook config file extensions for `main.{ext}`, `preview.{ext}`, `manager.{ext}`. Covers the
+ * Forkbook config file extensions for `main.{ext}`, `preview.{ext}`, `manager.{ext}`. Covers the
  * JS/TS family plus the Node module-system variants (`.mts`, `.cts`, etc.).
  */
 export const storybookConfigExtensions = [

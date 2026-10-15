@@ -1,5 +1,5 @@
 /* eslint-disable local-rules/no-uncategorized-errors */
-import { UncaughtManagerError } from 'storybook/internal/manager-errors';
+import { UncaughtManagerError } from '@aussieljk/forkbook/internal/manager-errors';
 
 import { global } from '@storybook/global';
 

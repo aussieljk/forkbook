@@ -1,5 +1,5 @@
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies/index.js';
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { headers } from './headers.ts';
 

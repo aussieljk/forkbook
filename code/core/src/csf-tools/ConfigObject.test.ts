@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { loadConfig, printConfig } from './ConfigFile.ts';
 
@@ -50,7 +50,7 @@ describe('ConfigFile mutations', () => {
 
   it('mutates an aliased config factory import', () => {
     const config = loadConfig(
-      'import { definePreview as preview } from "storybook/react"; export default preview({ tags: [] });'
+      'import { definePreview as preview } from "@aussieljk/forkbook/react"; export default preview({ tags: [] });'
     ).parse();
     expect(config.set(['tags'], ['autodocs']).ok).toBe(true);
     expect(config.getValue(['tags'])).toEqual(['autodocs']);
@@ -72,7 +72,7 @@ describe('ConfigFile mutations', () => {
 
   it('infers quotes and prints LF output for CRLF sources', () => {
     const source = [
-      "import { definePreview } from 'storybook/react';",
+      "import { definePreview } from '@aussieljk/forkbook/react';",
       '',
       'export default definePreview({ tags: [] });',
     ].join('\r\n');
@@ -372,11 +372,11 @@ describe('ConfigFile mutations', () => {
     const config = loadConfig('').parse();
     const object = config;
 
-    object.set(['framework'], t.stringLiteral('storybook/react-vite'));
+    object.set(['framework'], t.stringLiteral('@aussieljk/forkbook/react-vite'));
     object.set(['parameters', 'a11y', 'context'], t.stringLiteral('#app'));
 
     const output = loadConfig(printConfig(config).code).parse();
-    expect(output.getValue(['framework'])).toBe('storybook/react-vite');
+    expect(output.getValue(['framework'])).toBe('@aussieljk/forkbook/react-vite');
     expect(output.getValue(['parameters', 'a11y', 'context'])).toBe('#app');
   });
 

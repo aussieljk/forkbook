@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { ArgTypesRemovedFromStoryContextError } from 'storybook/internal/preview-errors';
-import type { StoryContextForRender } from 'storybook/internal/types';
+import { ArgTypesRemovedFromStoryContextError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
 import { hideArgTypes } from './hideArgTypes.ts';
 

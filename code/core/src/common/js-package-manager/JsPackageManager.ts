@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, normalize, resolve } from 'node:path';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import detectIndent from 'detect-indent';
 import * as find from 'empathic/find';
@@ -69,7 +69,7 @@ export function getPrettyPackageManagerName(packageManager: string | undefined):
 /**
  * Extract package name and version from input
  *
- * @param pkg A string like `storybook/internal/cli-commands`, `react` or `react@^16`
+ * @param pkg A string like `@aussieljk/forkbook/internal/cli-commands`, `react` or `react@^16`
  * @returns A tuple of 2 elements: [packageName, packageVersion]
  */
 export function getPackageDetails(pkg: string): [string, string?] {
@@ -106,14 +106,14 @@ export type PackageJsonInfo = {
 export abstract class JsPackageManager {
   abstract readonly type: PackageManagerName;
 
-  /** The path to the primary package.json file (contains the `storybook` dependency). */
+  /** The path to the primary package.json file (contains the `@aussieljk/forkbook` dependency). */
   readonly primaryPackageJson: PackageJsonInfo;
 
   /** The paths to all package.json files in the project root. */
   packageJsonPaths: string[];
 
   /**
-   * The path to the Storybook instance directory. This is used to find the primary package.json
+   * The path to the Forkbook instance directory. This is used to find the primary package.json
    * file in a repository.
    */
   readonly instanceDir: string;
@@ -355,8 +355,8 @@ export abstract class JsPackageManager {
    *
    * ```ts
    * addDependencies(options, [
-   *   `storybook/react@${storybookVersion}`,
-   *   `storybook/addon-links@${linksVersion}`,
+   *   `@aussieljk/forkbook/react@${storybookVersion}`,
+   *   `@aussieljk/forkbook/addon-links@${linksVersion}`,
    * ]);
    * ```
    *
@@ -429,7 +429,7 @@ export abstract class JsPackageManager {
    * @example
    *
    * ```ts
-   * removeDependencies([`storybook/react`]);
+   * removeDependencies([`@aussieljk/forkbook/react`]);
    * ```
    *
    * @param dependencies Contains a list of packages to remove.
@@ -668,14 +668,14 @@ export abstract class JsPackageManager {
 
   public addStorybookCommandInScripts(options?: { port: number; preCommand?: string }) {
     const sbPort = options?.port ?? 6006;
-    const storybookCmd = `storybook dev -p ${sbPort}`;
-    const buildStorybookCmd = `storybook build`;
+    const storybookCmd = `forkbook dev -p ${sbPort}`;
+    const buildStorybookCmd = `forkbook build`;
 
     const preCommand = options?.preCommand ? this.getRunCommand(options.preCommand) : undefined;
 
     this.addScripts({
-      storybook: [preCommand, storybookCmd].filter(Boolean).join(' && '),
-      'build-storybook': [preCommand, buildStorybookCmd].filter(Boolean).join(' && '),
+      forkbook: [preCommand, storybookCmd].filter(Boolean).join(' && '),
+      'build-forkbook': [preCommand, buildStorybookCmd].filter(Boolean).join(' && '),
     });
   }
 
@@ -833,7 +833,9 @@ export abstract class JsPackageManager {
         ...packageJson.devDependencies,
       };
 
-      return Object.keys(allDeps).some((dep) => dep.includes('storybook'));
+      return Object.keys(allDeps).some(
+        (dep) => dep.includes('storybook') || dep === '@aussieljk/forkbook'
+      );
     } catch (error) {
       return false; // If file doesn't exist or is unreadable, or JSON is invalid
     }

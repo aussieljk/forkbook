@@ -9,7 +9,7 @@ export const viteInjectMockerRuntime = (options: {
 }): import('vite').Plugin => {
   // Get the actual file path so Vite can resolve relative imports
   const mockerRuntimePath = fileURLToPath(
-    import.meta.resolve('storybook/internal/mocking-utils/mocker-runtime')
+    import.meta.resolve('@aussieljk/forkbook/internal/mocking-utils/mocker-runtime')
   );
 
   let viteConfig: ResolvedConfig;

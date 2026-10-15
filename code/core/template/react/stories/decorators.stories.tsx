@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
 
-import { useParameter } from 'storybook/preview-api';
+import { useParameter } from '@aussieljk/forkbook/preview-api';
 
 const Component: FC = () => <p>Story</p>;
 
@@ -54,7 +54,7 @@ export const Context: StoryObj<typeof Component> = {
 };
 
 /**
- * This story demonstrates is a regression test for this issue with React hooks in Storybook
+ * This story demonstrates is a regression test for this issue with React hooks in Forkbook
  * (https://github.com/storybookjs/storybook/issues/29189)
  *
  * Which happened when a decorator was using storybook hooks, and the render react hooks.

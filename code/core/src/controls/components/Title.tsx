@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Badge } from 'storybook/internal/components';
+import { Badge } from '@aussieljk/forkbook/internal/components';
 
-import { useArgTypes, useStorybookApi } from 'storybook/manager-api';
+import { useArgTypes, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID } from '../constants.ts';
 

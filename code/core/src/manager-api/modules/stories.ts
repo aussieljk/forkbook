@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import {
   CONFIG_ERROR,
   CURRENT_STORY_WAS_SET,
@@ -19,10 +19,10 @@ import {
   STORY_PREPARED,
   STORY_SPECIFIED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import { sanitize, toId } from 'storybook/internal/csf';
-import type { NavigateOptions } from 'storybook/internal/router';
-import { queryFromLocation } from 'storybook/internal/router';
+} from '@aussieljk/forkbook/internal/core-events';
+import { sanitize, toId } from '@aussieljk/forkbook/internal/csf';
+import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
+import { queryFromLocation } from '@aussieljk/forkbook/internal/router';
 import type {
   API_ComposedRef,
   API_DocsEntry,
@@ -47,7 +47,7 @@ import type {
   StoryPreparedPayload,
   Tag,
   TagsOptions,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 import { isReviewManagerRoute } from '../../shared/review/routes.ts';
 
 import { global } from '@storybook/global';
@@ -113,7 +113,7 @@ export interface SubAPI {
   /**
    * The `storyId` method is a reference to the `toId` function from `@storybook/csf`, which is used
    * to generate a unique ID for a story. This ID is used to identify a specific story in the
-   * Storybook index.
+   * Forkbook index.
    *
    * @type {typeof toId}
    */
@@ -127,13 +127,13 @@ export interface SubAPI {
    */
   resolveStory: (storyId: StoryId, refsId?: string) => API_HashEntry | undefined;
   /**
-   * Selects the first story to display in the Storybook UI.
+   * Selects the first story to display in the Forkbook UI.
    *
    * @returns {void}
    */
   selectFirstStory: () => void;
   /**
-   * Selects a story to display in the Storybook UI.
+   * Selects a story to display in the Forkbook UI.
    *
    * @param {string} [kindOrId] - The kind or ID of the story to select.
    * @param {StoryId} [story] - The ID of the story to select.

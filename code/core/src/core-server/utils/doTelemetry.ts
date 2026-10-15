@@ -1,5 +1,5 @@
-import { getPrecedingUpgrade, telemetry } from 'storybook/internal/telemetry';
-import type { CoreConfig, Options } from 'storybook/internal/types';
+import { getPrecedingUpgrade, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { CoreConfig, Options } from '@aussieljk/forkbook/internal/types';
 
 import type { Polka } from 'polka';
 import invariant from 'tiny-invariant';

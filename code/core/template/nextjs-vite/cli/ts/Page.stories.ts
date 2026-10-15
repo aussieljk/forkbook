@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { Page } from './Page';
 

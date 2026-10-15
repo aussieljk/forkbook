@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
-import { Form } from 'storybook/internal/components';
+import { Form } from '@aussieljk/forkbook/internal/components';
 
 import { getControlId } from './helpers';
 import type { ControlProps } from './types';

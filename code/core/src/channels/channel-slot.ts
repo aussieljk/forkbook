@@ -1,6 +1,6 @@
 /// <reference path="../typings.d.ts" />
 /**
- * Canonical install/read surface for Storybook's shared addons channel.
+ * Canonical install/read surface for Forkbook's shared addons channel.
  *
  * Each runtime (manager, preview, dev server) installs one channel instance here. The module slot
  * is the source of truth; {@link setChannel} also mirrors to `__STORYBOOK_ADDONS_CHANNEL__`
@@ -20,7 +20,7 @@ function syncGlobalSlot(next: ChannelLike | undefined): void {
  * Returns the installed addons channel, or `null` before one exists.
  *
  * The global slot wins over the module cache so duplicate copies of this module (e.g. dev-server
- * preset code and `.storybook` service registration loading different bundles) still observe
+ * preset code and `.forkbook` service registration loading different bundles) still observe
  * `setChannel` from whichever copy installed the live websocket channel.
  */
 export function getChannel(): ChannelLike | null {
@@ -43,7 +43,7 @@ export function requireChannel(): ChannelLike {
   const installed = getChannel();
   if (!installed) {
     throw new Error(
-      'Storybook addons channel is not installed in this runtime. Install it via setChannel() or addons.setChannel() at the runtime entry point before registering services or emitting events.'
+      'Forkbook addons channel is not installed in this runtime. Install it via setChannel() or addons.setChannel() at the runtime entry point before registering services or emitting events.'
     );
   }
 

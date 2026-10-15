@@ -1,6 +1,6 @@
-# Storybook Test
+# Forkbook Test
 
-The `storybook/test` package contains utilities for testing your stories inside `play` functions.
+The `@aussieljk/forkbook/test` package contains utilities for testing your stories inside `play` functions.
 
 ## Usage
 
@@ -9,7 +9,7 @@ The instrumentation makes sure you can debug those methods in the [interactions]
 
 ```ts
 // Button.stories.ts
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 import { Button } from './Button';
 
 export default {

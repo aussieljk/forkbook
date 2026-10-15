@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
-import { type JsPackageManager, getProjectRoot } from 'storybook/internal/common';
-import { type CsfValue, readConfig, writeConfig } from 'storybook/internal/csf-tools';
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { type JsPackageManager, getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { type CsfValue, readConfig, writeConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import commentJson from 'comment-json';
 import detectIndent from 'detect-indent';
@@ -41,7 +41,7 @@ export const findEslintFile = (instanceDir: string) => {
   return undefined;
 };
 
-const STORYBOOK_PLUGIN = 'eslint-plugin-storybook';
+const FORKBOOK_PLUGIN = 'eslint-plugin-storybook';
 const FLAT_CONFIG_DOCS_COMMENT = {
   type: 'CommentLine',
   value:
@@ -183,7 +183,7 @@ function hasStorybookConfig(target: ConfigTarget, storybookLocalNames: Set<strin
     const plugin = config.object.object;
     return (
       (t.isIdentifier(plugin) && storybookLocalNames.has(plugin.name)) ||
-      isRequireOf(plugin, STORYBOOK_PLUGIN)
+      isRequireOf(plugin, FORKBOOK_PLUGIN)
     );
   });
 }
@@ -220,7 +220,7 @@ function findCommonJsExport(ast: t.File) {
 }
 
 /**
- * Add the recommended Storybook config to an ESLint flat config, written as `export default` or
+ * Add the recommended Forkbook config to an ESLint flat config, written as `export default` or
  * `module.exports =`. Supported config shapes:
  *
  * 1. `[...]`
@@ -229,7 +229,7 @@ function findCommonJsExport(ast: t.File) {
  * 4. A top-level variable holding one of the above
  *
  * For any other ES module config, only the import is added. Any other CommonJS config is left
- * unchanged, with a warning to add the Storybook config manually.
+ * unchanged, with a warning to add the Forkbook config manually.
  */
 export const configureFlatConfig = async (code: string, configFile: string) => {
   const ast = babelParse(code);
@@ -243,7 +243,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
       programScope = path.scope;
     },
     ImportDeclaration(path) {
-      if (path.node.source.value === STORYBOOK_PLUGIN) {
+      if (path.node.source.value === FORKBOOK_PLUGIN) {
         hasStorybookImport = true;
         path.stop();
       }
@@ -252,7 +252,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
       // Some configs load plugins with import() (e.g. eslint-flat-config-utils), where we can't safely add the spread
       if (
         t.isImport(path.node.callee) &&
-        t.isStringLiteral(path.node.arguments[0], { value: STORYBOOK_PLUGIN })
+        t.isStringLiteral(path.node.arguments[0], { value: FORKBOOK_PLUGIN })
       ) {
         hasStorybookImport = true;
         path.stop();
@@ -261,7 +261,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
 
       const declarator = path.parentPath;
       if (
-        !isRequireOf(path.node, STORYBOOK_PLUGIN) ||
+        !isRequireOf(path.node, FORKBOOK_PLUGIN) ||
         !declarator?.isVariableDeclarator() ||
         !declarator.parentPath.parentPath?.isProgram()
       ) {
@@ -320,7 +320,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
     const storybookRequire = t.variableDeclaration('const', [
       t.variableDeclarator(
         t.identifier(localName),
-        t.callExpression(t.identifier('require'), [t.stringLiteral(STORYBOOK_PLUGIN)])
+        t.callExpression(t.identifier('require'), [t.stringLiteral(FORKBOOK_PLUGIN)])
       ),
     ]);
     Object.assign(storybookRequire, { comments: [FLAT_CONFIG_DOCS_COMMENT] });
@@ -338,7 +338,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
 
   const importDecl = t.importDeclaration(
     [t.importDefaultSpecifier(t.identifier('storybook'))],
-    t.stringLiteral(STORYBOOK_PLUGIN)
+    t.stringLiteral(FORKBOOK_PLUGIN)
   );
   Object.assign(importDecl, { comments: [FLAT_CONFIG_DOCS_COMMENT] });
   ast.program.body.unshift(importDecl);
@@ -415,14 +415,14 @@ export async function configureEslintPlugin({
       };
       const existingExtends = normalizeExtends(eslintConfig.extends).filter(Boolean);
 
-      if (existingExtends.includes('plugin:storybook/recommended')) {
+      if (existingExtends.includes('plugin:@aussieljk/forkbook/recommended')) {
         return;
       }
 
       if (!Array.isArray(eslintConfig.extends)) {
         eslintConfig.extends = eslintConfig.extends ? [eslintConfig.extends] : [];
       }
-      eslintConfig.extends.push('plugin:storybook/recommended');
+      eslintConfig.extends.push('plugin:@aussieljk/forkbook/recommended');
 
       const spaces = detectIndent(eslintFileContents).amount || 2;
       await writeFile(eslintConfigFile, commentJson.stringify(eslintConfig, null, spaces));
@@ -439,11 +439,11 @@ export async function configureEslintPlugin({
         const eslint = await readConfig(eslintConfigFile);
         const existingExtends = normalizeExtends(eslint.getValue(['extends'])).filter(Boolean);
 
-        if (existingExtends.includes('plugin:storybook/recommended')) {
+        if (existingExtends.includes('plugin:@aussieljk/forkbook/recommended')) {
           return;
         }
 
-        eslint.set(['extends'], [...existingExtends, 'plugin:storybook/recommended']);
+        eslint.set(['extends'], [...existingExtends, 'plugin:@aussieljk/forkbook/recommended']);
 
         await writeConfig(eslint);
       }
@@ -455,7 +455,7 @@ export async function configureEslintPlugin({
 
     packageJson.eslintConfig = {
       ...packageJson.eslintConfig,
-      extends: [...existingExtends, 'plugin:storybook/recommended'],
+      extends: [...existingExtends, 'plugin:@aussieljk/forkbook/recommended'],
     };
 
     packageManager.writePackageJson(packageJson, operationDir);
@@ -465,7 +465,7 @@ export async function configureEslintPlugin({
 export const suggestESLintPlugin = async (): Promise<boolean> => {
   const shouldInstall = await prompt.confirm({
     message: dedent`
-        We have detected that you're using ESLint. Storybook provides a plugin that gives the best experience with Storybook and helps follow best practices: ${picocolors.yellow(
+        We have detected that you're using ESLint. Forkbook provides a plugin that gives the best experience with Forkbook and helps follow best practices: ${picocolors.yellow(
           'https://storybook.js.org/docs/configure/integration/eslint-plugin'
         )}
 

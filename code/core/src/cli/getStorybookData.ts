@@ -1,10 +1,14 @@
 import { dirname, isAbsolute, resolve } from 'node:path';
 
-import type { PackageManagerName } from 'storybook/internal/common';
-import { JsPackageManagerFactory, getStorybookInfo, warnOnYarn1 } from 'storybook/internal/common';
-import { getStoriesPathsFromConfig } from 'storybook/internal/core-server';
-import { isCsfFactoryPreview, readConfig } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
+import type { PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import {
+  JsPackageManagerFactory,
+  getStorybookInfo,
+  warnOnYarn1,
+} from '@aussieljk/forkbook/internal/common';
+import { getStoriesPathsFromConfig } from '@aussieljk/forkbook/internal/core-server';
+import { isCsfFactoryPreview, readConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 /**
  * The project directory the config dir lives in, used to resolve story globs and to locate
@@ -16,7 +20,7 @@ export function getWorkingDir(configDir: string): string {
 }
 
 /**
- * Gathers the project metadata CLI commands need from the target Storybook: config, framework,
+ * Gathers the project metadata CLI commands need from the target Forkbook: config, framework,
  * package manager, installed version, and story paths. The canonical collector — `add` and
  * `skills setup` consume it.
  */
@@ -29,12 +33,12 @@ export const getStorybookData = async ({
   packageManagerName?: PackageManagerName;
   /**
    * Skip the module cache when reading the main config. Pass `true` when a prior step in the same
-   * process (e.g. `storybook add`) may have rewritten the main config on disk, otherwise this
+   * process (e.g. `forkbook add`) may have rewritten the main config on disk, otherwise this
    * would read back the module system's cached evaluation from before that rewrite.
    */
   skipCache?: boolean;
 }) => {
-  logger.debug('Getting Storybook info...');
+  logger.debug('Getting Forkbook info...');
   const {
     mainConfig,
     mainConfigPath,
@@ -52,7 +56,7 @@ export const getStorybookData = async ({
     { skipCache }
   );
 
-  const configDir = userDefinedConfigDir || configDirFromScript || '.storybook';
+  const configDir = userDefinedConfigDir || configDirFromScript || '.forkbook';
 
   const workingDir = getWorkingDir(configDir);
 
@@ -72,8 +76,9 @@ export const getStorybookData = async ({
 
   warnOnYarn1(packageManager.type);
 
-  logger.debug('Getting Storybook version...');
-  const versionInstalled = (await packageManager.getModulePackageJSON('storybook'))?.version;
+  logger.debug('Getting Forkbook version...');
+  const versionInstalled = (await packageManager.getModulePackageJSON('@aussieljk/forkbook'))
+    ?.version;
 
   logger.debug('Detecting CSF factory usage...');
   const hasCsfFactoryPreview = previewConfigPath
@@ -84,9 +89,9 @@ export const getStorybookData = async ({
     configDir,
     workingDir,
     mainConfig,
-    /** The version specifier of Storybook from the user's package.json */
+    /** The version specifier of Forkbook from the user's package.json */
     versionSpecifier,
-    /** The version of Storybook installed in the user's project */
+    /** The version of Forkbook installed in the user's project */
     versionInstalled,
     mainConfigPath,
     previewConfigPath,

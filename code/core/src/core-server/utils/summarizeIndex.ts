@@ -1,5 +1,5 @@
-import { isExampleStoryId } from 'storybook/internal/telemetry';
-import type { IndexEntry, StoryIndex } from 'storybook/internal/types';
+import { isExampleStoryId } from '@aussieljk/forkbook/internal/telemetry';
+import type { IndexEntry, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { Tag } from '../../shared/constants/tags.ts';
 import { isMdxEntry } from '../../shared/utils/story-index-filters.ts';

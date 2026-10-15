@@ -106,7 +106,7 @@ export const ROUTER_PACKAGES = [
   '@reach/router',
 ] as const;
 
-// Bundlers and their direct tooling. Storybook's own builder packages are reported separately
+// Bundlers and their direct tooling. Forkbook's own builder packages are reported separately
 // (as storybookPackages), so patterns here stay exact or scoped to avoid re-matching them.
 export const BUNDLER_PACKAGES = [
   'webpack',

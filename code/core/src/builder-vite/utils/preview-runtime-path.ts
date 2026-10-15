@@ -7,7 +7,7 @@ import { dirname, join } from 'pathe';
 // builder, and a bare specifier resolves from the root (SB-1981). Resolving via this module's
 // own URL pins the base to this package — the same convention as the mocker runtime plugin.
 const builderRequire = createRequire(import.meta.url);
-const corePath = dirname(builderRequire.resolve('storybook/package.json'));
+const corePath = dirname(builderRequire.resolve('@aussieljk/forkbook/package.json'));
 
 /** Absolute path of the preview runtime inside the builder's own `storybook` copy. */
 export const previewRuntimePath = join(corePath, 'dist', 'preview', 'runtime.js');

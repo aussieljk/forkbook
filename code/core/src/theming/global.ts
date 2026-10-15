@@ -1,6 +1,6 @@
 import { typography } from './base.ts';
 
-/** A small CSS reset for Storybook pages. */
+/** A small CSS reset for Forkbook pages. */
 export const resetCss = /* css */ `
 body {
   font-family: ${typography.fonts.base};
@@ -74,7 +74,7 @@ pre {
 `;
 
 /**
- * The reset plus the page styles of the Storybook manager. It reads the theme from CSS variables, so
+ * The reset plus the page styles of the Forkbook manager. It reads the theme from CSS variables, so
  * the variables must be set on `:root` (see `themeToCssVars`).
  */
 export const globalCss = /* css */ `

@@ -1,6 +1,6 @@
-import type { DecoratorFunction } from 'storybook/internal/types';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
-import { useEffect } from 'storybook/preview-api';
+import { useEffect } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from './constants.ts';
 import { DEFAULT_BACKGROUNDS } from './defaults.ts';

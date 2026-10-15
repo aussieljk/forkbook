@@ -38,8 +38,8 @@ describe('getPreviewBuilder', () => {
   it('imports any other builder reference as given', async () => {
     createBuilderPackage();
 
-    await getPreviewBuilder('storybook/builder-vite');
+    await getPreviewBuilder('@aussieljk/forkbook/builder-vite');
 
-    expect(vi.mocked(importModule)).toHaveBeenCalledWith('storybook/builder-vite');
+    expect(vi.mocked(importModule)).toHaveBeenCalledWith('@aussieljk/forkbook/builder-vite');
   });
 });

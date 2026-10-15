@@ -1,8 +1,8 @@
 import path from 'node:path';
 
-import { normalizeStoryPath } from 'storybook/internal/common';
-import { sanitize, storyNameFromExport } from 'storybook/internal/csf/csf-utils';
-import type { IndexEntry, StoryIndex, StoryIndexEntry } from 'storybook/internal/types';
+import { normalizeStoryPath } from '@aussieljk/forkbook/internal/common';
+import { sanitize, storyNameFromExport } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import type { IndexEntry, StoryIndex, StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import leven from 'leven';
 
@@ -193,7 +193,7 @@ export function findStoryIds(index: StoryIndex, stories: StoryInput[]): FindStor
               exportName,
               explicitStoryName ?? storyNameFromExport(exportName)
             )
-          : 'Storybook has no stories indexed for that file. Check the path, and that the file matches the `stories` globs in the Storybook config';
+          : 'Forkbook has no stories indexed for that file. Check the path, and that the file matches the `stories` globs in the Forkbook config';
       result.push({
         input: storyInput,
         errorMessage: `No story found for export name "${exportName}" with absolute file path "${absoluteStoryPath}". ${hint}`,

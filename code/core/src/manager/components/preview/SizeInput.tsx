@@ -1,7 +1,7 @@
 import type { ChangeEvent, ComponentProps } from 'react';
 import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 
-import { Form } from 'storybook/internal/components';
+import { Form } from '@aussieljk/forkbook/internal/components';
 
 import styles from './SizeInput.module.css';
 

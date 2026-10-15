@@ -40,7 +40,7 @@ describe('serializeError / deserializeError', () => {
     expect(aggregated[1].message).toBe('b');
   });
 
-  it('retains Storybook error fields like code and fromStorybook', () => {
+  it('retains Forkbook error fields like code and fromStorybook', () => {
     const original = new OpenServiceValidationError({
       kind: 'command',
       serviceId: 'svc',

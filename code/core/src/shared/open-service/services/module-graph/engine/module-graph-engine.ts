@@ -2,9 +2,9 @@ import { stat, writeFile } from 'node:fs/promises';
 
 import { join, normalize } from 'pathe';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import type { Presets } from 'storybook/internal/types';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
 import type { StoryIndex } from '../../../../../types/modules/indexer.ts';
 import { ModuleGraphFailureError } from '../errors.ts';
@@ -215,7 +215,7 @@ export class ModuleGraphEngine {
     // Shared parse/resolve cache so the patcher reuses cold-start results instead of
     // re-doing every file's parse + resolution on the first event after boot. The patcher
     // invalidates per-file entries on every change/unlink before reading.
-    const debugEnv = process.env.STORYBOOK_CHANGE_DETECTION_DEBUG;
+    const debugEnv = process.env.FORKBOOK_CHANGE_DETECTION_DEBUG;
     const cache = new ParseResolveCache({
       registry,
       resolver,
@@ -345,7 +345,7 @@ export class ModuleGraphEngine {
     workspaceRoots: Set<string>,
     cache: ParseResolveCache
   ): Promise<void> {
-    const debugEnv = process.env.STORYBOOK_CHANGE_DETECTION_DEBUG;
+    const debugEnv = process.env.FORKBOOK_CHANGE_DETECTION_DEBUG;
     if (!debugEnv) {
       return;
     }

@@ -88,7 +88,7 @@ export {
 } from './preview-web.ts';
 export type { SelectionStore, View } from './preview-web.ts';
 
-/** OPEN SERVICE API (preview leaf — register only; types on `storybook/open-service`) */
+/** OPEN SERVICE API (preview leaf — register only; types on `@aussieljk/forkbook/open-service`) */
 export { getService, registerService } from '../shared/open-service/preview.ts';
 export {
   clearChannel,

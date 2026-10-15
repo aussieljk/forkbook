@@ -1,4 +1,4 @@
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Card } from './Card.tsx';
 
 const meta = preview.meta({

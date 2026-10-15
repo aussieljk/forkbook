@@ -1,9 +1,9 @@
 import type { ComponentProps, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { once } from 'storybook/internal/client-logger';
-import { Button, Link, ResetWrapper } from 'storybook/internal/components';
-import { includeConditionalArg } from 'storybook/internal/csf';
+import { once } from '@aussieljk/forkbook/internal/client-logger';
+import { Button, Link, ResetWrapper } from '@aussieljk/forkbook/internal/components';
+import { includeConditionalArg } from '@aussieljk/forkbook/internal/csf';
 
 import { DocumentIcon, UndoIcon } from '@storybook/icons';
 

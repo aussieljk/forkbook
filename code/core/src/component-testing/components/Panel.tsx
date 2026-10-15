@@ -7,8 +7,8 @@ import {
   STORY_RENDER_PHASE_CHANGED,
   STORY_THREW_EXCEPTION,
   UNHANDLED_ERRORS_WHILE_PLAYING,
-} from 'storybook/internal/core-events';
-import type { StatusValue } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -19,11 +19,11 @@ import {
   useParameter,
   useStorybookApi,
   useStorybookState,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import {
   STATUS_TYPE_ID_COMPONENT_TEST,
-  STORYBOOK_ADDON_TEST_CHANNEL,
+  FORKBOOK_ADDON_TEST_CHANNEL,
 } from '../../addon-vitest/constants.ts';
 import { EVENTS } from '../../instrumenter/EVENTS.ts';
 import {
@@ -415,7 +415,7 @@ export const Panel = memo<{ refId?: string; storyId: string; storyUrl: string }>
           () =>
             setResultMismatch((currentValue) => {
               if (!currentValue) {
-                emit(STORYBOOK_ADDON_TEST_CHANNEL, {
+                emit(FORKBOOK_ADDON_TEST_CHANNEL, {
                   type: 'test-discrepancy',
                   payload: {
                     browserStatus: browserTestStatus === CallStates.DONE ? 'PASS' : 'FAIL',

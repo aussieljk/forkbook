@@ -35,7 +35,7 @@ export class JsPackageManagerFactory {
   /** Generate a cache key based on the parameters */
   private static getCacheKey(
     force?: PackageManagerName,
-    configDir = '.storybook',
+    configDir = '.forkbook',
     cwd = process.cwd(),
     storiesPaths?: string[]
   ): string {
@@ -127,7 +127,7 @@ export class JsPackageManagerFactory {
   public static getPackageManager(
     {
       force,
-      configDir = '.storybook',
+      configDir = '.forkbook',
       storiesPaths,
       ignoreCache = false,
     }: {

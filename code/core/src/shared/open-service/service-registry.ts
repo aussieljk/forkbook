@@ -100,14 +100,14 @@ function getRegistry(): Map<string, RegistryEntry> {
  *
  * Set it once at the runtime entry boundary, before any `registerService` call — it is read at
  * registration time, like the installed channel. Service definitions are unaffected: their handlers
- * stay registered and inspectable, they simply never run here because the Storybook this runtime
+ * stay registered and inspectable, they simply never run here because the Forkbook this runtime
  * attached to is the implementer.
  */
 export function setDelegatedMode(enabled: boolean): void {
   getInventory().delegatedMode = enabled;
 }
 
-/** Whether this runtime delegates command dispatch to the Storybook it is attached to. */
+/** Whether this runtime delegates command dispatch to the Forkbook it is attached to. */
 export function isDelegatedMode(): boolean {
   return getInventory().delegatedMode;
 }

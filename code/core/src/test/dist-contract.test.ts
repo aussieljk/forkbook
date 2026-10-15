@@ -27,7 +27,7 @@ const TSC_OPTIONS = [
   CONSUMER_FIXTURE,
 ];
 
-describe('storybook/test declaration contract', () => {
+describe('@aussieljk/forkbook/test declaration contract', () => {
   it.runIf(process.env.CI)('is built before this suite runs', () => {
     expect(DTS_BUILT).toBe(true);
   });

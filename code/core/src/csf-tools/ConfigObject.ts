@@ -1,4 +1,4 @@
-import { type NodePath, traverse, types as t } from 'storybook/internal/babel';
+import { type NodePath, traverse, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import type { ConfigFile } from './ConfigFile.ts';
 import { type CsfMutationDiagnostic, type CsfObject, createCsfObject } from './CsfObject.ts';

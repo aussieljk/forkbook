@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import type { useCollapsible } from './Collapsible.tsx';
 import { Collapsible } from './Collapsible.tsx';
 

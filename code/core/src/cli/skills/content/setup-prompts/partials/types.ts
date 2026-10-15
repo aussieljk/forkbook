@@ -1,4 +1,4 @@
-import type { JsPackageManager } from 'storybook/internal/common';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 
 export interface InstructionsContext {
   configDir: string;

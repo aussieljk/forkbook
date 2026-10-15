@@ -1,16 +1,16 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   AI_PROMPT_NUDGE,
   PREVIEW_INITIALIZED,
   SHARE_ISOLATE_MODE,
   SIDEBAR_FILTER_CHANGED,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   type CacheEntry,
   getLastEvents,
   getSessionId,
   telemetry,
-} from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/telemetry';
 
 import { REVIEW_EVENTS, type ReviewPageviewPayload } from '../../shared/review/events.ts';
 

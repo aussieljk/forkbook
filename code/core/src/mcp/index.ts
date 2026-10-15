@@ -8,11 +8,11 @@ import {
   addListAllDocumentationTool,
 } from './tools/register.ts';
 import type { StorybookContext } from './types.ts';
-import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from 'storybook/internal/toolsets-docs';
+import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from '@aussieljk/forkbook/internal/toolsets-docs';
 
-export { serverInstructions as STORYBOOK_MCP_INSTRUCTIONS };
+export { serverInstructions as FORKBOOK_MCP_INSTRUCTIONS };
 
-// The docs tools themselves come from Storybook's shared `docs` toolset; this package supplies the
+// The docs tools themselves come from Forkbook's shared `docs` toolset; this package supplies the
 // hosted runtime (manifest provider, composed sources) behind it.
 export {
   addGetDocumentationTool,
@@ -37,7 +37,7 @@ export {
   resolveComponentEntry,
   resolveComponentStories,
   resolveDocEntry as resolveDoc,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 export { getMultiSourceManifests } from './utils/multi-source-manifests.ts';
 
@@ -87,7 +87,7 @@ type InitializeRequestParams = {
 };
 
 /**
- * Options for creating a Storybook MCP handler.
+ * Options for creating a Forkbook MCP handler.
  * Extends StorybookContext with server-level configuration.
  */
 export interface StorybookMcpHandlerOptions extends StorybookContext {

@@ -7,9 +7,9 @@ import type {
   ModuleExports,
   PreparedStory,
   Renderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { ThemeVars } from 'storybook/theming';
+import type { ThemeVars } from '@aussieljk/forkbook/theming';
 
 import type { DocsContainerProps } from './blocks/blocks';
 import type { TocParameters } from './blocks/components';
@@ -219,7 +219,7 @@ export interface DocsParameters {
     disable?: boolean;
 
     /**
-     * Replace the default documentation template used by Storybook with your own
+     * Replace the default documentation template used by Forkbook with your own
      *
      * @see https://storybook.js.org/docs/writing-docs/autodocs#write-a-custom-template
      */
@@ -254,10 +254,10 @@ export interface DocsParameters {
     subtitle?: string;
 
     /**
-     * The BCP-47 language tag applied to Storybook-rendered docs prose (descriptions, titles,
+     * The BCP-47 language tag applied to Forkbook-rendered docs prose (descriptions, titles,
      * ArgTypes description cells, free MDX prose).
      *
-     * Storybook's own chrome stays English regardless. Inherited project → meta (page-level) or
+     * Forkbook's own chrome stays English regardless. Inherited project → meta (page-level) or
      * project → meta → story (per-story prose).
      *
      * @default 'en'

@@ -1,17 +1,17 @@
-import type { Channel } from 'storybook/internal/channels';
-import { findConfigFile, loadMainConfig } from 'storybook/internal/common';
-import type { WhatsNewCache, WhatsNewData } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { findConfigFile, loadMainConfig } from '@aussieljk/forkbook/internal/common';
+import type { WhatsNewCache, WhatsNewData } from '@aussieljk/forkbook/internal/core-events';
 import {
   REQUEST_WHATS_NEW_DATA,
   RESULT_WHATS_NEW_DATA,
   SET_WHATS_NEW_CACHE,
   TELEMETRY_ERROR,
   TOGGLE_WHATS_NEW_NOTIFICATIONS,
-} from 'storybook/internal/core-events';
-import { readConfig, writeConfig } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
-import { telemetry } from 'storybook/internal/telemetry';
-import type { CoreConfig, Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import { readConfig, writeConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { CoreConfig, Options } from '@aussieljk/forkbook/internal/types';
 
 import invariant from 'tiny-invariant';
 
@@ -76,12 +76,12 @@ export function initializeWhatsNew(channel: Channel, options: OptionsWithRequire
     async ({ disableWhatsNewNotifications }: { disableWhatsNewNotifications: boolean }) => {
       try {
         const mainPath = findConfigFile('main', options.configDir);
-        invariant(mainPath, `unable to find Storybook main file in ${options.configDir}`);
+        invariant(mainPath, `unable to find Forkbook main file in ${options.configDir}`);
         const main = await readConfig(mainPath);
         if (!main._exportsObject) {
           // eslint-disable-next-line local-rules/no-uncategorized-errors
           throw new Error(
-            `Unable to parse Storybook main file while trying to read 'core' property`
+            `Unable to parse Forkbook main file while trying to read 'core' property`
           );
         }
         main.set(['core', 'disableWhatsNewNotifications'], disableWhatsNewNotifications);

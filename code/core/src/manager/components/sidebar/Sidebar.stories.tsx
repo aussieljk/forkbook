@@ -5,15 +5,15 @@ import {
   type DecoratorFunction,
   type StatusValue,
   type StatusesByStoryIdAndTypeId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import type { IndexHash } from 'storybook/manager-api';
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import type { IndexHash } from '@aussieljk/forkbook/manager-api';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { defaultShortcuts } from '../../settings/defaultShortcuts.tsx';
 import { internal_fullStatusStore } from '../../manager-stores.mock.ts';

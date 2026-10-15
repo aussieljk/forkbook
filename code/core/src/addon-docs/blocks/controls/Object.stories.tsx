@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, waitFor } from '@aussieljk/forkbook/test';
 
 import { ObjectControl } from './Object';
 

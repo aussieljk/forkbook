@@ -14,14 +14,14 @@ const versionService = new VersionService();
 const getCliIntegrationFromAncestry =
   versionService.getCliIntegrationFromAncestry.bind(versionService);
 
-vi.mock('storybook/internal/telemetry');
+vi.mock('@aussieljk/forkbook/internal/telemetry');
 
-vi.mock('storybook/internal/core-server', () => ({
+vi.mock('@aussieljk/forkbook/internal/core-server', () => ({
   getServerPort: vi.fn().mockResolvedValue(6006),
   withTelemetry: vi.fn(),
 }));
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logTracker: {
     writeToFile: vi.fn().mockResolvedValue('/tmp/debug-storybook.log'),
   },

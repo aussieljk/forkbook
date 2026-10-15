@@ -1,7 +1,10 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SET_CURRENT_STORY, STORY_RENDER_PHASE_CHANGED } from 'storybook/internal/core-events';
+import {
+  SET_CURRENT_STORY,
+  STORY_RENDER_PHASE_CHANGED,
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 
@@ -11,9 +14,9 @@ import { addons } from './preview-api.ts';
 import type { Options } from './types.ts';
 
 const mocks = await vi.hoisted(async () => {
-  const { Channel } = await import('storybook/internal/channels');
+  const { Channel } = await import('@aussieljk/forkbook/internal/channels');
   const { EVENTS: INSTRUMENTER_EVENTS } = await import('./EVENTS.ts');
-  const { FORCE_REMOUNT } = await import('storybook/internal/core-events');
+  const { FORCE_REMOUNT } = await import('@aussieljk/forkbook/internal/core-events');
 
   const transport = {
     setHandler: () => {},
@@ -39,7 +42,7 @@ const mocks = await vi.hoisted(async () => {
   };
 });
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 vi.mock('./preview-api', () => {
   return {
     addons: {

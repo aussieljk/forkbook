@@ -9,7 +9,7 @@ import type {
   Store_CSFExports,
   StoriesWithPartialProps,
   StoryAnnotationsOrFn,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import {
   composeConfigs,
@@ -17,7 +17,7 @@ import {
   composeStory as originalComposeStory,
   setProjectAnnotations as originalSetProjectAnnotations,
   setDefaultProjectAnnotations,
-} from 'storybook/preview-api';
+} from '@aussieljk/forkbook/preview-api';
 
 import * as reactProjectAnnotations from './entry-preview.tsx';
 import * as reactArgTypesAnnotations from './entry-preview-argtypes.ts';
@@ -26,7 +26,7 @@ import type { ReactRenderer } from './types.ts';
 
 /**
  * Function that sets the globalConfig of your storybook. The global config is the preview module of
- * your .storybook folder.
+ * your .forkbook folder.
  *
  * It should be run a single time, so that your global config (e.g. decorators) is applied to your
  * stories when using `composeStories` or `composeStory`.
@@ -35,13 +35,13 @@ import type { ReactRenderer } from './types.ts';
  *
  * ```jsx
  * // setup-file.js
- * import { setProjectAnnotations } from 'storybook/react';
- * import projectAnnotations from './.storybook/preview';
+ * import { setProjectAnnotations } from '@aussieljk/forkbook/react';
+ * import projectAnnotations from './.forkbook/preview';
  *
  * setProjectAnnotations(projectAnnotations);
  * ```
  *
- * @param projectAnnotations - E.g. (import * as projectAnnotations from '../.storybook/preview')
+ * @param projectAnnotations - E.g. (import * as projectAnnotations from '../.forkbook/preview')
  */
 export function setProjectAnnotations(
   projectAnnotations:
@@ -77,16 +77,16 @@ export const INTERNAL_DEFAULT_PROJECT_ANNOTATIONS: ProjectAnnotations<ReactRende
 /**
  * Function that will receive a story along with meta (e.g. a default export from a .stories file)
  * and optionally projectAnnotations e.g. (import * as projectAnnotations from
- * '../.storybook/preview) and will return a composed component that has all
+ * '../.forkbook/preview) and will return a composed component that has all
  * args/parameters/decorators/etc combined and applied to it.
  *
- * It's very useful for reusing a story in scenarios outside of Storybook like unit testing.
+ * It's very useful for reusing a story in scenarios outside of Forkbook like unit testing.
  *
  * Example:
  *
  * ```jsx
  * import { render } from '@testing-library/react';
- * import { composeStory } from 'storybook/react';
+ * import { composeStory } from '@aussieljk/forkbook/react';
  * import Meta, { Primary as PrimaryStory } from './Button.stories';
  *
  * const Primary = composeStory(PrimaryStory, Meta);
@@ -99,7 +99,7 @@ export const INTERNAL_DEFAULT_PROJECT_ANNOTATIONS: ProjectAnnotations<ReactRende
  *
  * @param story
  * @param componentAnnotations - E.g. (import Meta from './Button.stories')
- * @param [projectAnnotations] - E.g. (import * as projectAnnotations from '../.storybook/preview')
+ * @param [projectAnnotations] - E.g. (import * as projectAnnotations from '../.forkbook/preview')
  *   this can be applied automatically if you use `setProjectAnnotations` in your setup files.
  * @param [exportsName] - In case your story does not contain a name and you want it to have a name.
  */
@@ -121,16 +121,16 @@ export function composeStory<TArgs extends Args = Args>(
 /**
  * Function that will receive a stories import (e.g. `import * as stories from './Button.stories'`)
  * and optionally projectAnnotations (e.g. `import * as projectAnnotations from
- * '../.storybook/preview`) and will return an object containing all the stories passed, but now as
+ * '../.forkbook/preview`) and will return an object containing all the stories passed, but now as
  * a composed component that has all args/parameters/decorators/etc combined and applied to it.
  *
- * It's very useful for reusing stories in scenarios outside of Storybook like unit testing.
+ * It's very useful for reusing stories in scenarios outside of Forkbook like unit testing.
  *
  * Example:
  *
  * ```jsx
  * import { render } from '@testing-library/react';
- * import { composeStories } from 'storybook/react';
+ * import { composeStories } from '@aussieljk/forkbook/react';
  * import * as stories from './Button.stories';
  *
  * const { Primary, Secondary } = composeStories(stories);
@@ -142,7 +142,7 @@ export function composeStory<TArgs extends Args = Args>(
  * ```
  *
  * @param csfExports - E.g. (import * as stories from './Button.stories')
- * @param [projectAnnotations] - E.g. (import * as projectAnnotations from '../.storybook/preview')
+ * @param [projectAnnotations] - E.g. (import * as projectAnnotations from '../.forkbook/preview')
  *   this can be applied automatically if you use `setProjectAnnotations` in your setup files.
  */
 export function composeStories<TModule extends Store_CSFExports<ReactRenderer, any>>(

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 let telemetryModule: typeof import('./index.ts');
 
 // Mock the dependencies that telemetry() calls internally
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logger: { info: vi.fn() },
 }));
 

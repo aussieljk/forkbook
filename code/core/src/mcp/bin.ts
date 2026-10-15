@@ -3,7 +3,7 @@
  * drive by hand than the HTTP handler. Run it from this directory:
  *   node bin.ts --manifestsDir ./fixtures/default
  *
- * `storybook/mcp` is a library and ships no executable, so this file is not published and there is
+ * `@aussieljk/forkbook/mcp` is a library and ships no executable, so this file is not published and there is
  * no `node_modules` path to invoke. Consumers wanting a stdio server build one from the exported
  * tool registrations — see the recipe in README.md.
  */
@@ -16,7 +16,7 @@ import {
   addGetStoryDocumentationTool,
   addListAllDocumentationTool,
 } from './tools/register.ts';
-import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from 'storybook/internal/toolsets-docs';
+import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from '@aussieljk/forkbook/internal/toolsets-docs';
 import type { StorybookContext } from './types.ts';
 import { parseArgs } from 'node:util';
 import * as fs from 'node:fs/promises';

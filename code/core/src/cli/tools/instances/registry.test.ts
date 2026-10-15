@@ -131,8 +131,8 @@ describe('readRegistry', () => {
     await expect(readRegistry(REGISTRY_DIR)).resolves.toEqual([minimal]);
   });
 
-  it('accepts records with an optional configDir (written by Storybook >= 10.5)', async () => {
-    const withConfigDir = { ...aliveRecord, configDir: '/projects/alive/packages/ui/.storybook' };
+  it('accepts records with an optional configDir (written by Forkbook >= 10.5)', async () => {
+    const withConfigDir = { ...aliveRecord, configDir: '/projects/alive/packages/ui/.forkbook' };
     vol.fromNestedJSON({
       [REGISTRY_DIR]: { 'config-dir.json': JSON.stringify(withConfigDir) },
     });

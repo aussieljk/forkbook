@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 
-import type { Options, SecurityConfig } from 'storybook/internal/types';
+import type { Options, SecurityConfig } from '@aussieljk/forkbook/internal/types';
 
 import { describe, expect, it } from 'vitest';
 
@@ -14,7 +14,7 @@ const template = readFileSync(
 const createOptions = (security?: SecurityConfig) =>
   ({
     configType: 'PRODUCTION',
-    configDir: '/project/.storybook',
+    configDir: '/project/.forkbook',
     presets: {
       apply: async (extension: string) =>
         ({ security, stories: ['../src/**/*.stories.tsx'] })[extension],

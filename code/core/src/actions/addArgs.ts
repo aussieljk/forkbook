@@ -1,4 +1,4 @@
-import type { ArgsEnhancer } from 'storybook/internal/types';
+import type { ArgsEnhancer } from '@aussieljk/forkbook/internal/types';
 
 import { addActionsFromArgTypes, inferActionsFromArgTypesRegex } from './addArgsHelpers.ts';
 

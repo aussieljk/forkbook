@@ -1,4 +1,4 @@
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import * as utils from './utils.ts';
 

@@ -41,7 +41,7 @@ describe('buildServerInstructions', () => {
     });
 
     expect(instructions).toMatchInlineSnapshot(`
-      "Follow these workflows when working with UI and/or Storybook. Answer questions about component props, API, or usage with the documentation tools — never from source or type definitions.
+      "Follow these workflows when working with UI and/or Forkbook. Answer questions about component props, API, or usage with the documentation tools — never from source or type definitions.
 
       ## UI Building and Story Writing Workflow
 
@@ -77,7 +77,7 @@ describe('buildServerInstructions', () => {
     });
 
     expect(instructions).toMatchInlineSnapshot(`
-      "Follow these workflows when working with UI and/or Storybook.
+      "Follow these workflows when working with UI and/or Forkbook.
 
       ## UI Building and Story Writing Workflow
 
@@ -114,7 +114,7 @@ describe('buildServerInstructions', () => {
     });
 
     expect(instructions).toMatchInlineSnapshot(`
-      "Follow these workflows when working with UI and/or Storybook. Answer questions about component props, API, or usage with the documentation tools — never from source or type definitions.
+      "Follow these workflows when working with UI and/or Forkbook. Answer questions about component props, API, or usage with the documentation tools — never from source or type definitions.
 
       ## Documentation Workflow
 
@@ -137,7 +137,7 @@ describe('buildServerInstructions', () => {
     });
 
     expect(instructions).toMatchInlineSnapshot(`
-      "Follow these workflows when working with UI and/or Storybook.
+      "Follow these workflows when working with UI and/or Forkbook.
 
       ## Validation Workflow
 
@@ -159,7 +159,7 @@ describe('buildServerInstructions', () => {
   });
 
   describe('transport: cli', () => {
-    it('renders sibling-tool references as `storybook tools` commands instead of MCP tool names', () => {
+    it('renders sibling-tool references as `forkbook tools` commands instead of MCP tool names', () => {
       const instructions = buildServerInstructions({
         transport: 'cli',
         devEnabled: true,
@@ -168,11 +168,11 @@ describe('buildServerInstructions', () => {
         moduleGraphSupported: true,
       });
 
-      expect(instructions).toContain('**npx storybook tools stories changed**');
+      expect(instructions).toContain('**npx forkbook tools stories changed**');
       expect(instructions).not.toContain('stories-changed');
     });
 
-    it('renders the write-story skill cross-reference as a `storybook skills` command', () => {
+    it('renders the write-story skill cross-reference as a `forkbook skills` command', () => {
       const instructions = buildServerInstructions({
         transport: 'cli',
         devEnabled: true,
@@ -181,7 +181,7 @@ describe('buildServerInstructions', () => {
         moduleGraphSupported: true,
       });
 
-      expect(instructions).toContain('npx storybook skills write-story');
+      expect(instructions).toContain('npx forkbook skills write-story');
       expect(instructions).not.toContain('get-storybook-story-instructions');
     });
 
@@ -194,9 +194,9 @@ describe('buildServerInstructions', () => {
         moduleGraphSupported: true,
       });
 
-      expect(instructions).toContain('**npx storybook tools stories find-by-component**');
-      expect(instructions).toContain('**npx storybook tools review create**');
-      expect(instructions).toContain('**npx storybook tools stories preview**');
+      expect(instructions).toContain('**npx forkbook tools stories find-by-component**');
+      expect(instructions).toContain('**npx forkbook tools review create**');
+      expect(instructions).toContain('**npx forkbook tools stories preview**');
       expect(instructions).not.toContain('review-create');
       expect(instructions).not.toContain('stories-preview');
       expect(instructions).not.toContain('stories-find-by-component');
@@ -211,8 +211,8 @@ describe('buildServerInstructions', () => {
         moduleGraphSupported: true,
       });
 
-      expect(instructions).toContain('npx storybook tools docs list');
-      expect(instructions).toContain('npx storybook tools docs show');
+      expect(instructions).toContain('npx forkbook tools docs list');
+      expect(instructions).toContain('npx forkbook tools docs show');
       expect(instructions).not.toContain('docs-list');
       expect(instructions).not.toContain('docs-show');
     });

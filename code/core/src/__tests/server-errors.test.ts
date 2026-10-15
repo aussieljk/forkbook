@@ -13,7 +13,7 @@ describe('OpenServiceRemoteCommandConfigDriftError', () => {
     });
 
     expect(error.message).toBe(
-      'The Storybook this runtime is attached to reported it has no handler for remote command "core/docgen.extractAllDocgen". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Storybook with a configuration matching this process.'
+      'The Forkbook this runtime is attached to reported it has no handler for remote command "core/docgen.extractAllDocgen". The two processes are running different configurations (for example a feature flag enabled in one but not the other). Restart the attached Forkbook with a configuration matching this process.'
     );
   });
 });
@@ -27,7 +27,7 @@ describe('OpenServiceRemoteCommandUnhandledError', () => {
     });
 
     expect(error.message).toBe(
-      'The Storybook this runtime is attached to did not acknowledge remote command "core/docgen.extractAllDocgen" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.'
+      'The Forkbook this runtime is attached to did not acknowledge remote command "core/docgen.extractAllDocgen" in time — it may be busy or unreachable. Retry; note the command may still have executed on that instance.'
     );
     expect(error.message).not.toMatch(/configuration|restart/i);
   });

@@ -1,4 +1,4 @@
-import type { DecoratorFunction, LegacyStoryFn } from 'storybook/internal/types';
+import type { DecoratorFunction, LegacyStoryFn } from '@aussieljk/forkbook/internal/types';
 
 import { applyDecorators as defaultDecorateStory } from '../applyDecorators';
 import type { ReactRenderer } from '../types';

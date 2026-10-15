@@ -1,11 +1,14 @@
 import type { ComponentProps, FunctionComponent } from 'react';
 import React from 'react';
 
-import type { SupportedLanguage, SyntaxHighlighterProps } from 'storybook/internal/components';
-import { SyntaxHighlighter } from 'storybook/internal/components';
+import type {
+  SupportedLanguage,
+  SyntaxHighlighterProps,
+} from '@aussieljk/forkbook/internal/components';
+import { SyntaxHighlighter } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
-import { ThemeProvider, convert, themes, useTheme } from 'storybook/theming';
+import { ThemeProvider, convert, themes, useTheme } from '@aussieljk/forkbook/theming';
 
 import { EmptyBlock } from './EmptyBlock';
 import { SnippetWarning } from './SnippetWarning';

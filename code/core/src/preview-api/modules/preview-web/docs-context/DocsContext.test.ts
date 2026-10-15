@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import type { CSFFile, Renderer } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { CSFFile, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import type { StoryStore } from '../../store/index.ts';
 import { DocsContext } from './DocsContext.ts';
@@ -115,7 +115,7 @@ describe('referenceMeta', () => {
 
   it('works with different module namespace objects when there is no default export', () => {
     // Simulates CSF4 modules (no `export default meta`) split into a chunk:
-    // the MDX-imported namespace differs by identity from the one Storybook registered.
+    // the MDX-imported namespace differs by identity from the one Forkbook registered.
     // Resolution should fall back to looking up the CSF file via any story export.
     const { story, csfFile, storyExport } = csfFileParts('meta--story', 'meta', {
       includeDefaultExport: false,
@@ -203,7 +203,7 @@ describe('resolveOf', () => {
 
     it('works for CSF4 module exports with different object identity and no default export', () => {
       // CSF4 modules (no `export default meta`) may be split into a separate chunk,
-      // producing a namespace object whose identity differs from Storybook's record.
+      // producing a namespace object whose identity differs from Forkbook's record.
       // Resolution falls back to identifying the CSF file via the story exports.
       const noDefaultParts = csfFileParts('meta--no-default-story', 'meta-no-default', {
         includeDefaultExport: false,

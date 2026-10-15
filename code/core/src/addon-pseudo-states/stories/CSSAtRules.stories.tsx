@@ -1,10 +1,10 @@
 import React, { type ComponentProps } from 'react';
 
-import { FORCE_REMOUNT } from 'storybook/internal/core-events';
+import { FORCE_REMOUNT } from '@aussieljk/forkbook/internal/core-events';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { useChannel, useStoryContext } from 'storybook/preview-api';
+import { useChannel, useStoryContext } from '@aussieljk/forkbook/preview-api';
 
 import { Button } from './CSSAtRules.tsx';
 import './grid.css';

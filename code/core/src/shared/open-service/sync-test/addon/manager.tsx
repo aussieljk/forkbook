@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AddonPanel } from 'storybook/internal/components';
+import { AddonPanel } from '@aussieljk/forkbook/internal/components';
 
-import { addons, registerService, types } from 'storybook/manager-api';
+import { addons, registerService, types } from '@aussieljk/forkbook/manager-api';
 
 import { concurrentWritesSyncServiceDef } from '../concurrent-writes/definition.ts';
 import { localCommandSyncServiceDef } from '../local-command/definition.ts';

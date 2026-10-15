@@ -1,7 +1,7 @@
 /* eslint-env browser */
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
-import { addons } from 'storybook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import type { HighlightTypes } from './types.ts';
 import { useHighlights } from './useHighlights.ts';

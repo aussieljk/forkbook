@@ -28,8 +28,8 @@ export const getManifestStatus = async (options: Options): Promise<ManifestStatu
   const [
     features,
     manifests,
-    // Added for backwards compatibility with Storybook versions prior to v10.2.0-alpha.10
-    // Should be removed once support for Storybook version < 10.2.0 is dropped
+    // Added for backwards compatibility with Forkbook versions prior to v10.2.0-alpha.10
+    // Should be removed once support for Forkbook version < 10.2.0 is dropped
     legacyComponentManifestGenerator,
   ] = await Promise.all([
     options.presets.apply('features') as any,

@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import { IncompatiblePostCssConfigError } from 'storybook/internal/server-errors';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { IncompatiblePostCssConfigError } from '@aussieljk/forkbook/internal/server-errors';
 
 import config from 'lilconfig';
 import postCssLoadConfig from 'postcss-load-config';
@@ -68,8 +68,8 @@ export { postCssLoadConfig };
 /**
  * Normalizes PostCSS configuration for NextJS compatibility.
  *
- * This function handles the incompatibility between NextJS's PostCSS plugin format and Storybook's
- * requirements. NextJS uses array format for plugins while Storybook expects object format.
+ * This function handles the incompatibility between NextJS's PostCSS plugin format and Forkbook's
+ * requirements. NextJS uses array format for plugins while Forkbook expects object format.
  *
  * Process:
  *

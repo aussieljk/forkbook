@@ -1,7 +1,7 @@
 import type { FC, SyntheticEvent } from 'react';
 import React from 'react';
 
-import { Button, Toolbar as SharedToolbar } from 'storybook/internal/components';
+import { Button, Toolbar as SharedToolbar } from '@aussieljk/forkbook/internal/components';
 
 import { ShareAltIcon, SyncIcon, ZoomIcon, ZoomOutIcon, ZoomResetIcon } from '@storybook/icons';
 import { clsx } from 'clsx';

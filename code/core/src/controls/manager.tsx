@@ -1,19 +1,24 @@
 import React from 'react';
 
-import { AddonPanel } from 'storybook/internal/components';
+import { AddonPanel } from '@aussieljk/forkbook/internal/components';
 import type {
   ResponseData,
   SaveStoryRequestPayload,
   SaveStoryResponsePayload,
-} from 'storybook/internal/core-events';
-import { SAVE_STORY_REQUEST, SAVE_STORY_RESPONSE } from 'storybook/internal/core-events';
-import type { Args } from 'storybook/internal/csf';
+} from '@aussieljk/forkbook/internal/core-events';
+import { SAVE_STORY_REQUEST, SAVE_STORY_RESPONSE } from '@aussieljk/forkbook/internal/core-events';
+import type { Args } from '@aussieljk/forkbook/internal/csf';
 
 import { FailedIcon, PassedIcon } from '@storybook/icons';
 
 import { dequal as deepEqual } from 'dequal';
-import { addons, experimental_requestResponse, getService, types } from 'storybook/manager-api';
-import { color } from 'storybook/theming';
+import {
+  addons,
+  experimental_requestResponse,
+  getService,
+  types,
+} from '@aussieljk/forkbook/manager-api';
+import { color } from '@aussieljk/forkbook/theming';
 
 import { ControlsPanel } from './components/ControlsPanel.tsx';
 import { Title } from './components/Title.tsx';
@@ -73,7 +78,7 @@ export default addons.register(ADDON_ID, (api) => {
           content: {
             headline: 'Failed to save story',
             subHeadline:
-              error?.message || 'Check the Storybook process on the command line for more details.',
+              error?.message || 'Check the Forkbook process on the command line for more details.',
           },
           duration: 8_000,
         });

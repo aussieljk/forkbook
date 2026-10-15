@@ -12,7 +12,7 @@ import { type StorybookInstanceRecord, StorybookInstanceRecordSchema } from './t
  * here so this reader does not pull the core-server module graph into the CLI's unit tests; the
  * path is specified in storybookjs/storybook#34826.
  */
-export const DEFAULT_REGISTRY_DIR = join(homedir(), '.storybook', 'instances');
+export const DEFAULT_REGISTRY_DIR = join(homedir(), '.forkbook', 'instances');
 
 /**
  * Errno codes for which we degrade to "no instance" rather than throwing. The command is meant to
@@ -22,7 +22,7 @@ export const DEFAULT_REGISTRY_DIR = join(homedir(), '.storybook', 'instances');
 const SOFT_REGISTRY_ERRORS = new Set(['ENOENT', 'EACCES', 'EPERM', 'ENOTDIR']);
 
 /**
- * Read all Storybook instance records from `registryDir`.
+ * Read all Forkbook instance records from `registryDir`.
  *
  * Each file is expected to be a single JSON object matching {@link StorybookInstanceRecord}.
  * Records whose PID is no longer alive are filtered out (and their files removed). Malformed files

@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useState } from 'react';
 
-import { Button, Link, SyntaxHighlighter } from 'storybook/internal/components';
+import { Button, Link, SyntaxHighlighter } from '@aussieljk/forkbook/internal/components';
 
 import { CheckIcon, CopyIcon, LocationIcon } from '@storybook/icons';
 

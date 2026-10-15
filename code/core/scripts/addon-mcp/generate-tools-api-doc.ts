@@ -1,5 +1,5 @@
 /**
- * Generates a markdown reference of everything an agent sees from the Storybook
+ * Generates a markdown reference of everything an agent sees from the Forkbook
  * AI surface: MCP server instructions and tool definitions,
  * and the plugin skills.
  *
@@ -13,8 +13,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
-import { buildServerInstructions } from 'storybook/internal/skills';
-import type { ToolAvailability } from 'storybook/internal/core-server';
+import { buildServerInstructions } from '@aussieljk/forkbook/internal/skills';
+import type { ToolAvailability } from '@aussieljk/forkbook/internal/core-server';
 import { registerCoreToolsetsForTest } from '../../src/addon-mcp/test-support/register-core-toolsets.ts';
 import {
   getAddonToolMetadata,
@@ -238,12 +238,12 @@ async function renderServerSection(): Promise<string> {
 
 const generatedAt = new Date().toISOString().slice(0, 10);
 const document = [
-  '# Storybook MCP / AI tools API',
+  '# Forkbook MCP / AI tools API',
   '',
   `> Generated ${generatedAt} by \`code/addons/mcp/scripts/generate-tools-api-doc.ts\` — do not edit by hand.`,
   '> Regenerate from the repo root with `bun code/addons/mcp/scripts/generate-tools-api-doc.ts`.',
   '',
-  'Assumed configuration: all toolsets enabled (`dev`, `test`, `docs`), component manifests available, `storybook/addon-vitest` installed, `storybook/addon-a11y` enabled, module graph supported, single source.',
+  'Assumed configuration: all toolsets enabled (`dev`, `test`, `docs`), component manifests available, `@aussieljk/forkbook/addon-vitest` installed, `@aussieljk/forkbook/addon-a11y` enabled, module graph supported, single source.',
   '',
   'Tool inputs and outputs are rendered as TypeScript types derived from the JSON Schemas the server actually serves; field docs, defaults, and constraints are preserved as doc comments.',
   '',

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 
-import { recast, types as t } from 'storybook/internal/babel';
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { recast, types as t } from '@aussieljk/forkbook/internal/babel';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { dedent } from 'ts-dedent';
 
@@ -33,7 +33,7 @@ function generateResolved(code: string) {
 
 function withCSF3(body: string) {
   return dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const meta: Meta<typeof Button> = {
@@ -75,7 +75,7 @@ test('Default', () => {
 
 test('Synthesizes self-closing when no children', () => {
   const input = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const meta: Meta<typeof Button> = {
@@ -298,7 +298,7 @@ test('CustomRenderWithOverideArgs only', async () => {
 
 test('Meta level render: Template (identifier referencing local function)', async () => {
   const input = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const Template = (args) => <Button {...args} override="overide" />;
@@ -322,7 +322,7 @@ test('Meta level render: Template (identifier referencing local function)', asyn
 
 test('Meta level render: Template (identifier referencing unresolvable function)', async () => {
   const input = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const meta: Meta<typeof Button> = {
@@ -349,7 +349,7 @@ test('Story unresolvable render does not fall back to meta render', async () => 
   // the story's render should take precedence — fall through to no-function JSX synthesis,
   // NOT use meta's render function.
   const input = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const meta: Meta<typeof Button> = {
@@ -374,7 +374,7 @@ test('Story unresolvable render does not fall back to meta render', async () => 
 
 test('Meta level render', async () => {
   const input = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from '@design-system/button';
 
     const meta: Meta<typeof Button> = {

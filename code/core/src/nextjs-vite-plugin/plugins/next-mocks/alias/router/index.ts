@@ -3,9 +3,9 @@ import singletonRouter, * as originalRouter from 'next/dist/client/router.js';
 import type { ExcludeRouterProps, WithRouterProps } from 'next/dist/client/with-router';
 import type { NextRouter, SingletonRouter } from 'next/router.js';
 import type { ComponentType } from 'react';
-import { NextjsRouterMocksNotAvailable } from 'storybook/internal/preview-errors';
-import type { Mock } from 'storybook/test';
-import { fn } from 'storybook/test';
+import { NextjsRouterMocksNotAvailable } from '@aussieljk/forkbook/internal/preview-errors';
+import type { Mock } from '@aussieljk/forkbook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 const defaultRouterState = {
   route: '/',

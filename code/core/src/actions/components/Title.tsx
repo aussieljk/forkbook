@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Badge } from 'storybook/internal/components';
-import { STORY_CHANGED } from 'storybook/internal/core-events';
+import { Badge } from '@aussieljk/forkbook/internal/components';
+import { STORY_CHANGED } from '@aussieljk/forkbook/internal/core-events';
 
-import { useAddonState, useChannel, useStorybookApi } from 'storybook/manager-api';
+import { useAddonState, useChannel, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID, CLEAR_ID, EVENT_ID, PANEL_ID } from '../constants.ts';
 

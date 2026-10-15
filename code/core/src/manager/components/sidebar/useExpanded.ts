@@ -1,13 +1,13 @@
 import type { Dispatch, MutableRefObject, Reducer } from 'react';
 import { useCallback, useEffect, useReducer } from 'react';
 
-import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from 'storybook/internal/core-events';
+import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 
 import { throttle } from 'es-toolkit/function';
-import type { StoriesHash } from 'storybook/manager-api';
-import { useStorybookApi } from 'storybook/manager-api';
+import type { StoriesHash } from '@aussieljk/forkbook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { matchesKeyCode, matchesModifiers } from '../../keybinding.ts';
 import { getAncestorIds, getDescendantIds, isAncestor, scrollIntoView } from '../../utils/tree.ts';

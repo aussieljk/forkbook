@@ -1,4 +1,4 @@
-import type { ArgTypes, SBType } from 'storybook/internal/csf';
+import type { ArgTypes, SBType } from '@aussieljk/forkbook/internal/csf';
 
 export type ComponentArgTypesInfo = {
   required: boolean;
@@ -13,7 +13,7 @@ export type Options = {
   skipUrlGeneration?: boolean;
 };
 
-export const STORYBOOK_FN_PLACEHOLDER = '[[STORYBOOK_FN_PLACEHOLDER]]';
+export const FORKBOOK_FN_PLACEHOLDER = '[[FORKBOOK_FN_PLACEHOLDER]]';
 
 /**
  * Generate dummy props using ArgTypes instead of ComponentArgTypesData This provides more accurate
@@ -174,7 +174,7 @@ export function generateDummyValueFromSBType(
 
       switch (mostLikelyType) {
         case 'image':
-          return 'https://placehold.co/600x400?text=Storybook';
+          return 'https://placehold.co/600x400?text=Forkbook';
 
         case 'url':
           return 'https://example.com';
@@ -197,7 +197,7 @@ export function generateDummyValueFromSBType(
       return propName ?? 'Hello world';
 
     case 'function':
-      return STORYBOOK_FN_PLACEHOLDER;
+      return FORKBOOK_FN_PLACEHOLDER;
 
     case 'literal':
       return normalizeStringLiteral(sbType.value);
@@ -262,7 +262,7 @@ export function generateDummyValueFromSBType(
     case 'other': {
       const value = sbType.value;
       if (value?.startsWith('React') || value?.includes('Event') || value?.includes('Element')) {
-        return STORYBOOK_FN_PLACEHOLDER;
+        return FORKBOOK_FN_PLACEHOLDER;
       }
 
       if (value === 'null') {

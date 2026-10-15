@@ -20,7 +20,7 @@ export const importMetaResolve = (...args: Parameters<ImportMeta['resolve']>) =>
     // This should only ever happen in our internal Vitest unit tests. This specific warning is silenced globally in vitest-setup.ts.
     // If anyone sees this warning, it means that this function was used in Vitest, but not our Vitest.
     console.warn(
-      "importMetaResolve from within Storybook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/storybookjs/storybook/issues/new?template=bug_report.yml"
+      "importMetaResolve from within Forkbook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/storybookjs/storybook/issues/new?template=bug_report.yml"
     );
     return pathToFileURL(args[0]).href;
   }
@@ -53,15 +53,15 @@ function registerTypescriptLoader() {
     typescriptLoaderRegistration = (async () => {
       if (semver.gte(process.versions.node, '26.0.0')) {
         try {
-          const { load } = await import('storybook/internal/bin/loader');
+          const { load } = await import('@aussieljk/forkbook/internal/bin/loader');
           nodeModule.registerHooks({ load });
         } catch {
           // Fallback in case nodejs/node#62786 caused an exception
-          const typescriptLoaderUrl = importMetaResolve('storybook/internal/bin/loader');
+          const typescriptLoaderUrl = importMetaResolve('@aussieljk/forkbook/internal/bin/loader');
           nodeModule.register(typescriptLoaderUrl, import.meta.url);
         }
       } else {
-        const typescriptLoaderUrl = importMetaResolve('storybook/internal/bin/loader');
+        const typescriptLoaderUrl = importMetaResolve('@aussieljk/forkbook/internal/bin/loader');
         nodeModule.register(typescriptLoaderUrl, import.meta.url);
       }
     })().catch((e) => {

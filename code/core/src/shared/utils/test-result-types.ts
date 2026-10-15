@@ -63,7 +63,7 @@ export interface TestRunAnalysis {
    * Stats accumulated across runs: for every story we've ever seen, we
    * keep the most recent outcome (by timestamp). Only emitted by the
    * agent self-healing flow, which is the only consumer that persists
-   * a per-story history in the Storybook cache.
+   * a per-story history in the Forkbook cache.
    */
   cumulativeTotal?: number;
   cumulativePassed?: number;

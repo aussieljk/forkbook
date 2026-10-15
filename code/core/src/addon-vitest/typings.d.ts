@@ -1,5 +1,7 @@
 declare const BROWSER_CONFIG: object;
-declare var STORYBOOK_BUILDER: import('storybook/internal/types').SupportedBuilder | undefined;
+declare var FORKBOOK_BUILDER:
+  | import('@aussieljk/forkbook/internal/types').SupportedBuilder
+  | undefined;
 
 interface ImportMetaEnv {
   __STORYBOOK_URL__?: string;

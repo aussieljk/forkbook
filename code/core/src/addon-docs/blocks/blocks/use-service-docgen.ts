@@ -1,7 +1,7 @@
-import type { DocgenPayload } from 'storybook/internal/types';
+import type { DocgenPayload } from '@aussieljk/forkbook/internal/types';
 
-import { type QueryState } from 'storybook/open-service';
-import { getService } from 'storybook/preview-api';
+import { type QueryState } from '@aussieljk/forkbook/open-service';
+import { getService } from '@aussieljk/forkbook/preview-api';
 
 import { useQuerySubscription } from './use-query-subscription.ts';
 

@@ -1,13 +1,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path, { join } from 'node:path';
 
-import { SupportedLanguage } from 'storybook/internal/types';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import { RN_STORYBOOK_DIR } from '../../../shared/constants/config-folder.ts';
 import { resolvePackageDir } from '../../../shared/utils/module.ts';
 
 const ENTRYPOINT_TEMPLATE_DIR = join(
-  resolvePackageDir('storybook'),
+  resolvePackageDir('@aussieljk/forkbook'),
   'assets/create/templates/react-native'
 );
 

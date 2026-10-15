@@ -7,7 +7,7 @@
 Takes your provider component, global styles, and theme(s)to wrap your stories in.
 
 ```js
-import { withThemeFromJSXProvider } from 'storybook/addon-themes';
+import { withThemeFromJSXProvider } from '@aussieljk/forkbook/addon-themes';
 
 export const decorators = [
   withThemeFromJSXProvider({
@@ -36,7 +36,7 @@ Available options:
 Takes your theme class names to apply your parent element to enable your theme(s).
 
 ```js
-import { withThemeByClassName } from 'storybook/addon-themes';
+import { withThemeByClassName } from '@aussieljk/forkbook/addon-themes';
 
 export const decorators = [
   withThemeByClassName({
@@ -62,7 +62,7 @@ Available options:
 Takes your theme names and data attribute to apply your parent element to enable your theme(s).
 
 ```js
-import { withThemeByDataAttribute } from 'storybook/addon-themes';
+import { withThemeByDataAttribute } from '@aussieljk/forkbook/addon-themes';
 
 export const decorators = [
   withThemeByDataAttribute({
@@ -94,7 +94,7 @@ If none of these decorators work for your library there is still hope. We've pro
 Pulls the selected theme from storybook's global state.
 
 ```js
-import { DecoratorHelpers } from 'storybook/addon-themes';
+import { DecoratorHelpers } from '@aussieljk/forkbook/addon-themes';
 
 const { pluckThemeFromContext } = DecoratorHelpers;
 
@@ -112,7 +112,7 @@ export const myCustomDecorator =
 Used to register the themes and defaultTheme with the addon state.
 
 ```js
-import { DecoratorHelpers } from 'storybook/addon-themes';
+import { DecoratorHelpers } from '@aussieljk/forkbook/addon-themes';
 
 const { initializeThemeState } = DecoratorHelpers;
 
@@ -130,8 +130,8 @@ export const myCustomDecorator = ({ themes, defaultState, ...rest }) => {
 Let's use Vuetify as an example. Vuetify uses it's own global state to know which theme to render. To build a custom decorator to accommodate this method we'll need to do the following
 
 ```js
-// .storybook/withVuetifyTheme.decorator.js
-import { DecoratorHelpers } from 'storybook/addon-themes';
+// .forkbook/withVuetifyTheme.decorator.js
+import { DecoratorHelpers } from '@aussieljk/forkbook/addon-themes';
 import { useTheme } from 'vuetify';
 
 const { initializeThemeState, pluckThemeFromContext } = DecoratorHelpers;
@@ -162,10 +162,10 @@ export const withVuetifyTheme = ({ themes, defaultTheme }) => {
 };
 ```
 
-This can then be provided to Storybook in `.storybook/preview.js`:
+This can then be provided to Forkbook in `.forkbook/preview.js`:
 
 ```js
-// .storybook/preview.js
+// .forkbook/preview.js
 import { setup } from '@storybook/vue3';
 import { registerPlugins } from '../src/plugins';
 import { withVuetifyTheme } from './withVuetifyTheme.decorator';

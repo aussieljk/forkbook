@@ -2,7 +2,7 @@ import {
   internal_UniversalStore,
   experimental_getStatusStore,
   experimental_getTestProviderStore,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import {
   ADDON_ID,

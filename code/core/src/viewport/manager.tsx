@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { ViewportTool } from './components/Tool.tsx';
 import { ADDON_ID, TOOL_ID } from './constants.ts';

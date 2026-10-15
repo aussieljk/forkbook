@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeStoriesEntry } from 'storybook/internal/common';
+import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
 
 import { userOrAutoTitleFromSpecifier as userOrAuto } from './autoTitle.ts';
 

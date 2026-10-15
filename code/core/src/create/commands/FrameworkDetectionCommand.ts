@@ -1,9 +1,9 @@
-import { type ProjectType } from 'storybook/internal/cli';
-import { type JsPackageManager } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import type { SupportedBuilder } from 'storybook/internal/types';
-import { type SupportedRenderer } from 'storybook/internal/types';
-import type { SupportedFramework } from 'storybook/internal/types';
+import { type ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { type JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { SupportedBuilder } from '@aussieljk/forkbook/internal/types';
+import { type SupportedRenderer } from '@aussieljk/forkbook/internal/types';
+import type { SupportedFramework } from '@aussieljk/forkbook/internal/types';
 
 import { generatorRegistry } from '../generators/GeneratorRegistry.ts';
 import type { CommandOptions } from '../generators/types.ts';

@@ -1,9 +1,13 @@
 import { join } from 'node:path';
 
-import { ProjectType, copyTemplateFiles } from 'storybook/internal/cli';
-import { executeCommand } from 'storybook/internal/common';
-import { CLI_COLORS, logger, prompt } from 'storybook/internal/node-logger';
-import { SupportedBuilder, SupportedLanguage, SupportedRenderer } from 'storybook/internal/types';
+import { ProjectType, copyTemplateFiles } from '@aussieljk/forkbook/internal/cli';
+import { executeCommand } from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import {
+  SupportedBuilder,
+  SupportedLanguage,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 import {
   applyPreviewImportsMap,
   RN_STORYBOOK_DIR,

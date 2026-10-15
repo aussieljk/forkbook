@@ -1,4 +1,4 @@
-import type { ViewMode as ViewModeBase } from 'storybook/internal/csf';
+import type { ViewMode as ViewModeBase } from '@aussieljk/forkbook/internal/csf';
 
 import type { Addon_OptionsParameterV7 } from './addons.ts';
 
@@ -65,7 +65,7 @@ export type {
   StrictInputType,
   Tag,
   TestFunction,
-} from 'storybook/internal/csf';
+} from '@aussieljk/forkbook/internal/csf';
 
 type OrString<T extends string> = T | (string & {});
 

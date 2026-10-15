@@ -2,9 +2,9 @@
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/docspage-hero.png" width="100%" />
 </center>
 
-<h1>Storybook DocsPage</h1>
+<h1>Forkbook DocsPage</h1>
 
-When you install [Storybook Docs](../README.md), `DocsPage` is the zero-config default documentation that all stories get out of the box. It aggregates your stories, text descriptions, docgen comments, props tables, and code examples into a single page for each component.
+When you install [Forkbook Docs](../README.md), `DocsPage` is the zero-config default documentation that all stories get out of the box. It aggregates your stories, text descriptions, docgen comments, props tables, and code examples into a single page for each component.
 
 - [Motivation](#motivation)
 - [Component parameter](#component-parameter)
@@ -17,22 +17,22 @@ When you install [Storybook Docs](../README.md), `DocsPage` is the zero-config d
 
 ## Motivation
 
-`DocsPage` is the successor to [`addon-info`](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info), which was one of the most popular Storybook addons despite many limitations.
+`DocsPage` is the successor to [`addon-info`](https://github.com/storybookjs/deprecated-addons/tree/master/addons/info), which was one of the most popular Forkbook addons despite many limitations.
 
-Like `addon-info`, `DocsPage` provides sensible defaults, meaning it adds documentation to your existing Storybook without requiring any additional work on your part.
+Like `addon-info`, `DocsPage` provides sensible defaults, meaning it adds documentation to your existing Forkbook without requiring any additional work on your part.
 
 However, `DocsPage` brings the following improvements:
 
 - It supports React with Vite and Next.js with Vite.
-- It generates better documentation that can be used as a standalone docs site, independently of Storybook.
+- It generates better documentation that can be used as a standalone docs site, independently of Forkbook.
 - It supports better configuration, so you can capture project specific information with ease.
 - It's built to work with [`MDX`](./mdx.md) when you need more control of your documentation.
 
 ## Component parameter
 
-`DocsPage` pulls info from many sources, but one of the main ones is the `component` parameter, which is a new addition to Storybook in 5.2. It's based on the best practice that each component should have an associated set of documentation and stories (versus organizing it in some other way).
+`DocsPage` pulls info from many sources, but one of the main ones is the `component` parameter, which is a new addition to Forkbook in 5.2. It's based on the best practice that each component should have an associated set of documentation and stories (versus organizing it in some other way).
 
-Storybook uses `component` to extract the component's description and props, and will rely on it further in future releases. We encourage you to add it to existing stories and use it in all new stories.
+Forkbook uses `component` to extract the component's description and props, and will rely on it further in future releases. We encourage you to add it to existing stories and use it in all new stories.
 
 Here's how to set the component in [Component Story Format (CSF)](https://storybook.js.org/docs/api/csf):
 
@@ -49,7 +49,7 @@ If you're coming from the `storiesOf` format, there's [a codemod that adds it fo
 
 ## Replacing DocsPage
 
-What if you don't want a `DocsPage` for your Storybook, for a specific component, or even for a specific story?
+What if you don't want a `DocsPage` for your Forkbook, for a specific component, or even for a specific story?
 
 You can replace DocsPage at any level by overriding the `docs.page` parameter:
 
@@ -60,7 +60,7 @@ You can replace DocsPage at any level by overriding the `docs.page` parameter:
 **Globally (preview.js)**
 
 ```js
-import { addParameters } from 'storybook/react';
+import { addParameters } from '@aussieljk/forkbook/react';
 
 addParameters({ docs: { page: null } });
 ```
@@ -94,7 +94,14 @@ Here's an example of rebuilding `DocsPage` out of doc blocks:
 
 ```js
 import React from 'react';
-import { ArgsTable, Description, Primary, Stories, Subtitle, Title } from 'storybook/addon-docs';
+import {
+  ArgsTable,
+  Description,
+  Primary,
+  Stories,
+  Subtitle,
+  Title,
+} from '@aussieljk/forkbook/addon-docs';
 import { DocgenButton } from '../../components/DocgenButton';
 
 export default {
@@ -129,7 +136,7 @@ The docs preset assumes this naming convention for its `source-loader` setup. If
 
 By default, the code block under the Preview is collapsed and you have to click on "Show code" to reveal it.
 
-You can override this default behavior in `.storybook/preview.js` (or in any of your components/stories):
+You can override this default behavior in `.forkbook/preview.js` (or in any of your components/stories):
 
 ```js
 export const parameters = {
@@ -148,4 +155,4 @@ With that flag, now the docs addon will show all code blocks open by default.
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
 - Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
+- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)

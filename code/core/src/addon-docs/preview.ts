@@ -1,4 +1,4 @@
-import type { PreparedStory, TagOptions } from 'storybook/internal/types';
+import type { PreparedStory, TagOptions } from '@aussieljk/forkbook/internal/types';
 
 const excludeTags = Object.entries<Partial<TagOptions>>(globalThis.TAGS_OPTIONS ?? {}).reduce(
   (acc, [tag, option]) => {

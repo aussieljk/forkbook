@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 const meta = {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

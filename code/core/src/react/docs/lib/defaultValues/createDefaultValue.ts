@@ -2,7 +2,7 @@ import {
   type PropDefaultValue,
   createSummaryValue,
   isTooLongForDefaultValueSummary,
-} from 'storybook/internal/docs-tools';
+} from '@aussieljk/forkbook/internal/docs-tools';
 
 import { ELEMENT_CAPTION, FUNCTION_CAPTION } from '../captions';
 import { generateCode } from '../generateCode';

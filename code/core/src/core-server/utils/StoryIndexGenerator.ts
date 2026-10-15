@@ -7,11 +7,11 @@ import {
   getProjectRoot,
   getTsconfigPathsBaseDir,
   normalizeStoryPath,
-} from 'storybook/internal/common';
-import { combineTags, storyNameFromExport, toId } from 'storybook/internal/csf/csf-utils';
-import { loadConfig } from 'storybook/internal/csf-tools';
-import { logger, once } from 'storybook/internal/node-logger';
-import { isExampleStoryId } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { combineTags, storyNameFromExport, toId } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import { loadConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger, once } from '@aussieljk/forkbook/internal/node-logger';
+import { isExampleStoryId } from '@aussieljk/forkbook/internal/telemetry';
 import type {
   DocsIndexEntry,
   DocsOptions,
@@ -24,7 +24,7 @@ import type {
   StoryIndexEntry,
   StoryIndexInput,
   StorybookConfigRaw,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import * as find from 'empathic/find';
 import picocolors from 'picocolors';
@@ -593,7 +593,7 @@ export class StoryIndexGenerator {
             - Does that file exist?
             - If so, is it a CSF file (\`.stories.*\`)?
             - If so, is it matched by the \`stories\` glob in \`main.js\`?
-            - If so, has the file successfully loaded in Storybook and are its stories visible?
+            - If so, has the file successfully loaded in Forkbook and are its stories visible?
           `
         );
       }

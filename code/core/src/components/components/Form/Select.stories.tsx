@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
+import { action } from '@aussieljk/forkbook/actions';
 
 import { Select as Component } from './Select.tsx';
 

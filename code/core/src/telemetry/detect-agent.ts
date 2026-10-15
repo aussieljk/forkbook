@@ -10,7 +10,7 @@ export type AgentInfo = {
 
 export type AgentDetection = AgentInfo | undefined;
 
-/** Detect whether Storybook CLI is likely being invoked by an AI agent, using std-env. */
+/** Detect whether Forkbook CLI is likely being invoked by an AI agent, using std-env. */
 export const detectAgent = (): AgentDetection => {
   const { name } = stdEnvDetectAgent();
   if (!name) {

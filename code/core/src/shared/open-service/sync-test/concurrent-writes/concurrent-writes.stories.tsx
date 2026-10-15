@@ -1,8 +1,8 @@
 import React, { useState, useSyncExternalStore } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fireEvent, userEvent, waitFor } from 'storybook/test';
+import { expect, fireEvent, userEvent, waitFor } from '@aussieljk/forkbook/test';
 
 import { OPEN_SERVICE_DEMO_PARAM_KEY } from '../addon/constants.ts';
 import { createDemoStore } from '../demo-store.ts';

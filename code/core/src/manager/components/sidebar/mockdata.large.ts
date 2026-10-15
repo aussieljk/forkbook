@@ -1,5 +1,5 @@
 /**
- * This data originates from the storiesHash state in Storybook. Grab it from the Manager node using
+ * This data originates from the storiesHash state in Forkbook. Grab it from the Manager node using
  * React DevTools by assigning it to a global variable, then use the following script to remove the
  * parameters, otherwise you'll end up with a huge file:
  *
@@ -6509,7 +6509,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-34': {
     id: 'webapp-components-isolatorframe--storybook-34',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 3.4',
+    name: 'Forkbook 3.4',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6523,7 +6523,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-40': {
     id: 'webapp-components-isolatorframe--storybook-40',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 4.0',
+    name: 'Forkbook 4.0',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6537,7 +6537,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-5': {
     id: 'webapp-components-isolatorframe--storybook-5',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 5',
+    name: 'Forkbook 5',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6551,7 +6551,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-5-legacy-package': {
     id: 'webapp-components-isolatorframe--storybook-5-legacy-package',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 5, legacy package',
+    name: 'Forkbook 5, legacy package',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6565,7 +6565,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-5-error': {
     id: 'webapp-components-isolatorframe--storybook-5-error',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 5, error',
+    name: 'Forkbook 5, error',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6579,7 +6579,7 @@ export const index = {
   'webapp-components-isolatorframe--storybook-6': {
     id: 'webapp-components-isolatorframe--storybook-6',
     title: 'Webapp components/IsolatorFrame',
-    name: 'Storybook 6',
+    name: 'Forkbook 6',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6771,7 +6771,7 @@ export const index = {
   'webapp-components-liveview--storybook-5-preloading': {
     id: 'webapp-components-liveview--storybook-5-preloading',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 5, preloading',
+    name: 'Forkbook 5, preloading',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6785,7 +6785,7 @@ export const index = {
   'webapp-components-liveview--storybook-34-preloading': {
     id: 'webapp-components-liveview--storybook-34-preloading',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 3.4, preloading',
+    name: 'Forkbook 3.4, preloading',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6799,7 +6799,7 @@ export const index = {
   'webapp-components-liveview--storybook-40-preloading': {
     id: 'webapp-components-liveview--storybook-40-preloading',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 4.0, preloading',
+    name: 'Forkbook 4.0, preloading',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6813,7 +6813,7 @@ export const index = {
   'webapp-components-liveview--storybook-5-visible': {
     id: 'webapp-components-liveview--storybook-5-visible',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 5, visible',
+    name: 'Forkbook 5, visible',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6827,7 +6827,7 @@ export const index = {
   'webapp-components-liveview--storybook-5-error-visible': {
     id: 'webapp-components-liveview--storybook-5-error-visible',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 5, error, visible',
+    name: 'Forkbook 5, error, visible',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6841,7 +6841,7 @@ export const index = {
   'webapp-components-liveview--storybook-34-visible': {
     id: 'webapp-components-liveview--storybook-34-visible',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 3.4, visible',
+    name: 'Forkbook 3.4, visible',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -6855,7 +6855,7 @@ export const index = {
   'webapp-components-liveview--storybook-40-visible': {
     id: 'webapp-components-liveview--storybook-40-visible',
     title: 'Webapp components/LiveView',
-    name: 'Storybook 4.0, visible',
+    name: 'Forkbook 4.0, visible',
     importPath: './path.js',
     args: {},
     argTypes: {},
@@ -17973,7 +17973,7 @@ export const index = {
   'webapp-screens-marketing-comparescreen-comparescreen--deploy-storybook': {
     id: 'webapp-screens-marketing-comparescreen-comparescreen--deploy-storybook',
     title: 'Webapp screens/Marketing/CompareScreen/CompareScreen',
-    name: 'Deploy Storybook overview',
+    name: 'Deploy Forkbook overview',
     importPath: './path.js',
     args: {},
     argTypes: {},

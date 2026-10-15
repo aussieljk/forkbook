@@ -1,5 +1,8 @@
-import { getChannel } from 'storybook/internal/channels';
-import { MANAGER_INERT_ATTRIBUTE_CHANGED, TELEMETRY_ERROR } from 'storybook/internal/core-events';
+import { getChannel } from '@aussieljk/forkbook/internal/channels';
+import {
+  MANAGER_INERT_ATTRIBUTE_CHANGED,
+  TELEMETRY_ERROR,
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 import { globalPackages, globalsNameReferenceMap } from './globals/globals.ts';

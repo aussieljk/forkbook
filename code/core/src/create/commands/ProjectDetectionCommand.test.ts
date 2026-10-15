@@ -1,18 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { HandledError, PackageManagerName } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import type { Feature } from 'storybook/internal/types';
-import { SupportedLanguage } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { HandledError, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import type { Feature } from '@aussieljk/forkbook/internal/types';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import type { CommandOptions } from '../generators/types.ts';
 import { ProjectTypeService } from '../services/ProjectTypeService.ts';
 import { ProjectDetectionCommand } from './ProjectDetectionCommand.ts';
 
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('../services/ProjectTypeService', { spy: true });
 
 describe('ProjectDetectionCommand', () => {
@@ -91,7 +91,7 @@ describe('ProjectDetectionCommand', () => {
       expect(result.projectType).toBe(ProjectType.REACT);
       expect(mockProjectTypeService.validateProvidedType).toHaveBeenCalledWith(ProjectType.REACT);
       expect(logger.step).toHaveBeenCalledWith(
-        'Installing Storybook for user specified project type: react'
+        'Installing Forkbook for user specified project type: react'
       );
       expect(mockProjectTypeService.autoDetectProjectType).not.toHaveBeenCalled();
     });
@@ -112,7 +112,7 @@ describe('ProjectDetectionCommand', () => {
       const error = new HandledError('Unknown project type supplied: unsupported');
       vi.mocked(mockProjectTypeService.validateProvidedType).mockImplementation(async () => {
         logger.error(
-          `The provided project type ${ProjectType.UNSUPPORTED} was not recognized by Storybook`
+          `The provided project type ${ProjectType.UNSUPPORTED} was not recognized by Forkbook`
         );
         throw error;
       });
@@ -120,7 +120,7 @@ describe('ProjectDetectionCommand', () => {
       await expect(command.execute()).rejects.toThrow(HandledError);
 
       expect(logger.error).toHaveBeenCalledWith(
-        'The provided project type unsupported was not recognized by Storybook'
+        'The provided project type unsupported was not recognized by Forkbook'
       );
     });
 
@@ -136,7 +136,7 @@ describe('ProjectDetectionCommand', () => {
       expect(prompt.select).not.toHaveBeenCalled();
     });
 
-    it('should check for existing Storybook installation', async () => {
+    it('should check for existing Forkbook installation', async () => {
       options.type = undefined;
       options.force = false;
       vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(ProjectType.REACT);

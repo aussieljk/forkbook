@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { TextControl } from './Text';
 
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    value: 'Storybook says hi. 👋',
+    value: 'Forkbook says hi. 👋',
   },
 };
 
@@ -45,7 +45,7 @@ export const WithMaxLength: Story = {
 
 export const BasicReadonly: Story = {
   args: {
-    value: 'Storybook says hi. 👋',
+    value: 'Forkbook says hi. 👋',
     argType: {
       table: {
         readonly: true,

@@ -1,4 +1,4 @@
-# Storybook CSF Tools
+# Forkbook CSF Tools
 
 An experimental library to read, analyze, transform, and write CSF programmatically.
 
@@ -57,7 +57,7 @@ const manager = loadConfig(source).parse();
 for (const object of manager.callArguments({
   importedName: 'addons',
   methodName: 'setConfig',
-  moduleNames: ['storybook/manager-api'],
+  moduleNames: ['@aussieljk/forkbook/manager-api'],
 })) {
   object.group(['layout'], ['showNav', 'showPanel']);
   object.group(['ui'], ['enableShortcuts']);

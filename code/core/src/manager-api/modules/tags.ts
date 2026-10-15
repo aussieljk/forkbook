@@ -3,7 +3,7 @@ import type {
   FilterFunction,
   Tag,
   TagsOptions,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import memoize from 'memoizerific';
 

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { Button } from './Button';
 

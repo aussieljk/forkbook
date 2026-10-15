@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { Link } from '../typography/link/link.tsx';
 import styles from './TooltipMessage.module.css';
@@ -18,7 +18,7 @@ export interface TooltipMessageProps {
 
 export const TooltipMessage = ({ title, desc, links }: TooltipMessageProps) => {
   deprecate(
-    '`TooltipMessage` is deprecated and will be removed in Storybook 11, use `Popover` and `PopoverProvider` instead.'
+    '`TooltipMessage` is deprecated and will be removed in Forkbook 11, use `Popover` and `PopoverProvider` instead.'
   );
 
   return (

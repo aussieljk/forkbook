@@ -4,7 +4,7 @@ import os from 'node:os';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { deprecate } from 'storybook/internal/node-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/node-logger';
 
 import { transformSync } from 'esbuild';
 
@@ -18,7 +18,7 @@ import {
 // Mock dependencies
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 vi.mock('esbuild');
 
 describe('loader', () => {
@@ -242,7 +242,7 @@ describe('loader', () => {
     it('should not modify absolute imports', () => {
       const testCases = [
         `import foo from 'react';`,
-        `import bar from 'storybook/react';`,
+        `import bar from '@aussieljk/forkbook/react';`,
         `import baz from 'node:fs';`,
       ];
 

@@ -7,7 +7,7 @@ export interface StoryInfo {
   changeStatus?: StoryChangeStatus;
 }
 
-/** Best-effort labels when the Storybook index has not resolved a story yet. */
+/** Best-effort labels when the Forkbook index has not resolved a story yet. */
 export const fallbackStoryInfo = (storyId: string): StoryInfo => {
   const separator = storyId.indexOf('--');
   if (separator === -1) {

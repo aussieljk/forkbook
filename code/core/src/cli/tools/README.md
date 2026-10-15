@@ -1,7 +1,7 @@
 # Tools CLI and SDK
 
-`storybook tools` is a shell over the Node SDK at `storybook/internal/tools`.
-The SDK owns both runtimes: **attached** (join a running Storybook as another Open Service
+`forkbook tools` is a shell over the Node SDK at `@aussieljk/forkbook/internal/tools`.
+The SDK owns both runtimes: **attached** (join a running Forkbook as another Open Service
 runtime) and **local** (load the project configuration in this process). How attach works is in
 [architecture.md](./architecture.md). Delegated command dispatch lives in the
 [open-service README](../../shared/open-service/README.md#delegated-mode).
@@ -12,7 +12,7 @@ instance.
 ## SDK
 
 ```ts
-import { createTools } from 'storybook/internal/tools';
+import { createTools } from '@aussieljk/forkbook/internal/tools';
 
 const tools = await createTools({
   cwd, // which project; defaults to process.cwd()
@@ -43,9 +43,9 @@ Factory vs `call`:
 
 `auto` fallback is factory-time only. A later `call` failure (disconnect, remote ack timeout) does not switch to local.
 
-`kind` defaults to `sdk`. The `storybook tools` CLI stamps `cli`. Do not value-export
+`kind` defaults to `sdk`. The `forkbook tools` CLI stamps `cli`. Do not value-export
 `bootstrapToolsRuntime` from the SDK barrel: a static import of the local runtime loads
-`storybook/internal/core-server` and can make UniversalStore a leader before the attached channel
+`@aussieljk/forkbook/internal/core-server` and can make UniversalStore a leader before the attached channel
 exists.
 
 ## CLI flags
@@ -75,16 +75,16 @@ manifests are fetched without credentials and with a 3 second timeout in every m
 cannot be read gets its own error section.
 
 ```bash
-npx storybook tools docs list
-npx storybook tools --attach docs list
-npx storybook tools --no-attach docs list
-npx storybook tools --cwd /apps/web --config-dir /apps/web/.storybook docs list
-npx storybook tools --port 6007 stories preview --stories '[{"storyId":"example-button--primary"}]'
+npx forkbook tools docs list
+npx forkbook tools --attach docs list
+npx forkbook tools --no-attach docs list
+npx forkbook tools --cwd /apps/web --config-dir /apps/web/.forkbook docs list
+npx forkbook tools --port 6007 stories preview --stories '[{"storyId":"example-button--primary"}]'
 ```
 
 ## Modes
 
-**Attached.** Discover `~/.storybook/instances/*.json`, connect a Node WebSocket to
+**Attached.** Discover `~/.forkbook/instances/*.json`, connect a Node WebSocket to
 `/storybook-server-channel?token=…` (no Origin), load the instance config as a **leaf** and
 **follower**, set `setDelegatedMode(true)` before the first `registerService`. This path never
 `chdir`s the host process. Two processes never attach across `storybook` installations: when the
@@ -97,11 +97,11 @@ recorded installation instead. A record that cannot prove its installation throw
 recorded `storybookPath` (its own manifest resolves the host entry), pinned to the instance's
 port. Local mode: a foreign `--cwd` spawns a child from the `storybook` package under that
 directory. Both proxy `describe` / `call` / `close` over IPC. `autoSpawn: false` throws instead.
-A child never spawns another child (`STORYBOOK_TOOLS_CHILD_HOST`).
+A child never spawns another child (`FORKBOOK_TOOLS_CHILD_HOST`).
 
 **Local.** Load the target configuration in this process when `cwd` already matches. This path
 never `chdir`s. A foreign `--cwd` starts a child host from the `storybook` package under that
-directory. Do not set `STORYBOOK_ATTACHED_TOOLS` on this path: that env is how the dispatcher
+directory. Do not set `FORKBOOK_ATTACHED_TOOLS` on this path: that env is how the dispatcher
 makes UniversalStore a follower before core loads, and local bootstrap must be a leader.
 
 ## Tests
@@ -110,4 +110,4 @@ makes UniversalStore a follower before core loads, and local bootstrap must be a
 - Attach e2e: `cd code && yarn playwright test -c e2e-internal/playwright.config.ts e2e-internal/tools-attach.spec.ts`
 
 Run e2e from the same checkout that serves the internal UI. A worktree CLI talking to a
-`/workspace` instance will load the wrong `.storybook` and fail on duplicate `core-server`.
+`/workspace` instance will load the wrong `.forkbook` and fail on duplicate `core-server`.

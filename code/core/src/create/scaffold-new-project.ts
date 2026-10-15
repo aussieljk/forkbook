@@ -1,10 +1,10 @@
 import { readdirSync } from 'node:fs';
 import { rm } from 'node:fs/promises';
 
-import { type PackageManagerName, executeCommand } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { GenerateNewProjectOnInitError } from 'storybook/internal/server-errors';
-import { telemetry } from 'storybook/internal/telemetry';
+import { type PackageManagerName, executeCommand } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { GenerateNewProjectOnInitError } from '@aussieljk/forkbook/internal/server-errors';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { createPromptCancelOptions } from './prompt-cancel.ts';
 import { TelemetryService } from './services/TelemetryService.ts';
@@ -79,8 +79,8 @@ export const scaffoldNewProject = async (
 
   let projectStrategy;
 
-  if (process.env.STORYBOOK_INIT_EMPTY_TYPE) {
-    projectStrategy = process.env.STORYBOOK_INIT_EMPTY_TYPE;
+  if (process.env.FORKBOOK_INIT_EMPTY_TYPE) {
+    projectStrategy = process.env.FORKBOOK_INIT_EMPTY_TYPE;
   }
 
   if (!projectStrategy) {
@@ -95,7 +95,7 @@ export const scaffoldNewProject = async (
           {
             label: 'Other',
             value: 'other',
-            hint: 'To install Storybook on another framework, first generate a project with that framework and then rerun this command.',
+            hint: 'To install Forkbook on another framework, first generate a project with that framework and then rerun this command.',
           },
         ],
       },
@@ -110,7 +110,7 @@ export const scaffoldNewProject = async (
       { stripMetadata: true, immediate: true }
     );
     logger.warn(
-      'To install Storybook on another framework, first generate a project with that framework and then rerun this command.'
+      'To install Forkbook on another framework, first generate a project with that framework and then rerun this command.'
     );
     logger.outro('Exiting...');
     process.exit(1);

@@ -2,16 +2,16 @@ import type { ComponentProps, FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { ProviderDoesNotExtendBaseProviderError } from 'storybook/internal/manager-errors';
-import { Location, LocationProvider, useNavigate } from 'storybook/internal/router';
-import type { Addon_PageType } from 'storybook/internal/types';
+import { ProviderDoesNotExtendBaseProviderError } from '@aussieljk/forkbook/internal/manager-errors';
+import { Location, LocationProvider, useNavigate } from '@aussieljk/forkbook/internal/router';
+import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
 import { HelmetProvider } from 'react-helmet-async';
-import { Provider as ManagerProvider, types } from 'storybook/manager-api';
-import type { Combo } from 'storybook/manager-api';
-import { ThemeProvider, ensure as ensureTheme } from 'storybook/theming';
+import { Provider as ManagerProvider, types } from '@aussieljk/forkbook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
+import { ThemeProvider, ensure as ensureTheme } from '@aussieljk/forkbook/theming';
 
 import { App } from './App.tsx';
 import type { Layout } from './components/layout/Layout.tsx';

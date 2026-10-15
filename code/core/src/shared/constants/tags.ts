@@ -1,6 +1,6 @@
 import type { API_PreparedIndexEntry } from '../../types/index.ts';
 
-/** System tags used throughout Storybook for categorizing and filtering stories and docs entries. */
+/** System tags used throughout Forkbook for categorizing and filtering stories and docs entries. */
 export const Tag = {
   /** Indicates that autodocs should be generated for this component */
   AUTODOCS: 'autodocs',
@@ -22,7 +22,7 @@ export const Tag = {
 
 /**
  * Tags can be any string, including custom user-defined tags. The Tag constant above defines the
- * system tags used by Storybook.
+ * system tags used by Forkbook.
  */
 export type Tag = string;
 

@@ -1,16 +1,21 @@
 import { cp, mkdir } from 'node:fs/promises';
 import { rm } from 'node:fs/promises';
 
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   loadAllPresets,
   loadMainConfig,
   logConfig,
   resolveAddonName,
-} from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import { getPrecedingUpgrade, telemetry } from 'storybook/internal/telemetry';
-import type { BuilderOptions, CLIOptions, LoadOptions, Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { getPrecedingUpgrade, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type {
+  BuilderOptions,
+  CLIOptions,
+  LoadOptions,
+  Options,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -66,11 +71,11 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
   }
 
   const commonPreset = join(
-    resolvePackageDir('storybook'),
+    resolvePackageDir('@aussieljk/forkbook'),
     'dist/core-server/presets/common-preset.js'
   );
   const commonOverridePreset = import.meta
-    .resolve('storybook/internal/core-server/presets/common-override-preset');
+    .resolve('@aussieljk/forkbook/internal/core-server/presets/common-override-preset');
 
   logger.step('Loading presets');
 
@@ -116,7 +121,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
     presets.apply('staticDirs'),
   ]);
 
-  const invokedBy = process.env.STORYBOOK_INVOKED_BY;
+  const invokedBy = process.env.FORKBOOK_INVOKED_BY;
   if (invokedBy) {
     // NOTE: we don't await this event to avoid slowing things down.
     // This could result in telemetry events being lost.
@@ -148,7 +153,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
     );
   }
 
-  const coreServerPublicDir = join(resolvePackageDir('storybook'), 'assets/browser');
+  const coreServerPublicDir = join(resolvePackageDir('@aussieljk/forkbook'), 'assets/browser');
   effects.push(cp(coreServerPublicDir, options.outputDir, { recursive: true, force: true }));
 
   const hasRegisteredServices = getRegisteredServices().length > 0;

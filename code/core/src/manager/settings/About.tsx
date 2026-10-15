@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Button, Link, StorybookLogo } from 'storybook/internal/components';
+import { Button, Link, StorybookLogo } from '@aussieljk/forkbook/internal/components';
 
 import { DocumentIcon, GithubIcon } from '@storybook/icons';
 
@@ -12,7 +12,7 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <StorybookLogo alt="Storybook" />
+        <StorybookLogo alt="Forkbook" />
       </header>
       <UpgradeBlock onNavigateToWhatsNew={onNavigateToWhatsNew} />
       <div className={styles.footer}>
@@ -40,7 +40,7 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
             className={styles.link}
             href="https://github.com/storybookjs/storybook/graphs/contributors"
           >
-            Storybook Community
+            Forkbook Community
           </Link>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import type { AddonTypes, StoryContext } from 'storybook/internal/csf';
-import { combineTags } from 'storybook/internal/csf';
+import type { AddonTypes, StoryContext } from '@aussieljk/forkbook/internal/csf';
+import { combineTags } from '@aussieljk/forkbook/internal/csf';
 import type {
   Args,
   ComponentAnnotations,
@@ -10,7 +10,7 @@ import type {
   Renderer,
   StoryAnnotations,
   TestFunction,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { OmitIndexSignature, SetOptional, Simplify, UnionToIntersection } from 'type-fest';
 

@@ -11,7 +11,7 @@ export interface ToolAvailability {
   /** Component-manifest feature is on AND manifests were found. Gates the `docs` toolset. */
   docsEnabled: boolean;
   /**
-   * Docs gate for the `storybook tools` CLI channel, which reads manifests in-process and so only
+   * Docs gate for the `forkbook tools` CLI channel, which reads manifests in-process and so only
    * needs manifests to be producible — not the `componentsManifest` opt-in that gates MCP.
    */
   docsEnabledForCli: boolean;
@@ -20,11 +20,11 @@ export interface ToolAvailability {
   /** The component-manifest feature flag is enabled (drives the docs "why disabled" copy). */
   docsFeatureEnabled: boolean;
   /**
-   * `storybook/addon-vitest` is enabled (not merely installed), matching the condition under
+   * `@aussieljk/forkbook/addon-vitest` is enabled (not merely installed), matching the condition under
    * which it registers the `test` toolset. Gates the `test` toolset (`test-run`).
    */
   testSupported: boolean;
-  /** `storybook/addon-a11y` is enabled. Gates the accessibility sub-feature of `test-run`. */
+  /** `@aussieljk/forkbook/addon-a11y` is enabled. Gates the accessibility sub-feature of `test-run`. */
   a11yEnabled: boolean;
   /** `docgenServer` mode: read manifest data in-process from the open services. */
   docgenServer: boolean;
@@ -32,7 +32,7 @@ export interface ToolAvailability {
 
 /**
  * Composed Storybooks with component manifests can back docs tools even when the
- * local Storybook has no component manifest. Use this before feeding
+ * local Forkbook has no component manifest. Use this before feeding
  * availability into the shared tool registry.
  */
 export function getEffectiveToolAvailability(

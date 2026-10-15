@@ -2,11 +2,11 @@ import {
   MDX_SERVICE_ID,
   type MdxPayload,
   mdxQueryStaticPath,
-} from 'storybook/internal/core-server';
+} from '@aussieljk/forkbook/internal/core-server';
 
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 
 const mdxInputSchema = v.object({ id: v.string() });
 

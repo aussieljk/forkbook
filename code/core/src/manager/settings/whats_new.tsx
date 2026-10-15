@@ -1,13 +1,13 @@
 import type { FC } from 'react';
 import React, { Fragment, useEffect, useState } from 'react';
 
-import { Button, Loader } from 'storybook/internal/components';
+import { Button, Loader } from '@aussieljk/forkbook/internal/components';
 
 import { global } from '@storybook/global';
 import { AlertIcon, EyeCloseIcon, EyeIcon, HeartIcon } from '@storybook/icons';
 
-import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { useTheme } from 'storybook/theming';
+import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { useCopyButton } from '../../shared/useCopyButton.ts';
 import styles from './whats_new.module.css';

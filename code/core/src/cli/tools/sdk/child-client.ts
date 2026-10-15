@@ -1,6 +1,6 @@
 import { fork, type ChildProcess, type ForkOptions } from 'node:child_process';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import {
   deserializeError,
@@ -92,20 +92,20 @@ export async function spawnChildHost(
   } catch (cause) {
     throw new SpawnFailedError({
       reason: args.installationPath
-        ? `The running Storybook's installation at ${resolutionRoot} can no longer resolve \`storybook/internal/tools/child-host\`. From your project directory, restart Storybook (for example \`npx storybook dev\`) and re-run this command from there.`
-        : `Could not resolve \`storybook/internal/tools/child-host\` from ${resolutionRoot}. Install Storybook in that project, then retry.`,
+        ? `The running Forkbook's installation at ${resolutionRoot} can no longer resolve \`@aussieljk/forkbook/internal/tools/child-host\`. From your project directory, restart Forkbook (for example \`npx forkbook dev\`) and re-run this command from there.`
+        : `Could not resolve \`@aussieljk/forkbook/internal/tools/child-host\` from ${resolutionRoot}. Install Forkbook in that project, then retry.`,
       cause,
     });
   }
 
   const env: NodeJS.ProcessEnv = {
     ...process.env,
-    STORYBOOK_TOOLS_CHILD_HOST: 'true',
+    FORKBOOK_TOOLS_CHILD_HOST: 'true',
   };
   if (resolvedMode === 'attached') {
-    env.STORYBOOK_ATTACHED_TOOLS = 'true';
+    env.FORKBOOK_ATTACHED_TOOLS = 'true';
   } else {
-    delete env.STORYBOOK_ATTACHED_TOOLS;
+    delete env.FORKBOOK_ATTACHED_TOOLS;
   }
 
   let child: ChildProcess;
@@ -172,7 +172,7 @@ export async function spawnChildHost(
   void disconnected.catch(() => {});
 
   child.on('message', (raw: unknown) => {
-    // Only a result or an error settles a call. A child host from an older Storybook still sends a
+    // Only a result or an error settles a call. A child host from an older Forkbook still sends a
     // per-call `telemetry` envelope first; treating it as the reply would reject the call and drop
     // the result that follows.
     if (!isChildMessage(raw) || (raw.type !== 'result' && raw.type !== 'error')) {
@@ -235,7 +235,7 @@ export async function spawnChildHost(
     closed = true;
     child.kill();
     throw new SpawnFailedError({
-      reason: `The tools child host at ${cwd} speaks protocol ${hello.version}, but this process expects ${CHILD_HOST_PROTOCOL_VERSION}. Restart your Storybook so both sides match.`,
+      reason: `The tools child host at ${cwd} speaks protocol ${hello.version}, but this process expects ${CHILD_HOST_PROTOCOL_VERSION}. Restart your Forkbook so both sides match.`,
     });
   }
 

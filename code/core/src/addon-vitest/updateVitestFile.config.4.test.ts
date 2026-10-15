@@ -2,12 +2,12 @@ import { join } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import * as babel from 'storybook/internal/babel';
+import * as babel from '@aussieljk/forkbook/internal/babel';
 
 import { getDiff } from '../core-server/utils/save-story/getDiff.ts';
 import { loadTemplate, updateConfigFile } from './updateVitestFile.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logger: {
     info: vi.fn(),
     warn: vi.fn(),
@@ -23,9 +23,9 @@ describe('updateConfigFile', () => {
   it('updates vite config file with existing projects', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     // In Vitest 4, `workspace` doesn't exist — users have `projects`
@@ -62,7 +62,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -78,10 +78,10 @@ describe('updateConfigFile', () => {
       +     projects: ['packages/*', {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -104,9 +104,9 @@ describe('updateConfigFile', () => {
   it('supports object notation without defineConfig with existing projects', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     // In Vitest 4, `workspace` doesn't exist — users have `projects`
@@ -143,7 +143,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -159,10 +159,10 @@ describe('updateConfigFile', () => {
       +     projects: ['packages/*', {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -185,9 +185,9 @@ describe('updateConfigFile', () => {
   it('supports function notation when defineConfig callback returns an object literal', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -231,7 +231,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -272,10 +272,10 @@ describe('updateConfigFile', () => {
       +       }, {
       +         extends: true,
       +         plugins: [
-      +         // The plugin will run tests for the stories defined in your Storybook config
+      +         // The plugin will run tests for the stories defined in your Forkbook config
       +         // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +         storybookTest({
-      +           configDir: path.join(dirname, '.storybook')
+      +           configDir: path.join(dirname, '.forkbook')
       +         })],
       +         test: {
       +           name: 'storybook',
@@ -299,9 +299,9 @@ describe('updateConfigFile', () => {
   it('does not support complex function notation', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -343,9 +343,9 @@ describe('updateConfigFile', () => {
   it('adds projects property to test config', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -380,7 +380,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -400,10 +400,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -426,9 +426,9 @@ describe('updateConfigFile', () => {
   it('updates config which is not exported immediately', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -463,7 +463,7 @@ describe('updateConfigFile', () => {
         import { fileURLToPath, URL } from 'url';
         
       + import path from 'node:path';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -484,10 +484,10 @@ describe('updateConfigFile', () => {
       +     projects: [{
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -511,9 +511,9 @@ describe('updateConfigFile', () => {
   it('edits projects property of test config', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -549,7 +549,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -565,10 +565,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -591,9 +591,9 @@ describe('updateConfigFile', () => {
   it('adds projects property to test config', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -628,7 +628,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -648,10 +648,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -674,9 +674,9 @@ describe('updateConfigFile', () => {
   it('adds test property to vite config', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -708,7 +708,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -723,10 +723,10 @@ describe('updateConfigFile', () => {
       +     projects: [{
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -749,9 +749,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with multiple defineConfig calls, finding the one with test', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -789,7 +789,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -810,10 +810,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -835,9 +835,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig without defineConfig calls', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -872,7 +872,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -892,10 +892,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -918,9 +918,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig without config containing test property', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -953,7 +953,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -968,10 +968,10 @@ describe('updateConfigFile', () => {
       +     projects: [{
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -994,9 +994,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with defineConfig pattern using projects (Vitest 3.2+)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1033,7 +1033,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1052,10 +1052,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1078,9 +1078,9 @@ describe('updateConfigFile', () => {
   it('appends storybook project to existing test.projects array (no double nesting)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1123,7 +1123,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1141,10 +1141,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1167,9 +1167,9 @@ describe('updateConfigFile', () => {
   it('extracts coverage config and keeps it at top level when using workspace', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1211,7 +1211,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1240,10 +1240,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1266,9 +1266,9 @@ describe('updateConfigFile', () => {
   it('extracts coverage config and keeps it at top level when using projects', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1310,7 +1310,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1339,10 +1339,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1365,9 +1365,9 @@ describe('updateConfigFile', () => {
   it('supports defineConfig wrapping mergeConfig', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1395,7 +1395,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1418,10 +1418,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1444,9 +1444,9 @@ describe('updateConfigFile', () => {
   it('supports defineConfig wrapping mergeConfig with satisfies operator', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1478,7 +1478,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1501,10 +1501,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1527,9 +1527,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with as operator (TSAsExpression)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1560,7 +1560,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1583,10 +1583,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1609,9 +1609,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with test defined as a constant (shorthand property)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1640,7 +1640,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1666,10 +1666,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1692,9 +1692,9 @@ describe('updateConfigFile', () => {
   it('supports const defined config re-exported (export default config)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1727,7 +1727,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1750,10 +1750,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1777,9 +1777,9 @@ describe('updateConfigFile', () => {
   it('supports defineProject instead of defineConfig', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1806,7 +1806,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1829,10 +1829,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1855,9 +1855,9 @@ describe('updateConfigFile', () => {
   it('supports export const config re-exported as default (ExportNamedDeclaration)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1890,7 +1890,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1913,10 +1913,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -1940,9 +1940,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with config object as an exported constant (ExportNamedDeclaration)', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -1973,7 +1973,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -1996,10 +1996,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -2023,9 +2023,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with config object as a constant variable', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -2056,7 +2056,7 @@ describe('updateConfigFile', () => {
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
       + import { defineConfig } from 'vitest/config';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -2079,10 +2079,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -2106,9 +2106,9 @@ describe('updateConfigFile', () => {
   it('supports mergeConfig with aliased defineConfig and updates the config that contains test', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -2167,7 +2167,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
       + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
@@ -2209,10 +2209,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',
@@ -2236,9 +2236,9 @@ describe('updateConfigFile', () => {
   it('keeps coverage at top level instead of moving into projects', async () => {
     const source = babel.babelParse(
       await loadTemplate('vitest.config.4.template', {
-        CONFIG_DIR: '.storybook',
+        CONFIG_DIR: '.forkbook',
         BROWSER_CONFIG: "{ provider: 'playwright' }",
-        SETUP_FILE: '../.storybook/vitest.setup.ts',
+        SETUP_FILE: '../.forkbook/vitest.setup.ts',
       })
     );
     const target = babel.babelParse(`
@@ -2277,7 +2277,7 @@ describe('updateConfigFile', () => {
         
       + import path from 'node:path';
       + import { fileURLToPath } from 'node:url';
-      + import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+      + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
@@ -2317,10 +2317,10 @@ describe('updateConfigFile', () => {
       +     }, {
       +       extends: true,
       +       plugins: [
-      +       // The plugin will run tests for the stories defined in your Storybook config
+      +       // The plugin will run tests for the stories defined in your Forkbook config
       +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
-      +         configDir: path.join(dirname, '.storybook')
+      +         configDir: path.join(dirname, '.forkbook')
       +       })],
       +       test: {
       +         name: 'storybook',

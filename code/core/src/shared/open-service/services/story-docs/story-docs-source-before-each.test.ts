@@ -1,9 +1,9 @@
-import { SourceType } from 'storybook/internal/docs-tools';
-import type { StoryContext } from 'storybook/internal/types';
+import { SourceType } from '@aussieljk/forkbook/internal/docs-tools';
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { emitTransformCode, getService } from 'storybook/preview-api';
+import { emitTransformCode, getService } from '@aussieljk/forkbook/preview-api';
 
 import type { StoryDocsService } from './definition.ts';
 import { prependImportToSnippet, selectSnippetForStory, selectWarningForStory } from './snippet.ts';
@@ -13,7 +13,7 @@ import {
 } from './story-docs-source-before-each.ts';
 import type { StoryDocsPayload } from './types.ts';
 
-vi.mock('storybook/preview-api', { spy: true });
+vi.mock('@aussieljk/forkbook/preview-api', { spy: true });
 
 const mockedEmitTransformCode = vi.mocked(emitTransformCode);
 const mockedGetService = vi.mocked(getService);

@@ -1,8 +1,12 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { ProjectType } from 'storybook/internal/cli';
-import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import {
+  SupportedBuilder,
+  SupportedFramework,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import { defineGeneratorModule } from '../modules/GeneratorModule.ts';
 

@@ -1,9 +1,14 @@
 import type { FC, MouseEvent, PropsWithChildren, SyntheticEvent } from 'react';
 import React, { useContext } from 'react';
 
-import type { SupportedLanguage } from 'storybook/internal/components';
-import { Button, Code, components, nameSpaceClassNames } from 'storybook/internal/components';
-import { NAVIGATE_URL } from 'storybook/internal/core-events';
+import type { SupportedLanguage } from '@aussieljk/forkbook/internal/components';
+import {
+  Button,
+  Code,
+  components,
+  nameSpaceClassNames,
+} from '@aussieljk/forkbook/internal/components';
+import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 
 import { LinkIcon } from '@storybook/icons';
 

@@ -2,12 +2,16 @@ import {
   RESET_STORY_ARGS,
   STORY_ARGS_UPDATED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import type { PartialStoryFn, PlayFunctionContext, StoryContext } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type {
+  PartialStoryFn,
+  PlayFunctionContext,
+  StoryContext,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global as globalThis } from '@storybook/global';
 
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 function pick(obj, keys) {
   const result = {};

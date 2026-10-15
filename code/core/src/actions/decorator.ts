@@ -1,6 +1,6 @@
-import type { PartialStoryFn, Renderer } from 'storybook/internal/types';
+import type { PartialStoryFn, Renderer } from '@aussieljk/forkbook/internal/types';
 
-import { makeDecorator, useEffect } from 'storybook/preview-api';
+import { makeDecorator, useEffect } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from './constants.ts';
 import { actions } from './runtime/actions.ts';
@@ -51,11 +51,11 @@ const applyEventHandlers = (actionsFn: any, ...handles: any[]) => {
   }, [root, actionsFn, handles]);
 };
 
-// This type is basically the same as DecoratorFunction from storybook/internal/types.
+// This type is basically the same as DecoratorFunction from @aussieljk/forkbook/internal/types.
 // We can not use DecoratorFunction though as the type has to be generic.
 // Hard to explain, but you will understand when you try to solve this issue:
 // https://github.com/storybookjs/storybook/issues/22384
-/** @deprecated Will be removed in Storybook v10 */
+/** @deprecated Will be removed in Forkbook v10 */
 export const withActions: <T extends Renderer>(storyFn: PartialStoryFn<T>) => T['storyResult'] =
   makeDecorator({
     name: 'withActions',

@@ -1,5 +1,5 @@
 /**
- * Core services for Storybook initialization
+ * Core services for Forkbook initialization
  *
  * These services provide centralized, testable functionality for the init process
  */

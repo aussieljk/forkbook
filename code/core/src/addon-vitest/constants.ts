@@ -1,13 +1,13 @@
-import type { StoreOptions } from 'storybook/internal/types';
+import type { StoreOptions } from '@aussieljk/forkbook/internal/types';
 
 import type { CurrentRun, RunTrigger, StoreState } from './types.ts';
 
 export { PANEL_ID as COMPONENT_TESTING_PANEL_ID } from '../component-testing/constants.ts';
 export { PANEL_ID as A11Y_PANEL_ID, ADDON_ID as A11Y_ADDON_ID } from '../addon-a11y/constants.ts';
 
-export const ADDON_ID = 'storybook/test';
+export const ADDON_ID = '@aussieljk/forkbook/test';
 export const TEST_PROVIDER_ID = `${ADDON_ID}/test-provider`;
-export const STORYBOOK_ADDON_TEST_CHANNEL = `${ADDON_ID}/channel`;
+export const FORKBOOK_ADDON_TEST_CHANNEL = `${ADDON_ID}/channel`;
 
 export const TUTORIAL_VIDEO_LINK = 'https://youtu.be/Waht9qq7AoA';
 export const DOCUMENTATION_LINK = 'writing-tests/integrations/vitest-addon';
@@ -57,17 +57,18 @@ export const storeOptions = {
 export const FULL_RUN_TRIGGERS: RunTrigger[] = ['global', 'run-all'] as const;
 
 export const STORE_CHANNEL_EVENT_NAME = `UNIVERSAL_STORE:${storeOptions.id}`;
-export const STATUS_STORE_CHANNEL_EVENT_NAME = 'UNIVERSAL_STORE:storybook/status';
-export const TEST_PROVIDER_STORE_CHANNEL_EVENT_NAME = 'UNIVERSAL_STORE:storybook/test-provider';
+export const STATUS_STORE_CHANNEL_EVENT_NAME = 'UNIVERSAL_STORE:@aussieljk/forkbook/status';
+export const TEST_PROVIDER_STORE_CHANNEL_EVENT_NAME =
+  'UNIVERSAL_STORE:@aussieljk/forkbook/test-provider';
 export const STORY_INDEX_CHANNEL_EVENT_NAME = `${ADDON_ID}/story-index`;
 
-export const STATUS_TYPE_ID_COMPONENT_TEST = 'storybook/component-test';
-export const STATUS_TYPE_ID_A11Y = 'storybook/a11y';
-export const STORYBOOK_TEST_PROVIDE_KEY = 'storybook/test-provided';
-export const STORYBOOK_CORE_GHOST_STORIES_PROVIDE_KEY = 'storybook/core-ghost-stories';
-export const STORYBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY = 'storybook/core-render-analysis';
-export const STORYBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY = 'storybook/test-initial-globals';
-export const STORYBOOK_TEST_FEATURES_PROVIDE_KEY = 'storybook/test-features';
+export const STATUS_TYPE_ID_COMPONENT_TEST = '@aussieljk/forkbook/component-test';
+export const STATUS_TYPE_ID_A11Y = '@aussieljk/forkbook/a11y';
+export const FORKBOOK_TEST_PROVIDE_KEY = '@aussieljk/forkbook/test-provided';
+export const FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY = '@aussieljk/forkbook/core-ghost-stories';
+export const FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY = '@aussieljk/forkbook/core-render-analysis';
+export const FORKBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY = '@aussieljk/forkbook/test-initial-globals';
+export const FORKBOOK_TEST_FEATURES_PROVIDE_KEY = '@aussieljk/forkbook/test-features';
 
 // Channel event names for programmatic test triggering
 export const TRIGGER_TEST_RUN_REQUEST = `${ADDON_ID}/trigger-test-run-request`;

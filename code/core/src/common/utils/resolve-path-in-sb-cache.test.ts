@@ -13,7 +13,7 @@ vi.mock('empathic/package', () => ({
 
 vi.mock('../versions.ts', () => ({
   default: {
-    storybook: '10.3.0-alpha.1',
+    '@aussieljk/forkbook': '10.3.0-alpha.1',
   },
 }));
 
@@ -28,8 +28,10 @@ describe('resolvePathInStorybookCache', () => {
 
     const result = resolvePathInStorybookCache('test-file', 'test-sub');
 
-    expect(result).toContain(versions.storybook);
-    expect(result).toBe(join(mockCacheDir, versions.storybook, 'test-sub', 'test-file'));
+    expect(result).toContain(versions['@aussieljk/forkbook']);
+    expect(result).toBe(
+      join(mockCacheDir, versions['@aussieljk/forkbook'], 'test-sub', 'test-file')
+    );
   });
 
   it('should include version in the cache path when falling back to cwd', () => {
@@ -38,9 +40,17 @@ describe('resolvePathInStorybookCache', () => {
 
     const result = resolvePathInStorybookCache('test-file', 'test-sub');
 
-    expect(result).toContain(versions.storybook);
+    expect(result).toContain(versions['@aussieljk/forkbook']);
     expect(result).toBe(
-      join(cwd, 'node_modules', '.cache', 'storybook', versions.storybook, 'test-sub', 'test-file')
+      join(
+        cwd,
+        'node_modules',
+        '.cache',
+        'storybook',
+        versions['@aussieljk/forkbook'],
+        'test-sub',
+        'test-file'
+      )
     );
   });
 
@@ -50,7 +60,9 @@ describe('resolvePathInStorybookCache', () => {
 
     const result = resolvePathInStorybookCache('test-file');
 
-    expect(result).toBe(join(mockCacheDir, versions.storybook, 'default', 'test-file'));
+    expect(result).toBe(
+      join(mockCacheDir, versions['@aussieljk/forkbook'], 'default', 'test-file')
+    );
   });
 
   it('should handle empty file or directory name', () => {
@@ -60,7 +72,7 @@ describe('resolvePathInStorybookCache', () => {
     const result = resolvePathInStorybookCache('', 'test-sub');
 
     // Note: path.join() normalizes away the trailing slash for empty strings
-    expect(result).toBe(join(mockCacheDir, versions.storybook, 'test-sub'));
+    expect(result).toBe(join(mockCacheDir, versions['@aussieljk/forkbook'], 'test-sub'));
   });
 
   it('should create consistent paths for the same version', () => {
@@ -70,8 +82,8 @@ describe('resolvePathInStorybookCache', () => {
     const result1 = resolvePathInStorybookCache('file1', 'sub1');
     const result2 = resolvePathInStorybookCache('file2', 'sub1');
 
-    expect(result1).toContain(versions.storybook);
-    expect(result2).toContain(versions.storybook);
+    expect(result1).toContain(versions['@aussieljk/forkbook']);
+    expect(result2).toContain(versions['@aussieljk/forkbook']);
     // Verify both paths share the same base directory by comparing parent directories
     const parent1 = result1.substring(0, result1.lastIndexOf(join('sub1', 'file1')));
     const parent2 = result2.substring(0, result2.lastIndexOf(join('sub1', 'file2')));
@@ -85,8 +97,12 @@ describe('resolvePathInStorybookCache', () => {
     const result1 = resolvePathInStorybookCache('test-file', 'dev-server');
     const result2 = resolvePathInStorybookCache('test-file', 'telemetry');
 
-    expect(result1).toBe(join(mockCacheDir, versions.storybook, 'dev-server', 'test-file'));
-    expect(result2).toBe(join(mockCacheDir, versions.storybook, 'telemetry', 'test-file'));
+    expect(result1).toBe(
+      join(mockCacheDir, versions['@aussieljk/forkbook'], 'dev-server', 'test-file')
+    );
+    expect(result2).toBe(
+      join(mockCacheDir, versions['@aussieljk/forkbook'], 'telemetry', 'test-file')
+    );
   });
 
   it('should use "unknown" as version when storybook version is not available', () => {
@@ -94,7 +110,7 @@ describe('resolvePathInStorybookCache', () => {
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
     // Mock the versions module to return a falsy value
-    vi.mocked(versions).storybook = '' as any;
+    vi.mocked(versions)['@aussieljk/forkbook'] = '' as any;
 
     const result = resolvePathInStorybookCache('test-file', 'test-sub');
 
@@ -102,6 +118,6 @@ describe('resolvePathInStorybookCache', () => {
     expect(result).toBe(join(mockCacheDir, 'unknown', 'test-sub', 'test-file'));
 
     // Reset the mock
-    vi.mocked(versions).storybook = '10.3.0-alpha.1';
+    vi.mocked(versions)['@aussieljk/forkbook'] = '10.3.0-alpha.1';
   });
 });

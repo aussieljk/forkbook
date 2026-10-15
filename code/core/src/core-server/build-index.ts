@@ -1,8 +1,8 @@
 import { writeFile } from 'node:fs/promises';
 
-import { normalizeStories } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import type { BuilderOptions, CLIOptions, LoadOptions } from 'storybook/internal/types';
+import { normalizeStories } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { BuilderOptions, CLIOptions, LoadOptions } from '@aussieljk/forkbook/internal/types';
 
 import { loadStorybook } from './load.ts';
 import { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';

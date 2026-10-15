@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { getControlId } from '../helpers';
 import type { ControlProps, NormalizedOptionsConfig, OptionsSingleSelection } from '../types';

@@ -1,6 +1,6 @@
 import { draftMode as originalDraftMode } from 'next/dist/server/request/draft-mode.js';
 import * as headers from 'next/dist/server/request/headers.js';
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 // re-exports of the actual module
 export * from 'next/dist/server/request/headers.js';

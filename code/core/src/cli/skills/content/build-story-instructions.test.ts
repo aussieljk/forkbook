@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildStoryInstructions } from './build-story-instructions.ts';
 
 const baseInputs = {
-  framework: 'storybook/react-vite',
+  framework: '@aussieljk/forkbook/react-vite',
   testSupported: true,
   a11yEnabled: false,
   docsEnabled: false,
@@ -14,19 +14,19 @@ describe('buildStoryInstructions transport refs', () => {
     const text = buildStoryInstructions({ ...baseInputs, transport: 'mcp' });
     expect(text).toContain('stories-changed');
     expect(text).toContain('test-run');
-    expect(text).not.toContain('npx storybook tools');
+    expect(text).not.toContain('npx forkbook tools');
   });
 
   it('CLI transport names tools CLI commands', () => {
     const text = buildStoryInstructions({ ...baseInputs, transport: 'cli' });
-    expect(text).toContain('npx storybook tools stories changed');
-    expect(text).toContain('npx storybook tools test run');
+    expect(text).toContain('npx forkbook tools stories changed');
+    expect(text).toContain('npx forkbook tools test run');
     expect(text).not.toContain('stories-changed');
   });
 
   it('maps framework to renderer, falling back to the framework name', () => {
     expect(buildStoryInstructions({ ...baseInputs, transport: 'mcp' })).toContain(
-      'storybook/react'
+      '@aussieljk/forkbook/react'
     );
     expect(
       buildStoryInstructions({ ...baseInputs, transport: 'mcp', framework: '@storybook/who-knows' })
@@ -38,8 +38,8 @@ describe('buildStoryInstructions placeholder resolution', () => {
   it('replaces framework and renderer placeholders with no leftovers', () => {
     const instructions = buildStoryInstructions({ ...baseInputs, transport: 'mcp' });
 
-    expect(instructions).toContain('storybook/react-vite');
-    expect(instructions).toContain('storybook/react');
+    expect(instructions).toContain('@aussieljk/forkbook/react-vite');
+    expect(instructions).toContain('@aussieljk/forkbook/react');
     expect(instructions).toContain('stories-preview');
     expect(instructions).toContain('stories-changed');
 

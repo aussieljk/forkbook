@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { Button } from './Button';
 
@@ -6,7 +6,7 @@ import { Button } from './Button';
  * These are the stories for the Button component
  *
  * _this description was written as a comment above the default export_ _this should never be shown
- * in Storybook, as it should be overridden by `parameters.docs.description.component`_
+ * in Forkbook, as it should be overridden by `parameters.docs.description.component`_
  */
 const meta = {
   title: 'Examples/Button with Meta Description as Parameter and Comment',

@@ -1,7 +1,7 @@
 import type { IframeHTMLAttributes } from 'react';
 import React from 'react';
 
-import { Zoom } from 'storybook/internal/components';
+import { Zoom } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 

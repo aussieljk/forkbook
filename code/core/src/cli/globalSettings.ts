@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import { invariant } from '../common/utils/utils.ts';
 
-const DEFAULT_SETTINGS_PATH = join(homedir(), '.storybook', 'settings.json');
+const DEFAULT_SETTINGS_PATH = join(homedir(), '.forkbook', 'settings.json');
 
 const VERSION = 1;
 

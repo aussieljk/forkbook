@@ -1,15 +1,15 @@
 import type * as React from 'react';
 
-import type { Addon_DecoratorFunction, LoaderFunction } from 'storybook/internal/types';
+import type { Addon_DecoratorFunction, LoaderFunction } from '@aussieljk/forkbook/internal/types';
 
-import type { ReactRenderer } from 'storybook/react';
+import type { ReactRenderer } from '@aussieljk/forkbook/react';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore we must ignore types here as during compilation they are not generated yet
-import { createNavigation } from 'storybook/nextjs-vite/navigation.mock';
+import { createNavigation } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore we must ignore types here as during compilation they are not generated yet
-import { createRouter } from 'storybook/nextjs-vite/router.mock';
+import { createRouter } from '@aussieljk/forkbook/nextjs-vite/router.mock';
 
 import { isNextRouterError } from 'next/dist/client/components/is-next-router-error.js';
 

@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 
-import { findStorybookPackageRoot, versions } from 'storybook/internal/common';
+import { findStorybookPackageRoot, versions } from '@aussieljk/forkbook/internal/common';
 
 import { StorybookDevServerDisconnectedError } from '../../../server-errors.ts';
 import {
@@ -98,7 +98,7 @@ export async function bootstrapAttachedRuntime(
   }
 
   const [record, ...siblings] = selection.matches;
-  const callerVersion = deps.version ?? versions.storybook;
+  const callerVersion = deps.version ?? versions['@aussieljk/forkbook'];
 
   if (!record.token) {
     throw new AttachUnavailableError({
@@ -112,7 +112,7 @@ export async function bootstrapAttachedRuntime(
   const installation = checkInstallation(record, callerStorybookPath);
   if (!installation.ok) {
     const autoSpawn = options.autoSpawn ?? false;
-    const isChildHost = deps.isChildHost ?? process.env.STORYBOOK_TOOLS_CHILD_HOST === 'true';
+    const isChildHost = deps.isChildHost ?? process.env.FORKBOOK_TOOLS_CHILD_HOST === 'true';
     if (installation.reason === 'different-installation' && autoSpawn && !isChildHost) {
       return { kind: 'spawn', record, storybookPath: installation.instancePath, siblings };
     }
@@ -149,7 +149,7 @@ export async function bootstrapAttachedRuntime(
   const enableDelegatedMode = deps.setDelegatedMode ?? setDelegatedMode;
   enableDelegatedMode(true);
 
-  const configDir = record.configDir ?? resolve(record.cwd, '.storybook');
+  const configDir = record.configDir ?? resolve(record.cwd, '.forkbook');
   const { loadStorybook, getService } = await resolveLoaders(deps);
   try {
     await loadStorybook({ configDir, channel: connection.channel });
@@ -158,7 +158,7 @@ export async function bootstrapAttachedRuntime(
     connection.close();
     throw new ToolsRuntimeError({
       reason: 'config-load-failed',
-      message: `Could not load the Storybook configuration for this project: ${
+      message: `Could not load the Forkbook configuration for this project: ${
         error instanceof Error ? error.message : String(error)
       }`,
       cause: error,
@@ -187,7 +187,7 @@ async function resolveLoaders(deps: AttachRuntimeDeps): Promise<{
     return { loadStorybook: deps.loadStorybook, getService: deps.getService };
   }
   // Status stores are constructed when this module evaluates; the channel must already be prepared.
-  const core = await import('storybook/internal/core-server');
+  const core = await import('@aussieljk/forkbook/internal/core-server');
   return {
     loadStorybook:
       deps.loadStorybook ??
@@ -212,7 +212,7 @@ async function waitForHandshake(connection: NodeChannelConnection): Promise<void
           () =>
             reject(
               new StorybookDevServerDisconnectedError({
-                reason: 'Timed out waiting for the Storybook channel to open',
+                reason: 'Timed out waiting for the Forkbook channel to open',
               })
             ),
           ATTACH_HANDSHAKE_TIMEOUT_MS

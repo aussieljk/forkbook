@@ -9,18 +9,18 @@ export type ResolveTarget = {
   /** Normalised before matching; usually the CLI's `--cwd` or `process.cwd()`. */
   cwd: string;
   /**
-   * Resolved config directory the CLI is targeting (from `--config-dir`, or the `.storybook`
-   * default under `cwd`). Matched against the `configDir` recorded by `storybook dev`.
+   * Resolved config directory the CLI is targeting (from `--config-dir`, or the `.forkbook`
+   * default under `cwd`). Matched against the `configDir` recorded by `forkbook dev`.
    */
   configDir?: string;
   /**
-   * True when `configDir` came from an explicit `--config-dir` flag rather than the `.storybook`
+   * True when `configDir` came from an explicit `--config-dir` flag rather than the `.forkbook`
    * default under `cwd`. An explicit config dir expresses precise intent, so matching is then
    * restricted to records with that exact configDir: a same-cwd instance serving a different
    * config must not win over the flag.
    */
   configDirExplicit?: boolean;
-  /** Port of a running Storybook; a known port targets that instance without cwd or config dir. */
+  /** Port of a running Forkbook; a known port targets that instance without cwd or config dir. */
   port?: number;
   /** The invoking agent (std-env name), used to pick among competing matches. */
   agent?: string;
@@ -42,7 +42,7 @@ export type InstanceSelection =
 
 // Paths are compared resolved and exact (case-insensitive on Windows, byte-exact on POSIX), never
 // by prefix. A record matches when its cwd equals `target.cwd` or its configDir equals
-// `target.configDir`, so a dev server started at a monorepo root with `-c packages/ui/.storybook`
+// `target.configDir`, so a dev server started at a monorepo root with `-c packages/ui/.forkbook`
 // is found from `packages/ui` and vice versa. An explicit `--config-dir` matches on configDir
 // only, which records from older Storybooks lack.
 //
@@ -50,7 +50,7 @@ export type InstanceSelection =
 // restricted by an explicit `--config-dir`. Nothing on the port → `port-mismatch`.
 //
 // Competing matches narrow to the invoking agent's bucket when one exists. MCP status plays no
-// role: attaching over the channel works without `storybook/addon-mcp`.
+// role: attaching over the channel works without `@aussieljk/forkbook/addon-mcp`.
 export function selectInstances(
   records: StorybookInstanceRecord[],
   target: ResolveTarget

@@ -19,18 +19,18 @@ describe('isReactNativeStorybookPath', () => {
     expect(isReactNativeStorybookPath('.rnstorybook/preview.tsx')).toBe(true);
     expect(isReactNativeStorybookPath('/project/.rnstorybook/preview.ts')).toBe(true);
     expect(isReactNativeStorybookPath('C:\\project\\.rnstorybook\\preview.tsx')).toBe(true);
-    expect(isReactNativeStorybookPath('.storybook/preview.ts')).toBe(false);
+    expect(isReactNativeStorybookPath('.forkbook/preview.ts')).toBe(false);
     expect(isReactNativeStorybookPath(undefined)).toBe(false);
   });
 });
 
 describe('webPreviewCandidates', () => {
-  it('lists .storybook preview files next to .rnstorybook', () => {
+  it('lists .forkbook preview files next to .rnstorybook', () => {
     const projectDir = resolve('app');
 
     expect(webPreviewCandidates(join('app', '.rnstorybook', 'preview.tsx'))).toEqual(
       storybookConfigExtensions.map((extension) =>
-        join(projectDir, '.storybook', `preview${extension}`)
+        join(projectDir, '.forkbook', `preview${extension}`)
       )
     );
   });
@@ -38,7 +38,7 @@ describe('webPreviewCandidates', () => {
 
 describe('hasSiblingReactNativeConfig', () => {
   it('detects .rnstorybook beside the config directory', () => {
-    const configDir = join('apps', 'mobile', '.storybook');
+    const configDir = join('apps', 'mobile', '.forkbook');
     const sibling = join(resolve('apps', 'mobile'), '.rnstorybook');
 
     expect(hasSiblingReactNativeConfig(configDir, (file) => file === sibling)).toBe(true);
@@ -50,7 +50,7 @@ describe('hasSiblingReactNativeConfig', () => {
 describe('previewFileForImports', () => {
   it('prefers an existing web preview over the native file', () => {
     const nativePreview = join('app', '.rnstorybook', 'preview.tsx');
-    const webPreview = join(resolve('app'), '.storybook', 'preview.ts');
+    const webPreview = join(resolve('app'), '.forkbook', 'preview.ts');
 
     expect(previewFileForImports(nativePreview, (file) => file === webPreview)).toBe(webPreview);
     expect(previewFileForImports(nativePreview, () => false)).toBe(nativePreview);
@@ -86,7 +86,7 @@ describe('applyPreviewImportsMap', () => {
   it('does not write a target outside the package', () => {
     const packageJson: { imports?: Record<string, unknown> } = {};
     const fromDirectory = join('repo', 'apps', 'mobile');
-    const previewFile = join('repo', '.storybook', 'preview.tsx');
+    const previewFile = join('repo', '.forkbook', 'preview.tsx');
 
     expect(previewImportTarget(previewFile, fromDirectory)).toBeUndefined();
     expect(applyPreviewImportsMap(packageJson, previewFile, fromDirectory)).toBe(false);

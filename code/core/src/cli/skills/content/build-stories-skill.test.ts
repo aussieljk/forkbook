@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { buildStoriesSkill, type StoriesSkillInputs } from './build-stories-skill.ts';
 
 const everything: StoriesSkillInputs = {
-  framework: 'storybook/react-vite',
+  framework: '@aussieljk/forkbook/react-vite',
   csfFactories: false,
-  previewFile: '.storybook/preview.ts',
+  previewFile: '.forkbook/preview.ts',
   typescript: true,
   docsEnabled: true,
   testSupported: true,
@@ -17,11 +17,11 @@ describe('buildStoriesSkill', () => {
   it('shows every command with its arguments when every feature is on', () => {
     const text = buildStoriesSkill(everything);
 
-    expect(text).toContain('npx storybook tools docs show --id <id>');
-    expect(text).toContain(`npx storybook tools test run --stories '[{"storyId":"<id>"}]'`);
-    expect(text).toContain('npx storybook tools stories changed');
-    expect(text).toContain(`npx storybook tools stories find-by-component --componentPaths '["`);
-    expect(text).toContain(`npx storybook tools review create --input '{`);
+    expect(text).toContain('npx forkbook tools docs show --id <id>');
+    expect(text).toContain(`npx forkbook tools test run --stories '[{"storyId":"<id>"}]'`);
+    expect(text).toContain('npx forkbook tools stories changed');
+    expect(text).toContain(`npx forkbook tools stories find-by-component --componentPaths '["`);
+    expect(text).toContain(`npx forkbook tools review create --input '{`);
     expect(text).toContain('accessibility violations');
   });
 
@@ -66,7 +66,7 @@ describe('buildStoriesSkill', () => {
     const text = buildStoriesSkill({
       ...everything,
       csfFactories: true,
-      previewFile: '.storybook/preview.tsx',
+      previewFile: '.forkbook/preview.tsx',
     });
 
     expect(text).toContain('preview.meta({');
@@ -84,12 +84,14 @@ describe('buildStoriesSkill', () => {
   it('leaves out the Meta and StoryObj types in a JavaScript project', () => {
     const text = buildStoriesSkill({
       ...everything,
-      previewFile: '.storybook/preview.js',
+      previewFile: '.forkbook/preview.js',
       typescript: false,
     });
 
     expect(text).not.toContain('StoryObj');
-    expect(text).toContain('- Import `fn`, `expect`, `mocked` and `sb` from `storybook/test`.');
+    expect(text).toContain(
+      '- Import `fn`, `expect`, `mocked` and `sb` from `@aussieljk/forkbook/test`.'
+    );
     expect(text).toContain("sb.mock(import('../src/api.js')");
   });
 

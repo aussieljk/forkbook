@@ -1,4 +1,4 @@
-import { types as t, traverse } from 'storybook/internal/babel';
+import { types as t, traverse } from '@aussieljk/forkbook/internal/babel';
 
 import { SaveStoryError } from './utils.ts';
 import { valueToAST } from './valueToAST.ts';

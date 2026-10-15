@@ -1,7 +1,7 @@
 import React, { type ReactNode, useCallback, useRef, useState } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import { REVIEW_STATUS_TYPE_ID } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 import { CloseIcon, SearchIcon } from '@storybook/icons';
@@ -10,7 +10,7 @@ import type { DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
 import type { FuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
-import { shortcutToHumanString, useStorybookApi } from 'storybook/manager-api';
+import { shortcutToHumanString, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { getGroupStatus, getMostCriticalStatusValue } from '../../utils/status.tsx';
@@ -148,7 +148,7 @@ export const Search = React.memo<SearchProps>(function Search({
 
       // When the index is being created, we have a legacy piece of logic that
       // wraps every docs page inside a component entry. This originates from
-      // Storybook 6 and has never been removed. Because of it, we must dedupe
+      // Forkbook 6 and has never been removed. Because of it, we must dedupe
       // docs entries that are hidden under a fake component entry.
       // See https://github.com/storybookjs/storybook/issues/35513 for details.
       const docsParentIds = new Set<string>();

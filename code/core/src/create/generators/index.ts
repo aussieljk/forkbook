@@ -1,7 +1,7 @@
 /**
  * Generator registry and utilities
  *
- * Provides a centralized way to manage and access Storybook generators
+ * Provides a centralized way to manage and access Forkbook generators
  */
 
 export { GeneratorRegistry, generatorRegistry } from './GeneratorRegistry.ts';

@@ -46,7 +46,7 @@ async function generateVersionsFile(): Promise<void> {
   const destination = join(CORE_ROOT_DIR, 'src', 'common', 'versions.ts');
 
   const { version } = JSON.parse(await readFile(join(CORE_ROOT_DIR, 'package.json'), 'utf8'));
-  const versions = JSON.stringify({ storybook: version });
+  const versions = JSON.stringify({ '@aussieljk/forkbook': version });
 
   const { code: formatted } = await format(
     'versions.ts',
@@ -61,15 +61,15 @@ async function generateVersionsFile(): Promise<void> {
 }
 
 const localAlias = {
-  'storybook/internal': join(CORE_ROOT_DIR, 'src'),
-  'storybook/theming': join(CORE_ROOT_DIR, 'src', 'theming'),
-  'storybook/test': join(CORE_ROOT_DIR, 'src', 'test'),
-  'storybook/test/preview': join(CORE_ROOT_DIR, 'src', 'test', 'preview'),
-  'storybook/actions': join(CORE_ROOT_DIR, 'src', 'actions'),
-  'storybook/preview-api': join(CORE_ROOT_DIR, 'src', 'preview-api'),
-  'storybook/manager-api': join(CORE_ROOT_DIR, 'src', 'manager-api'),
-  'storybook/open-service': join(CORE_ROOT_DIR, 'src', 'shared', 'open-service'),
-  storybook: join(CORE_ROOT_DIR, 'src'),
+  '@aussieljk/forkbook/internal': join(CORE_ROOT_DIR, 'src'),
+  '@aussieljk/forkbook/theming': join(CORE_ROOT_DIR, 'src', 'theming'),
+  '@aussieljk/forkbook/test': join(CORE_ROOT_DIR, 'src', 'test'),
+  '@aussieljk/forkbook/test/preview': join(CORE_ROOT_DIR, 'src', 'test', 'preview'),
+  '@aussieljk/forkbook/actions': join(CORE_ROOT_DIR, 'src', 'actions'),
+  '@aussieljk/forkbook/preview-api': join(CORE_ROOT_DIR, 'src', 'preview-api'),
+  '@aussieljk/forkbook/manager-api': join(CORE_ROOT_DIR, 'src', 'manager-api'),
+  '@aussieljk/forkbook/open-service': join(CORE_ROOT_DIR, 'src', 'shared', 'open-service'),
+  '@aussieljk/forkbook': join(CORE_ROOT_DIR, 'src'),
 };
 async function generateExportsFile(): Promise<void> {
   const destination = join(CORE_ROOT_DIR, 'src', 'manager', 'globals', 'exports.ts');

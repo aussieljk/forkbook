@@ -1,15 +1,19 @@
-import { logger } from 'storybook/internal/node-logger';
-import { OpenServiceModuleGraphUnavailableError } from 'storybook/internal/server-errors';
-import { clearToolsetRegistry, defineToolset, registerToolset } from 'storybook/open-service';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { OpenServiceModuleGraphUnavailableError } from '@aussieljk/forkbook/internal/server-errors';
+import {
+  clearToolsetRegistry,
+  defineToolset,
+  registerToolset,
+} from '@aussieljk/forkbook/open-service';
 import * as v from 'valibot';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getService } from 'storybook/internal/core-server';
+import { getService } from '@aussieljk/forkbook/internal/core-server';
 
 import { collectTelemetry } from '../telemetry.ts';
 import { callToolsetMethod, getToolsetToolMetadata } from './toolset-tools.ts';
 
-vi.mock('storybook/internal/core-server', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 vi.mock('../telemetry.ts', { spy: true });
 
 /**
@@ -170,8 +174,7 @@ describe('toolset-backed MCP tools', () => {
     registerStubStoriesToolset({
       handler: () => {
         throw new OpenServiceModuleGraphUnavailableError({
-          reason:
-            "Storybook's story module graph hasn't built yet — it is still being constructed.",
+          reason: "Forkbook's story module graph hasn't built yet — it is still being constructed.",
         });
       },
     });
@@ -180,7 +183,7 @@ describe('toolset-backed MCP tools', () => {
 
     expect(result.isError).toBe(true);
     expect(result.content[0].text).toBe(
-      "Storybook's story module graph hasn't built yet — it is still being constructed."
+      "Forkbook's story module graph hasn't built yet — it is still being constructed."
     );
   });
 

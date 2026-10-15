@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { Button, TabsView } from 'storybook/internal/components';
+import { Button, TabsView } from '@aussieljk/forkbook/internal/components';
 
 import { CollapseIcon, ExpandAltIcon, EyeCloseIcon, EyeIcon, SyncIcon } from '@storybook/icons';
 
 import type { Result } from 'axe-core';
-import { useTheme } from 'storybook/theming';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import type { RuleType } from '../types.ts';
 import { useA11yContext } from './A11yContext.tsx';

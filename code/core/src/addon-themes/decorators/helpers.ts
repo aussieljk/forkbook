@@ -1,6 +1,6 @@
-import type { StoryContext } from 'storybook/internal/types';
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
 
-import { addons } from 'storybook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import { GLOBAL_KEY, THEMING_EVENTS } from '../constants.ts';
 

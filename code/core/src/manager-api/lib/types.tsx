@@ -1,5 +1,5 @@
-import type { RouterData } from 'storybook/internal/router';
-import type { API_ProviderData } from 'storybook/internal/types';
+import type { RouterData } from '@aussieljk/forkbook/internal/router';
+import type { API_ProviderData } from '@aussieljk/forkbook/internal/types';
 
 import type { API, State } from '../root.tsx';
 import type Store from '../store.ts';

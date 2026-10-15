@@ -1,6 +1,6 @@
-import type { DecoratorFunction } from 'storybook/internal/types';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
-import { useCallback, useEffect } from 'storybook/preview-api';
+import { useCallback, useEffect } from '@aussieljk/forkbook/preview-api';
 
 import { filterDefs, filters } from './visionSimulatorFilters.ts';
 

@@ -7,8 +7,8 @@ import {
   getTsconfigPathsBaseDir,
   resolveImport,
   supportedExtensions,
-} from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import * as find from 'empathic/find';
 import * as TsconfigPaths from 'tsconfig-paths';

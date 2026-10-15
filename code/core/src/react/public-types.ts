@@ -12,13 +12,13 @@ import type {
   ProjectAnnotations,
   StoryAnnotations,
   StrictArgs,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { SetOptional, Simplify } from 'type-fest';
 
 import type { ReactRenderer } from './types.ts';
 
-export type { Args, ArgTypes, Parameters, StrictArgs } from 'storybook/internal/types';
+export type { Args, ArgTypes, Parameters, StrictArgs } from '@aussieljk/forkbook/internal/types';
 export type { ReactRenderer };
 
 /**

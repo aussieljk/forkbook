@@ -1,10 +1,10 @@
-import type { ProjectType } from 'storybook/internal/cli';
-import { logger } from 'storybook/internal/node-logger';
+import type { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { GeneratorModule } from './types.ts';
 
 /**
- * Registry for managing Storybook project generators
+ * Registry for managing Forkbook project generators
  *
  * All new generators should use the GeneratorModule format with metadata + configure. Legacy
  * generators (not yet refactored) can still be registered with LegacyGeneratorMetadata.

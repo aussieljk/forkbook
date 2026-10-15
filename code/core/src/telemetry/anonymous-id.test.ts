@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { executeCommandSync } from 'storybook/internal/common';
+import { executeCommandSync } from '@aussieljk/forkbook/internal/common';
 
 import {
   getAnonymousProjectId,
@@ -9,7 +9,7 @@ import {
   unhashedProjectId,
 } from './anonymous-id.ts';
 
-vi.mock(import('storybook/internal/common'), async (actualModule) => {
+vi.mock(import('@aussieljk/forkbook/internal/common'), async (actualModule) => {
   const actual = await actualModule();
 
   return {
@@ -133,7 +133,7 @@ describe('getProjectSince', () => {
     vi.resetModules();
   });
 
-  it('returns the Storybook creation date from git log output', () => {
+  it('returns the Forkbook creation date from git log output', () => {
     vi.mocked(executeCommandSync).mockReturnValue(
       '2025-12-11 16:24:01 +0530\n' + '2014-12-11 19:09:10 +0530'
     );
@@ -168,7 +168,7 @@ describe('getAnonymousProjectId', () => {
     vi.spyOn(process, 'cwd').mockReturnValue('/path/to/project/root');
   });
 
-  it('returns hashed project id for Storybook repo when git command succeeds', async () => {
+  it('returns hashed project id for Forkbook repo when git command succeeds', async () => {
     vi.mocked(executeCommandSync).mockReturnValue('git@github.com:storybookjs/storybook.git');
     const result = getAnonymousProjectId();
 

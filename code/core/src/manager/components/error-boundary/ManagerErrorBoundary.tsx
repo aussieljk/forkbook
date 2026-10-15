@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { Component } from 'react';
 
-import { Badge, Button, Collapsible } from 'storybook/internal/components';
+import { Badge, Button, Collapsible } from '@aussieljk/forkbook/internal/components';
 
 import { SyncIcon, UnfoldIcon } from '@storybook/icons';
 
@@ -22,14 +22,14 @@ const ErrorFallback = ({ error, errorInfo }: ErrorFallbackProps) => {
             <span>Something went wrong</span>
           </h1>
           <p className={styles.subHeading}>
-            The Storybook Manager UI encountered an error. This is usually caused by custom addon
+            The Forkbook Manager UI encountered an error. This is usually caused by custom addon
             code or configuration. Please check your browser console for more details. Try clearing
             browser storage if the issue persists.
           </p>
           <Button asChild size="medium">
             <a href={window.location.origin + window.location.pathname.replace('iframe.html', '')}>
               <SyncIcon size={14} />
-              Reload Storybook
+              Reload Forkbook
             </a>
           </Button>
         </div>
@@ -82,7 +82,7 @@ export class ManagerErrorBoundary extends Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Log error to console for debugging
-    console.error('Storybook Manager UI Error:', error);
+    console.error('Forkbook Manager UI Error:', error);
     console.error('Component Stack:', errorInfo.componentStack);
     this.setState({ errorInfo });
 

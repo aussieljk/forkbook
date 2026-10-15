@@ -1,9 +1,9 @@
 /**
  * How a composition picks the access for each of its sources.
  *
- * The local Storybook is a source like any other, but it is the one this process can read directly.
+ * The local Forkbook is a source like any other, but it is the one this process can read directly.
  * These tests pin that routing, so a composition cannot quietly grow a second way of reading the
- * Storybook it is already serving.
+ * Forkbook it is already serving.
  */
 
 import { describe, expect, it, vi } from 'vitest';

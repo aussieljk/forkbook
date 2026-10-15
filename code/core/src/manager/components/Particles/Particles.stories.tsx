@@ -1,4 +1,4 @@
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Particles } from './Particles.tsx';
 
 const SomeComponent = (props: React.ComponentProps<'div'>) => {

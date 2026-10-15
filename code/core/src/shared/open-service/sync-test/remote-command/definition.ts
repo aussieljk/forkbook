@@ -8,14 +8,14 @@
 
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 
 type RemoteCommandState = {
   value: string;
 };
 
 export const remoteCommandSyncServiceDef = defineService({
-  id: 'storybook/internal/open-service-remote-command-sync-demo',
+  id: '@aussieljk/forkbook/internal/open-service-remote-command-sync-demo',
   description: 'Internal demo service for validating remote command execution and state sync.',
   initialState: { value: '' } satisfies RemoteCommandState,
   queries: {

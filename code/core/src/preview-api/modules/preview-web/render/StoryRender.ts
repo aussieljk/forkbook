@@ -1,4 +1,4 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   PLAY_FUNCTION_THREW_EXCEPTION,
   STORY_FINISHED,
@@ -6,11 +6,11 @@ import {
   STORY_RENDER_PHASE_CHANGED,
   type StoryFinishedPayload,
   UNHANDLED_ERRORS_WHILE_PLAYING,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   MountMustBeDestructuredError,
   NoStoryMountedError,
-} from 'storybook/internal/preview-errors';
+} from '@aussieljk/forkbook/internal/preview-errors';
 import type {
   Canvas,
   PreparedStory,
@@ -23,9 +23,9 @@ import type {
   StoryId,
   StoryRenderOptions,
   TeardownRenderToCanvas,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { UserEventObject } from 'storybook/test';
+import type { UserEventObject } from '@aussieljk/forkbook/test';
 
 import { type StoryStore, hideArgTypes } from '../../store/index.ts';
 import type { Render, RenderType } from './Render.ts';

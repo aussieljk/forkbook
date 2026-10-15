@@ -1,7 +1,7 @@
-import { type NodePath, recast, types as t } from 'storybook/internal/babel';
-import { formatCode } from 'storybook/internal/common';
-import { type CsfFile } from 'storybook/internal/csf-tools';
-import type { PresetPropertyFn } from 'storybook/internal/types';
+import { type NodePath, recast, types as t } from '@aussieljk/forkbook/internal/babel';
+import { formatCode } from '@aussieljk/forkbook/internal/common';
+import { type CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
+import type { PresetPropertyFn } from '@aussieljk/forkbook/internal/types';
 
 import { join } from 'pathe';
 

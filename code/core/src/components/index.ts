@@ -78,7 +78,7 @@ export type { TooltipNoteProps } from './components/tooltip/TooltipNote.tsx';
 export { TooltipProvider } from './components/tooltip/TooltipProvider.tsx';
 export type { TooltipProviderProps } from './components/tooltip/TooltipProvider.tsx';
 
-// Old tooltips - deprecated and to remove in Storybook 11
+// Old tooltips - deprecated and to remove in Forkbook 11
 export { WithTooltip, WithTooltipPure } from './components/tooltip/lazy-WithTooltip.tsx';
 export { TooltipMessage } from './components/tooltip/TooltipMessage.tsx';
 export {

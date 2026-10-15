@@ -2,17 +2,17 @@ import {
   getCoreAnnotations,
   hasCoreAnnotations,
   markAsComposedWithCoreAnnotations,
-} from 'storybook/internal/csf';
+} from '@aussieljk/forkbook/internal/csf';
 import type {
   ModuleExports,
   NormalizedProjectAnnotations,
   Renderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { composeConfigs } from './composeConfigs.ts';
 
 /**
- * Composes project annotations together, prepending Storybook's core annotations unless they are
+ * Composes project annotations together, prepending Forkbook's core annotations unless they are
  * already present, and flags the result via {@link markAsComposedWithCoreAnnotations} so later
  * composition does not add them a second time.
  *

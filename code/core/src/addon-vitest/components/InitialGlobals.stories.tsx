@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 // The `storybook-ui` Vitest project pins `initialGlobals: { initialGlobalsWork: true }` in
 // vitest.config.storybook.ts. This story renders that global and asserts it arrived, exercising the

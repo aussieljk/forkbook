@@ -1,5 +1,8 @@
-import { STORY_FILE_TEST_REGEXP, getStoryImportPathFromEntry } from 'storybook/internal/common';
-import type { StoryDocsProviderPreset } from 'storybook/internal/types';
+import {
+  STORY_FILE_TEST_REGEXP,
+  getStoryImportPathFromEntry,
+} from '@aussieljk/forkbook/internal/common';
+import type { StoryDocsProviderPreset } from '@aussieljk/forkbook/internal/types';
 
 import { buildStoryDocsPayload } from './build-story-docs.ts';
 

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import * as v from 'valibot';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { TRIGGER_TEST_RUN_REQUEST, TRIGGER_TEST_RUN_RESPONSE } from '../../constants.ts';
 import { createTestToolset, type TestRunResult } from './definition.ts';

@@ -1,11 +1,11 @@
 import { global as globalThis } from '@storybook/global';
 
-import { expect, mocked } from 'storybook/test';
+import { expect, mocked } from '@aussieljk/forkbook/test';
 
 import { fn } from './ModuleMocking.utils';
 
 // This story demonstrates auto module mocking. The imported util function is mocked in the
-// .storybook/preview.js file via sb.mock(module) but a
+// .forkbook/preview.js file via sb.mock(module) but a
 // mock is not provided via __mocks__/ModuleMocking.utils.ts, meaning that the implementation of
 // the mock has to happen at runtime.
 

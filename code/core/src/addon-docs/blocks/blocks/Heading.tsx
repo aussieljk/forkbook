@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
-import { H2 } from 'storybook/internal/components';
+import { H2 } from '@aussieljk/forkbook/internal/components';
 
 import GithubSlugger from 'github-slugger';
 

@@ -6,17 +6,17 @@ import lodash from 'lodash-es';
 import add from 'lodash-es/add';
 // eslint-disable-next-line depend/ban-dependencies
 import sum from 'lodash-es/sum';
-import { expect, mocked } from 'storybook/test';
+import { expect, mocked } from '@aussieljk/forkbook/test';
 
 // This story is used to test the node module mocking.
 //
-// lodash is mocked, because sb.mock('lodash') is called in the .storybook/preview.js and the
+// lodash is mocked, because sb.mock('lodash') is called in the .forkbook/preview.js and the
 // __mocks__ directory contains a lodash.js file.
 //
-// lodash/add is mocked, because sb.mock('lodash/add') is called in the .storybook/preview.js and the
+// lodash/add is mocked, because sb.mock('lodash/add') is called in the .forkbook/preview.js and the
 // __mocks__ directory contains a lodash/add.js file.
 //
-// lodash/sum is automocked, because sb.mock('lodash/sum') is called in the .storybook/preview.js and the
+// lodash/sum is automocked, because sb.mock('lodash/sum') is called in the .forkbook/preview.js and the
 // __mocks__ directory does not contain a lodash/sum.js file. Mocking has to happen at runtime.
 
 export default {

@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
-import { anchorBlockIdFromId } from 'storybook/internal/docs-tools';
+import { anchorBlockIdFromId } from '@aussieljk/forkbook/internal/docs-tools';
 
 export { anchorBlockIdFromId };
 

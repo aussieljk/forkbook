@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { babelParse, traverse } from 'storybook/internal/babel';
+import { babelParse, traverse } from '@aussieljk/forkbook/internal/babel';
 
 // eslint-disable-next-line depend/ban-dependencies
 import { glob } from 'glob';

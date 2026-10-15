@@ -1,6 +1,6 @@
 import React, { type ComponentProps } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { Button } from './Button.tsx';
 import './grid.css';

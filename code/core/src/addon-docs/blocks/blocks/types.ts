@@ -1,4 +1,4 @@
-import type { ModuleExport } from 'storybook/internal/types';
+import type { ModuleExport } from '@aussieljk/forkbook/internal/types';
 
 export const PRIMARY_STORY = '^';
 

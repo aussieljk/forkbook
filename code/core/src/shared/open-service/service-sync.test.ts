@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import { deepSignal } from 'deepsignal/core';
 
 import type { EntryStamp, JsonPatchOperation } from './service-channel.ts';
@@ -12,7 +12,7 @@ import {
   type AuthoredEntry,
 } from './service-sync.ts';
 
-vi.mock('storybook/internal/client-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/client-logger', { spy: true });
 
 function stamp(runtimeId: string, counter: number, seq = counter): EntryStamp {
   return { seq, runtimeId, counter };

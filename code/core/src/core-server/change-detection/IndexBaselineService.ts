@@ -1,5 +1,8 @@
-import { createFileSystemCache, resolvePathInStorybookCache } from 'storybook/internal/common';
-import type { StoryIndex } from 'storybook/internal/types';
+import {
+  createFileSystemCache,
+  resolvePathInStorybookCache,
+} from '@aussieljk/forkbook/internal/common';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import type { StoryIndexGenerator } from '../utils/StoryIndexGenerator.ts';
 import type { GitDiffProvider } from './GitDiffProvider.ts';

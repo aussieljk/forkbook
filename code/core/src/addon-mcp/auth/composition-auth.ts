@@ -10,8 +10,8 @@ import {
   ComponentManifestMap,
   DocsManifestMap,
   type Source,
-} from 'storybook/internal/toolsets-docs';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import * as v from 'valibot';
 
 export interface ComposedRef {
@@ -81,13 +81,13 @@ export class CompositionAuth {
         const result = await this.#checkRef(ref.url);
         if (result === 'manifest-not-found') {
           logger.warn(
-            `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): components manifest not found at ${ref.url}/manifests/components.json. Enable the \`componentsManifest\` feature on that Storybook to compose it into MCP.`
+            `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): components manifest not found at ${ref.url}/manifests/components.json. Enable the \`componentsManifest\` feature on that Forkbook to compose it into MCP.`
           );
           continue;
         }
         if (result === 'manifest-invalid') {
           logger.warn(
-            `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): its components manifest failed validation. This usually means a version mismatch between the composed Storybook and this one — upgrade the older side.`
+            `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): its components manifest failed validation. This usually means a version mismatch between the composed Forkbook and this one — upgrade the older side.`
           );
           continue;
         }
@@ -111,7 +111,7 @@ export class CompositionAuth {
         }
       } catch (error) {
         logger.warn(
-          `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): the ref could not be reached (${error instanceof Error ? error.message : String(error)}). Refs are only checked at dev-server boot — restart Storybook once the ref is reachable.`
+          `[addon-mcp] Skipping composed ref "${ref.title}" (${ref.url}): the ref could not be reached (${error instanceof Error ? error.message : String(error)}). Refs are only checked at dev-server boot — restart Forkbook once the ref is reachable.`
         );
       }
     }

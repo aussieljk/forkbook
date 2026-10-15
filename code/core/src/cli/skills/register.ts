@@ -1,6 +1,9 @@
-import { experimental_loadStorybook, withTelemetry } from 'storybook/internal/core-server';
-import { telemetry } from 'storybook/internal/telemetry';
-import type { CLIOptions } from 'storybook/internal/types';
+import {
+  experimental_loadStorybook,
+  withTelemetry,
+} from '@aussieljk/forkbook/internal/core-server';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { CLIOptions } from '@aussieljk/forkbook/internal/types';
 
 import type { Command } from 'commander';
 
@@ -43,7 +46,7 @@ export function registerSkillsCommand(
     .helpOption(false)
     .helpCommand(false)
     .usage('[options] [id]')
-    .argument('[tokens...]', 'A skill id from `storybook skills --help`');
+    .argument('[tokens...]', 'A skill id from `forkbook skills --help`');
 
   for (const { flags, description } of SKILLS_OPTION_SPECS) {
     skillsCommand.option(flags, description);
@@ -79,7 +82,7 @@ export function registerSkillsCommand(
         handleCommandFailure(options.logfile)
       );
     }
-    // Exit explicitly: loading the target Storybook configuration may leave live handles
+    // Exit explicitly: loading the target Forkbook configuration may leave live handles
     // behind that natural drain cannot clear (mirrors `cli/tools/register.ts`).
     process.exit();
   });

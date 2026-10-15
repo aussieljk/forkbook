@@ -2,9 +2,9 @@
 import type { FC, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent } from 'react';
 import React, { Component, forwardRef, memo, useMemo } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
-import { sanitize } from 'storybook/internal/csf';
-import type { Addon_RenderOptions } from 'storybook/internal/types';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
+import { sanitize } from '@aussieljk/forkbook/internal/csf';
+import type { Addon_RenderOptions } from '@aussieljk/forkbook/internal/types';
 
 import { clsx } from 'clsx';
 
@@ -105,7 +105,7 @@ class TabErrorBoundary extends Component<ErrorBoundaryProps, { hasError: boolean
       return (
         <EmptyTabContent
           title="This addon has errors"
-          description="Check your browser logs and addon code to pinpoint what went wrong. This issue was not caused by Storybook."
+          description="Check your browser logs and addon code to pinpoint what went wrong. This issue was not caused by Forkbook."
         />
       );
     }

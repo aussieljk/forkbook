@@ -34,7 +34,7 @@ it.runIf(BUILT).each([
           const require = createRequire(import.meta.url);
           const summaries = [];
           const reporter = await (${loader})(
-            'storybook/addon-vitest/internal/coverage-reporter',
+            '@aussieljk/forkbook/addon-vitest/internal/coverage-reporter',
             {
               testManager: {
                 onCoverageCollected: (summary) => summaries.push(summary),

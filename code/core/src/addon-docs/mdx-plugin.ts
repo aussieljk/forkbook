@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { createFilter } from '@rollup/pluginutils';
 import type { Plugin } from 'vite';
@@ -9,7 +9,7 @@ import type { CompileOptions } from './compiler';
 import { compile } from './compiler';
 
 /**
- * Storybook uses a single loader when dealing with MDX:
+ * Forkbook uses a single loader when dealing with MDX:
  *
  * - *.mdx are compiled with the MDX compiler directly
  *
@@ -39,7 +39,7 @@ export async function mdxPlugin(options: Options): Promise<Plugin> {
           ...mdxPluginOptions,
           mdxCompileOptions: {
             providerImportSource: fileURLToPath(
-              import.meta.resolve('storybook/addon-docs/mdx-react-shim')
+              import.meta.resolve('@aussieljk/forkbook/addon-docs/mdx-react-shim')
             ),
             ...mdxPluginOptions?.mdxCompileOptions,
             rehypePlugins: [

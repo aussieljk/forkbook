@@ -15,9 +15,9 @@ export const PACKS_DIRECTORY = join(ROOT_DIRECTORY, 'packs');
 export const REPROS_DIRECTORY = join(ROOT_DIRECTORY, 'repros');
 
 export const SANDBOX_DIRECTORY =
-  process.env.STORYBOOK_SANDBOX_ROOT && path.isAbsolute(process.env.STORYBOOK_SANDBOX_ROOT)
-    ? process.env.STORYBOOK_SANDBOX_ROOT
-    : join(ROOT_DIRECTORY, process.env.STORYBOOK_SANDBOX_ROOT || '../storybook-sandboxes');
+  process.env.FORKBOOK_SANDBOX_ROOT && path.isAbsolute(process.env.FORKBOOK_SANDBOX_ROOT)
+    ? process.env.FORKBOOK_SANDBOX_ROOT
+    : join(ROOT_DIRECTORY, process.env.FORKBOOK_SANDBOX_ROOT || '../storybook-sandboxes');
 
 export const JUNIT_DIRECTORY = join(ROOT_DIRECTORY, 'test-results');
 

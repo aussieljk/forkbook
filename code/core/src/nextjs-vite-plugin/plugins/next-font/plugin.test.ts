@@ -45,7 +45,7 @@ describe('vitePluginNextFont resolveId', () => {
     });
 
     const source = `${path.join('node_modules', 'next', 'font', 'local', 'target.css')}?${rawQuery}`;
-    const importer = '/project/.storybook/preview.tsx';
+    const importer = '/project/.forkbook/preview.tsx';
 
     const result = (await plugin.resolveId!.call(createContext(), source, importer)) as {
       id: string;
@@ -57,7 +57,7 @@ describe('vitePluginNextFont resolveId', () => {
 
   it('produces distinct virtual ids for different font option payloads', async () => {
     const plugin = vitePluginNextFont();
-    const importer = '/project/.storybook/preview.tsx';
+    const importer = '/project/.forkbook/preview.tsx';
     const sourcePrefix = path.join('node_modules', 'next', 'font', 'local', 'target.css');
 
     const queryA = JSON.stringify({

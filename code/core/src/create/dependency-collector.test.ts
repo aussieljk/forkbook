@@ -110,8 +110,8 @@ describe('DependencyCollector', () => {
 
     it('should handle scoped packages without conflicts', () => {
       // When adding same package twice, it updates (doesn't create conflict)
-      collector.addDependencies(['storybook/react@8.0.0']);
-      collector.addDependencies(['storybook/react@7.0.0']);
+      collector.addDependencies(['@aussieljk/forkbook/react@8.0.0']);
+      collector.addDependencies(['@aussieljk/forkbook/react@7.0.0']);
 
       const conflicts = collector.getVersionConflicts();
 
@@ -119,7 +119,7 @@ describe('DependencyCollector', () => {
       expect(conflicts).toEqual([]);
 
       const { dependencies } = collector.getAllPackages();
-      expect(dependencies).toContain('storybook/react@7.0.0');
+      expect(dependencies).toContain('@aussieljk/forkbook/react@7.0.0');
     });
   });
 
@@ -242,11 +242,11 @@ describe('DependencyCollector', () => {
     });
 
     it('should handle scoped packages', () => {
-      collector.addDependencies(['storybook/react@8.0.0']);
+      collector.addDependencies(['@aussieljk/forkbook/react@8.0.0']);
 
       const { dependencies } = collector.getAllPackages();
 
-      expect(dependencies).toContain('storybook/react@8.0.0');
+      expect(dependencies).toContain('@aussieljk/forkbook/react@8.0.0');
     });
   });
 });

@@ -7,10 +7,10 @@ import {
   STORY_CHANGED,
   STORY_RENDERED,
   UPDATE_GLOBALS,
-} from 'storybook/internal/core-events';
-import type { DecoratorFunction } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
-import { addons, useEffect, useMemo, useRef } from 'storybook/preview-api';
+import { addons, useEffect, useMemo, useRef } from '@aussieljk/forkbook/preview-api';
 
 import { PSEUDO_STATES } from '../constants.ts';
 import type { PseudoParameter, PseudoState, PseudoStateConfig } from '../types.ts';
@@ -139,7 +139,7 @@ export const withPseudoState: DecoratorFunction = (
       return document.getElementById(`story--${id}`);
     }
     return (
-      document.getElementById('storybook-root') || // Storybook 7.0+
+      document.getElementById('storybook-root') || // Forkbook 7.0+
       document.getElementById('root')
     );
   }, [rootSelector, viewMode, id]);

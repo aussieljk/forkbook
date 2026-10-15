@@ -116,7 +116,7 @@ export interface API_SidebarOptions<API = any> {
     item: API_HashEntry,
     api: API,
     // Optional so pre-existing consumers that invoke these callbacks with two arguments
-    // keep compiling; Storybook itself always passes the context.
+    // keep compiling; Forkbook itself always passes the context.
     context?: {
       isMobile: boolean;
       location: 'sidebar' | 'bottom-bar';

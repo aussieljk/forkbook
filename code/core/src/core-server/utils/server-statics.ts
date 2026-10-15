@@ -6,9 +6,9 @@ import {
   getDirectoryFromWorkingDir,
   getProjectRoot,
   resolvePathInStorybookCache,
-} from 'storybook/internal/common';
-import { CLI_COLORS, logger, once } from 'storybook/internal/node-logger';
-import type { Options, StorybookConfigRaw } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logger, once } from '@aussieljk/forkbook/internal/node-logger';
+import type { Options, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { relative } from 'pathe';
 import picocolors from 'picocolors';
@@ -33,7 +33,7 @@ const readFileOnce = async (path: string) => {
 };
 
 const faviconWrapperPath = join(
-  resolvePackageDir('storybook'),
+  resolvePackageDir('@aussieljk/forkbook'),
   '/assets/browser/favicon-wrapper.svg'
 );
 

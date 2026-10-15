@@ -1,8 +1,8 @@
 import React, { type FC } from 'react';
 
-import { Separator } from 'storybook/internal/components';
+import { Separator } from '@aussieljk/forkbook/internal/components';
 
-import { useGlobalTypes } from 'storybook/manager-api';
+import { useGlobalTypes } from '@aussieljk/forkbook/manager-api';
 
 import { normalizeArgType } from '../utils/normalize-toolbar-arg-type.ts';
 import { ToolbarMenuSelect } from './ToolbarMenuSelect.tsx';

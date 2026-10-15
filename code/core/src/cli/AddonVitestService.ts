@@ -1,12 +1,12 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 
-import { canUpdateVitestConfigFile } from 'storybook/internal/babel';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { getProjectRoot } from 'storybook/internal/common';
-import { CLI_COLORS } from 'storybook/internal/node-logger';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { ErrorCollector } from 'storybook/internal/telemetry';
+import { canUpdateVitestConfigFile } from '@aussieljk/forkbook/internal/babel';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS } from '@aussieljk/forkbook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { ErrorCollector } from '@aussieljk/forkbook/internal/telemetry';
 
 import * as find from 'empathic/find';
 import { coerce, intersects, minVersion, satisfies, validRange } from 'semver';
@@ -49,7 +49,7 @@ export const canInstallLatestVitest = (allDependencies: Record<string, string>):
 };
 
 /**
- * Centralized service for storybook/addon-vitest dependency collection and compatibility
+ * Centralized service for @aussieljk/forkbook/addon-vitest dependency collection and compatibility
  * validation
  *
  * This service consolidates logic from:
@@ -76,12 +76,12 @@ export class AddonVitestService {
   }
 
   /**
-   * Collect all dependencies needed for storybook/addon-vitest
+   * Collect all dependencies needed for @aussieljk/forkbook/addon-vitest
    *
    * Returns versioned package strings ready for installation:
    *
    * - Base packages: vitest, @vitest/browser-playwright, playwright
-   * - Next.js specific: storybook/nextjs-vite
+   * - Next.js specific: @aussieljk/forkbook/nextjs-vite
    * - Coverage reporter: @vitest/coverage-v8
    */
   async collectDependencies(): Promise<string[]> {
@@ -134,7 +134,7 @@ export class AddonVitestService {
   }
 
   /**
-   * Install Playwright browser binaries for storybook/addon-vitest
+   * Install Playwright browser binaries for @aussieljk/forkbook/addon-vitest
    *
    * Installs Chromium via `npx playwright install chromium`. In CI environments and on
    * macOS/Windows (officially supported platforms), also installs system-level browser dependencies
@@ -150,7 +150,7 @@ export class AddonVitestService {
   async installPlaywright(
     options: {
       yes?: boolean;
-      /** Is set to true if Storybook didn't install the dependencies yet */
+      /** Is set to true if Forkbook didn't install the dependencies yet */
       useRemotePkg?: boolean;
     } = {}
   ): Promise<{ errors: string[]; result: 'installed' | 'skipped' | 'aborted' | 'failed' }> {
@@ -165,7 +165,7 @@ export class AddonVitestService {
 
     let result: 'installed' | 'skipped' | 'aborted' | 'failed';
 
-    if (process.env.STORYBOOK_CLI_SKIP_PLAYWRIGHT_INSTALLATION) {
+    if (process.env.FORKBOOK_CLI_SKIP_PLAYWRIGHT_INSTALLATION) {
       result = 'skipped';
       return { errors, result };
     }
@@ -175,7 +175,7 @@ export class AddonVitestService {
         ? true
         : await (async () => {
             logger.log(dedent`
-            Playwright browser binaries are necessary for storybook/addon-vitest. The download can take some time. If you don't want to wait, you can skip the installation and run the following command manually later:
+            Playwright browser binaries are necessary for @aussieljk/forkbook/addon-vitest. The download can take some time. If you don't want to wait, you can skip the installation and run the following command manually later:
             ${CLI_COLORS.cta(playwrightCommandString)}
             `);
             return prompt.confirm({
@@ -208,7 +208,7 @@ export class AddonVitestService {
           if (!useWithDeps) {
             logger.warn(dedent`
               Playwright was installed without system dependencies. Depending on your operating system, you may need to install additional libraries for Playwright to work correctly.
-              To check for missing dependencies, run Storybook Test from the Storybook UI — it will report any libraries that need to be installed.
+              To check for missing dependencies, run Forkbook Test from the Forkbook UI — it will report any libraries that need to be installed.
               On MacOS, Windows, Debian and Ubuntu, you can install system dependencies manually by running:
               ${CLI_COLORS.cta(this.packageManager.getPackageCommand(['playwright', 'install', 'chromium', '--with-deps']))}
             `);
@@ -232,7 +232,7 @@ export class AddonVitestService {
   }
 
   /**
-   * Validate full compatibility for storybook/addon-vitest
+   * Validate full compatibility for @aussieljk/forkbook/addon-vitest
    *
    * Checks:
    *
@@ -312,7 +312,7 @@ export class AddonVitestService {
   /**
    * Validate vitest config files for addon compatibility
    *
-   * Public method that can be used by both postinstall and storybook/internal/create flows
+   * Public method that can be used by both postinstall and @aussieljk/forkbook/internal/create flows
    */
   async validateConfigFiles(directory: string): Promise<Result> {
     const reasons: string[] = [];

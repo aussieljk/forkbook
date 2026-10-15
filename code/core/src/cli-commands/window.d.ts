@@ -1,6 +1,6 @@
-import type { Renderer } from 'storybook/internal/types';
+import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
-import type { StoryStore } from 'storybook/preview-api';
+import type { StoryStore } from '@aussieljk/forkbook/preview-api';
 
 declare global {
   interface Window {

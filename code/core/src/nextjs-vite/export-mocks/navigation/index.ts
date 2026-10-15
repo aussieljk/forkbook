@@ -1,10 +1,10 @@
-import { NextjsRouterMocksNotAvailable } from 'storybook/internal/preview-errors';
+import { NextjsRouterMocksNotAvailable } from '@aussieljk/forkbook/internal/preview-errors';
 
 import * as actual from 'next/dist/client/components/navigation.js';
 import { RedirectStatusCode } from 'next/dist/client/components/redirect-status-code.js';
 import { getRedirectError } from 'next/dist/client/components/redirect.js';
-import type { Mock } from 'storybook/test';
-import { fn } from 'storybook/test';
+import type { Mock } from '@aussieljk/forkbook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 let navigationAPI: {
   push: Mock;

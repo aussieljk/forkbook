@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Channel } from 'storybook/internal/channels';
-import type { API_Provider, DecoratorFunction } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { API_Provider, DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
 import { deepMerge } from '@vitest/utils';
-import type { API, State } from 'storybook/manager-api';
-import { fn } from 'storybook/test';
+import type { API, State } from '@aussieljk/forkbook/manager-api';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { IconSymbols } from './IconSymbols.tsx';
 

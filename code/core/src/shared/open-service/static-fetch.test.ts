@@ -78,7 +78,7 @@ describe('createBrowserStaticLoader', () => {
     expect(snapshot).toEqual({ entries: { alpha: 'from-file' } });
   });
 
-  // A Storybook deployed below the origin root - a GitHub Pages project site, a docs site mounted
+  // A Forkbook deployed below the origin root - a GitHub Pages project site, a docs site mounted
   // under a path - must still reach its own snapshots, and the manager and the preview iframe must
   // agree on where those are. An origin-absolute request would leave the deployment entirely.
   it('resolves under the deployment directory from both the manager and the preview iframe', async () => {

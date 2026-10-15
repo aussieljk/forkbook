@@ -11,7 +11,7 @@ import { AttachUnavailableError, EnvironmentMismatchError, ToolsRuntimeError } f
 
 vi.mock('node:fs', { spy: true });
 
-const STORYBOOK_PATH = '/repo/node_modules/storybook';
+const FORKBOOK_PATH = '/repo/node_modules/storybook';
 const FOREIGN_STORYBOOK_PATH = '/npx-cache/node_modules/storybook';
 
 const RECORD: StorybookInstanceRecord = {
@@ -19,12 +19,12 @@ const RECORD: StorybookInstanceRecord = {
   instanceId: 'abc',
   pid: 123,
   cwd: '/repo',
-  configDir: '/repo/.storybook',
+  configDir: '/repo/.forkbook',
   url: 'http://localhost:6006',
   port: 6006,
   token: 'secret',
   storybookVersion: '10.2.0',
-  storybookPath: STORYBOOK_PATH,
+  storybookPath: FORKBOOK_PATH,
   mcp: { status: 'ready' },
 };
 
@@ -33,7 +33,7 @@ const OTHER: StorybookInstanceRecord = {
   instanceId: 'other',
   pid: 456,
   cwd: '/apps/web',
-  configDir: '/apps/web/.storybook',
+  configDir: '/apps/web/.forkbook',
   url: 'http://localhost:6007',
   port: 6007,
 };
@@ -65,7 +65,7 @@ function makeRuntimeDeps(records: StorybookInstanceRecord[], extras: Record<stri
       setDelegatedMode,
       getRegisteredToolsets,
       version: '10.2.0',
-      storybookPath: () => STORYBOOK_PATH,
+      storybookPath: () => FORKBOOK_PATH,
       ...extras,
     },
   };
@@ -89,7 +89,7 @@ beforeEach(async () => {
   vi.unstubAllGlobals();
   vol.reset();
   vol.fromNestedJSON({
-    [`${STORYBOOK_PATH}/package.json`]: '{"name":"storybook"}',
+    [`${FORKBOOK_PATH}/package.json`]: '{"name":"storybook"}',
     [`${FOREIGN_STORYBOOK_PATH}/package.json`]: '{"name":"storybook"}',
   });
   const memfs = await vi.importActual<typeof import('memfs')>('memfs');
@@ -145,7 +145,7 @@ describe('bootstrapAttachedRuntime', () => {
     await expect(failure).rejects.toThrow(AttachUnavailableError);
     await expect(failure).rejects.toMatchObject({ data: { reason: 'no-instance' } });
     await expect(failure).rejects.toThrow('npm run storybook');
-    await expect(failure).rejects.toThrow('configDir `/apps/web/.storybook`');
+    await expect(failure).rejects.toThrow('configDir `/apps/web/.forkbook`');
     const error = await rejectedAttachUnavailable(failure);
     expect(error.data.instances.every((instance) => !('token' in instance))).toBe(true);
     expect(inspect(error)).not.toContain('secret');
@@ -289,7 +289,7 @@ describe('bootstrapAttachedRuntime', () => {
     const failure = bootstrapAttachedRuntime({ cwd: '/repo' }, deps);
 
     await expect(failure).rejects.toMatchObject({ data: { reason: 'old-server' } });
-    await expect(failure).rejects.toThrow('Restart Storybook (v10.2.0+)');
+    await expect(failure).rejects.toThrow('Restart Forkbook (v10.2.0+)');
   });
 
   it('attaches from the project when the instance was started from an unrelated directory', async () => {
@@ -326,7 +326,7 @@ describe('bootstrapAttachedRuntime', () => {
     await expect(failure).rejects.toThrow(EnvironmentMismatchError);
     await expect(failure).rejects.toThrow('different `storybook` installations');
     await expect(failure).rejects.toThrow(FOREIGN_STORYBOOK_PATH);
-    await expect(failure).rejects.toThrow(STORYBOOK_PATH);
+    await expect(failure).rejects.toThrow(FORKBOOK_PATH);
     await expect(failure).rejects.toThrow('10.2.0');
     await expect(failure).rejects.toThrow(RECORD.configDir!);
     expect(deps.createNodeChannel).not.toHaveBeenCalled();
@@ -349,7 +349,7 @@ describe('bootstrapAttachedRuntime', () => {
 
     await expect(failure).rejects.toThrow(EnvironmentMismatchError);
     await expect(failure).rejects.toThrow('Could not verify');
-    await expect(failure).rejects.toThrow('restart Storybook');
+    await expect(failure).rejects.toThrow('restart Forkbook');
     expect(deps.createNodeChannel).not.toHaveBeenCalled();
   });
 
@@ -418,11 +418,11 @@ describe('bootstrapAttachedRuntime', () => {
     expect(connection.close).toHaveBeenCalled();
   });
 
-  it('matches a nested package cwd against a parent-cwd record whose configDir is the package Storybook', async () => {
+  it('matches a nested package cwd against a parent-cwd record whose configDir is the package Forkbook', async () => {
     const nested: StorybookInstanceRecord = {
       ...RECORD,
       cwd: '/repo',
-      configDir: '/repo/packages/ui/.storybook',
+      configDir: '/repo/packages/ui/.forkbook',
     };
     const { deps } = makeRuntimeDeps([nested], { cwd: () => '/repo' });
 

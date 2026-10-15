@@ -1,7 +1,7 @@
 import type { ChangeEvent, FC } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { getControlId } from '../helpers';
 import type { ControlProps, NormalizedOptionsConfig, OptionsMultiSelection } from '../types';

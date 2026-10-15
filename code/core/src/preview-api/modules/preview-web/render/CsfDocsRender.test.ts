@@ -1,7 +1,11 @@
 import { expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import type { DocsIndexEntry, RenderContextCallbacks, Renderer } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type {
+  DocsIndexEntry,
+  RenderContextCallbacks,
+  Renderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import { Tag } from '../../../../shared/constants/tags.ts';
 import type { StoryStore } from '../../store/index.ts';

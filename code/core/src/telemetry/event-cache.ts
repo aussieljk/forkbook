@@ -1,4 +1,4 @@
-import { cache } from 'storybook/internal/common';
+import { cache } from '@aussieljk/forkbook/internal/common';
 
 import type { EventType, TelemetryEvent } from './types.ts';
 

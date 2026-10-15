@@ -7,12 +7,12 @@ describe('UniversalStore.create', () => {
     expect(() =>
       UniversalStore.create({ id: 'my-addon/store', leader: true })
     ).toThrowErrorMatchingInlineSnapshot(
-      `[TypeError: UniversalStore is internal to Storybook and cannot create a store with id "my-addon/store"]`
+      `[TypeError: UniversalStore is internal to Forkbook and cannot create a store with id "my-addon/store"]`
     );
   });
 
   it('creates stores with first-party ids', () => {
-    expect(UniversalStore.create({ id: 'storybook/test', leader: true })).toBeInstanceOf(
+    expect(UniversalStore.create({ id: '@aussieljk/forkbook/test', leader: true })).toBeInstanceOf(
       UniversalStore
     );
   });

@@ -6,9 +6,12 @@ export const DEBOUNCE = 100;
 
 export const defaultStaticDirs = [
   {
-    from: join(resolvePackageDir('storybook'), 'assets/browser'),
+    from: join(resolvePackageDir('@aussieljk/forkbook'), 'assets/browser'),
     to: '/sb-common-assets',
   },
 ];
 
-export const defaultFavicon = join(resolvePackageDir('storybook'), 'assets/browser/favicon.svg');
+export const defaultFavicon = join(
+  resolvePackageDir('@aussieljk/forkbook'),
+  'assets/browser/favicon.svg'
+);

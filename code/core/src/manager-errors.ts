@@ -3,7 +3,7 @@ import { StorybookError } from './storybook-error.ts';
 
 /**
  * If you can't find a suitable category for your error, create one based on the package name/file
- * path of which the error is thrown. For instance: If it's from `storybook/internal/client-logger`,
+ * path of which the error is thrown. For instance: If it's from `@aussieljk/forkbook/internal/client-logger`,
  * then MANAGER_CLIENT-LOGGER
  *
  * Categories are prefixed by a logical grouping, e.g. MANAGER_ to prevent manager and preview
@@ -28,7 +28,7 @@ export class ProviderDoesNotExtendBaseProviderError extends StorybookError {
       name: 'ProviderDoesNotExtendBaseProviderError',
       category: Category.MANAGER_UI,
       code: 1,
-      message: `The Provider passed into Storybook's UI is not extended from the base Provider. Please check your Provider implementation.`,
+      message: `The Provider passed into Forkbook's UI is not extended from the base Provider. Please check your Provider implementation.`,
     });
   }
 }

@@ -11,11 +11,19 @@ import {
   resolvePathInStorybookCache,
   validateFrameworkName,
   versions,
-} from 'storybook/internal/common';
-import { CLI_COLORS, deprecate, logger, prompt } from 'storybook/internal/node-logger';
-import { MissingBuilderError, NoStatsForViteDevError } from 'storybook/internal/server-errors';
-import { oneWayHash, telemetry } from 'storybook/internal/telemetry';
-import type { BuilderOptions, CLIOptions, LoadOptions, Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, deprecate, logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import {
+  MissingBuilderError,
+  NoStatsForViteDevError,
+} from '@aussieljk/forkbook/internal/server-errors';
+import { oneWayHash, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type {
+  BuilderOptions,
+  CLIOptions,
+  LoadOptions,
+  Options,
+} from '@aussieljk/forkbook/internal/types';
 import { global } from '@storybook/global';
 
 import { join, relative, resolve } from 'pathe';
@@ -60,7 +68,7 @@ export async function buildDevStandalone(
     storybookVersion = packageJson.version;
   } else {
     if (!storybookVersion) {
-      storybookVersion = versions.storybook;
+      storybookVersion = versions['@aussieljk/forkbook'];
     }
   }
   // updateInfo are cached, so this is typically pretty fast
@@ -75,7 +83,7 @@ export async function buildDevStandalone(
     const shouldChangePort = await prompt.confirm({
       message: dedent`
         Port ${options.port} is not available. 
-        Would you like to run Storybook on port ${port} instead?
+        Would you like to run Forkbook on port ${port} instead?
       `,
       initialValue: true,
     });
@@ -136,7 +144,8 @@ export async function buildDevStandalone(
   let presets = await loadAllPresets({
     corePresets,
     overridePresets: [
-      import.meta.resolve('storybook/internal/core-server/presets/common-override-preset'),
+      import.meta
+        .resolve('@aussieljk/forkbook/internal/core-server/presets/common-override-preset'),
     ],
     ...options,
     isCritical: true,
@@ -180,7 +189,7 @@ export async function buildDevStandalone(
               - Refer to the migration guide at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#commonjs-with-vite-is-deprecated`);
 
     const mainJsPath = getInterpretedFile(
-      resolve(options.configDir || '.storybook', 'main')
+      resolve(options.configDir || '.forkbook', 'main')
     ) as string;
     if (/\.c[jt]s$/.test(mainJsPath)) {
       deprecate(deprecationMessage);
@@ -209,7 +218,7 @@ export async function buildDevStandalone(
   // Load second pass: all presets are applied in order
   presets = await loadAllPresets({
     corePresets: [
-      join(resolvePackageDir('storybook'), 'dist/core-server/presets/common-preset.js'),
+      join(resolvePackageDir('@aussieljk/forkbook'), 'dist/core-server/presets/common-preset.js'),
       ...(managerBuilder.corePresets || []),
       ...(previewBuilder.corePresets || []),
       ...(resolvedRenderer ? [resolvedRenderer] : []),
@@ -217,7 +226,8 @@ export async function buildDevStandalone(
     ],
     overridePresets: [
       ...(previewBuilder.overridePresets || []),
-      import.meta.resolve('storybook/internal/core-server/presets/common-override-preset'),
+      import.meta
+        .resolve('@aussieljk/forkbook/internal/core-server/presets/common-override-preset'),
     ],
     ...options,
     channel,
@@ -249,7 +259,7 @@ export async function buildDevStandalone(
     storybookVersion,
     token: getWsToken(),
   }).catch((error: unknown) => {
-    logger.warn('Storybook failed to write its runtime instance registry record.');
+    logger.warn('Forkbook failed to write its runtime instance registry record.');
     logger.debug(error instanceof Error ? (error.stack ?? error.message) : String(error));
   });
 

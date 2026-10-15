@@ -1,4 +1,4 @@
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 
 import type { ReferenceContext, ResolvedMembers } from './resolve-members.ts';
 import { resolveObjectMembers, sourceOf } from './resolve-members.ts';

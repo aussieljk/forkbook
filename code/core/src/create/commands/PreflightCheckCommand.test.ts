@@ -6,16 +6,16 @@ import {
   resolveStorybookVersionSpecifier,
   invalidateProjectRootCache,
   getProcessAncestry,
-} from 'storybook/internal/common';
-import { logger, once } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/common';
+import { logger, once } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import * as scaffoldModule from '../scaffold-new-project.ts';
 import { PreflightCheckCommand } from './PreflightCheckCommand.ts';
 
-vi.mock('storybook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('../scaffold-new-project', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 describe('PreflightCheckCommand', () => {
   let command: PreflightCheckCommand;
@@ -182,25 +182,25 @@ describe('PreflightCheckCommand', () => {
       expect(vi.mocked(logger.info)).toHaveBeenCalledWith('Package manager: Yarn Berry');
     });
 
-    it('should warn when package.json name is "storybook"', async () => {
+    it('should warn when package.json name is "@aussieljk/forkbook"', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
-      mockPackageManager.primaryPackageJson = { packageJson: { name: 'storybook' } };
+      mockPackageManager.primaryPackageJson = { packageJson: { name: '@aussieljk/forkbook' } };
 
       await command.execute({ force: false } as any);
 
       expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
-        expect.stringContaining('Your package.json "name" field is set to "storybook"')
+        expect.stringContaining('Your package.json "name" field is set to "@aussieljk/forkbook"')
       );
     });
 
-    it('should not warn when package.json name is not "storybook"', async () => {
+    it('should not warn when package.json name is not "@aussieljk/forkbook"', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.primaryPackageJson = { packageJson: { name: 'my-project' } };
 
       await command.execute({ force: false } as any);
 
       expect(vi.mocked(logger.warn)).not.toHaveBeenCalledWith(
-        expect.stringContaining('Your package.json "name" field is set to "storybook"')
+        expect.stringContaining('Your package.json "name" field is set to "@aussieljk/forkbook"')
       );
     });
 
@@ -226,7 +226,7 @@ describe('PreflightCheckCommand', () => {
       expect(options.storybookVersionSpecifier).toBe('10.6.0-alpha.7');
     });
 
-    it('should call the package manager Storybook install precheck', async () => {
+    it('should call the package manager Forkbook install precheck', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockVersionService.getCurrentVersion.mockReturnValue('10.4.0-alpha.17');
 

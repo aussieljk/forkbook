@@ -8,7 +8,7 @@ describe('getStoryId', () => {
   it('should return the storyId', async () => {
     const cwd = process.cwd();
     const options = {
-      configDir: join(cwd, '.storybook'),
+      configDir: join(cwd, '.forkbook'),
       presets: {
         apply: (val: string) => {
           if (val === 'stories') {
@@ -29,7 +29,7 @@ describe('getStoryId', () => {
   it('should throw an error if the storyId cannot be calculated', async () => {
     const cwd = process.cwd();
     const options = {
-      configDir: join(cwd, '.storybook'),
+      configDir: join(cwd, '.forkbook'),
       presets: {
         apply: (val: string) => {
           if (val === 'stories') {

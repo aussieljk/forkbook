@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 
-import type { Options, Ref } from 'storybook/internal/types';
+import type { Options, Ref } from '@aussieljk/forkbook/internal/types';
 
 import * as pkg from 'empathic/package';
 

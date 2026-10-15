@@ -1,6 +1,6 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { dedent } from 'ts-dedent';
 
@@ -10,7 +10,7 @@ import { setupMemfsMocks } from './memfs-test-setup.ts';
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
 vi.mock(import('./utils.ts'), { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('empathic/find', { spy: true });
 vi.mock('tsconfig-paths', { spy: true });
 
@@ -30,7 +30,7 @@ const getImports = async (code: string, packageName?: string, storyFilePath?: st
 
 test('Get imports from multiple components', async () => {
   const code = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { ButtonGroup } from './button-group';
     import { Button } from '@design-system/button';
 
@@ -367,7 +367,7 @@ test('Mixed default + named import: keep only named when only named (alias) used
 
 test('Per-specifier type import is dropped when mixing with value specifiers', async () => {
   const code = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { type Meta as M, Button } from '@ds/button';
 
     const meta = {};

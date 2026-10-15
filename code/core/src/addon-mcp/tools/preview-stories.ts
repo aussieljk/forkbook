@@ -18,7 +18,7 @@ export const PREVIEW_STORIES_RESOURCE_URI = `ui://${PREVIEW_STORIES_TOOL_NAME}/p
 export async function addPreviewStoriesResource(server: McpServer<any, AddonContext>) {
   const previewStoryAppScript = await fs.readFile(
     url.fileURLToPath(
-      import.meta.resolve('storybook/addon-mcp/internal/preview-stories-app-script')
+      import.meta.resolve('@aussieljk/forkbook/addon-mcp/internal/preview-stories-app-script')
     ),
     'utf-8'
   );

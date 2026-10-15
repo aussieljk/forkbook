@@ -1,6 +1,6 @@
-import { resolveSkillInputs } from 'storybook/internal/core-server';
-import { buildStoryInstructions } from 'storybook/internal/skills';
-import type { Options } from 'storybook/internal/types';
+import { resolveSkillInputs } from '@aussieljk/forkbook/internal/core-server';
+import { buildStoryInstructions } from '@aussieljk/forkbook/internal/skills';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import type { McpServer } from 'tmcp';
 import { collectTelemetry } from '../telemetry.ts';
 import type { AddonContext } from '../types.ts';
@@ -27,7 +27,7 @@ export async function addGetUIBuildingInstructionsTool(
   server.tool(
     {
       name: GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME,
-      title: 'Storybook Story Development Instructions',
+      title: 'Forkbook Story Development Instructions',
       get description() {
         const testSupported = (server.ctx.custom?.toolsets?.test ?? true) && addonVitestAvailable;
         const a11yAvailable = testSupported && (server.ctx.custom?.a11yEnabled ?? false);
@@ -92,26 +92,26 @@ export function getStorybookStoryInstructionsDescription({
 - How to handle test failures${a11yAvailable ? ' and accessibility violations' : ''}`
     : '';
 
-  return `Get comprehensive instructions for writing, testing, and fixing Storybook stories (.stories.tsx, .stories.ts, .stories.jsx, .stories.js files).
+  return `Get comprehensive instructions for writing, testing, and fixing Forkbook stories (.stories.tsx, .stories.ts, .stories.jsx, .stories.js files).
 
 CRITICAL: You MUST call this tool before:
-- Creating new Storybook stories or story files
-- Updating or modifying existing Storybook stories
+- Creating new Forkbook stories or story files
+- Updating or modifying existing Forkbook stories
 - Adding new story variants or exports to story files
 - Editing any file matching *.stories.* patterns
 - Writing components that will need stories
 - Editing anything that changes how the UI looks — components, styles, CSS, themes, colors, or design tokens; a shared file with no stories of its own still changes its consumers' stories${criticalTestBullets}${criticalA11yBullets}
 
-This tool provides essential Storybook-specific guidance including:
-- How to structure stories correctly for Storybook 9
+This tool provides essential Forkbook-specific guidance including:
+- How to structure stories correctly for Forkbook 9
 - Required imports (Meta, StoryObj from framework package)
-- Test utility imports (from 'storybook/test')
+- Test utility imports (from '@aussieljk/forkbook/test')
 - Story naming conventions and best practices
 - Play function patterns for interactive testing
 - Mocking strategies for external dependencies
 - Story variants and coverage requirements${testAndA11yGuidance}
 
-Even if you're familiar with Storybook, call this tool to ensure you're following the correct patterns, import paths, and conventions for this specific Storybook setup.`;
+Even if you're familiar with Forkbook, call this tool to ensure you're following the correct patterns, import paths, and conventions for this specific Forkbook setup.`;
 }
 
 export function getStorybookStoryInstructionsToolMetadata(options: {
@@ -120,14 +120,14 @@ export function getStorybookStoryInstructionsToolMetadata(options: {
 }) {
   return {
     name: GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME,
-    title: 'Storybook Story Development Instructions',
+    title: 'Forkbook Story Development Instructions',
     description: getStorybookStoryInstructionsDescription(options),
   };
 }
 
 /**
  * Thin adapter over the shared `buildStoryInstructions` content builder: resolves this
- * Storybook's framework/renderer and availability probes through `resolveSkillInputs` (the same
+ * Forkbook's framework/renderer and availability probes through `resolveSkillInputs` (the same
  * path the skills CLI uses), then renders the MCP-flavored prose. Optional overrides
  * (toolset gates, `addonVitestAvailable`, `docsEnabled`, `a11yEnabled`) take
  * priority when provided; omitted fields fall back to the probe so callers cannot silently get

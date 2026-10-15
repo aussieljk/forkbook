@@ -1,4 +1,4 @@
-import { PackageManagerName } from 'storybook/internal/common';
+import { PackageManagerName } from '@aussieljk/forkbook/internal/common';
 
 import { spawnSync } from 'child_process';
 

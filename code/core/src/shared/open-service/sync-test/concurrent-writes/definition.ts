@@ -7,14 +7,14 @@
 
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 
 type ConcurrentWritesState = {
   slots: Record<string, string>;
 };
 
 export const concurrentWritesSyncServiceDef = defineService({
-  id: 'storybook/internal/open-service-concurrent-writes-sync-demo',
+  id: '@aussieljk/forkbook/internal/open-service-concurrent-writes-sync-demo',
   description: 'Internal demo service for sequential and concurrent writes to distinct keys.',
   initialState: { slots: {} as Record<string, string> } satisfies ConcurrentWritesState,
   queries: {

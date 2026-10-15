@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { Meta, StoryFn } from 'storybook/react-vite';
+import type { Meta, StoryFn } from '@aussieljk/forkbook/react-vite';
 
-import type { API } from 'storybook/manager-api';
-import { ManagerContext } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
 
 import { IconSymbols } from './IconSymbols.tsx';
 import { Search } from './Search.tsx';

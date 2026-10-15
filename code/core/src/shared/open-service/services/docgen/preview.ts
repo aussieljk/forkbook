@@ -1,6 +1,6 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
-import type { ServiceInstanceOf } from 'storybook/open-service';
+import type { ServiceInstanceOf } from '@aussieljk/forkbook/open-service';
 
 import { registerService } from '../../preview.ts';
 import { docgenServiceDef } from './definition.ts';

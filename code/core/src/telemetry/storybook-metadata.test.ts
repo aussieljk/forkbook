@@ -3,14 +3,14 @@ import path from 'node:path';
 import type { MockInstance } from 'vitest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getStorybookInfo, isCI } from 'storybook/internal/common';
+import { getStorybookInfo, isCI } from '@aussieljk/forkbook/internal/common';
 import {
   type PackageJson,
   type StorybookConfig,
   SupportedBuilder,
   SupportedFramework,
   SupportedRenderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { detect } from 'package-manager-detector';
 
@@ -46,7 +46,7 @@ vi.mock(import('./get-portable-stories-usage.ts'), { spy: true });
 vi.mock(import('./get-application-file-count.ts'), { spy: true });
 vi.mock(import('./get-known-packages.ts'), { spy: true });
 vi.mock(import('package-manager-detector'), { spy: true });
-vi.mock(import('storybook/internal/common'), { spy: true });
+vi.mock(import('@aussieljk/forkbook/internal/common'), { spy: true });
 
 const packageJsonMock: PackageJson = {
   name: 'some-user-project',
@@ -63,9 +63,9 @@ const defaultInfo = {
   framework: SupportedFramework.REACT_VITE,
   renderer: SupportedRenderer.REACT,
   builder: SupportedBuilder.VITE,
-  frameworkPackage: 'storybook/react-vite',
-  rendererPackage: 'storybook/react',
-  builderPackage: 'storybook/builder-vite',
+  frameworkPackage: '@aussieljk/forkbook/react-vite',
+  rendererPackage: '@aussieljk/forkbook/react',
+  builderPackage: '@aussieljk/forkbook/builder-vite',
   addons: [],
   mainConfig: {
     stories: [],
@@ -110,8 +110,8 @@ beforeEach(() => {
 
   vi.mocked(getActualPackageJson).mockImplementation(async () => ({
     dependencies: {
-      'storybook/react': 'x.x.x',
-      'storybook/builder-vite': 'x.x.x',
+      '@aussieljk/forkbook/react': 'x.x.x',
+      '@aussieljk/forkbook/builder-vite': 'x.x.x',
     },
   }));
 
@@ -236,14 +236,14 @@ describe('storybook-metadata', () => {
 
       it('custom, local, or non-node_modules paths', () => {
         const addonNames = [
-          'file://$SNIP/.storybook/redesign-addon',
+          'file://$SNIP/.forkbook/redesign-addon',
           '$SNIP/addons/airtracker',
           '$SNIP/preset/index',
           '$SNIP/src',
           '../../../tools/storybook/src/plugins/storybook-translations',
           './html-addon',
           '..',
-          'file:///D:/foo/templates/.storybook/addons/some-addon',
+          'file:///D:/foo/templates/.forkbook/addons/some-addon',
         ].map(sanitizeAddonName);
 
         expect(addonNames).toEqual([
@@ -266,7 +266,7 @@ describe('storybook-metadata', () => {
         const unixResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
@@ -279,14 +279,14 @@ describe('storybook-metadata', () => {
         });
 
         expect(unixResult.framework).toEqual({
-          name: 'storybook/react-vite',
+          name: '@aussieljk/forkbook/react-vite',
           options: { strictMode: false },
         });
 
         const windowsResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
@@ -299,7 +299,7 @@ describe('storybook-metadata', () => {
         });
 
         expect(windowsResult.framework).toEqual({
-          name: 'storybook/react-vite',
+          name: '@aussieljk/forkbook/react-vite',
           options: { strictMode: false },
         });
       });
@@ -314,7 +314,7 @@ describe('storybook-metadata', () => {
         const unixResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
@@ -330,7 +330,7 @@ describe('storybook-metadata', () => {
         const windowsResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
@@ -351,23 +351,23 @@ describe('storybook-metadata', () => {
 
         vi.mocked(getStorybookInfo).mockImplementation(async () => ({
           ...defaultInfo,
-          frameworkPackage: '/Users/foo/my-projects/.storybook/some-local-framework' as any,
+          frameworkPackage: '/Users/foo/my-projects/.forkbook/some-local-framework' as any,
         }));
 
         const unixResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
-              name: '/Users/foo/my-projects/.storybook/some-local-framework',
+              name: '/Users/foo/my-projects/.forkbook/some-local-framework',
             },
           },
         });
 
         expect(unixResult.framework).toEqual({
-          name: '$SNIP/.storybook/some-local-framework',
+          name: '$SNIP/.forkbook/some-local-framework',
         });
       });
 
@@ -378,23 +378,23 @@ describe('storybook-metadata', () => {
 
         vi.mocked(getStorybookInfo).mockImplementation(async () => ({
           ...defaultInfo,
-          frameworkPackage: 'C:\\Users\\foo\\my-project\\.storybook\\some-local-framework' as any,
+          frameworkPackage: 'C:\\Users\\foo\\my-project\\.forkbook\\some-local-framework' as any,
         }));
 
         const windowsResult = await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
             framework: {
-              name: 'C:\\Users\\foo\\my-project\\.storybook\\some-local-framework',
+              name: 'C:\\Users\\foo\\my-project\\.forkbook\\some-local-framework',
             },
           },
         });
 
         expect(windowsResult.framework).toEqual({
-          name: '$SNIP\\.storybook\\some-local-framework',
+          name: '$SNIP\\.forkbook\\some-local-framework',
         });
       });
     });
@@ -404,13 +404,13 @@ describe('storybook-metadata', () => {
         packageJson: {
           ...packageJsonMock,
           devDependencies: {
-            'storybook/react': 'x.y.z',
+            '@aussieljk/forkbook/react': 'x.y.z',
             '@storybook/addon-essentials': 'x.x.x',
             '@storybook/addon-knobs': 'x.x.y',
             'storybook-addon-deprecated': 'x.x.z',
           },
         } as PackageJson,
-        configDir: '.storybook',
+        configDir: '.forkbook',
         packageJsonPath,
         mainConfig: {
           ...mainJsMock,
@@ -440,7 +440,7 @@ describe('storybook-metadata', () => {
       `);
       expect(result.storybookPackages).toMatchInlineSnapshot(`
         {
-          "storybook/react": {
+          "@aussieljk/forkbook/react": {
             "version": "x.x.x",
           },
         }
@@ -453,7 +453,7 @@ describe('storybook-metadata', () => {
       const result = await computeStorybookMetadata({
         packageJson: packageJsonMock,
         packageJsonPath,
-        configDir: '.storybook',
+        configDir: '.forkbook',
         mainConfig: {
           ...mainJsMock,
           features,
@@ -468,16 +468,16 @@ describe('storybook-metadata', () => {
         await computeStorybookMetadata({
           packageJson: packageJsonMock,
           packageJsonPath,
-          configDir: '.storybook',
+          configDir: '.forkbook',
           mainConfig: {
             ...mainJsMock,
-            framework: 'storybook/react-vite',
+            framework: '@aussieljk/forkbook/react-vite',
           },
         })
       ).toMatchObject({
-        framework: { name: 'storybook/react-vite' },
-        renderer: 'storybook/react',
-        builder: 'storybook/builder-vite',
+        framework: { name: '@aussieljk/forkbook/react-vite' },
+        renderer: '@aussieljk/forkbook/react',
+        builder: '@aussieljk/forkbook/builder-vite',
       });
     });
 
@@ -485,7 +485,7 @@ describe('storybook-metadata', () => {
       const res = await computeStorybookMetadata({
         packageJson: packageJsonMock,
         packageJsonPath,
-        configDir: '.storybook',
+        configDir: '.forkbook',
         mainConfig: {
           ...mainJsMock,
           refs: {
@@ -501,7 +501,7 @@ describe('storybook-metadata', () => {
       const res = await computeStorybookMetadata({
         packageJson: packageJsonMock,
         packageJsonPath,
-        configDir: '.storybook',
+        configDir: '.forkbook',
         mainConfig: {
           ...mainJsMock,
           addons: [
@@ -533,7 +533,7 @@ describe('storybook-metadata', () => {
       'should detect the supported metaframework: %s',
       async (metaFramework, name) => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: {
@@ -554,7 +554,7 @@ describe('storybook-metadata', () => {
     describe('hasTurbopack', () => {
       it('should be true when a next script passes --turbopack', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { next: 'x.x.x' },
@@ -568,7 +568,7 @@ describe('storybook-metadata', () => {
 
       it('should be false when a next script passes --webpack', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { next: 'x.x.x' },
@@ -582,7 +582,7 @@ describe('storybook-metadata', () => {
 
       it('should be undefined when a next script has no bundler flag', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { next: 'x.x.x' },
@@ -596,7 +596,7 @@ describe('storybook-metadata', () => {
 
       it('should be undefined when the project has no next script at all', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             scripts: { build: 'vite build' },
@@ -611,7 +611,7 @@ describe('storybook-metadata', () => {
     describe('hasModuleFederation', () => {
       it('should be true when a @module-federation/* package is a dependency', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { '@module-federation/enhanced': 'x.x.x' },
@@ -624,7 +624,7 @@ describe('storybook-metadata', () => {
 
       it('should be true when @originjs/vite-plugin-federation is a devDependency', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             devDependencies: { '@originjs/vite-plugin-federation': 'x.x.x' },
@@ -637,7 +637,7 @@ describe('storybook-metadata', () => {
 
       it('should be false when no Module Federation package is present', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { react: 'x.x.x' },
@@ -652,7 +652,7 @@ describe('storybook-metadata', () => {
     describe('rendererPackages', () => {
       it('resolves the runtime packages mapped to the detected renderer', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: packageJsonMock,
           packageJsonPath,
           mainConfig: mainJsMock,
@@ -665,7 +665,7 @@ describe('storybook-metadata', () => {
 
       it('ignores declared dependencies of other frameworks', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { vue: 'x.x.x', svelte: 'x.x.x' },
@@ -686,7 +686,7 @@ describe('storybook-metadata', () => {
         }));
 
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: packageJsonMock,
           packageJsonPath,
           mainConfig: mainJsMock,
@@ -701,7 +701,7 @@ describe('storybook-metadata', () => {
     describe('custom bundler config', () => {
       it('should detect viteFinal as hasCustomVite', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: packageJsonMock,
           packageJsonPath,
           mainConfig: {
@@ -714,7 +714,7 @@ describe('storybook-metadata', () => {
 
       it('should not report hasCustomVite without viteFinal', async () => {
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: packageJsonMock,
           packageJsonPath,
           mainConfig: mainJsMock,
@@ -725,7 +725,7 @@ describe('storybook-metadata', () => {
       it('should report hasCustomWebpack for a next project customizing webpack in next.config', async () => {
         vi.mocked(getHasNextCustomWebpack).mockReturnValue(true);
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: {
             ...packageJsonMock,
             dependencies: { next: 'x.x.x' },
@@ -739,7 +739,7 @@ describe('storybook-metadata', () => {
       it('should not consult next.config for projects without next', async () => {
         vi.mocked(getHasNextCustomWebpack).mockReturnValue(true);
         const res = await computeStorybookMetadata({
-          configDir: '.storybook',
+          configDir: '.forkbook',
           packageJson: packageJsonMock,
           packageJsonPath,
           mainConfig: mainJsMock,
@@ -758,7 +758,7 @@ describe('storybook-metadata', () => {
       } as Settings);
 
       const res = await computeStorybookMetadata({
-        configDir: '.storybook',
+        configDir: '.forkbook',
         packageJson: packageJsonMock,
         packageJsonPath,
         mainConfig: mainJsMock,
@@ -774,7 +774,7 @@ describe('storybook-metadata', () => {
       vi.mocked(globalSettings).mockResolvedValue({} as Settings);
 
       const res = await computeStorybookMetadata({
-        configDir: '.storybook',
+        configDir: '.forkbook',
         packageJson: packageJsonMock,
         packageJsonPath,
         mainConfig: mainJsMock,
@@ -794,7 +794,7 @@ describe('storybook-metadata', () => {
       } as Settings);
 
       const res = await computeStorybookMetadata({
-        configDir: '.storybook',
+        configDir: '.forkbook',
         packageJson: packageJsonMock,
         packageJsonPath,
         mainConfig: mainJsMock,
@@ -806,7 +806,7 @@ describe('storybook-metadata', () => {
 
     it('should include knownPackages in metadata', async () => {
       const res = await computeStorybookMetadata({
-        configDir: '.storybook',
+        configDir: '.forkbook',
         packageJson: {
           ...packageJsonMock,
           dependencies: {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { API_PreparedIndexEntry } from 'storybook/internal/types';
+import type { API_PreparedIndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import {
   computeStatusFilterFn,

@@ -3,20 +3,23 @@ import { join, relative } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import type { ResponseData, SaveStoryResponsePayload } from 'storybook/internal/core-events';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type {
+  ResponseData,
+  SaveStoryResponsePayload,
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   SAVE_STORY_REQUEST,
   SAVE_STORY_RESPONSE,
   STORY_RENDERED,
-} from 'storybook/internal/core-events';
-import type { Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { initializeSaveStory } from './save-story.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const importPath = relative(process.cwd(), join(__dirname, 'mocks/csf-variances.stories.tsx'));
 

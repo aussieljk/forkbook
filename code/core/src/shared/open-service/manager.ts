@@ -1,12 +1,12 @@
 /**
  * Manager-side entrypoint for the open-service architecture.
  *
- * Import from here in manager (React) code. Define services with `storybook/open-service`.
+ * Import from here in manager (React) code. Define services with `@aussieljk/forkbook/open-service`.
  *
  * Quick start:
  *
  * ```ts
- * import { registerService, useServiceQuery, useServiceCommand } from 'storybook/manager-api';
+ * import { registerService, useServiceQuery, useServiceCommand } from '@aussieljk/forkbook/manager-api';
  *
  * // Inside an addons.register callback:
  * const service = registerService(myServiceDef);
@@ -43,7 +43,7 @@ export const getService = getServiceCore as TypedGetService<ManagerCoreServices>
  * Registers a service in the manager and returns its runtime surface.
  *
  * The manager is a relay hub: it bridges the dev server and the preview iframes. The channel is read
- * via `getChannel()` from `storybook/internal/channels`, which the manager runtime installs before any
+ * via `getChannel()` from `@aussieljk/forkbook/internal/channels`, which the manager runtime installs before any
  * `addons.register` callback runs, so no manual channel setup is needed.
  */
 export function registerService<

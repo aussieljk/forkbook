@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CheckIcon, CircleIcon, PlayIcon, StopAltIcon } from '@storybook/icons';
 
-import { useTheme } from 'storybook/theming';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { type Call, CallStates } from '../../instrumenter/types.ts';
 

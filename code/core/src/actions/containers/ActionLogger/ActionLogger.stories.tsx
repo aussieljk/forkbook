@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import type { API, State } from 'storybook/manager-api';
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import type { API, State } from '@aussieljk/forkbook/manager-api';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 import type { ActionDisplay } from '../../models/index.ts';
 import { EVENT_ID } from '../../constants.ts';
 import ActionLogger from './index.tsx';
@@ -19,7 +19,7 @@ const wrapperStyle: React.CSSProperties = {
 };
 
 /**
- * A minimal event-emitter mock for the Storybook manager API.
+ * A minimal event-emitter mock for the Forkbook manager API.
  * The container calls `api.on(EVENT_ID, handler)` to register its `addAction`
  * callback. We capture that handler so that play functions can call
  * `api.emit(EVENT_ID, action)` to drive the container's state.

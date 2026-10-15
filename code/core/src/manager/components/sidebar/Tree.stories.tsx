@@ -5,13 +5,17 @@ import {
   type Addon_TestProviderType,
   Addon_TypesEnum,
   type StatusesByStoryIdAndTypeId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import { type ComponentEntry, type IndexHash, ManagerContext } from 'storybook/manager-api';
-import { expect, fn, screen, userEvent, within } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import {
+  type ComponentEntry,
+  type IndexHash,
+  ManagerContext,
+} from '@aussieljk/forkbook/manager-api';
+import { expect, fn, screen, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { defaultShortcuts } from '../../settings/defaultShortcuts.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
@@ -388,9 +392,9 @@ function makeDualSlotStory(
 
 export const WithChangeDetectionOnly: Story = makeDualSlotStory({
   [dualSlotStoryId]: {
-    'storybook/change-detection': {
+    '@aussieljk/forkbook/change-detection': {
       storyId: dualSlotStoryId,
-      typeId: 'storybook/change-detection',
+      typeId: '@aussieljk/forkbook/change-detection',
       value: 'status-value:new',
       title: 'Change Detection',
       description: 'Story is new',
@@ -402,17 +406,17 @@ export const WithChangeDetectionOnly: Story = makeDualSlotStory({
 export const WithChangeDetectionAndTestStatus: Story = makeDualSlotStory(
   {
     [dualSlotStoryId]: {
-      'storybook/change-detection': {
+      '@aussieljk/forkbook/change-detection': {
         storyId: dualSlotStoryId,
-        typeId: 'storybook/change-detection',
+        typeId: '@aussieljk/forkbook/change-detection',
         value: 'status-value:modified',
         title: 'Change Detection',
         description: 'Story is modified',
         sidebarContextMenu: false,
       },
-      'storybook/vitest': {
+      '@aussieljk/forkbook/vitest': {
         storyId: dualSlotStoryId,
-        typeId: 'storybook/vitest',
+        typeId: '@aussieljk/forkbook/vitest',
         value: 'status-value:error',
         title: 'Vitest',
         description: 'Test failed',
@@ -426,9 +430,9 @@ export const WithChangeDetectionAndTestStatus: Story = makeDualSlotStory(
 
 export const WithTestStatusOnly: Story = makeDualSlotStory({
   [dualSlotStoryId]: {
-    'storybook/vitest': {
+    '@aussieljk/forkbook/vitest': {
       storyId: dualSlotStoryId,
-      typeId: 'storybook/vitest',
+      typeId: '@aussieljk/forkbook/vitest',
       value: 'status-value:warning',
       title: 'Vitest',
       description: 'Test warning',
@@ -439,9 +443,9 @@ export const WithTestStatusOnly: Story = makeDualSlotStory({
 export const WithRelatedStatus: Story = {
   ...makeDualSlotStory({
     [dualSlotStoryId]: {
-      'storybook/change-detection': {
+      '@aussieljk/forkbook/change-detection': {
         storyId: dualSlotStoryId,
-        typeId: 'storybook/change-detection',
+        typeId: '@aussieljk/forkbook/change-detection',
         value: 'status-value:affected',
         title: 'Change Detection',
         description: 'Story is related',
@@ -458,17 +462,17 @@ export const WithRelatedStatus: Story = {
 
 export const BranchWithChangeDetectionPriority: Story = makeDualSlotStory({
   [dualSlotStoryId]: {
-    'storybook/change-detection': {
+    '@aussieljk/forkbook/change-detection': {
       storyId: dualSlotStoryId,
-      typeId: 'storybook/change-detection',
+      typeId: '@aussieljk/forkbook/change-detection',
       value: 'status-value:new',
       title: 'Change Detection',
       description: 'Story is new',
       sidebarContextMenu: false,
     },
-    'storybook/vitest': {
+    '@aussieljk/forkbook/vitest': {
       storyId: dualSlotStoryId,
-      typeId: 'storybook/vitest',
+      typeId: '@aussieljk/forkbook/vitest',
       value: 'status-value:error',
       title: 'Vitest',
       description: 'Test failed',
@@ -497,9 +501,9 @@ export const WithModified: Story = {
   ...makeDualSlotStory(
     {
       [dualSlotStoryId]: {
-        'storybook/change-detection': {
+        '@aussieljk/forkbook/change-detection': {
           storyId: dualSlotStoryId,
-          typeId: 'storybook/change-detection',
+          typeId: '@aussieljk/forkbook/change-detection',
           value: 'status-value:modified',
           title: 'Change Detection',
           description: 'Story is modified',
@@ -524,9 +528,9 @@ export const WithModified: Story = {
 export const WithNew: Story = {
   ...makeDualSlotStory({
     [dualSlotStoryId]: {
-      'storybook/change-detection': {
+      '@aussieljk/forkbook/change-detection': {
         storyId: dualSlotStoryId,
-        typeId: 'storybook/change-detection',
+        typeId: '@aussieljk/forkbook/change-detection',
         value: 'status-value:new',
         title: 'Change Detection',
         description: 'Story is new',

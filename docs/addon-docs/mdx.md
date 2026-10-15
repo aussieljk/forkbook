@@ -2,9 +2,9 @@
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-hero.png" width="100%" />
 </center>
 
-<h1>Storybook Docs MDX</h1>
+<h1>Forkbook Docs MDX</h1>
 
-`MDX` is the syntax [Storybook Docs](../README.md) uses to capture long-form markdown documentation and stories in one file. You can also write pure documentation pages in `MDX` and add them to Storybook alongside your stories.
+`MDX` is the syntax [Forkbook Docs](../README.md) uses to capture long-form markdown documentation and stories in one file. You can also write pure documentation pages in `MDX` and add them to Forkbook alongside your stories.
 
 - [Basic example](#basic-example)
 - [MDX-Flavored CSF](#mdx-flavored-csf)
@@ -20,7 +20,7 @@
 Let's get started with an example that combines markdown with a single story:
 
 ```md
-import { Meta, Story, Canvas } from 'storybook/addon-docs';
+import { Meta, Story, Canvas } from '@aussieljk/forkbook/addon-docs';
 import { Checkbox } from './Checkbox';
 
 <Meta title="MDX/Checkbox" component={Checkbox} />
@@ -41,13 +41,13 @@ markdown documentation.
 </Canvas>
 ```
 
-And here's how that's rendered in Storybook:
+And here's how that's rendered in Forkbook:
 
 <center>
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-simple.png" width="100%" />
 </center>
 
-As you can see there's a lot going on here. We're writing Markdown, we're writing JSX, and somehow we're also defining Storybook stories that are drop-in compatible with the entire Storybook ecosystem.
+As you can see there's a lot going on here. We're writing Markdown, we're writing JSX, and somehow we're also defining Forkbook stories that are drop-in compatible with the entire Forkbook ecosystem.
 
 Let's break it down.
 
@@ -55,7 +55,7 @@ Let's break it down.
 
 [MDX](https://mdxjs.com/) is a standard file format that combines Markdown with JSX. This means you can use Markdown’s terse syntax (such as `# heading`) for your documentation, and freely embed JSX component blocks at any point in the file.
 
-MDX-flavored [Component Story Format (CSF)](https://medium.com/storybookjs/component-story-format-66f4c32366df) includes a collection of components called **"Doc Blocks"**, that allow Storybook to translate MDX files into storybook stories. MDX-defined stories are identical to regular Storybook stories, so they can be used with Storybook's entire ecosystem of addons and view layers.
+MDX-flavored [Component Story Format (CSF)](https://medium.com/storybookjs/component-story-format-66f4c32366df) includes a collection of components called **"Doc Blocks"**, that allow Forkbook to translate MDX files into storybook stories. MDX-defined stories are identical to regular Forkbook stories, so they can be used with Forkbook's entire ecosystem of addons and view layers.
 
 For example, here's the story from `Checkbox` example above, rewritten in CSF:
 
@@ -72,14 +72,14 @@ export const allCheckboxes = () => (
 );
 ```
 
-There's a one-to-one mapping from the code in `MDX` to `CSF`, which in turn directly corresponds to Storybook's internal `storiesOf` API. As a user, this means your existing Storybook knowledge should translate between the three. And technically, this means that the transformations that happen under the hood are simple and predictable.
+There's a one-to-one mapping from the code in `MDX` to `CSF`, which in turn directly corresponds to Forkbook's internal `storiesOf` API. As a user, this means your existing Forkbook knowledge should translate between the three. And technically, this means that the transformations that happen under the hood are simple and predictable.
 
 ## Writing stories
 
 Now let's look at a more realistic example to see a few more things we can do:
 
 ```md
-import { Meta, Story, Canvas } from 'storybook/addon-docs';
+import { Meta, Story, Canvas } from '@aussieljk/forkbook/addon-docs';
 
 import { Badge } from './Badge';
 import { Icon } from './Icon';
@@ -125,7 +125,7 @@ with unique URLs and isolated snapshot tests.
 </Canvas>
 ```
 
-And here's how that gets rendered in Storybook:
+And here's how that gets rendered in Forkbook:
 
 <center>
   <img src="https://raw.githubusercontent.com/storybookjs/storybook/master/addons/docs/docs/media/mdx-page.png" width="100%" />
@@ -133,10 +133,10 @@ And here's how that gets rendered in Storybook:
 
 ## Embedding stories
 
-Suppose you have an existing story and want to embed it into your docs. Here's how to show a story with ID `some--id` (check the browser URL in Storybook v5+ to see a story's ID):
+Suppose you have an existing story and want to embed it into your docs. Here's how to show a story with ID `some--id` (check the browser URL in Forkbook v5+ to see a story's ID):
 
 ```md
-import { Story } from "storybook/addon-docs";
+import { Story } from "@aussieljk/forkbook/addon-docs";
 
 # Some header
 
@@ -163,10 +163,10 @@ parameters={{ ... }}
 </Story>
 ```
 
-In addition, global decorators work just like before, e.g. adding the following to your `.storybook/preview.js`:
+In addition, global decorators work just like before, e.g. adding the following to your `.forkbook/preview.js`:
 
 ```js
-import { addDecorator, addParameters } from 'storybook/react';
+import { addDecorator, addParameters } from '@aussieljk/forkbook/react';
 
 addDecorator(...);
 addParameters({ ... });
@@ -174,9 +174,9 @@ addParameters({ ... });
 
 ## Documentation-only MDX
 
-Typically, when you use Storybook MDX, you define stories in the MDX documentation is automatically associated with those stories. But what if you want to write Markdown-style documentation and have it show up in your Storybook?
+Typically, when you use Forkbook MDX, you define stories in the MDX documentation is automatically associated with those stories. But what if you want to write Markdown-style documentation and have it show up in your Forkbook?
 
-If you don't define stories in your MDX, you can write MDX documentation and associate it with an existing story, or embed that MDX as its own documentation node in your Storybook's navigation.
+If you don't define stories in your MDX, you can write MDX documentation and associate it with an existing story, or embed that MDX as its own documentation node in your Forkbook's navigation.
 
 If you don't define a `Meta`, you can write Markdown and associate with an existing story. See ["CSF Stories with MDX Docs"](recipes.md#csf-stories-with-mdx-docs).
 
@@ -188,13 +188,13 @@ To get a "documentation-only story", in your UI, define a `<Meta>` as you normal
 
 ## MDX file names
 
-All of your `MDX` files should have the suffix `*.stories.mdx`. This tells Storybook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
+All of your `MDX` files should have the suffix `*.stories.mdx`. This tells Forkbook to apply its special processing to the `<Meta>` and `<Story>` elements in the file.
 
-Be sure to update your Storybook config file to load `.stories.mdx` stories, as per the [`addon-docs` installation instructions](../README.md#installation).
+Be sure to update your Forkbook config file to load `.stories.mdx` stories, as per the [`addon-docs` installation instructions](../README.md#installation).
 
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
 - Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
+- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)

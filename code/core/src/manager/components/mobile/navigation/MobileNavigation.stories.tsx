@@ -1,11 +1,11 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { startCase } from 'es-toolkit/string';
-import { ManagerContext, useStorybookApi } from 'storybook/manager-api';
-import { expect, fn, screen, userEvent, waitFor } from 'storybook/test';
+import { ManagerContext, useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, screen, userEvent, waitFor } from '@aussieljk/forkbook/test';
 
 import { MOBILE_TRANSITION_DURATION } from '../../../constants.ts';
 import { LayoutProvider, useLayout } from '../../layout/LayoutProvider.tsx';
@@ -24,7 +24,7 @@ const MockMenu = () => {
       >
         close
       </button>
-      <button type="button" aria-label="About Storybook" onClick={() => setMobileAboutOpen(true)}>
+      <button type="button" aria-label="About Forkbook" onClick={() => setMobileAboutOpen(true)}>
         about
       </button>
     </div>
@@ -263,7 +263,7 @@ export const AboutResetOnReopen: Story = {
   play: async (context) => {
     // @ts-expect-error (non strict)
     await MenuOpen.play(context);
-    await userEvent.click(await screen.findByLabelText('About Storybook'));
+    await userEvent.click(await screen.findByLabelText('About Forkbook'));
     await screen.findByLabelText('Close about section');
 
     // The first Escape can close the tooltip of the focused Back button. The second one closes
@@ -292,7 +292,7 @@ export const AboutFocusTrapped: Story = {
   play: async (context) => {
     // @ts-expect-error (non strict)
     await MenuOpen.play(context);
-    await userEvent.click(await screen.findByLabelText('About Storybook'));
+    await userEvent.click(await screen.findByLabelText('About Forkbook'));
 
     const backButton = await screen.findByLabelText('Close about section');
     await waitFor(() => expect(backButton).toHaveFocus());
@@ -316,7 +316,7 @@ export const AboutFocusTrapped: Story = {
     await userEvent.tab();
     await expect(screen.getByRole('link', { name: 'Chromatic' })).toHaveFocus();
     await userEvent.tab();
-    await expect(screen.getByRole('link', { name: 'Storybook Community' })).toHaveFocus();
+    await expect(screen.getByRole('link', { name: 'Forkbook Community' })).toHaveFocus();
     await userEvent.tab();
     await expect(backButton).toHaveFocus();
   },

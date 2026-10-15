@@ -3,7 +3,7 @@ import type { BaseEvent, StoreOptions } from '../universal-store/types.ts';
 import type { useUniversalStore as managerUseUniversalStore } from '../universal-store/use-universal-store-manager.ts';
 
 export const UNIVERSAL_TEST_PROVIDER_STORE_OPTIONS: StoreOptions<TestProviderStateByProviderId> = {
-  id: 'storybook/test-provider',
+  id: '@aussieljk/forkbook/test-provider',
   leader: true,
   initialState: {},
 };
@@ -24,7 +24,7 @@ export type TestProviderStoreEvent = BaseEvent & {
 
 type BaseTestProviderStore = {
   /**
-   * Notifies all listeners that settings have changed for test providers. The Storybook UI will
+   * Notifies all listeners that settings have changed for test providers. The Forkbook UI will
    * highlight the test providers to tell the user that settings has changed.
    */
   settingsChanged: () => void;
@@ -47,7 +47,7 @@ type BaseTestProviderStore = {
 
   /**
    * Subscribe to clicks on the "Clear All" button, that is supposed to clear all state from test
-   * providers. Storybook already clears all statuses, but if your test provider has more
+   * providers. Forkbook already clears all statuses, but if your test provider has more
    * non-status-based state, you can use this to clear that here.
    *
    * @remarks
@@ -70,7 +70,7 @@ type BaseTestProviderStore = {
 /**
  * Test provider store that holds _all_ test provider's states.
  *
- * This is an internal store only meant to be used by Storybook UI itself. The API can change at any
+ * This is an internal store only meant to be used by Forkbook UI itself. The API can change at any
  * time. Addons and test providers should use the `getTestProvider` function instead.
  */
 type FullTestProviderStore = BaseTestProviderStore & {
@@ -208,7 +208,7 @@ export type TestProviderStoreById = BaseTestProviderStore & {
    * - 'test-provider-state:succeeded': Tests completed successfully
    * - 'test-provider-state:crashed': Running tests failed or encountered an error
    *
-   * Storybook UI will use this state to determine what to show in the UI.
+   * Forkbook UI will use this state to determine what to show in the UI.
    *
    * @remarks
    * The 'test-provider-state:crashed' is meant to signify that the test run as a whole failed to
@@ -261,7 +261,7 @@ export type TestProviderStoreById = BaseTestProviderStore & {
    * - 'test-provider-state:succeeded': Tests completed successfully
    * - 'test-provider-state:crashed': Running tests failed or encountered an error
    *
-   * Storybook UI will use this state to determine what to show in the UI.
+   * Forkbook UI will use this state to determine what to show in the UI.
    *
    * @remarks
    * The 'test-provider-state:crashed' is meant to signify that the test run as a whole failed to

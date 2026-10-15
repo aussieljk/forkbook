@@ -1,5 +1,5 @@
 import { isEqual } from 'es-toolkit/predicate';
-import { useEffect, useState } from 'storybook/preview-api';
+import { useEffect, useState } from '@aussieljk/forkbook/preview-api';
 
 import type { UniversalStore } from './index.ts';
 
@@ -10,7 +10,7 @@ import type { UniversalStore } from './index.ts';
  * @param universalStore The UniversalStore instance to use.
  * @param selector An optional selector function to select a subset of the store state.
  * @remark This hook is intended for use in the preview. For use in the manager UI, import from
- * `storybook/manager-api` instead.
+ * `@aussieljk/forkbook/manager-api` instead.
  */
 export const useUniversalStore: {
   <

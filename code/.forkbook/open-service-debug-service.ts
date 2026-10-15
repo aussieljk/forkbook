@@ -1,12 +1,12 @@
 import * as v from 'valibot';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type { StoryIndexGenerator } from '../core/src/core-server/utils/StoryIndexGenerator.ts';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 import { describeService, registerService } from '../core/src/shared/open-service/server.ts';
 
-const DEBUG_SERVICE_ID = 'storybook/internal/open-service-debug';
+const DEBUG_SERVICE_ID = '@aussieljk/forkbook/internal/open-service-debug';
 
 type DebugServiceState = {
   activity: string[];
@@ -34,7 +34,7 @@ function createDebugServiceDef(storyIndexGeneratorPromise: Promise<StoryIndexGen
   return defineService({
     id: DEBUG_SERVICE_ID,
     description:
-      'Exercises Storybook open-service registration, queries, commands, loads, subscriptions, static builds, and story-index integration inside the internal Storybook.',
+      'Exercises Forkbook open-service registration, queries, commands, loads, subscriptions, static builds, and story-index integration inside the internal Forkbook.',
     initialState: {
       activity: [],
       preloadedByEntryId: {},
@@ -151,12 +151,12 @@ function createDebugServiceDef(storyIndexGeneratorPromise: Promise<StoryIndexGen
 }
 
 /**
- * Registers the internal Storybook debug service that exercises the server-side open-service
+ * Registers the internal Forkbook debug service that exercises the server-side open-service
  * features in one place.
  *
  * The service self-demonstrates queries, commands, loads, subscriptions, static snapshot
- * generation, and story-index integration inside the internal Storybook. It is gated behind the
- * `STORYBOOK_OPEN_SERVICE_DEBUG=true` env flag in `code/.storybook/services-preset.ts`.
+ * generation, and story-index integration inside the internal Forkbook. It is gated behind the
+ * `FORKBOOK_OPEN_SERVICE_DEBUG=true` env flag in `code/.forkbook/services-preset.ts`.
  */
 export async function registerOpenServiceDebugService(
   storyIndexGeneratorPromise: Promise<StoryIndexGenerator>

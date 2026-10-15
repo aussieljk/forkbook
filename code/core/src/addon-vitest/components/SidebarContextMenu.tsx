@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import type { API_HashEntry } from 'storybook/internal/types';
+import type { API_HashEntry } from '@aussieljk/forkbook/internal/types';
 
-import { type API } from 'storybook/manager-api';
+import { type API } from '@aussieljk/forkbook/manager-api';
 
 import { useTestProvider } from '../use-test-provider-state.ts';
 import { TestProviderRender } from './TestProviderRender.tsx';

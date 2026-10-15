@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import type { Options, StoryIndex } from 'storybook/internal/types';
+import type { Options, StoryIndex } from '@aussieljk/forkbook/internal/types';
 import { getStoryIndex } from './get-story-index.ts';
 
 function makeOptions(apply: Options['presets']['apply']): Options {

@@ -172,7 +172,7 @@ export interface Addon_BaseAnnotations<
   TRenderer extends Renderer = Renderer,
 > {
   /**
-   * Dynamic data that are provided (and possibly updated by) Storybook and its addons.
+   * Dynamic data that are provided (and possibly updated by) Forkbook and its addons.
    *
    * @see [Arg story inputs](https://storybook.js.org/docs/api/csf#args-story-inputs)
    */
@@ -180,7 +180,7 @@ export interface Addon_BaseAnnotations<
 
   /**
    * ArgTypes encode basic metadata for args, such as `name` and `description`. These get
-   * automatically filled in by Storybook Docs.
+   * automatically filled in by Forkbook Docs.
    *
    * @see [Arg types](https://storybook.js.org/docs/api/arg-types)
    */
@@ -194,7 +194,7 @@ export interface Addon_BaseAnnotations<
   parameters?: Parameters;
 
   /**
-   * Wrapper components or Storybook decorators that wrap a story.
+   * Wrapper components or Forkbook decorators that wrap a story.
    *
    * Decorators defined in Meta will be applied to every story variation.
    *
@@ -269,7 +269,7 @@ export interface Addon_BaseMeta<ComponentType> {
    * Manually set the id of a story, which in particular is useful if you want to rename stories
    * without breaking permalinks.
    *
-   * Storybook will prioritize the id over the title for ID generation, if provided, and will
+   * Forkbook will prioritize the id over the title for ID generation, if provided, and will
    * prioritize the story.storyName over the export key for display.
    *
    * @see [Sidebar and URLs](https://storybook.js.org/docs/configure/user-interface/sidebar-and-urls#permalink-to-stories)
@@ -367,7 +367,7 @@ export interface Addon_BaseType {
    * JSX.Element within which components are rendered
    */
   render: (props: Partial<Addon_RenderOptions>) => ReturnType<FC<Partial<Addon_RenderOptions>>>;
-  // TODO: for Storybook 9 I'd like to change this to be:
+  // TODO: for Forkbook 9 I'd like to change this to be:
   // render: FC<Partial<Addon_RenderOptions>>;
   // This would bring it in line with how every other addon is set up.
   // We'd need to change how the render function is called in the manager:
@@ -382,12 +382,12 @@ export interface Addon_PageType {
   type: Addon_TypesEnum.experimental_PAGE;
   /** The unique id of the page. */
   id: string;
-  /** The URL to navigate to when Storybook needs to navigate to this page. */
+  /** The URL to navigate to when Forkbook needs to navigate to this page. */
   url: string;
   /** The title is used in mobile mode to represent the page in the navigation. */
   title: FC | string | ReactElement | ReactNode;
   /**
-   * The main content of the addon, a function component without any props. Storybook will render
+   * The main content of the addon, a function component without any props. Forkbook will render
    * your component always.
    *
    * If you want to render your component only when the URL matches, use the `Route` component.
@@ -395,7 +395,7 @@ export interface Addon_PageType {
    * @example
    *
    * ```jsx
-   * import { Route } from 'storybook/internal/router';
+   * import { Route } from '@aussieljk/forkbook/internal/router';
    *
    * Render: () => {
    *   return (

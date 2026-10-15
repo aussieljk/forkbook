@@ -123,7 +123,7 @@ describe('docs tools in a composition', () => {
     );
   });
 
-  it('defaults a lookup that names no source to the local Storybook', async () => {
+  it('defaults a lookup that names no source to the local Forkbook', async () => {
     const { server, tools } = makeServer(['local']);
     await registerAddonMcpTools(server, context);
     const show = getAddonToolMetadata(context).find((tool) => tool.name === 'docs-show');

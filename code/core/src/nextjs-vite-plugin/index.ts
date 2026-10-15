@@ -79,7 +79,7 @@ function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginO
           };
         }),
     {
-      name: 'storybook/internal/nextjs-vite-plugin',
+      name: '@aussieljk/forkbook/internal/nextjs-vite-plugin',
       enforce: 'pre' as const,
       async config(config) {
         const isNext16orNewer = getNextjsMajorVersion() >= 16;

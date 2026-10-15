@@ -1,9 +1,9 @@
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import { optionalEnvToBoolean } from 'storybook/internal/common';
-import { sendTelemetryError, withTelemetry } from 'storybook/internal/core-server';
-import { telemetry } from 'storybook/internal/telemetry';
+import { optionalEnvToBoolean } from '@aussieljk/forkbook/internal/common';
+import { sendTelemetryError, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest';
 
@@ -16,11 +16,11 @@ import type { ToolsRunResult } from './run.ts';
 vi.mock('./run.ts', { spy: true });
 vi.mock('node:fs/promises', { spy: true });
 // Factory mock: a spy of this package loads the real withTelemetry and hangs these CLI tests.
-vi.mock('storybook/internal/core-server', () => ({
+vi.mock('@aussieljk/forkbook/internal/core-server', () => ({
   withTelemetry: vi.fn(async (_event, _options, run: () => Promise<unknown>) => run()),
   sendTelemetryError: vi.fn(),
 }));
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 function buildProgram() {
   const program = new Command();
@@ -36,11 +36,11 @@ function buildProgram() {
 
   const toolsCommand = program
     .command('tools')
-    .description('Run the agent tools provided by the target Storybook configuration')
+    .description('Run the agent tools provided by the target Forkbook configuration')
     .option(
       '--disable-telemetry',
       'Disable sending telemetry data',
-      optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY)
+      optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY)
     )
     .option('--logfile [path]', 'Write all debug logs to the specified file')
     .exitOverride();
@@ -83,7 +83,7 @@ function makeProgram() {
 }
 
 beforeEach(() => {
-  vi.stubEnv('STORYBOOK_DISABLE_TELEMETRY', undefined);
+  vi.stubEnv('FORKBOOK_DISABLE_TELEMETRY', undefined);
   vi.mocked(runToolsCommand).mockResolvedValue(successResult());
   vi.mocked(writeFile).mockResolvedValue(undefined);
   vi.mocked(withTelemetry).mockImplementation(async (_eventType, _options, run) => run());
@@ -196,7 +196,7 @@ describe('tools-command telemetry', () => {
     vi.mocked(runToolsCommand).mockResolvedValue(
       successResult({
         exitCode: 1,
-        output: 'No running Storybook',
+        output: 'No running Forkbook',
         outcome: { kind: 'attach-gate', reason: 'no-instance' },
         requestedMode: 'attached',
         attachMode: 'attached',
@@ -227,7 +227,7 @@ describe('tools-command telemetry', () => {
     vi.mocked(runToolsCommand).mockResolvedValue(
       successResult({
         exitCode: 1,
-        output: 'No running Storybook',
+        output: 'No running Forkbook',
         outcome: { kind: 'attach-gate', reason: 'no-instance' },
         requestedMode: 'attached',
         attachMode: 'attached',
@@ -325,7 +325,7 @@ describe('tools-command telemetry', () => {
       cliOptions: {
         disableTelemetry: undefined,
         logfile: undefined,
-        configDir: resolve(process.cwd(), '.storybook'),
+        configDir: resolve(process.cwd(), '.forkbook'),
       },
     });
   });
@@ -392,7 +392,7 @@ describe('tools-command telemetry', () => {
     vi.mocked(runToolsCommand).mockResolvedValue(
       successResult({
         output: 'result markdown',
-        multiInstanceNotice: 'Warning: Multiple Storybook instances match this project.',
+        multiInstanceNotice: 'Warning: Multiple Forkbook instances match this project.',
       })
     );
     const stdoutSpy = vi.mocked(process.stdout.write);
@@ -402,16 +402,16 @@ describe('tools-command telemetry', () => {
 
     const stdoutText = stdoutSpy.mock.calls.map(([chunk]) => chunk).join('');
     const stderrText = stderrSpy.mock.calls.map(([chunk]) => chunk).join('');
-    expect(stderrText).toContain('Multiple Storybook instances');
+    expect(stderrText).toContain('Multiple Forkbook instances');
     expect(stdoutText).toContain('result markdown');
-    expect(stdoutText).not.toContain('Multiple Storybook instances');
+    expect(stdoutText).not.toContain('Multiple Forkbook instances');
   });
 
   it('records that the attach resolved among multiple matches', async () => {
     const { program } = buildProgram();
     vi.mocked(runToolsCommand).mockResolvedValue(
       successResult({
-        multiInstanceNotice: 'Warning: Multiple Storybook instances',
+        multiInstanceNotice: 'Warning: Multiple Forkbook instances',
         multipleMatches: true,
       })
     );
@@ -484,7 +484,7 @@ describe('the --json stream contract', () => {
     vi.mocked(runToolsCommand).mockResolvedValue(
       successResult({
         output: '{"ok":true}',
-        multiInstanceNotice: 'Warning: Multiple Storybook instances',
+        multiInstanceNotice: 'Warning: Multiple Forkbook instances',
       })
     );
 
@@ -493,7 +493,7 @@ describe('the --json stream contract', () => {
     expect(stdoutSpy).toHaveBeenCalledTimes(1);
     expect(stdoutSpy.mock.calls[0][0]).toBe('{"ok":true}\n');
     const stderrText = stderrSpy.mock.calls.map(([chunk]) => chunk).join('');
-    expect(stderrText).toContain('Multiple Storybook instances');
+    expect(stderrText).toContain('Multiple Forkbook instances');
   });
 
   it('restores stdout when the command fails', async () => {

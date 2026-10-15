@@ -1,9 +1,9 @@
-# Storybook MCP Addon
+# Forkbook MCP Addon
 
-Storybook addon for MCP-powered UI development workflows.
+Forkbook addon for MCP-powered UI development workflows.
 
 <div align="center">
-	<img src="./addon-mcp-claude-code-showcase.gif" alt="Storybook MCP Addon Demo" />
+	<img src="./addon-mcp-claude-code-showcase.gif" alt="Forkbook MCP Addon Demo" />
 </div>
 
 See [documentation](https://storybook.js.org/docs/next/ai/mcp/overview/?ref=readme) for installation instructions, usage examples, APIs, and more.
@@ -11,13 +11,13 @@ See [documentation](https://storybook.js.org/docs/next/ai/mcp/overview/?ref=read
 ## Configuration
 
 By default, the addon exposes its MCP server at `/mcp`. You can configure a
-different literal endpoint path in `.storybook/main.ts`:
+different literal endpoint path in `.forkbook/main.ts`:
 
 ```ts
 export default {
   addons: [
     {
-      name: 'storybook/addon-mcp',
+      name: '@aussieljk/forkbook/addon-mcp',
       options: {
         endpoint: '/custom-mcp',
       },
@@ -28,4 +28,4 @@ export default {
 
 The endpoint must be a URL pathname such as `/custom-mcp` or `/tools/mcp`.
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

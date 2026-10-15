@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import React, { useEffect } from 'react';
 
-import { Modal } from 'storybook/internal/components';
+import { Modal } from '@aussieljk/forkbook/internal/components';
 
 import { MOBILE_TRANSITION_DURATION } from '../../../constants.ts';
 import { useLayout } from '../../layout/LayoutProvider.tsx';

@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { actions, configureActions } from 'storybook/actions';
+import { actions, configureActions } from '@aussieljk/forkbook/actions';
 
 const configs = actions('actionA', 'actionB', 'actionC');
 

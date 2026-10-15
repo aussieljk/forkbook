@@ -1,9 +1,9 @@
-import { ElementA11yParameterError } from 'storybook/internal/preview-errors';
+import { ElementA11yParameterError } from '@aussieljk/forkbook/internal/preview-errors';
 
 import { global } from '@storybook/global';
 
 import type { AxeResults, ContextProp, ContextSpec, RunOptions, Spec } from 'axe-core';
-import { addons, waitForAnimations } from 'storybook/preview-api';
+import { addons, waitForAnimations } from '@aussieljk/forkbook/preview-api';
 
 import { withLinkPaths } from './a11yRunnerUtils.ts';
 import { EVENTS } from './constants.ts';
@@ -97,7 +97,7 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
 
   const context: ContextSpec = {
     include: document?.body,
-    exclude: ['.sb-wrapper', '#storybook-docs', '#storybook-highlights-root'], // Internal Storybook elements that are always in the document
+    exclude: ['.sb-wrapper', '#storybook-docs', '#storybook-highlights-root'], // Internal Forkbook elements that are always in the document
   };
 
   if (input.context) {

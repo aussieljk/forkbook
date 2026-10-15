@@ -173,8 +173,8 @@ const __vitest_mocked_module__ = globalThis[${globalThisAccessor}].mockObject(__
 `;
 
   // Register module mock spies in the global registry so that clearAllMocks/resetAllMocks/
-  // restoreAllMocks from storybook/test can find and clear them. This is needed because the
-  // module mocker may use a different @vitest/spy instance than the one bundled with storybook/test.
+  // restoreAllMocks from @aussieljk/forkbook/test can find and clear them. This is needed because the
+  // module mocker may use a different @vitest/spy instance than the one bundled with @aussieljk/forkbook/test.
   const spyRegistration = `
 if (!globalThis.__STORYBOOK_MODULE_MOCK_SPIES__) { globalThis.__STORYBOOK_MODULE_MOCK_SPIES__ = new Set(); }
 for (const __vitest_key__ of Object.keys(__vitest_mocked_module__)) {

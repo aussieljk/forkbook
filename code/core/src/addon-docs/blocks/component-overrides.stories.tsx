@@ -1,17 +1,17 @@
 /**
  * These stories use JSX so they are not part of the template stories. Even though they _do_ work in
  * non-React frameworks, we are keeping them out of the sandboxes and only have them in the main UI
- * Storybook.
+ * Forkbook.
  */
 import React from 'react';
 import type { FC, ReactNode } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Title as DocsTitle } from 'storybook/addon-docs/blocks';
+import { Title as DocsTitle } from '@aussieljk/forkbook/addon-docs/blocks';
 
 import { MDXProvider } from '@mdx-js/react';
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import { withMdxComponentOverride } from './blocks/with-mdx-component-override';
 

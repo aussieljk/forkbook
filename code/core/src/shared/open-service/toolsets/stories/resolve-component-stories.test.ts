@@ -1,7 +1,7 @@
 import { existsSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { vol } from 'memfs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -174,7 +174,7 @@ describe('resolveComponentStories', () => {
           id: 'virtual--page',
           name: 'Virtual',
           title: 'V',
-          importPath: 'virtual:storybook/auto-docs',
+          importPath: 'virtual:@aussieljk/forkbook/auto-docs',
           tags: [],
         } as StoryIndex['entries'][string],
       },
@@ -318,7 +318,7 @@ describe('resolveComponentStories', () => {
     expect(res.available).toBe(false);
     // The service's cause plus the remedy: the agent is told what failed and what to change.
     expect(res.reason).toBe(
-      "Storybook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
+      "Forkbook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
     );
   });
 

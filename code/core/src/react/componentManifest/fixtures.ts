@@ -1,13 +1,13 @@
-import { Tag } from 'storybook/internal/core-server';
-import type { IndexEntry } from 'storybook/internal/types';
+import { Tag } from '@aussieljk/forkbook/internal/core-server';
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
 export const fsMocks = {
   ['./package.json']: JSON.stringify({ name: 'some-package' }),
   ['./src/stories/Button.stories.ts']: dedent`
-        import type { Meta, StoryObj } from 'storybook/react';
-        import { fn } from 'storybook/test';
+        import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
+        import { fn } from '@aussieljk/forkbook/test';
         import { Button } from './Button';
         
         const meta = {
@@ -57,8 +57,8 @@ export const fsMocks = {
           );
         };`,
   ['./src/stories/Header.stories.ts']: dedent`
-        import type { Meta, StoryObj } from 'storybook/react';
-        import { fn } from 'storybook/test';
+        import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
+        import { fn } from '@aussieljk/forkbook/test';
         import Header from './Header';
         
         /** 

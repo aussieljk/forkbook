@@ -1,14 +1,14 @@
 import net, { type AddressInfo } from 'node:net';
 import os from 'node:os';
 
-import { SERVER_CHANNEL_PATH } from 'storybook/internal/channels';
-import { logger } from 'storybook/internal/node-logger';
-import { NoFreePortError } from 'storybook/internal/server-errors';
+import { SERVER_CHANNEL_PATH } from '@aussieljk/forkbook/internal/channels';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { NoFreePortError } from '@aussieljk/forkbook/internal/server-errors';
 
 import detectFreePort from 'detect-port';
 
 /**
- * The address the dev server binds to. Without `--host`, Storybook binds to `127.0.0.1` only, so
+ * The address the dev server binds to. Without `--host`, Forkbook binds to `127.0.0.1` only, so
  * other machines cannot reach it. An empty `--host` value is treated the same way, because Node
  * would otherwise bind to every interface.
  */
@@ -69,8 +69,8 @@ export const getServerPort = (port?: number, { exactPort }: PortOptions = {}) =>
     .then((freePort) => {
       // detect-port resolves `undefined` instead of rejecting when the environment refuses
       // every bind attempt, e.g. sandboxed shells that deny listening on network ports.
-      // Throwing (instead of exiting) lets `storybook dev` report the error through telemetry
-      // and lets `storybook init`, which probes for a port opportunistically, recover from it.
+      // Throwing (instead of exiting) lets `forkbook dev` report the error through telemetry
+      // and lets `forkbook init`, which probes for a port opportunistically, recover from it.
       if (!freePort) {
         throw new NoFreePortError({ requestedPort: port });
       }

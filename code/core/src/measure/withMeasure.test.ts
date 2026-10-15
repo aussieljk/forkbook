@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { StoryContextForRender } from 'storybook/internal/types';
+import type { StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
-vi.mock('storybook/preview-api', () => ({
+vi.mock('@aussieljk/forkbook/preview-api', () => ({
   useEffect: (cb: () => void) => {
     cb();
   },

@@ -1,4 +1,4 @@
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 
 import { dedent } from 'ts-dedent';
 
@@ -21,7 +21,7 @@ import type { StoreOptions } from './types.ts';
  * @example
  *
  * ```ts
- * import * as testUtils from 'storybook/test'; // in stories
+ * import * as testUtils from '@aussieljk/forkbook/test'; // in stories
  * import { vi as testUtils } from 'vitest'; // ... or in Vitest tests
  *
  * const initialState = { ... };

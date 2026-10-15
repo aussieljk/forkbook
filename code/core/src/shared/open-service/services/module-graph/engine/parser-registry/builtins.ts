@@ -1,4 +1,4 @@
-import { parseWithOxc } from 'storybook/internal/oxc-parser';
+import { parseWithOxc } from '@aussieljk/forkbook/internal/oxc-parser';
 
 import { jsTsSourceExtensions } from '../../../../../constants/extensions.ts';
 import { mdxParse } from './mdx-parse.ts';

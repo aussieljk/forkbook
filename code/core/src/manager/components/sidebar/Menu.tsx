@@ -1,12 +1,17 @@
 import type { ComponentProps, FC } from 'react';
 import React, { useState } from 'react';
 
-import { ActionList, Button, PopoverProvider, ToggleButton } from 'storybook/internal/components';
+import {
+  ActionList,
+  Button,
+  PopoverProvider,
+  ToggleButton,
+} from '@aussieljk/forkbook/internal/components';
 
 import { CloseIcon, CogIcon } from '@storybook/icons';
 
 import { clsx } from 'clsx';
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import type { useMenu } from '../../container/Menu.tsx';
 import { useLayout } from '../layout/LayoutProvider.tsx';
@@ -136,7 +141,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
         <SidebarButton
           padding="small"
           variant="ghost"
-          ariaLabel="About Storybook"
+          ariaLabel="About Forkbook"
           highlighted={!!isHighlighted}
           onClick={(e) => {
             onClick?.(e);
@@ -165,7 +170,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
 
   return (
     <PopoverProvider
-      ariaLabel="Storybook menu"
+      ariaLabel="Forkbook menu"
       placement={'bottom-start'}
       padding={0}
       popover={({ onHide }) => <SidebarMenuList onHide={onHide} menu={menu} />}

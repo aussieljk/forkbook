@@ -4,8 +4,8 @@ import {
   RESET_STORY_ARGS,
   STORY_ARGS_UPDATED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import type { Args, DocsContextProps, PreparedStory } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Args, DocsContextProps, PreparedStory } from '@aussieljk/forkbook/internal/types';
 
 export const useArgs = (
   story: PreparedStory,

@@ -6,14 +6,14 @@ import {
   type JsPackageManager,
   type PackageJson,
   frameworkToRenderer,
-} from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   type SupportedFramework,
   SupportedLanguage,
   type SupportedRenderer,
-} from 'storybook/internal/types';
-import { Feature } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 import { coerce, satisfies } from 'semver';
@@ -62,7 +62,7 @@ export const writeFileAsJson = (jsonPath: string, content: unknown) => {
  *   packageJson
  * ); // you can then spread the result when using installDependencies
  * installDependencies(npmOptions, [
- *   `storybook/react@${storybookVersion}`,
+ *   `@aussieljk/forkbook/react@${storybookVersion}`,
  *   ...babelDependencies,
  * ]);
  * ```
@@ -248,5 +248,7 @@ export function coerceSemver(version: string) {
 export function hasStorybookDependencies(packageManager: JsPackageManager) {
   const currentPackageDeps = packageManager.getAllDependencies();
 
-  return Object.keys(currentPackageDeps).some((dep) => dep.includes('storybook'));
+  return Object.keys(currentPackageDeps).some(
+    (dep) => dep.includes('storybook') || dep === '@aussieljk/forkbook'
+  );
 }

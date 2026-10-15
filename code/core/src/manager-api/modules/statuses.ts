@@ -2,7 +2,7 @@ import type {
   API_FilterFunction,
   API_PreparedIndexEntry,
   StatusValue,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { statusValueShortName, toStatusValue } from '../../shared/status-store/index.ts';
 import { parseFilterParam } from '../lib/filter-param.ts';

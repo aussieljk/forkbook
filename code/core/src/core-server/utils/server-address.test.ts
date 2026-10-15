@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import detectPort from 'detect-port';
 
@@ -29,7 +29,7 @@ vi.mock('node:os', () => ({
   },
 }));
 vi.mock('detect-port');
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 
 describe('getServerAddresses', () => {
   const port = 3000;
@@ -106,7 +106,7 @@ describe('getServerPort', () => {
     vi.mocked(detectPort).mockResolvedValue(undefined as unknown as number);
 
     await expect(getServerPort(port)).rejects.toThrow(
-      "Unable to find a free port for Storybook's dev server"
+      "Unable to find a free port for Forkbook's dev server"
     );
   });
 

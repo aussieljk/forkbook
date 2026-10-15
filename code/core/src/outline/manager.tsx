@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { OutlineSelector } from './OutlineSelector.tsx';
 import { ADDON_ID } from './constants.ts';

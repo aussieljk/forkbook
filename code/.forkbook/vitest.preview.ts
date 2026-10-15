@@ -1,7 +1,7 @@
-import type { Loader } from 'storybook/react-vite';
+import type { Loader } from '@aussieljk/forkbook/react-vite';
 
 // Under Vitest browser mode, drive interactions through Vitest's interactivity API instead of
-// storybook/test's userEvent: https://vitest.dev/guide/browser/interactivity-api.html
+// @aussieljk/forkbook/test's userEvent: https://vitest.dev/guide/browser/interactivity-api.html
 export const loaders: Loader[] = [
   async (context) => {
     if (!(globalThis as { __vitest_browser__?: boolean }).__vitest_browser__) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { Tool } from './Tool.tsx';
 import { ADDON_ID, TOOL_ID } from './constants.ts';

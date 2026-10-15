@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { TooltipNote, WithTooltip } from 'storybook/internal/components';
+import { TooltipNote, WithTooltip } from '@aussieljk/forkbook/internal/components';
 
-import type { Color } from 'storybook/theming';
+import type { Color } from '@aussieljk/forkbook/theming';
 
 import styles from './StatusBadge.module.css';
 

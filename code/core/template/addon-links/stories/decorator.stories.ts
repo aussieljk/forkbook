@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { withLinks } from 'storybook/addon-links';
+import { withLinks } from '@aussieljk/forkbook/addon-links';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Html,

@@ -18,7 +18,7 @@ describe('isStorybookInternalFrame', () => {
   it.each([
     '/project/src/stories/Page.stories.ts',
     '/project/src/stories/Page.tsx',
-    '/project/.storybook/preview.ts',
+    '/project/.forkbook/preview.ts',
     '/project/node_modules/@testing-library/dom/dist/index.js',
     '/project/node_modules/.cache/storybook/10.6.0/hash/sb-vitest/deps/react-dom_client.js',
     undefined,

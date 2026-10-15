@@ -1,8 +1,8 @@
-import { Bar } from 'storybook/internal/components';
+import { Bar } from '@aussieljk/forkbook/internal/components';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { TabList } from './TabList.tsx';
 import { TabPanel } from './TabPanel.tsx';
 import type { TabProps } from './TabsView.tsx';

@@ -1,7 +1,7 @@
 /**
- * Storybook instruments `expect`, `userEvent` and Testing Library so the Interactions panel can
+ * Forkbook instruments `expect`, `userEvent` and Testing Library so the Interactions panel can
  * replay a play function step by step. Every instrumented call therefore sits behind a handful of
- * wrapper frames inside Storybook's own bundles, which push the failing line in the story far down
+ * wrapper frames inside Forkbook's own bundles, which push the failing line in the story far down
  * the stack trace Vitest reports.
  *
  * These patterns match those bundles in the shapes a frame can take: the published package layout

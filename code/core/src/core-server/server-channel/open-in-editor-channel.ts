@@ -1,10 +1,13 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type {
   OpenInEditorRequestPayload,
   OpenInEditorResponsePayload,
-} from 'storybook/internal/core-events';
-import { OPEN_IN_EDITOR_REQUEST, OPEN_IN_EDITOR_RESPONSE } from 'storybook/internal/core-events';
-import { telemetry } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/core-events';
+import {
+  OPEN_IN_EDITOR_REQUEST,
+  OPEN_IN_EDITOR_RESPONSE,
+} from '@aussieljk/forkbook/internal/core-events';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import launch from 'launch-editor';
 

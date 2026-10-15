@@ -167,7 +167,7 @@ export function getStoryExample(projectInfo: ProjectInfo): string {
   if (language === 'js') {
     return dedent`
       \`\`\`${tsx}
-      import { expect } from 'storybook/test';
+      import { expect } from '@aussieljk/forkbook/test';
       import { Button } from './Button';
 
       const meta = {
@@ -196,7 +196,7 @@ export function getStoryExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`${tsx}
     import type { Meta, StoryObj } from '${typeImport}';
-    import { expect } from 'storybook/test';
+    import { expect } from '@aussieljk/forkbook/test';
     import { Button } from './Button';
 
     const meta = {

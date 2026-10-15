@@ -1,7 +1,7 @@
 import { type Server, createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 
-import { CHANNEL_WS_DISCONNECT } from 'storybook/internal/core-events';
+import { CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
 
 import { isJSON, parse, stringify } from 'telejson';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -154,7 +154,7 @@ describe('createNodeChannel', () => {
 
     connection.close(1000);
 
-    await expect(disconnected).rejects.toThrow('Storybook dev server disconnected');
+    await expect(disconnected).rejects.toThrow('Forkbook dev server disconnected');
     expect(disconnects).toEqual([{ code: 1000, reason: '' }]);
   });
 
@@ -163,7 +163,7 @@ describe('createNodeChannel', () => {
 
     const { disconnected } = openChannel();
 
-    await expect(disconnected).rejects.toThrow('Storybook dev server disconnected');
+    await expect(disconnected).rejects.toThrow('Forkbook dev server disconnected');
   });
 
   it('restores the process channel and UniversalStore on close', async () => {

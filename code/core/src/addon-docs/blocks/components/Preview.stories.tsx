@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Button } from 'storybook/internal/components';
-import type { DocsContextProps, ModuleExport } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import type { DocsContextProps, ModuleExport } from '@aussieljk/forkbook/internal/types';
 
 import * as ButtonStories from '../examples/Button.stories';
 import { Preview, PreviewSkeleton } from './Preview';

@@ -1,12 +1,16 @@
 import type { ComponentProps, FC } from 'react';
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import type { API_IndexHash, API_Refs } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import type { API_IndexHash, API_Refs } from '@aussieljk/forkbook/internal/types';
 
 import { BottomBarToggleIcon, MenuIcon } from '@storybook/icons';
 
-import { type API_KeyCollection, useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import {
+  type API_KeyCollection,
+  useStorybookApi,
+  useStorybookState,
+} from '@aussieljk/forkbook/manager-api';
 import { clsx } from 'clsx';
 
 import { useLandmark } from '../../../hooks/useLandmark.ts';

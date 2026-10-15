@@ -1,4 +1,4 @@
-/** Renders JSON Schema nodes as the indented bullet lines `storybook tools` prints under `Arguments:`. */
+/** Renders JSON Schema nodes as the indented bullet lines `forkbook tools` prints under `Arguments:`. */
 import * as v from 'valibot';
 
 /**

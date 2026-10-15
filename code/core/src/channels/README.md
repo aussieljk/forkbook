@@ -1,7 +1,7 @@
-# Storybook Channel
+# Forkbook Channel
 
-Storybook Channel is similar to an EventEmitter.
-Channels are used with Storybook implementations to send/receive events between the Storybook Manager and the Storybook Renderer.
+Forkbook Channel is similar to an EventEmitter.
+Channels are used with Forkbook implementations to send/receive events between the Forkbook Manager and the Forkbook Renderer.
 
 ```js
 class Channel {
@@ -33,8 +33,8 @@ For more information visit: [storybook.js.org](https://storybook.js.org)
 
 ## Channel access (internal)
 
-Storybook installs one shared addons channel per runtime (manager, preview iframe, dev server).
-Use the channel-slot API from `storybook/internal/channels` in TypeScript — not direct reads of
+Forkbook installs one shared addons channel per runtime (manager, preview iframe, dev server).
+Use the channel-slot API from `@aussieljk/forkbook/internal/channels` in TypeScript — not direct reads of
 `__STORYBOOK_ADDONS_CHANNEL__`.
 
 | Operation | API |

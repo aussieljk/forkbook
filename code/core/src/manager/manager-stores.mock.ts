@@ -1,5 +1,8 @@
-import { experimental_MockUniversalStore, internal_useUniversalStore } from 'storybook/manager-api';
-import * as testUtils from 'storybook/test';
+import {
+  experimental_MockUniversalStore,
+  internal_useUniversalStore,
+} from '@aussieljk/forkbook/manager-api';
+import * as testUtils from '@aussieljk/forkbook/test';
 
 import {
   type StatusStoreEvent,

@@ -1,8 +1,8 @@
 import { lstatSync } from 'node:fs';
 import { basename, join, relative, resolve, sep } from 'node:path';
 
-import { commonGlobOptions } from 'storybook/internal/common';
-import type { NormalizedStoriesSpecifier, Path } from 'storybook/internal/types';
+import { commonGlobOptions } from '@aussieljk/forkbook/internal/common';
+import type { NormalizedStoriesSpecifier, Path } from '@aussieljk/forkbook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';

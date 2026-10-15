@@ -1,8 +1,8 @@
 import React, { useSyncExternalStore } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor } from '@aussieljk/forkbook/test';
 
 import { OPEN_SERVICE_DEMO_PARAM_KEY } from '../addon/constants.ts';
 import { createDemoStore } from '../demo-store.ts';
@@ -23,13 +23,13 @@ function RemoteCommandDemo() {
         syncs the updated state back to manager and preview.
       </p>
       <p style={{ lineHeight: 1.5, margin: '0 0 16px' }}>
-        In a built Storybook this variant intentionally does nothing: it depends on the dev server
-        to run <code>setValue</code> and mutate the service state.
+        In a built Forkbook this variant intentionally does nothing: it depends on the dev server to
+        run <code>setValue</code> and mutate the service state.
       </p>
       <p style={{ lineHeight: 1.5, margin: '0 0 16px' }}>
-        The play-function variant is skipped in Storybook Vitest because that runner does not
-        provide the full manager/preview/server channel path. Run it in the Storybook UI
-        interactions panel, or use the internal Playwright e2e, to exercise the remote command path.
+        The play-function variant is skipped in Forkbook Vitest because that runner does not provide
+        the full manager/preview/server channel path. Run it in the Forkbook UI interactions panel,
+        or use the internal Playwright e2e, to exercise the remote command path.
       </p>
 
       <label style={{ display: 'grid', gap: 6 }}>
@@ -67,7 +67,7 @@ function RemoteCommandDemo() {
 /**
  * Exercises open-service remote command execution: manager and preview call a command implemented
  * only by the dev server, then observe synchronized state. This variant does not update state in a
- * built Storybook because there is no dev server peer to run the command.
+ * built Forkbook because there is no dev server peer to run the command.
  */
 const meta = {
   title: 'Open Service/Sync Test/Remote Command',
@@ -98,7 +98,7 @@ type Story = StoryObj<typeof meta>;
 export const RemoteCommandSync: Story = {};
 
 /**
- * Runs only in the real Storybook UI/e2e environment because it depends on the server handling the
+ * Runs only in the real Forkbook UI/e2e environment because it depends on the server handling the
  * remote command.
  */
 export const RemoteCommandPlayFunction: Story = {

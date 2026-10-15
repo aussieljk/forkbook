@@ -1,5 +1,5 @@
 import { mcpServerHandler } from './mcp-handler.ts';
-import type { PresetPropertyFn, StorybookConfigRaw } from 'storybook/internal/types';
+import type { PresetPropertyFn, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 import { AddonOptions, type AddonOptionsInput } from './types.ts';
 import * as v from 'valibot';
 import {
@@ -8,13 +8,13 @@ import {
   getToolAvailability,
   isValidHost,
   loadManifests,
-} from 'storybook/internal/core-server';
-import { isWebContainer } from 'storybook/internal/common';
+} from '@aussieljk/forkbook/internal/core-server';
+import { isWebContainer } from '@aussieljk/forkbook/internal/common';
 import htmlTemplate from './template.html';
 import path from 'node:path';
 import { extractBearerToken, type ManifestProvider } from './auth/index.ts';
 import { resolveCompositionSources } from './auth/resolve-composition-sources.ts';
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { DEFAULT_MCP_ENDPOINT } from './constants.ts';
 import { getStoryIndex } from './utils/get-story-index.ts';
@@ -96,7 +96,7 @@ export const experimental_devServer: PresetPropertyFn<
 
   // Composition (multi-source) is the only remaining consumer of the manifest-provider plumbing:
   // single-source docs tools read the registered docs toolset instead. In docgen-server mode core
-  // 404s the local `/manifests/*.json`, so the local source reads this Storybook in-process
+  // 404s the local `/manifests/*.json`, so the local source reads this Forkbook in-process
   // through the same registration-based access selection the dev server uses when it is not
   // composed — the docgen services when they actually registered, the inline manifests otherwise.
   const rawAvailability = await getToolAvailability(options);
@@ -111,7 +111,7 @@ export const experimental_devServer: PresetPropertyFn<
   let createManifestProvider: ((req: IncomingMessage) => ManifestProvider) | undefined;
 
   if (refs.length > 0) {
-    logger.info(`Initialized composition with ${refs.length} remote Storybook(s)`);
+    logger.info(`Initialized composition with ${refs.length} remote Forkbook(s)`);
     if (compositionAuth.requiresAuth) {
       logger.info(`Auth required for: ${compositionAuth.authUrls.join(', ')}`);
     }
@@ -228,9 +228,9 @@ export const experimental_devServer: PresetPropertyFn<
 
     const testNoticeLines = [
       !testSupported &&
-        `This toolset requires Storybook 10.3.0+ with <code>storybook/addon-vitest</code>. <a target="_blank" href="https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#install-and-set-up">Learn how to set it up</a>`,
+        `This toolset requires Forkbook 10.3.0+ with <code>@aussieljk/forkbook/addon-vitest</code>. <a target="_blank" href="https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#install-and-set-up">Learn how to set it up</a>`,
       !a11yEnabled &&
-        `Add <code>storybook/addon-a11y</code> for accessibility testing. <a target="_blank" href="https://storybook.js.org/docs/writing-tests/accessibility-testing">Learn more</a>`,
+        `Add <code>@aussieljk/forkbook/addon-a11y</code> for accessibility testing. <a target="_blank" href="https://storybook.js.org/docs/writing-tests/accessibility-testing">Learn more</a>`,
     ].filter(Boolean);
     const testNotice = testNoticeLines.length
       ? `<div class="toolset-notice">${testNoticeLines.join('<br>')}</div>`

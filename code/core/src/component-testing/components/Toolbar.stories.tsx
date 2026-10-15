@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import type { API } from 'storybook/manager-api';
-import { expect, userEvent } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import type { API } from '@aussieljk/forkbook/manager-api';
+import { expect, userEvent } from '@aussieljk/forkbook/test';
 
 import { Toolbar } from './Toolbar.tsx';
 

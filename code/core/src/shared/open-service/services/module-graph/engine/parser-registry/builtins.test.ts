@@ -7,7 +7,7 @@ import { ChangeDetectionFailureError } from '../../../../../../core-server/chang
 import { mdxImportParser, oxcImportParser } from './builtins.ts';
 import type { ImportParserContext } from './types.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const noopContext: ImportParserContext = {
   parseScriptWithOxc: async () => [],

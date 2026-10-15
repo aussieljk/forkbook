@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import type { FilterFunction, StatusValue, Tag } from 'storybook/internal/types';
+import type { FilterFunction, StatusValue, Tag } from '@aussieljk/forkbook/internal/types';
 
 import { BUILT_IN_FILTERS, USER_TAG_FILTER } from '../../../shared/constants/tags.ts';
 

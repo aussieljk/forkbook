@@ -1,9 +1,9 @@
-import type { PlayFunction, PlayFunctionContext } from 'storybook/internal/types';
+import type { PlayFunction, PlayFunctionContext } from '@aussieljk/forkbook/internal/types';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, screen } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, screen } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../.storybook/preview.tsx';
+import preview from '../../../../.forkbook/preview.tsx';
 import { VisionSimulator } from './VisionSimulator.tsx';
 
 const managerContext: any = {

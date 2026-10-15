@@ -1,5 +1,5 @@
 /**
- * Command classes for Storybook initialization workflow
+ * Command classes for Forkbook initialization workflow
  *
  * Each command represents a discrete step in the init process with clear responsibilities
  */

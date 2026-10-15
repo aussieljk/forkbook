@@ -1,8 +1,8 @@
 import type { FC, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 
-import type { Channel } from 'storybook/internal/channels';
-import { NAVIGATE_URL } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 
 import { clsx } from 'clsx';
 import tocbot from 'tocbot';

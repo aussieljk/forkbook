@@ -3,11 +3,11 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { format } from 'oxfmt';
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 
 import { getDiff } from '../../../core-server/utils/save-story/getDiff.ts';
 import {
@@ -18,7 +18,7 @@ import {
   transformMetroConfigSource,
 } from './metroConfig.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const getFormattedDiff = async (before: string, after: string, filePath: string) => {
   const [beforeResult, afterResult] = await Promise.all([

@@ -2,7 +2,7 @@ import type { ProjectInfo } from '../../project-info.ts';
 
 /**
  * Builds a markdown-format docs URL with renderer and language query parameters.
- * Appending .md to any Storybook docs URL returns clean markdown with code examples.
+ * Appending .md to any Forkbook docs URL returns clean markdown with code examples.
  */
 export function getDocsMarkdownUrl(
   path: string,

@@ -1,4 +1,4 @@
-import { telemetry } from 'storybook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import type { ToolsetMethodReport } from '../../../shared/open-service/toolset-definition.ts';
 import {
@@ -95,7 +95,7 @@ export async function reportToolsCommandEvent(
 }
 
 export function shouldReportSdkInvocation(kind: ToolsClientInfo['kind']): boolean {
-  return kind === 'sdk' && process.env.STORYBOOK_TOOLS_CHILD_HOST !== 'true';
+  return kind === 'sdk' && process.env.FORKBOOK_TOOLS_CHILD_HOST !== 'true';
 }
 
 export async function reportSdkAttachGate(args: {

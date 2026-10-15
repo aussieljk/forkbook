@@ -1,7 +1,7 @@
 import type { DOMAttributes, ReactElement, ReactNode } from 'react';
 import React, { useCallback, useContext, useId, useState } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { Popover as BasePopover } from '@base-ui/react/popover';
 
@@ -16,7 +16,7 @@ import { PortalTheme } from '../shared/PortalTheme.tsx';
 export interface PopoverProviderProps {
   /**
    * An accessible label for the popover dialog, announced by screen readers. This prop will become
-   * mandatory in Storybook 11. Provide a concise description of the popover's purpose.
+   * mandatory in Forkbook 11. Provide a concise description of the popover's purpose.
    */
   ariaLabel?: string;
 
@@ -79,7 +79,7 @@ export const PopoverProvider = ({
 }: PopoverProviderProps) => {
   if (!ariaLabel) {
     deprecate(
-      "The 'ariaLabel' prop on 'PopoverProvider' will become mandatory in Storybook 11. Provide a concise, accessible label describing the popover's purpose."
+      "The 'ariaLabel' prop on 'PopoverProvider' will become mandatory in Forkbook 11. Provide a concise, accessible label describing the popover's purpose."
     );
   }
 

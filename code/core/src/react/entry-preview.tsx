@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Tag } from 'storybook/internal/preview-api';
+import { Tag } from '@aussieljk/forkbook/internal/preview-api';
 
 import { global } from '@storybook/global';
 
-import { configure } from 'storybook/test';
+import { configure } from '@aussieljk/forkbook/test';
 
 import { getAct, getReactActEnvironment, setReactActEnvironment } from './act-compat.ts';
 import type { Decorator } from './public-types.ts';
@@ -94,7 +94,7 @@ export const beforeAll = async () => {
     });
   } catch (e) {
     // no-op
-    // storybook/test might not be available
+    // @aussieljk/forkbook/test might not be available
   }
 };
 

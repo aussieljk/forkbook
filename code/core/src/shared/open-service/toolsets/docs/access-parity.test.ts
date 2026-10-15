@@ -9,7 +9,7 @@
  * suite exercises the default mode only.
  */
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 import { describe, expect, it } from 'vitest';
 
 import { Tag } from '../../../constants/tags.ts';
@@ -221,14 +221,14 @@ describe('docs tools render the same text in both docgen modes', () => {
 });
 
 /**
- * The same parity, for the third way these tools are served: a built Storybook read over the
- * manifest files, which is what `storybook/mcp` does.
+ * The same parity, for the third way these tools are served: a built Forkbook read over the
+ * manifest files, which is what `@aussieljk/forkbook/mcp` does.
  *
  * Componentless stories are the case where the two legs used to disagree — the built index dropped
- * the story-docs reference for any component docgen produced nothing for, so a hosted Storybook
+ * the story-docs reference for any component docgen produced nothing for, so a hosted Forkbook
  * answered as if those stories did not exist.
  */
-describe('docs tools render the same text in dev and from a built Storybook', () => {
+describe('docs tools render the same text in dev and from a built Forkbook', () => {
   const componentId = 'abstractions-billboard';
 
   const componentlessIndex = {

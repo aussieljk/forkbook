@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SIDEBAR_FILTER_CHANGED } from 'storybook/internal/core-events';
+import { SIDEBAR_FILTER_CHANGED } from '@aussieljk/forkbook/internal/core-events';
 
 import { REVIEW_EVENTS } from '../../shared/review/events.ts';
 import { initTelemetryChannel, makePayload } from './telemetry-channel.ts';
 
-vi.mock('storybook/internal/telemetry', () => ({
+vi.mock('@aussieljk/forkbook/internal/telemetry', () => ({
   telemetry: vi.fn(),
   getLastEvents: vi.fn().mockResolvedValue({}),
   getSessionId: vi.fn().mockResolvedValue('test-session-id'),
@@ -13,7 +13,7 @@ vi.mock('storybook/internal/telemetry', () => ({
   setTelemetryEnabled: vi.fn(),
 }));
 
-const { telemetry } = await import('storybook/internal/telemetry');
+const { telemetry } = await import('@aussieljk/forkbook/internal/telemetry');
 
 describe('telemetry-channel', () => {
   describe('SIDEBAR_FILTER_CHANGED', () => {

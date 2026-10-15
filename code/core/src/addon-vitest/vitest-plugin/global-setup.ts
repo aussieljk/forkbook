@@ -2,7 +2,7 @@ import { type ChildProcess, spawn } from 'node:child_process';
 
 import type { TestProject } from 'vitest/node';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import treeKill from 'tree-kill';
 
@@ -19,7 +19,7 @@ const getIsVitestStandaloneRun = () => {
 
 const isVitestStandaloneRun = getIsVitestStandaloneRun();
 
-// TODO: Not run when executed via Storybook
+// TODO: Not run when executed via Forkbook
 const checkStorybookRunning = async (storybookUrl: string): Promise<boolean> => {
   try {
     const response = await fetch(`${storybookUrl}/iframe.html`, {
@@ -42,15 +42,15 @@ const startStorybookIfNotRunning = async () => {
   const isRunning = await checkStorybookRunning(storybookUrl);
 
   if (isRunning) {
-    logger.verbose('Storybook is already running');
+    logger.verbose('Forkbook is already running');
     return;
   }
 
-  logger.verbose(`Starting Storybook with command: ${storybookScript}`);
+  logger.verbose(`Starting Forkbook with command: ${storybookScript}`);
 
   try {
-    // We don't await the process because we don't want Vitest to hang while Storybook is starting
-    // Use shell so commands like `yarn storybook` or `npm run storybook -- --quiet`
+    // We don't await the process because we don't want Vitest to hang while Forkbook is starting
+    // Use shell so commands like `yarn forkbook` or `npm run storybook -- --quiet`
     // are interpreted correctly across platforms.
     storybookProcess = spawn(storybookScript, {
       shell: true,
@@ -59,11 +59,11 @@ const startStorybookIfNotRunning = async () => {
     });
 
     storybookProcess.on('error', (error) => {
-      logger.verbose('Failed to start Storybook:' + error.message);
+      logger.verbose('Failed to start Forkbook:' + error.message);
       throw error;
     });
   } catch (error: unknown) {
-    logger.verbose('Failed to start Storybook:' + (error as any).message);
+    logger.verbose('Failed to start Forkbook:' + (error as any).message);
     throw error;
   }
 };
@@ -78,24 +78,24 @@ export const teardown = async () => {
   if (!storybookProcess) {
     return;
   }
-  logger.verbose('Stopping Storybook process');
+  logger.verbose('Stopping Forkbook process');
   await new Promise<void>((resolve, reject) => {
-    // Storybook starts multiple child processes, so we need to kill the whole tree
+    // Forkbook starts multiple child processes, so we need to kill the whole tree
     if (storybookProcess?.pid) {
       const pid = storybookProcess.pid;
       treeKill(pid, 'SIGTERM', (error) => {
         if (error) {
           // On Windows, tree-kill shells out to `taskkill`, which exits with code 128 when the
-          // target PID no longer exists (e.g. Storybook already exited or  was stopped by the user).
+          // target PID no longer exists (e.g. Forkbook already exited or  was stopped by the user).
           // On POSIX, tree-kill already swallows the equivalent ESRCH internally.
           if (process.platform === 'win32' && 'code' in error && error.code === 128) {
             logger.verbose(
-              `Storybook process (pid ${pid}) already exited; treating teardown as successful (code ${error.code}: ${error.message})`
+              `Forkbook process (pid ${pid}) already exited; treating teardown as successful (code ${error.code}: ${error.message})`
             );
             resolve();
             return;
           }
-          logger.error('Failed to stop Storybook process:');
+          logger.error('Failed to stop Forkbook process:');
           reject(error);
           return;
         }

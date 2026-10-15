@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { TabList } from './TabList.tsx';
 import { TabPanel } from './TabPanel.tsx';
 import { useTabsState } from './TabsView.tsx';

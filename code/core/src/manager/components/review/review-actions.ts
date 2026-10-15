@@ -1,6 +1,6 @@
-import type { NavigateFunction } from 'storybook/internal/router';
-import { logger } from 'storybook/internal/client-logger';
-import { getService, type API } from 'storybook/manager-api';
+import type { NavigateFunction } from '@aussieljk/forkbook/internal/router';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { getService, type API } from '@aussieljk/forkbook/manager-api';
 
 import {
   AUTO_ENTERED_SESSION_KEY,

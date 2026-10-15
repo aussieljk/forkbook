@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Select } from 'storybook/internal/components';
+import { Select } from '@aussieljk/forkbook/internal/components';
 
 import { GrowIcon } from '@storybook/icons';
 

@@ -9,9 +9,9 @@
  *
  * This provider needs no configuration: tsgo finds the tsconfig of each story file itself.
  */
-import { createLazyDocgenMiddleware } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import type { DocgenMiddleware } from 'storybook/internal/types';
+import { createLazyDocgenMiddleware } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { DocgenMiddleware } from '@aussieljk/forkbook/internal/types';
 
 import { ComponentMetaManager } from '../componentManifest/componentMeta/ComponentMetaManager.ts';
 import { buildDocgenPayload } from './buildDocgen.ts';

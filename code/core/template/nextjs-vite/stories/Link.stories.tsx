@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
-import { useLinkStatus as mockUseLinkStatus } from 'storybook/nextjs-vite/link.mock';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+import { useLinkStatus as mockUseLinkStatus } from '@aussieljk/forkbook/nextjs-vite/link.mock';
 
 import Link, { useLinkStatus } from 'next/link';
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 import style from './Link.stories.module.css';
 

@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode, SyntheticEvent } from 'react';
 import React, { Fragment, useCallback } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import type { LinkWrapperType, ListItemProps } from './ListItem.tsx';
 import ListItem from './ListItem.tsx';
@@ -48,7 +48,7 @@ export interface TooltipLinkListProps extends HTMLAttributes<HTMLDivElement> {
 
 export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkListProps) => {
   deprecate(
-    '`TooltipLinkList` is deprecated and will be removed in Storybook 11, use `ActionList` or `MenuItem` and `WithMenu` instead.'
+    '`TooltipLinkList` is deprecated and will be removed in Forkbook 11, use `ActionList` or `MenuItem` and `WithMenu` instead.'
   );
 
   const groups = Array.isArray(links[0]) ? (links as Link[][]) : [links as Link[]];

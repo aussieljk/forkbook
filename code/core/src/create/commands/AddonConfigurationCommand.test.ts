@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { AddonVitestService } from 'storybook/internal/cli';
-import { type JsPackageManager, PackageManagerName } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { ErrorCollector } from 'storybook/internal/telemetry';
+import type { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import { type JsPackageManager, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { ErrorCollector } from '@aussieljk/forkbook/internal/telemetry';
 
 import addonVitestPostinstall from '../../addon-vitest/postinstall.ts';
 import type { TelemetryService } from '../services/index.ts';
@@ -12,8 +12,8 @@ import {
   executeAddonConfiguration,
 } from './AddonConfigurationCommand.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 vi.mock('../../addon-vitest/postinstall', { spy: true });
 vi.mock('../../cli-commands/postinstallAddon', () => ({
   postinstallAddon: vi.fn().mockResolvedValue(undefined),
@@ -66,7 +66,7 @@ describe('AddonConfigurationCommand', () => {
   describe('execute', () => {
     it('should return success when no configDir is provided', async () => {
       const result = await command.execute({
-        addons: ['storybook/addon-vitest'],
+        addons: ['@aussieljk/forkbook/addon-vitest'],
         configDir: undefined,
       });
 
@@ -77,7 +77,7 @@ describe('AddonConfigurationCommand', () => {
     it('should return success when addons array is empty', async () => {
       const result = await command.execute({
         addons: [],
-        configDir: '.storybook',
+        configDir: '.forkbook',
       });
 
       expect(result).toEqual({ status: 'success' });
@@ -88,14 +88,14 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       const result = await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(result).toEqual({ status: 'success' });
       expect(addonVitestPostinstall).toHaveBeenCalledWith({
         packageManager: 'npm',
-        configDir: '.storybook',
+        configDir: '.forkbook',
         yes: true,
         skipInstall: true,
         useRemotePkg: false,
@@ -116,14 +116,14 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       const result = await command.execute({
-        addons: ['storybook/addon-docs'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-docs'],
+        configDir: '.forkbook',
       });
 
       expect(result).toEqual({ status: 'success' });
-      expect(postinstallAddon).toHaveBeenCalledWith('storybook/addon-docs', {
+      expect(postinstallAddon).toHaveBeenCalledWith('@aussieljk/forkbook/addon-docs', {
         packageManager: 'npm',
-        configDir: '.storybook',
+        configDir: '.forkbook',
         yes: true,
         skipInstall: true,
         useRemotePkg: false,
@@ -140,8 +140,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       const result = await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(result).toEqual({ status: 'failed' });
@@ -156,13 +156,16 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       const result = await command.execute({
-        addons: ['storybook/addon-vitest', 'storybook/addon-a11y'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest', '@aussieljk/forkbook/addon-a11y'],
+        configDir: '.forkbook',
       });
 
       const { postinstallAddon } = await import('../../cli-commands/postinstallAddon.ts');
       expect(result).toEqual({ status: 'failed' });
-      expect(postinstallAddon).toHaveBeenCalledWith('storybook/addon-a11y', expect.anything());
+      expect(postinstallAddon).toHaveBeenCalledWith(
+        '@aussieljk/forkbook/addon-a11y',
+        expect.anything()
+      );
       expect(mockTaskLog.error).toHaveBeenCalledWith('Failed to configure addons');
     });
 
@@ -173,8 +176,8 @@ describe('AddonConfigurationCommand', () => {
       });
 
       const result = await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(result).toEqual({ status: 'failed' });
@@ -186,8 +189,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       await command.execute({
-        addons: ['storybook/addon-a11y'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-a11y'],
+        configDir: '.forkbook',
       });
 
       expect(mockAddonVitestService.installPlaywright).not.toHaveBeenCalled();
@@ -202,8 +205,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(mockTelemetryService.trackPlaywrightPromptDecision).toHaveBeenCalledWith('skipped');
@@ -217,8 +220,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(mockTelemetryService.trackPlaywrightPromptDecision).toHaveBeenCalledWith('aborted');
@@ -232,8 +235,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       await command.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(mockTelemetryService.trackPlaywrightPromptDecision).toHaveBeenCalledWith('failed');
@@ -249,8 +252,8 @@ describe('AddonConfigurationCommand', () => {
       vi.mocked(prompt.taskLog).mockReturnValue(mockTaskLog);
 
       await commandWithYes.execute({
-        addons: ['storybook/addon-vitest'],
-        configDir: '.storybook',
+        addons: ['@aussieljk/forkbook/addon-vitest'],
+        configDir: '.forkbook',
       });
 
       expect(addonVitestPostinstall).toHaveBeenCalledWith(expect.objectContaining({ yes: true }));
@@ -292,7 +295,7 @@ describe('executeAddonConfiguration', () => {
       packageManager: mockPackageManager,
       options: { packageManager: PackageManagerName.NPM, disableTelemetry: true },
       addons: [],
-      configDir: '.storybook',
+      configDir: '.forkbook',
     });
 
     expect(result).toEqual({ status: 'success' });
@@ -302,12 +305,15 @@ describe('executeAddonConfiguration', () => {
     const result = await executeAddonConfiguration({
       packageManager: mockPackageManager,
       options: { packageManager: PackageManagerName.NPM, disableTelemetry: false },
-      addons: ['storybook/addon-a11y'],
-      configDir: '.storybook',
+      addons: ['@aussieljk/forkbook/addon-a11y'],
+      configDir: '.forkbook',
     });
 
     const { postinstallAddon } = await import('../../cli-commands/postinstallAddon.ts');
     expect(result).toEqual({ status: 'success' });
-    expect(postinstallAddon).toHaveBeenCalledWith('storybook/addon-a11y', expect.anything());
+    expect(postinstallAddon).toHaveBeenCalledWith(
+      '@aussieljk/forkbook/addon-a11y',
+      expect.anything()
+    );
   });
 });

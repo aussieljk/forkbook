@@ -4,7 +4,7 @@ import {
   GLOBALS_UPDATED,
   SET_CURRENT_STORY,
   UPDATE_QUERY_PARAMS,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 
@@ -12,7 +12,7 @@ import EventEmitter from 'events';
 
 import { init as initURL } from '../modules/url';
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 vi.mock('@storybook/global', () => ({
   global: {
     window: {
@@ -25,7 +25,7 @@ vi.mock('@storybook/global', () => ({
     document: {
       baseURI: 'http://localhost:6006/',
     },
-    STORYBOOK_NETWORK_ADDRESS: 'http://192.168.1.1:6006/',
+    FORKBOOK_NETWORK_ADDRESS: 'http://192.168.1.1:6006/',
   },
 }));
 

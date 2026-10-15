@@ -33,7 +33,7 @@ describe('component transformer', () => {
     expect(result.code).toContain('_test("Badge", _testStory({');
 
     expect(result.code).toMatchInlineSnapshot(`
-      "import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       import { Body } from '../typography';
       export const Badge = ({
@@ -75,7 +75,7 @@ describe('component transformer', () => {
     expect(result.code).toContain('_test("Spinner", _testStory({');
 
     expect(result.code).toMatchInlineSnapshot(`
-      "import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       const _Spinner = () => <div />;
       export default _Spinner;
@@ -138,7 +138,7 @@ describe('component transformer', () => {
     expect(result.code).toContain('_test("Spinner", _testStory({');
 
     expect(result.code).toMatchInlineSnapshot(`
-      "import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       import { someWrapper } from '../lib/util';
       function Component() {}
@@ -251,7 +251,7 @@ describe('component transformer', () => {
     expect(result.code).toContain('_test("Badge", _testStory({');
     expect(result.code).toContain('_test("Tag", _testStory({');
     expect(result.code).toMatchInlineSnapshot(`
-      "import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       export const Label = () => <div />;
       export const Tag = () => <span />;
@@ -368,7 +368,7 @@ describe('component transformer', () => {
       getComponentArgTypes: mockGetComponentArgTypes,
     });
 
-    expect(result.code).not.toContain('import { fn as _fn } from "storybook/test"');
+    expect(result.code).not.toContain('import { fn as _fn } from "@aussieljk/forkbook/test"');
   });
 
   it('generates test with args from getComponentArgTypes', async () => {
@@ -405,10 +405,10 @@ describe('component transformer', () => {
       getComponentArgTypes: mockGetComponentArgTypes,
     });
 
-    expect(result.code).toContain('import { fn as _fn } from "storybook/test"');
+    expect(result.code).toContain('import { fn as _fn } from "@aussieljk/forkbook/test"');
     expect(result.code).toMatchInlineSnapshot(`
-      "import { fn as _fn } from "storybook/test";
-      import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { fn as _fn } from "@aussieljk/forkbook/test";
+      import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       import { Body } from '../typography';
       export const Badge = ({
@@ -481,7 +481,7 @@ describe('component transformer', () => {
     // Check that valid identifiers still use identifier syntax
     expect(result.code).toContain('validKey: "validKey"');
     expect(result.code).toMatchInlineSnapshot(`
-      "import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+      "import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
       import { test as _test, expect as _expect } from "vitest";
       export const Badge = () => <div />;
       const _isRunningFromThisFile = convertToFilePath(import.meta.url).includes(globalThis.__vitest_worker__.filepath ?? _expect.getState().testPath);

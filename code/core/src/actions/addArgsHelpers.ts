@@ -1,4 +1,4 @@
-import type { Args, ArgsEnhancer, Renderer } from 'storybook/internal/types';
+import type { Args, ArgsEnhancer, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { action } from './runtime/action.ts';
 

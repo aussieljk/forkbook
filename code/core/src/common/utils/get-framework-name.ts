@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -11,7 +11,7 @@ export async function getFrameworkName(options: Options) {
 
   if (!framework) {
     throw new Error(dedent`
-      You must specify a framework in '.storybook/main.js' config.
+      You must specify a framework in '.forkbook/main.js' config.
 
       https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#framework-field-mandatory
     `);
@@ -27,7 +27,7 @@ export async function getFrameworkName(options: Options) {
  * @example
  *
  * ```ts
- * extractFrameworkPackageName('/path/to/@storybook/react-vite'); // => 'storybook/react-vite'
+ * extractFrameworkPackageName('/path/to/@storybook/react-vite'); // => '@aussieljk/forkbook/react-vite'
  * extractFrameworkPackageName('@third-party/framework'); // => '@third-party/framework'
  * ```
  */

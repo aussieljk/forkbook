@@ -1,9 +1,9 @@
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-import { sendTelemetryError, withTelemetry } from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
-import type { CLIOptions } from 'storybook/internal/types';
+import { sendTelemetryError, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { CLIOptions } from '@aussieljk/forkbook/internal/types';
 
 import { Option, type Command } from 'commander';
 
@@ -30,8 +30,8 @@ type ToolsPassthroughOptions = ToolsOutputFlags & {
 };
 
 /**
- * Register the `storybook tools` passthrough: a generic `[toolset] [tool] [args...]` argument
- * triple that runs the toolsets registered by the target Storybook configuration. Attach is the
+ * Register the `forkbook tools` passthrough: a generic `[toolset] [tool] [args...]` argument
+ * triple that runs the toolsets registered by the target Forkbook configuration. Attach is the
  * default when a matching instance is running; `--no-attach` forces a local host.
  * `passThroughOptions` hands every token after the tool name to the tool untouched, which requires
  * positional options on the program.
@@ -51,7 +51,7 @@ export function registerToolsPassthrough(
   toolsCommand
     .helpOption(false)
     .usage('[options] [toolset] [tool] [args...]')
-    .argument('[toolset]', 'A toolset provided by the target Storybook configuration')
+    .argument('[toolset]', 'A toolset provided by the target Forkbook configuration')
     .argument('[tool]', "One of the toolset's tools, e.g. `stories find-by-component`")
     .argument(
       '[args...]',
@@ -103,7 +103,7 @@ export function registerToolsPassthrough(
         }
         try {
           // Like `init`, the fallback keeps telemetry on when no main config is loadable: running
-          // from a cwd without a Storybook is a failure this event exists to measure. The explicit
+          // from a cwd without a Forkbook is a failure this event exists to measure. The explicit
           // opt-outs (env var, flag, loadable `core.disableTelemetry`) still apply.
           await withTelemetry(
             'tools-command',
@@ -166,7 +166,7 @@ export function registerToolsPassthrough(
 /**
  * The cliOptions handed to the telemetry machinery. Only the opt-out tier is forwarded — the
  * passthrough's own options may contain paths and are never sent in payloads. `configDir` points
- * at the config location of the *target* Storybook so `withTelemetry` resolves
+ * at the config location of the *target* Forkbook so `withTelemetry` resolves
  * `core.disableTelemetry` from the project the command is aimed at. It is read locally, never
  * sent.
  */

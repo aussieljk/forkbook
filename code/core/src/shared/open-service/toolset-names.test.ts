@@ -26,7 +26,7 @@ describe('toolset method names', () => {
   it('renders references in the active transport vocabulary', () => {
     expect(getToolName({ transport: 'mcp' })('docs.showStory')).toBe('docs-show-story');
     expect(getToolName({ transport: 'cli' })('docs.showStory')).toBe(
-      'npx storybook tools docs show-story'
+      'npx forkbook tools docs show-story'
     );
     expect(getToolName({ transport: 'sdk' })('docs.showStory')).toBe('docs.showStory');
   });

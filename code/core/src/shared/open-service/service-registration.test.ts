@@ -108,13 +108,13 @@ describe('service registration', () => {
     );
   });
 
-  it('throws a Storybook error when resolving a missing registered service id', () => {
+  it('throws a Forkbook error when resolving a missing registered service id', () => {
     expect(() => getService('internal-fixture/missing-service')).toThrow(
       'No registered service with id "internal-fixture/missing-service" exists in this environment.'
     );
   });
 
-  it('throws a Storybook error when a registered query is missing its handler', () => {
+  it('throws a Forkbook error when a registered query is missing its handler', () => {
     // A command without a local handler does NOT throw here — it requests remote execution from a
     // peer that implements it (see service-command-transport.test.ts). Queries stay local-only.
     const service = registerService(

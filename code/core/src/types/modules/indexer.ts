@@ -130,7 +130,7 @@ export type BaseIndexInput = {
    * matched.
    */
   metaId?: MetaId;
-  /** Tags for filtering entries in Storybook and its tools. */
+  /** Tags for filtering entries in Forkbook and its tools. */
   tags?: Tag[];
   /**
    * The id of the entry, auto-generated from {@link title}/{@link metaId} and {@link exportName} if

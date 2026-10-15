@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
 import UnstableRethrow from './UnstableRethrow';
 

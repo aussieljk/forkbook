@@ -1,11 +1,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   FindPackageVersionsError,
   MinimumReleaseAgeHandledError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
@@ -22,12 +22,12 @@ import type { InstallationMetadata, PackageMetadata } from './types.ts';
 import {
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
-  STORYBOOK_RERUN_INSTRUCTION,
+  FORKBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
   hasStorybookMinimumAgeExclusions,
   parsePackageTimeMap,
   parseReleaseTime,
-  STORYBOOK_PACKAGE_PATTERNS,
+  FORKBOOK_PACKAGE_PATTERNS,
 } from './util.ts';
 
 type NpmDependency = {
@@ -140,7 +140,7 @@ export class BUNProxy extends JsPackageManager {
   ): ResultPromise {
     // The following command is unsafe to use with `bun run`
     // because it will always favour a equally script named in the package.json instead of the installed binary.
-    // so running `bun storybook add` will run the
+    // so running `bun forkbook add` will run the
     // `storybook` script (dev) instead of the `storybook`. binary.
     // return executeCommand({
     //   command: 'bun',
@@ -269,7 +269,7 @@ export class BUNProxy extends JsPackageManager {
       return;
     }
 
-    const timeMap = await this.getPackageTimeMap('storybook');
+    const timeMap = await this.getPackageTimeMap('@aussieljk/forkbook');
     if (!timeMap) {
       return;
     }
@@ -298,7 +298,7 @@ export class BUNProxy extends JsPackageManager {
       this.updateMinimumReleaseAgeExcludes();
       logger.info(
         dedent`
-          bun minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Storybook updated minimumReleaseAgeExcludes for this project automatically.
+          bun minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Forkbook updated minimumReleaseAgeExcludes for this project automatically.
 
           Added patterns: storybook, @storybook/*, eslint-plugin-storybook
 
@@ -325,13 +325,13 @@ export class BUNProxy extends JsPackageManager {
         message: 'How would you like to proceed?',
         options: [
           {
-            label: 'Update bunfig.toml to exclude Storybook packages from minimumReleaseAge',
+            label: 'Update bunfig.toml to exclude Forkbook packages from minimumReleaseAge',
             value: 'exclude',
           },
           {
             label: compatibleVersion
               ? `Stop now and rerun with the most recent allowed release: storybook@${compatibleVersion}`
-              : 'Stop now and rerun with an older stable Storybook release later',
+              : 'Stop now and rerun with an older stable Forkbook release later',
             value: 'rerun',
           },
         ],
@@ -502,7 +502,7 @@ export class BUNProxy extends JsPackageManager {
     return dedent`
       bun minimumReleaseAge blocked storybook@${currentVersion} from being installed.
 
-      ${STORYBOOK_RERUN_INSTRUCTION}
+      ${FORKBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:
@@ -515,7 +515,7 @@ export class BUNProxy extends JsPackageManager {
     const currentContent = this.readBunfig() ?? '';
     const lineEnding = currentContent.includes('\r\n') ? '\r\n' : '\n';
     const nextPatterns = Array.from(
-      new Set([...this.getMinimumReleaseAgeExcludes(currentContent), ...STORYBOOK_PACKAGE_PATTERNS])
+      new Set([...this.getMinimumReleaseAgeExcludes(currentContent), ...FORKBOOK_PACKAGE_PATTERNS])
     );
     const replacement = [
       'minimumReleaseAgeExcludes = [',

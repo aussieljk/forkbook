@@ -137,6 +137,7 @@ export const createLogStream = async (
   });
 };
 
-/** The package itself, or a framework, renderer or addon that ships inside it (`storybook/<area>`). */
-export const isCorePackage = (pkg: string) => pkg === 'storybook' || pkg.startsWith('storybook/');
+/** The package itself, or a framework, renderer or addon that ships inside it (`@aussieljk/forkbook/<area>`). */
+export const isCorePackage = (pkg: string) =>
+  pkg === '@aussieljk/forkbook' || pkg.startsWith('@aussieljk/forkbook/');
 export const isSatelliteAddon = (pkg: string) => satelliteAddons.includes(pkg);

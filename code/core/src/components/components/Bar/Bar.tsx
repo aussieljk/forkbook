@@ -1,7 +1,7 @@
 import type { ComponentProps, CSSProperties } from 'react';
 import React, { Children, forwardRef } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { clsx } from 'clsx';
 

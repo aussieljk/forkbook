@@ -2,8 +2,8 @@ import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
-import { globalsNameReferenceMap } from 'storybook/internal/preview/globals';
-import type { Options } from 'storybook/internal/types';
+import { globalsNameReferenceMap } from '@aussieljk/forkbook/internal/preview/globals';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { previewRuntimePath } from '../utils/preview-runtime-path.ts';
 
@@ -31,7 +31,7 @@ const replacementMap = new Map([
  * @example
  *
  * ```js
- * import { useMemo as useMemo2, useEffect as useEffect2 } from 'storybook/preview-api';
+ * import { useMemo as useMemo2, useEffect as useEffect2 } from '@aussieljk/forkbook/preview-api';
  * ```
  *
  * Becomes
@@ -52,7 +52,7 @@ export async function storybookExternalGlobalsPlugin(options: Options): Promise<
     globalsNameReferenceMap;
 
   if (build?.test?.disableBlocks) {
-    externals['storybook/addon-docs/blocks'] = '__STORYBOOK_BLOCKS_EMPTY_MODULE__';
+    externals['@aussieljk/forkbook/addon-docs/blocks'] = '__STORYBOOK_BLOCKS_EMPTY_MODULE__';
   }
 
   await init;

@@ -1,4 +1,4 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { OpenServiceUnknownStoryIdsError } from '../../../../server-errors.ts';
 import { getService, registerService } from '../../server.ts';

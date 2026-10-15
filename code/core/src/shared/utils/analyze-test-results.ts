@@ -59,7 +59,7 @@ export function extractCategorizedErrors(
 }
 
 /**
- * StoryId suffix for a story named `CssCheck` (after Storybook's CSF
+ * StoryId suffix for a story named `CssCheck` (after Forkbook's CSF
  * `toStartCaseStr` + `sanitize`: `CssCheck` → `Css Check` → `css-check`).
  */
 const CSS_CHECK_STORY_ID_SUFFIX = '--css-check';

@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { linkTo } from 'storybook/addon-links';
+import { linkTo } from '@aussieljk/forkbook/addon-links';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

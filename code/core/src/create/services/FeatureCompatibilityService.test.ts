@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AddonVitestService } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { SupportedBuilder, SupportedFramework } from 'storybook/internal/types';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { SupportedBuilder, SupportedFramework } from '@aussieljk/forkbook/internal/types';
 
 import { FeatureCompatibilityService } from './FeatureCompatibilityService.ts';
 
-vi.mock('storybook/internal/cli', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/cli', { spy: true });
 
 describe('FeatureCompatibilityService', () => {
   let service: FeatureCompatibilityService;

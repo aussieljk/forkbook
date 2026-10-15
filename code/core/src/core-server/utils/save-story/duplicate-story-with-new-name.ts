@@ -1,5 +1,5 @@
-import { types as t, traverse } from 'storybook/internal/babel';
-import type { CsfFile } from 'storybook/internal/csf-tools';
+import { types as t, traverse } from '@aussieljk/forkbook/internal/babel';
+import type { CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { SaveStoryError } from './utils.ts';
 

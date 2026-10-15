@@ -1,8 +1,8 @@
 import type { ComponentProps, MutableRefObject } from 'react';
 import React, { useCallback, useMemo, useRef } from 'react';
 
-import { Button, ListItem } from 'storybook/internal/components';
-import { PRELOAD_ENTRIES } from 'storybook/internal/core-events';
+import { Button, ListItem } from '@aussieljk/forkbook/internal/components';
+import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
 
 import {
   CHANGE_DETECTION_STATUS_TYPE_ID,
@@ -12,21 +12,21 @@ import {
   type StatusesByStoryIdAndTypeId,
   type StatusValue,
   type StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { CollapseIcon as CollapseIconSvg, ExpandAltIcon } from '@storybook/icons';
 
 import { internal_fullStatusStore as fullStatusStore } from '#manager-stores';
 import { clsx } from 'clsx';
-import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 import type {
   API,
   ComponentEntry,
   GroupEntry,
   StoriesHash,
   StoryEntry,
-} from 'storybook/manager-api';
-import { useTheme } from 'storybook/theming';
+} from '@aussieljk/forkbook/manager-api';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import {

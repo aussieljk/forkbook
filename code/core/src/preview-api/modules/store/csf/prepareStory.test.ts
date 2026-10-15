@@ -10,9 +10,9 @@ import type {
   SBScalarType,
   StoryContext,
   StoryContextForRender,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { UserEventObject } from 'storybook/test';
+import type { UserEventObject } from '@aussieljk/forkbook/test';
 
 import { Tag } from '../../../../shared/constants/tags.ts';
 import { HooksContext, addons } from '../../addons/index.ts';

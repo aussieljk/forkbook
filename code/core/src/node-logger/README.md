@@ -1,11 +1,11 @@
-# Storybook Logger
+# Forkbook Logger
 
 Any node logging that is done through storybook should be done through this package.
 
 Examples:
 
 ```js
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 logger.info('Info message');
 logger.warn('Warning message');

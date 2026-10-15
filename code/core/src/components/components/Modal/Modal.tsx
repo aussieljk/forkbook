@@ -1,11 +1,11 @@
 import React, { type HTMLAttributes, createContext, useContext, useEffect, useState } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
-import type { DecoratorFunction } from 'storybook/internal/csf';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/csf';
 
 import { Dialog } from '@base-ui/react/dialog';
 import { useTransitionState } from 'react-transition-state';
-import { themeToCssVars, useTheme } from 'storybook/theming';
+import { themeToCssVars, useTheme } from '@aussieljk/forkbook/theming';
 
 import { useMediaQuery } from '../../../manager/hooks/useMedia.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
@@ -44,7 +44,7 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   /** Handler called when visibility of the Modal changes. */
   onOpenChange?: (isOpen: boolean) => void;
 
-  // TODO: Storybook 11, make this required
+  // TODO: Forkbook 11, make this required
   /** The accessible name for the modal. */
   ariaLabel?: string;
 
@@ -86,8 +86,8 @@ function BaseModal({
   let deprecated = undefined;
   if (ariaLabel === undefined || ariaLabel === '') {
     deprecated = 'ariaLabel';
-    deprecate('The `ariaLabel` prop on `Modal` will become mandatory in Storybook 11.');
-    // TODO in Storybook 11
+    deprecate('The `ariaLabel` prop on `Modal` will become mandatory in Forkbook 11.');
+    // TODO in Forkbook 11
     // throw new Error(
     //   'Modal requires an ARIA label to be accessible. Please provide a valid ariaLabel prop.'
     // );
@@ -96,14 +96,14 @@ function BaseModal({
   if (onEscapeKeyDown !== undefined) {
     deprecated = 'onEscapeKeyDown';
     deprecate(
-      'The `onEscapeKeyDown` prop is deprecated and will be removed in Storybook 11. Use `dismissOnEscape` instead.'
+      'The `onEscapeKeyDown` prop is deprecated and will be removed in Forkbook 11. Use `dismissOnEscape` instead.'
     );
   }
 
   if (onInteractOutside !== undefined) {
     deprecated = 'onInteractOutside';
     deprecate(
-      'The `onInteractOutside` prop is deprecated and will be removed in Storybook 11. Use `dismissOnInteractOutside` instead.'
+      'The `onInteractOutside` prop is deprecated and will be removed in Forkbook 11. Use `dismissOnInteractOutside` instead.'
     );
   }
 
@@ -224,8 +224,8 @@ function BaseModal({
 export const Modal = Object.assign(BaseModal, Components);
 
 /**
- * Storybook decorator to help render Modals in stories with multiple theme layouts. Internal to
- * Storybook. Use at your own risk.
+ * Forkbook decorator to help render Modals in stories with multiple theme layouts. Internal to
+ * Forkbook. Use at your own risk.
  */
 export const ModalDecorator: DecoratorFunction = (Story, { args }) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);

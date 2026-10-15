@@ -1,6 +1,6 @@
 import React, { useEffect, type FC, type ReactNode } from 'react';
 
-import { Select } from 'storybook/internal/components';
+import { Select } from '@aussieljk/forkbook/internal/components';
 
 import { useReviewContext } from '../review-context.ts';
 import { prettifyComponentId, resolveNavIndex, type ReviewNavEntry } from '../review-navigation.ts';

@@ -8,9 +8,9 @@ import { copyAllStaticFilesRelativeToMain } from './copy-all-static-files.ts';
 
 vi.mock('node:fs', { spy: true });
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/node-logger', () => ({ logger: { info: vi.fn() } }));
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({ logger: { info: vi.fn() } }));
 
-const configDir = '/project/.storybook';
+const configDir = '/project/.forkbook';
 const outputDir = '/project/storybook-static';
 
 beforeEach(async () => {
@@ -32,7 +32,7 @@ describe('copyAllStaticFilesRelativeToMain', () => {
         'asset.txt': 'public',
         'shared.txt': 'public',
       },
-      '/project/.storybook/static': {
+      '/project/.forkbook/static': {
         'shared.txt': 'storybook',
       },
       [outputDir]: {},
@@ -46,7 +46,7 @@ describe('copyAllStaticFilesRelativeToMain', () => {
     });
   });
 
-  it('never replaces the files Storybook writes to the output dir', async () => {
+  it('never replaces the files Forkbook writes to the output dir', async () => {
     memfs.vol.fromNestedJSON({
       '/project/public': {
         'index.html': 'public',

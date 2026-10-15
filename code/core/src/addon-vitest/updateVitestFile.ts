@@ -5,8 +5,8 @@ import {
   getTargetConfigObject,
   isDefineConfigLike,
   resolveExpression,
-} from 'storybook/internal/babel';
-import type { BabelFile, types as t } from 'storybook/internal/babel';
+} from '@aussieljk/forkbook/internal/babel';
+import type { BabelFile, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { normalize } from 'pathe';
 

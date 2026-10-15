@@ -4,14 +4,14 @@ Use the configured framework (`{{FRAMEWORK}}`) and renderer (`{{RENDERER}}`). Fo
 
 When writing UI, prefer breaking larger components up into smaller parts.
 
-ALWAYS write a Storybook story for any component written. If editing a component, ensure appropriate changes have been made to stories for that component.
+ALWAYS write a Forkbook story for any component written. If editing a component, ensure appropriate changes have been made to stories for that component.
 {{DOCS_WORKFLOW_GUIDANCE}}
 
 ## How to write good stories
 
 Goal: Cover every distinct piece of business logic and state the component can reach (happy paths, error/edge states, loading, permissions/roles, empty states, variations from props/context). Avoid redundant stories that show the same logic.
 
-Interactivity: If the component is interactive, add Interaction tests using play functions that drive the UI with storybook/test utilities (e.g., fn, userEvent, expect). Simulate key user flows: clicking buttons/links, typing, focus/blur, keyboard nav, form submit, async responses, toggle/selection changes, pagination/filters, etc. When passing `fn` functions as `args` for callback functions, make sure to add a play function which interacts with the component and assert whether the callback function was actually called.
+Interactivity: If the component is interactive, add Interaction tests using play functions that drive the UI with @aussieljk/forkbook/test utilities (e.g., fn, userEvent, expect). Simulate key user flows: clicking buttons/links, typing, focus/blur, keyboard nav, form submit, async responses, toggle/selection changes, pagination/filters, etc. When passing `fn` functions as `args` for callback functions, make sure to add a play function which interacts with the component and assert whether the callback function was actually called.
 
 Data/setup: Provide realistic props, state, and mocked data. Include meaningful labels/text to make behaviors observable. Stub network/services with deterministic fixtures; keep stories reliable.
 
@@ -23,9 +23,9 @@ Accessibility: Use semantic roles/labels; ensure focusable/keyboard interactions
 
 Naming/structure: Use clear story names that describe the scenario (“Error state after failed submit”). Group related variants logically; don’t duplicate.
 
-Imports/format: Import Meta/StoryObj from the framework package; import test helpers from storybook/test (not @storybook/test). Keep stories minimal—only what's needed to demonstrate behavior.
+Imports/format: Import Meta/StoryObj from the framework package; import test helpers from @aussieljk/forkbook/test (not @storybook/test). Keep stories minimal—only what's needed to demonstrate behavior.
 
-## Storybook 9 Essential Changes for Story Writing
+## Forkbook 9 Essential Changes for Story Writing
 
 ### Package Consolidation
 
@@ -40,11 +40,11 @@ Update story imports to use the framework package:
 
 #### Test utility imports
 
-Update test imports to use `storybook/test` instead of `@storybook/test`
+Update test imports to use `@aussieljk/forkbook/test` instead of `@storybook/test`
 
 ```diff
 - import { fn } from '@storybook/test';
-+ import { fn } from 'storybook/test';
++ import { fn } from '@aussieljk/forkbook/test';
 ```
 
 ### Global State Changes
@@ -52,7 +52,7 @@ Update test imports to use `storybook/test` instead of `@storybook/test`
 The `globals` annotation has be renamed to `initialGlobals`:
 
 ```diff
-// .storybook/preview.js
+// .forkbook/preview.js
 export default {
 - globals: { theme: 'light' }
 + initialGlobals: { theme: 'light' }
@@ -64,21 +64,21 @@ export default {
 Instead of `parameters.docs.autodocs` in main.js, use tags:
 
 ```js
-// .storybook/preview.js or in individual stories
+// .forkbook/preview.js or in individual stories
 export default {
 	tags: ['autodocs'], // generates autodocs for all stories
 };
 ```
 
-### Mocking imports in Storybook
+### Mocking imports in Forkbook
 
-To mock imports in Storybook, use Storybook's mocking features. ALWAYS mock external dependencies to ensure stories render consistently.
+To mock imports in Forkbook, use Forkbook's mocking features. ALWAYS mock external dependencies to ensure stories render consistently.
 
-1. **Register in the mock in Storybook's preview file**:
-   To mock dependendencies, you MUST register a module mock in `.storybook/preview.ts` (or equivalent):
+1. **Register in the mock in Forkbook's preview file**:
+   To mock dependendencies, you MUST register a module mock in `.forkbook/preview.ts` (or equivalent):
 
 ```js
-import { sb } from 'storybook/test';
+import { sb } from '@aussieljk/forkbook/test';
 
 // Prefer spy mocks (keeps functions, but allows to override them and spy on them)
 sb.mock(import('some-library'), { spy: true });
@@ -94,7 +94,7 @@ sb.mock(import('./relative/module.ts'), { spy: true });
    You can override the behaviour of the mocks per-story using `beforeEach` and the `mocked()` type function:
 
 ```js
-import { expect, mocked, fn } from 'storybook/test';
+import { expect, mocked, fn } from '@aussieljk/forkbook/test';
 import { library } from 'some-library';
 
 const meta = {
@@ -117,7 +117,7 @@ Before doing this ensure you have mocked the import in the preview file.
 
 - The play function has a `canvas` parameter that can be used directly with testing-library-like query methods.
 - It also has a `canvasElement` which is the actual DOM element.
-- The `within`-function imported from `storybook/test` transforms a DOM element to an object with query methods, similar to `canvas`.
+- The `within`-function imported from `@aussieljk/forkbook/test` transforms a DOM element to an object with query methods, similar to `canvas`.
 
 **DO NOT** use `within(canvas)` - it is redundant because `canvas` already has the query methods, `canvas` is not a DOM element.
 
@@ -128,7 +128,7 @@ play: async ({ canvas }) => {
 };
 
 // ⚠️ Also acceptable: Use `canvasElement` with `within`
-import { within } from 'storybook/test';
+import { within } from '@aussieljk/forkbook/test';
 
 play: async ({ canvasElement }) => {
 	const canvas = within(canvasElement);
@@ -144,7 +144,7 @@ play: async ({ canvas }) => {
 ### Key Requirements
 
 - **Node.js 22.12+**
-- For TypeScript projects, use a version supported by the configured Storybook framework and application framework.
+- For TypeScript projects, use a version supported by the configured Forkbook framework and application framework.
 {{RENDERER_REQUIREMENTS}}
 
 ## Story Linking Agent Behavior

@@ -3,7 +3,7 @@ import { cpus } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { OxcParseError } from './errors.ts';
 import type { ImportEdge } from './types.ts';

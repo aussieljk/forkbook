@@ -10,12 +10,12 @@ import {
   DOCS_MANIFEST_PATH,
   ManifestGetError,
   RequiresOwnMcpError,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 /**
  * The manifests one provider serves, keyed by source id (`''` for the single-source case). Each
  * entry either resolves to the manifest JSON or rejects, which is how these tests stand in for a
- * Storybook that cannot be read.
+ * Forkbook that cannot be read.
  */
 type ServedManifests = {
   componentManifest?: unknown;
@@ -192,7 +192,7 @@ describe('getDocumentationTool', () => {
         "content": [
           {
             "text": "Error getting manifest: Failed to get component manifest: Failed to fetch manifest: 404 Not Found
-      Hint: The Storybook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Storybook versions) to its main.ts config.
+      Hint: The Forkbook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Forkbook versions) to its main.ts config.
       Caused by: Failed to fetch manifest: 404 Not Found",
             "type": "text",
           },
@@ -700,7 +700,7 @@ describe('getDocumentationTool', () => {
 
       expect((response.result as any).isError).toBe(true);
       expect((response.result as any).content[0].text).toContain(
-        'Storybook source not found: "nonexistent"'
+        'Forkbook source not found: "nonexistent"'
       );
       expect((response.result as any).content[0].text).toContain('local, remote');
     });
@@ -861,7 +861,7 @@ describe('getDocumentationTool', () => {
       expect((response.result as any).content[0].text).toBe(`# Remote
 id: remote
 
-This composed Storybook is private and cannot be read through the local Storybook MCP proxy.
+This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.
 
 Use this source's own MCP endpoint instead:
 http://remote.example.com/mcp`);

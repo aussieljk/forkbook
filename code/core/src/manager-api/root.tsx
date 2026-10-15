@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 
-import type { Listener } from 'storybook/internal/channels';
+import type { Listener } from '@aussieljk/forkbook/internal/channels';
 import {
   DOCS_PREPARED,
   SET_STORIES,
@@ -18,8 +18,8 @@ import {
   SHARED_STATE_SET,
   STORY_CHANGED,
   STORY_PREPARED,
-} from 'storybook/internal/core-events';
-import type { RouterData } from 'storybook/internal/router';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { RouterData } from '@aussieljk/forkbook/internal/router';
 import type {
   API_ComponentEntry,
   API_ComposedRef,
@@ -41,7 +41,7 @@ import type {
   Globals,
   Parameters,
   StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { isEqual } from 'es-toolkit/predicate';
 
@@ -123,7 +123,7 @@ export type ManagerProviderProps = RouterData &
     children: ReactNode | FC<Combo>;
   };
 
-// This is duplicated from storybook/preview-api for the reasons mentioned in lib-addons/types.js
+// This is duplicated from @aussieljk/forkbook/preview-api for the reasons mentioned in lib-addons/types.js
 export const combineParameters = (...parameterSets: Parameters[]) =>
   noArrayMerge({}, ...parameterSets);
 
@@ -398,21 +398,21 @@ export function useParameter<S>(parameterKey: string, defaultValue?: S) {
 }
 
 // cache for taking care of HMR
-globalThis.STORYBOOK_ADDON_STATE = {};
-const { STORYBOOK_ADDON_STATE } = globalThis;
+globalThis.FORKBOOK_ADDON_STATE = {};
+const { FORKBOOK_ADDON_STATE } = globalThis;
 
 // shared state
 export function useSharedState<S>(stateId: string, defaultState?: S) {
   const api = useStorybookApi();
-  const existingState = api.getAddonState<S>(stateId) || STORYBOOK_ADDON_STATE[stateId];
+  const existingState = api.getAddonState<S>(stateId) || FORKBOOK_ADDON_STATE[stateId];
   const state = orDefault<S>(
     existingState,
-    STORYBOOK_ADDON_STATE[stateId] ? STORYBOOK_ADDON_STATE[stateId] : defaultState
+    FORKBOOK_ADDON_STATE[stateId] ? FORKBOOK_ADDON_STATE[stateId] : defaultState
   );
   let quicksync = false;
 
   if (state === defaultState && defaultState !== undefined) {
-    STORYBOOK_ADDON_STATE[stateId] = defaultState;
+    FORKBOOK_ADDON_STATE[stateId] = defaultState;
     quicksync = true;
   }
 
@@ -428,7 +428,7 @@ export function useSharedState<S>(stateId: string, defaultState?: S) {
       await api.setAddonState<S>(stateId, s, options);
       const result = api.getAddonState(stateId);
 
-      STORYBOOK_ADDON_STATE[stateId] = result;
+      FORKBOOK_ADDON_STATE[stateId] = result;
       return result;
     },
     [api, stateId]
@@ -443,17 +443,17 @@ export function useSharedState<S>(stateId: string, defaultState?: S) {
       [SET_STORIES]: async () => {
         const currentState = api.getAddonState(stateId);
         if (currentState) {
-          STORYBOOK_ADDON_STATE[stateId] = currentState;
+          FORKBOOK_ADDON_STATE[stateId] = currentState;
           api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, currentState);
-        } else if (STORYBOOK_ADDON_STATE[stateId]) {
+        } else if (FORKBOOK_ADDON_STATE[stateId]) {
           // this happens when HMR
-          await setState(STORYBOOK_ADDON_STATE[stateId]);
-          api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, STORYBOOK_ADDON_STATE[stateId]);
+          await setState(FORKBOOK_ADDON_STATE[stateId]);
+          api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, FORKBOOK_ADDON_STATE[stateId]);
         } else if (defaultState !== undefined) {
           // if not HMR, yet the defaults are from the manager
           await setState(defaultState);
-          // initialize STORYBOOK_ADDON_STATE after first load, so its available for subsequent HMR
-          STORYBOOK_ADDON_STATE[stateId] = defaultState;
+          // initialize FORKBOOK_ADDON_STATE after first load, so its available for subsequent HMR
+          FORKBOOK_ADDON_STATE[stateId] = defaultState;
           api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, defaultState);
         }
       },

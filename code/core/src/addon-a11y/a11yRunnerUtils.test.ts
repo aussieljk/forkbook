@@ -52,18 +52,18 @@ describe('a11yRunnerUtils', () => {
       const result = withLinkPaths(axeResults, 'test-story-id');
 
       expect(result.violations[0].nodes[0].linkPath).toBe(
-        '/?path=/story/test-story-id&addonPanel=storybook/a11y/panel&a11ySelection=violations.color-contrast.1'
+        '/?path=/story/test-story-id&addonPanel=@aussieljk/forkbook/a11y/panel&a11ySelection=violations.color-contrast.1'
       );
       expect(result.violations[0].nodes[1].linkPath).toBe(
-        '/?path=/story/test-story-id&addonPanel=storybook/a11y/panel&a11ySelection=violations.color-contrast.2'
+        '/?path=/story/test-story-id&addonPanel=@aussieljk/forkbook/a11y/panel&a11ySelection=violations.color-contrast.2'
       );
 
       expect(result.passes[0].nodes[0].linkPath).toBe(
-        '/?path=/story/test-story-id&addonPanel=storybook/a11y/panel&a11ySelection=passes.button-name.1'
+        '/?path=/story/test-story-id&addonPanel=@aussieljk/forkbook/a11y/panel&a11ySelection=passes.button-name.1'
       );
 
       expect(result.incomplete[0].nodes[0].linkPath).toBe(
-        '/?path=/story/test-story-id&addonPanel=storybook/a11y/panel&a11ySelection=incomplete.aria-valid.1'
+        '/?path=/story/test-story-id&addonPanel=@aussieljk/forkbook/a11y/panel&a11ySelection=incomplete.aria-valid.1'
       );
     });
   });

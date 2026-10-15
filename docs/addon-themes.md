@@ -1,22 +1,22 @@
-# storybook/addon-themes
+# @aussieljk/forkbook/addon-themes
 
-Storybook Addon Themes can be used to switch between multiple themes for components inside the preview in [Storybook](https://storybook.js.org?ref=readme).
+Forkbook Addon Themes can be used to switch between multiple themes for components inside the preview in [Forkbook](https://storybook.js.org?ref=readme).
 
-![React Storybook Screenshot](https://user-images.githubusercontent.com/18172605/274302488-77a39112-cdbe-4d16-9966-0d8e9e7e3399.gif)
+![React Forkbook Screenshot](https://user-images.githubusercontent.com/18172605/274302488-77a39112-cdbe-4d16-9966-0d8e9e7e3399.gif)
 
 ## Usage
 
-Requires Storybook 7.0 or later. If you need to add it to your Storybook, you can run:
+Requires Forkbook 7.0 or later. If you need to add it to your Forkbook, you can run:
 
 ```sh
-npm i -D storybook/addon-themes
+npm i -D @aussieljk/forkbook/addon-themes
 ```
 
-Then, add following content to [`.storybook/main.js`](https://storybook.js.org/docs/configure#configure-your-storybook-project?ref=readme):
+Then, add following content to [`.forkbook/main.js`](https://storybook.js.org/docs/configure#configure-your-storybook-project?ref=readme):
 
 ```js
 export default {
-  addons: ['storybook/addon-themes'],
+  addons: ['@aussieljk/forkbook/addon-themes'],
 };
 ```
 
@@ -65,4 +65,4 @@ export const PrimaryDark = {
 };
 ```
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

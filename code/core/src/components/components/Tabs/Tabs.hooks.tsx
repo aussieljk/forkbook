@@ -1,7 +1,7 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
-import { sanitize } from 'storybook/internal/csf';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
+import { sanitize } from '@aussieljk/forkbook/internal/csf';
 
 import useResizeObserver from 'use-resize-observer';
 

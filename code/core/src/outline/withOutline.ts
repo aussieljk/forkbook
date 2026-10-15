@@ -1,6 +1,6 @@
-import type { DecoratorFunction } from 'storybook/internal/types';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
-import { useEffect, useMemo } from 'storybook/preview-api';
+import { useEffect, useMemo } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from './constants.ts';
 import { addOutlineStyles, clearStyles } from './helpers.ts';

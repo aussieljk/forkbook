@@ -38,7 +38,7 @@ describe('test fn', () => {
   it('indexes test functions', () => {
     const { entries } = getIndex(
       `
-          import { config } from '#.storybook/preview'
+          import { config } from '#.forkbook/preview'
           const meta = config.meta({ component: 'foo' });
           export const A = meta.story({})
           A.test('async test function', async () => {})

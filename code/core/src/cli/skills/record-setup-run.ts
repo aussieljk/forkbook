@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 
-import { cache } from 'storybook/internal/common';
-import { telemetry } from 'storybook/internal/telemetry';
+import { cache } from '@aussieljk/forkbook/internal/common';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import type { SetupRun } from './run.ts';
 

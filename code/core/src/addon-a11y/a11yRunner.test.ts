@@ -2,7 +2,7 @@ import type { AxeResults } from 'axe-core';
 import type { Mock } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { addons } from 'storybook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import { EVENTS } from './constants.ts';
 
@@ -33,7 +33,7 @@ vi.mock('axe-core', () => ({
   default: axeMock,
 }));
 
-vi.mock('storybook/preview-api');
+vi.mock('@aussieljk/forkbook/preview-api');
 const mockedAddons = vi.mocked(addons);
 
 const axeResults = {

@@ -1,6 +1,6 @@
-import type { ChannelLike } from 'storybook/internal/channels';
-import { STORY_INDEX_INVALIDATED } from 'storybook/internal/core-events';
-import type { Presets } from 'storybook/internal/types';
+import type { ChannelLike } from '@aussieljk/forkbook/internal/channels';
+import { STORY_INDEX_INVALIDATED } from '@aussieljk/forkbook/internal/core-events';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
 import { registerService } from '../../server.ts';
 import { registerModuleGraphIndexService } from '../module-graph-index/server.ts';

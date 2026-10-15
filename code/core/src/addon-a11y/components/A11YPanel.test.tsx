@@ -5,14 +5,14 @@ import { describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import * as managerApi from 'storybook/manager-api';
-import { ThemeProvider, convert, themes } from 'storybook/theming';
+import * as managerApi from '@aussieljk/forkbook/manager-api';
+import { ThemeProvider, convert, themes } from '@aussieljk/forkbook/theming';
 
 import { type EnhancedResults } from '../types.ts';
 import { A11YPanel } from './A11YPanel.tsx';
 import { type A11yContextStore, useA11yContext } from './A11yContext.tsx';
 
-vi.mock('storybook/manager-api');
+vi.mock('@aussieljk/forkbook/manager-api');
 const mockedManagerApi = vi.mocked(managerApi);
 
 vi.mock('./A11yContext');

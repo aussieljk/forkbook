@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { useGlobals, useParameter, useStorybookApi } from 'storybook/manager-api';
+import { useGlobals, useParameter, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID, PARAM_KEY } from './constants.ts';
 import { MINIMAL_VIEWPORTS } from './defaults.ts';

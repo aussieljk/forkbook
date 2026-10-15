@@ -17,9 +17,9 @@ describe('UnknownFlowArgTypesError', () => {
         "raw": "SomeType['someProperty']"
       } 
 
-      Storybook will fall back to use a generic type description instead.
+      Forkbook will fall back to use a generic type description instead.
 
-      This type is either not supported or it is a bug in the docgen generation in Storybook.
+      This type is either not supported or it is a bug in the docgen generation in Forkbook.
       If you think this is a bug, please detail it as much as possible in the Github issue.
 
       More info: https://github.com/storybookjs/storybook/issues/26606

@@ -13,12 +13,12 @@ import type {
 } from 'react';
 import React from 'react';
 
-import type { Canvas } from 'storybook/internal/csf';
-import type { Args, StrictArgs } from 'storybook/internal/types';
+import type { Canvas } from '@aussieljk/forkbook/internal/csf';
+import type { Args, StrictArgs } from '@aussieljk/forkbook/internal/types';
 
 import { expectTypeOf } from 'expect-type';
-import { fn, mocked } from 'storybook/test';
-import type { Mock } from 'storybook/test';
+import { fn, mocked } from '@aussieljk/forkbook/test';
+import type { Mock } from '@aussieljk/forkbook/test';
 
 import { __definePreview } from './preview.tsx';
 import type { Decorator } from './public-types.ts';

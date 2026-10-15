@@ -1,4 +1,4 @@
-import type { PartialStoryFn, StoryContext } from 'storybook/internal/types';
+import type { PartialStoryFn, StoryContext } from '@aussieljk/forkbook/internal/types';
 
 import { global as globalThis } from '@storybook/global';
 

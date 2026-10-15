@@ -1,9 +1,9 @@
 import { access, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { parser, recast, types as t } from 'storybook/internal/babel';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { parser, recast, types as t } from '@aussieljk/forkbook/internal/babel';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 export const METRO_CONFIG_CANDIDATES = ['metro.config.ts', 'metro.config.js', 'metro.config.cjs'];
 export const METRO_SETUP_DOCS_LINK =

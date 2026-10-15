@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { expect, fireEvent, fn, mocked } from 'storybook/test';
+import { expect, fireEvent, fn, mocked } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { NumericInput } from './NumericInput.tsx';
 
 const meta = preview.meta({

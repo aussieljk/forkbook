@@ -1,8 +1,8 @@
-import type { Path } from 'storybook/internal/types';
+import type { Path } from '@aussieljk/forkbook/internal/types';
 
 import { watchDirectories } from './watch-story-specifiers.ts';
 
-/** Watch the `.storybook` dir for changes */
+/** Watch the `.forkbook` dir for changes */
 export function watchConfig(
   configDir: Path,
   onInvalidate: (path: Path, removed: boolean) => Promise<void>

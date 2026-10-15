@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { withReset } from 'storybook/internal/components';
+import { withReset } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 

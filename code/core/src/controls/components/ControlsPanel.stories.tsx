@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { STORY_FINISHED, STORY_PREPARED } from 'storybook/internal/core-events';
+import { STORY_FINISHED, STORY_PREPARED } from '@aussieljk/forkbook/internal/core-events';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { global } from '@storybook/global';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, waitFor, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { buildQueryState } from '../../shared/open-service/query-state.ts';
 import type { QueryState } from '../../shared/open-service/types.ts';
@@ -347,7 +347,7 @@ export const ServiceDocgenKeepsControlsMountedWhenGateOpens: Story = {
 };
 
 /**
- * With STORYBOOK_DOCGEN_STORY_PREPARED="true" the dev gate opens earlier, at STORY_PREPARED instead of
+ * With FORKBOOK_DOCGEN_STORY_PREPARED="true" the dev gate opens earlier, at STORY_PREPARED instead of
  * STORY_FINISHED, so the panel subscribes to docgen as soon as the story module is delivered.
  */
 export const ServiceDocgenLoadsAfterStoryPreparedInDev: Story = {

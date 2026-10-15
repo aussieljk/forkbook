@@ -1,16 +1,16 @@
 import React from 'react';
 
-import type { Channel } from 'storybook/internal/channels';
-import { createBrowserChannel } from 'storybook/internal/channels';
-import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from 'storybook/internal/core-events';
-import type { Addon_Config, Addon_Types } from 'storybook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { createBrowserChannel } from '@aussieljk/forkbook/internal/channels';
+import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
+import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 import { FailedIcon } from '@storybook/icons';
 
-import type { API, AddonStore } from 'storybook/manager-api';
-import { addons, types } from 'storybook/manager-api';
-import { color } from 'storybook/theming';
+import type { API, AddonStore } from '@aussieljk/forkbook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
+import { color } from '@aussieljk/forkbook/theming';
 
 import { ToolbarManager } from '../toolbar/components/ToolbarManager.tsx';
 import { TOOLBAR_ID } from '../toolbar/constants.ts';
@@ -60,7 +60,7 @@ class ReactProvider extends Provider {
         id: WS_DISCONNECTED_NOTIFICATION_ID,
         content: {
           headline: 'Connection lost',
-          subHeadline: 'Please restart your Storybook server and reload the page',
+          subHeadline: 'Please restart your Forkbook server and reload the page',
         },
         icon: <FailedIcon color={color.negative} />,
         link: undefined,

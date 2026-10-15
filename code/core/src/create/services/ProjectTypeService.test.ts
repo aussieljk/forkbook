@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import { NxProjectDetectedError } from 'storybook/internal/server-errors';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { NxProjectDetectedError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { ProjectTypeService } from './ProjectTypeService.ts';
 
@@ -30,10 +30,10 @@ describe('ProjectTypeService', () => {
       vi.spyOn(service, 'detectProjectType').mockResolvedValue(ProjectType.UNDETECTED);
 
       await expect(service.autoDetectProjectType()).rejects.toThrowError(
-        'Storybook failed to detect your project type'
+        'Forkbook failed to detect your project type'
       );
       expect(logger.error).toHaveBeenCalledWith(
-        expect.stringContaining('Unable to initialize Storybook in this directory.')
+        expect.stringContaining('Unable to initialize Forkbook in this directory.')
       );
     });
 
@@ -64,7 +64,7 @@ describe('ProjectTypeService', () => {
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
 
       await expect(service.autoDetectProjectType()).rejects.toThrowError(
-        'Storybook failed to detect your project type'
+        'Forkbook failed to detect your project type'
       );
     });
 
@@ -166,7 +166,7 @@ describe('ProjectTypeService', () => {
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
 
       await expect(service.autoDetectProjectType()).rejects.toThrowError(
-        'Storybook failed to detect your project type'
+        'Forkbook failed to detect your project type'
       );
     });
   });

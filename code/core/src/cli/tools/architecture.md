@@ -1,7 +1,7 @@
 # Tools CLI attachment architecture
 
-The `storybook tools` CLI attaches to a running Storybook as another Open Service runtime. The
-Node SDK `storybook/internal/tools` owns both runtimes. The CLI parses flags, renders help and
+The `forkbook tools` CLI attaches to a running Forkbook as another Open Service runtime. The
+Node SDK `@aussieljk/forkbook/internal/tools` owns both runtimes. The CLI parses flags, renders help and
 outcomes, and sets exit codes.
 
 **Caller** = the temporary tools CLI/SDK process. **Instance** = the long-running dev server.
@@ -11,21 +11,21 @@ Open-service contract: [README.md](../../shared/open-service/README.md). Operati
 
 ## How attached mode works
 
-Toolsets are the public agent surface for MCP and `storybook tools`. Attached mode joins the
+Toolsets are the public agent surface for MCP and `forkbook tools`. Attached mode joins the
 instance's Open Service environment as another runtime, like the manager UI. It loads the instance
 config and presets (registering every service), connects to the instance channel over WebSocket,
 syncs service state, runs the toolset handler in the caller, and dispatches every service command
 to the instance. Cold-boot work (docgen, tests) runs where the warm resources already live.
 
 The caller connects to `/storybook-server-channel` over WebSocket. The instance writes its channel
-token into `~/.storybook/instances/<id>.json` (file `0600`, dir `0700`). The endpoint is
+token into `~/.forkbook/instances/<id>.json` (file `0600`, dir `0700`). The endpoint is
 `record.url` plus that path. The upgrade handler accepts a missing `Origin` when the token is
 valid.
 
 CLI default is `auto`: attach when a matching instance is running, otherwise load locally.
 `--attach` requires attachment. `--no-attach` forces local. A missing instance falls back to
 local with no notice. Unexpected factory-time gate failures print the facts of the failed check
-plus generic recovery guidance (restart Storybook from the project, re-run from there) — never a
+plus generic recovery guidance (restart Forkbook from the project, re-run from there) — never a
 constructed path, and never a path in executable-command position — and then fall back. A later
 `tools.call` failure (disconnect, remote ack timeout) stays on the attached host.
 
@@ -55,7 +55,7 @@ triggered by commands or loads is delegated and stays cheap. Eager work at regis
 
 The caller is a leaf (`relay: false`, like preview). It talks to the server hub directly.
 UniversalStores prepare against the real channel as followers. The dispatcher sets
-`STORYBOOK_ATTACHED_TOOLS` before importing core so those stores are born followers. Local
+`FORKBOOK_ATTACHED_TOOLS` before importing core so those stores are born followers. Local
 fallback deletes that env before loading the local runtime, which must be a leader.
 
 ## Installation match
@@ -118,19 +118,19 @@ IPC. Command-level side effects run on the instance.
 
 ## SDK
 
-`storybook/internal/tools` owns both modes. Mode (`attached` | `local`) and host (`in-process` |
+`@aussieljk/forkbook/internal/tools` owns both modes. Mode (`attached` | `local`) and host (`in-process` |
 `child`) are orthogonal. See [README.md](./README.md#sdk). Vocabulary: **tools** for the surface,
 **toolset** as the grouping term, dotted method refs matching `ToolsetMethodId`. A long-lived
 consumer amortizes config load across many calls on the live synced runtime.
 
 ## End-to-end flow (attached)
 
-1. **Discover.** Read `~/.storybook/instances/*.json` (pid-liveness-checked). Match by cwd /
+1. **Discover.** Read `~/.forkbook/instances/*.json` (pid-liveness-checked). Match by cwd /
    configDir — or, with `--port`, by port alone across all projects (the record supplies the
    project; an explicit `--config-dir` still restricts). Several matches → the invoking agent's
    bucket, then the most recently started; the siblings surface as a stderr warning naming
    `--port`. No record → local fallback, or a hard error under `--attach`.
-2. **Gate.** Token present (else "restart Storybook" + fallback). Same `storybook` installation
+2. **Gate.** Token present (else "restart Forkbook" + fallback). Same `storybook` installation
    (the record's `storybookPath` realpath-equals the caller's own package root) → in-process; a
    different installation → child host from the recorded installation; unverifiable or may not
    respawn → `EnvironmentMismatchError`.
@@ -152,14 +152,14 @@ constructs a path or places one in executable-command position.
 
 | Failure                           | Detection                                      | Message must include                                                                                          |
 | --------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| No instance for this project      | No cwd/configDir match                         | `--attach` only: how to start Storybook; other running instances with `cwd` + `url`. `auto` falls back with no notice |
+| No instance for this project      | No cwd/configDir match                         | `--attach` only: how to start Forkbook; other running instances with `cwd` + `url`. `auto` falls back with no notice |
 | Port mismatch                     | No running instance on `--port`                | Running instances with their `port` + `url`; `--port <port>`                                                  |
-| Old server                        | Token absent                                   | Restart Storybook (vX.Y+) to enable attach                                                                    |
+| Old server                        | Token absent                                   | Restart Forkbook (vX.Y+) to enable attach                                                                    |
 | Stale record / connection refused | WS connect fails                               | Registry cleanup; fallback note                                                                               |
 | Different installation, no spawn  | Mismatch with `autoSpawn: false` / in a child  | Both roots, both versions, the instance's config dir; restart guidance (with `autoSpawn`, this respawns instead) |
 | Unverifiable installation         | No `storybookPath`, or its root gone from disk | Restart guidance                                                                                              |
-| Config drift                      | Instance reports command unhandled             | Attached Storybook has no handler for the command — restart it with a matching configuration                  |
-| Unacknowledged command            | Remote command ack timeout                     | Attached Storybook did not acknowledge in time; the command may still have executed — retry                   |
+| Config drift                      | Instance reports command unhandled             | Attached Forkbook has no handler for the command — restart it with a matching configuration                  |
+| Unacknowledged command            | Remote command ack timeout                     | Attached Forkbook did not acknowledge in time; the command may still have executed — retry                   |
 
 Rows other than the last two are factory-time attach gates. In `auto`, those fall back to a local host. Under `--attach`, they are hard errors with
 the same no-instance text. Config drift and an unacknowledged command are post-attach `tools.call` failures:
@@ -185,9 +185,9 @@ the same no-instance text. Config drift and an unacknowledged command are post-a
   state; commands do work that produces state.
 - **Thin-trigger load**: a query `load` hook that only awaits commands, so delegation is
   transitive.
-- **Instance registry**: `~/.storybook/instances/<id>.json`, written by running dev servers,
+- **Instance registry**: `~/.forkbook/instances/<id>.json`, written by running dev servers,
   pid-liveness-checked; carries the channel token and the server's `storybookPath`.
-- **Tools SDK**: `storybook/internal/tools` — owns both modes. `createTools` → `{ describe, call,
+- **Tools SDK**: `@aussieljk/forkbook/internal/tools` — owns both modes. `createTools` → `{ describe, call,
 close, mode, storybook }`.
 - **Installation gate**: whether this process runs the exact same `storybook` installation as the
   instance (`storybookPath` equality). A match attaches in-process; a mismatch respawns from the

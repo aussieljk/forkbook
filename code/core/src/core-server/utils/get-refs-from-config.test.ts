@@ -1,10 +1,10 @@
-import { logger } from 'storybook/internal/node-logger';
-import type { Options } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { getRefsFromConfig } from './get-refs-from-config.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 function optionsWithRefs(refs: unknown): Options {
   return { presets: { apply: async () => refs } } as unknown as Options;

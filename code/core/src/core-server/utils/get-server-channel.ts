@@ -1,12 +1,12 @@
 import type { IncomingMessage } from 'node:http';
 
-import type { ChannelHandler } from 'storybook/internal/channels';
+import type { ChannelHandler } from '@aussieljk/forkbook/internal/channels';
 import {
   Channel,
   HEARTBEAT_INTERVAL,
   SERVER_CHANNEL_PATH,
   setChannel,
-} from 'storybook/internal/channels';
+} from '@aussieljk/forkbook/internal/channels';
 
 import { isJSON, parse, stringify } from 'telejson';
 import { WebSocket, WebSocketServer } from 'ws';
@@ -83,7 +83,7 @@ export class ServerChannelTransport {
           socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n');
           return;
         }
-        // Every browser client Storybook ships declares a page, so a browser without one is
+        // Every browser client Forkbook ships declares a page, so a browser without one is
         // malformed, and letting it through would hand it the server role.
         if (page === null && request.headers.origin !== undefined) {
           socket.end('HTTP/1.1 400 Bad Request\r\nConnection: close\r\n\r\n');

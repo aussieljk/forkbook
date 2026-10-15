@@ -5,8 +5,8 @@ import { global } from '@storybook/global';
 
 import * as R from 'react-router-dom';
 
-import { NAVIGATE_URL } from 'storybook/internal/core-events';
-import { addons } from 'storybook/manager-api';
+import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
+import { addons } from '@aussieljk/forkbook/manager-api';
 import type { LinkProps, NavigateOptions, RenderData } from './types.ts';
 import { getMatch, parsePath, queryFromLocation } from './utils.ts';
 

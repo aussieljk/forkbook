@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Addon_TypesEnum, SupportedBuilder } from 'storybook/internal/types';
+import { Addon_TypesEnum, SupportedBuilder } from '@aussieljk/forkbook/internal/types';
 
 import {
   a11yStatusStore,
@@ -8,7 +8,7 @@ import {
   store,
   testProviderStore,
 } from '#manager-store';
-import { Tag, addons } from 'storybook/manager-api';
+import { Tag, addons } from '@aussieljk/forkbook/manager-api';
 
 import { GlobalErrorContext, GlobalErrorModal } from './components/GlobalErrorModal.tsx';
 import { SidebarContextMenu } from './components/SidebarContextMenu.tsx';
@@ -17,13 +17,13 @@ import {
   A11Y_PANEL_ID,
   ADDON_ID,
   COMPONENT_TESTING_PANEL_ID,
-  STORYBOOK_ADDON_TEST_CHANNEL,
+  FORKBOOK_ADDON_TEST_CHANNEL,
   TEST_PROVIDER_ID,
 } from './constants.ts';
 import { useTestProvider } from './use-test-provider-state.ts';
 
 addons.register(ADDON_ID, (api) => {
-  if (globalThis.STORYBOOK_BUILDER === SupportedBuilder.VITE) {
+  if (globalThis.FORKBOOK_BUILDER === SupportedBuilder.VITE) {
     const openPanel = (panelId: string) => {
       api.setSelectedPanel(panelId);
       api.togglePanel(true);
@@ -43,7 +43,7 @@ addons.register(ADDON_ID, (api) => {
       });
     });
     store.subscribe('TEST_RUN_COMPLETED', ({ payload }) => {
-      api.emit(STORYBOOK_ADDON_TEST_CHANNEL, { type: 'test-run-completed', payload });
+      api.emit(FORKBOOK_ADDON_TEST_CHANNEL, { type: 'test-run-completed', payload });
     });
 
     addons.add(TEST_PROVIDER_ID, {

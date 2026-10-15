@@ -1,5 +1,5 @@
-import type { Channel } from 'storybook/internal/channels';
-import type { RequestData, ResponseData } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { RequestData, ResponseData } from '@aussieljk/forkbook/internal/core-events';
 
 export class RequestResponseError<Payload extends Record<string, any> | void> extends Error {
   payload: Payload | undefined = undefined;

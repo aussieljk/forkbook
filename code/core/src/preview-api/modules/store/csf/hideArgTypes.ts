@@ -1,5 +1,9 @@
-import { ArgTypesRemovedFromStoryContextError } from 'storybook/internal/preview-errors';
-import type { Renderer, StoryContext, StoryContextForRender } from 'storybook/internal/types';
+import { ArgTypesRemovedFromStoryContextError } from '@aussieljk/forkbook/internal/preview-errors';
+import type {
+  Renderer,
+  StoryContext,
+  StoryContextForRender,
+} from '@aussieljk/forkbook/internal/types';
 
 const HIDDEN_KEY = 'argTypes';
 

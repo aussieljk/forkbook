@@ -2,7 +2,7 @@
  * How `createServiceDocsAccess` sees a project's documentable entries.
  *
  * Derived from the story index filtered by the manifest tag, not from the docgen and story-docs
- * aggregates: the index is what decides which components a Storybook publishes, and it carries
+ * aggregates: the index is what decides which components a Forkbook publishes, and it carries
  * their order. Classifying from the aggregates instead would list components the project does not
  * expose, and alphabetise what the sidebar deliberately does not.
  */

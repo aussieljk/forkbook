@@ -3,10 +3,10 @@ import React from 'react';
 
 import { DiscordIcon, SidebarIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import { expect, fn } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
 import { Link } from './link.tsx';
 

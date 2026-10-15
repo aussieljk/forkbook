@@ -1,5 +1,5 @@
-import type { Status, StatusStoreByTypeId, StatusValue } from 'storybook/internal/types';
-import { REVIEW_STATUS_TYPE_ID } from 'storybook/internal/types';
+import type { Status, StatusStoreByTypeId, StatusValue } from '@aussieljk/forkbook/internal/types';
+import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
 import type { ReviewState } from './review-state.ts';
 

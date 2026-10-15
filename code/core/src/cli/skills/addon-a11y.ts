@@ -1,7 +1,7 @@
 import type { Options } from '../../types/index.ts';
 
 /**
- * Check if storybook/addon-a11y is enabled in the Storybook configuration.
+ * Check if @aussieljk/forkbook/addon-a11y is enabled in the Forkbook configuration.
  */
 export async function isAddonA11yEnabled(options: Options): Promise<boolean> {
   try {

@@ -2,8 +2,8 @@ import { join } from 'pathe';
 
 import { ResolverFactory as OxcResolverFactory } from 'oxc-resolver';
 
-import { defaultResolveConditionNames } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { defaultResolveConditionNames } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { ModuleResolveConfig } from '../adapters/types.ts';
 

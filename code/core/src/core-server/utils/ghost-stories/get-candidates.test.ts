@@ -7,7 +7,7 @@ import { getCandidatesForStorybook } from './get-candidates.ts';
 
 vi.mock('node:fs/promises');
 vi.mock('glob');
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 vi.mock('./component-analyzer');
 
 describe('getCandidatesForStorybook', () => {

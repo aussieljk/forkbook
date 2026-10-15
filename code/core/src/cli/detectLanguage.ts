@@ -1,14 +1,14 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { SupportedLanguage } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import semver from 'semver';
 
 /**
  * Detect whether the project should be treated as TypeScript or JavaScript. The js/tsconfig lookup
- * happens in `workingDir`, which defaults to the process cwd for callers (like `storybook init`)
+ * happens in `workingDir`, which defaults to the process cwd for callers (like `forkbook init`)
  * that already run from the project root.
  */
 export async function detectLanguage(
@@ -84,7 +84,7 @@ export async function detectIncompatiblePackageVersions(
       `@typescript-eslint/parser ${typescriptEslintParserVersion} is below 5.44.0`
     );
   }
-  // Treat Storybook canary/prerelease versions (e.g. 0.0.0-pr-*) as compatible
+  // Treat Forkbook canary/prerelease versions (e.g. 0.0.0-pr-*) as compatible
   if (
     eslintPluginStorybookVersion &&
     !eslintPluginStorybookVersion.startsWith('0.0.0-') &&

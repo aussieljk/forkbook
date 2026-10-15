@@ -1,4 +1,4 @@
-import type { Report } from 'storybook/preview-api';
+import type { Report } from '@aussieljk/forkbook/preview-api';
 
 export interface StoryFinishedPayload {
   storyId: string;

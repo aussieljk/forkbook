@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType, installSkills } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { telemetry } from 'storybook/internal/telemetry';
+import { ProjectType, installSkills } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import {
   Feature,
   SupportedBuilder,
   SupportedFramework,
   SupportedLanguage,
   SupportedRenderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import {
   executeAddonConfiguration,
@@ -24,18 +24,18 @@ import {
 import { doInitiate } from './initiate.ts';
 import { FeatureCompatibilityService } from './services/FeatureCompatibilityService.ts';
 
-vi.mock('storybook/internal/cli', { spy: true });
-vi.mock('storybook/internal/telemetry');
+vi.mock('@aussieljk/forkbook/internal/cli', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry');
 vi.mock('./commands/index.ts', { spy: true });
 vi.mock('./generators/index.ts');
 vi.mock('./services/FeatureCompatibilityService.ts', { spy: true });
-vi.mock(import('storybook/internal/common'), async (importOriginal) => ({
+vi.mock(import('@aussieljk/forkbook/internal/common'), async (importOriginal) => ({
   ...(await importOriginal()),
   cache: { set: vi.fn().mockResolvedValue(undefined) } as never,
 }));
 
 const packageManager = {
-  getPackageCommand: () => 'npx storybook skills setup',
+  getPackageCommand: () => 'npx forkbook skills setup',
 } as Partial<JsPackageManager> as JsPackageManager;
 
 const initiateWith = (...features: Feature[]) => {
@@ -63,7 +63,7 @@ describe('init: the skills step', () => {
       FeatureCompatibilityService.prototype.validateTestFeatureCompatibility
     ).mockResolvedValue({ compatible: true });
     vi.mocked(executeGeneratorExecution).mockResolvedValue({
-      configDir: '.storybook',
+      configDir: '.forkbook',
       storybookCommand: 'npm run storybook',
       extraAddons: [],
     } as Awaited<ReturnType<typeof executeGeneratorExecution>>);

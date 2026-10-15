@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { PresetConfig, StorybookConfigRaw } from 'storybook/internal/types';
+import type { PresetConfig, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { getPresets } from '../../common/presets.ts';
 import * as overridePreset from './common-override-preset.ts';
@@ -22,7 +22,7 @@ async function resolveDocgenServer(
     (contents, index) => ({ type: 'virtual', name: `preset-${index}`, ...contents }) as PresetConfig
   );
   const loaded = await getPresets(presetConfigs, {
-    configDir: '/project/.storybook',
+    configDir: '/project/.forkbook',
     isCritical: true,
     build,
   } as never);

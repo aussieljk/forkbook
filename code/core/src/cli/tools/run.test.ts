@@ -1,11 +1,11 @@
 /**
- * The primary seam of the `storybook tools` CLI: tokens in, `{ exitCode, output }` out, against a
+ * The primary seam of the `forkbook tools` CLI: tokens in, `{ exitCode, output }` out, against a
  * toolset registry populated with the real core toolsets (stub dependencies). Exercises dispatch,
  * help, argument parsing and validation, the requires-dev-server contract, and outcome mapping —
  * everything behind the commander wiring, without spawning processes.
  */
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as v from 'valibot';
@@ -34,7 +34,7 @@ import {
 } from './sdk/index.ts';
 import { registerCoreToolsetsForTest } from './test-support/register-core-toolsets.ts';
 
-const CONFIG_DIR = '/repo/.storybook';
+const CONFIG_DIR = '/repo/.forkbook';
 
 const STORY_INDEX = {
   v: 5,
@@ -336,14 +336,14 @@ describe('local tools', () => {
         toolset: 'docs',
         tool: 'list',
         tokens: [],
-        target: { cwd: '/repo', configDir: '.storybook' },
+        target: { cwd: '/repo', configDir: '.forkbook' },
       },
       deps
     );
 
     expect(createTools).toHaveBeenCalledWith({
       cwd: '/repo',
-      configDir: '.storybook',
+      configDir: '.forkbook',
       mode: 'auto',
       clientInfo: { name: 'storybook-cli', version: expect.any(String), kind: 'cli' },
     });
@@ -421,7 +421,7 @@ describe('requires-dev-server contract', () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.outcome).toEqual({ kind: 'intercept', reason: 'requires-dev-server' });
-    expect(result.output).toContain('requires a running Storybook dev server');
+    expect(result.output).toContain('requires a running Forkbook dev server');
   });
 
   it('hands the parsed --port to instance discovery so the message names the right instance', async () => {
@@ -509,7 +509,7 @@ describe('requires-dev-server contract', () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.outcome).toEqual({ kind: 'intercept', reason: 'requires-dev-server' });
-    expect(result.output).toContain('requires a running Storybook dev server');
+    expect(result.output).toContain('requires a running Forkbook dev server');
   });
 });
 
@@ -542,7 +542,7 @@ describe('dispatch', () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.outcome).toEqual({ kind: 'intercept', reason: 'invalid-arguments' });
-    expect(result.output).toContain('Invalid arguments for `npx storybook tools docs show`');
+    expect(result.output).toContain('Invalid arguments for `npx forkbook tools docs show`');
     expect(result.output).toContain('--help');
   });
 
@@ -563,13 +563,13 @@ describe('dispatch', () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.outcome).toEqual({ kind: 'intercept', reason: 'invalid-arguments' });
-    expect(result.output).toBe(`Invalid arguments for \`npx storybook tools docs show\`:
+    expect(result.output).toBe(`Invalid arguments for \`npx forkbook tools docs show\`:
 
 - Unknown flag \`--storybook-id\`.
 
 Valid flags: \`--id\`, \`--storybookId\`.
 
-Run \`npx storybook tools docs show --help\` for the expected arguments.`);
+Run \`npx forkbook tools docs show --help\` for the expected arguments.`);
     expect(resolve).not.toHaveBeenCalled();
   });
 
@@ -594,7 +594,7 @@ Run \`npx storybook tools docs show --help\` for the expected arguments.`);
 
     expect(result.outcome).toEqual({ kind: 'intercept', reason: 'invalid-arguments' });
     expect(result.output).toContain(
-      'goes before the toolset name: `npx storybook tools --port <value> docs show`'
+      'goes before the toolset name: `npx forkbook tools --port <value> docs show`'
     );
   });
 
@@ -628,12 +628,12 @@ describe('help', () => {
     expect(result.exitCode).toBe(0);
     expect(result.outcome).toEqual({ kind: 'help' });
     expect(result.output).toContain(
-      `Storybook tools from the Storybook configuration at ${CONFIG_DIR}`
+      `Forkbook tools from the Forkbook configuration at ${CONFIG_DIR}`
     );
     // The generic flags are documented in the dump itself: commander's own help is disabled in
     // favor of this runtime-derived one, so nothing else renders them.
     expect(result.output).toContain(
-      'Usage: npx storybook tools [options] [toolset] [tool] [args...]'
+      'Usage: npx forkbook tools [options] [toolset] [tool] [args...]'
     );
     expect(result.output).toContain('--cwd <path>');
     expect(result.output).toContain('-c, --config-dir <dir-name>');
@@ -654,7 +654,7 @@ describe('help', () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.outcome).toEqual({ kind: 'help' });
-    expect(result.output).toContain('Usage: npx storybook tools docs <tool> [--key value ...]');
+    expect(result.output).toContain('Usage: npx forkbook tools docs <tool> [--key value ...]');
     expect(result.output).toContain('docs show-story  [local]');
   });
 
@@ -665,7 +665,7 @@ describe('help', () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.outcome).toEqual({ kind: 'help' });
-    expect(result.output).toContain('Usage: npx storybook tools docs <tool> [--key value ...]');
+    expect(result.output).toContain('Usage: npx forkbook tools docs <tool> [--key value ...]');
     expect(result.output).not.toContain('Unknown tool');
   });
 
@@ -676,8 +676,8 @@ describe('help', () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.outcome).toEqual({ kind: 'help' });
-    expect(result.output).toContain('Usage: npx storybook tools stories preview [--key value ...]');
-    expect(result.output).toContain('requires a running Storybook dev server');
+    expect(result.output).toContain('Usage: npx forkbook tools stories preview [--key value ...]');
+    expect(result.output).toContain('requires a running Forkbook dev server');
     expect(result.output).toContain('`--stories`');
   });
 
@@ -717,7 +717,7 @@ describe('help', () => {
 
     const result = await run(['stories', 'find-by-component', '--help'], deps);
 
-    expect(result.output).toContain('npx storybook tools stories changed');
+    expect(result.output).toContain('npx forkbook tools stories changed');
     expect(result.output).not.toContain('stories-changed');
   });
 });
@@ -859,7 +859,7 @@ describe('host failures', () => {
         throw new ToolsRuntimeError({
           reason: 'config-load-failed',
           message:
-            'Could not load the Storybook configuration for this project: No configuration files found',
+            'Could not load the Forkbook configuration for this project: No configuration files found',
         });
       },
     };
@@ -868,7 +868,7 @@ describe('host failures', () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.output).toBe(
-      'Could not load the Storybook configuration for this project: No configuration files found'
+      'Could not load the Forkbook configuration for this project: No configuration files found'
     );
     expect(result.outcome).toMatchObject({ kind: 'error' });
   });
@@ -946,7 +946,7 @@ describe('attached tools', () => {
     registerToolset(
       defineToolset({
         id: 'foreign',
-        description: 'Toolset whose method needs a running Storybook.',
+        description: 'Toolset whose method needs a running Forkbook.',
         methods: {
           ping: {
             title: 'Ping',
@@ -980,7 +980,7 @@ describe('attached tools', () => {
           reason: 'no-instance',
           instances: [],
           remediation:
-            'No running Storybook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+            'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
         });
       }),
     });
@@ -998,7 +998,7 @@ describe('attached tools', () => {
   it('prints the SDK fallback notice separately from the local result', async () => {
     const tools = makeLocalTools();
     tools.fallbackNotice =
-      "No running Storybook instance is on port 9999.\n\nFalling back to loading this project's Storybook configuration.";
+      "No running Forkbook instance is on port 9999.\n\nFalling back to loading this project's Forkbook configuration.";
     tools.requestedMode = 'auto';
     tools.fallbackReason = 'port-mismatch';
     const { deps, createTools } = makeDeps({

@@ -3,7 +3,7 @@ import { sep } from 'node:path';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { InvalidStoriesEntryError } from 'storybook/internal/server-errors';
+import { InvalidStoriesEntryError } from '@aussieljk/forkbook/internal/server-errors';
 
 import {
   getDirectoryFromWorkingDir,
@@ -38,7 +38,7 @@ vi.mock('node:fs', () => {
 });
 
 const options = {
-  configDir: '/path/to/project/.storybook',
+  configDir: '/path/to/project/.forkbook',
   workingDir: '/path/to/project',
 };
 
@@ -67,15 +67,15 @@ describe('normalizeStoriesEntry', () => {
     expect(specifier).toMatchInlineSnapshot(`
       {
         "titlePrefix": "",
-        "directory": "./.storybook",
+        "directory": "./.forkbook",
         "files": "file.stories.jsx",
         "importPathMatcher": {}
       }
     `);
 
-    expect(specifier.importPathMatcher).toMatchPaths(['./.storybook/file.stories.jsx']);
+    expect(specifier.importPathMatcher).toMatchPaths(['./.forkbook/file.stories.jsx']);
     expect(specifier.importPathMatcher).not.toMatchPaths([
-      '.storybook/file.stories.jsx',
+      '.forkbook/file.stories.jsx',
       './file.stories.jsx',
       '../file.stories.jsx',
     ]);
@@ -304,7 +304,7 @@ describe('normalizeStoriesEntry', () => {
 describe('getDirectoryFromWorkingDir', () => {
   it('should return normalized story path', () => {
     const normalizedPath = getDirectoryFromWorkingDir({
-      configDir: '/path/to/project/.storybook',
+      configDir: '/path/to/project/.forkbook',
       workingDir: '/path/to/project',
       directory: '/path/to/project/src',
     });

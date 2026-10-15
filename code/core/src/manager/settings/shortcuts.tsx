@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React, { Component } from 'react';
 
-import { Button, Form, Tooltip, TooltipProvider } from 'storybook/internal/components';
+import { Button, Form, Tooltip, TooltipProvider } from '@aussieljk/forkbook/internal/components';
 
 import { CheckIcon } from '@storybook/icons';
 
@@ -10,7 +10,7 @@ import {
   eventToShortcut,
   shortcutMatchesShortcut,
   shortcutToHumanString,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 import { clsx } from 'clsx';
 
 import SettingsFooter from './SettingsFooter.tsx';

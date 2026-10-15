@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { userEvent, within } from 'storybook/test';
+import { userEvent, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../.storybook/preview.tsx';
+import preview from '../../../../.forkbook/preview.tsx';
 
 const FreezeHarness = () => {
   const [clickCount, setClickCount] = useState(0);

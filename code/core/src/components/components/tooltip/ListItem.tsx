@@ -1,6 +1,6 @@
 import React, { type ComponentProps, type ReactNode, type SyntheticEvent, forwardRef } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import memoize from 'memoizerific';
 
@@ -90,9 +90,7 @@ const ListItem = forwardRef((props: ListItemProps, ref) => {
   const activeAttr = active || undefined;
   const disabledAttr = disabled || undefined;
 
-  deprecate(
-    '`ListItem` is deprecated and will be removed in Storybook 11, use `MenuItem` instead.'
-  );
+  deprecate('`ListItem` is deprecated and will be removed in Forkbook 11, use `MenuItem` instead.');
 
   return (
     <Item

@@ -54,7 +54,7 @@ export type ReviewServiceState = {
 export const reviewServiceDef = defineService({
   id: 'core/review',
   internal: true,
-  description: 'Owns the current curated Storybook review, its deferred update, and its staleness.',
+  description: 'Owns the current curated Forkbook review, its deferred update, and its staleness.',
   initialState: { current: null, pending: null } as ReviewServiceState,
   queries: {
     current: {

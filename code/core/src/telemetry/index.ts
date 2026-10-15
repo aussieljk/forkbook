@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { notify } from './notify.ts';
 import { sanitizeError } from './sanitize.ts';
@@ -200,7 +200,7 @@ async function _processAndSend(
     }
 
     if (!payload.error || options?.enableCrashReports) {
-      if (process.env?.STORYBOOK_TELEMETRY_DEBUG) {
+      if (process.env?.FORKBOOK_TELEMETRY_DEBUG) {
         logger.info('[telemetry]');
         logger.info(JSON.stringify(telemetryData, null, 2));
       }

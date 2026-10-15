@@ -1,4 +1,4 @@
-import type { StorybookTypes } from 'storybook/internal/types';
+import type { StorybookTypes } from '@aussieljk/forkbook/internal/types';
 
 import actionAnnotations, { type ActionsTypes } from '../actions/preview.ts';
 import backgroundsAnnotations, { type BackgroundTypes } from '../backgrounds/preview.ts';

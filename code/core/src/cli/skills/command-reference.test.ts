@@ -25,22 +25,22 @@ const catalogEntry = (id: string, descriptions: Record<string, string>) =>
   );
 
 const docs = catalogEntry('docs', {
-  list: 'List components. Then call `npx storybook tools docs show`.',
-  show: 'Show one component. For one story, use `npx storybook tools docs show-story`.',
+  list: 'List components. Then call `npx forkbook tools docs show`.',
+  show: 'Show one component. For one story, use `npx forkbook tools docs show-story`.',
   showStory: 'Show one story.',
 });
 const review = catalogEntry('review', {
-  create: 'Create a review. Find ids with `npx storybook tools docs list`.',
+  create: 'Create a review. Find ids with `npx forkbook tools docs list`.',
 });
 
 const described = (reference: string) =>
-  [...reference.matchAll(/^Usage: npx storybook tools (.+) \[--key value \.\.\.\]$/gm)].map(
+  [...reference.matchAll(/^Usage: npx forkbook tools (.+) \[--key value \.\.\.\]$/gm)].map(
     ([, command]) => command
   );
 
 describe('renderCommandReference', () => {
   it('describes each tool the output names with its `--help` output', () => {
-    const reference = renderCommandReference('Call `npx storybook tools docs list`.', [
+    const reference = renderCommandReference('Call `npx forkbook tools docs list`.', [
       docs,
       review,
     ]);
@@ -52,13 +52,13 @@ describe('renderCommandReference', () => {
   });
 
   it('does not take a longer command for the one it starts with', () => {
-    const reference = renderCommandReference('Call `npx storybook tools docs show-story`.', [docs]);
+    const reference = renderCommandReference('Call `npx forkbook tools docs show-story`.', [docs]);
 
     expect(described(reference)).toEqual(['docs show-story']);
   });
 
   it('follows entries only into toolsets the text names', () => {
-    const reference = renderCommandReference('Call `npx storybook tools review create`.', [
+    const reference = renderCommandReference('Call `npx forkbook tools review create`.', [
       docs,
       review,
     ]);
@@ -67,6 +67,6 @@ describe('renderCommandReference', () => {
   });
 
   it('is empty when the text names no tool', () => {
-    expect(renderCommandReference('Run `npx storybook tools --help`.', [docs])).toBe('');
+    expect(renderCommandReference('Run `npx forkbook tools --help`.', [docs])).toBe('');
   });
 });

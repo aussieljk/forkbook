@@ -1,8 +1,8 @@
 import React, { type FC } from 'react';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import {
   IFRAME_RESIZE_CONTEXT,
   type IframeResizeViewport,
@@ -75,7 +75,7 @@ const titleCase = (value: string) =>
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
 
-// Stand-in for the Storybook index: every demo story resolves to a title +
+// Stand-in for the Forkbook index: every demo story resolves to a title +
 // name so the grid renders it (stories with no index entry are skipped).
 const demoStoryInfo: Record<string, StoryInfo> = Object.fromEntries(
   demoStoryIds.map((id) => {

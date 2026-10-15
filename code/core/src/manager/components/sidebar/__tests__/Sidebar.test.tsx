@@ -5,11 +5,11 @@ import { afterEach, describe, expect, test } from 'vitest';
 
 import React from 'react';
 
-import type { API_IndexHash } from 'storybook/internal/types';
+import type { API_IndexHash } from '@aussieljk/forkbook/internal/types';
 
-import type { HashEntry, Refs } from 'storybook/manager-api';
-import type { StorybookTheme } from 'storybook/theming';
-import { ThemeProvider, ensure, themes } from 'storybook/theming';
+import type { HashEntry, Refs } from '@aussieljk/forkbook/manager-api';
+import type { StorybookTheme } from '@aussieljk/forkbook/theming';
+import { ThemeProvider, ensure, themes } from '@aussieljk/forkbook/theming';
 
 import { Sidebar } from '../Sidebar.tsx';
 import type { SidebarProps } from '../Sidebar.tsx';

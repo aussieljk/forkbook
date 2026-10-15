@@ -1,7 +1,7 @@
 import { Category, StorybookError } from '../../../server-errors.ts';
 import type { StorybookInstanceRecord } from '../instances/types.ts';
 
-/** Why attaching to a running Storybook was not possible. */
+/** Why attaching to a running Forkbook was not possible. */
 export type AttachUnavailableReason =
   | 'no-instance'
   | 'port-mismatch'
@@ -9,7 +9,7 @@ export type AttachUnavailableReason =
   | 'connection-failed';
 
 /**
- * The requested capability needs a running Storybook and the SDK could not attach to one.
+ * The requested capability needs a running Forkbook and the SDK could not attach to one.
  *
  * `remediation` is the whole message: it is written for the agent or developer that triggered the
  * call and names the next step, which is what `agentFacing` declares. `instances` carries every
@@ -49,7 +49,7 @@ export class AttachUnavailableError extends StorybookError {
 }
 
 /**
- * The instance record cannot prove which `storybook` installation the running Storybook is, or
+ * The instance record cannot prove which `storybook` installation the running Forkbook is, or
  * the installations differ and spawning a child host from the recorded one is not allowed
  * (`autoSpawn: false`, or this process is already a child host). `reason` is the whole message
  * and names the recovery.

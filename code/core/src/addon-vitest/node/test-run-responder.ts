@@ -1,12 +1,15 @@
-import type { Channel } from 'storybook/internal/channels';
-import { createFileSystemCache, resolvePathInStorybookCache } from 'storybook/internal/common';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import {
+  createFileSystemCache,
+  resolvePathInStorybookCache,
+} from '@aussieljk/forkbook/internal/common';
 import {
   internal_UniversalStore,
   experimental_getTestProviderStore,
-} from 'storybook/internal/core-server';
-import type { Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-server';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
 
 import { isEqual } from 'es-toolkit/predicate';
 
@@ -77,8 +80,7 @@ const createTestRunnerStore = async ({ channel, options }: ResponderOptions): Pr
       ...selectCachedState(cachedState),
     },
     leader:
-      process.env.VITEST_CHILD_PROCESS !== 'true' &&
-      process.env.STORYBOOK_ATTACHED_TOOLS !== 'true',
+      process.env.VITEST_CHILD_PROCESS !== 'true' && process.env.FORKBOOK_ATTACHED_TOOLS !== 'true',
   });
   store.onStateChange((state, previousState) => {
     if (!isEqual(selectCachedState(state), selectCachedState(previousState))) {
@@ -165,14 +167,14 @@ export const wireTestRunResponder = async ({
   channel: Channel | undefined;
   options: Options;
 }): Promise<void> => {
-  // The vitest child process loads this same Storybook configuration in-process; answering
+  // The vitest child process loads this same Forkbook configuration in-process; answering
   // requests from inside it could recursively boot another child.
   if (process.env.VITEST_CHILD_PROCESS === 'true') {
     return;
   }
   // An attached tools host shares the instance's channel. Answering here would create a second
-  // UniversalStore leader for `storybook/test` and crash the running Storybook.
-  if (process.env.STORYBOOK_ATTACHED_TOOLS === 'true') {
+  // UniversalStore leader for `@aussieljk/forkbook/test` and crash the running Forkbook.
+  if (process.env.FORKBOOK_ATTACHED_TOOLS === 'true') {
     return;
   }
   // Without a channel there is no bus to answer on. In practice every configuration loader
@@ -206,7 +208,7 @@ export const wireTestRunResponder = async ({
       sendResponse({
         status: 'error',
         error: {
-          message: 'Story tests require a Vite-based Storybook builder.',
+          message: 'Story tests require a Vite-based Forkbook builder.',
         },
       });
       return;

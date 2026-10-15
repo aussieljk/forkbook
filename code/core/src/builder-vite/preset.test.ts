@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { isAbsolute } from 'pathe';
 import { describe, expect, it, vi } from 'vitest';
@@ -9,7 +9,7 @@ import { resolveVitePublicDir } from './vite-config.ts';
 
 vi.mock('./vite-config.ts', () => ({ resolveVitePublicDir: vi.fn() }));
 
-const options = { configDir: '/project/.storybook', configType: 'PRODUCTION' } as Options;
+const options = { configDir: '/project/.forkbook', configType: 'PRODUCTION' } as Options;
 
 describe('staticDirs preset', () => {
   it('appends the Vite public dir at the root after the existing entries', async () => {

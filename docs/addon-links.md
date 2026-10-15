@@ -1,29 +1,29 @@
 # Story Links Addon
 
-The Storybook Links addon can be used to create links that navigate between stories in [Storybook](https://storybook.js.org?ref=readme).
+The Forkbook Links addon can be used to create links that navigate between stories in [Forkbook](https://storybook.js.org?ref=readme).
 
 [Framework Support](https://storybook.js.org/docs/configure/integration/frameworks-feature-support?ref=readme)
 
 ## Getting Started
 
-Install this addon by adding the `storybook/addon-links` dependency:
+Install this addon by adding the `@aussieljk/forkbook/addon-links` dependency:
 
 ```sh
-yarn add -D storybook/addon-links
+yarn add -D @aussieljk/forkbook/addon-links
 ```
 
-within `.storybook/main.js`:
+within `.forkbook/main.js`:
 
 ```js
 export default {
-  addons: ['storybook/addon-links'],
+  addons: ['@aussieljk/forkbook/addon-links'],
 };
 ```
 
 Then you can import `linkTo` in your stories and use like this:
 
 ```js
-import { linkTo } from 'storybook/addon-links';
+import { linkTo } from '@aussieljk/forkbook/addon-links';
 
 export default {
   title: 'Button',
@@ -36,7 +36,7 @@ export const second = () => <button onClick={linkTo('Button', 'first')}>Go to "F
 Have a look at the linkTo function:
 
 ```js
-import { linkTo } from 'storybook/addon-links';
+import { linkTo } from '@aussieljk/forkbook/addon-links';
 
 linkTo('Toggle', 'off');
 linkTo(
@@ -46,7 +46,7 @@ linkTo(
 linkTo('Toggle'); // Links to the first story in the 'Toggle' kind
 ```
 
-With that, you can link an event in a component to any story in the Storybook.
+With that, you can link an event in a component to any story in the Forkbook.
 
 - First parameter is the story kind name (what you named with `title`).
 - Second (optional) parameter is the story name (what you named with `exported name`).
@@ -55,8 +55,8 @@ With that, you can link an event in a component to any story in the Storybook.
 You can also pass a function instead for any of above parameter. That function accepts arguments emitted by the event and it should return a string:
 
 ```js
-import { linkTo } from 'storybook/addon-links';
-import LinkTo from 'storybook/addon-links/react';
+import { linkTo } from '@aussieljk/forkbook/addon-links';
+import LinkTo from '@aussieljk/forkbook/addon-links/react';
 
 export default {
   title: 'Select',
@@ -80,8 +80,8 @@ export const third = () => <LinkTo story="index">Go back</LinkTo>;
 If you want to get an URL for a particular story, you may use `hrefTo` function. It returns a promise, which resolves to string containing a relative URL:
 
 ```js
-import { hrefTo } from 'storybook/addon-links';
-import { action } from 'storybook/actions';
+import { hrefTo } from '@aussieljk/forkbook/addon-links';
+import { action } from '@aussieljk/forkbook/actions';
 
 export default {
   title: 'Href',
@@ -99,7 +99,7 @@ export const log = () => {
 If you want to render native links to other stories so you can middle-click or command-click to open them in a new tab, you can use the `hrefToSync` function. This returns a string containing the URL immediately:
 
 ```js
-import { hrefToSync } from 'storybook/addon-links';
+import { hrefToSync } from '@aussieljk/forkbook/addon-links';
 
 export default {
   title: 'HrefSync',
@@ -117,7 +117,7 @@ export const log = () => {
 Here is an example in React, but it works with any framework:
 
 ```js
-import { withLinks } from 'storybook/addon-links';
+import { withLinks } from '@aussieljk/forkbook/addon-links';
 
 export default {
   title: 'Button',
@@ -134,10 +134,10 @@ export const first = () => (
 ## LinkTo component (React only)
 
 One possible way of using `hrefTo` is to create a component that uses native `a` element, but prevents page reloads on plain left click, so that one can still use default browser methods to open link in new tab.
-A React implementation of such a component can be imported from `storybook/addon-links` package:
+A React implementation of such a component can be imported from `@aussieljk/forkbook/addon-links` package:
 
 ```js
-import LinkTo from 'storybook/addon-links/react';
+import LinkTo from '@aussieljk/forkbook/addon-links/react';
 
 export default {
   title: 'Link',
@@ -163,4 +163,4 @@ It accepts all the props the `a` element does, plus `story` and `kind`. It the `
 
 To implement such a component for another framework, you need to add special handling for `click` event on native `a` element. See [`RoutedLink` sources](https://github.com/storybookjs/storybook/blob/next/code/addons/links/src/react/components/RoutedLink.tsx) for reference.
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

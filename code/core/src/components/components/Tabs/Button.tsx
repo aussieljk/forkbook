@@ -11,7 +11,7 @@ import type {
 } from 'react';
 import React, { forwardRef } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { clsx } from 'clsx';
 

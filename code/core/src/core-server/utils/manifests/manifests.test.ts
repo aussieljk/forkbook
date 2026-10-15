@@ -2,8 +2,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/node-logger';
-import type { ComponentsManifest, Manifests, Presets, StoryIndex } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type {
+  ComponentsManifest,
+  Manifests,
+  Presets,
+  StoryIndex,
+} from '@aussieljk/forkbook/internal/types';
 
 import * as v from 'valibot';
 import { vol } from 'memfs';
@@ -19,7 +24,7 @@ import { Tag } from '../../../shared/constants/tags.ts';
 import { registerManifests, writeManifests } from './manifests.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/node-logger');
+vi.mock('@aussieljk/forkbook/internal/node-logger');
 
 describe('manifests', () => {
   let mockGetIndex: ReturnType<typeof vi.fn<() => Promise<StoryIndex>>>;

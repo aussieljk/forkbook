@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { Addon_StoryContext } from 'storybook/internal/types';
+import type { Addon_StoryContext } from '@aussieljk/forkbook/internal/types';
 
 import { RedirectBoundary } from 'next/dist/client/components/redirect-boundary.js';
 

@@ -1,6 +1,6 @@
 import type React from 'react';
 
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
 import * as addonAnnotations from './preview';
 import type { DocsTypes } from './types';

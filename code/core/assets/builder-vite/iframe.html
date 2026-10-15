@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Storybook</title>
+    <title>Forkbook</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <style>
@@ -52,7 +52,7 @@
 
       ('OTHER_GLOBALS HERE');
 
-      // We do this so that "module && module.hot" etc. in Storybook source code
+      // We do this so that "module && module.hot" etc. in Forkbook source code
       // doesn't fail (it will simply be disabled)
       window.module = undefined;
       window.global = window;
@@ -68,10 +68,10 @@
       function __onViteAppLoadingError(event) {
         const hostname = globalThis.location.hostname;
         if (hostname !== 'localhost' && globalThis.CONFIG_TYPE === 'DEVELOPMENT') {
-          const message = `Failed to load the Storybook preview file 'vite-app.js':
+          const message = `Failed to load the Forkbook preview file 'vite-app.js':
 
-      It looks like you're visiting the Storybook development server on another hostname than localhost: '${hostname}', but you haven't configured the necessary security features to support this.
-      Please re-run your Storybook development server with the '--host ${hostname}' flag, or manually configure your Vite allowedHosts configuration with viteFinal.
+      It looks like you're visiting the Forkbook development server on another hostname than localhost: '${hostname}', but you haven't configured the necessary security features to support this.
+      Please re-run your Forkbook development server with the '--host ${hostname}' flag, or manually configure your Vite allowedHosts configuration with viteFinal.
 
       See:`;
           const docs = [

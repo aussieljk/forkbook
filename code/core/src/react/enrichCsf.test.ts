@@ -1,8 +1,8 @@
 import { expect, test, vi } from 'vitest';
 
-import { generate } from 'storybook/internal/babel';
-import { type InterPresetOptions, getPresets } from 'storybook/internal/common';
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { generate } from '@aussieljk/forkbook/internal/babel';
+import { type InterPresetOptions, getPresets } from '@aussieljk/forkbook/internal/common';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { dedent } from 'ts-dedent';
 
@@ -17,7 +17,7 @@ test('should enrich csf with code parameters', async () => {
   const enrichCsf = await presets.apply('experimental_enrichCsf');
 
   const code = dedent`
-    import preview from '#.storybook/preview';
+    import preview from '#.forkbook/preview';
     import { Button } from './Button';
     
     const meta = preview.meta({ component: Button })
@@ -29,7 +29,7 @@ test('should enrich csf with code parameters', async () => {
   csf.parse();
   await enrichCsf?.(csf, csf);
   expect(generate(csf._ast).code).toMatchInlineSnapshot(`
-    "import preview from '#.storybook/preview';
+    "import preview from '#.forkbook/preview';
     import { Button } from './Button';
     const meta = preview.meta({
       component: Button
@@ -77,7 +77,7 @@ test('should not enrich when experimentalCodeExamples is disabled', async () => 
   const enrichCsf = await presets.apply('experimental_enrichCsf');
 
   const code = dedent`
-    import preview from '#.storybook/preview';
+    import preview from '#.forkbook/preview';
     import { Button } from './Button';
     const meta = preview.meta({ component: Button })
     export const Primary = meta.story({ args: { primary: true,  label: 'Button' } });
@@ -86,7 +86,7 @@ test('should not enrich when experimentalCodeExamples is disabled', async () => 
   csf.parse();
   await enrichCsf?.(csf, csf);
   expect(generate(csf._ast).code).toMatchInlineSnapshot(`
-    "import preview from '#.storybook/preview';
+    "import preview from '#.forkbook/preview';
     import { Button } from './Button';
     const meta = preview.meta({
       component: Button

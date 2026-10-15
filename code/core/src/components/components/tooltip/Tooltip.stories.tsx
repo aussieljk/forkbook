@@ -1,6 +1,6 @@
 import React from 'react';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Tooltip } from './Tooltip.tsx';
 
 const SampleTooltip = () => (

@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 
-import { once } from 'storybook/internal/node-logger';
-import { MainFileMissingError } from 'storybook/internal/server-errors';
+import { once } from '@aussieljk/forkbook/internal/node-logger';
+import { MainFileMissingError } from '@aussieljk/forkbook/internal/server-errors';
 
 // eslint-disable-next-line depend/ban-dependencies
 import { glob } from 'glob';
@@ -22,7 +22,7 @@ export async function validateConfigurationFiles(configDir: string, cwd?: string
   if (mainConfigMatches.length > 1) {
     once.warn(dedent`
       Multiple main files found in your configDir (${resolve(configDir)}).
-      Storybook will use the first one found and ignore the others. Please remove the extra files.
+      Forkbook will use the first one found and ignore the others. Please remove the extra files.
     `);
   }
 

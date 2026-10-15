@@ -1,23 +1,19 @@
 {
-  "name": "@storybook/code",
+  "name": "forkbook-code",
   "version": "11.0.0-alpha.6",
   "private": true,
-  "description": "Storybook root",
-  "homepage": "https://storybook.js.org/",
+  "description": "Forkbook code root",
+  "homepage": "https://forkbook.ljk.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/storybook.git"
-  },
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/storybook"
+    "url": "git+https://github.com/aussieljk/forkbook.git"
   },
   "scripts": {
     "build": "NODE_ENV=production bun --cwd ../scripts build-package",
     "knip": "knip --config ../scripts/knip.config.ts",
     "lint": "oxlint --report-unused-disable-directives-severity=error . --quiet",
-    "storybook:ui": "NODE_OPTIONS=\"--max_old_space_size=4096\" core/dist/bin/dispatcher.js dev --port 6006 --config-dir ./.storybook",
-    "storybook:ui:build": "NODE_OPTIONS=\"--max_old_space_size=5120\" core/dist/bin/dispatcher.js build --config-dir ./.storybook"
+    "storybook:ui": "NODE_OPTIONS=\"--max_old_space_size=4096\" core/dist/bin/dispatcher.js dev --port 6006 --config-dir ./.forkbook",
+    "storybook:ui:build": "NODE_OPTIONS=\"--max_old_space_size=5120\" core/dist/bin/dispatcher.js build --config-dir ./.forkbook"
   },
   "browserslist": [
     "chrome >= 147",
@@ -30,6 +26,7 @@
     "node >= 20"
   ],
   "dependencies": {
+    "@aussieljk/forkbook": "workspace:*",
     "@storybook/global": "^5.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "6.9.1",
@@ -56,7 +53,6 @@
     "react-dom": "^18.2.0",
     "react-popper-tooltip": "^4.4.2",
     "sort-package-json": "^3.5.0",
-    "storybook": "workspace:*",
     "ts-dedent": "^2.0.0",
     "typescript": "^6.0.3",
     "typescript-native": "npm:typescript@^7.0.2",
@@ -88,47 +84,5 @@
     "yorkie": {
       "built": false
     }
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/storybook"
-  },
-  "nx": {
-    "includedScripts": []
-  },
-  "pr-log": {
-    "skipLabels": [
-      "cleanup"
-    ],
-    "validLabels": [
-      [
-        "BREAKING CHANGE",
-        "Breaking Changes"
-      ],
-      [
-        "feature request",
-        "Features"
-      ],
-      [
-        "bug",
-        "Bug Fixes"
-      ],
-      [
-        "documentation",
-        "Documentation"
-      ],
-      [
-        "maintenance",
-        "Maintenance"
-      ],
-      [
-        "build",
-        "Build"
-      ],
-      [
-        "dependencies",
-        "Dependency Upgrades"
-      ]
-    ]
   }
 }

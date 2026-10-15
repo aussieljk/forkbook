@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -667,7 +667,7 @@ describe('Refs API', () => {
         );
       });
 
-      it('keeps the configured URL in a built Storybook', async () => {
+      it('keeps the configured URL in a built Forkbook', async () => {
         global.CONFIG_TYPE = 'PRODUCTION';
 
         await expect(

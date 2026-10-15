@@ -1,4 +1,4 @@
-export const ADDON_ID = 'storybook/interactions';
+export const ADDON_ID = '@aussieljk/forkbook/interactions';
 export const PANEL_ID = `${ADDON_ID}/panel`;
 export const PARAM_KEY = 'interactions';
 

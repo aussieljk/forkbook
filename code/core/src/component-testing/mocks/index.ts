@@ -1,4 +1,4 @@
-import { type Call, CallStates } from 'storybook/internal/instrumenter';
+import { type Call, CallStates } from '@aussieljk/forkbook/internal/instrumenter';
 
 import { INTERNAL_RENDER_CALL_ID } from '../constants.ts';
 

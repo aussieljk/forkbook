@@ -1,4 +1,4 @@
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Pre,

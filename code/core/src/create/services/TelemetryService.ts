@@ -1,14 +1,14 @@
-import type { ProjectType, SkillsInstallResult } from 'storybook/internal/cli';
+import type { ProjectType, SkillsInstallResult } from '@aussieljk/forkbook/internal/cli';
 import {
   getProcessAncestry,
   getStorybookVersionSpecifierFromAncestry,
-} from 'storybook/internal/common';
-import { telemetry } from 'storybook/internal/telemetry';
-import { Feature } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import { VersionService } from './VersionService.ts';
 
-/** Service for tracking telemetry events during Storybook initialization */
+/** Service for tracking telemetry events during Forkbook initialization */
 export class TelemetryService {
   private versionService = new VersionService();
 
@@ -39,7 +39,7 @@ export class TelemetryService {
     });
   }
 
-  /** Track the outcome of the official Storybook skills install step */
+  /** Track the outcome of the official Forkbook skills install step */
   async trackSkills(result: SkillsInstallResult): Promise<void> {
     await telemetry('init-step', {
       step: 'skills',
@@ -62,7 +62,7 @@ export class TelemetryService {
     },
     options: { configDir?: string } = {}
   ): Promise<void> {
-    // Pass configDir so metadata resolves `.rnstorybook` (RN) instead of defaulting to `.storybook`.
+    // Pass configDir so metadata resolves `.rnstorybook` (RN) instead of defaulting to `.forkbook`.
     await telemetry('init', data, { configDir: options.configDir });
   }
 

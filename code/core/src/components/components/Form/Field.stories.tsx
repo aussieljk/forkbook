@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { Field as FieldComponent } from './Field.tsx';
 import { Input as InputComponent } from './Input.tsx';

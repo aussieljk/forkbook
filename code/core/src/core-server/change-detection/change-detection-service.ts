@@ -1,14 +1,14 @@
 import { join, normalize } from 'pathe';
 
 import { dequal } from 'dequal';
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   Status,
   StatusStoreByTypeId,
   StatusValue,
   StoryIndex,
-} from 'storybook/internal/types';
-import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
 import { getService } from '../../shared/open-service/server.ts';
 import { getStoryIdsByAbsolutePath } from '../../shared/open-service/services/module-graph/story-files.ts';

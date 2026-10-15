@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { prompt } from 'storybook/internal/node-logger';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager, PackageManagerName } from './JsPackageManager.ts';
 import { Yarn1Proxy } from './Yarn1Proxy.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
     getPreferredStdio: vi.fn(() => 'inherit'),
@@ -139,7 +139,7 @@ describe('Yarn 1 Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         };
       });
@@ -150,7 +150,7 @@ describe('Yarn 1 Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            'storybook/react': 'x.x.x',
+            '@aussieljk/forkbook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -260,7 +260,7 @@ describe('Yarn 1 Proxy', () => {
 
   describe('mapDependencies', () => {
     it('should display duplicated dependencies based on yarn output', async () => {
-      // yarn list --pattern "@storybook/*" "storybook/react" --recursive --json
+      // yarn list --pattern "@storybook/*" "@aussieljk/forkbook/react" --recursive --json
       mockedExecuteCommand.mockResolvedValueOnce({
         stdout: `
         {

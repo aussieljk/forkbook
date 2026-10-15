@@ -1,10 +1,10 @@
-import { ImplicitActionsDuringRendering } from 'storybook/internal/preview-errors';
-import type { Renderer } from 'storybook/internal/types';
+import { ImplicitActionsDuringRendering } from '@aussieljk/forkbook/internal/preview-errors';
+import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
-import type { PreviewWeb } from 'storybook/preview-api';
-import { addons } from 'storybook/preview-api';
+import type { PreviewWeb } from '@aussieljk/forkbook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import { EVENT_ID } from '../constants.ts';
 import type { ActionDisplay, ActionOptions, HandlerFunction } from '../models/index.ts';

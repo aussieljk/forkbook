@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import { internal_UniversalStore } from 'storybook/internal/core-server';
-import type { Options } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import { internal_UniversalStore } from '@aussieljk/forkbook/internal/core-server';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { TRIGGER_TEST_RUN_REQUEST, TRIGGER_TEST_RUN_RESPONSE } from '../constants.ts';
 import { runTestRunner } from './boot-test-runner.ts';
@@ -12,8 +12,8 @@ const testProviderStore = vi.hoisted(() => ({
   onClearAll: vi.fn(),
 }));
 
-vi.mock('storybook/internal/core-server', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/core-server')>();
+vi.mock('@aussieljk/forkbook/internal/core-server', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/core-server')>();
   return {
     ...actual,
     internal_UniversalStore: {
@@ -25,8 +25,8 @@ vi.mock('storybook/internal/core-server', async (importOriginal) => {
   };
 });
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return {
     ...actual,
     createFileSystemCache: vi.fn(() => ({
@@ -44,9 +44,11 @@ vi.mock('../logger.ts', () => ({
   log: vi.fn(),
 }));
 
-function makeOptions({ builder = 'storybook/builder-vite' }: { builder?: string } = {}): Options {
+function makeOptions({
+  builder = '@aussieljk/forkbook/builder-vite',
+}: { builder?: string } = {}): Options {
   return {
-    configDir: '.storybook',
+    configDir: '.forkbook',
     presets: {
       apply: vi.fn(async (key: string, fallback?: unknown) => {
         switch (key) {
@@ -185,7 +187,7 @@ describe('wireTestRunResponder', () => {
   });
 
   it('wires nothing on an attached tools host, so the instance remains the only leader', async () => {
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', 'true');
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', 'true');
     const { wireTestRunResponder } = await loadResponder();
     const channel = new Channel({});
     const responses = vi.fn();
@@ -245,7 +247,7 @@ describe('wireTestRunResponder', () => {
     const responses = vi.fn();
     channel.on(TRIGGER_TEST_RUN_RESPONSE, responses);
     const options = makeOptions();
-    const { createFileSystemCache } = await import('storybook/internal/common');
+    const { createFileSystemCache } = await import('@aussieljk/forkbook/internal/common');
     vi.mocked(createFileSystemCache).mockReturnValueOnce({
       get: vi.fn().mockRejectedValue(new Error('cache read failed')),
       set: vi.fn(),

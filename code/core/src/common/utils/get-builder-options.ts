@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 /**
  * Builder options can be specified in `core.builder.options` or `framework.options.builder`.

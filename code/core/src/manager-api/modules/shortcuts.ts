@@ -3,13 +3,13 @@ import {
   PREVIEW_KEYDOWN,
   STORIES_COLLAPSE_ALL,
   STORIES_EXPAND_ALL,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 
 import copy from 'copy-to-clipboard';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import type { KeyboardEventLike } from '../lib/shortcut.ts';
 import { eventToShortcut, shortcutMatchesShortcut } from '../lib/shortcut.ts';
 import type { ModuleFn } from '../lib/types.tsx';
@@ -546,7 +546,7 @@ export const init: ModuleFn = ({ store, fullAPI, provider }) => {
     // When a shortcut is matched we also stop propagation so React Aria cannot re-dispatch
     // the same event (which it does for ArrowUp/Down) and cause double-firing or
     // unintended tree navigation as a side effect.
-    // Landmark-navigation shortcuts (F6 / Shift+F6) are intentionally excluded: Storybook's
+    // Landmark-navigation shortcuts (F6 / Shift+F6) are intentionally excluded: Forkbook's
     // handler is a no-op for them and React Aria must be allowed to handle them.
     document.addEventListener(
       'keydown',

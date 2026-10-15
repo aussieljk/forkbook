@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 
-import type { DocgenProviderDescriptor } from 'storybook/internal/types';
+import type { DocgenProviderDescriptor } from '@aussieljk/forkbook/internal/types';
 
 /**
  * React renderer docgen provider.
@@ -19,6 +19,8 @@ export const experimental_docgenProvider = async (
 ): Promise<DocgenProviderDescriptor[]> => [
   ...existing,
   {
-    moduleSpecifier: fileURLToPath(import.meta.resolve('storybook/react/internal/docgen-worker')),
+    moduleSpecifier: fileURLToPath(
+      import.meta.resolve('@aussieljk/forkbook/react/internal/docgen-worker')
+    ),
   },
 ];

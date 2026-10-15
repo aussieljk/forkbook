@@ -3,7 +3,7 @@ import type { SyntheticEvent } from 'react';
 import { global } from '@storybook/global';
 
 import memoize from 'memoizerific';
-import type { HashEntry, IndexHash } from 'storybook/manager-api';
+import type { HashEntry, IndexHash } from '@aussieljk/forkbook/manager-api';
 
 import { DEFAULT_REF_ID } from '../components/sidebar/Sidebar.tsx';
 import type { Dataset, Item, RefType } from '../components/sidebar/types.ts';

@@ -2,7 +2,7 @@ import {
   CouldNotEvaluateFrameworkError,
   InvalidFrameworkNameError,
   MissingFrameworkFieldError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import { resolveModulePath } from 'exsolve';
 
@@ -10,7 +10,7 @@ import { jsModuleExtensions } from '../../shared/constants/extensions.ts';
 import { extractFrameworkPackageName } from '../index.ts';
 import { frameworkPackages } from './get-storybook-info.ts';
 
-const rendererNames = ['react', 'storybook/react'];
+const rendererNames = ['react', '@aussieljk/forkbook/react'];
 
 export function validateFrameworkName(
   frameworkName: string | undefined

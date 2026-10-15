@@ -8,13 +8,13 @@ const { mockCacheGet, mockCacheSet, mockIsCI, mockSelect, mockWarn } = vi.hoiste
   mockWarn: vi.fn(),
 }));
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return { ...actual, cache: { get: mockCacheGet, set: mockCacheSet }, isCI: mockIsCI };
 });
 
-vi.mock('storybook/internal/node-logger', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/node-logger')>();
+vi.mock('@aussieljk/forkbook/internal/node-logger', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/node-logger')>();
   return {
     ...actual,
     logger: { ...actual.logger, warn: mockWarn },

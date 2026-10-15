@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { AddonPanel, type SyntaxHighlighterFormatTypes } from 'storybook/internal/components';
+import {
+  AddonPanel,
+  type SyntaxHighlighterFormatTypes,
+} from '@aussieljk/forkbook/internal/components';
 
-import { addons, types, useChannel, useParameter } from 'storybook/manager-api';
-import { useTheme } from 'storybook/theming';
+import { addons, types, useChannel, useParameter } from '@aussieljk/forkbook/manager-api';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import {
   ADDON_ID,
@@ -12,8 +15,8 @@ import {
   type StoryDocsCodePanelParameters,
   shouldWaitForServiceSnippet,
   SNIPPET_RENDERED,
-} from 'storybook/internal/docs-tools';
-import type { StoryId } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/docs-tools';
+import type { StoryId } from '@aussieljk/forkbook/internal/types';
 import type { SourceParameters } from './blocks/blocks';
 import { SnippetWarning } from './blocks/components/SnippetWarning';
 import { Source } from './blocks/components/Source';

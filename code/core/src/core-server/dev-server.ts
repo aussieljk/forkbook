@@ -1,8 +1,8 @@
-import { logConfig, normalizeStories } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import { MissingBuilderError } from 'storybook/internal/server-errors';
-import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
-import type { Options, SecurityConfig } from 'storybook/internal/types';
+import { logConfig, normalizeStories } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { MissingBuilderError } from '@aussieljk/forkbook/internal/server-errors';
+import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
+import type { Options, SecurityConfig } from '@aussieljk/forkbook/internal/types';
 
 import compression from '@polka/compression';
 import polka from 'polka';
@@ -170,7 +170,7 @@ export async function storybookDevServer(
   const listening = new Promise<void>((resolve, reject) => {
     server.once('error', reject);
     // SECURITY: If no host is set, listen on 127.0.0.1. Node binds to 0.0.0.0 by default, which
-    // makes Storybook accessible on LAN (e.g. conference WiFi). `localhost` is not used because
+    // makes Forkbook accessible on LAN (e.g. conference WiFi). `localhost` is not used because
     // Node binds it to one address only, often ::1, which refuses clients that connect to 127.0.0.1.
     app.listen({ port: options.port, host: getListenHost(options.host) }, resolve);
   }).then(() => addLoopbackListener(server));

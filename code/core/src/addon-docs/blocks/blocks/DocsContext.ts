@@ -2,7 +2,7 @@
 import type { Context } from 'react';
 import { createContext } from 'react';
 
-import type { DocsContextProps, Renderer } from 'storybook/internal/types';
+import type { DocsContextProps, Renderer } from '@aussieljk/forkbook/internal/types';
 
 export type { DocsContextProps };
 

@@ -1,15 +1,23 @@
 import { inject, type RunnerTask, type TaskMeta, type TestContext } from 'vitest';
 
-import { type Meta, type Story, getStoryChildren, isStory } from 'storybook/internal/csf';
-import type { ComponentAnnotations, ComposedStoryFn, Renderer } from 'storybook/internal/types';
-
-import { type Report, composeStory, getCsfFactoryAnnotations } from 'storybook/preview-api';
+import { type Meta, type Story, getStoryChildren, isStory } from '@aussieljk/forkbook/internal/csf';
+import type {
+  ComponentAnnotations,
+  ComposedStoryFn,
+  Renderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import {
-  STORYBOOK_CORE_GHOST_STORIES_PROVIDE_KEY,
-  STORYBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY,
-  STORYBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY,
-  STORYBOOK_TEST_PROVIDE_KEY,
+  type Report,
+  composeStory,
+  getCsfFactoryAnnotations,
+} from '@aussieljk/forkbook/preview-api';
+
+import {
+  FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY,
+  FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY,
+  FORKBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY,
+  FORKBOOK_TEST_PROVIDE_KEY,
 } from '../constants.ts';
 import { composeInitialGlobals } from './compose-initial-globals.ts';
 import { setViewport } from './viewports.ts';
@@ -60,31 +68,31 @@ export const testStory = ({
 
     let runConfig: Record<string, unknown> = { a11y: true };
     try {
-      runConfig = inject(STORYBOOK_TEST_PROVIDE_KEY) ?? { a11y: true };
+      runConfig = inject(FORKBOOK_TEST_PROVIDE_KEY) ?? { a11y: true };
     } catch {
-      // Standalone Vitest runs might not provide Storybook run config.
+      // Standalone Vitest runs might not provide Forkbook run config.
     }
 
     let ghostStoriesEnabled = false;
     try {
-      ghostStoriesEnabled = inject(STORYBOOK_CORE_GHOST_STORIES_PROVIDE_KEY) ?? false;
+      ghostStoriesEnabled = inject(FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY) ?? false;
     } catch {
-      // Standalone Vitest runs might not provide Storybook ghost stories config.
+      // Standalone Vitest runs might not provide Forkbook ghost stories config.
     }
 
     let renderAnalysisEnabled = false;
     try {
-      renderAnalysisEnabled = inject(STORYBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY) ?? false;
+      renderAnalysisEnabled = inject(FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY) ?? false;
     } catch {
-      // Standalone Vitest runs might not provide Storybook render analysis config.
+      // Standalone Vitest runs might not provide Forkbook render analysis config.
     }
 
     // Globals the consumer pinned on this project via `storybookTest({ initialGlobals })`, e.g.
-    // `{ theme: 'dark' }` to run the suite under a specific theme. Spread first so Storybook's own
+    // `{ theme: 'dark' }` to run the suite under a specific theme. Spread first so Forkbook's own
     // run-control globals below always win.
     let userInitialGlobals: Record<string, unknown> = {};
     try {
-      userInitialGlobals = inject(STORYBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY) ?? {};
+      userInitialGlobals = inject(FORKBOOK_TEST_INITIAL_GLOBALS_PROVIDE_KEY) ?? {};
     } catch {
       // Standalone Vitest runs might not provide project initial globals.
     }
@@ -122,7 +130,7 @@ export const testStory = ({
     };
 
     // The id will always be present, calculated by CsfFile
-    // and is needed so that we can add the test to the story in Storybook's UI for the status
+    // and is needed so that we can add the test to the story in Forkbook's UI for the status
     _task.meta.storyId = storyId;
     _task.meta.componentPath = componentPath;
     _task.meta.componentName = componentName;

@@ -1,9 +1,9 @@
-import { PREVIEW_KEYDOWN } from 'storybook/internal/core-events';
-import type { PlayFunctionContext } from 'storybook/internal/csf';
+import { PREVIEW_KEYDOWN } from '@aussieljk/forkbook/internal/core-events';
+import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/csf';
 
 import { global as globalThis } from '@storybook/global';
 
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Form,

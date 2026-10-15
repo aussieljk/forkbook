@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 
-import { selectComponentEntriesByComponentId } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import type { Manifests, Presets } from 'storybook/internal/types';
+import { selectComponentEntriesByComponentId } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Manifests, Presets } from '@aussieljk/forkbook/internal/types';
 
 import { join } from 'pathe';
 import type { Polka } from 'polka';
@@ -84,7 +84,7 @@ function mergeServicePayloads(
  * Deliberately flag-based, while the docs toolset's engine selection (`createLocalDocsAccess`) is
  * registration-based. The two can disagree: with the flag on but the docgen services unregistered
  * (manager-only build, no docgen worker), the toolset falls back to reading the inline manifests
- * while this route keeps 404ing them — so a composing parent Storybook fetching manifests over
+ * while this route keeps 404ing them — so a composing parent Forkbook fetching manifests over
  * HTTP sees nothing even though the local MCP tools still serve docs. Accepted for now: switching
  * this gate to registration would change composition behavior that only the live-fixture suites
  * cover, so it is deferred to its own change.

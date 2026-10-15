@@ -5,8 +5,12 @@ import type {
   CoreCommon_StorybookInfo,
   PackageJson,
   StorybookConfigRaw,
-} from 'storybook/internal/types';
-import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import {
+  SupportedBuilder,
+  SupportedFramework,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import invariant from 'tiny-invariant';
 
@@ -21,17 +25,17 @@ import { getStorybookConfiguration } from './get-storybook-configuration.ts';
 import { loadMainConfig } from './load-main-config.ts';
 
 export const rendererPackages: Record<string, SupportedRenderer> = {
-  'storybook/react': SupportedRenderer.REACT,
+  '@aussieljk/forkbook/react': SupportedRenderer.REACT,
   '@storybook/react-native': SupportedRenderer.REACT_NATIVE,
 };
 
 export const frameworkPackages: Record<string, SupportedFramework> = {
-  'storybook/react-vite': SupportedFramework.REACT_VITE,
-  'storybook/nextjs-vite': SupportedFramework.NEXTJS_VITE,
+  '@aussieljk/forkbook/react-vite': SupportedFramework.REACT_VITE,
+  '@aussieljk/forkbook/nextjs-vite': SupportedFramework.NEXTJS_VITE,
 };
 
 export const builderPackages: Record<string, SupportedBuilder> = {
-  'storybook/builder-vite': SupportedBuilder.VITE,
+  '@aussieljk/forkbook/builder-vite': SupportedBuilder.VITE,
 };
 
 const findDependency = (
@@ -50,7 +54,10 @@ const getStorybookVersionSpecifier = (configDir: string) => {
   for (const packageJsonPath of packageJsonPaths) {
     const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
     // Pull the viewlayer from dependencies in package.json
-    const [dep, devDep, peerDep] = findDependency(packageJson, ([key]) => key === 'storybook');
+    const [dep, devDep, peerDep] = findDependency(
+      packageJson,
+      ([key]) => key === '@aussieljk/forkbook'
+    );
     const [pkg, version] = dep || devDep || peerDep || [];
 
     if (pkg && version) {
@@ -68,14 +75,14 @@ export const findConfigFile = (prefix: string, configDir: string) => {
 };
 
 export const getConfigInfo = (configDir?: string) => {
-  let storybookConfigDir = configDir ?? '.storybook';
+  let storybookConfigDir = configDir ?? '.forkbook';
 
   if (!existsSync(storybookConfigDir)) {
     const packageJsonPaths = JsPackageManager.listAllPackageJsonPaths(storybookConfigDir);
 
     for (const packageJsonPath of packageJsonPaths) {
       const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-      const storybookScript = packageJson.scripts?.storybook;
+      const storybookScript = packageJson.scripts?.forkbook;
       if (storybookScript && !configDir) {
         const configParam = getStorybookConfiguration(storybookScript, '-c', '--config-dir');
 
@@ -96,7 +103,7 @@ export const getConfigInfo = (configDir?: string) => {
 };
 
 export const getStorybookInfo = async (
-  configDir = '.storybook',
+  configDir = '.forkbook',
   cwd?: string,
   { skipCache }: { skipCache?: boolean } = {}
 ): Promise<CoreCommon_StorybookInfo> => {
@@ -105,7 +112,7 @@ export const getStorybookInfo = async (
     configDir: configInfo.configDir,
     cwd,
     // When the main config may have been rewritten earlier in the same process (e.g. by
-    // `storybook add`), callers must skip the module cache to read the
+    // `forkbook add`), callers must skip the module cache to read the
     // current on-disk config instead of a stale, previously-evaluated version.
     skipCache,
   })) as StorybookConfigRaw;
@@ -119,7 +126,7 @@ export const getStorybookInfo = async (
 
   if (!frameworkField) {
     /*
-      React Native on-device Storybook historically omitted `framework` from main.ts.
+      React Native on-device Forkbook historically omitted `framework` from main.ts.
       When the config lives in `.rnstorybook`, infer the framework so telemetry
       `metadata.framework.name` is populated for existing projects (scoped to the
       RN config dir to avoid mis-attributing web Storybooks in the same monorepo).

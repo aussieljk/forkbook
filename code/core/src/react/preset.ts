@@ -1,9 +1,9 @@
 import path, { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import type { ArgTypes } from 'storybook/internal/csf';
-import type { PresetProperty } from 'storybook/internal/types';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import type { ArgTypes } from '@aussieljk/forkbook/internal/csf';
+import type { PresetProperty } from '@aussieljk/forkbook/internal/types';
 
 import { resolvePackageDir } from '../shared/utils/module.ts';
 import { getSharedComponentMetaManager } from './componentManifest/componentMetaManagerSingleton.ts';
@@ -41,15 +41,17 @@ export const previewAnnotations: PresetProperty<'previewAnnotations'> = async (
   return result
     .concat(input)
     .concat([
-      fileURLToPath(import.meta.resolve('storybook/react/entry-preview')),
-      fileURLToPath(import.meta.resolve('storybook/react/entry-preview-argtypes')),
+      fileURLToPath(import.meta.resolve('@aussieljk/forkbook/react/entry-preview')),
+      fileURLToPath(import.meta.resolve('@aussieljk/forkbook/react/entry-preview-argtypes')),
     ])
     .concat(
-      docsEnabled ? [fileURLToPath(import.meta.resolve('storybook/react/entry-preview-docs'))] : []
+      docsEnabled
+        ? [fileURLToPath(import.meta.resolve('@aussieljk/forkbook/react/entry-preview-docs'))]
+        : []
     )
     .concat(
       experimentalRSC
-        ? [fileURLToPath(import.meta.resolve('storybook/react/entry-preview-rsc'))]
+        ? [fileURLToPath(import.meta.resolve('@aussieljk/forkbook/react/entry-preview-rsc'))]
         : []
     );
 };
@@ -72,7 +74,7 @@ export const resolvedReact = async (existing: any) => {
   }
 };
 
-/** ArgTypes of a component export, for the component tests of `storybook/addon-vitest`. */
+/** ArgTypes of a component export, for the component tests of `@aussieljk/forkbook/addon-vitest`. */
 export async function internal_getArgTypesData(
   _input: unknown,
   options: { componentFilePath?: string; componentExportName?: string }

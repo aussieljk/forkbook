@@ -1,6 +1,6 @@
-import type { AfterEach } from 'storybook/internal/types';
+import type { AfterEach } from '@aussieljk/forkbook/internal/types';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import { run } from './a11yRunner.ts';
 import type { A11yParameters } from './params.ts';
@@ -54,11 +54,11 @@ export const afterEach: AfterEach<any> = async ({
         });
 
         /**
-         * When Vitest is running outside of Storybook, we need to throw an error to fail the test
+         * When Vitest is running outside of Forkbook, we need to throw an error to fail the test
          * run when there are accessibility issues.
          *
          * @todo In the future, we want to always throw an error when there are accessibility
-         *   issues. This is a temporary solution. Later, portable stories and Storybook should
+         *   issues. This is a temporary solution. Later, portable stories and Forkbook should
          *   implement proper try catch handling.
          */
         if (getIsVitestStandaloneRun()) {
@@ -70,14 +70,14 @@ export const afterEach: AfterEach<any> = async ({
               vitestMatchersExtended = true;
             }
 
-            // @ts-expect-error - todo - fix type extension of expect from storybook/test
+            // @ts-expect-error - todo - fix type extension of expect from @aussieljk/forkbook/test
             expect(result).toHaveNoViolations();
           }
         }
       }
       /**
        * @todo Later we don't want to catch errors here. Instead, we want to throw them and let
-       *   Storybook/portable stories handle them on a higher level.
+       *   Forkbook/portable stories handle them on a higher level.
        */
     } catch (e) {
       reporting.addReport({

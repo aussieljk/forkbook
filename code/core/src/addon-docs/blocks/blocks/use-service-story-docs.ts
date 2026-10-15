@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 
-import type { StoryDoc, StoryDocsPayload } from 'storybook/internal/types';
+import type { StoryDoc, StoryDocsPayload } from '@aussieljk/forkbook/internal/types';
 
 import {
   type QueryState,
   selectSnippetForStory,
   selectStoryDoc,
   selectWarningForStory,
-} from 'storybook/open-service';
-import { getService } from 'storybook/preview-api';
+} from '@aussieljk/forkbook/open-service';
+import { getService } from '@aussieljk/forkbook/preview-api';
 
 import { useQuerySubscription } from './use-query-subscription.ts';
 

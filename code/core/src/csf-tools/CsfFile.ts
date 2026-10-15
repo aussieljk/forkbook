@@ -10,21 +10,21 @@ import {
   recast,
   types as t,
   traverse,
-} from 'storybook/internal/babel';
+} from '@aussieljk/forkbook/internal/babel';
 import {
   isExportStory,
   storyNameFromExport,
   toId,
   toTestId,
-} from 'storybook/internal/csf/csf-utils';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/csf/csf-utils';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   ComponentAnnotations,
   IndexInput,
   IndexInputStats,
   IndexedCSFFile,
   StoryAnnotations,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -663,7 +663,7 @@ export class CsfFile {
                     );
                   } else {
                     throw new BadMetaError(
-                      'meta() factory must be imported from .storybook/preview configuration',
+                      'meta() factory must be imported from .forkbook/preview configuration',
                       storyNode as t.Node,
                       self._options.fileName
                     );
@@ -873,7 +873,7 @@ export class CsfFile {
             throw new Error(dedent`
               Unexpected \`storiesOf\` usage: ${formatLocation(node, self._options.fileName)}.
 
-              \`storiesOf\` was removed in Storybook 8.0. Write stories in CSF instead.
+              \`storiesOf\` was removed in Forkbook 8.0. Write stories in CSF instead.
             `);
           }
           if (
@@ -927,7 +927,7 @@ export class CsfFile {
                   // the user is trying to use CSF Factories but with a wrong import path.
                   // Other .meta() calls (e.g., Zod v4's .meta()) are silently ignored.
                   throw new BadMetaError(
-                    'meta() factory must be imported from .storybook/preview configuration',
+                    'meta() factory must be imported from .forkbook/preview configuration',
                     configParent,
                     self._options.fileName
                   );

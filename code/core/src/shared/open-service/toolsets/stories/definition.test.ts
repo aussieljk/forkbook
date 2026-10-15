@@ -1,6 +1,6 @@
 import { existsSync, realpathSync } from 'node:fs';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { toJsonSchema } from '@valibot/to-json-schema';
 import { vol } from 'memfs';
@@ -48,7 +48,7 @@ const themePath = resolve(storybookWorkingDir, 'src/theme.ts');
 // Git reports paths relative to the repository root, and the response echoes them in that form.
 const changedComponentFile = 'packages/ui/src/Button.tsx';
 const changedThemeFile = 'packages/ui/src/theme.ts';
-const changedPreviewFile = 'packages/ui/.storybook/preview.tsx';
+const changedPreviewFile = 'packages/ui/.forkbook/preview.tsx';
 
 const buttonStoryHit = { storyFile: './src/Button.stories.tsx', depth: 1 };
 const previewUrl = 'http://localhost:6006/?path=/story/button--primary';
@@ -73,10 +73,10 @@ const storyIndex = { getIndex };
 const git = { getChangedFiles, getRepoRoot };
 const changeStatuses = { getAll: getStatuses };
 const storybookDirs = {
-  configDir: resolve(storybookWorkingDir, '.storybook'),
+  configDir: resolve(storybookWorkingDir, '.forkbook'),
   getStaticDirs: async () => [
     resolve(storybookWorkingDir, 'public'),
-    resolve(storybookWorkingDir, '.storybook/static'),
+    resolve(storybookWorkingDir, '.forkbook/static'),
   ],
 };
 
@@ -194,7 +194,7 @@ describe('stories.preview', () => {
     });
   });
 
-  it('rejects when the adapter has no Storybook origin to build URLs from', async () => {
+  it('rejects when the adapter has no Forkbook origin to build URLs from', async () => {
     await expect(
       runPreview([{ storyId: 'button--primary' }], { ...cliCtx, origin: undefined })
     ).rejects.toBeInstanceOf(OpenServiceMissingOriginError);
@@ -217,7 +217,7 @@ describe('stories.preview', () => {
 
       expect(outcome.markdown).toEqual([
         previewUrl,
-        expect.stringContaining('publish the review with **npx storybook tools review create**'),
+        expect.stringContaining('publish the review with **npx forkbook tools review create**'),
       ]);
     });
 
@@ -294,7 +294,7 @@ describe('stories.changed', () => {
 
     expect(error).toBeInstanceOf(OpenServiceModuleGraphUnavailableError);
     expect((error as Error).message).toBe(
-      "Storybook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
+      "Forkbook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
     );
     expect(getStatuses).not.toHaveBeenCalled();
   });
@@ -381,17 +381,17 @@ describe('stories.changed', () => {
     ]);
   });
 
-  it('treats every changed source file as part of the project when Storybook sits at the git root', async () => {
+  it('treats every changed source file as part of the project when Forkbook sits at the git root', async () => {
     getRepoRoot.mockResolvedValue(storybookWorkingDir);
     getChangedFiles.mockResolvedValue({
-      changed: new Set(['.storybook/preview.tsx', 'vite.config.ts', 'src/theme.ts']),
+      changed: new Set(['.forkbook/preview.tsx', 'vite.config.ts', 'src/theme.ts']),
       new: new Set(['src/theme.config.ts']),
     });
 
     const outcome = await runChanged();
 
     expect(outcome.data).toMatchObject({
-      changedConfigFiles: ['.storybook/preview.tsx'],
+      changedConfigFiles: ['.forkbook/preview.tsx'],
       unreachableFiles: ['src/theme.ts', 'src/theme.config.ts'],
     });
   });
@@ -419,7 +419,7 @@ describe('stories.changed', () => {
     expect(outcome.markdown).not.toContain('(first');
   });
 
-  it("lists this Storybook project's unreachable files before other packages'", async () => {
+  it("lists this Forkbook project's unreachable files before other packages'", async () => {
     getChangedFiles.mockResolvedValue({
       changed: new Set(['apps/api/src/server.ts']),
       new: new Set([changedThemeFile]),
@@ -434,17 +434,17 @@ describe('stories.changed', () => {
     getChangedFiles.mockResolvedValue({
       changed: new Set([
         changedPreviewFile,
-        'packages/ui/.storybook/main.ts',
-        'packages/ui/.storybook/manager.ts',
-        'packages/ui/.storybook/tsconfig.json',
-        'packages/ui/.storybook/preview.test.ts',
-        'packages/ui/.storybook/env.d.ts',
-        'packages/ui/.storybook/static/mockServiceWorker.js',
+        'packages/ui/.forkbook/main.ts',
+        'packages/ui/.forkbook/manager.ts',
+        'packages/ui/.forkbook/tsconfig.json',
+        'packages/ui/.forkbook/preview.test.ts',
+        'packages/ui/.forkbook/env.d.ts',
+        'packages/ui/.forkbook/static/mockServiceWorker.js',
       ]),
       new: new Set([
-        'packages/ui/.storybook/decorators.tsx',
-        'packages/ui/.storybook/preview-head.html',
-        'packages/ui/.storybook/preview.css',
+        'packages/ui/.forkbook/decorators.tsx',
+        'packages/ui/.forkbook/preview-head.html',
+        'packages/ui/.forkbook/preview.css',
       ]),
     });
 
@@ -452,14 +452,14 @@ describe('stories.changed', () => {
 
     expect(outcome.data.changedConfigFiles).toEqual([
       changedPreviewFile,
-      'packages/ui/.storybook/decorators.tsx',
-      'packages/ui/.storybook/preview-head.html',
-      'packages/ui/.storybook/preview.css',
+      'packages/ui/.forkbook/decorators.tsx',
+      'packages/ui/.forkbook/preview-head.html',
+      'packages/ui/.forkbook/preview.css',
     ]);
     expect(outcome.data.unreachableFiles).toEqual([]);
   });
 
-  it('anchors Git-relative paths at the repository root, not the Storybook working directory', async () => {
+  it('anchors Git-relative paths at the repository root, not the Forkbook working directory', async () => {
     await runChanged();
 
     expect(storiesForFiles).toHaveBeenCalledWith({ files: [componentPath, themePath] });
@@ -489,8 +489,8 @@ describe('stories.changed', () => {
       );
       expect(outcome.markdown).toBe(
         String(mcpOutcome.markdown)
-          .replaceAll('review-create', 'npx storybook tools review create')
-          .replaceAll('stories-find-by-component', 'npx storybook tools stories find-by-component')
+          .replaceAll('review-create', 'npx forkbook tools review create')
+          .replaceAll('stories-find-by-component', 'npx forkbook tools stories find-by-component')
       );
     });
 
@@ -523,7 +523,7 @@ Next: if the change is visually observable, publish the review now — call **re
 New stories:
 - \`button--primary\`: Button / Primary (\`./src/Button.stories.tsx\`)
 
-Changed files in the Storybook config directory, which can affect every story: \`${changedPreviewFile}\`.
+Changed files in the Forkbook config directory, which can affect every story: \`${changedPreviewFile}\`.
 
 Coverage sanity check: the working tree also contains modified file(s) that aren't reachable from any story (no static import path connects them), so this result can miss stories they affect: \`${changedThemeFile}\`. A component: write its stories, or tell the user. A file used without an import, such as a CSS-variable token: pass the components that use it to \`stories-find-by-component\`. Anything else, such as an app entry file: leave it out of the review. Never invent story IDs to fill the gap.
 
@@ -542,7 +542,7 @@ Next: if the change is visually observable, publish the review now — call **re
       expect(outcome.markdown).toBe(
         `No new, modified, or related stories detected.
 
-Changed files in the Storybook config directory, which can affect every story: \`${changedPreviewFile}\`.
+Changed files in the Forkbook config directory, which can affect every story: \`${changedPreviewFile}\`.
 
 Coverage sanity check: the working tree also contains modified file(s) that aren't reachable from any story (no static import path connects them), so this result can miss stories they affect: \`${changedThemeFile}\`. A component: write its stories, or tell the user. A file used without an import, such as a CSS-variable token: pass the components that use it to \`stories-find-by-component\`. Anything else, such as an app entry file: leave it out of the review. Never invent story IDs to fill the gap.`
       );
@@ -597,7 +597,7 @@ describe('stories.findByComponent', () => {
     // The adapter hands this message straight to the agent, so it must name both the
     // adapter-specific cause the service reported and the remedy that cause does not say.
     expect((error as Error).message).toBe(
-      "Storybook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
+      "Forkbook's story dependency graph is unavailable: builder does not support change detection. Make sure the dev server is running with a builder that supports change detection."
     );
   });
 
@@ -650,18 +650,18 @@ describe('descriptions', () => {
 
   it('names sibling tools as CLI commands', () => {
     expect(resolveToolsetDescription(toolset.methods.changed.description, cliCtx)).toContain(
-      'npx storybook tools stories find-by-component'
+      'npx forkbook tools stories find-by-component'
     );
   });
 
   it('describes preview as a mid-loop tool', () => {
     expect(resolveToolsetDescription(toolset.methods.preview.description, mcpCtx))
-      .toBe(`Use this tool to get Storybook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
+      .toBe(`Use this tool to get Forkbook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
 Do not end visual work or browse requests with these links — publish a curated review with review-create instead (passing changedFiles: [] when no code changed) and link that.`);
 
     expect(resolveToolsetDescription(toolset.methods.preview.description, cliCtx))
-      .toBe(`Use this tool to get Storybook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
-Do not end visual work or browse requests with these links — publish a curated review with npx storybook tools review create instead (passing changedFiles: [] when no code changed) and link that.`);
+      .toBe(`Use this tool to get Forkbook preview URLs while iterating on a specific story, or when the user asks for a direct link to one.
+Do not end visual work or browse requests with these links — publish a curated review with npx forkbook tools review create instead (passing changedFiles: [] when no code changed) and link that.`);
   });
 
   it('keeps review-create out of the static preview output schema', () => {

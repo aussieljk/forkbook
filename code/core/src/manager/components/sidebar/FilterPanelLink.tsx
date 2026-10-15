@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { ActionList, Form } from 'storybook/internal/components';
+import { ActionList, Form } from '@aussieljk/forkbook/internal/components';
 
 import { DeleteIcon } from '@storybook/icons';
 

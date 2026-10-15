@@ -2,19 +2,22 @@ import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { InlineConfig } from 'vitest/node';
 
-import { validateConfigurationFiles } from 'storybook/internal/common';
-import { StoryIndexGenerator, experimental_loadStorybook } from 'storybook/internal/core-server';
-import { isTelemetryModuleEnabled } from 'storybook/internal/telemetry';
+import { validateConfigurationFiles } from '@aussieljk/forkbook/internal/common';
+import {
+  StoryIndexGenerator,
+  experimental_loadStorybook,
+} from '@aussieljk/forkbook/internal/core-server';
+import { isTelemetryModuleEnabled } from '@aussieljk/forkbook/internal/telemetry';
 
 import { storybookTest } from './index.ts';
 
 const REPO_ROOT = '/repo';
 const PACKAGE_ROOT = '/repo/apps/storybook';
-const CONFIG_DIR = '/repo/apps/storybook/.storybook';
+const CONFIG_DIR = '/repo/apps/storybook/.forkbook';
 
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/core-server', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 const presetApply = vi.fn();
 
@@ -26,7 +29,7 @@ beforeEach(() => {
       case 'stories':
         return ['../stories/**/*.stories.tsx'];
       case 'framework':
-        return { name: 'storybook/react-vite' };
+        return { name: '@aussieljk/forkbook/react-vite' };
       // Mirrors a project without its own `viteFinal`: the common config is returned untouched,
       // so the root the plugin proposes is the root it ends up returning.
       case 'viteFinal':
@@ -138,9 +141,9 @@ describe('internal setup files', () => {
     const resolve = (specifier: string) => fileURLToPath(import.meta.resolve(specifier));
     expect([...project.config.setupFiles, ...(test.setupFiles as string[])]).toEqual([
       '/repo/my-own-setup.ts',
-      resolve('storybook/addon-vitest/internal/setup-file.browser.4'),
-      'storybook/addon-vitest/internal/setup-file',
-      'storybook/addon-vitest/internal/setup-file-with-project-annotations',
+      resolve('@aussieljk/forkbook/addon-vitest/internal/setup-file.browser.4'),
+      '@aussieljk/forkbook/addon-vitest/internal/setup-file',
+      '@aussieljk/forkbook/addon-vitest/internal/setup-file-with-project-annotations',
     ]);
   });
 });

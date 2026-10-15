@@ -230,7 +230,7 @@ const coreConfig: BuildEntries = {
         entryPoint: './src/shared/open-service/index.ts',
       },
       {
-        // Dependency-light docs toolset surface bundled into `storybook/mcp`'s dist (core is a
+        // Dependency-light docs toolset surface bundled into `@aussieljk/forkbook/mcp`'s dist (core is a
         // dev dependency there), replacing that package's own manifest-formatter copies. Portable:
         // its d.ts is one flat self-contained file so that consumer can inline it through standard
         // resolution; guarded by `portable-dist.test.ts` next to the entry source.

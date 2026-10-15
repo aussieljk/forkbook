@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { Tag } from 'storybook/internal/preview-api';
-import type { PreparedStory } from 'storybook/internal/types';
+import { Tag } from '@aussieljk/forkbook/internal/preview-api';
+import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
 import { DocsContext } from './DocsContext';
 

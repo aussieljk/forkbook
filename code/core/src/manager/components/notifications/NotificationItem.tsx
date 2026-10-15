@@ -1,13 +1,13 @@
 import type { CSSProperties, FC, SyntheticEvent } from 'react';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import { Link } from 'storybook/internal/router';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import { Link } from '@aussieljk/forkbook/internal/router';
 
 import { CloseAltIcon } from '@storybook/icons';
 
 import { clsx } from 'clsx';
-import { type State } from 'storybook/manager-api';
+import { type State } from '@aussieljk/forkbook/manager-api';
 
 import styles from './NotificationItem.module.css';
 

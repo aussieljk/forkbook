@@ -1,12 +1,12 @@
 /**
  * Channel transport constants and helpers for the open-service peer-to-peer sync protocol.
  *
- * Services use Storybook's existing manager↔preview channel so that a service registered
+ * Services use Forkbook's existing manager↔preview channel so that a service registered
  * in the manager or preview can automatically synchronise its state with other connected
  * peers. The `services:` prefix keeps service events trivially filterable from other
  * channel traffic.
  *
- * The live channel is read via {@link getChannel} from `storybook/internal/channels`.
+ * The live channel is read via {@link getChannel} from `@aussieljk/forkbook/internal/channels`.
  */
 import { nanoid } from 'nanoid';
 import * as v from 'valibot';

@@ -1,26 +1,26 @@
-# Storybook Errors
+# Forkbook Errors
 
-Storybook provides a utility to manage errors thrown from it. Each error is categorized and coded, and there is an ESLint plugin which enforces their usage, instead of throwing generic errors like `throw new Error()`.
+Forkbook provides a utility to manage errors thrown from it. Each error is categorized and coded, and there is an ESLint plugin which enforces their usage, instead of throwing generic errors like `throw new Error()`.
 
-Storybook errors reside in this package and are categorized into:
+Forkbook errors reside in this package and are categorized into:
 
 1. **[Preview errors](./preview-errors.ts)**
-   - Errors which occur in the preview part of Storybook (where user code executes)
+   - Errors which occur in the preview part of Forkbook (where user code executes)
    - e.g. Rendering issues, etc.
-   - available in `storybook/internal/preview-errors`
+   - available in `@aussieljk/forkbook/internal/preview-errors`
 2. **[Manager errors](./manager-errors.ts)**
-   - Errors which occur in the manager part of Storybook (manager UI)
-   - e.g. Sidebar, addons, Storybook UI, Storybook router, etc.
-   - available in `storybook/internal/server-errors`
+   - Errors which occur in the manager part of Forkbook (manager UI)
+   - e.g. Sidebar, addons, Forkbook UI, Forkbook router, etc.
+   - available in `@aussieljk/forkbook/internal/server-errors`
 3. **[Server errors](./server-errors.ts)**
    - Errors which occur in node
-   - e.g. Storybook init command, dev command, builder errors (Vite), etc.
-   - available in `storybook/internal/server-errors`
+   - e.g. Forkbook init command, dev command, builder errors (Vite), etc.
+   - available in `@aussieljk/forkbook/internal/server-errors`
 
 ## How to create errors
 
 First, **find which file your error should be part of**, based on the criteria above.
-Second use the `StorybookError` class to define custom errors with specific codes and categories for use within the Storybook codebase. Below is a detailed documentation for the error properties:
+Second use the `StorybookError` class to define custom errors with specific codes and categories for use within the Forkbook codebase. Below is a detailed documentation for the error properties:
 
 ### Class Structure
 
@@ -49,7 +49,7 @@ export class YourCustomError extends StorybookError {
 | code          | `number`              | The numeric code for the error.                                                                                                                            |
 | message       | `string`              | The error message.                                                                                                                                         |
 | data          | `Object`              | Optional. Data associated with the error. Used to provide additional information in the error message or to be passed to telemetry.                        |
-| documentation | `boolean` or `string` | Optional. Should be set to `true` **if the error is documented on the Storybook website**. If defined as string, it should be a custom documentation link. |
+| documentation | `boolean` or `string` | Optional. Should be set to `true` **if the error is documented on the Forkbook website**. If defined as string, it should be a custom documentation link. |
 
 ## Usage Example
 
@@ -60,7 +60,7 @@ export class StorybookIndexGenerationError extends StorybookError {
     super({
       category: Category.Generic,
       code: 1,
-      message: `Storybook failed when generating an index for your stories. Check the stories field in your main.js`,
+      message: `Forkbook failed when generating an index for your stories. Check the stories field in your main.js`,
     });
   }
 }
@@ -86,7 +86,7 @@ import {
 } from '@storybook/core-events/server-errors';
 
 throw StorybookIndexGenerationError();
-// "SB_Generic_0001: Storybook failed when generating an index for your stories. Check the stories field in your main.js.
+// "SB_Generic_0001: Forkbook failed when generating an index for your stories. Check the stories field in your main.js.
 
 throw InvalidFileExtensionError({ extension: 'mtsx' });
 // "SB_Validation_0002: Invalid file extension found: mtsx. More info: https://some-custom-documentation.com/validation-errors"
@@ -129,9 +129,9 @@ https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#dropped-addon-do
 Short:
 
 ```
-Failed to start Storybook.
+Failed to start Forkbook.
 
-Do you have an error in your \`preview.js\`? Check your Storybook's browser console for errors.
+Do you have an error in your \`preview.js\`? Check your Forkbook's browser console for errors.
 ```
 
 ❌ Here are a few unrecommended examples:
@@ -156,4 +156,4 @@ Better understanding of what is actually failing: By defining categories, error 
 
 Improved Telemetry: Aggregating and filtering errors allows better assessment of their impact, which helps in prioritization and tackling the issues.
 
-Improved Documentation: Categorized errors lead to the creation of a helpful errors page on the Storybook website, benefiting users with better guidance and improving overall accessibility and user experience.
+Improved Documentation: Categorized errors lead to the creation of a helpful errors page on the Forkbook website, benefiting users with better guidance and improving overall accessibility and user experience.

@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   FindPackageVersionsError,
   MinimumReleaseAgeHandledError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
@@ -25,7 +25,7 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
-  STORYBOOK_RERUN_INSTRUCTION,
+  FORKBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
@@ -277,7 +277,7 @@ export class NPMProxy extends JsPackageManager {
       return;
     }
 
-    const timeMap = await this.getPackageTimeMap('storybook');
+    const timeMap = await this.getPackageTimeMap('@aussieljk/forkbook');
     if (!timeMap) {
       return;
     }
@@ -458,7 +458,7 @@ export class NPMProxy extends JsPackageManager {
     return dedent`
       npm min-release-age blocked storybook@${currentVersion} from being installed.
 
-      ${STORYBOOK_RERUN_INSTRUCTION}
+      ${FORKBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:

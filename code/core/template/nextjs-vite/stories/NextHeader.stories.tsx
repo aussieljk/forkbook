@@ -1,8 +1,8 @@
-import type { Meta } from 'storybook/nextjs-vite';
-import type { StoryObj } from 'storybook/nextjs-vite';
-import { cookies, headers } from 'storybook/nextjs-vite/headers.mock';
+import type { Meta } from '@aussieljk/forkbook/nextjs-vite';
+import type { StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+import { cookies, headers } from '@aussieljk/forkbook/nextjs-vite/headers.mock';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
 import NextHeader from './NextHeader';
 

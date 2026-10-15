@@ -1,7 +1,7 @@
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { ChevronSmallDownIcon } from '@storybook/icons';
 

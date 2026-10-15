@@ -6,7 +6,7 @@ import { processPreviewAnnotation } from './process-preview-annotation.ts';
 describe('processPreviewAnnotation()', () => {
   it('should pull the `absolute` value from an object', () => {
     const annotation = {
-      bare: 'storybook/addon-links/preview',
+      bare: '@aussieljk/forkbook/addon-links/preview',
       absolute: '/Users/foo/storybook/node_modules/@storybook/addon-links/dist/preview.mjs',
     };
     const url = processPreviewAnnotation(annotation, '/Users/foo/storybook/');
@@ -20,9 +20,9 @@ describe('processPreviewAnnotation()', () => {
   });
 
   it('should keep absolute filesystem paths', () => {
-    const annotation = '/Users/foo/storybook/.storybook/preview.js';
+    const annotation = '/Users/foo/storybook/.forkbook/preview.js';
     const url = processPreviewAnnotation(annotation, '/Users/foo/storybook/');
-    expect(url).toBe('/Users/foo/storybook/.storybook/preview.js');
+    expect(url).toBe('/Users/foo/storybook/.forkbook/preview.js');
   });
 
   it('should keep absolute node_modules paths', () => {
@@ -44,9 +44,9 @@ describe('processPreviewAnnotation()', () => {
   });
 
   it('should keep absolute windows filesystem paths as is', () => {
-    const annotation = 'C:/foo/storybook/.storybook/preview.js';
+    const annotation = 'C:/foo/storybook/.forkbook/preview.js';
     const url = processPreviewAnnotation(annotation, 'C:/foo/storybook');
-    expect(url).toBe('C:/foo/storybook/.storybook/preview.js');
+    expect(url).toBe('C:/foo/storybook/.forkbook/preview.js');
   });
   it('should convert relative paths outside the root into absolute on Windows', () => {
     const annotation = '../parent.js';
@@ -61,9 +61,9 @@ describe('processPreviewAnnotation()', () => {
   });
 
   it('should normalize absolute Windows paths using \\', () => {
-    const annotation = 'C:\\foo\\storybook\\.storybook\\preview.js';
+    const annotation = 'C:\\foo\\storybook\\.forkbook\\preview.js';
     const url = processPreviewAnnotation(annotation, 'C:\\foo\\storybook');
-    expect(url).toBe('C:/foo/storybook/.storybook/preview.js');
+    expect(url).toBe('C:/foo/storybook/.forkbook/preview.js');
   });
 
   it('should normalize relative Windows paths using \\', () => {

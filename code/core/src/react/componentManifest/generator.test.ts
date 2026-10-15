@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 
-import { Tag } from 'storybook/internal/core-server';
+import { Tag } from '@aussieljk/forkbook/internal/core-server';
 
 import { vol } from 'memfs';
 import { dedent } from 'ts-dedent';
@@ -15,7 +15,7 @@ vi.mock('node:fs');
 vi.mock('node:fs/promises');
 
 vi.mock(import('./utils.ts'), { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('empathic/find', { spy: true });
 vi.mock('tsconfig-paths', { spy: true });
 // A new tsgo session for each manifest run, so that it reads the memfs files of the test.
@@ -70,7 +70,7 @@ test('manifests generates correct id, name, description and examples ', async ()
           "description": "Primary UI component for user interaction",
           "id": "example-button",
           "import": "import { Button } from '@design-system/components/override';
-    import { fn } from 'storybook/test';",
+    import { fn } from '@aussieljk/forkbook/test';",
           "jsDocTags": {
             "import": [
               "import { Button } from '@design-system/components/override';",
@@ -208,7 +208,7 @@ test('manifests generates correct id, name, description and examples ', async ()
           "description": "Description from meta and very long.",
           "id": "example-header",
           "import": "import { Header } from 'some-package';
-    import { fn } from 'storybook/test';",
+    import { fn } from '@aussieljk/forkbook/test';",
           "jsDocTags": {
             "summary": [
               "Component summary",
@@ -364,7 +364,7 @@ async function getManifestForStory(code: string) {
 
 function withCSF3(body: string) {
   return dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from './Button';
 
     const meta = {
@@ -380,7 +380,7 @@ function withCSF3(body: string) {
 
 test('fall back to index title when no component name', async () => {
   const code = dedent`
-    import type { Meta } from 'storybook/react';
+    import type { Meta } from '@aussieljk/forkbook/react';
     import { Button } from './Button';
 
     export default {
@@ -552,7 +552,7 @@ test('includes declared subcomponents that are already used in JSX', async () =>
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Button.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { Button } from './Button';
         import { ButtonIcon } from './ButtonIcon';
 
@@ -629,7 +629,7 @@ test('includes declared subcomponents even when they are not used in JSX', async
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Button.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { Button } from './Button';
         import { ButtonIcon } from './ButtonIcon';
 
@@ -693,7 +693,7 @@ test('includes aliased member-expression subcomponents', async () => {
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/ComboBox.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import * as ComboBox from './ComboBox';
 
         const meta = {
@@ -803,7 +803,7 @@ test('keeps the parent manifest when a declared subcomponent cannot be resolved'
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Button.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { Button } from './Button';
 
         const MissingItem = () => null;
@@ -931,7 +931,7 @@ test('generator preserves @import override when reactComponentMeta is enabled', 
 
   // `fn` joins the block because the story's args call it, so the snippet compiles as pasted.
   expect(button?.import).toBe(
-    "import { Button } from '@design-system/components/override';\nimport { fn } from 'storybook/test';"
+    "import { Button } from '@design-system/components/override';\nimport { fn } from '@aussieljk/forkbook/test';"
   );
   expect(button?.jsDocTags.import).toEqual([
     "import { Button } from '@design-system/components/override';",
@@ -946,7 +946,7 @@ test('generator falls back to title-based matching when meta.component aliases a
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Accordion.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import * as Accordion from './accordion';
 
         const Root = Accordion.Root;
@@ -1032,8 +1032,8 @@ test('should create component manifest when only attached-mdx docs have manifest
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Button.stories.ts']: dedent`
-        import type { Meta, StoryObj } from 'storybook/react';
-        import { fn } from 'storybook/test';
+        import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
+        import { fn } from '@aussieljk/forkbook/test';
         import { Button } from './Button';
 
         const meta = {
@@ -1144,7 +1144,7 @@ test('should prefer story entries over attached-mdx docs entries for the same co
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/Primary/Primary.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { Primary } from './Primary';
 
         const meta = {
@@ -1166,7 +1166,7 @@ test('should prefer story entries over attached-mdx docs entries for the same co
         export const Primary = ({ title }: PrimaryProps) => <div>{title}</div>;
       `,
       ['./src/OtherFile/OtherFile.stories.tsx']: dedent`
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { OtherFile } from './OtherFile';
 
         const meta = {
@@ -1243,7 +1243,7 @@ test('stories are populated when meta has no explicit title', async () => {
     {
       ['./package.json']: JSON.stringify({ name: 'some-package' }),
       ['./src/stories/Card.stories.ts']: dedent`
-        import type { Meta, StoryObj } from 'storybook/react';
+        import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
         import { Card } from './Card';
 
         const meta: Meta<typeof Card> = {

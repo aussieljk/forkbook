@@ -1,15 +1,15 @@
 import React, { useMemo, useRef } from 'react';
 
-import { ScrollArea } from 'storybook/internal/components';
+import { ScrollArea } from '@aussieljk/forkbook/internal/components';
 import type {
   API_LoadedRefData,
   StatusesByStoryIdAndTypeId,
   StoryIndex,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
-import { useStorybookApi, type State } from 'storybook/manager-api';
+import { useStorybookApi, type State } from '@aussieljk/forkbook/manager-api';
 
 import { focusableUIElements, isPagesViewMode } from '../../../manager-api/modules/layout.ts';
 import { useLandmark } from '../../hooks/useLandmark.ts';
@@ -118,7 +118,7 @@ export const Sidebar = React.memo(function Sidebar({
       {...landmarkProps}
     >
       <h1 id="global-site-h1" className="sb-sr-only">
-        Storybook
+        Forkbook
       </h1>
       <IconSymbols />
       <ScrollArea vertical offset={3} scrollbarSize={6} scrollPadding="4rem">

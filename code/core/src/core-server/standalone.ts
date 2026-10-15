@@ -5,7 +5,7 @@ import { buildStaticStandalone } from './build-static.ts';
 async function build(options: any = {}, frameworkOptions: any = {}) {
   const { mode = 'dev' } = options;
 
-  const { default: packageJson } = await import('storybook/package.json', {
+  const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
     with: { type: 'json' },
   });
 

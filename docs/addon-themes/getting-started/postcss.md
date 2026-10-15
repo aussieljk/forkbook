@@ -7,24 +7,24 @@ To get started, **install the package** as a dev dependency
 yarn:
 
 ```zsh
-yarn add -D storybook/addon-themes postcss-dark-theme-class
+yarn add -D @aussieljk/forkbook/addon-themes postcss-dark-theme-class
 ```
 
 npm:
 
 ```zsh
-npm install -D storybook/addon-themes postcss-dark-theme-class
+npm install -D @aussieljk/forkbook/addon-themes postcss-dark-theme-class
 ```
 
 pnpm:
 
 ```zsh
-pnpm add -D storybook/addon-themes postcss-dark-theme-class
+pnpm add -D @aussieljk/forkbook/addon-themes postcss-dark-theme-class
 ```
 
 ## 🧩 Register Addon
 
-Now, **include the addon** in your `.storybook/main.js` file.
+Now, **include the addon** in your `.forkbook/main.js` file.
 
 ```diff
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
   ],
   addons: [
     "@storybook/addon-essentials",
-+   "storybook/addon-themes"
++   "@aussieljk/forkbook/addon-themes"
   ],
 };
 ```
@@ -71,7 +71,7 @@ Use `prefers-color-scheme` media in your CSS:
 
 ## 🥾 Import your CSS
 
-To give your stories access to styles, import them into your `.storybook/preview.js` file.
+To give your stories access to styles, import them into your `.forkbook/preview.js` file.
 
 ```diff
 import { Preview } from "@storybook/your-renderer";
@@ -87,12 +87,12 @@ export default preview;
 
 ## 🎨 Provide your theme(s)
 
-To enable switching between these modes in a click for your stories, use our `withThemeByClassName` decorator by adding the following code to your `.storybook/preview.js` file.
+To enable switching between these modes in a click for your stories, use our `withThemeByClassName` decorator by adding the following code to your `.forkbook/preview.js` file.
 
 ```diff
 -import { Preview } from "@storybook/your-renderer";
 +import { Preview, Renderer } from "@storybook/your-renderer";
-+import { withThemeByClassName } from "storybook/addon-themes";
++import { withThemeByClassName } from "@aussieljk/forkbook/addon-themes";
 
 import "../src/index.css";
 

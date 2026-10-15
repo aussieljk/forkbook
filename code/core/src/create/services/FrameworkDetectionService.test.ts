@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { prompt } from 'storybook/internal/node-logger';
-import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
+import {
+  SupportedBuilder,
+  SupportedFramework,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import * as find from 'empathic/find';
 
@@ -12,15 +16,15 @@ vi.mock('empathic/find', () => ({
   any: vi.fn(),
 }));
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return {
     ...actual,
     getProjectRoot: vi.fn(() => '/project/root'),
   };
 });
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     select: vi.fn(),
   },

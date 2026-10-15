@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react';
 import React, { useEffect, useMemo } from 'react';
 
-import Events from 'storybook/internal/core-events';
-import type { Addon_PageType } from 'storybook/internal/types';
+import Events from '@aussieljk/forkbook/internal/core-events';
+import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 
-import { addons } from 'storybook/manager-api';
-import { cssVarsToString, globalCss, themeToCssVars, useTheme } from 'storybook/theming';
+import { addons } from '@aussieljk/forkbook/manager-api';
+import { cssVarsToString, globalCss, themeToCssVars, useTheme } from '@aussieljk/forkbook/theming';
 
 import { ManagerErrorBoundary } from './components/error-boundary/ManagerErrorBoundary.tsx';
 import { Layout } from './components/layout/Layout.tsx';

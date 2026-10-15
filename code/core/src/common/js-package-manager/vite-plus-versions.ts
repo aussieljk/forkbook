@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 /** Cached result: undefined = not yet checked, null = not available */
 let cachedVersions: Record<string, string> | null | undefined;

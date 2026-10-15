@@ -1,4 +1,4 @@
-import { versions } from 'storybook/internal/common';
+import { versions } from '@aussieljk/forkbook/internal/common';
 
 import type { ToolsetMethodReport } from '../../shared/open-service/toolset-definition.ts';
 import { parseToolsetMethodId, toCliMethodName } from '../../shared/open-service/toolset-names.ts';
@@ -100,7 +100,7 @@ export type ToolsInvocation = {
 /** Identifies this CLI to the tools SDK that hosts its run. */
 const CLI_CLIENT_INFO: ToolsClientInfo = {
   name: 'storybook-cli',
-  version: versions.storybook,
+  version: versions['@aussieljk/forkbook'],
   kind: 'cli',
 };
 
@@ -149,7 +149,7 @@ function resolveToolsMode(
 }
 
 /**
- * Run one `storybook tools` invocation against the toolsets the target Storybook configuration
+ * Run one `forkbook tools` invocation against the toolsets the target Forkbook configuration
  * registers in this process. This is the whole command behind the commander wiring: dispatch,
  * help, argument parsing, the requires-dev-server contract, and the mechanical
  * outcome mapping (markdown to stdout, `--json` for data, `ok` drives the exit code).
@@ -326,7 +326,7 @@ async function dispatchTools(
 
   const { methodName } = parseToolsetMethodId(method.ref);
   const toolPath = `${entry.id} ${toCliMethodName(methodName)}`;
-  const commandPath = `npx storybook tools ${toolPath}`;
+  const commandPath = `npx forkbook tools ${toolPath}`;
 
   if (tools.mode === 'local' && method.requiresDevServer) {
     const discovery = await (deps.discoverInstance ?? discoverRunningInstance)(invocation.target);
@@ -374,11 +374,11 @@ function formatUnknownToolsetFromCatalog(
   catalog: { configDir: string; toolsets: { id: string }[] }
 ): string {
   const available = catalog.toolsets.map((toolset) => `- \`${toolset.id}\``).join('\n');
-  return `Unknown toolset \`${toolsetName}\`. The Storybook configuration at ${catalog.configDir} provides:
+  return `Unknown toolset \`${toolsetName}\`. The Forkbook configuration at ${catalog.configDir} provides:
 
 ${available}
 
-Run \`npx storybook tools --help\` for every tool.`;
+Run \`npx forkbook tools --help\` for every tool.`;
 }
 
 function formatUnknownToolFromCatalog(
@@ -392,7 +392,7 @@ function formatUnknownToolFromCatalog(
 
 ${available}
 
-Run \`npx storybook tools ${entry.id}\` for their descriptions.`;
+Run \`npx forkbook tools ${entry.id}\` for their descriptions.`;
 }
 
 function joinMarkdown(markdown: string | string[]): string {
@@ -405,14 +405,14 @@ function formatRequiresDevServer(
   requestedMode: ToolsMode
 ): string {
   if (discovery.currentRecord && requestedMode === 'local') {
-    return `Found your Storybook running at ${discovery.currentRecord.url}, but \`${commandPath}\` cannot run from a local tools host. Re-run without \`--no-attach\` to attach to that instance.`;
+    return `Found your Forkbook running at ${discovery.currentRecord.url}, but \`${commandPath}\` cannot run from a local tools host. Re-run without \`--no-attach\` to attach to that instance.`;
   }
   if (discovery.currentRecord) {
-    return `Found your Storybook running at ${discovery.currentRecord.url}, but \`${commandPath}\` could not attach to it. Start or restart that Storybook, then re-run this command.`;
+    return `Found your Forkbook running at ${discovery.currentRecord.url}, but \`${commandPath}\` could not attach to it. Start or restart that Forkbook, then re-run this command.`;
   }
 
   const lines = [
-    `\`${commandPath}\` requires a running Storybook dev server, and none was found for this project. Start it first (for example \`npm run storybook\`), then re-run this command.`,
+    `\`${commandPath}\` requires a running Forkbook dev server, and none was found for this project. Start it first (for example \`npm run storybook\`), then re-run this command.`,
   ];
   if (discovery.records.length > 0) {
     const candidates = discovery.records
@@ -420,7 +420,7 @@ function formatRequiresDevServer(
       .join('\n');
     lines.push(
       '',
-      `Running Storybook instances that did not match this project — target one with \`--cwd\` or \`--config-dir\`:`,
+      `Running Forkbook instances that did not match this project — target one with \`--cwd\` or \`--config-dir\`:`,
       candidates
     );
   }
@@ -439,7 +439,7 @@ function formatValidationIssues(
   issues: ValidationIssues,
   input: ToolsetJsonSchema | undefined
 ): string {
-  const commandPath = `npx storybook tools ${toolPath}`;
+  const commandPath = `npx forkbook tools ${toolPath}`;
   const declaredKeys = input?.properties
     ? Object.keys(input.properties as Record<string, unknown>)
     : undefined;
@@ -453,7 +453,7 @@ function formatValidationIssues(
     if (declaredKeys && segments.length === 1 && !declaredKeys.includes(key)) {
       hasUnknownKey = true;
       return TARGET_OPTIONS.includes(key)
-        ? `- Unknown flag \`--${key}\`. It selects the target Storybook, so it goes before the toolset name: \`npx storybook tools --${key} <value> ${toolPath}\`.`
+        ? `- Unknown flag \`--${key}\`. It selects the target Forkbook, so it goes before the toolset name: \`npx forkbook tools --${key} <value> ${toolPath}\`.`
         : `- Unknown flag \`--${key}\`.`;
     }
     const path = segments.join('.');

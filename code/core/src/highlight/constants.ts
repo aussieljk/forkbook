@@ -1,4 +1,4 @@
-export const ADDON_ID = 'storybook/highlight';
+export const ADDON_ID = '@aussieljk/forkbook/highlight';
 
 export const HIGHLIGHT = `${ADDON_ID}/add`;
 export const REMOVE_HIGHLIGHT = `${ADDON_ID}/remove`;

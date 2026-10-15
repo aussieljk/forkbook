@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { StoryContext } from 'storybook/internal/csf';
+import type { StoryContext } from '@aussieljk/forkbook/internal/csf';
 
 import { run } from './a11yRunner.ts';
 import { afterEach } from './preview.tsx';

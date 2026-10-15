@@ -3,20 +3,20 @@ import * as REACT_DOM from 'react-dom';
 import * as REACT_DOM_CLIENT from 'react-dom/client';
 import * as REACT_JSX_RUNTIME from 'react/jsx-runtime';
 
-import * as CHANNELS from 'storybook/internal/channels';
-import * as CLIENT_LOGGER from 'storybook/internal/client-logger';
-import * as COMPONENTS from 'storybook/internal/components';
-import * as EVENTS from 'storybook/internal/core-events';
-import * as EVENTS_MANAGER_ERRORS from 'storybook/internal/manager-errors';
-import * as ROUTER from 'storybook/internal/router';
-import * as TYPES from 'storybook/internal/types';
+import * as CHANNELS from '@aussieljk/forkbook/internal/channels';
+import * as CLIENT_LOGGER from '@aussieljk/forkbook/internal/client-logger';
+import * as COMPONENTS from '@aussieljk/forkbook/internal/components';
+import * as EVENTS from '@aussieljk/forkbook/internal/core-events';
+import * as EVENTS_MANAGER_ERRORS from '@aussieljk/forkbook/internal/manager-errors';
+import * as ROUTER from '@aussieljk/forkbook/internal/router';
+import * as TYPES from '@aussieljk/forkbook/internal/types';
 
 import * as ICONS from '@storybook/icons';
 
-import * as MANAGER_API from 'storybook/manager-api';
-import * as TEST from 'storybook/test';
-import * as THEMING from 'storybook/theming';
-import * as THEMINGCREATE from 'storybook/theming/create';
+import * as MANAGER_API from '@aussieljk/forkbook/manager-api';
+import * as TEST from '@aussieljk/forkbook/test';
+import * as THEMING from '@aussieljk/forkbook/theming';
+import * as THEMINGCREATE from '@aussieljk/forkbook/theming/create';
 
 import type { globalsNameReferenceMap } from './globals.ts';
 
@@ -33,18 +33,18 @@ export const globalsNameValueMap: Required<Record<keyof typeof globalsNameRefere
   'react-dom/client': REACT_DOM_CLIENT,
   '@storybook/icons': ICONS,
 
-  'storybook/manager-api': MANAGER_API,
+  '@aussieljk/forkbook/manager-api': MANAGER_API,
 
-  'storybook/theming': THEMING,
-  'storybook/theming/create': THEMINGCREATE,
+  '@aussieljk/forkbook/theming': THEMING,
+  '@aussieljk/forkbook/theming/create': THEMINGCREATE,
 
-  'storybook/test': TEST,
+  '@aussieljk/forkbook/test': TEST,
 
-  'storybook/internal/channels': CHANNELS,
-  'storybook/internal/client-logger': CLIENT_LOGGER,
-  'storybook/internal/components': COMPONENTS,
-  'storybook/internal/core-events': EVENTS,
-  'storybook/internal/manager-errors': EVENTS_MANAGER_ERRORS,
-  'storybook/internal/router': ROUTER,
-  'storybook/internal/types': TYPES,
+  '@aussieljk/forkbook/internal/channels': CHANNELS,
+  '@aussieljk/forkbook/internal/client-logger': CLIENT_LOGGER,
+  '@aussieljk/forkbook/internal/components': COMPONENTS,
+  '@aussieljk/forkbook/internal/core-events': EVENTS,
+  '@aussieljk/forkbook/internal/manager-errors': EVENTS_MANAGER_ERRORS,
+  '@aussieljk/forkbook/internal/router': ROUTER,
+  '@aussieljk/forkbook/internal/types': TYPES,
 };

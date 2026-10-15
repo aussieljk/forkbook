@@ -104,7 +104,7 @@ describe('review.create', () => {
   });
 
   it('includes the deployment subpath from the toolset origin in the review link', async () => {
-    // A sub-path-hosted Storybook answers MCP under its root; the review page lives there too.
+    // A sub-path-hosted Forkbook answers MCP under its root; the review page lives there too.
     const outcome = await createReview({}, { ...cliCtx, origin: 'http://localhost:6006/nested' });
 
     expect(outcome.data).toMatchObject({
@@ -112,7 +112,7 @@ describe('review.create', () => {
     });
   });
 
-  it('rejects when the adapter has no Storybook origin to link to', async () => {
+  it('rejects when the adapter has no Forkbook origin to link to', async () => {
     await expect(createReview({}, { ...cliCtx, origin: undefined })).rejects.toBeInstanceOf(
       OpenServiceMissingOriginError
     );
@@ -137,7 +137,7 @@ describe('review.create', () => {
 
       expect(error).not.toBeInstanceOf(OpenServiceUnknownStoryIdsError);
       expect((error as Error).message)
-        .toBe(`Refusing to publish review: 2 story IDs are not backed by a story entry in the live Storybook index (docs entries cannot be review slots):
+        .toBe(`Refusing to publish review: 2 story IDs are not backed by a story entry in the live Forkbook index (docs entries cannot be review slots):
 - \`button--ghost\`
 - \`card--imagined\`
 
@@ -148,9 +148,9 @@ This usually means the IDs were inferred from file paths or naming conventions r
       const error = await createReview().catch((reason: unknown) => reason);
 
       expect((error as Error).message).toContain(
-        'calling `npx storybook tools stories find-by-component`'
+        'calling `npx forkbook tools stories find-by-component`'
       );
-      expect((error as Error).message).toContain('retry `npx storybook tools review create`');
+      expect((error as Error).message).toContain('retry `npx forkbook tools review create`');
     });
 
     it('agrees with the singular case', async () => {
@@ -159,7 +159,7 @@ This usually means the IDs were inferred from file paths or naming conventions r
       const error = await createReview().catch((reason: unknown) => reason);
 
       expect((error as Error).message).toContain(
-        'Refusing to publish review: 1 story ID is not backed by a story entry in the live Storybook index (docs entries cannot be review slots)'
+        'Refusing to publish review: 1 story ID is not backed by a story entry in the live Forkbook index (docs entries cannot be review slots)'
       );
     });
   });
@@ -185,7 +185,7 @@ This usually means the IDs were inferred from file paths or naming conventions r
     });
 
     it('tells MCP to reuse the request-derived UI root, not the bare origin', async () => {
-      // A sub-path-hosted Storybook serves its UI under the request root; "already running at"
+      // A sub-path-hosted Forkbook serves its UI under the request root; "already running at"
       // must name the address the agent can actually reach, like the review link does.
       const outcome = await createReview(
         {},
@@ -196,7 +196,7 @@ This usually means the IDs were inferred from file paths or naming conventions r
       );
 
       expect(outcome.markdown).toContain(
-        'Storybook is already running at http://localhost:6006/nested — reuse it.'
+        'Forkbook is already running at http://localhost:6006/nested — reuse it.'
       );
     });
 
@@ -204,11 +204,11 @@ This usually means the IDs were inferred from file paths or naming conventions r
       const outcome = await createReview({}, mcpCtx);
 
       expect(outcome.markdown)
-        .toBe(`Review applied: 1 collection, 1 story. Storybook is already running at http://localhost:6006 — reuse it. Do NOT start another Storybook or change its port to view this review; the running instance already serves it.
+        .toBe(`Review applied: 1 collection, 1 story. Forkbook is already running at http://localhost:6006 — reuse it. Do NOT start another Forkbook or change its port to view this review; the running instance already serves it.
 
 Two things you must do now, both of them:
 1. **Open ${reviewUrl} in your in-app browser now.** Look through your tools and skills, including ones you still have to load, for one that opens a URL in this app's own browser pane or preview tab (a navigate, open-URL or preview tool or skill), not a headless or external browser. Call it with this URL before you write your final response, so the user sees the review without leaving the tool. Skip this only when you have no such tool.
-2. **Show the link to the user too.** End your final response with a dedicated review section as the very last thing: its own heading on a line by itself (e.g. \`## 👀 Review your changes\`), then a one-line explanation of what the review is, then on the next line the review page as a markdown link prefixed with a 👉 so it's easy to spot: \`👉 [Open the Storybook review page](${reviewUrl})\`. For the explanation, use something like: "The review shows the 1 story most relevant for you to review right now. Because this is AI-curated, results may be inaccurate or incomplete." Put nothing after the link — not a trailing sentence the user has to hunt for. The user needs to see this link even after you've opened it yourself.`);
+2. **Show the link to the user too.** End your final response with a dedicated review section as the very last thing: its own heading on a line by itself (e.g. \`## 👀 Review your changes\`), then a one-line explanation of what the review is, then on the next line the review page as a markdown link prefixed with a 👉 so it's easy to spot: \`👉 [Open the Forkbook review page](${reviewUrl})\`. For the explanation, use something like: "The review shows the 1 story most relevant for you to review right now. Because this is AI-curated, results may be inaccurate or incomplete." Put nothing after the link — not a trailing sentence the user has to hunt for. The user needs to see this link even after you've opened it yourself.`);
     });
   });
 
@@ -229,10 +229,8 @@ Two things you must do now, both of them:
         cliCtx
       );
 
-      expect(description).toContain('Start from npx storybook tools stories changed;');
-      expect(description).toContain(
-        'fall back to npx storybook tools stories find-by-component if'
-      );
+      expect(description).toContain('Start from npx forkbook tools stories changed;');
+      expect(description).toContain('fall back to npx forkbook tools stories find-by-component if');
     });
   });
 

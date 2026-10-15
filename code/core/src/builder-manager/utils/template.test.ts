@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { customHeadHasFavicon, renderHTML } from './template.ts';
 

@@ -4,7 +4,7 @@ import type { ThemeVars } from '../types.ts';
 const theme: ThemeVars = {
   base: 'light',
 
-  // Storybook-specific color palette
+  // Forkbook-specific color palette
   colorPrimary: color.primary,
   colorSecondary: color.secondary,
 

@@ -2,16 +2,16 @@ import fs from 'node:fs/promises';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import * as find from 'empathic/find';
 
 import { FinalizationCommand, executeFinalization } from './FinalizationCommand.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('empathic/find', { spy: true });
 
 describe('FinalizationCommand', () => {
@@ -22,7 +22,7 @@ describe('FinalizationCommand', () => {
       logfile: undefined,
       showAgentFollowUp: false,
       showAiInstructions: false,
-      setupSkillCommand: 'npx storybook skills setup',
+      setupSkillCommand: 'npx forkbook skills setup',
     });
 
     vi.mocked(getProjectRoot).mockReturnValue('/test/project');
@@ -56,7 +56,7 @@ describe('FinalizationCommand', () => {
       vi.mocked(find.up).mockReturnValue(undefined);
 
       await command.execute({
-        storybookCommand: 'yarn storybook',
+        storybookCommand: 'yarn forkbook',
       });
 
       expect(fs.readFile).not.toHaveBeenCalled();
@@ -119,7 +119,7 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: true,
         showAiInstructions: true,
-        setupSkillCommand: 'pnpm exec storybook skills setup',
+        setupSkillCommand: 'pnpm exec forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
@@ -129,7 +129,7 @@ describe('FinalizationCommand', () => {
         expect.stringContaining('is not entirely set up yet')
       );
       expect(logger.step).toHaveBeenCalledWith(
-        expect.stringContaining('pnpm exec storybook skills setup')
+        expect.stringContaining('pnpm exec forkbook skills setup')
       );
       const logCalls = vi.mocked(logger.log).mock.calls.map((c) => String(c[0]));
       expect(logCalls.some((msg) => msg.includes('https://storybook.js.org/llms.txt'))).toBe(true);
@@ -141,14 +141,14 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: true,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
       await agentCommand.execute({});
 
       expect(logger.step).toHaveBeenCalledWith(
-        expect.stringContaining('Storybook was successfully installed')
+        expect.stringContaining('Forkbook was successfully installed')
       );
       // Ensure the agent message is NOT shown
       const stepCalls = vi.mocked(logger.step).mock.calls.map((c) => String(c[0]));
@@ -160,14 +160,14 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: false,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
       await nonAgentCommand.execute({});
 
       expect(logger.step).toHaveBeenCalledWith(
-        expect.stringContaining('Storybook was successfully installed')
+        expect.stringContaining('Forkbook was successfully installed')
       );
       // Ensure the agent message is NOT shown
       const stepCalls = vi.mocked(logger.step).mock.calls.map((c) => String(c[0]));
@@ -185,7 +185,7 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: true,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
@@ -195,7 +195,7 @@ describe('FinalizationCommand', () => {
         expect.stringContaining('To finalize setting up with AI')
       );
       expect(logger.step).toHaveBeenCalledWith(
-        expect.stringContaining('npx storybook skills setup')
+        expect.stringContaining('npx forkbook skills setup')
       );
     });
 
@@ -204,7 +204,7 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: false,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
@@ -219,7 +219,7 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: true,
         showAiInstructions: true,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
@@ -235,18 +235,18 @@ describe('FinalizationCommand', () => {
   });
 
   describe('storybookCommand message', () => {
-    it('should print "To run Storybook, run" with the command', async () => {
+    it('should print "To run Forkbook, run" with the command', async () => {
       const cmd = new FinalizationCommand({
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: false,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
       await cmd.execute({ storybookCommand: 'npm run storybook' });
 
-      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('To run Storybook, run'));
+      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('To run Forkbook, run'));
       expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run storybook'));
     });
 
@@ -255,14 +255,14 @@ describe('FinalizationCommand', () => {
         logfile: undefined,
         showAgentFollowUp: false,
         showAiInstructions: false,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
       await cmd.execute({ storybookCommand: null });
 
       const logCalls = vi.mocked(logger.log).mock.calls.map((c) => String(c[0]));
-      expect(logCalls.some((msg) => msg.includes('To run Storybook, run'))).toBe(false);
+      expect(logCalls.some((msg) => msg.includes('To run Forkbook, run'))).toBe(false);
     });
   });
 
@@ -274,7 +274,7 @@ describe('FinalizationCommand', () => {
         showAgentFollowUp: true,
         showAiInstructions: false,
         logfile: undefined,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
 
       // Agent mode should show agent-specific message
@@ -290,7 +290,7 @@ describe('FinalizationCommand', () => {
         showAgentFollowUp: false,
         showAiInstructions: true,
         logfile: undefined,
-        setupSkillCommand: 'npx storybook skills setup',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
 
       expect(logger.step).toHaveBeenCalledWith(
@@ -305,11 +305,11 @@ describe('FinalizationCommand', () => {
         showAgentFollowUp: false,
         showAiInstructions: false,
         logfile: undefined,
-        storybookCommand: 'yarn storybook',
-        setupSkillCommand: 'npx storybook skills setup',
+        storybookCommand: 'yarn forkbook',
+        setupSkillCommand: 'npx forkbook skills setup',
       });
 
-      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('yarn storybook'));
+      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('yarn forkbook'));
     });
   });
 });

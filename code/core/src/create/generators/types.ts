@@ -1,6 +1,6 @@
-import type { NpmOptions, ProjectType } from 'storybook/internal/cli';
-import type { JsPackageManager, PackageManagerName } from 'storybook/internal/common';
-import type { ConfigFile } from 'storybook/internal/csf-tools';
+import type { NpmOptions, ProjectType } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import type { ConfigFile } from '@aussieljk/forkbook/internal/csf-tools';
 import type {
   Feature,
   StorybookConfig,
@@ -8,7 +8,7 @@ import type {
   SupportedFramework,
   SupportedLanguage,
   SupportedRenderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { DependencyCollector } from '../dependency-collector.ts';
 import type { TelemetryService } from '../services/TelemetryService.ts';

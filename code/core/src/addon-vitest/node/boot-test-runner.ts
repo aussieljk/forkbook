@@ -1,16 +1,21 @@
 import { type ChildProcess } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import type { Channel } from 'storybook/internal/channels';
-import { executeNodeCommand, loadPreviewOrConfigFile } from 'storybook/internal/common';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { executeNodeCommand, loadPreviewOrConfigFile } from '@aussieljk/forkbook/internal/common';
 import {
   type StoryIndexGenerator,
   internal_universalStatusStore,
   internal_universalTestProviderStore,
-} from 'storybook/internal/core-server';
-import type { EventInfo, Options, PreviewAnnotation, StoryIndex } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-server';
+import type {
+  EventInfo,
+  Options,
+  PreviewAnnotation,
+  StoryIndex,
+} from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
 
 import { normalize } from 'pathe';
 
@@ -29,7 +34,9 @@ const MAX_START_TIME = 30000;
 
 // This path is a bit confusing, but essentially `boot-test-runner` gets bundled into the preset bundle
 // which is at the root. Then, from the root, we want to load `node/vitest.mjs`
-const vitestModulePath = fileURLToPath(importMetaResolve('storybook/addon-vitest/vitest'));
+const vitestModulePath = fileURLToPath(
+  importMetaResolve('@aussieljk/forkbook/addon-vitest/vitest')
+);
 
 // Events that were triggered before Vitest was ready are queued up and resent once it's ready
 const eventQueue: { type: string; args?: any[] }[] = [];
@@ -150,9 +157,9 @@ const bootTestRunner = async ({
             TEST: 'true',
             VITEST_CHILD_PROCESS: 'true',
             NODE_ENV: process.env.NODE_ENV ?? 'test',
-            STORYBOOK_CONFIG_DIR: normalize(options.configDir),
-            STORYBOOK_CONFIG_LOADER: configLoader,
-            STORYBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(previewAnnotations),
+            FORKBOOK_CONFIG_DIR: normalize(options.configDir),
+            FORKBOOK_CONFIG_LOADER: configLoader,
+            FORKBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(previewAnnotations),
           },
           extendEnv: true,
         },

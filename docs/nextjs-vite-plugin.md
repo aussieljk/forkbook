@@ -1,28 +1,28 @@
-# storybook/internal/nextjs-vite-plugin
+# @aussieljk/forkbook/internal/nextjs-vite-plugin
 
-This is a Vite plugin that allows you to use Next.js features in Vite. It is the basis for `storybook/nextjs-vite` and should be used when running portable stories in Vitest.
+This is a Vite plugin that allows you to use Next.js features in Vite. It is the basis for `@aussieljk/forkbook/nextjs-vite` and should be used when running portable stories in Vitest.
 
 ## Features
 
 - **Next.js Integration**: Seamlessly integrate Next.js features into your Vite project.
-- **Storybook Compatibility**: Acts as the foundation for [the `storybook/nextjs-vite` framework](https://storybook.js.org/docs/get-started/frameworks/nextjs#with-vite), enabling you to use Storybook with Next.js in a Vite environment.
+- **Forkbook Compatibility**: Acts as the foundation for [the `@aussieljk/forkbook/nextjs-vite` framework](https://storybook.js.org/docs/get-started/frameworks/nextjs#with-vite), enabling you to use Forkbook with Next.js in a Vite environment.
 - **Portable Stories**: Ideal for running portable stories in Vitest, ensuring your components are tested in an environment that closely mirrors production.
 
 ## Requirements
 
 - Next.js v14.1.0 or higher
-- Storybook 10 or higher
+- Forkbook 10 or higher
 
 ## Installation
 
 Install the plugin using your preferred package manager:
 
 ```sh
-npm install storybook/internal/nextjs-vite-plugin
+npm install @aussieljk/forkbook/internal/nextjs-vite-plugin
 # or
-yarn add storybook/internal/nextjs-vite-plugin
+yarn add @aussieljk/forkbook/internal/nextjs-vite-plugin
 # or
-pnpm add storybook/internal/nextjs-vite-plugin
+pnpm add @aussieljk/forkbook/internal/nextjs-vite-plugin
 ```
 
 ## Usage
@@ -38,19 +38,19 @@ Add the plugin to your Vitest configuration file. This ensures that Vitest is aw
 ```ts
 // vitest.config.ts
 import { defineConfig } from 'vite';
-import nextjs from 'storybook/internal/nextjs-vite-plugin';
+import nextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
 export default defineConfig({
   plugins: [nextjs()],
 });
 ```
 
-If you are using `storybook/nextjs-vite` you don't have to install `storybook/internal/nextjs-vite-plugin`, since `storybook/nextjs-vite` already re-exports it.
+If you are using `@aussieljk/forkbook/nextjs-vite` you don't have to install `@aussieljk/forkbook/internal/nextjs-vite-plugin`, since `@aussieljk/forkbook/nextjs-vite` already re-exports it.
 
 ```ts
 // vitest.config.ts
 import { defineConfig } from 'vite';
-import { storybookNextJsPlugin } from 'storybook/nextjs-vite/vite-plugin';
+import { storybookNextJsPlugin } from '@aussieljk/forkbook/nextjs-vite/vite-plugin';
 
 export default defineConfig({
   plugins: [storybookNextJsPlugin()],
@@ -87,13 +87,13 @@ When you also use the SVG-to-React plugin [vite-plugin-svgr](https://github.com/
 
 You can achieve this by adding include/exclude patterns as plugin options. The patterns follow Rollup's FilterPattern semantics (micromatch).
 
-#### 1. When using Storybook
+#### 1. When using Forkbook
 
 ```ts
-// .storybook/main.ts
+// .forkbook/main.ts
 export default {
   framework: {
-    name: 'storybook/nextjs-vite',
+    name: '@aussieljk/forkbook/nextjs-vite',
     options: {
       image: {
         // Default image glob patterns are already applied; this is optional
@@ -106,12 +106,12 @@ export default {
 };
 ```
 
-#### 2. When not using Storybook
+#### 2. When not using Forkbook
 
 ```ts
 // vite.config.ts or vitest.config.ts
 import { defineConfig } from 'vite';
-import nextjs from 'storybook/internal/nextjs-vite-plugin';
+import nextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
@@ -136,19 +136,19 @@ Notes:
 
 ## Usage with portable stories
 
-[Portable stories](https://storybook.js.org/docs/api/portable-stories/portable-stories-vitest) are Storybook stories which can be used in external environments, such as Vitest.
+[Portable stories](https://storybook.js.org/docs/api/portable-stories/portable-stories-vitest) are Forkbook stories which can be used in external environments, such as Vitest.
 
 This plugin is necessary to run portable stories in Vitest, as it provides the necessary Next.js features to ensure that your components are tested in an environment that closely mirrors production.
 
 ## Automatic story transformation
 
-The addon `storybook/addon-vitest` can be used to automatically transform your stories at Vitest runtime to in-memory test files. This allows you to run your stories in a Vitest environment without needing to manually transform your stories. Please visit https://storybook.js.org/docs/8.3/writing-tests/test-runner-with-vitest for more information.
+The addon `@aussieljk/forkbook/addon-vitest` can be used to automatically transform your stories at Vitest runtime to in-memory test files. This allows you to run your stories in a Vitest environment without needing to manually transform your stories. Please visit https://storybook.js.org/docs/8.3/writing-tests/test-runner-with-vitest for more information.
 
-## Limitations and differences to the Webpack5-based integration of Next.js in Storybook
+## Limitations and differences to the Webpack5-based integration of Next.js in Forkbook
 
 ### `next/font` `staticDir` mapping obsolete
 
-You don't need to map your custom font directory in Storybook's `staticDir` configuration. Instead, Vite will automatically serve the files in the `public` directory and provide assets during production builds.
+You don't need to map your custom font directory in Forkbook's `staticDir` configuration. Instead, Vite will automatically serve the files in the `public` directory and provide assets during production builds.
 
 ### CSS/SASS
 
@@ -179,7 +179,7 @@ When testing components that rely on Next.js Server Actions, you need to ensure 
    ```ts
    // vitest.config.ts
    import { defineConfig } from 'vitest/config';
-   import nextjs from 'storybook/internal/nextjs-vite-plugin';
+   import nextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
    export default defineConfig({
      plugins: [nextjs()],

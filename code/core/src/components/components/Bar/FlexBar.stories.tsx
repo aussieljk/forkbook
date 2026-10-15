@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { FlexBar } from './Bar.tsx';
 
 const meta = preview.meta({ component: FlexBar, title: 'Bar/FlexBar (deprecated)' });

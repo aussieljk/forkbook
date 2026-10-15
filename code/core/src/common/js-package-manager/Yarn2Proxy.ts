@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { prompt } from 'storybook/internal/node-logger';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   FindPackageVersionsError,
   MinimumReleaseAgeHandledError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
@@ -23,14 +23,14 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
-  STORYBOOK_RERUN_INSTRUCTION,
+  FORKBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
   hasStorybookMinimumAgeExclusions,
   parsePackageData,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
   parseReleaseTime,
-  STORYBOOK_PACKAGE_PATTERNS,
+  FORKBOOK_PACKAGE_PATTERNS,
 } from './util.ts';
 
 // more info at https://yarnpkg.com/advanced/error-codes
@@ -255,7 +255,7 @@ export class Yarn2Proxy extends JsPackageManager {
       return;
     }
 
-    const timeMap = await this.getPackageTimeMap('storybook');
+    const timeMap = await this.getPackageTimeMap('@aussieljk/forkbook');
     if (!timeMap) {
       return;
     }
@@ -284,7 +284,7 @@ export class Yarn2Proxy extends JsPackageManager {
       await this.updatePreapprovedPackages();
       logger.info(
         dedent`
-          yarn npmMinimalAgeGate would block storybook@${storybookVersion} from being installed because it was released within the configured npmMinimalAgeGate window, so Storybook updated npmPreapprovedPackages for this project automatically.
+          yarn npmMinimalAgeGate would block storybook@${storybookVersion} from being installed because it was released within the configured npmMinimalAgeGate window, so Forkbook updated npmPreapprovedPackages for this project automatically.
 
           Added patterns: storybook, @storybook/*, eslint-plugin-storybook
 
@@ -312,13 +312,13 @@ export class Yarn2Proxy extends JsPackageManager {
         message: 'How would you like to proceed?',
         options: [
           {
-            label: 'Update yarn config to preapprove Storybook packages',
+            label: 'Update yarn config to preapprove Forkbook packages',
             value: 'exclude',
           },
           {
             label: compatibleVersion
               ? `Stop now and rerun with the most recent allowed release: storybook@${compatibleVersion}`
-              : 'Stop now and rerun with an older stable Storybook release later',
+              : 'Stop now and rerun with an older stable Forkbook release later',
             value: 'rerun',
           },
         ],
@@ -487,7 +487,7 @@ export class Yarn2Proxy extends JsPackageManager {
     return dedent`
       yarn npmMinimalAgeGate blocked storybook@${currentVersion} from being installed.
 
-      ${STORYBOOK_RERUN_INSTRUCTION}
+      ${FORKBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:
@@ -498,7 +498,7 @@ export class Yarn2Proxy extends JsPackageManager {
   private async updatePreapprovedPackages(): Promise<void> {
     const currentPreapprovedPackages = await this.getPreapprovedPackages();
     const nextPreapprovedPackages = Array.from(
-      new Set([...currentPreapprovedPackages, ...STORYBOOK_PACKAGE_PATTERNS])
+      new Set([...currentPreapprovedPackages, ...FORKBOOK_PACKAGE_PATTERNS])
     );
 
     await prompt.executeTaskWithSpinner(

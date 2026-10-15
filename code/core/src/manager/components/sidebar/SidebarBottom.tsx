@@ -5,14 +5,19 @@ import {
   type Addon_Collection,
   type Addon_TestProviderType,
   Addon_TypesEnum,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import {
   experimental_useStatusStore,
   experimental_useTestProviderStore,
   internal_fullTestProviderStore,
 } from '#manager-stores';
-import { type API, type State, useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import {
+  type API,
+  type State,
+  useStorybookApi,
+  useStorybookState,
+} from '@aussieljk/forkbook/manager-api';
 
 import type { TestProviderStateByProviderId } from '../../../shared/test-provider-store/index.ts';
 import { NotificationList } from '../notifications/NotificationList.tsx';

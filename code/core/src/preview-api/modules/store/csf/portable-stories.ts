@@ -1,8 +1,8 @@
-import { type CleanupCallback, isExportStory } from 'storybook/internal/csf';
+import { type CleanupCallback, isExportStory } from '@aussieljk/forkbook/internal/csf';
 import {
   MountMustBeDestructuredError,
   ProjectAnnotationsAlreadyAppliedError,
-} from 'storybook/internal/preview-errors';
+} from '@aussieljk/forkbook/internal/preview-errors';
 import type {
   Args,
   Canvas,
@@ -21,9 +21,9 @@ import type {
   StoryContext,
   StoryContextForRender,
   StrictArgTypes,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { UserEventObject } from 'storybook/test';
+import type { UserEventObject } from '@aussieljk/forkbook/test';
 
 import { HooksContext } from '../../../addons.ts';
 import {
@@ -45,7 +45,7 @@ import { prepareContext, prepareStory } from './prepareStory.ts';
 declare global {
   var globalProjectAnnotations: NormalizedProjectAnnotations<any>;
   var defaultProjectAnnotations: ProjectAnnotations<any>;
-  // Set by storybook/addon-vitest once its setup file has applied the project annotations.
+  // Set by @aussieljk/forkbook/addon-vitest once its setup file has applied the project annotations.
   var __STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__: boolean | undefined;
   var __STORYBOOK_SET_PROJECT_ANNOTATIONS_CALLED__: boolean | undefined;
 }
@@ -72,7 +72,7 @@ export function setProjectAnnotations<TRenderer extends Renderer = Renderer>(
 
   const annotations = Array.isArray(projectAnnotations) ? projectAnnotations : [projectAnnotations];
   // Pass the raw annotation modules (which may use `default` and/or named exports, e.g. from
-  // `import * as annotations from '.storybook/preview'`) straight through: `composeConfigs` unwraps
+  // `import * as annotations from '.forkbook/preview'`) straight through: `composeConfigs` unwraps
   // those, and `composeProjectAnnotationsWithCore` detects the CSF4 marker (set by `definePreview`,
   // which is what e.g. addon-vitest passes here) so core annotations are never applied twice.
   globalThis.globalProjectAnnotations = composeProjectAnnotationsWithCore<TRenderer>([
@@ -196,7 +196,7 @@ export function composeStory<TRenderer extends Renderer = Renderer, TArgs extend
         // render are flushed when `StoryRender` emits `STORY_RENDERED`, whose listener also detaches
         // the hooks context. The portable path never emits that event, so invoke the same listener
         // directly here (after the render resolves, before play + the a11y `afterEach` observe the
-        // DOM): it triggers the effects (e.g. `storybook/addon-themes` setting `data-theme` on
+        // DOM): it triggers the effects (e.g. `@aussieljk/forkbook/addon-themes` setting `data-theme` on
         // `<html>`), clears the current context, and removes the now-stale render listener. (Effect-
         // only decorators; preview-api state updates that re-render are a separate, unsupported case.)
         hooks.renderListener(context.id);

@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

@@ -1,4 +1,4 @@
-import type { StorybookConfig, TypescriptOptions } from 'storybook/internal/types';
+import type { StorybookConfig, TypescriptOptions } from '@aussieljk/forkbook/internal/types';
 
 import type { DetectResult } from 'package-manager-detector';
 
@@ -90,7 +90,7 @@ export type StorybookMetadata = {
    * Whether a Next.js project customizes webpack through the `webpack` option of `next.config.*`.
    */
   hasCustomWebpack?: boolean;
-  /** Whether the Storybook config defines `viteFinal`. */
+  /** Whether the Forkbook config defines `viteFinal`. */
   hasCustomVite?: boolean;
   hasCustomBabel?: boolean;
   /**
@@ -130,7 +130,7 @@ export type YarnNodeLinker = 'node-modules' | 'pnp' | 'pnpm';
 
 export type PnpmNodeLinker = 'isolated' | 'hoisted' | 'pnp';
 
-// node_modules is Storybook's label for package managers without a linker setting, distinct from
+// node_modules is Forkbook's label for package managers without a linker setting, distinct from
 // Yarn Berry's node-modules so the telemetry data stays comparable over time.
 export type NodeLinker = 'node_modules' | YarnNodeLinker | PnpmNodeLinker;
 

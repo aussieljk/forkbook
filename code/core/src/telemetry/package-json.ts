@@ -56,7 +56,7 @@ const attempt = <T>(fn: () => T): T | undefined => {
 /**
  * Resolves the package.json of a package as installed for the project in the current working
  * directory. Resolution must be anchored to the project rather than to this module: when the
- * Storybook CLI runs from outside the project (e.g. via `npx`), module-relative resolution finds
+ * Forkbook CLI runs from outside the project (e.g. via `npx`), module-relative resolution finds
  * the CLI's own dependency tree instead of the project's.
  */
 const resolvePackageJsonPath = (packageName: string): string | undefined => {

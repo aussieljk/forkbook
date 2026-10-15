@@ -1,5 +1,5 @@
-# Storybook Addon Test
+# Forkbook Addon Test
 
-Addon to integrate Vitest test results with Storybook.
+Addon to integrate Vitest test results with Forkbook.
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

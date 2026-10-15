@@ -1,12 +1,22 @@
-import { logger } from 'storybook/internal/client-logger';
-import type { Story } from 'storybook/internal/csf';
-import { getStoryChildren, isExportStory, isStory, toTestId } from 'storybook/internal/csf';
-import type { ComponentTitle, Parameters, Path, Renderer } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { Story } from '@aussieljk/forkbook/internal/csf';
+import {
+  getStoryChildren,
+  isExportStory,
+  isStory,
+  toTestId,
+} from '@aussieljk/forkbook/internal/csf';
+import type {
+  ComponentTitle,
+  Parameters,
+  Path,
+  Renderer,
+} from '@aussieljk/forkbook/internal/types';
 import type {
   CSFFile,
   ModuleExports,
   NormalizedComponentAnnotations,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { normalizeComponentAnnotations } from './normalizeComponentAnnotations.ts';
 import { normalizeStory } from './normalizeStory.ts';

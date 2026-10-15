@@ -22,13 +22,13 @@ test('help command', () => {
 
   expect(stderrString).toBe('');
   expect(stdoutString).toContain('init');
-  expect(stdoutString).toContain('Initialize Storybook into your project');
+  expect(stdoutString).toContain('Initialize Forkbook into your project');
 
   expect(stdoutString).toContain('add');
-  expect(stdoutString).toContain('Add an addon to your Storybook');
+  expect(stdoutString).toContain('Add an addon to your Forkbook');
 
   expect(stdoutString).toContain('remove');
-  expect(stdoutString).toContain('Remove an addon from your Storybook');
+  expect(stdoutString).toContain('Remove an addon from your Forkbook');
 
   expect(stdoutString).toContain('info');
   expect(stdoutString).toContain('Prints debugging information about the local');

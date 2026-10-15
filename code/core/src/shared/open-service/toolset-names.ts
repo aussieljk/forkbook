@@ -8,7 +8,7 @@ export type ToolsetMethodId = `${string}.${string}`;
  * Split `toolsetId.methodName` into parts. Rejects empty segments and anything that is not exactly
  * one separator (no truncation of `a.b.c`).
  *
- * Throws a plain `Error` so this module stays portable for `storybook/internal/toolsets-docs`.
+ * Throws a plain `Error` so this module stays portable for `@aussieljk/forkbook/internal/toolsets-docs`.
  * Registration adapters wrap with `OpenServiceInvalidToolsetMethodIdError` where appropriate.
  */
 export function parseToolsetMethodId(methodId: string): {
@@ -35,7 +35,7 @@ export function parseToolsetMethodId(methodId: string): {
 /**
  * `findByComponent` -> `find-by-component`.
  *
- * The one authority for how a method name is spelled on the CLI; the `storybook tools` command
+ * The one authority for how a method name is spelled on the CLI; the `forkbook tools` command
  * derives its dispatch and help from this so command names and description cross-references cannot
  * disagree.
  */
@@ -68,7 +68,7 @@ export function getToolName(context: Pick<ToolsetCtx, 'transport'>) {
       case 'mcp':
         return toMcpToolName(method);
       case 'cli':
-        return `npx storybook tools ${toCliPath(method)}`;
+        return `npx forkbook tools ${toCliPath(method)}`;
       case 'sdk':
         return method;
       default: {

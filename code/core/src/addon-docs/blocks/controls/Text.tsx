@@ -1,7 +1,7 @@
 import type { ChangeEvent, FC } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import { Button, Form } from 'storybook/internal/components';
+import { Button, Form } from '@aussieljk/forkbook/internal/components';
 
 import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, TextConfig, TextValue } from './types';

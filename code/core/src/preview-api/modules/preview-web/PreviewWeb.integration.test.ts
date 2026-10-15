@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { RenderContext } from 'storybook/internal/types';
+import type { RenderContext } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -25,13 +25,13 @@ import { WebView } from './WebView.ts';
 //   - ie. from`renderToCanvas()` (stories) or`ReactDOM.render()` (docs) in.
 // This file lets them rip.
 
-vi.mock('storybook/internal/channels', async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/channels', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('storybook/internal/channels')>()),
+    ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/channels')>()),
     createBrowserChannel: () => mockChannel,
   };
 });
-vi.mock('storybook/addon-docs/blocks', async () => {
+vi.mock('@aussieljk/forkbook/addon-docs/blocks', async () => {
   const { CodeOrSourceMdx } = await import('../../../addon-docs/blocks/blocks/mdx.tsx');
   return {
     Docs: vi.fn(() => 'Docs'),
@@ -40,24 +40,24 @@ vi.mock('storybook/addon-docs/blocks', async () => {
     HeadersMdx: vi.fn(() => 'HeadersMdx'),
   };
 });
-vi.mock('storybook/internal/client-logger');
-vi.mock('storybook/internal/components');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/components');
 
-vi.mock('storybook/internal/channels', async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/channels', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('storybook/internal/channels')>()),
+    ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/channels')>()),
     createBrowserChannel: () => mockChannel,
   };
 });
-vi.mock('storybook/internal/client-logger', async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/client-logger', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('storybook/internal/client-logger')>()),
+    ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/client-logger')>()),
     createBrowserChannel: () => mockChannel,
   };
 });
-vi.mock('storybook/internal/components', async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/components', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('storybook/internal/components')>()),
+    ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/components')>()),
     createBrowserChannel: () => mockChannel,
   };
 });

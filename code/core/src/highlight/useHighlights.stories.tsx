@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { addons, useChannel } from 'storybook/preview-api';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { addons, useChannel } from '@aussieljk/forkbook/preview-api';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../.storybook/preview.tsx';
+import preview from '../../../.forkbook/preview.tsx';
 import { StoryContent } from './StoryContent.tsx';
 import {
   HIGHLIGHT,

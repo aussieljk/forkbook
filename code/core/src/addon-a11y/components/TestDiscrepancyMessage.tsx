@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { Link } from 'storybook/internal/components';
+import { Link } from '@aussieljk/forkbook/internal/components';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { DOCUMENTATION_DISCREPANCY_LINK } from '../constants.ts';
 import styles from './TestDiscrepancyMessage.module.css';

@@ -34,7 +34,7 @@ function writeSection({
   typescript,
 }: StoriesSkillInputs): string {
   const format = csfFactories
-    ? `This project writes stories with CSF Factories, because \`${previewFile}\` uses \`definePreview\`: \`import preview from '../.storybook/preview'\` (the path to that file), then \`const meta = preview.meta({ component: Button })\` and \`export const Primary = meta.story({ args: { ... } })\`. Do not import \`Meta\` or \`StoryObj\`. Import`
+    ? `This project writes stories with CSF Factories, because \`${previewFile}\` uses \`definePreview\`: \`import preview from '../.forkbook/preview'\` (the path to that file), then \`const meta = preview.meta({ component: Button })\` and \`export const Primary = meta.story({ args: { ... } })\`. Do not import \`Meta\` or \`StoryObj\`. Import`
     : typescript
       ? `Import \`Meta\` and \`StoryObj\` from \`${framework}\`, and`
       : 'Import';
@@ -45,7 +45,7 @@ function writeSection({
 
 Every component you create or change gets stories: one per distinct state it can reach (variants, loading, empty, error, disabled), with realistic props. Never export a story under the name of a global such as \`Error\`: export \`ErrorState\` and set \`name: 'Error'\`. An interactive component also gets a \`play\` function that drives it and asserts the visible result; for a callback passed as \`fn()\`, assert whether it was called, as that state expects. The rules below are for the stories you write; do not rewrite existing stories only to match them.
 
-- ${format} \`fn\`, \`expect\`, \`mocked\` and \`sb\` from \`storybook/test\`.
+- ${format} \`fn\`, \`expect\`, \`mocked\` and \`sb\` from \`@aussieljk/forkbook/test\`.
 - \`play: async ({ canvas, userEvent }) => { ... }\`: query \`canvas\` directly, by role or label. Never wrap it in \`within()\`. \`userEvent.click(element)\` takes no options.
 - A story never calls a real service. Mock network requests with MSW, never with a module mock or a replaced \`fetch\`: give the story \`beforeEach({ msw }) { msw.use(http.get('/api/users', () => HttpResponse.json([...]))) }\`, and leave the code that calls \`fetch\` as it is. When the project has no \`msw-storybook-addon\` yet, set it up first: install \`msw\` and \`msw-storybook-addon\` as dev dependencies, run \`npx msw init ./public --save\` (\`../public\` has to be in \`staticDirs\` of the main config), and add ${mswSetup} to \`${previewFile}\`. Read the addon's version in \`package.json\`: only before version 3 do stories have no \`msw\` in \`beforeEach\` and take \`parameters: { msw: { handlers: [...] } }\` instead. From version 3 on, never write \`parameters.msw\`.
 - Mock a module only for a dependency that is not a network call: register it in \`${previewFile}\` with \`sb.mock(import('../src/api.${typescript ? 'ts' : 'js'}'), { spy: true })\` (path relative to that file, with its extension), then set the result per story in \`beforeEach\` with \`mocked(getUser).mockResolvedValue(...)\`.`;
@@ -115,7 +115,7 @@ ${ref('review.create')} --input '{
 }'
 \`\`\`
 
-Publish a review after every change the user can see, and again after each later change. It needs a running Storybook.${discoverFirst} Group the stories into two to five collections, from the changed component up to the pages that show it (one is enough when a single component is affected), and include every story you created. List every file you created or changed in \`changedFiles\`, story files too. When the user only asks to see or browse components or stories and you changed no files, publish the same review with \`"changedFiles": []\`. Skip the review only when nothing visible changed and the user did not ask to see anything, and say that instead.
+Publish a review after every change the user can see, and again after each later change. It needs a running Forkbook.${discoverFirst} Group the stories into two to five collections, from the changed component up to the pages that show it (one is enough when a single component is affected), and include every story you created. List every file you created or changed in \`changedFiles\`, story files too. When the user only asks to see or browse components or stories and you changed no files, publish the same review with \`"changedFiles": []\`. Skip the review only when nothing visible changed and the user did not ask to see anything, and say that instead.
 
 Then do both things the command prints, every time: open the review in the in-app browser with a browser tool (unless you have none), and end your answer with the review section it gives you. Do not list separate story links next to it.`;
 }
@@ -132,7 +132,7 @@ Only for a look at one story while you iterate, or when the user asks for a dire
 
 export function buildStoriesSkill(inputs: StoriesSkillInputs): string {
   return [
-    `# Storybook workflow
+    `# Forkbook workflow
 
 Follow this for every change to how the UI looks (components, stories, styles, themes, tokens) and for requests to show components or stories. Some commands print what to do next; follow that too. Add \`--help\` to a command only when a call fails.`,
     inputs.docsEnabled && docsSection(),

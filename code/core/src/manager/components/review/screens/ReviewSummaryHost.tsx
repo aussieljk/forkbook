@@ -1,6 +1,6 @@
 import React, { useCallback, type FC } from 'react';
 
-import { useStorybookApi } from 'storybook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { PRE_REVIEW_RETURN_KEY } from '../constants.ts';
 import { useReviewContext } from '../review-context.ts';

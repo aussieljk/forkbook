@@ -1,12 +1,17 @@
 import React, { useCallback, useState } from 'react';
 
-import { Button, PopoverProvider } from 'storybook/internal/components';
-import type { StatusesByStoryIdAndTypeId, StoryIndex } from 'storybook/internal/types';
-import type { StatusValue } from 'storybook/internal/types';
+import { Button, PopoverProvider } from '@aussieljk/forkbook/internal/components';
+import type { StatusesByStoryIdAndTypeId, StoryIndex } from '@aussieljk/forkbook/internal/types';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import { FilterIcon } from '@storybook/icons';
 
-import { type API, type Combo, Consumer, experimental_useStatusStore } from 'storybook/manager-api';
+import {
+  type API,
+  type Combo,
+  Consumer,
+  experimental_useStatusStore,
+} from '@aussieljk/forkbook/manager-api';
 
 import { getActiveFilterCount } from '../../../shared/utils/story-index-filters.ts';
 import { FilterPanel } from './FilterPanel.tsx';

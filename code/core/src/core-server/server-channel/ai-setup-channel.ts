@@ -1,19 +1,19 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   AI_SETUP_ANALYTICS_REQUEST,
   AI_SETUP_ANALYTICS_RESPONSE,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   getLastEvents,
   getStorybookMetadata,
   isStoryCreatedByAISetup,
   telemetry,
-} from 'storybook/internal/telemetry';
-import type { Options } from 'storybook/internal/types';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { Options } from '@aussieljk/forkbook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { runStoryTests } from '../utils/ghost-stories/run-story-tests.ts';
-import type { StoryIndexGenerator } from 'storybook/internal/core-server';
+import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
 import { waitForIdleVitest } from '../utils/wait-for-idle-vitest.ts';
 import { getAiSetupRunId } from '../../shared/utils/ai-checklist-flags.ts';
 
@@ -38,7 +38,7 @@ export function initAIAnalyticsChannel(
       const lastSetupStoryScoringRun = lastEvents?.['ai-setup-final-scoring'];
       runId = await getAiSetupRunId(options.configDir);
 
-      // Only run if `storybook skills setup` has been called
+      // Only run if `forkbook skills setup` has been called
       if (!lastAISetup) {
         return;
       }
@@ -52,11 +52,11 @@ export function initAIAnalyticsChannel(
       }
 
       const metadata = await getStorybookMetadata(options.configDir);
-      const isReactStorybook = metadata?.renderer?.includes('storybook/react');
+      const isReactStorybook = metadata?.renderer?.includes('@aussieljk/forkbook/react');
       const hasVitestAddon =
         !!metadata?.addons &&
         Object.keys(metadata.addons).some((addonKey) =>
-          addonKey.includes('storybook/addon-vitest')
+          addonKey.includes('@aussieljk/forkbook/addon-vitest')
         );
 
       // For now this is gated by React + Vitest

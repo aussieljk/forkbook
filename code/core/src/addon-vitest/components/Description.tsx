@@ -2,8 +2,8 @@ import React, { type ComponentProps } from 'react';
 
 import { clsx } from 'clsx';
 
-import { Link as LinkComponent } from 'storybook/internal/components';
-import type { TestProviderState } from 'storybook/internal/types';
+import { Link as LinkComponent } from '@aussieljk/forkbook/internal/components';
+import type { TestProviderState } from '@aussieljk/forkbook/internal/types';
 
 import type { StoreState } from '../types.ts';
 import { GlobalErrorContext } from './GlobalErrorModal.tsx';

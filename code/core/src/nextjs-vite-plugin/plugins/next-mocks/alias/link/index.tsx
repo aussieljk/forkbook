@@ -1,6 +1,6 @@
 import type { LinkProps } from 'next/link';
 import React from 'react';
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 const linkAction = fn().mockName('next/link::Link');
 

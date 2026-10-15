@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import type { State } from 'storybook/manager-api';
+import type { State } from '@aussieljk/forkbook/manager-api';
 
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import NotificationItem from './NotificationItem.tsx';

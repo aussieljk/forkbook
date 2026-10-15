@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 
 import { EventEmitter } from 'node:events';
 import { createServer, type Server } from 'node:http';
@@ -12,7 +12,7 @@ import {
   PREVIEW_INITIALIZED,
   SAVE_STORY_REQUEST,
   SAVE_STORY_RESPONSE,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 
 import { ServerChannelTransport, getServerChannel } from '../get-server-channel.ts';
 

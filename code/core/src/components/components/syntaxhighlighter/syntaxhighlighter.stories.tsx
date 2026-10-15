@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { ThemeProvider, ensure, themes } from 'storybook/theming';
+import { ThemeProvider, ensure, themes } from '@aussieljk/forkbook/theming';
 
 import { SyntaxHighlighter } from './syntaxhighlighter.tsx';
 
@@ -174,7 +174,7 @@ export const CSharpDark = {
 export const Story = {
   args: {
     language: 'jsx',
-    children: `import type { Meta, StoryObj } from 'storybook/react-vite';
+    children: `import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
     import { Header } from './Header';
     

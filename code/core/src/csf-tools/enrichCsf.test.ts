@@ -151,7 +151,7 @@ describe('enrichCsf', () => {
         await enrich(
           dedent`
           // compiled code
-          import {config} from "/.storybook/preview.ts";
+          import {config} from "/.forkbook/preview.ts";
           const meta = config.meta({
               args: {
                 label: "Hello world!"
@@ -161,7 +161,7 @@ describe('enrichCsf', () => {
         `,
           dedent`
           // original code
-          import {config} from "#.storybook/preview.ts";
+          import {config} from "#.forkbook/preview.ts";
           const meta = config.meta({
               args: {
                 label: "Hello world!"
@@ -172,7 +172,7 @@ describe('enrichCsf', () => {
         )
       ).toMatchInlineSnapshot(`
         // compiled code
-        import { config } from "/.storybook/preview.ts";
+        import { config } from "/.forkbook/preview.ts";
         const meta = config.meta({
           args: {
             label: "Hello world!"
@@ -196,7 +196,7 @@ describe('enrichCsf', () => {
         await enrich(
           dedent`
           // compiled code
-          import {config} from "/.storybook/preview.ts";
+          import {config} from "/.forkbook/preview.ts";
           const meta = config.meta({});
           const withIcon = meta.type();
           export const Story = meta.type().story({});
@@ -205,7 +205,7 @@ describe('enrichCsf', () => {
         `,
           dedent`
           // original code
-          import {config} from "#.storybook/preview.ts";
+          import {config} from "#.forkbook/preview.ts";
           const meta = config.meta({});
           const withIcon = meta.type<{ args: { icon: string } }>();
           export const Story = meta.type<{ args: { icon: string } }>().story({});
@@ -215,7 +215,7 @@ describe('enrichCsf', () => {
         )
       ).toMatchInlineSnapshot(`
         // compiled code
-        import { config } from "/.storybook/preview.ts";
+        import { config } from "/.forkbook/preview.ts";
         const meta = config.meta({});
         const withIcon = meta.type();
         export const Story = meta.type().story({});

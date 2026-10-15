@@ -4,7 +4,7 @@
  * Docgen-server mode moves docs data out of the served manifests and into the open services, but
  * the `docgenServer` flag alone is not enough to read from them: the docgen
  * registrations are skipped for manager-only builds and when no docgen worker is available. Every
- * consumer that reads the local Storybook — core's own docs toolset and a composition's local
+ * consumer that reads the local Forkbook — core's own docs toolset and a composition's local
  * source alike — must make the same choice, so it lives here: the services when they actually
  * registered, and otherwise the manifests, which every mode still writes.
  *
@@ -12,7 +12,7 @@
  * this access before the `services` preset hooks have necessarily run.
  */
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { DOCGEN_SERVICE_ID } from '../../services/docgen/paths.ts';
 import { STORY_DOCS_SERVICE_ID } from '../../services/story-docs/paths.ts';

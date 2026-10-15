@@ -4,8 +4,8 @@ import {
   OPEN_IN_EDITOR_REQUEST,
   OPEN_IN_EDITOR_RESPONSE,
   type OpenInEditorResponsePayload,
-} from 'storybook/internal/core-events';
-import type { API_Notification } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { API_Notification } from '@aussieljk/forkbook/internal/types';
 
 import { FailedIcon } from '@storybook/icons';
 
@@ -63,8 +63,7 @@ export const init: ModuleFn = ({ provider, fullAPI }) => {
             content: {
               headline: 'Failed to open in editor',
               subHeadline:
-                payload.error ||
-                'Check the Storybook process on the command line for more details.',
+                payload.error || 'Check the Forkbook process on the command line for more details.',
             },
             icon: <FailedIcon color={color.negative} />,
             duration: 8_000,

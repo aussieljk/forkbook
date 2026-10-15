@@ -6,7 +6,7 @@ import type {
   StatusesByStoryIdAndTypeId,
   StoryId,
   TestProviderState,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { store, testProviderStore } from '#manager-store';
 import { isEqual } from 'es-toolkit/predicate';
@@ -15,7 +15,7 @@ import {
   experimental_useStatusStore,
   experimental_useTestProviderStore,
   internal_useUniversalStore,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID, STATUS_TYPE_ID_A11Y, STATUS_TYPE_ID_COMPONENT_TEST } from './constants.ts';
 import type { StoreState } from './types.ts';

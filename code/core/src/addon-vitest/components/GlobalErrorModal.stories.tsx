@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 import { dedent } from 'ts-dedent';
 
 import { storeOptions } from '../constants.ts';
@@ -81,7 +81,7 @@ export const FatalError: Story = {
     const canvas = within(canvasElement.parentElement!);
     const button = canvas.getByText('Open modal');
     await userEvent.click(button);
-    await expect(canvas.findByText('Storybook Test Error Details')).resolves.toBeInTheDocument();
+    await expect(canvas.findByText('Forkbook Test Error Details')).resolves.toBeInTheDocument();
   },
 };
 

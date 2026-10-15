@@ -1,5 +1,5 @@
-import type { Channel } from 'storybook/internal/channels';
-import { isStory } from 'storybook/internal/csf';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { isStory } from '@aussieljk/forkbook/internal/csf';
 import type {
   CSFFile,
   ModuleExport,
@@ -10,7 +10,7 @@ import type {
   ResolvedModuleExportType,
   StoryId,
   StoryName,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -180,7 +180,7 @@ export class DocsContext<TRenderer extends Renderer> implements DocsContextProps
 
     // CSF4 modules don't have a default export, and when a bundler splits the
     // story module into a separate chunk the namespace passed to <Meta of={...} />
-    // may differ by object identity from the one Storybook registered. Fall back
+    // may differ by object identity from the one Forkbook registered. Fall back
     // to resolving the CSF file via any of its story exports.
     // Skip individual story objects (handled by the story lookup below).
     if (

@@ -1,5 +1,5 @@
-import type { Renderer, StoryId } from 'storybook/internal/types';
-import type { StoryRenderOptions } from 'storybook/internal/types';
+import type { Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
+import type { StoryRenderOptions } from '@aussieljk/forkbook/internal/types';
 
 export type RenderType = 'story' | 'docs';
 

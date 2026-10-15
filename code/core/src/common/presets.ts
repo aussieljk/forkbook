@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/node-logger';
-import { CriticalPresetLoadError } from 'storybook/internal/server-errors';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { CriticalPresetLoadError } from '@aussieljk/forkbook/internal/server-errors';
 import type {
   BuilderOptions,
   CLIOptions,
@@ -10,7 +10,7 @@ import type {
   PresetConfig,
   Presets,
   StorybookConfigRaw,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { readFileSync } from 'node:fs';
 
@@ -63,10 +63,10 @@ function readAddonManifest(dir: string): { name?: string; exports?: unknown } | 
  *
  * Valid inputs:
  *
- * - `'storybook/addon-docs/preset' => { type: 'presets', item }`
- * - `'storybook/addon-docs' => { type: 'presets', item: 'storybook/addon-docs/preset' }`
- * - `{ name: 'storybook/addon-docs(/preset)?', options: { } } => { type: 'presets', item: { name:
- *   'storybook/addon-docs/preset', options } }`
+ * - `'@aussieljk/forkbook/addon-docs/preset' => { type: 'presets', item }`
+ * - `'@aussieljk/forkbook/addon-docs' => { type: 'presets', item: '@aussieljk/forkbook/addon-docs/preset' }`
+ * - `{ name: '@aussieljk/forkbook/addon-docs(/preset)?', options: { } } => { type: 'presets', item: { name:
+ *   '@aussieljk/forkbook/addon-docs/preset', options } }`
  */
 export const resolveAddonName = (
   configDir: string,

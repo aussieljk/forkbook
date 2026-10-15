@@ -7,7 +7,7 @@ Notice the `?raw` at the end above, it is necessary to work.
 A full example:
 
 ```md
-import { Markdown } from 'storybook/addon-docs/blocks';
+import { Markdown } from '@aussieljk/forkbook/addon-docs/blocks';
 import content from './Markdown-content.md?raw';
 
 <Markdown>{content}</Markdown>

@@ -1,7 +1,7 @@
-import { AddonVitestService } from 'storybook/internal/cli';
-import { type JsPackageManager } from 'storybook/internal/common';
-import { CLI_COLORS, logger, prompt } from 'storybook/internal/node-logger';
-import { ErrorCollector } from 'storybook/internal/telemetry';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import { type JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { ErrorCollector } from '@aussieljk/forkbook/internal/telemetry';
 
 import { dedent } from 'ts-dedent';
 
@@ -10,7 +10,7 @@ import type { CommandOptions } from '../generators/types.ts';
 import { TelemetryService } from '../services/index.ts';
 
 const ADDON_INSTALLATION_INSTRUCTIONS = {
-  'storybook/addon-vitest':
+  '@aussieljk/forkbook/addon-vitest':
     'https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced',
 } as { [key: string]: string };
 
@@ -24,7 +24,7 @@ export type ExecuteAddonConfigurationResult = {
 };
 
 /**
- * Command for configuring Storybook addons
+ * Command for configuring Forkbook addons
  *
  * Responsibilities:
  *
@@ -52,7 +52,7 @@ export class AddonConfigurationCommand {
     try {
       const { hasFailures, addonResults } = await this.configureAddons(configDir, addons);
 
-      if (addonResults.has('storybook/addon-vitest')) {
+      if (addonResults.has('@aussieljk/forkbook/addon-vitest')) {
         const { result } = await this.addonVitestService.installPlaywright({
           yes: this.commandOptions.yes,
           useRemotePkg: !!this.commandOptions.skipInstall,
@@ -136,7 +136,7 @@ export class AddonConfigurationCommand {
           prompt,
         };
 
-        if (addon === 'storybook/addon-vitest') {
+        if (addon === '@aussieljk/forkbook/addon-vitest') {
           await addonVitestPostinstall(options);
         } else {
           await postinstallAddon(addon, options);

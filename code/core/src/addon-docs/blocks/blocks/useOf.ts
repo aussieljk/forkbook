@@ -4,7 +4,7 @@ import type {
   DocsContextProps,
   ResolvedModuleExportFromType,
   ResolvedModuleExportType,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { DocsContext } from './DocsContext';
 

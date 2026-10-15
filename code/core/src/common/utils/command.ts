@@ -1,4 +1,4 @@
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import { existsSync } from 'node:fs';
 import { delimiter, join } from 'node:path';
 
@@ -236,7 +236,7 @@ function tryCommandVariationsSync(
  * Open for extension:
  *
  * - Add new commands to `WINDOWS_SHIM_COMMANDS` as needed.
- * - If Storybook adds new internal commands later, extend the list.
+ * - If Forkbook adds new internal commands later, extend the list.
  *
  * @param {string} command - The executable name passed into executeCommand.
  * @returns {string[]} - Array of command variations to try (most specific first).

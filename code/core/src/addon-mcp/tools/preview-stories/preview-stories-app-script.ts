@@ -6,7 +6,7 @@
 const LATEST_PROTOCOL_VERSION = '2025-11-21';
 
 import { MCP_APP_SIZE_CHANGED_EVENT, MCP_APP_PARAM } from '../../constants.ts';
-import type { PreviewStoriesOutput } from 'storybook/internal/core-server';
+import type { PreviewStoriesOutput } from '@aussieljk/forkbook/internal/core-server';
 import pkg from '../../../../package.json' with { type: 'json' };
 
 interface McpUiHostStyles {
@@ -138,7 +138,7 @@ onHostNotification(METHODS.TOOL_RESULT, loadStoryIframes);
 onHostNotification(METHODS.HOST_CONTEXT_CHANGED, applyHostStyles);
 sendHostNotification(METHODS.INITIALIZED, {});
 
-// Listen for size messages from Storybook iframes (height only to avoid feedback loops)
+// Listen for size messages from Forkbook iframes (height only to avoid feedback loops)
 window.addEventListener('message', function (event: MessageEvent) {
   if (event.data?.type !== MCP_APP_SIZE_CHANGED_EVENT) {
     return;
@@ -212,7 +212,7 @@ function loadStoryIframes(params: { structuredContent?: PreviewStoriesOutput }):
     iframe.style.height = '0';
 
     const iframeSrc = storyResult.previewUrl.replace('/?path=/story/', '/iframe.html?id=');
-    // Add MCP App param to enable size reporting in Storybook's preview.ts
+    // Add MCP App param to enable size reporting in Forkbook's preview.ts
     const url = new URL(iframeSrc);
     url.searchParams.set(MCP_APP_PARAM, 'true');
     iframe.src = url.toString();

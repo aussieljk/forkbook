@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
 import { getControlId, getControlSetterButtonId } from './helpers';
 import type { BooleanConfig, BooleanValue, ControlProps } from './types';

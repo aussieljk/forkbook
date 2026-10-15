@@ -1,9 +1,9 @@
 import {
   getStoryImportPathFromEntry,
   selectComponentEntriesByComponentId,
-} from 'storybook/internal/common';
-import type { IndexEntry } from 'storybook/internal/types';
-import { type PresetPropertyFn, type StorybookConfigRaw } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
+import { type PresetPropertyFn, type StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import path from 'pathe';
 

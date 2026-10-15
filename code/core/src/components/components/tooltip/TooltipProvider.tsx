@@ -1,7 +1,7 @@
 import type { DOMAttributes, ReactElement, ReactNode } from 'react';
 import React, { useContext, useId, useState } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { Tooltip } from '@base-ui/react/tooltip';
 

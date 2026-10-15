@@ -1,9 +1,9 @@
 /**
- * Access helper for Storybook's `core/module-graph` open service — the reverse index from source
+ * Access helper for Forkbook's `core/module-graph` open service — the reverse index from source
  * files to the story files that (transitively) import them. Replaces the removed
  * `experimental_getDependencyGraphService` compatibility API.
  *
- * Older Storybook versions don't ship the open-service runtime; we dynamically import and treat a
+ * Older Forkbook versions don't ship the open-service runtime; we dynamically import and treat a
  * missing `getService` export (or an unregistered service) as "unsupported".
  *
  * The generic open-service query type (`Query`) is imported from core. The
@@ -12,7 +12,7 @@
  * mirror them here; keep them in sync with `core/module-graph` if it changes.
  */
 
-import type { Query } from 'storybook/internal/core-server';
+import type { Query } from '@aussieljk/forkbook/internal/core-server';
 
 const MODULE_GRAPH_SERVICE_ID = 'core/module-graph';
 
@@ -57,7 +57,10 @@ let probed: GetServiceFn | null | undefined;
 async function probe(): Promise<GetServiceFn | null> {
   if (probed !== undefined) return probed;
   try {
-    const mod = (await import('storybook/internal/core-server')) as Record<string, unknown>;
+    const mod = (await import('@aussieljk/forkbook/internal/core-server')) as Record<
+      string,
+      unknown
+    >;
     const fn = mod.getService;
     probed = typeof fn === 'function' ? (fn as GetServiceFn) : null;
   } catch {
@@ -67,7 +70,7 @@ async function probe(): Promise<GetServiceFn | null> {
 }
 
 /**
- * Resolves the `core/module-graph` runtime service, or `undefined` when Storybook doesn't ship the
+ * Resolves the `core/module-graph` runtime service, or `undefined` when Forkbook doesn't ship the
  * open-service API or the service isn't registered (e.g. a builder without change detection, or the
  * dev server isn't running). A non-undefined result doesn't mean the graph is built — await
  * `queries.status.loaded(undefined)` and check for the `ready` status.

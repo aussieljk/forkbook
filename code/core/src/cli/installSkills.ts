@@ -1,13 +1,19 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { getProjectRoot, isCI, versions } from 'storybook/internal/common';
-import { CLI_COLORS, logger } from 'storybook/internal/node-logger';
-import { isTelemetryModuleEnabled } from 'storybook/internal/telemetry';
-import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { getProjectRoot, isCI } from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { isTelemetryModuleEnabled } from '@aussieljk/forkbook/internal/telemetry';
+import {
+  SupportedBuilder,
+  SupportedFramework,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 
+// Forkbook uses the upstream Storybook skills, at the tag of the Storybook version it forks from.
 const SKILLS_REPO = 'storybookjs/skills';
+const SKILLS_REF = `${SKILLS_REPO}#v11.0.0-alpha.6`;
 
 export type SkillsSource = 'ai-feature' | 'refresh';
 
@@ -32,7 +38,7 @@ export function supportsSkills(
   return renderer === SupportedRenderer.REACT;
 }
 
-/** Whether `storybook skills setup` supports this project, so init can print its prompt. */
+/** Whether `forkbook skills setup` supports this project, so init can print its prompt. */
 export function supportsAiSetup(
   renderer: SupportedRenderer | undefined,
   builder: SupportedBuilder | undefined,
@@ -41,7 +47,7 @@ export function supportsAiSetup(
   return builder === SupportedBuilder.VITE && renderer === SupportedRenderer.REACT;
 }
 
-/** Whether the project has skills from the official Storybook skills repository installed. */
+/** Whether the project has skills from the official Forkbook skills repository installed. */
 export async function hasStorybookSkills(): Promise<boolean> {
   try {
     const lock: { skills?: Record<string, { source?: string }> } = JSON.parse(
@@ -56,7 +62,7 @@ export async function hasStorybookSkills(): Promise<boolean> {
 }
 
 /**
- * Install the official Storybook skills into the project root through Vercel's `skills` CLI.
+ * Install the official Forkbook skills into the project root through Vercel's `skills` CLI.
  *
  * Never runs in CI, and a failed install is reported in the result instead of thrown.
  */
@@ -74,7 +80,7 @@ export async function installSkills({
     return { result: 'skipped', source: 'ci' };
   }
 
-  const skillsRef = `${SKILLS_REPO}#v${versions.storybook}`;
+  const skillsRef = SKILLS_REF;
   const args = [
     'skills@latest',
     'add',
@@ -98,7 +104,7 @@ export async function installSkills({
     });
   } catch (error) {
     logger.warn(
-      `Could not install the Storybook skills, continuing without them. Install them later with: ${packageManager.getRemoteRunCommand(['skills@latest', 'add', skillsRef])}`
+      `Could not install the Forkbook skills, continuing without them. Install them later with: ${packageManager.getRemoteRunCommand(['skills@latest', 'add', skillsRef])}`
     );
     logger.debug(error);
     // pnpm and Yarn Berry failures arrive as package-install errors because the args contain `add`
@@ -111,7 +117,7 @@ export async function installSkills({
   }
 
   logger.log(
-    `Remove the Storybook skills with: ${packageManager.getRemoteRunCommand(['skills@latest', 'remove'])}`
+    `Remove the Forkbook skills with: ${packageManager.getRemoteRunCommand(['skills@latest', 'remove'])}`
   );
   return { result: 'installed', source };
 }

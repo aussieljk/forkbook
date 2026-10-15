@@ -1,7 +1,7 @@
 import { expectTypeOf, test } from 'vitest';
 
-import { DEFAULT_BACKGROUNDS } from 'storybook/backgrounds';
-import type { Background, BackgroundMap } from 'storybook/backgrounds';
+import { DEFAULT_BACKGROUNDS } from '@aussieljk/forkbook/backgrounds';
+import type { Background, BackgroundMap } from '@aussieljk/forkbook/backgrounds';
 
 test('accepts built-in and custom background maps', () => {
   expectTypeOf<BackgroundMap>().toEqualTypeOf<Record<string, Background>>();

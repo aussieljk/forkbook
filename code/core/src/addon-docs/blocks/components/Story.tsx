@@ -2,8 +2,8 @@
 import type { FunctionComponent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { ErrorFormatter, Loader } from 'storybook/internal/components';
-import type { DocsContextProps, PreparedStory } from 'storybook/internal/types';
+import { ErrorFormatter, Loader } from '@aussieljk/forkbook/internal/components';
+import type { DocsContextProps, PreparedStory } from '@aussieljk/forkbook/internal/types';
 
 import { getStoryHref } from '../getStoryHref';
 import { IFrame } from './IFrame';

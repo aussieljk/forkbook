@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React from 'react';
 
-import { H3 } from 'storybook/internal/components';
+import { H3 } from '@aussieljk/forkbook/internal/components';
 
 import type { HeadingProps } from './Heading';
 import { slugs } from './Heading';

@@ -8,7 +8,7 @@
  */
 import { statSync } from 'node:fs';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { API, type APIOptions, type Snapshot } from 'typescript-native/unstable/sync';
 

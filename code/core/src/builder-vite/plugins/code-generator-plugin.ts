@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-import type { StoryIndexGenerator } from 'storybook/internal/core-server';
-import type { Options } from 'storybook/internal/types';
+import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type { Plugin } from 'vite';
 
@@ -19,7 +19,9 @@ import {
 } from '../virtual-file-names.ts';
 
 export function codeGeneratorPlugin(options: Options) {
-  const iframePath = fileURLToPath(importMetaResolve('storybook/builder-vite/input/iframe.html'));
+  const iframePath = fileURLToPath(
+    importMetaResolve('@aussieljk/forkbook/builder-vite/input/iframe.html')
+  );
   let iframeId: string;
   const storyIndexGeneratorPromise: Promise<StoryIndexGenerator> =
     options.presets.apply<StoryIndexGenerator>('storyIndexGenerator');
@@ -80,7 +82,7 @@ export function codeGeneratorPlugin(options: Options) {
         }
         case iframeId: {
           return readFileSync(
-            fileURLToPath(importMetaResolve('storybook/builder-vite/input/iframe.html')),
+            fileURLToPath(importMetaResolve('@aussieljk/forkbook/builder-vite/input/iframe.html')),
             'utf-8'
           );
         }

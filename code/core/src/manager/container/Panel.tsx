@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React, { useMemo, useState } from 'react';
 
-import { Addon_TypesEnum } from 'storybook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
-import { useChannel, useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import { useChannel, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 
 import { STORY_PREPARED } from '../../core-events/index.ts';
 import { focusableUIElements } from '../../manager-api/modules/layout.ts';

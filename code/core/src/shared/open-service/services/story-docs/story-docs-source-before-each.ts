@@ -1,9 +1,9 @@
-import { logger } from 'storybook/internal/client-logger';
-import type { CleanupCallback } from 'storybook/internal/csf';
-import type { StoryContext } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { CleanupCallback } from '@aussieljk/forkbook/internal/csf';
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
 import { shouldSkipStoryDocsEmit } from '../../../../docs-tools/storyDocsCodePanel.ts';
 
-import { emitTransformCode, getService } from 'storybook/preview-api';
+import { emitTransformCode, getService } from '@aussieljk/forkbook/preview-api';
 
 import { selectSnippetForStory, selectWarningForStory } from './snippet.ts';
 

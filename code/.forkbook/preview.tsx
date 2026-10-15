@@ -1,23 +1,23 @@
 import React, { type FC, Fragment, useEffect } from 'react';
 
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 
 import { global } from '@storybook/global';
 
-import type { Decorator, Loader, ReactRenderer } from 'storybook/react-vite';
-import { definePreview } from 'storybook/react-vite';
+import type { Decorator, Loader, ReactRenderer } from '@aussieljk/forkbook/react-vite';
+import { definePreview } from '@aussieljk/forkbook/react-vite';
 
-import addonA11y from 'storybook/addon-a11y';
-import addonDocs from 'storybook/addon-docs';
-import { DocsContext } from 'storybook/addon-docs/blocks';
-import addonThemes from 'storybook/addon-themes';
-import addonTest from 'storybook/addon-vitest';
+import addonA11y from '@aussieljk/forkbook/addon-a11y';
+import addonDocs from '@aussieljk/forkbook/addon-docs';
+import { DocsContext } from '@aussieljk/forkbook/addon-docs/blocks';
+import addonThemes from '@aussieljk/forkbook/addon-themes';
+import addonTest from '@aussieljk/forkbook/addon-vitest';
 
-import addonPseudoStates from 'storybook/addon-pseudo-states';
-import { DocsContext as DocsContextProps, useArgs } from 'storybook/preview-api';
-import type { PreviewWeb } from 'storybook/preview-api';
-import { expect, sb } from 'storybook/test';
-import { ThemeProvider, convert, resetCss, themes, useTheme } from 'storybook/theming';
+import addonPseudoStates from '@aussieljk/forkbook/addon-pseudo-states';
+import { DocsContext as DocsContextProps, useArgs } from '@aussieljk/forkbook/preview-api';
+import type { PreviewWeb } from '@aussieljk/forkbook/preview-api';
+import { expect, sb } from '@aussieljk/forkbook/test';
+import { ThemeProvider, convert, resetCss, themes, useTheme } from '@aussieljk/forkbook/theming';
 
 import { DocsPageWrapper } from '../core/src/addon-docs/blocks/components/index.ts';
 import { toHaveLiveRegion } from '../core/src/shared/utils/toHaveLiveRegion.ts';
@@ -29,7 +29,7 @@ import * as vitestPreview from './vitest.preview.ts';
 
 sb.mock(import('@storybook/global'), { spy: true });
 
-// Register custom matchers on storybook/test's expect so play functions can use them
+// Register custom matchers on @aussieljk/forkbook/test's expect so play functions can use them
 expect.extend({ toHaveLiveRegion });
 
 sb.mock('../core/template/stories/test/ModuleMocking.utils.ts');
@@ -47,9 +47,9 @@ import '../core/src/shared/open-service/sync-test/preview.ts';
 
 const { document } = global;
 
-// The internal Storybook's manager stories (sidebar context menu, …) demonstrate
-// DEVELOPMENT-only UI, so they must render as if in development even though this Storybook is itself
-// built and served statically (`yarn storybook:ui`, Chromatic, Vitest portable stories). In Vitest the
+// The internal Forkbook's manager stories (sidebar context menu, …) demonstrate
+// DEVELOPMENT-only UI, so they must render as if in development even though this Forkbook is itself
+// built and served statically (`yarn forkbook:ui`, Chromatic, Vitest portable stories). In Vitest the
 // preview builder never injects CONFIG_TYPE (it is undefined); in Chromatic it is injected as PRODUCTION.
 // The one exception is the open-service static-load E2E, which serves a plain production build to
 // exercise the real static-loading path — there CONFIG_TYPE is PRODUCTION and Chromatic is not driving
@@ -57,7 +57,7 @@ const { document } = global;
 // This runs as the project's `beforeAll`, after the addons' `beforeAll` hooks, so open services such
 // as `core/docgen` register while CONFIG_TYPE still reflects the build and load their static snapshots.
 // TODO(open-service): #29743 added an unconditional `CONFIG_TYPE = 'DEVELOPMENT'` here with no rationale.
-// Ask Norbert why the internal Storybook needs to force development mode rather than the stories opting
+// Ask Norbert why the internal Forkbook needs to force development mode rather than the stories opting
 // in per-story; if it can be removed, this gate should go with it.
 const renderAsDevelopment = () => {
   if (isChromatic() || globalThis.CONFIG_TYPE !== 'PRODUCTION') {

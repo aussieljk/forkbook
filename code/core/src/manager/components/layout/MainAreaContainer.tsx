@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Match } from 'storybook/internal/router';
+import { Match } from '@aussieljk/forkbook/internal/router';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import styles from './MainAreaContainer.module.css';

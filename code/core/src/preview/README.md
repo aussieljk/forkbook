@@ -1,6 +1,6 @@
 # Preview (Web)
 
-This is the main API for the (web) version of the Storybook Preview.
+This is the main API for the (web) version of the Forkbook Preview.
 
 The preview's job is:
 

@@ -1,7 +1,7 @@
 import type { FC, MutableRefObject } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 
 import { getActiveFilterCount } from '../../../shared/utils/story-index-filters.ts';
 import { getStateType } from '../../utils/tree.ts';

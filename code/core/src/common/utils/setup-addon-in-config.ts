@@ -1,5 +1,5 @@
-import type { ConfigFile } from 'storybook/internal/csf-tools';
-import { writeConfig } from 'storybook/internal/csf-tools';
+import type { ConfigFile } from '@aussieljk/forkbook/internal/csf-tools';
+import { writeConfig } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { loadMainConfig } from './load-main-config.ts';
 import { syncStorybookAddons } from './sync-main-preview-addons.ts';
@@ -16,7 +16,7 @@ export interface SetupAddonInConfigOptions {
 }
 
 /**
- * Setup an addon in the Storybook configuration by adding it to the addons array in main config and
+ * Setup an addon in the Forkbook configuration by adding it to the addons array in main config and
  * syncing it with preview config.
  *
  * @param options Configuration options for setting up the addon

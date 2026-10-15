@@ -8,9 +8,9 @@ import {
   invalidateProjectRootCache,
   warnOnYarn1,
   getProcessAncestry,
-} from 'storybook/internal/common';
-import { CLI_COLORS, logger } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { dedent } from 'ts-dedent';
 
@@ -24,7 +24,7 @@ export interface PreflightCheckResult {
 }
 
 /**
- * Command for running preflight checks before Storybook initialization
+ * Command for running preflight checks before Forkbook initialization
  *
  * Responsibilities:
  *
@@ -52,7 +52,7 @@ export class PreflightCheckCommand {
 
     // Check if the current directory is empty
     if (isEmptyDirProject) {
-      // Initializing Storybook in an empty directory with yarn1
+      // Initializing Forkbook in an empty directory with yarn1
       // will very likely fail due to different kinds of hoisting issues
       // which doesn't get fixed anymore in yarn1.
       // We will fallback to npm in this case.
@@ -73,7 +73,7 @@ export class PreflightCheckCommand {
       invalidateProjectRootCache();
     }
 
-    logger.intro(CLI_COLORS.info(`Initializing Storybook`));
+    logger.intro(CLI_COLORS.info(`Initializing Forkbook`));
 
     const packageManager = JsPackageManagerFactory.getPackageManager({
       force: options.packageManager,
@@ -107,7 +107,7 @@ export class PreflightCheckCommand {
   }
 
   /**
-   * Warn when the project's package.json "name" is "storybook", which shadows
+   * Warn when the project's package.json "name" is "@aussieljk/forkbook", which shadows
    * the real storybook package in workspaces.
    *
    * See: https://github.com/storybookjs/storybook/issues/28725
@@ -115,16 +115,16 @@ export class PreflightCheckCommand {
   private checkPackageNameConflict(packageManager: JsPackageManager): void {
     const packageName = packageManager.primaryPackageJson.packageJson.name;
 
-    if (packageName === 'storybook') {
+    if (packageName === '@aussieljk/forkbook') {
       logger.warn(dedent`
-        Your package.json "name" field is set to "storybook".
+        Your package.json "name" field is set to "@aussieljk/forkbook".
 
         In npm, pnpm, or yarn workspaces this creates a symlink at
-        node_modules/storybook that shadows the real Storybook package,
-        causing "Cannot find module storybook/internal/..." errors.
+        node_modules/storybook that shadows the real Forkbook package,
+        causing "Cannot find module @aussieljk/forkbook/internal/..." errors.
 
         Please rename the "name" field in your package.json to something
-        other than "storybook" (e.g. "my-storybook", "docs", "@myorg/storybook").
+        other than "@aussieljk/forkbook" (e.g. "my-storybook", "docs", "@myorg/storybook").
       `);
     }
   }
@@ -145,7 +145,7 @@ export class PreflightCheckCommand {
     } else if (isPrerelease) {
       logger.warn(`This is a pre-release version: ${currentVersion}`);
     } else {
-      logger.info(`Adding Storybook version ${currentVersion} to your project`);
+      logger.info(`Adding Forkbook version ${currentVersion} to your project`);
     }
   }
 }

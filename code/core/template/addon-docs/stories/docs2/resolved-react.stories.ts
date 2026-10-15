@@ -2,11 +2,11 @@ import * as ReactExport from 'react';
 import * as ReactDom from 'react-dom';
 import * as ReactDomServer from 'react-dom/server';
 
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 /**
  * This component is used to display the resolved version of React and its related packages. As long
- * as `storybook/addon-docs` is installed, `react` and `react-dom` should be available to import
+ * as `@aussieljk/forkbook/addon-docs` is installed, `react` and `react-dom` should be available to import
  * from and should resolve to the same version.
  *
  * The autodocs here ensures that it also works in the generated documentation.

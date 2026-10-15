@@ -1,21 +1,21 @@
 export type UserOptions = {
   /**
-   * The directory where the Storybook configuration is located, relative to the vitest
-   * configuration file. If not provided, the plugin will use '.storybook' in the current working
+   * The directory where the Forkbook configuration is located, relative to the vitest
+   * configuration file. If not provided, the plugin will use '.forkbook' in the current working
    * directory.
    *
-   * @default '.storybook'
+   * @default '.forkbook'
    */
   configDir?: string;
   /**
-   * Optional script to run Storybook. If provided, Vitest will start Storybook using this script
+   * Optional script to run Forkbook. If provided, Vitest will start Forkbook using this script
    * when ran in watch mode.
    *
    * @default undefined
    */
   storybookScript?: string;
   /**
-   * The URL where Storybook is hosted. This is used to provide a link to the story in the test
+   * The URL where Forkbook is hosted. This is used to provide a link to the story in the test
    * output on failures.
    *
    * @default 'http://localhost:6006'
@@ -39,11 +39,11 @@ export type UserOptions = {
   disableAddonDocs?: boolean;
 
   /**
-   * Globals applied to every story run by this project, merged under the values Storybook sets
+   * Globals applied to every story run by this project, merged under the values Forkbook sets
    * internally. Use it to pin a toolbar global for the whole run — most usefully to test a
    * specific theme: define one Vitest project per theme, each with a different value, e.g.
    * `storybookTest({ initialGlobals: { theme: 'dark' } })`. Equivalent to `initialGlobals` in
-   * `.storybook/preview`, but per project instead of global.
+   * `.forkbook/preview`, but per project instead of global.
    *
    * @default {}
    */

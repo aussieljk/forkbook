@@ -1,7 +1,7 @@
-import { Channel } from 'storybook/internal/channels';
-import { cache } from 'storybook/internal/common';
-import { buildIndexStandalone, withTelemetry } from 'storybook/internal/core-server';
-import type { BuilderOptions, CLIBaseOptions } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import { cache } from '@aussieljk/forkbook/internal/common';
+import { buildIndexStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import type { BuilderOptions, CLIBaseOptions } from '@aussieljk/forkbook/internal/types';
 
 export interface CLIIndexOptions extends CLIBaseOptions {
   configDir?: string;
@@ -13,7 +13,7 @@ export const buildIndex = async (
 ) => {
   const options = {
     ...cliOptions,
-    configDir: cliOptions.configDir || '.storybook',
+    configDir: cliOptions.configDir || '.forkbook',
     outputFile: cliOptions.outputFile || 'index.json',
     configType: 'PRODUCTION' as BuilderOptions['configType'],
     cache,

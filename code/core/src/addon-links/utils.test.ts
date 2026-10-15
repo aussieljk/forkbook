@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SELECT_STORY } from 'storybook/internal/core-events';
+import { SELECT_STORY } from '@aussieljk/forkbook/internal/core-events';
 
-import { addons } from 'storybook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import { hrefTo, hrefToSync, linkTo } from './utils.ts';
 
-vi.mock('storybook/preview-api');
+vi.mock('@aussieljk/forkbook/preview-api');
 vi.mock('@storybook/global', () => ({
   global: {
     document: global.document,

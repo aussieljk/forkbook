@@ -1,7 +1,11 @@
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
-import { PopoverProvider, SyntaxHighlighter, codeCommon } from 'storybook/internal/components';
+import {
+  PopoverProvider,
+  SyntaxHighlighter,
+  codeCommon,
+} from '@aussieljk/forkbook/internal/components';
 
 import { ChevronSmallDownIcon, ChevronSmallUpIcon } from '@storybook/icons';
 

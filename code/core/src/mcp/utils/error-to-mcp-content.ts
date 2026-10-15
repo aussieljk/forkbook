@@ -2,7 +2,7 @@ import {
   formatRequiresOwnMcpNotice,
   ManifestGetError,
   RequiresOwnMcpError,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 type MCPTextResult = {
   content: Array<{ type: 'text'; text: string }>;

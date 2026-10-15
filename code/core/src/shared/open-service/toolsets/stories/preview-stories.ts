@@ -1,4 +1,4 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { buildArgsParam } from '../../../../router/utils.ts';
 import type { PreviewStoriesOutput } from './definition.ts';

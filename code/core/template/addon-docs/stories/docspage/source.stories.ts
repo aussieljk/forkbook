@@ -1,4 +1,4 @@
-import type { StoryContext } from 'storybook/internal/types';
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 

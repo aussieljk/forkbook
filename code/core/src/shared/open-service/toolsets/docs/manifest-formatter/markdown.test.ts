@@ -200,7 +200,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
       `);
     });
 
-    it('does not render tags Storybook consumes as structured fields', () => {
+    it('does not render tags Forkbook consumes as structured fields', () => {
       const manifest: ComponentManifest = {
         id: 'button',
         path: 'src/components/Button.tsx',
@@ -1837,7 +1837,7 @@ describe('MarkdownFormatter - formatMultiSourceManifestsToLists', () => {
 			"# Tetra Design System
 			id: tetra
 
-			This composed Storybook is private and cannot be read through the local Storybook MCP proxy.
+			This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.
 
 			Use this source's own MCP endpoint instead:
 			https://tetra.chromatic.com/mcp"

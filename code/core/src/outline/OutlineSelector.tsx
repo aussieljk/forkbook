@@ -1,10 +1,10 @@
 import React, { memo, useCallback, useEffect } from 'react';
 
-import { ToggleButton } from 'storybook/internal/components';
+import { ToggleButton } from '@aussieljk/forkbook/internal/components';
 
 import { OutlineIcon } from '@storybook/icons';
 
-import { useGlobals, useParameter, useStorybookApi } from 'storybook/manager-api';
+import { useGlobals, useParameter, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID, PARAM_KEY } from './constants.ts';
 import type { OutlineParameters } from './types.ts';

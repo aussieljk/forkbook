@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentTelemetryReporter } from './agent-telemetry-reporter.ts';
 
-vi.mock('storybook/internal/telemetry', () => ({
+vi.mock('@aussieljk/forkbook/internal/telemetry', () => ({
   telemetry: vi.fn(),
   isExampleStoryId: vi.fn(
     (id: string) =>
@@ -16,7 +16,7 @@ vi.mock('./agent-story-history-cache.ts', () => ({
   mergeAndWriteStoryHistory: vi.fn(async (results) => results),
 }));
 
-const { telemetry } = await import('storybook/internal/telemetry');
+const { telemetry } = await import('@aussieljk/forkbook/internal/telemetry');
 const { mergeAndWriteStoryHistory } = await import('./agent-story-history-cache.ts');
 
 function createMockTestCase({
@@ -70,7 +70,7 @@ describe('AgentTelemetryReporter', () => {
     vi.clearAllMocks();
     vi.mocked(mergeAndWriteStoryHistory).mockImplementation(async (results) => results);
     reporter = new AgentTelemetryReporter({
-      configDir: '.storybook',
+      configDir: '.forkbook',
       agent: { name: 'claude' },
     });
   });
@@ -138,7 +138,7 @@ describe('AgentTelemetryReporter', () => {
           unhandledErrorCount: 0,
           watch: false,
         }),
-        { configDir: '.storybook', stripMetadata: true }
+        { configDir: '.forkbook', stripMetadata: true }
       );
     });
 

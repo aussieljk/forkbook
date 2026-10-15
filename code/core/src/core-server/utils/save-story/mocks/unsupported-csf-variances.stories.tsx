@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import type { Meta } from 'storybook/react-vite';
+import type { Meta } from '@aussieljk/forkbook/react-vite';
 
 export default {
   title: 'MyComponent',

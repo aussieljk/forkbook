@@ -1,4 +1,4 @@
-import type { ViewMode } from 'storybook/internal/types';
+import type { ViewMode } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 

@@ -1,5 +1,5 @@
-import { types as t } from 'storybook/internal/babel';
-import type { CsfFile } from 'storybook/internal/csf-tools';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
+import type { CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
 
 export type DeclaredSubcomponent = {
   componentName: string;

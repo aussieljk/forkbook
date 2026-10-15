@@ -1,15 +1,15 @@
 declare var DOCS_OPTIONS: any;
 declare var CONFIG_TYPE: 'DEVELOPMENT' | 'PRODUCTION';
 /**
- * The network address of the Storybook instance. Used by Storybook to generate a QR code so users
+ * The network address of the Forkbook instance. Used by Forkbook to generate a QR code so users
  * can access the story on mobile devices.
  */
-declare var STORYBOOK_NETWORK_ADDRESS: string | undefined;
+declare var FORKBOOK_NETWORK_ADDRESS: string | undefined;
 
 declare var __STORYBOOK_ADDONS_MANAGER: any;
 declare var RELEASE_NOTES_DATA: any;
 
-declare var FEATURES: import('storybook/internal/types').StorybookConfigRaw['features'];
+declare var FEATURES: import('@aussieljk/forkbook/internal/types').StorybookConfigRaw['features'];
 
 declare var REFS: any;
 declare var VERSIONCHECK: any;
@@ -34,5 +34,5 @@ declare var __STORYBOOK_ICONS__: any;
 declare var __STORYBOOK_CLIENT_LOGGER__: any;
 declare var __STORYBOOK_ADDONS_CHANNEL__: any;
 declare var __STORYBOOK_TYPES__: any;
-declare var STORYBOOK_RENDERER: string | undefined;
+declare var FORKBOOK_RENDERER: string | undefined;
 declare var sendTelemetryError: (error: any) => void;

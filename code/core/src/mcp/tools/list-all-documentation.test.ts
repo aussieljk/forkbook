@@ -10,7 +10,7 @@ import {
   DOCS_MANIFEST_PATH,
   ManifestGetError,
   RequiresOwnMcpError,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 // JSON imports widen the `v` literal to `number`, so re-type the fixtures against
 // the discriminated-union schema for use in strongly-typed mocks.
@@ -20,7 +20,7 @@ const smallDocsManifestFixture = smallDocsManifestFixtureRaw as unknown as DocsM
 /**
  * The manifests one provider serves, keyed by source id (`''` for the single-source case). Each
  * entry either resolves to the manifest JSON or rejects, which is how these tests stand in for a
- * Storybook that cannot be read.
+ * Forkbook that cannot be read.
  */
 type ServedManifests = {
   componentManifest?: unknown;
@@ -336,7 +336,7 @@ describe('listAllDocumentationTool', () => {
       expect(text).toContain('# Tetra Design System');
       expect(text).toContain('id: tetra');
       expect(text).toContain(
-        'This composed Storybook is private and cannot be read through the local Storybook MCP proxy.'
+        'This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.'
       );
       expect(text).toContain('https://tetra.chromatic.com/mcp');
       expect(text).not.toContain('error:');
@@ -371,7 +371,7 @@ describe('listAllDocumentationTool', () => {
         "content": [
           {
             "text": "Error getting manifest: Failed to get component manifest: Failed to fetch manifest: 404 Not Found
-      Hint: The Storybook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Storybook versions) to its main.ts config.
+      Hint: The Forkbook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Forkbook versions) to its main.ts config.
       Caused by: Failed to fetch manifest: 404 Not Found",
             "type": "text",
           },

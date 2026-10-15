@@ -1,7 +1,7 @@
 /**
- * Dependency-light entry for the docs toolset (`storybook/internal/toolsets-docs`).
+ * Dependency-light entry for the docs toolset (`@aussieljk/forkbook/internal/toolsets-docs`).
  *
- * `storybook/mcp` consumes the manifest formatter and toolset from here and bundles this entry
+ * `@aussieljk/forkbook/mcp` consumes the manifest formatter and toolset from here and bundles this entry
  * into its own dist (core is only a dev dependency there), so everything reachable from this file
  * must stay free of Node-only and server-only imports.
  */

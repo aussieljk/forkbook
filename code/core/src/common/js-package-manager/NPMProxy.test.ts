@@ -3,14 +3,14 @@ import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { prompt } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { NPMProxy } from './NPMProxy.ts';
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
     getPreferredStdio: vi.fn(() => 'inherit'),
@@ -139,7 +139,7 @@ describe('NPM Proxy', () => {
         const originalError = new Error(
           [
             'npm error code ETARGET',
-            'npm error notarget No matching version found for storybook/react-vite@10.4.0-alpha.17 with a date before 02/05/2026, 13:32:18.',
+            'npm error notarget No matching version found for @aussieljk/forkbook/react-vite@10.4.0-alpha.17 with a date before 02/05/2026, 13:32:18.',
             "npm error notarget In most cases you or one of your dependencies are requesting a package version that doesn't exist.",
           ].join('\n')
         );
@@ -153,7 +153,7 @@ describe('NPM Proxy', () => {
         expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
         expect(error).toMatchObject({ cause: originalError });
         expect(error?.message).toContain('min-release-age');
-        expect(error?.message).toContain('storybook/react-vite@10.4.0-alpha.17');
+        expect(error?.message).toContain('@aussieljk/forkbook/react-vite@10.4.0-alpha.17');
       });
     });
   });
@@ -181,7 +181,7 @@ describe('NPM Proxy', () => {
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
       expect(error).toBeTruthy();
-      expect(error?.message).toContain('npx storybook@10.3.9 init');
+      expect(error?.message).toContain('npx @aussieljk/forkbook@10.3.9 init');
       expect(error?.message).toContain('min-release-age');
     });
   });
@@ -293,7 +293,7 @@ describe('NPM Proxy', () => {
             dependencies: {},
             devDependencies: {
               '@storybook/manager-webpack5': 'x.x.x',
-              'storybook/react': 'x.x.x',
+              '@aussieljk/forkbook/react': 'x.x.x',
             },
           };
         });
@@ -304,7 +304,7 @@ describe('NPM Proxy', () => {
           {
             dependencies: {},
             devDependencies: {
-              'storybook/react': 'x.x.x',
+              '@aussieljk/forkbook/react': 'x.x.x',
             },
           },
           expect.any(String)
@@ -425,22 +425,24 @@ describe('NPM Proxy', () => {
   });
 
   describe('getVersion', () => {
-    it('with a Storybook package listed in versions.json it returns the version', async () => {
-      const storybookReactViteVersion = (await import('../versions.ts')).default['storybook'];
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
+    it('with a Forkbook package listed in versions.json it returns the version', async () => {
+      const storybookReactViteVersion = (await import('../versions.ts')).default[
+        '@aussieljk/forkbook'
+      ];
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '0.0.0' } as any);
 
-      const version = await npmProxy.getVersion('storybook');
+      const version = await npmProxy.getVersion('@aussieljk/forkbook');
 
       expect(executeCommandSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           command: 'npm',
-          args: ['info', 'storybook', 'version'],
+          args: ['info', '@aussieljk/forkbook', 'version'],
         })
       );
       expect(version).toEqual(`^${storybookReactViteVersion}`);
     });
 
-    it('with a Storybook package not listed in versions.json it returns the latest version', async () => {
+    it('with a Forkbook package not listed in versions.json it returns the latest version', async () => {
       const packageVersion = '5.3.19';
       const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
         stdout: `${packageVersion}`,

@@ -3,9 +3,9 @@ import React from 'react';
 
 import { FaceHappyIcon } from '@storybook/icons';
 
-import { expect, fn } from 'storybook/test';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Button } from './Button.tsx';
 
 const meta = preview.meta({

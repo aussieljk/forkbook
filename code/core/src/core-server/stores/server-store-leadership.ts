@@ -7,7 +7,7 @@ export function isServerStoreLeader(): boolean {
   // core-server before a follower channel exists, so they must not construct a leader.
   return (
     !optionalEnvToBoolean(process.env.VITEST_CHILD_PROCESS) &&
-    !optionalEnvToBoolean(process.env.STORYBOOK_ATTACHED_TOOLS) &&
+    !optionalEnvToBoolean(process.env.FORKBOOK_ATTACHED_TOOLS) &&
     UniversalStore.preparedEnvironment !== UniversalStore.Environment.UNKNOWN
   );
 }

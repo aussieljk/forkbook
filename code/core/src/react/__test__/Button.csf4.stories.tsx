@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { action } from 'storybook/actions';
-import { expect, fn, mocked, userEvent, within } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { expect, fn, mocked, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { __definePreview } from '../preview.tsx';
 import { Button } from './Button.tsx';

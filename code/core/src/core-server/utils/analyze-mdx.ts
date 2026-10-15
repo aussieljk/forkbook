@@ -1,4 +1,4 @@
-import type { DocsAnchor } from 'storybook/internal/types';
+import type { DocsAnchor } from '@aussieljk/forkbook/internal/types';
 
 import { Parser } from 'acorn';
 import acornJsx from 'acorn-jsx';

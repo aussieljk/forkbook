@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
 import { Page } from './Page';
 

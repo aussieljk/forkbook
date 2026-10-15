@@ -1,6 +1,6 @@
-import { getRefsFromConfig } from 'storybook/internal/core-server';
-import type { Source } from 'storybook/internal/toolsets-docs';
-import type { Options } from 'storybook/internal/types';
+import { getRefsFromConfig } from '@aussieljk/forkbook/internal/core-server';
+import type { Source } from '@aussieljk/forkbook/internal/toolsets-docs';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import { CompositionAuth, type ComposedRef } from './composition-auth.ts';
 
 export type ResolvedCompositionSources = {

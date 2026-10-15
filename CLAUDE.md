@@ -1,6 +1,6 @@
-# Storybook fork
+# Forkbook
 
-A small, fast fork of Storybook. It supports only React with Vite, Next.js with Vite, and React Native (iOS). It uses Bun, Vite 8, oxfmt, tsgo docgen, Base UI, sugar-high and @parcel/watcher.
+Forkbook (`@aussieljk/forkbook` on npm) is a small, fast fork of Storybook. It supports only React with Vite, Next.js with Vite, and React Native (iOS). It uses Bun, Vite 8, oxfmt, tsgo docgen, Base UI, sugar-high and @parcel/watcher.
 
 ## Commands
 
@@ -43,7 +43,7 @@ While you work, use `verify --changed` or one test file. Run the full `bun run v
 - `code/core/build-config.ts` merges the entry lists in `code/core/build-config/<area>.ts`.
 - An area with its own `src/<area>/vitest.config.ts` is its own Vitest project. The `core` project skips it.
 - Next.js code has its own TypeScript project (`code/core/tsconfig.nextjs.json`), so the global Next.js types do not leak into the rest.
-- `code/.storybook`: the internal Storybook. Its stories run as browser tests in the `storybook-ui` Vitest project.
+- `code/.forkbook`: the internal Forkbook. Its stories run as browser tests in the `storybook-ui` Vitest project.
 - `scripts/`: build (`build-package.ts`, `build/`), `verify.ts`, `merge-agent.ts`.
 - The build configs list the entries. `scripts/build/utils/generate-package-json.ts` writes the `exports` field. Each export has a `code` condition that points to the source. TypeScript uses it (`customConditions: ["code"]`), so the type check does not need a build.
 
@@ -55,7 +55,7 @@ While you work, use `verify --changed` or one test file. Run the full `bun run v
 - `code/tsconfig.json` must keep `"jsx": "react-jsx"`. Vite 8 follows it, and `preserve` breaks every JSX test.
 - `memfs` is pinned to 4.56.11. Later versions resolve relative paths from `/`, not from the current folder, which breaks many tests.
 - oxfmt finds its config by walking up from the file. In this repo it finds the root `.oxfmtrc.json`, so tests that format files see this config.
-- The tsgo API (`typescript-native/unstable/sync`) does not run under the Bun runtime. It runs under Node, which Storybook and Vitest use.
+- The tsgo API (`typescript-native/unstable/sync`) does not run under the Bun runtime. It runs under Node, which Forkbook and Vitest use.
 - tsgo does not see file changes by itself. `ComponentMetaManager` reopens files when their modified time changes.
 - Babel is version 7. Do not add Babel 8 packages.
 - Patched dependencies are in `patches/` (`patchedDependencies` in the root `package.json`). Make a patch with `bun patch <pkg>`.

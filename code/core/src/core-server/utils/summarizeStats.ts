@@ -1,4 +1,4 @@
-import type { IndexInputStats } from 'storybook/internal/types';
+import type { IndexInputStats } from '@aussieljk/forkbook/internal/types';
 
 export type IndexStatsSummary = Record<keyof IndexInputStats, number>;
 

@@ -41,7 +41,7 @@ type CoreServices<TDefs extends readonly AnyServiceDefinition[]> = {
   [Def in TDefs[number] as Def['id']]: ServiceInstanceOf<Def>;
 };
 
-/** Core services registered in the Storybook manager. */
+/** Core services registered in the Forkbook manager. */
 export type ManagerCoreServices = CoreServices<typeof managerCoreServiceDefs>;
 
 /** Core services registered in the preview. */

@@ -1,7 +1,7 @@
 import type { FC, ReactElement } from 'react';
 import React, { useContext } from 'react';
 
-import { Tag } from 'storybook/internal/preview-api';
+import { Tag } from '@aussieljk/forkbook/internal/preview-api';
 
 import { DocsContext } from './DocsContext';
 import { DocsStory } from './DocsStory';

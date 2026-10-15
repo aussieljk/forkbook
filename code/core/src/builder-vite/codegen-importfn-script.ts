@@ -1,4 +1,4 @@
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { genDynamicImport, genObjectFromRawEntries } from 'knitwork';
 import { join, normalize, relative } from 'pathe';
@@ -11,7 +11,7 @@ import { getUniqueImportPaths } from './utils/unique-import-paths.ts';
  * the working directory and their dynamic imports. The import is done in an asynchronous function
  * to delay loading and to allow Vite to split the code into smaller chunks. It then creates a
  * function, `importFn(path)`, which resolves a path to an import function and this is called by
- * Storybook to fetch a story dynamically when needed.
+ * Forkbook to fetch a story dynamically when needed.
  */
 export function generateImportFnScriptCode(index: StoryIndex): string {
   const objectEntries: [path: string, importStatement: string][] = getUniqueImportPaths(index).map(

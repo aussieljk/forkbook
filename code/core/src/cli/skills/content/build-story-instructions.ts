@@ -31,7 +31,7 @@ export function buildStoryInstructions({
   // Must state the same workflow as build-server-instructions.ts; when it routed discovery into
   // previews, agents fabricated story IDs.
   const storyLinkingWorkflow = `After changing any component or story, call \`${ref('stories.changed')}\` to discover the new, modified, and related stories affected by your change. Story IDs must come from that call (or a fallback discovery tool such as ${ref('stories.findByComponent')} for shared-infrastructure changes) — never construct them from file names, export names, or memory. Feed the discovered IDs into **${ref('review.create')}** when the change is visually observable; use \`${ref('stories.preview')}\` only while iterating on a specific story.`;
-  const changedStoryFallbackLinkGuidance = `When sharing preview/story links (not when ending with a review section): if you did not pass every changed story into \`${ref('stories.preview')}\`, include this Storybook fallback link so the user can view the complete changed list: \`/?statuses=affected;modified;new\`.`;
+  const changedStoryFallbackLinkGuidance = `When sharing preview/story links (not when ending with a review section): if you did not pass every changed story into \`${ref('stories.preview')}\`, include this Forkbook fallback link so the user can view the complete changed list: \`/?statuses=affected;modified;new\`.`;
 
   /**
    * Injected into the story instructions when the documentation toolset is
@@ -45,7 +45,7 @@ export function buildStoryInstructions({
 
 ## Using library components
 
-This Storybook exposes component documentation tools. Before creating or changing any UI, call **${ref('docs.list')}** once to see what the design system already provides — build on existing components instead of hand-rolling duplicates — then call **${ref('docs.show')}** with the \`id\` of each component you build on or get asked about, for its real props and usage examples. When multiple Storybook sources are configured, pass the \`storybookId\` from **${ref('docs.list')}** on follow-up calls. Do this instead of reading the library's source or type definitions out of \`node_modules\` — stories show intended usage, raw types don't — and answer props/usage questions from these tools too. Never assume or invent props.`;
+This Forkbook exposes component documentation tools. Before creating or changing any UI, call **${ref('docs.list')}** once to see what the design system already provides — build on existing components instead of hand-rolling duplicates — then call **${ref('docs.show')}** with the \`id\` of each component you build on or get asked about, for its real props and usage examples. When multiple Forkbook sources are configured, pass the \`storybookId\` from **${ref('docs.list')}** on follow-up calls. Do this instead of reading the library's source or type definitions out of \`node_modules\` — stories show intended usage, raw types don't — and answer props/usage questions from these tools too. Never assume or invent props.`;
 
   let uiInstructions = storyInstructionsTemplate
     .replaceAll('{{FRAMEWORK}}', framework)

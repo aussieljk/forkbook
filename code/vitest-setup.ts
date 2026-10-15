@@ -25,7 +25,7 @@ const ALLOWED_CONSOLE_PREDICATES: ((...args: any[]) => boolean)[] = [
   (message) => message.includes('error: `DialogContent` requires a `DialogTitle`'),
   (message) =>
     message.includes(
-      "importMetaResolve from within Storybook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/storybookjs/storybook/issues/new?template=bug_report.yml"
+      "importMetaResolve from within Forkbook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/storybookjs/storybook/issues/new?template=bug_report.yml"
     ),
   (message) => message.includes('<Pressable> child must forward its ref to a DOM element.'),
   (message) => message.includes('<Focusable> child must forward its ref to a DOM element.'),
@@ -62,9 +62,9 @@ expect.extend({
 
 expect.extend({ toHaveLiveRegion });
 
-vi.mock('storybook/internal/node-logger', async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/node-logger', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('storybook/internal/node-logger')>()),
+    ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/node-logger')>()),
     prompt: {
       select: vi.fn(),
       multiSelect: vi.fn(),

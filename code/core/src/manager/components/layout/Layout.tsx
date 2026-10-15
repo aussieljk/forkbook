@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
-import type { API_Layout, API_ViewMode } from 'storybook/internal/types';
+import type { API_Layout, API_ViewMode } from '@aussieljk/forkbook/internal/types';
 
-import { useStorybookApi, useStorybookState, type API } from 'storybook/manager-api';
+import { useStorybookApi, useStorybookState, type API } from '@aussieljk/forkbook/manager-api';
 import { isPagesViewMode } from '../../../manager-api/modules/layout.ts';
 
 import { MINIMUM_CONTENT_WIDTH_PX } from '../../constants.ts';

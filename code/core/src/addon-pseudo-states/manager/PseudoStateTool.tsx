@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Select } from 'storybook/internal/components';
+import { Select } from '@aussieljk/forkbook/internal/components';
 
 import { ButtonIcon } from '@storybook/icons';
 
-import { useGlobals } from 'storybook/manager-api';
+import { useGlobals } from '@aussieljk/forkbook/manager-api';
 
 import { PARAM_KEY, PSEUDO_STATES } from '../constants.ts';
 

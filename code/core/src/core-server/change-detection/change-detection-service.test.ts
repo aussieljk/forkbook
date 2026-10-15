@@ -2,9 +2,9 @@ import { stat } from 'node:fs/promises';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/node-logger';
-import type { Status, StoryIndex } from 'storybook/internal/types';
-import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Status, StoryIndex } from '@aussieljk/forkbook/internal/types';
+import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
 import {
   createStatusStore,
@@ -39,7 +39,7 @@ import {
 } from './readiness.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('../../shared/open-service/server.ts', () => ({
   getService: vi.fn(),
 }));
@@ -121,7 +121,7 @@ function createMockStoryIndexBaselineService(
 function createStatus(value: Status['value'], data?: Status['data']): Status {
   return {
     storyId: 'story-1',
-    typeId: 'storybook/change-detection',
+    typeId: '@aussieljk/forkbook/change-detection',
     value,
     title: '',
     description: '',

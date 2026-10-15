@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import type { API } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import { type Call, type CallStates, type ControlStates } from '../../instrumenter/types.ts';
 import { announce } from '../../shared/announce.ts';

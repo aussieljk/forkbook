@@ -1,11 +1,11 @@
-import { isCI } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
+import { isCI } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   SupportedBuilder,
   SupportedFramework,
   SupportedRenderer,
-} from 'storybook/internal/types';
-import { Feature } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -34,7 +34,7 @@ export interface UserPreferencesOptions {
 }
 
 /**
- * Command for gathering user preferences during Storybook initialization
+ * Command for gathering user preferences during Forkbook initialization
  *
  * Responsibilities:
  *
@@ -161,15 +161,15 @@ export class UserPreferencesCommand {
     return features;
   }
 
-  /** Prompt user about AI-assisted Storybook setup */
+  /** Prompt user about AI-assisted Forkbook setup */
   private async promptAiSetup(skipPrompt: boolean, isAiSetupAvailable: boolean): Promise<boolean> {
     const useAi = skipPrompt
       ? true
       : await prompt.confirm(
           {
             message: isAiSetupAvailable
-              ? 'Do you want AI features, like skills and prompts, in your Storybook?'
-              : 'Do you want AI features, like skills, in your Storybook?',
+              ? 'Do you want AI features, like skills and prompts, in your Forkbook?'
+              : 'Do you want AI features, like skills, in your Forkbook?',
             initialValue: true,
           },
           createPromptCancelOptions(this.telemetryService, 'ai-setup')

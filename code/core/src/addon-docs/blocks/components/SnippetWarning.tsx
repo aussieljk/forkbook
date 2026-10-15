@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
 import { AlertIcon } from '@storybook/icons';
 import { clsx } from 'clsx';

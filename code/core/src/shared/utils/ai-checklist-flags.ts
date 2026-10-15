@@ -1,17 +1,17 @@
 import { resolve } from 'node:path';
 
-import { cache } from 'storybook/internal/common';
+import { cache } from '@aussieljk/forkbook/internal/common';
 
 /**
  * Flags persisted to the regular fs cache by the CLI to drive AI-related UI in
  * the dev server. They live OUTSIDE the telemetry event cache on purpose:
- * Storybook's UI behavior must not depend on whether telemetry happens to be
+ * Forkbook's UI behavior must not depend on whether telemetry happens to be
  * enabled. Both flags are tiny local files containing no PII.
  *
- * Both flags are scoped to a Storybook project via `configDir`. In monorepos
- * with hoisted `node_modules`, multiple Storybook projects share the same
+ * Both flags are scoped to a Forkbook project via `configDir`. In monorepos
+ * with hoisted `node_modules`, multiple Forkbook projects share the same
  * `node_modules/.cache/storybook/...` directory — without scoping, running
- * `storybook skills setup` (or `storybook init` with AI accepted) in package A
+ * `forkbook skills setup` (or `forkbook init` with AI accepted) in package A
  * would falsely flip package B's checklist or copy-prompt UI.
  *
  * The CLI writes `{ timestamp, configDir }` (absolute, resolved). The dev
@@ -49,7 +49,7 @@ async function readProjectScopedFlag(
   } catch {}
 }
 
-/** Written by `storybook init` when the user accepted the AI feature and in legacy inits where the question was not asked.
+/** Written by `forkbook init` when the user accepted the AI feature and in legacy inits where the question was not asked.
  * Due to regressions with unsupported frameworks, and the computational complexity of plugging framework feature support
  * into this part of the app, we've decided to revert the flag to treat the user as opting out from init when the flag
  * isn't found.
@@ -59,7 +59,7 @@ export async function hasAiInitOptIn(configDir: string): Promise<boolean> {
   return flag?.answer === true;
 }
 
-/** Written by `storybook skills setup` when it ran in this project. */
+/** Written by `forkbook skills setup` when it ran in this project. */
 export async function hasAiSetupRun(configDir: string): Promise<boolean> {
   return !!(await readProjectScopedFlag('ai-setup-ran', configDir));
 }

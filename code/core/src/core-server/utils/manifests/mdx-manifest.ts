@@ -1,7 +1,7 @@
 /**
  * Canonical contract for the MDX docs open service.
  *
- * The service implementation lives in `storybook/addon-docs`, but the data contract (service id,
+ * The service implementation lives in `@aussieljk/forkbook/addon-docs`, but the data contract (service id,
  * on-disk/`$ref` layout, payload shapes, and the consumer query handle) lives here in core so the
  * addon that produces it and the core manifest writer that consumes it share one source of truth.
  * Mirrors the docgen service contract under `shared/open-service/services/docgen/`.

@@ -1,6 +1,6 @@
-import { AddonVitestService } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import type { SupportedBuilder, SupportedFramework } from 'storybook/internal/types';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import type { SupportedBuilder, SupportedFramework } from '@aussieljk/forkbook/internal/types';
 
 export interface FeatureCompatibilityResult {
   compatible: boolean;

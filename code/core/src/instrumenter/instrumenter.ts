@@ -1,11 +1,11 @@
-import type { Channel } from 'storybook/internal/channels';
-import { once } from 'storybook/internal/client-logger';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { once } from '@aussieljk/forkbook/internal/client-logger';
 import {
   FORCE_REMOUNT,
   SET_CURRENT_STORY,
   STORY_RENDER_PHASE_CHANGED,
-} from 'storybook/internal/core-events';
-import type { StoryId } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { StoryId } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -261,7 +261,7 @@ export class Instrumenter {
       addons.ready().then(() => {
         this.channel = addons.getChannel();
 
-        // A forceRemount might be triggered for debugging (on `start`), or elsewhere in Storybook.
+        // A forceRemount might be triggered for debugging (on `start`), or elsewhere in Forkbook.
         this.channel.on(FORCE_REMOUNT, resetState);
 
         // Start with a clean slate before playing after a remount, and stop debugging when done.

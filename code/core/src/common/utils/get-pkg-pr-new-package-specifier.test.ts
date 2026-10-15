@@ -37,7 +37,7 @@ describe('isPkgPrNewVersionSpecifier', () => {
 });
 
 describe('getPkgPrNewPackageSpecifier', () => {
-  it('maps a compact create-storybook specifier onto a Storybook package', () => {
+  it('maps a compact create-storybook specifier onto a Forkbook package', () => {
     expect(
       getPkgPrNewPackageSpecifier('@storybook/react', 'https://pkg.pr.new/create-storybook@abc123')
     ).toBe('https://pkg.pr.new/@storybook/react@abc123');

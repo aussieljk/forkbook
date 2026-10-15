@@ -5,12 +5,15 @@ import {
   ProjectType,
   detectIncompatiblePackageVersions,
   detectLanguage,
-} from 'storybook/internal/cli';
-import { HandledError, getProjectRoot } from 'storybook/internal/common';
-import type { JsPackageManager, PackageJsonWithMaybeDeps } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
-import { NxProjectDetectedError } from 'storybook/internal/server-errors';
-import type { SupportedLanguage } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/cli';
+import { HandledError, getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import type {
+  JsPackageManager,
+  PackageJsonWithMaybeDeps,
+} from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { NxProjectDetectedError } from '@aussieljk/forkbook/internal/server-errors';
+import type { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import * as find from 'empathic/find';
 import { dedent } from 'ts-dedent';
@@ -34,7 +37,7 @@ type TemplateConfiguration = {
 export class ProjectTypeService {
   constructor(private readonly jsPackageManager: JsPackageManager) {}
 
-  /** Sorted configuration to match a Storybook preset template */
+  /** Sorted configuration to match a Forkbook preset template */
   getSupportedTemplates(): TemplateConfiguration[] {
     return [
       {
@@ -53,7 +56,7 @@ export class ProjectTypeService {
         },
       },
       // DO NOT MOVE ANY TEMPLATES BELOW THIS LINE
-      // React is part of every Template, after Storybook is initialized once
+      // React is part of every Template, after Forkbook is initialized once
       {
         preset: ProjectType.REACT,
         dependencies: ['react'],
@@ -65,7 +68,7 @@ export class ProjectTypeService {
     ];
   }
 
-  isStorybookInstantiated(configDir = resolve(process.cwd(), '.storybook')) {
+  isStorybookInstantiated(configDir = resolve(process.cwd(), '.forkbook')) {
     return existsSync(configDir);
   }
 
@@ -77,9 +80,7 @@ export class ProjectTypeService {
     if (installable.includes(projectTypeProvided)) {
       return projectTypeProvided;
     }
-    logger.error(
-      `The provided project type ${projectTypeProvided} was not recognized by Storybook`
-    );
+    logger.error(`The provided project type ${projectTypeProvided} was not recognized by Forkbook`);
     throw new HandledError(`Unknown project type supplied: ${projectTypeProvided}`);
   }
 
@@ -91,15 +92,15 @@ export class ProjectTypeService {
 
       if (detectedType === ProjectType.UNDETECTED || detectedType === null) {
         logger.error(dedent`
-          Unable to initialize Storybook in this directory.
+          Unable to initialize Forkbook in this directory.
 
-          Storybook couldn't detect a supported framework or configuration for your project. Make sure you're inside a React, Next.js or React Native project and that its dependencies are installed.
+          Forkbook couldn't detect a supported framework or configuration for your project. Make sure you're inside a React, Next.js or React Native project and that its dependencies are installed.
 
           Tips:
           - Run init in an empty directory or create a new framework app first.
-          - If this directory contains unrelated files, try a new directory for Storybook.
+          - If this directory contains unrelated files, try a new directory for Forkbook.
         `);
-        throw new HandledError('Storybook failed to detect your project type');
+        throw new HandledError('Forkbook failed to detect your project type');
       }
 
       if (detectedType === ProjectType.NX) {

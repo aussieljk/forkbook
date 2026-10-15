@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { extractDeclaredSubcomponents } from 'storybook/internal/common';
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { extractDeclaredSubcomponents } from '@aussieljk/forkbook/internal/common';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 describe('extractDeclaredSubcomponents', () => {
   it('does not loop forever on circular identifier references', () => {
     const csf = loadCsf(
       `
-        import type { Meta } from 'storybook/react';
+        import type { Meta } from '@aussieljk/forkbook/react';
         import { Button } from './Button';
 
         const LoopA = LoopB;

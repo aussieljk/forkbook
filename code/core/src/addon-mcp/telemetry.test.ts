@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { McpServer } from 'tmcp';
 import type { AddonContext } from './types.ts';
 import { collectTelemetry } from './telemetry.ts';
-import { logger } from 'storybook/internal/node-logger';
-import { telemetry } from 'storybook/internal/telemetry';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 describe('collectTelemetry', () => {
   let mockServer: McpServer<any, AddonContext>;

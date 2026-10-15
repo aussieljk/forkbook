@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Button } from 'storybook/internal/components';
-import type { Addon_BaseType } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 import { EditorIcon } from '@storybook/icons';
 
-import { Consumer, types, useStorybookApi } from 'storybook/manager-api';
-import type { Combo } from 'storybook/manager-api';
+import { Consumer, types, useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
 
 const mapper = ({ state, api }: Combo) => {
   const { storyId, refId } = state;

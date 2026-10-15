@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { ProjectAnnotations, Renderer, StoryIndex } from 'storybook/internal/types';
+import type { ProjectAnnotations, Renderer, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { definePreview } from '../../../csf/csf-factories.ts';
 import { getCoreAnnotations } from '../../../csf/core-annotations.ts';
@@ -31,7 +31,7 @@ vi.mock('@storybook/global', async (importOriginal) => ({
   },
 }));
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 
 const componentOneExports = {
   default: { title: 'Component One', argTypes: { foo: { description: 'from meta' } } },

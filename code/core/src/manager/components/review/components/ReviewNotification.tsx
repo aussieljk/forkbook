@@ -2,7 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, type FC } from 'react';
 
 import { WandIcon } from '@storybook/icons';
 
-import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 import { reviewAvailableNotificationId } from '../constants.ts';
 import { useReviewContext, type ReviewBanner } from '../review-context.ts';
 import {

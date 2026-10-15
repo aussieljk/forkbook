@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { AddonPanel } from 'storybook/internal/components';
+import { AddonPanel } from '@aussieljk/forkbook/internal/components';
 
-import { type Combo, Consumer, addons, types } from 'storybook/manager-api';
+import { type Combo, Consumer, addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { Panel } from './components/Panel.tsx';
 import { PanelTitle } from './components/PanelTitle.tsx';

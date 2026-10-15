@@ -1,15 +1,15 @@
 import process from 'node:process';
 
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   internal_UniversalStore,
   experimental_getStatusStore,
   experimental_getTestProviderStore,
-} from 'storybook/internal/core-server';
+} from '@aussieljk/forkbook/internal/core-server';
 
-import type { PreviewAnnotation, StoryIndex } from 'storybook/internal/types';
+import type { PreviewAnnotation, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
 
 import {
   ADDON_ID,
@@ -51,11 +51,11 @@ const testManager = new TestManager({
     process.send?.({ type: 'ready' });
   },
   storybookOptions: {
-    configDir: process.env.STORYBOOK_CONFIG_DIR || '',
+    configDir: process.env.FORKBOOK_CONFIG_DIR || '',
   } as any,
-  configLoader: process.env.STORYBOOK_CONFIG_LOADER as BuilderOptions['configLoader'],
+  configLoader: process.env.FORKBOOK_CONFIG_LOADER as BuilderOptions['configLoader'],
   previewAnnotations: JSON.parse(
-    process.env.STORYBOOK_PREVIEW_ANNOTATIONS || '[]'
+    process.env.FORKBOOK_PREVIEW_ANNOTATIONS || '[]'
   ) as PreviewAnnotation[],
 });
 

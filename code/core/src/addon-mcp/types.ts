@@ -1,6 +1,10 @@
 import * as v from 'valibot';
-import type { Options } from 'storybook/internal/types';
-import type { DocsAccess, ManifestProvider, Source } from 'storybook/internal/toolsets-docs';
+import type { Options } from '@aussieljk/forkbook/internal/types';
+import type {
+  DocsAccess,
+  ManifestProvider,
+  Source,
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 const isLiteralEndpointPathname = (endpoint: string) => {
   try {
@@ -39,7 +43,7 @@ export type AddonOptionsOutput = v.InferOutput<typeof AddonOptions>;
  * What serving the docs tools needs from the request being handled.
  *
  * Only a composition uses these: it reads several Storybooks, each through its own provider, and
- * the local one through its own access when docgen-server mode is on. A single Storybook is served
+ * the local one through its own access when docgen-server mode is on. A single Forkbook is served
  * by the docs toolset registered at boot and needs none of it.
  */
 export type DocsServingContext = {
@@ -49,28 +53,28 @@ export type DocsServingContext = {
   manifestProvider?: ManifestProvider;
   /** The composed Storybooks, when `refs` are configured. */
   sources?: Source[];
-  /** Reads the local Storybook directly, in docgen-server mode. */
+  /** Reads the local Forkbook directly, in docgen-server mode. */
   localAccess?: DocsAccess;
 };
 
 /**
  * Custom context passed to MCP server and tools.
- * Contains Storybook-specific configuration and runtime information.
+ * Contains Forkbook-specific configuration and runtime information.
  */
 export type AddonContext = DocsServingContext & {
   /**
-   * The Storybook options object containing configuration,
+   * The Forkbook options object containing configuration,
    * port, presets, and other runtime information.
    */
   options: Options;
 
   /**
-   * The resolved MCP endpoint pathname for this Storybook instance.
+   * The resolved MCP endpoint pathname for this Forkbook instance.
    */
   endpoint?: string;
 
   /**
-   * The origin URL of the running Storybook instance.
+   * The origin URL of the running Forkbook instance.
    * Typically http://localhost:{port}
    */
   origin: string;
@@ -81,7 +85,7 @@ export type AddonContext = DocsServingContext & {
   disableTelemetry: boolean;
 
   /**
-   * Whether storybook/addon-a11y is enabled.
+   * Whether @aussieljk/forkbook/addon-a11y is enabled.
    * Used to dynamically tailor tool descriptions and guidance.
    */
   a11yEnabled?: boolean;

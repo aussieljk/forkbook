@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
 
-import preview from '../../../../.storybook/preview.tsx';
+import preview from '../../../../.forkbook/preview.tsx';
 import { Button } from '../../components/index.ts';
 import { TextFlip } from './TextFlip.tsx';
 

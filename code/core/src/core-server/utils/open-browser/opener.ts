@@ -7,7 +7,7 @@
 import { execSync } from 'node:child_process';
 import { join } from 'node:path';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import spawn from 'cross-spawn';
 import open from 'open';
@@ -146,7 +146,7 @@ function startBrowserProcess(browser: string | undefined, url: string, args: str
         // on OSX Chromium-based browser with AppleScript
         execSync(`ps cax | grep "${chromiumBrowser}"`);
         const pathToApplescript = join(
-          resolvePackageDir('storybook'),
+          resolvePackageDir('@aussieljk/forkbook'),
           'assets',
           'server',
           'openBrowser.applescript'

@@ -1,4 +1,4 @@
-import { CHANNEL_WS_DISCONNECT } from 'storybook/internal/core-events';
+import { CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
 
 import { WebSocket } from 'ws';
 
@@ -75,7 +75,7 @@ export function createNodeChannel({ url, token }: NodeChannelOptions): NodeChann
   socketUrl.pathname = SERVER_CHANNEL_PATH;
   socketUrl.search = new URLSearchParams({ token }).toString();
 
-  // Loopback only: a local `wss://` Storybook often uses a self-signed dev certificate.
+  // Loopback only: a local `wss://` Forkbook often uses a self-signed dev certificate.
   const rejectUnauthorized = !LOOPBACK_HOSTNAMES.has(socketUrl.hostname);
   const socket = new WebSocket(socketUrl.href, { rejectUnauthorized });
   const connected = waitUntilOpen(socket);
@@ -120,7 +120,7 @@ function waitUntilOpen(socket: WebSocket): Promise<void> {
     }
     const fail = (reason?: string) => reject(new StorybookDevServerDisconnectedError({ reason }));
     if (socket.readyState === WebSocket.CLOSED || socket.readyState === WebSocket.CLOSING) {
-      fail('WebSocket closed before the Storybook channel opened');
+      fail('WebSocket closed before the Forkbook channel opened');
       return;
     }
     const settle = (action: () => void) => {
@@ -131,8 +131,7 @@ function waitUntilOpen(socket: WebSocket): Promise<void> {
     };
     const onOpen = () => settle(resolve);
     const onError = (error: Error) => settle(() => fail(error.message));
-    const onClose = () =>
-      settle(() => fail('WebSocket closed before the Storybook channel opened'));
+    const onClose = () => settle(() => fail('WebSocket closed before the Forkbook channel opened'));
     socket.once('open', onOpen);
     socket.once('error', onError);
     socket.once('close', onClose);

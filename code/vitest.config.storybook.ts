@@ -1,13 +1,13 @@
 import { defaultExclude, defineProject } from 'vitest/config';
 
-import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
 
 import { playwright } from '@vitest/browser-playwright';
 import Inspect from 'vite-plugin-inspect';
 
 const extraPlugins: any[] = [];
 if (process.env.INSPECT === 'true') {
-  // this plugin assists in inspecting the Storybook Vitest plugin's transformation and sourcemaps
+  // this plugin assists in inspecting the Forkbook Vitest plugin's transformation and sourcemaps
   extraPlugins.push(
     Inspect({
       outputDir: '.vite-inspect',
@@ -21,7 +21,7 @@ if (process.env.INSPECT === 'true') {
 export default defineProject({
   plugins: [
     storybookTest({
-      configDir: import.meta.dirname + '/.storybook',
+      configDir: import.meta.dirname + '/.forkbook',
       tags: {
         include: ['vitest'],
       },
@@ -43,7 +43,7 @@ export default defineProject({
       '**/Zoom.stories.tsx', // expected to fail in Vitest because of fetching /iframe.html to cause ECONNREFUSED
       './core/src/addon-docs/blocks/**', // won't work because of https://github.com/storybookjs/storybook/issues/29783
     ],
-    // TODO: bring this back once portable stories support storybook/preview-api hooks
+    // TODO: bring this back once portable stories support @aussieljk/forkbook/preview-api hooks
     testNamePattern: /^(?!.*(UseState)).*$/,
     browser: {
       enabled: true,
@@ -56,7 +56,7 @@ export default defineProject({
       headless: true,
       screenshotFailures: false,
     },
-    setupFiles: ['./.storybook/storybook.setup.ts'],
+    setupFiles: ['./.forkbook/storybook.setup.ts'],
     environment: 'happy-dom',
   },
 });

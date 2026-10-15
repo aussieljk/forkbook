@@ -1,4 +1,4 @@
-import { PackageManagerName } from 'storybook/internal/common';
+import { PackageManagerName } from '@aussieljk/forkbook/internal/common';
 
 import { dedent } from 'ts-dedent';
 import type { ProjectInfo } from '../../../project-info.ts';
@@ -12,7 +12,7 @@ export function monorepoRule({
   monorepoType,
 }: Pick<ProjectInfo, 'monorepoType'>): string | undefined {
   if (monorepoType) {
-    return `**${monorepoType} monorepo.** Don't initially look for config or existing Storybook content in other packages. Start exploring from config and tooling local to the package where you are asked to set up Storybook. If it uses local monorepo dependencies, build all dependencies found during discovery before writing stories or running tests.`;
+    return `**${monorepoType} monorepo.** Don't initially look for config or existing Forkbook content in other packages. Start exploring from config and tooling local to the package where you are asked to set up Forkbook. If it uses local monorepo dependencies, build all dependencies found during discovery before writing stories or running tests.`;
   }
 }
 
@@ -20,22 +20,22 @@ export function packageManagerRule({
   packageManager,
   packageManagerName,
 }: SetupInstructionsContext): string {
-  const storybookCmd = packageManager.getPackageCommand(['storybook']);
+  const storybookCmd = packageManager.getPackageCommand(['forkbook']);
   if (packageManager.type === PackageManagerName.NPM) {
-    return dedent`**Use \`npm\` for installs and \`${storybookCmd}\` for Storybook/Vitest CLI commands** (detected from this project's lockfile).`;
+    return dedent`**Use \`npm\` for installs and \`${storybookCmd}\` for Forkbook/Vitest CLI commands** (detected from this project's lockfile).`;
   }
   if (packageManagerName) {
-    return dedent`**Use \`${packageManagerName}\` for installs and \`${storybookCmd}\` for Storybook/Vitest CLI commands** (detected from this project's lockfile). Do not use \`npx\` — it invokes npm and fails when the repo enforces a different package manager.`;
+    return dedent`**Use \`${packageManagerName}\` for installs and \`${storybookCmd}\` for Forkbook/Vitest CLI commands** (detected from this project's lockfile). Do not use \`npx\` — it invokes npm and fails when the repo enforces a different package manager.`;
   }
   return dedent`**Detect the package manager once** from the lockfile (\`pnpm-lock.yaml\` → pnpm, \`yarn.lock\` → yarn, \`bun.lockb\` → bun, otherwise npm) and use it for every install and CLI command in this trial. Do not use \`npx\` when the project uses pnpm, yarn, or bun.`;
 }
 
 export function editOverWriteRule({ configDir, tsx }: SetupInstructionsContext): string {
-  return dedent`**Edit > Write.** For any file you've Read, use \`Edit\`. Use \`Write\` only for new files. The project already has a \`${configDir}/preview.${tsx}\` from \`storybook init\` — **Edit** it, do not overwrite.`;
+  return dedent`**Edit > Write.** For any file you've Read, use \`Edit\`. Use \`Write\` only for new files. The project already has a \`${configDir}/preview.${tsx}\` from \`forkbook init\` — **Edit** it, do not overwrite.`;
 }
 
 export function keepUserWorkRule(ctx: SetupInstructionsContext): string {
-  return dedent`**Keep the user's work.** Never delete, move, or rewrite the stories, components, or config that existed before you started; add to them instead. The only exception is the \`storybook init\` examples described in the clean-up step.`;
+  return dedent`**Keep the user's work.** Never delete, move, or rewrite the stories, components, or config that existed before you started; add to them instead. The only exception is the \`forkbook init\` examples described in the clean-up step.`;
 }
 
 export function batchTestsRule(ctx: SetupInstructionsContext): string {

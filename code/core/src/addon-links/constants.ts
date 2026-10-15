@@ -1,4 +1,4 @@
-export const ADDON_ID = 'storybook/links';
+export const ADDON_ID = '@aussieljk/forkbook/links';
 export const PARAM_KEY = `links`;
 
 export default {

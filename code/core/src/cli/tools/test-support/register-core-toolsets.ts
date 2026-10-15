@@ -1,17 +1,17 @@
 /**
- * Registers the core toolsets the `storybook tools` CLI dispatches over.
+ * Registers the core toolsets the `forkbook tools` CLI dispatches over.
  *
- * Test support: in a real invocation, loading the Storybook configuration runs the `services`
+ * Test support: in a real invocation, loading the Forkbook configuration runs the `services`
  * preset hooks, which register these before the CLI reads the registry. The real toolsets are used
  * (with stub runtime dependencies) rather than fakes, so the CLI is tested against the definitions
  * it ships with — the same approach as addon-mcp's scaffold.
  *
- * The `test` toolset is owned by `storybook/addon-vitest` and is intentionally not registered
+ * The `test` toolset is owned by `@aussieljk/forkbook/addon-vitest` and is intentionally not registered
  * here. Cover it in the addon's own unit tests; core/CLI tests that need "test absent" behavior
  * already match this default.
  */
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import {
   clearToolsetRegistry,
@@ -51,7 +51,7 @@ export function registerCoreToolsetsForTest({
         getChangedFiles: async () => ({ changed: new Set<string>(), new: new Set<string>() }),
       },
       changeStatuses: { getAll: () => ({}) },
-      storybookDirs: { configDir: `${process.cwd()}/.storybook`, getStaticDirs: async () => [] },
+      storybookDirs: { configDir: `${process.cwd()}/.forkbook`, getStaticDirs: async () => [] },
     })
   );
   registerToolset(reviewToolset);

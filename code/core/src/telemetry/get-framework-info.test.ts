@@ -1,27 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { StorybookConfig } from 'storybook/internal/types';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { getFrameworkInfo } from './get-framework-info.ts';
 
-vi.mock('storybook/internal/common', () => ({
+vi.mock('@aussieljk/forkbook/internal/common', () => ({
   getStorybookInfo: vi.fn(),
 }));
 
 describe('getFrameworkInfo', () => {
   const defaultInfo = {
-    frameworkPackage: 'storybook/react',
-    rendererPackage: 'storybook/react',
-    builderPackage: 'storybook/builder-vite',
+    frameworkPackage: '@aussieljk/forkbook/react',
+    rendererPackage: '@aussieljk/forkbook/react',
+    builderPackage: '@aussieljk/forkbook/builder-vite',
   };
 
   beforeEach(async () => {
-    const { getStorybookInfo } = await import('storybook/internal/common');
+    const { getStorybookInfo } = await import('@aussieljk/forkbook/internal/common');
     vi.mocked(getStorybookInfo).mockResolvedValue(defaultInfo as any);
   });
 
   it('returns framework/builder/renderer with empty options when no framework provided', async () => {
-    const result = await getFrameworkInfo({} as StorybookConfig, '/tmp/.storybook');
+    const result = await getFrameworkInfo({} as StorybookConfig, '/tmp/.forkbook');
     expect(result).toEqual({
       framework: { name: defaultInfo.frameworkPackage, options: {} },
       builder: defaultInfo.builderPackage,
@@ -30,8 +30,8 @@ describe('getFrameworkInfo', () => {
   });
 
   it('passes configDir to getStorybookInfo', async () => {
-    const configDir = '/my/project/.storybook';
-    const { getStorybookInfo } = await import('storybook/internal/common');
+    const configDir = '/my/project/.forkbook';
+    const { getStorybookInfo } = await import('@aussieljk/forkbook/internal/common');
     await getFrameworkInfo({} as StorybookConfig, configDir);
     expect(getStorybookInfo).toHaveBeenCalledWith(configDir);
   });
@@ -39,8 +39,8 @@ describe('getFrameworkInfo', () => {
   it('returns provided framework options when object is passed', async () => {
     const options = { foo: 'bar' } as any;
     const result = await getFrameworkInfo(
-      { framework: { name: 'storybook/react', options } } as any,
-      '/tmp/.storybook'
+      { framework: { name: '@aussieljk/forkbook/react', options } } as any,
+      '/tmp/.forkbook'
     );
     expect(result.framework.options).toEqual(options);
   });

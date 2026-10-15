@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { page } from 'vitest/browser';
-import { INITIAL_VIEWPORTS } from 'storybook/viewport';
+import { INITIAL_VIEWPORTS } from '@aussieljk/forkbook/viewport';
 
 import {
   DEFAULT_VIEWPORT_DIMENSIONS,
@@ -180,7 +180,7 @@ describe('setViewport', () => {
         .toThrowErrorMatchingInlineSnapshot(`
       [SB_ADDON_VITEST_0001 (UnsupportedViewportDimensionError): Encountered an unsupported value "calc(100vw - 20px)" when setting the viewport width dimension.
 
-      The Storybook plugin only supports values in the following units:
+      The Forkbook plugin only supports values in the following units:
       - px, vh, vw, em, rem and %.
 
       You can either change the viewport for this story to use one of the supported units or skip the test by adding '!test' to the story's tags per https://storybook.js.org/docs/writing-stories/tags]

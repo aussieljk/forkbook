@@ -1,4 +1,4 @@
-import { telemetry } from 'storybook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,7 +9,7 @@ import {
   toolsCommandDimensions,
 } from './command-telemetry.ts';
 
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 describe('toolsCommandDimensions', () => {
   it('uses resolvedMode for attachMode when a host exists', () => {
@@ -90,7 +90,7 @@ describe('reportToolsCommandEvent', () => {
           event: 'tool:stories_findByComponent',
           payload: { componentCount: 2, success: 'not a record field' },
         },
-        configDir: '/repo/.storybook',
+        configDir: '/repo/.forkbook',
       }
     );
 
@@ -107,7 +107,7 @@ describe('reportToolsCommandEvent', () => {
         requestedMode: 'auto',
         attachMode: 'local',
       },
-      { configDir: '/repo/.storybook' }
+      { configDir: '/repo/.forkbook' }
     );
   });
 
@@ -156,7 +156,7 @@ describe('shouldReportSdkInvocation', () => {
   it('is true only for the SDK outside a child host', () => {
     expect(shouldReportSdkInvocation('sdk')).toBe(true);
     expect(shouldReportSdkInvocation('cli')).toBe(false);
-    vi.stubEnv('STORYBOOK_TOOLS_CHILD_HOST', 'true');
+    vi.stubEnv('FORKBOOK_TOOLS_CHILD_HOST', 'true');
     expect(shouldReportSdkInvocation('sdk')).toBe(false);
   });
 });

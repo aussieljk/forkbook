@@ -130,18 +130,18 @@ export async function generateBundle({
     alias: {
       // The following aliases ensures that the runtimes bundles in the actual sources of these modules
       // instead of attempting to resolve them to the dist files, because the dist files are not available yet.
-      'storybook/preview-api': './src/preview-api',
-      'storybook/manager-api': './src/manager-api',
-      'storybook/theming': './src/theming',
-      'storybook/test': './src/test',
-      'storybook/internal': './src',
-      'storybook/outline': './src/outline',
-      'storybook/backgrounds': './src/backgrounds',
-      'storybook/highlight': './src/highlight',
-      'storybook/measure': './src/measure',
-      'storybook/actions': './src/actions',
-      'storybook/viewport': './src/viewport',
-      'storybook/open-service': './src/shared/open-service',
+      '@aussieljk/forkbook/preview-api': './src/preview-api',
+      '@aussieljk/forkbook/manager-api': './src/manager-api',
+      '@aussieljk/forkbook/theming': './src/theming',
+      '@aussieljk/forkbook/test': './src/test',
+      '@aussieljk/forkbook/internal': './src',
+      '@aussieljk/forkbook/outline': './src/outline',
+      '@aussieljk/forkbook/backgrounds': './src/backgrounds',
+      '@aussieljk/forkbook/highlight': './src/highlight',
+      '@aussieljk/forkbook/measure': './src/measure',
+      '@aussieljk/forkbook/actions': './src/actions',
+      '@aussieljk/forkbook/viewport': './src/viewport',
+      '@aussieljk/forkbook/open-service': './src/shared/open-service',
       // The following aliases ensures that the manager has a single version of React,
       // even if transitive dependencies would depend on other versions.
       react: resolvePackageDir('react'),
@@ -231,7 +231,7 @@ export async function generateBundle({
 
           We're adding unique names to the imports to avoid collisions
           when one of our packages bundles in another of our packages,
-          like storybook/internal/create bundling in parts of storybook core.
+          like @aussieljk/forkbook/internal/create bundling in parts of storybook core.
           Similarly we're using var definitions as they can be redefined
           without causing errors.
           */
@@ -245,7 +245,7 @@ export async function generateBundle({
             var require = CJS_COMPAT_NODE_MODULE_${uid}.createRequire(import.meta.url);
 
             // ------------------------------------------------------------
-            // end of CJS compatibility banner, injected by Storybook's esbuild configuration
+            // end of CJS compatibility banner, injected by Forkbook's esbuild configuration
             // ------------------------------------------------------------
             `,
         },

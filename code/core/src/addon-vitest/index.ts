@@ -1,3 +1,3 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
 export default () => definePreviewAddon({});

@@ -6,14 +6,14 @@ import type { FC, PropsWithChildren } from 'react';
 import React, { Profiler, StrictMode, createElement } from 'react';
 
 import PropTypes from 'prop-types';
-import { addons, emitTransformCode, useState } from 'storybook/preview-api';
+import { addons, emitTransformCode, useState } from '@aussieljk/forkbook/preview-api';
 
-import type { StoryContextForRender } from 'storybook/internal/types';
+import type { StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
 import type { ReactRenderer } from '../types';
 import { getReactSymbolName, jsxDecorator, renderJsx } from './jsxDecorator';
 
-vi.mock('storybook/preview-api', () => ({
+vi.mock('@aussieljk/forkbook/preview-api', () => ({
   addons: {
     getChannel: vi.fn(),
   },

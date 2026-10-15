@@ -1,12 +1,12 @@
-import type { CompatibleString } from 'storybook/internal/types';
+import type { CompatibleString } from '@aussieljk/forkbook/internal/types';
 
-import type { BuilderOptions } from 'storybook/builder-vite';
-import type { StorybookConfig as StorybookConfigReactVite } from 'storybook/react-vite';
+import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
+import type { StorybookConfig as StorybookConfigReactVite } from '@aussieljk/forkbook/react-vite';
 
 import type { NextRouter } from 'next/router';
 
-type FrameworkName = CompatibleString<'storybook/nextjs-vite'>;
-type BuilderName = CompatibleString<'storybook/builder-vite'>;
+type FrameworkName = CompatibleString<'@aussieljk/forkbook/nextjs-vite'>;
+type BuilderName = CompatibleString<'@aussieljk/forkbook/builder-vite'>;
 
 export type FrameworkOptions = {
   /** The path to the Next.js configuration file. */
@@ -35,7 +35,7 @@ type StorybookConfigFramework = {
   };
 };
 
-/** The interface for Storybook configuration in `main.ts` files. */
+/** The interface for Forkbook configuration in `main.ts` files. */
 export type StorybookConfig = Omit<StorybookConfigReactVite, keyof StorybookConfigFramework> &
   StorybookConfigFramework;
 

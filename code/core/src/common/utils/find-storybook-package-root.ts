@@ -16,7 +16,7 @@ const ownDir = normalize(dirname(fileURLToPath(import.meta.url)));
 export function findStorybookPackageRoot(): string | undefined {
   let dir = ownDir;
   while (true) {
-    if (readManifestName(dir) === 'storybook') {
+    if (readManifestName(dir) === '@aussieljk/forkbook') {
       try {
         return normalize(realpathSync(dir));
       } catch {

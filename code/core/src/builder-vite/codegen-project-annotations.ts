@@ -1,6 +1,6 @@
-import { getFrameworkName, loadPreviewOrConfigFile } from 'storybook/internal/common';
-import { isCsfFactoryPreview, readConfig } from 'storybook/internal/csf-tools';
-import type { Options, PreviewAnnotation } from 'storybook/internal/types';
+import { getFrameworkName, loadPreviewOrConfigFile } from '@aussieljk/forkbook/internal/common';
+import { isCsfFactoryPreview, readConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import type { Options, PreviewAnnotation } from '@aussieljk/forkbook/internal/types';
 
 import { genArrayFromRaw, genImport, genSafeVariableName } from 'knitwork';
 import { filename } from 'pathe/utils';
@@ -78,7 +78,7 @@ export function generateProjectAnnotationsCodeFromPreviews(options: {
   }
 
   return dedent`
-    import { composeConfigs } from 'storybook/preview-api';
+    import { composeConfigs } from '@aussieljk/forkbook/preview-api';
 
     ${imports.join('\n')}
 

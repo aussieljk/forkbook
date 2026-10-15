@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import type { DecoratorFunction } from 'storybook/internal/csf';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/csf';
 
 export const POPPER_PLACEMENTS = [
   'top',
@@ -58,7 +58,7 @@ export const Trigger = forwardRef<HTMLButtonElement, TriggerProps>((props, ref) 
 Trigger.displayName = 'Trigger';
 
 /**
- * Storybook decorator to help render PopoverProvider in stories. Internal to Storybook. Use at your
+ * Forkbook decorator to help render PopoverProvider in stories. Internal to Forkbook. Use at your
  * own risk.
  */
 export const OverlayTriggerDecorator: DecoratorFunction = (Story, { args }) => {

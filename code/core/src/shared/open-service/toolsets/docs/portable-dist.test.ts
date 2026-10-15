@@ -1,7 +1,7 @@
 /**
- * Guards the portable d.ts artifact of the `storybook/internal/toolsets-docs` entry.
+ * Guards the portable d.ts artifact of the `@aussieljk/forkbook/internal/toolsets-docs` entry.
  *
- * `storybook/mcp` bundles this entry's declarations into its own dist through standard module
+ * `@aussieljk/forkbook/mcp` bundles this entry's declarations into its own dist through standard module
  * resolution, so the artifact must be one flat self-contained file whose only external imports are
  * on that package's own dependency list. An edit that entangles the entry with react, another core
  * surface, or a shared type chunk must fail here — where the artifact is produced — with a message

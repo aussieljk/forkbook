@@ -1,7 +1,7 @@
-import { type JsPackageManager, getProjectRoot } from 'storybook/internal/common';
-import { prompt } from 'storybook/internal/node-logger';
-import type { SupportedRenderer } from 'storybook/internal/types';
-import { SupportedBuilder, SupportedFramework } from 'storybook/internal/types';
+import { type JsPackageManager, getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
+import type { SupportedRenderer } from '@aussieljk/forkbook/internal/types';
+import { SupportedBuilder, SupportedFramework } from '@aussieljk/forkbook/internal/types';
 
 import * as find from 'empathic/find';
 

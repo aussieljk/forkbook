@@ -58,7 +58,7 @@ type LoadableOptions<P = Record<string, unknown>> = DynamicOptions<P>;
 type LoadableFn<P = Record<string, unknown>> = (opts: LoadableOptions<P>) => React.ComponentType<P>;
 
 export function noSSR<P = Record<string, unknown>>(): React.ComponentType<P> {
-  throw new Error('noSSR is not implemented in Storybook');
+  throw new Error('noSSR is not implemented in Forkbook');
 }
 
 /**
@@ -128,7 +128,7 @@ export default function dynamic<P = Record<string, unknown>>(
   }
 
   // support for disabling server side rendering, eg: dynamic(() => import('../hello-world'), {ssr: false}).
-  // In browser environments (Storybook/Vitest), we simply remove webpack and modules options
+  // In browser environments (Forkbook/Vitest), we simply remove webpack and modules options
   // and proceed with the loadable component since we're always on the client-side.
   if (typeof loadableOptions.ssr === 'boolean' && !loadableOptions.ssr) {
     // biome-ignore lint/performance/noDelete: <explanation>

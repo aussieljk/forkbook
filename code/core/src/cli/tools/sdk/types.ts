@@ -7,7 +7,7 @@ import type { ToolsRuntime } from './local-runtime.ts';
 /**
  * How the SDK hosts the target project's tools.
  *
- * `attached` talks to a running Storybook dev server. `local` loads the target configuration
+ * `attached` talks to a running Forkbook dev server. `local` loads the target configuration
  * without one: in this process when `cwd` already matches, otherwise in a child host started from
  * that directory. `auto` prefers attached and falls back to local.
  */
@@ -19,16 +19,16 @@ export type ToolsHostKind = 'in-process' | 'child';
 export type ToolsClientInfo = {
   name: string;
   version: string;
-  /** Defaults to `sdk`; first-party surfaces stamp their own, as the `storybook tools` CLI does. */
+  /** Defaults to `sdk`; first-party surfaces stamp their own, as the `forkbook tools` CLI does. */
   kind?: 'sdk' | 'cli';
 };
 
 export type CreateToolsOptions = {
-  /** Project directory of the target Storybook; defaults to `process.cwd()`. */
+  /** Project directory of the target Forkbook; defaults to `process.cwd()`. */
   cwd?: string;
-  /** Directory to load the Storybook configuration from; relative paths resolve from `cwd`. */
+  /** Directory to load the Forkbook configuration from; relative paths resolve from `cwd`. */
   configDir?: string;
-  /** Port of a running Storybook; a known port targets that instance without cwd or config dir. */
+  /** Port of a running Forkbook; a known port targets that instance without cwd or config dir. */
   port?: number;
   /** Defaults to `auto`. */
   mode?: ToolsMode;
@@ -46,17 +46,17 @@ export type ToolsSiblingInstance = {
   configDir?: string;
 };
 
-/** What the resolved host knows about the Storybook it serves. */
+/** What the resolved host knows about the Forkbook it serves. */
 export type ToolsStorybookInfo = {
   version: string;
   configDir: string;
-  /** Base URL of the running Storybook, including any deployment subpath. */
+  /** Base URL of the running Forkbook, including any deployment subpath. */
   url?: string;
-  /** Process id of the running Storybook. */
+  /** Process id of the running Forkbook. */
   pid?: number;
-  /** Port of the running Storybook, as recorded by `storybook dev`. */
+  /** Port of the running Forkbook, as recorded by `forkbook dev`. */
   port?: number;
-  /** Directory the running Storybook was started from. */
+  /** Directory the running Forkbook was started from. */
   cwd?: string;
   /**
    * Set when attach chose among several matching instances: the competing instances, best first,
@@ -83,7 +83,7 @@ export type ToolsetCatalogEntry = {
   methods: ToolsetCatalogMethod[];
 };
 
-/** Every tool the target Storybook configuration registers. */
+/** Every tool the target Forkbook configuration registers. */
 export type ToolsetCatalog = {
   configDir: string;
   toolsets: ToolsetCatalogEntry[];
@@ -96,7 +96,7 @@ export type ToolsDescribeOptions = {
 
 export type ToolsCallOptions = {
   signal?: AbortSignal;
-  /** Overrides the host's Storybook origin for this call. */
+  /** Overrides the host's Forkbook origin for this call. */
   origin?: string;
 };
 
@@ -122,7 +122,7 @@ type ToolsBase = {
    *
    * @throws {ToolsRuntimeError} When the reference is unknown, the input fails the method's
    *   schema, or the host can no longer serve calls.
-   * @throws {AttachUnavailableError} When the method needs a running Storybook the host has not
+   * @throws {AttachUnavailableError} When the method needs a running Forkbook the host has not
    *   attached to.
    */
   call(
@@ -134,13 +134,13 @@ type ToolsBase = {
 };
 
 /**
- * A host that loaded the target configuration without a running Storybook.
+ * A host that loaded the target configuration without a running Forkbook.
  */
 export type LocalTools = ToolsBase & {
   mode: 'local';
 };
 
-/** A host that joined a running Storybook over its channel. */
+/** A host that joined a running Forkbook over its channel. */
 export type AttachedTools = ToolsBase & {
   mode: 'attached';
 };

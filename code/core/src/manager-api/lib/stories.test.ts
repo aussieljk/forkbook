@@ -5,7 +5,7 @@ import {
   type StatusesByStoryIdAndTypeId,
   type StoryIndexV2,
   type StoryIndexV3,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import type { State } from '../root.tsx';
 import { mockEntries } from '../tests/mockStoriesEntries.ts';

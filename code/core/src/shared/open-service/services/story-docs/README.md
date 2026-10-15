@@ -11,7 +11,7 @@ preserving `parameters.docs.source.transform` handling in preview.
 ## Providers
 
 Renderers contribute payloads through the `experimental_storyDocsProvider` preset chain.
-A renderer whose snippets depend on its own docgen worker builds that preset with `createWorkerGatedStoryDocsProvider` from `storybook/internal/core-server`.
+A renderer whose snippets depend on its own docgen worker builds that preset with `createWorkerGatedStoryDocsProvider` from `@aussieljk/forkbook/internal/core-server`.
 The helper skips the renderer when its worker is not registered, reads only matching story files, logs a file it cannot read at debug level and hands it to the next provider, and merges its payload over the next provider's.
 Vue, Svelte and Web Components use it; React and Angular have no worker gate and keep their own presets.
 

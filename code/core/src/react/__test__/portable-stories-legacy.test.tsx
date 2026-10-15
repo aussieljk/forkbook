@@ -4,16 +4,16 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { Meta } from 'storybook/react';
+import type { Meta } from '@aussieljk/forkbook/react';
 
 import { expectTypeOf } from 'expect-type';
-import { addons } from 'storybook/preview-api';
+import { addons } from '@aussieljk/forkbook/preview-api';
 
 import { composeStories, composeStory, setProjectAnnotations } from '../index.ts';
 import type { Button } from './Button.tsx';
 import * as stories from './Button.stories.tsx';
 
-// TODO: Potentially remove this in Storybook 9.0 once we fully move users to the new portable stories API (with CSF4)
+// TODO: Potentially remove this in Forkbook 9.0 once we fully move users to the new portable stories API (with CSF4)
 describe('Legacy Portable Stories API', () => {
   // example with composeStories, returns an object with all stories composed with args/decorators
   const { CSF3Primary, LoaderStory } = composeStories(stories);

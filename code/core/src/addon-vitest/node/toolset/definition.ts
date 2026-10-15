@@ -1,11 +1,14 @@
 import * as v from 'valibot';
 
-import { storyInputArraySchema, type StoryIndexAccess } from 'storybook/internal/core-server';
+import {
+  storyInputArraySchema,
+  type StoryIndexAccess,
+} from '@aussieljk/forkbook/internal/core-server';
 import {
   defineToolset,
   type ToolsetTelemetryReport,
   type ToolsetOutcome,
-} from 'storybook/open-service';
+} from '@aussieljk/forkbook/open-service';
 
 import { countTestRunFailures, formatTestRun, summarizeTestRun } from './format.ts';
 import { createAsyncQueue, runStoryTests, type TestChannel } from './run.ts';
@@ -225,11 +228,11 @@ export function createTestToolset({ channel, storyIndex, a11yEnabled }: CreateTe
 
   return defineToolset({
     id: 'test',
-    description: 'Run Storybook story tests via addon-vitest.',
+    description: 'Run Forkbook story tests via addon-vitest.',
     methods: {
       run: {
         input: runInputSchema,
-        title: 'Run Storybook tests',
+        title: 'Run Forkbook tests',
         description: describeRun(a11yEnabled),
         handler: async (
           input,

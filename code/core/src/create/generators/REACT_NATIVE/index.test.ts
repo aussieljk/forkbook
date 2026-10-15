@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { copyTemplateFiles } from 'storybook/internal/cli';
-import { executeCommand } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { SupportedLanguage } from 'storybook/internal/types';
+import { copyTemplateFiles } from '@aussieljk/forkbook/internal/cli';
+import { executeCommand } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import { DependencyCollector } from '../../dependency-collector.ts';
 import { TelemetryService } from '../../services/TelemetryService.ts';
@@ -12,9 +12,9 @@ import { generateReactNativeEntrypoint } from './generateEntrypoint.ts';
 import { runMetroCodemodOrFallback } from './metroConfig.ts';
 import { detectReactNativeEntrypointTemplateVariant } from './index.ts';
 
-vi.mock('storybook/internal/cli', { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/cli', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('./generateEntrypoint', { spy: true });
 vi.mock('./metroConfig', { spy: true });
 

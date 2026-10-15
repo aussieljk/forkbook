@@ -1,4 +1,4 @@
-import type { ToolsetCtx } from 'storybook/open-service';
+import type { ToolsetCtx } from '@aussieljk/forkbook/open-service';
 
 import type { TestRunData, TestRunResult } from './definition.ts';
 

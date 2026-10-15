@@ -1,6 +1,6 @@
 /**
  * Outcome-unwrap contract of the hosted adapter: what an MCP client observes must match what the
- * dev-server adapter (`storybook/addon-mcp`) produces from the same toolset — published
+ * dev-server adapter (`@aussieljk/forkbook/addon-mcp`) produces from the same toolset — published
  * `outputSchema`, validated `structuredContent`, verbatim agent-facing errors, and a server-side
  * log for unexpected failures. No docs method declares an `outputSchema` yet, so the schema cases
  * doctor the toolset the adapter is fed; the toolset is this adapter's input, not its internals.
@@ -10,7 +10,10 @@ import { McpServer } from 'tmcp';
 import * as v from 'valibot';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { COMPONENT_MANIFEST_PATH, ManifestGetError } from 'storybook/internal/toolsets-docs';
+import {
+  COMPONENT_MANIFEST_PATH,
+  ManifestGetError,
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 
 import type { ComponentManifestMap, StorybookContext } from '../types.ts';
 import smallManifestFixtureRaw from '../fixtures/small-manifest.fixture.json' with { type: 'json' };
@@ -23,8 +26,9 @@ const listMethod = vi.hoisted(() => ({
   handler: undefined as ((input: unknown, ctx: unknown) => unknown) | undefined,
 }));
 
-vi.mock('storybook/internal/toolsets-docs', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/toolsets-docs')>();
+vi.mock('@aussieljk/forkbook/internal/toolsets-docs', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@aussieljk/forkbook/internal/toolsets-docs')>();
   return {
     ...actual,
     createDocsToolset: (options: never) => {

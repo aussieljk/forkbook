@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ArgsStoryFn } from 'storybook/internal/types';
+import type { ArgsStoryFn } from '@aussieljk/forkbook/internal/types';
 
 import type { ReactRenderer } from './types.ts';
 

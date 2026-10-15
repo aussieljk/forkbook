@@ -1,4 +1,4 @@
-import type { API } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import {
   NOTIFIED_REVIEW_CREATED_AT_KEY,

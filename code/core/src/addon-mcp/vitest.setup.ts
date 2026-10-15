@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 
-// Global mock for storybook/internal/node-logger
+// Global mock for @aussieljk/forkbook/internal/node-logger
 // This mock must be hoisted to run before any imports
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logger: {
     debug: vi.fn(),
     info: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('storybook/internal/node-logger', () => ({
   },
 }));
 
-// Global mock for storybook/internal/telemetry
-vi.mock('storybook/internal/telemetry', () => ({
+// Global mock for @aussieljk/forkbook/internal/telemetry
+vi.mock('@aussieljk/forkbook/internal/telemetry', () => ({
   telemetry: vi.fn(),
 }));

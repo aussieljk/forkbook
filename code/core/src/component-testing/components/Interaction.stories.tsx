@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, userEvent } from 'storybook/test';
+import { expect, userEvent } from '@aussieljk/forkbook/test';
 
 import { type Call, CallStates } from '../../instrumenter/types.ts';
 import { getCalls } from '../mocks/index.ts';

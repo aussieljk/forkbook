@@ -1,9 +1,9 @@
-import { NextjsRouterMocksNotAvailable } from 'storybook/internal/preview-errors';
+import { NextjsRouterMocksNotAvailable } from '@aussieljk/forkbook/internal/preview-errors';
 
 import singletonRouter, * as originalRouter from 'next/dist/client/router.js';
 import type { NextRouter, SingletonRouter } from 'next/router';
-import type { Mock } from 'storybook/test';
-import { fn } from 'storybook/test';
+import type { Mock } from '@aussieljk/forkbook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
 const defaultRouterState = {
   route: '/',

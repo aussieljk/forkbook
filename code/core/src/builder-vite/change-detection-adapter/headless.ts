@@ -1,11 +1,14 @@
-import type { ChangeDetectionAdapter, ModuleResolveConfig } from 'storybook/internal/core-server';
-import type { Options } from 'storybook/internal/types';
+import type {
+  ChangeDetectionAdapter,
+  ModuleResolveConfig,
+} from '@aussieljk/forkbook/internal/core-server';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { commonConfig } from '../vite-config.ts';
 
 /**
  * Headless implementation of {@link ChangeDetectionAdapter}, for consumers that host the module
- * graph without a dev server (the `storybook tools` CLI).
+ * graph without a dev server (the `forkbook tools` CLI).
  *
  * It assembles the same config the dev server would (`commonConfig` in development mode followed by
  * the `viteFinal` preset) and resolves it with Vite's server-less `resolveConfig`, so plugin

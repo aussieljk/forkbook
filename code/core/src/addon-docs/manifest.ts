@@ -1,7 +1,7 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
-import { getComponentIdFromEntry, groupBy } from 'storybook/internal/common';
+import { getComponentIdFromEntry, groupBy } from '@aussieljk/forkbook/internal/common';
 import {
   type DocsManifestEntry,
   type DocsManifestRefEntry,
@@ -9,8 +9,8 @@ import {
   Tag,
   analyzeMdx,
   mdxManifestRef,
-} from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   ComponentManifest,
   ComponentsManifest,
@@ -19,11 +19,11 @@ import type {
   Manifests,
   PresetPropertyFn,
   StorybookConfigRaw,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { extractDocsSummary } from './extract-docs-summary.ts';
 
-export type { DocsManifestEntry } from 'storybook/internal/core-server';
+export type { DocsManifestEntry } from '@aussieljk/forkbook/internal/core-server';
 
 interface DocsManifest {
   v: number;

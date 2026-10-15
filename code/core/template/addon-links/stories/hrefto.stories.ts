@@ -1,4 +1,4 @@
-import { hrefTo } from 'storybook/addon-links';
+import { hrefTo } from '@aussieljk/forkbook/addon-links';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Html,

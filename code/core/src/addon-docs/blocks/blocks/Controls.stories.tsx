@@ -1,11 +1,11 @@
 /** Custom docs page: {@link ./Controls.mdx} (attached via `<Meta of={...} />`). */
 import React from 'react';
 
-import type { PlayFunctionContext } from 'storybook/internal/csf';
+import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/csf';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import * as ExampleStories from '../examples/ControlsParameters.stories';
 import * as SubcomponentsExampleStories from '../examples/ControlsWithSubcomponentsParameters.stories';

@@ -1,10 +1,10 @@
 /**
  * Derives a short docs summary from MDX so ref-based docs manifests can expose `summary` in the
- * same shape `storybook/mcp` expects.
+ * same shape `@aussieljk/forkbook/mcp` expects.
  *
  * Keep in sync with the fallback copy at
  * `code/lib/mcp/src/utils/manifest-formatter/extract-docs-summary.ts`. Dual copy is intentional:
- * addon-docs must not depend on `storybook/mcp`, and mcp must not depend on addon-docs.
+ * addon-docs must not depend on `@aussieljk/forkbook/mcp`, and mcp must not depend on addon-docs.
  */
 export const MAX_SUMMARY_LENGTH = 90;
 

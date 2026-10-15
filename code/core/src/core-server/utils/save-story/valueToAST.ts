@@ -1,4 +1,4 @@
-import { parser, types as t } from 'storybook/internal/babel';
+import { parser, types as t } from '@aussieljk/forkbook/internal/babel';
 
 export function valueToAST<T>(literal: T): any {
   if (literal === null) {

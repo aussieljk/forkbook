@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/client-logger';
-import type { GlobalTypes, Globals } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { GlobalTypes, Globals } from '@aussieljk/forkbook/internal/types';
 
 import { DEEPLY_EQUAL, deepDiff } from './args.ts';
 

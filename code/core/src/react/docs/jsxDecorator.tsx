@@ -1,15 +1,19 @@
 import type { ReactElement, ReactNode } from 'react';
 import React, { createElement, isValidElement } from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
-import { SourceType, getDocgenSection } from 'storybook/internal/docs-tools';
-import type { PartialStoryFn, StoryContext, StoryContextForRender } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { SourceType, getDocgenSection } from '@aussieljk/forkbook/internal/docs-tools';
+import type {
+  PartialStoryFn,
+  StoryContext,
+  StoryContextForRender,
+} from '@aussieljk/forkbook/internal/types';
 
 import type { Options } from 'react-element-to-jsx-string';
 import type reactElementToJSXStringType from 'react-element-to-jsx-string';
 // @ts-expect-error (this is needed, because our bundling prefers the `browser` field, but that yields CJS)
 import reactElementToJSXStringRaw from 'react-element-to-jsx-string/dist/esm/index.js';
-import { emitTransformCode, useEffect, useRef } from 'storybook/preview-api';
+import { emitTransformCode, useEffect, useRef } from '@aussieljk/forkbook/preview-api';
 
 import type { ReactRenderer } from '../types';
 import { isForwardRef, isMemo } from './lib/componentTypes';

@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import {
   CONFIG_ERROR,
   CURRENT_STORY_WAS_SET,
@@ -26,9 +26,13 @@ import {
   STORY_UNCHANGED,
   UPDATE_GLOBALS,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import { ArgTypesRemovedFromStoryContextError } from 'storybook/internal/preview-errors';
-import type { ModuleImportFn, ProjectAnnotations, Renderer } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import { ArgTypesRemovedFromStoryContextError } from '@aussieljk/forkbook/internal/preview-errors';
+import type {
+  ModuleImportFn,
+  ProjectAnnotations,
+  Renderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -75,7 +79,7 @@ vi.mock('@storybook/global', async (importOriginal) => ({
   },
 }));
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 vi.mock('react-dom');
 vi.mock('./WebView');
 
@@ -581,7 +585,7 @@ describe('PreviewWeb', () => {
         expect(vi.mocked(preview.view.showErrorDisplay).mock.calls[0][0]).toMatchInlineSnapshot(`
           [SB_PREVIEW_API_0004 (MissingRenderToCanvasError): Expected your framework's preset to export a \`renderToCanvas\` field.
 
-          Perhaps it needs to be upgraded for Storybook 7.0?
+          Perhaps it needs to be upgraded for Forkbook 7.0?
 
           More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
           ]

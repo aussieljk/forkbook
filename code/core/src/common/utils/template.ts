@@ -12,7 +12,7 @@ export function getPreviewBodyTemplate(
   interpolations?: Record<string, string>
 ) {
   const base = readFileSync(
-    join(resolvePackageDir('storybook'), 'assets/server/base-preview-body.html'),
+    join(resolvePackageDir('@aussieljk/forkbook'), 'assets/server/base-preview-body.html'),
     'utf8'
   );
 
@@ -31,7 +31,7 @@ export function getPreviewHeadTemplate(
   interpolations?: Record<string, string>
 ) {
   const base = readFileSync(
-    join(resolvePackageDir('storybook'), 'assets/server/base-preview-head.html'),
+    join(resolvePackageDir('@aussieljk/forkbook'), 'assets/server/base-preview-head.html'),
     'utf8'
   );
   const headHtmlPath = resolve(configDirPath, 'preview-head.html');

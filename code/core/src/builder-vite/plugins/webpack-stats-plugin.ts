@@ -1,7 +1,7 @@
 // This plugin is a direct port of https://github.com/IanVS/vite-plugin-turbosnap
 import { relative } from 'node:path';
 
-import type { BuilderStats } from 'storybook/internal/types';
+import type { BuilderStats } from '@aussieljk/forkbook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
@@ -45,7 +45,7 @@ function isUserCode(moduleName: string) {
     return false;
   }
 
-  // keep Storybook's virtual files because they import the story files, so they are essential to the module graph
+  // keep Forkbook's virtual files because they import the story files, so they are essential to the module graph
   if (Object.values(SB_VIRTUAL_FILES).includes(getOriginalVirtualModuleId(moduleName))) {
     return true;
   }

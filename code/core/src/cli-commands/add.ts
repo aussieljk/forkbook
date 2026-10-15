@@ -6,10 +6,10 @@ import {
   getStorybookInfo,
   setupAddonInConfig,
   isCorePackage,
-} from 'storybook/internal/common';
-import { readConfig } from 'storybook/internal/csf-tools';
-import { logger as nodeLogger, prompt } from 'storybook/internal/node-logger';
-import type { StorybookConfigRaw } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { readConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger as nodeLogger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import SemVer from 'semver';
 import { dedent } from 'ts-dedent';
@@ -44,7 +44,7 @@ export interface PostinstallOptions {
  * @example
  *
  * ```ts
- * getVersionSpecifier('storybook/addon-docs@7.0.1') => ['storybook/addon-docs', '7.0.1']
+ * getVersionSpecifier('@aussieljk/forkbook/addon-docs@7.0.1') => ['@aussieljk/forkbook/addon-docs', '7.0.1']
  * ```
  *
  * @param addon - The input string
@@ -80,12 +80,12 @@ type CLIOptions = {
  * @example
  *
  * ```sh
- * sb add "storybook/addon-docs"
- * sb add "storybook/addon-vitest@9.0.1"
+ * sb add "@aussieljk/forkbook/addon-docs"
+ * sb add "@aussieljk/forkbook/addon-vitest@9.0.1"
  * ```
  *
- * If there is no version specifier and it's a Storybook addon, it will try to use the version
- * specifier matching your current Storybook install version.
+ * If there is no version specifier and it's a Forkbook addon, it will try to use the version
+ * specifier matching your current Forkbook install version.
  */
 export async function add(
   addon: string,
@@ -109,12 +109,12 @@ export async function add(
 
   if (typeof configDir === 'undefined') {
     throw new Error(dedent`
-      Unable to find storybook config directory. Please specify your Storybook config directory with the --config-dir flag.
+      Unable to find storybook config directory. Please specify your Forkbook config directory with the --config-dir flag.
     `);
   }
 
   if (!mainConfigPath) {
-    logger.error('Unable to find Storybook main.js config');
+    logger.error('Unable to find Forkbook main.js config');
     return;
   }
 
@@ -122,7 +122,7 @@ export async function add(
   if (checkInstalled(addonName, mainConfig)) {
     shouldAddToMain = false;
     if (!yes) {
-      logger.log(`The Storybook addon "${addonName}" is already present in ${mainConfigPath}.`);
+      logger.log(`The Forkbook addon "${addonName}" is already present in ${mainConfigPath}.`);
       const shouldForceInstall = await prompt.confirm({
         message: `Do you wish to install it again?`,
       });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Bar, Button, Form, Modal } from 'storybook/internal/components';
+import { Bar, Button, Form, Modal } from '@aussieljk/forkbook/internal/components';
 
 import { AddIcon, CheckIcon, UndoIcon } from '@storybook/icons';
 

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { ResetWrapper } from 'storybook/internal/components';
+import { ResetWrapper } from '@aussieljk/forkbook/internal/components';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, screen, within } from 'storybook/test';
+import { expect, screen, within } from '@aussieljk/forkbook/test';
 
 import { ArgRow } from './ArgRow';
 import { TableWrapper } from './ArgsTable';

@@ -1,5 +1,5 @@
-import { JsPackageManagerFactory, PackageManagerName } from 'storybook/internal/common';
-import { SupportedRenderer } from 'storybook/internal/types';
+import { JsPackageManagerFactory, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,12 +9,12 @@ import { DEFAULT_PROMPT_NAME, getSetupMarkdownOutput, PROMPT_NAMES } from './ind
 const projectInfo: ProjectInfo = {
   storybookVersion: '10.5.0',
   majorVersion: 10,
-  framework: 'storybook/react-vite',
-  rendererPackage: 'storybook/react',
+  framework: '@aussieljk/forkbook/react-vite',
+  rendererPackage: '@aussieljk/forkbook/react',
   renderer: SupportedRenderer.REACT,
-  builderPackage: 'storybook/builder-vite',
+  builderPackage: '@aussieljk/forkbook/builder-vite',
   addons: [],
-  configDir: '.storybook',
+  configDir: '.forkbook',
   storiesPaths: [],
   language: 'ts',
   packageManager: JsPackageManagerFactory.getPackageManager({ force: PackageManagerName.NPM }),
@@ -26,7 +26,7 @@ const projectInfo: ProjectInfo = {
 afterEach(() => vi.unstubAllEnvs());
 
 describe.each(['ts', 'js'] as const)('setup instructions in %s projects', (language) => {
-  it.each(['storybook/react-vite', 'storybook/nextjs-vite'])(
+  it.each(['@aussieljk/forkbook/react-vite', '@aussieljk/forkbook/nextjs-vite'])(
     'preserves React examples for %s',
     async (framework) => {
       for (const name of [
@@ -111,15 +111,15 @@ it('has the agent add the Vitest addon only when the project lacks it', async ()
   const without = await getSetupMarkdownOutput(projectInfo);
   const withAddon = await getSetupMarkdownOutput({
     ...projectInfo,
-    addons: ['storybook/addon-vitest'],
+    addons: ['@aussieljk/forkbook/addon-vitest'],
   });
 
-  expect(without.markdown).toContain('npx storybook add storybook/addon-vitest --yes');
-  expect(without.markdown).not.toContain('storybook build');
-  expect(withAddon.markdown).not.toContain('storybook add storybook/addon-vitest');
+  expect(without.markdown).toContain('npx forkbook add @aussieljk/forkbook/addon-vitest --yes');
+  expect(without.markdown).not.toContain('forkbook build');
+  expect(withAddon.markdown).not.toContain('forkbook add @aussieljk/forkbook/addon-vitest');
 });
 
-it('only lets the agent delete the examples that storybook init generated', async () => {
+it('only lets the agent delete the examples that forkbook init generated', async () => {
   vi.stubEnv('EVAL_SETUP_PROMPT', '');
   const { markdown } = await getSetupMarkdownOutput(projectInfo);
 

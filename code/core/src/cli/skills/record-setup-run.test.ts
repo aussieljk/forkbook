@@ -1,20 +1,20 @@
 import { resolve } from 'node:path';
 
-import { cache, PackageManagerName } from 'storybook/internal/common';
-import { telemetry } from 'storybook/internal/telemetry';
+import { cache, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import type { ProjectInfo } from './project-info.ts';
 import { recordSetupRun } from './record-setup-run.ts';
 
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
 const projectInfo = {
-  framework: 'storybook/react-vite',
-  rendererPackage: 'storybook/react',
-  builderPackage: 'storybook/builder-vite',
-  configDir: '.storybook',
+  framework: '@aussieljk/forkbook/react-vite',
+  rendererPackage: '@aussieljk/forkbook/react',
+  builderPackage: '@aussieljk/forkbook/builder-vite',
+  configDir: '.forkbook',
   language: 'ts',
   packageManager: { type: PackageManagerName.NPM },
 } as ProjectInfo;
@@ -35,21 +35,21 @@ it('persists a project-scoped flag and reports the setup session under the same 
   expect(cache.set).toHaveBeenCalledWith('ai-setup-ran', {
     timestamp: expect.any(Number),
     runId: expect.any(String),
-    configDir: resolve('.storybook'),
+    configDir: resolve('.forkbook'),
   });
   expect(telemetry).toHaveBeenCalledWith(
     'ai-setup',
     {
       cliOptions: { packageManager: 'npm', prompt: 'optimized-tests' },
       project: {
-        framework: 'storybook/react-vite',
-        renderer: 'storybook/react',
-        builder: 'storybook/builder-vite',
+        framework: '@aussieljk/forkbook/react-vite',
+        renderer: '@aussieljk/forkbook/react',
+        builder: '@aussieljk/forkbook/builder-vite',
         language: 'ts',
       },
       runId: (flag as { runId: string }).runId,
     },
-    { configDir: resolve('.storybook') }
+    { configDir: resolve('.forkbook') }
   );
 });
 

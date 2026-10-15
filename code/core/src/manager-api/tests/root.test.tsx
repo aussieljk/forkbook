@@ -4,9 +4,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { API_PreparedStoryIndex } from 'storybook/internal/types';
+import type { API_PreparedStoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import { Channel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 
 import type { API, Combo, State } from '../root.tsx';
 import { Provider as ManagerProvider } from '../root.tsx';

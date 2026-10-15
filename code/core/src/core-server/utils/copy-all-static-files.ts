@@ -1,7 +1,7 @@
 import { cp } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import picocolors from 'picocolors';
 

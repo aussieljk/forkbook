@@ -1,6 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel, clearChannel, getChannel, setChannel } from 'storybook/internal/channels';
+import {
+  Channel,
+  clearChannel,
+  getChannel,
+  setChannel,
+} from '@aussieljk/forkbook/internal/channels';
 
 import {
   type Task,
@@ -70,7 +75,7 @@ describe('modifyErrorMessage', () => {
 
     expect(task.result?.errors?.[0].message).toMatchInlineSnapshot(`
       "
-      [34mClick to debug the error directly in Storybook: http://localhost:6006/?path=/story/my-story&addonPanel=storybook/interactions/panel[39m
+      [34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/my-story&addonPanel=@aussieljk/forkbook/interactions/panel[39m
 
       Original error message"
     `);

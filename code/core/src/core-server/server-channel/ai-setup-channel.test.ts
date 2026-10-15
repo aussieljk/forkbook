@@ -1,17 +1,17 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ChannelTransport } from 'storybook/internal/channels';
-import { Channel } from 'storybook/internal/channels';
+import type { ChannelTransport } from '@aussieljk/forkbook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   AI_SETUP_ANALYTICS_REQUEST,
   AI_SETUP_ANALYTICS_RESPONSE,
-} from 'storybook/internal/core-events';
-import type { Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { initAIAnalyticsChannel } from './ai-setup-channel.ts';
 
-vi.mock('storybook/internal/telemetry', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/telemetry')>();
+vi.mock('@aussieljk/forkbook/internal/telemetry', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/telemetry')>();
   return {
     ...actual,
     getLastEvents: vi.fn(),
@@ -45,7 +45,7 @@ vi.mock('../utils/wait-for-idle-vitest.ts', async (importOriginal) => {
   };
 });
 
-const mockTelemetry = await import('storybook/internal/telemetry');
+const mockTelemetry = await import('@aussieljk/forkbook/internal/telemetry');
 const mockAiChecklistFlags = await import('../../shared/utils/ai-checklist-flags.ts');
 const mockRunStoryTests = await import('../utils/ghost-stories/run-story-tests.ts');
 const mockWaitForIdleVitest = await import('../utils/wait-for-idle-vitest.ts');
@@ -128,8 +128,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(false);
 
@@ -165,8 +165,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup-final-scoring': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(false);
 
@@ -202,8 +202,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup-final-scoring': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(true);
       vi.mocked(mockRunStoryTests.runStoryTests).mockResolvedValue({
@@ -265,7 +265,7 @@ describe('initAIAnalyticsChannel', () => {
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
         renderer: '@storybook/vue',
-        addons: { 'storybook/addon-vitest': {} },
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
 
       initAIAnalyticsChannel(mockChannel, {} as Options);
@@ -286,7 +286,7 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
+        renderer: '@aussieljk/forkbook/react',
         addons: {},
       } as any);
 
@@ -308,8 +308,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: 'storybook/react',
-        addons: { 'storybook/addon-vitest': {} },
+        renderer: '@aussieljk/forkbook/react',
+        addons: { '@aussieljk/forkbook/addon-vitest': {} },
       } as any);
       vi.mocked(mockWaitForIdleVitest.waitForIdleVitest).mockResolvedValue(false);
 

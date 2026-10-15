@@ -1,4 +1,4 @@
-import type { API } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import { TOOLBAR_ID } from '../constants.ts';
 import type { ToolbarShortcutConfig } from '../types.ts';

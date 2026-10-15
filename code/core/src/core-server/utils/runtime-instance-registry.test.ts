@@ -113,13 +113,13 @@ afterEach(() => {
 
 describe('getMcpMetadataFromMainConfig', () => {
   it('marks MCP as not-installed when addon-mcp is not configured', () => {
-    expect(getMcpMetadataFromMainConfig({ addons: ['storybook/addon-docs'] })).toEqual({
+    expect(getMcpMetadataFromMainConfig({ addons: ['@aussieljk/forkbook/addon-docs'] })).toEqual({
       status: 'not-installed',
     });
   });
 
   it('uses the default endpoint when addon-mcp is configured as a string', () => {
-    expect(getMcpMetadataFromMainConfig({ addons: ['storybook/addon-mcp'] })).toEqual({
+    expect(getMcpMetadataFromMainConfig({ addons: ['@aussieljk/forkbook/addon-mcp'] })).toEqual({
       status: 'ready',
       endpoint: '/mcp',
     });
@@ -128,7 +128,7 @@ describe('getMcpMetadataFromMainConfig', () => {
   it('uses endpoint from addon-mcp options', () => {
     expect(
       getMcpMetadataFromMainConfig({
-        addons: [{ name: 'storybook/addon-mcp', options: { endpoint: '/custom-mcp' } }],
+        addons: [{ name: '@aussieljk/forkbook/addon-mcp', options: { endpoint: '/custom-mcp' } }],
       })
     ).toEqual({
       status: 'ready',
@@ -187,7 +187,7 @@ describe('createRuntimeInstanceRecord', () => {
     expect(record.cwd).toBe(resolve('/elsewhere'));
   });
 
-  it('preserves a Storybook deployment subpath but drops UI query parameters', () => {
+  it('preserves a Forkbook deployment subpath but drops UI query parameters', () => {
     const record = createRuntimeInstanceRecord({
       ...baseOptions,
       address: 'http://localhost:6006/nested/?path=/docs/button--primary',
@@ -200,14 +200,14 @@ describe('createRuntimeInstanceRecord', () => {
     const record = createRuntimeInstanceRecord({
       ...baseOptions,
       cwd: '/repo',
-      configDir: 'packages/ui/.storybook',
+      configDir: 'packages/ui/.forkbook',
     });
 
-    expect(record.configDir).toBe(resolve('/repo/packages/ui/.storybook'));
+    expect(record.configDir).toBe(resolve('/repo/packages/ui/.forkbook'));
   });
 
   it('keeps an absolute configDir as-is', () => {
-    const configDir = join(tmpdir(), 'repo', 'packages', 'ui', '.storybook');
+    const configDir = join(tmpdir(), 'repo', 'packages', 'ui', '.forkbook');
     const record = createRuntimeInstanceRecord({ ...baseOptions, cwd: '/elsewhere', configDir });
 
     expect(record.configDir).toBe(resolve(configDir));
@@ -247,7 +247,7 @@ describe('createRuntimeInstanceRecord', () => {
     expect(record.agent).toBe('codex');
   });
 
-  it('stores only the Storybook origin in url and excludes initial path query params', () => {
+  it('stores only the Forkbook origin in url and excludes initial path query params', () => {
     const record = createRuntimeInstanceRecord({
       ...baseOptions,
       address: 'https://localhost:8008/?path=/story/example--primary',

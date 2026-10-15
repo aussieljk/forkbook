@@ -1,6 +1,6 @@
 // Follows the references a story hides its config behind: a spread of a constant, of a sibling
 // story, or of something another module owns, applying every write in the order it runs.
-import { generate, type NodePath, types as t } from 'storybook/internal/babel';
+import { generate, type NodePath, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { importedName, isTypeSpecifier } from './imports.ts';
 import {

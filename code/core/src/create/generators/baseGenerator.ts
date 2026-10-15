@@ -6,15 +6,16 @@ import {
   configureEslintPlugin,
   copyTemplateFiles,
   extractEslintInfo,
-} from 'storybook/internal/cli';
+} from '@aussieljk/forkbook/internal/cli';
 import {
   type JsPackageManager,
   frameworkPackages,
   getPackageDetails,
   isCI,
-} from 'storybook/internal/common';
-import { prompt } from 'storybook/internal/node-logger';
-import { SupportedFramework, SupportedLanguage } from 'storybook/internal/types';
+  isCorePackage,
+} from '@aussieljk/forkbook/internal/common';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { SupportedFramework, SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import invariant from 'tiny-invariant';
 import { dedent } from 'ts-dedent';
@@ -33,7 +34,7 @@ const defaultOptions = {
   extraMain: undefined,
   extensions: undefined,
   componentsDestinationPath: undefined,
-  storybookConfigFolder: '.storybook',
+  storybookConfigFolder: '.forkbook',
   installFrameworkPackages: true,
 } satisfies FrameworkOptions;
 
@@ -53,7 +54,7 @@ const getPackageByValue = (
   throw new Error(
     dedent`
       Could not find ${type} package for ${value}.
-      Make sure this package exists, and if it does, please file an issue as this might be a bug in Storybook.
+      Make sure this package exists, and if it does, please file an issue as this might be a bug in Forkbook.
     `
   );
 };
@@ -125,7 +126,7 @@ export async function baseGenerator(
 
   const taskLog = prompt.taskLog({
     id: 'base-generator',
-    title: 'Generating Storybook configuration',
+    title: 'Generating Forkbook configuration',
   });
 
   const { frameworkPackagePath, frameworkPackage } = getFrameworkDetails({
@@ -171,11 +172,11 @@ export async function baseGenerator(
 
   // The framework and the core addons ship inside the storybook package.
   const allPackages = [
-    'storybook',
+    '@aussieljk/forkbook',
     ...(installFrameworkPackages ? [frameworkPackage] : []),
     ...addonPackages,
     ...(extraPackagesToInstall || []),
-  ].filter((pkg) => pkg && (pkg === 'storybook' || !isCorePackage(pkg)));
+  ].filter((pkg) => pkg && (pkg === '@aussieljk/forkbook' || !isCorePackage(pkg)));
 
   const packagesToInstall = [...new Set(allPackages)].filter(
     (packageToInstall) =>
@@ -272,7 +273,7 @@ export async function baseGenerator(
   });
 
   if (addScripts) {
-    taskLog.message(`- Adding Storybook command to package.json`);
+    taskLog.message(`- Adding Forkbook command to package.json`);
     packageManager.addStorybookCommandInScripts({
       port: 6006,
     });
@@ -289,12 +290,15 @@ export async function baseGenerator(
       packageManager: packageManager as any,
       language,
       destination: componentsDestinationPath,
-      commonAssetsDir: join(resolvePackageDir('storybook'), 'assets/create/rendererAssets/common'),
+      commonAssetsDir: join(
+        resolvePackageDir('@aussieljk/forkbook'),
+        'assets/create/rendererAssets/common'
+      ),
       features,
     });
   }
 
-  taskLog.success('Storybook configuration generated', { showLog: true });
+  taskLog.success('Forkbook configuration generated', { showLog: true });
 
   return {
     configDir: storybookConfigFolder,

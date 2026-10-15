@@ -1,7 +1,7 @@
 import type { CSSProperties, ComponentProps } from 'react';
 import React, { forwardRef, useContext } from 'react';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { CrossIcon } from '@storybook/icons';
 

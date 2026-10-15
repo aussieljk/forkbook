@@ -33,7 +33,7 @@ afterEach(() => {
 });
 
 describe('server.getPreviewHeadHtml', () => {
-  it('return an empty string when .storybook/preview-head.html does NOT exist', () => {
+  it('return an empty string when .forkbook/preview-head.html does NOT exist', () => {
     vol.fromNestedJSON({
       [`${BASE_CORE_PKG_DIR}/assets/server/base-preview-head.html`]: BASE_HTML_CONTENTS,
       [CONFIG_DIR]: {},
@@ -42,7 +42,7 @@ describe('server.getPreviewHeadHtml', () => {
     expect(getPreviewHeadTemplate(CONFIG_DIR)).toEqual(BASE_HTML_CONTENTS);
   });
 
-  it('return the contents of the file when .storybook/preview-head.html exists', () => {
+  it('return the contents of the file when .forkbook/preview-head.html exists', () => {
     vol.fromNestedJSON({
       [`${BASE_CORE_PKG_DIR}/assets/server/base-preview-head.html`]: BASE_HTML_CONTENTS,
       [CONFIG_DIR]: {
@@ -55,7 +55,7 @@ describe('server.getPreviewHeadHtml', () => {
 });
 
 describe('server.getPreviewBodyHtml', () => {
-  it('return an empty string when .storybook/preview-body.html does NOT exist', () => {
+  it('return an empty string when .forkbook/preview-body.html does NOT exist', () => {
     vol.fromNestedJSON({
       [`${BASE_CORE_PKG_DIR}/assets/server/base-preview-body.html`]: BASE_BODY_HTML_CONTENTS,
       [CONFIG_DIR]: {},
@@ -64,7 +64,7 @@ describe('server.getPreviewBodyHtml', () => {
     expect(getPreviewBodyTemplate(CONFIG_DIR)).toEqual(BASE_BODY_HTML_CONTENTS);
   });
 
-  it('return the contents of the file when .storybook/preview-body.html exists', () => {
+  it('return the contents of the file when .forkbook/preview-body.html exists', () => {
     vol.fromNestedJSON({
       [`${BASE_CORE_PKG_DIR}/assets/server/base-preview-body.html`]: BASE_BODY_HTML_CONTENTS,
       [CONFIG_DIR]: {

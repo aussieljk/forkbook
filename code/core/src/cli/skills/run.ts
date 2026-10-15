@@ -14,10 +14,10 @@ import type { ProjectInfo, getProjectInfo } from './project-info.ts';
 import { getSetupSupportError } from './setup-support.ts';
 
 export const SKILLS_OPTION_SPECS = [
-  { flags: '--cwd <path>', description: 'Project directory of the target Storybook' },
+  { flags: '--cwd <path>', description: 'Project directory of the target Forkbook' },
   {
     flags: '-c, --config-dir <dir-name>',
-    description: 'Storybook config directory of the target Storybook',
+    description: 'Forkbook config directory of the target Forkbook',
   },
   { flags: '--all', description: 'Print every skill in full' },
   { flags: '-h, --help', description: 'Show this usage and every skill' },
@@ -45,7 +45,7 @@ export type SetupRun = { projectInfo: ProjectInfo; prompt: string };
 export type SkillsRunDeps = {
   /**
    * `experimental_loadStorybook`, injected so this module stays testable without loading a real
-   * Storybook configuration. Typed to the `Options` surface `resolveSkillInputs` consumes, so no
+   * Forkbook configuration. Typed to the `Options` surface `resolveSkillInputs` consumes, so no
    * cast is needed at either call site.
    */
   loadStorybook: (args: { configDir: string }) => Promise<Options>;
@@ -89,7 +89,7 @@ export function resolveSkillsIntent({
   if (rest.length > 0) {
     return {
       kind: 'error',
-      message: `Unexpected arguments: ${rest.map((token) => `"${token}"`).join(' ')}. Run \`npx storybook skills --help\` for usage.`,
+      message: `Unexpected arguments: ${rest.map((token) => `"${token}"`).join(' ')}. Run \`npx forkbook skills --help\` for usage.`,
     };
   }
   return { kind: 'get', id };
@@ -181,7 +181,7 @@ async function loadInputs(configDir: string, deps: SkillsRunDeps): Promise<Skill
     // agent piping this output should not see a raw Node stack trace for an everyday "wrong
     // directory" mistake.
     throw new SkillsError(
-      `Could not load the Storybook configuration for this project: ${
+      `Could not load the Forkbook configuration for this project: ${
         error instanceof Error ? error.message : String(error)
       }`
     );
@@ -195,9 +195,9 @@ function table(rows: [string, string][]): string[] {
 
 function renderCatalogHelp(): string {
   return [
-    'Usage: npx storybook skills [options] [id]',
+    'Usage: npx forkbook skills [options] [id]',
     '',
-    'Agent skills served by this Storybook.',
+    'Agent skills served by this Forkbook.',
     '',
     'Options:',
     ...table(SKILLS_OPTION_SPECS.map((spec) => [spec.flags, spec.description])),
@@ -205,7 +205,7 @@ function renderCatalogHelp(): string {
     'Skills:',
     ...table(SKILL_IDS.map((id) => [id, SKILLS[id].blurb])),
     '',
-    'Print a skill with `npx storybook skills <id>`, or every skill with `npx storybook skills --all`.',
+    'Print a skill with `npx forkbook skills <id>`, or every skill with `npx forkbook skills --all`.',
   ].join('\n');
 }
 

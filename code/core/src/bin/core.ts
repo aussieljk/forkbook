@@ -3,9 +3,9 @@ import {
   getEnvConfig,
   optionalEnvToBoolean,
   parseList,
-} from 'storybook/internal/common';
-import { logTracker, logger } from 'storybook/internal/node-logger';
-import { addToGlobalContext } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { logTracker, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { addToGlobalContext } from '@aussieljk/forkbook/internal/telemetry';
 
 import { Option, program } from 'commander';
 import leven from 'leven';
@@ -24,14 +24,14 @@ addToGlobalContext('cliVersion', version);
 process.env.STORYBOOK = 'true';
 
 /**
- * Core CLI for Storybook.
+ * Core CLI for Forkbook.
  *
- * This module provides the core CLI for Storybook, handling the following commands:
+ * This module provides the core CLI for Forkbook, handling the following commands:
  *
- * - `dev`: Start the Storybook development server
- * - `build`: Build the Storybook static files
- * - `index`: Generate the Storybook index file
- * - `tools`: Agent tools derived from the target Storybook configuration's registered toolsets
+ * - `dev`: Start the Forkbook development server
+ * - `build`: Build the Forkbook static files
+ * - `index`: Generate the Forkbook index file
+ * - `tools`: Agent tools derived from the target Forkbook configuration's registered toolsets
  *
  * The dispatch CLI at ./dispatcher.ts routes commands to this core CLI.
  */
@@ -41,7 +41,7 @@ const handleCommandFailure = async (logFilePath: string | boolean): Promise<neve
     const logFile = await logTracker.writeToFile(logFilePath);
     logger.log(`Debug logs are written to: ${logFile}`);
   } catch {}
-  logger.outro('Storybook exited with an error');
+  logger.outro('Forkbook exited with an error');
   process.exit(1);
 };
 
@@ -51,7 +51,7 @@ const command = (name: string) =>
     .option(
       '--disable-telemetry',
       'Disable sending telemetry data',
-      optionalEnvToBoolean(process.env.STORYBOOK_DISABLE_TELEMETRY)
+      optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY)
     )
     .option('--debug', 'Get more logs in debug mode', false)
     .option('--enable-crash-reports', 'Enable sending crash reports to telemetry data')
@@ -93,12 +93,12 @@ const command = (name: string) =>
     });
 
 command('dev')
-  .option('-p, --port <number>', 'Port to run Storybook')
-  .option('-h, --host <string>', 'Host to run Storybook')
-  .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
+  .option('-p, --port <number>', 'Port to run Forkbook')
+  .option('-h, --host <string>', 'Host to run Forkbook')
+  .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option(
     '--https',
-    'Serve Storybook over HTTPS. Note: You must provide your own certificate information.'
+    'Serve Forkbook over HTTPS. Note: You must provide your own certificate information.'
   )
   .option(
     '--ssl-ca <ca>',
@@ -109,7 +109,7 @@ command('dev')
   .option('--ssl-key <key>', 'Provide an SSL key. (Required with --https)')
   .option('--smoke-test', 'Exit after successful start')
   .option('--ci', "CI mode (skip interactive prompts, don't open browser)")
-  .option('--open', 'Open Storybook automatically in the browser', false)
+  .option('--open', 'Open Forkbook automatically in the browser', false)
   .option('--quiet', 'Suppress verbose build output')
   .option('--no-version-updates', 'Suppress update check', true)
   .option('--debug-webpack', 'Display final webpack configurations for debugging purposes')
@@ -118,11 +118,11 @@ command('dev')
   .option('--exact-port', 'Exit early if the desired port is not available')
   .option(
     '--initial-path [path]',
-    'URL path to be appended when visiting Storybook for the first time'
+    'URL path to be appended when visiting Forkbook for the first time'
   )
   .option('--preview-only', 'Use the preview without the manager UI')
   .action(async (options) => {
-    const { default: packageJson } = await import('storybook/package.json', {
+    const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
       with: { type: 'json' },
     });
 
@@ -143,7 +143,7 @@ command('dev')
 
 command('build')
   .option('-o, --output-dir <dir-name>', 'Directory where to store built files')
-  .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
+  .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option('--quiet', 'Suppress verbose build output')
   .option('--debug-webpack', 'Display final webpack configurations for debugging purposes')
   .option('--stats-json [directory]', 'Write stats JSON to disk')
@@ -154,7 +154,7 @@ command('build')
     const { env } = process;
     env.NODE_ENV = env.NODE_ENV || 'production';
 
-    const { default: packageJson } = await import('storybook/package.json', {
+    const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
       with: { type: 'json' },
     });
 
@@ -173,22 +173,22 @@ command('build')
       packageJson,
       test: !!options.test || optionalEnvToBoolean(process.env.SB_TESTBUILD),
     }).catch(() => {
-      logger.outro('Storybook exited with an error');
+      logger.outro('Forkbook exited with an error');
       process.exit(1);
     });
 
-    logger.outro('Storybook build completed successfully');
+    logger.outro('Forkbook build completed successfully');
   });
 
 command('index')
   .option('-o, --output-file <file-name>', 'JSON file to output index')
-  .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
+  .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option('--quiet', 'Suppress verbose build output')
   .action(async (options) => {
     const { env } = process;
     env.NODE_ENV = env.NODE_ENV || 'production';
 
-    const { default: packageJson } = await import('storybook/package.json', {
+    const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
       with: { type: 'json' },
     });
 
@@ -218,17 +218,17 @@ const handleCliCommandFailure =
     return handleCommandFailure(logFilePath ?? false);
   };
 
-// `storybook tools <toolset> <tool>`: runs the toolsets registered by the target Storybook
+// `forkbook tools <toolset> <tool>`: runs the toolsets registered by the target Forkbook
 // configuration in this process, disconnected from any dev server (storybookjs/storybook#35716).
 const toolsCommand = command('tools').description(
-  'Run the agent tools provided by the target Storybook configuration'
+  'Run the agent tools provided by the target Forkbook configuration'
 );
 registerToolsPassthrough(program, toolsCommand, handleCliCommandFailure);
 
-// `storybook skills`: agent-facing instruction documents served by the target Storybook
+// `forkbook skills`: agent-facing instruction documents served by the target Forkbook
 // configuration (storybookjs/storybook#35526, Milestone 6).
 const skillsCommand = command('skills').description(
-  'Agent skills served by the target Storybook configuration'
+  'Agent skills served by the target Forkbook configuration'
 );
 registerSkillsCommand(program, skillsCommand, handleCliCommandFailure);
 

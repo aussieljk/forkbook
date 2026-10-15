@@ -5,9 +5,9 @@ import type {
   Addon_BaseType,
   Addon_WrapperType,
   StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { API, LeafEntry, State } from 'storybook/manager-api';
+import type { API, LeafEntry, State } from '@aussieljk/forkbook/manager-api';
 
 export interface PreviewProps {
   api: API;

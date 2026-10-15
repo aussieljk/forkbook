@@ -9,7 +9,7 @@
  * Builder-vite is the first consumer (see `code/builders/builder-vite/src/change-detection-adapter/`).
  */
 
-import type { ModuleResolveConfig } from 'storybook/internal/types';
+import type { ModuleResolveConfig } from '@aussieljk/forkbook/internal/types';
 
 export type { ModuleResolveConfig };
 

@@ -75,8 +75,8 @@ describe('vitePluginNextSwc env detection', () => {
     );
   };
 
-  it('treats Storybook-like Vite config (no `test` field) as browser, not server', async () => {
-    // In Storybook, VITEST is not set; in our unit test runner it is, so we explicitly simulate Storybook.
+  it('treats Forkbook-like Vite config (no `test` field) as browser, not server', async () => {
+    // In Forkbook, VITEST is not set; in our unit test runner it is, so we explicitly simulate Forkbook.
     process.env.VITEST = 'false';
     vi.resetModules();
     await setupMocks();

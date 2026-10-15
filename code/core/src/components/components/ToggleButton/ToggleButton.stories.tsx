@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React, { useState } from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { ToggleButton } from './ToggleButton.tsx';
 

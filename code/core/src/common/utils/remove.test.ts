@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { fs, vol } from 'memfs';
 import { dedent } from 'ts-dedent';
@@ -15,8 +15,8 @@ import { removeAddon } from './remove.ts';
 vi.mock('node:fs', { spy: true });
 vi.mock('node:fs/promises', { spy: true });
 
-const CONFIG_DIR = resolve('/project/.storybook');
-const MAIN = resolve('/project/.storybook/main.ts');
+const CONFIG_DIR = resolve('/project/.forkbook');
+const MAIN = resolve('/project/.forkbook/main.ts');
 const ADDON = '@storybook/addon-svelte-csf';
 
 const mainConfigFile = (addons: string) => dedent`
@@ -43,12 +43,12 @@ describe('removeAddon', () => {
   });
 
   it('removes the addon from the dependencies and from addons', async () => {
-    vol.fromJSON({ [MAIN]: mainConfigFile(`'storybook/addon-docs', '${ADDON}'`) });
+    vol.fromJSON({ [MAIN]: mainConfigFile(`'@aussieljk/forkbook/addon-docs', '${ADDON}'`) });
 
     await remove();
 
     expect(packageManager.removeDependencies).toHaveBeenCalledWith([ADDON]);
-    expect(fs.readFileSync(MAIN, 'utf8')).toContain("addons: ['storybook/addon-docs']");
+    expect(fs.readFileSync(MAIN, 'utf8')).toContain("addons: ['@aussieljk/forkbook/addon-docs']");
   });
 
   it.each([
@@ -57,15 +57,15 @@ describe('removeAddon', () => {
     ['the object form', `{ name: '${ADDON}', options: { legacyTemplate: true } }`],
     ['the addon twice', `'${ADDON}', '${ADDON}/preset'`],
   ])('removes an entry that names %s', async (_, entry) => {
-    vol.fromJSON({ [MAIN]: mainConfigFile(`'storybook/addon-docs', ${entry}`) });
+    vol.fromJSON({ [MAIN]: mainConfigFile(`'@aussieljk/forkbook/addon-docs', ${entry}`) });
 
     await remove();
 
-    expect(fs.readFileSync(MAIN, 'utf8')).toContain("addons: ['storybook/addon-docs']");
+    expect(fs.readFileSync(MAIN, 'utf8')).toContain("addons: ['@aussieljk/forkbook/addon-docs']");
   });
 
   it('leaves the main config unchanged when it does not list the addon', async () => {
-    const main = mainConfigFile(`'storybook/addon-docs'`);
+    const main = mainConfigFile(`'@aussieljk/forkbook/addon-docs'`);
     vol.fromJSON({ [MAIN]: main });
 
     await remove();
@@ -75,7 +75,7 @@ describe('removeAddon', () => {
 
   it('warns when it cannot read the addons entries', async () => {
     const main = dedent`
-      const shared = ['storybook/addon-docs'];
+      const shared = ['@aussieljk/forkbook/addon-docs'];
       export default { addons: [...shared, '${ADDON}'] };
     `;
     vol.fromJSON({ [MAIN]: main });

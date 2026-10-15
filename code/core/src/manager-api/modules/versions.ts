@@ -1,4 +1,8 @@
-import type { API_UnknownEntries, API_Version, API_Versions } from 'storybook/internal/types';
+import type {
+  API_UnknownEntries,
+  API_Version,
+  API_Versions,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -34,19 +38,19 @@ const normalizeRendererName = (renderer: string) => {
 
 export interface SubAPI {
   /**
-   * Returns the current version of the Storybook Manager.
+   * Returns the current version of the Forkbook Manager.
    *
-   * @returns {API_Version} The current version of the Storybook Manager.
+   * @returns {API_Version} The current version of the Forkbook Manager.
    */
   getCurrentVersion: () => API_Version;
   /**
-   * Returns the latest version of the Storybook Manager.
+   * Returns the latest version of the Forkbook Manager.
    *
-   * @returns {API_Version} The latest version of the Storybook Manager.
+   * @returns {API_Version} The latest version of the Forkbook Manager.
    */
   getLatestVersion: () => API_Version;
   /**
-   * Returns the URL of the Storybook documentation for the current version.
+   * Returns the URL of the Forkbook documentation for the current version.
    *
    * @param options - The options for the documentation URL.
    * @param options.asset - Like subpath, but links to the docs-assets directory.
@@ -54,7 +58,7 @@ export interface SubAPI {
    * @param options.versioned - Whether to include the versioned path.
    * @param options.renderer - Whether to include the renderer path.
    * @param options.ref - Tracking reference for the docs site. E.g. 'ui', 'error', 'upgrade', etc.
-   * @returns {string} The URL of the Storybook Manager documentation.
+   * @returns {string} The URL of the Forkbook Manager documentation.
    */
   getDocsUrl: (options: {
     asset?: string;
@@ -64,7 +68,7 @@ export interface SubAPI {
     ref?: string;
   }) => string;
   /**
-   * Checks if an update is available for the Storybook Manager.
+   * Checks if an update is available for the Forkbook Manager.
    *
    * @returns {boolean} True if an update is available, false otherwise.
    */
@@ -127,8 +131,8 @@ export const init: ModuleFn = ({ store }) => {
         url += asset ? cleanedSubpath : `${cleanedSubpath}/`;
       }
 
-      if (renderer && typeof global.STORYBOOK_RENDERER !== 'undefined') {
-        const rendererName = global.STORYBOOK_RENDERER as string;
+      if (renderer && typeof global.FORKBOOK_RENDERER !== 'undefined') {
+        const rendererName = global.FORKBOOK_RENDERER as string;
 
         if (rendererName) {
           url += `?renderer=${normalizeRendererName(rendererName)}`;

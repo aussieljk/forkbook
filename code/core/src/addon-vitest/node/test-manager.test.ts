@@ -1,21 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TestResult } from 'vitest/node';
 
-import { Tag, experimental_MockUniversalStore } from 'storybook/internal/core-server';
+import { Tag, experimental_MockUniversalStore } from '@aussieljk/forkbook/internal/core-server';
 import type {
   Options,
   StatusStoreByTypeId,
   StoryIndex,
   TestProviderStoreById,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import path from 'pathe';
-import type { Report } from 'storybook/preview-api';
+import type { Report } from '@aussieljk/forkbook/preview-api';
 
 import {
   STATUS_TYPE_ID_A11Y,
   STATUS_TYPE_ID_COMPONENT_TEST,
-  STORYBOOK_TEST_PROVIDE_KEY,
+  FORKBOOK_TEST_PROVIDE_KEY,
   storeOptions,
 } from '../constants.ts';
 import type { StoreEvent, StoreState } from '../types.ts';
@@ -194,7 +194,7 @@ const options: TestManagerOptions = {
   },
   onReady: vi.fn(),
   storybookOptions: {
-    configDir: '.storybook',
+    configDir: '.forkbook',
   } as Options,
   previewAnnotations: [],
 };
@@ -255,7 +255,7 @@ describe('TestManager', () => {
       },
     });
     expect(createVitest).toHaveBeenCalledTimes(1);
-    expect(vitest.provide).toHaveBeenCalledWith(STORYBOOK_TEST_PROVIDE_KEY, {
+    expect(vitest.provide).toHaveBeenCalledWith(FORKBOOK_TEST_PROVIDE_KEY, {
       coverage: false,
       a11y: false,
     });
@@ -278,7 +278,7 @@ describe('TestManager', () => {
       },
     });
 
-    expect(vitest.provide).toHaveBeenLastCalledWith(STORYBOOK_TEST_PROVIDE_KEY, {
+    expect(vitest.provide).toHaveBeenLastCalledWith(FORKBOOK_TEST_PROVIDE_KEY, {
       coverage: false,
       a11y: true,
       customFlag: 'custom-value',
@@ -326,7 +326,7 @@ describe('TestManager', () => {
 
     await testManager.vitestManager.runAffectedTestsAfterChange(tests[0].moduleId, 'change');
 
-    expect(vitest.provide).toHaveBeenCalledWith(STORYBOOK_TEST_PROVIDE_KEY, {
+    expect(vitest.provide).toHaveBeenCalledWith(FORKBOOK_TEST_PROVIDE_KEY, {
       coverage: false,
       a11y: true,
     });
@@ -455,7 +455,7 @@ describe('TestManager', () => {
       errors: [
         {
           message:
-            '\n\x1B[34mClick to debug the error directly in Storybook: http://localhost:6006/?path=/story/story--one\x1B[39m\n\nexpect(element).toBeInTheDocument()',
+            '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/story--one\x1B[39m\n\nexpect(element).toBeInTheDocument()',
           stack:
             'Error: expect(element).toBeInTheDocument()\n    at Proxy.expectWrapper (http://localhost:6006/deps/storybook_test.js?v=8c5dc1d5:13691:16)',
           stacks: [

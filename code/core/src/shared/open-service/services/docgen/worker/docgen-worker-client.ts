@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { IndexEntry } from '../../../../../types/modules/indexer.ts';
 import { importMetaResolve } from '../../../../utils/module.ts';
@@ -11,7 +11,7 @@ import type { DocgenPayload, DocgenProviderDescriptor } from '../types.ts';
 import type { DocgenWorkerRequest, DocgenWorkerResponse } from './protocol.ts';
 
 // Resolved via the export map, not a hard-coded dist path, so strict layouts like pnpm's work.
-const WORKER_SPECIFIER = 'storybook/internal/docgen-worker';
+const WORKER_SPECIFIER = '@aussieljk/forkbook/internal/docgen-worker';
 
 const DEFAULT_TASK_TIMEOUT_MS = 120_000;
 

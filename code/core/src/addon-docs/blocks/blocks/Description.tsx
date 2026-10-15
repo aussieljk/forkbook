@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useContext } from 'react';
 
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 
 import { DocsContext } from './DocsContext';
 import { Markdown } from './Markdown';

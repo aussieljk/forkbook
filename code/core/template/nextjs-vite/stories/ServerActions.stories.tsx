@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
-import { revalidatePath } from 'storybook/nextjs-vite/cache.mock';
-import { cookies } from 'storybook/nextjs-vite/headers.mock';
-import { getRouter, redirect } from 'storybook/nextjs-vite/navigation.mock';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+import { revalidatePath } from '@aussieljk/forkbook/nextjs-vite/cache.mock';
+import { cookies } from '@aussieljk/forkbook/nextjs-vite/headers.mock';
+import { getRouter, redirect } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { accessRoute, login, logout } from './ServerActions';
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { ThemeProvider, useTheme } from 'storybook/theming';
+import { ThemeProvider, useTheme } from '@aussieljk/forkbook/theming';
 
 /**
  * Portals render outside the element of the ThemeProvider, so the theme CSS variables do not reach

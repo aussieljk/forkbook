@@ -1,5 +1,5 @@
-import type { ArgTypes, PreparedStory } from 'storybook/internal/types';
-import type { Args, StoryId } from 'storybook/internal/types';
+import type { ArgTypes, PreparedStory } from '@aussieljk/forkbook/internal/types';
+import type { Args, StoryId } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 

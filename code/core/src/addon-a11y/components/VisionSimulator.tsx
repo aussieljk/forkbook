@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Select } from 'storybook/internal/components';
+import { Select } from '@aussieljk/forkbook/internal/components';
 
 import { AccessibilityIcon } from '@storybook/icons';
 
-import { useGlobals } from 'storybook/manager-api';
+import { useGlobals } from '@aussieljk/forkbook/manager-api';
 
 import { VISION_GLOBAL_KEY } from '../constants.ts';
 import { filterDefs, filters } from '../visionSimulatorFilters.ts';

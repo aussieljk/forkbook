@@ -79,7 +79,7 @@ describe('getUIBuildingInstructionsTool', () => {
   it('should include testing and a11y description when available', async () => {
     const mockOptions = {
       presets: {
-        apply: vi.fn().mockResolvedValue('storybook/react-vite'),
+        apply: vi.fn().mockResolvedValue('@aussieljk/forkbook/react-vite'),
       },
     };
 
@@ -105,7 +105,7 @@ describe('getUIBuildingInstructionsTool', () => {
   it('should exclude testing and a11y description when test toolset is disabled', async () => {
     const mockOptions = {
       presets: {
-        apply: vi.fn().mockResolvedValue('storybook/react-vite'),
+        apply: vi.fn().mockResolvedValue('@aussieljk/forkbook/react-vite'),
       },
     };
 
@@ -131,7 +131,7 @@ describe('getUIBuildingInstructionsTool', () => {
   it('should include testing but exclude a11y description when a11y is disabled', async () => {
     const mockOptions = {
       presets: {
-        apply: vi.fn().mockResolvedValue('storybook/react-vite'),
+        apply: vi.fn().mockResolvedValue('@aussieljk/forkbook/react-vite'),
       },
     };
 
@@ -159,7 +159,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn(async (presetName: string) => {
-          if (presetName === 'framework') return 'storybook/react-vite';
+          if (presetName === 'framework') return '@aussieljk/forkbook/react-vite';
           return undefined;
         }),
       },
@@ -189,8 +189,8 @@ describe('getUIBuildingInstructionsTool', () => {
     const instructions = response.result?.content[0].text as string;
 
     // Check that placeholders were replaced
-    expect(instructions).toContain('storybook/react-vite');
-    expect(instructions).toContain('storybook/react');
+    expect(instructions).toContain('@aussieljk/forkbook/react-vite');
+    expect(instructions).toContain('@aussieljk/forkbook/react');
     expect(instructions).toContain(PREVIEW_STORIES_TOOL_NAME);
     expect(instructions).toContain(GET_CHANGED_STORIES_TOOL_NAME);
 
@@ -211,7 +211,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn(async (presetName: string) => {
-          if (presetName === 'framework') return 'storybook/react-vite';
+          if (presetName === 'framework') return '@aussieljk/forkbook/react-vite';
           return undefined;
         }),
       },
@@ -232,7 +232,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn(async (presetName: string) => {
-          if (presetName === 'framework') return 'storybook/react-vite';
+          if (presetName === 'framework') return '@aussieljk/forkbook/react-vite';
           return undefined;
         }),
       },
@@ -255,7 +255,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn(async (presetName: string) => {
-          if (presetName === 'framework') return 'storybook/react-vite';
+          if (presetName === 'framework') return '@aussieljk/forkbook/react-vite';
           return undefined;
         }),
       },
@@ -301,7 +301,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn().mockResolvedValue({
-          name: 'storybook/nextjs-vite',
+          name: '@aussieljk/forkbook/nextjs-vite',
           options: {},
         }),
       },
@@ -330,16 +330,16 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const instructions = response.result?.content[0].text as string;
 
-    expect(instructions).toContain('storybook/nextjs-vite');
-    expect(instructions).toContain('storybook/react');
+    expect(instructions).toContain('@aussieljk/forkbook/nextjs-vite');
+    expect(instructions).toContain('@aussieljk/forkbook/react');
   });
 
   it('should collect telemetry when enabled', async () => {
-    const { telemetry } = await import('storybook/internal/telemetry');
+    const { telemetry } = await import('@aussieljk/forkbook/internal/telemetry');
 
     const mockOptions = {
       presets: {
-        apply: vi.fn().mockResolvedValue('storybook/react-vite'),
+        apply: vi.fn().mockResolvedValue('@aussieljk/forkbook/react-vite'),
       },
     };
 
@@ -410,7 +410,7 @@ describe('getUIBuildingInstructionsTool', () => {
     const mockOptions = {
       presets: {
         apply: vi.fn(async (presetName: string) =>
-          presetName === 'framework' ? 'storybook/react-vite' : undefined
+          presetName === 'framework' ? '@aussieljk/forkbook/react-vite' : undefined
         ),
       },
     } as any;

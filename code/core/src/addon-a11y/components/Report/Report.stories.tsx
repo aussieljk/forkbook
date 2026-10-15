@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { fn } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { results } from '../../results.mock.ts';
 import { RuleType } from '../../types.ts';
 import { Report } from './Report.tsx';

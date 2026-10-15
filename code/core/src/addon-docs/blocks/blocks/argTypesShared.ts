@@ -1,9 +1,9 @@
-import type { Args, Parameters, Renderer, StrictArgTypes } from 'storybook/internal/csf';
-import type { ArgTypesExtractor } from 'storybook/internal/docs-tools';
+import type { Args, Parameters, Renderer, StrictArgTypes } from '@aussieljk/forkbook/internal/csf';
+import type { ArgTypesExtractor } from '@aussieljk/forkbook/internal/docs-tools';
 import {
   getServiceSubcomponentArgTypes,
   mergeServiceArgTypes,
-} from 'storybook/internal/docs-tools';
+} from '@aussieljk/forkbook/internal/docs-tools';
 
 import { ArgsTableError } from '../components';
 import { useServiceDocgen } from './use-service-docgen.ts';

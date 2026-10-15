@@ -1,4 +1,4 @@
-import { sanitize } from 'storybook/internal/csf';
+import { sanitize } from '@aussieljk/forkbook/internal/csf';
 import type {
   API_ComponentEntry,
   API_DocsEntry,
@@ -19,7 +19,7 @@ import type {
   StoryId,
   StoryIndexV2,
   StoryIndexV3,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { countBy } from 'es-toolkit/array';
 import { mapValues } from 'es-toolkit/object';
@@ -142,7 +142,7 @@ export const transformStoryIndexV3toV4 = (index: StoryIndexV3): API_PreparedStor
 };
 
 /**
- * Storybook 8.0 and below did not automatically tag stories with 'dev'. Therefore Storybook 8.1 and
+ * Forkbook 8.0 and below did not automatically tag stories with 'dev'. Therefore Forkbook 8.1 and
  * above would not show composed 8.0 stories by default. This function adds the 'dev' tag to all
  * stories in the index to workaround this issue.
  */

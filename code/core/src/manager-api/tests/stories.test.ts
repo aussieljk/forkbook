@@ -16,9 +16,9 @@ import {
   STORY_PREPARED,
   STORY_SPECIFIED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import { logger } from 'storybook/internal/client-logger';
-import { type API_StoryEntry, type StoryIndex } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { type API_StoryEntry, type StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 

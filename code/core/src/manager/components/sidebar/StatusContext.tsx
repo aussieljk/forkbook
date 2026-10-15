@@ -5,9 +5,9 @@ import type {
   StatusValue,
   StatusesByStoryIdAndTypeId,
   StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { StoriesHash } from 'storybook/manager-api';
+import type { StoriesHash } from '@aussieljk/forkbook/manager-api';
 
 import type { Item } from '../../container/Sidebar.tsx';
 import { getDescendantIds } from '../../utils/tree.ts';

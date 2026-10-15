@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
 import { redirect } from 'next/navigation';
-import { userEvent, within } from 'storybook/test';
+import { userEvent, within } from '@aussieljk/forkbook/test';
 
 let state = 'Bug! Not invalidated';
 

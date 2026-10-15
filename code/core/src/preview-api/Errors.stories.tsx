@@ -60,7 +60,7 @@ export default {
   args: {
     id: 'sb-errordisplay',
   },
-  // This story cannot be properly tested in portable stories as it depends on an element that only exists in Storybook's preview HTML
+  // This story cannot be properly tested in portable stories as it depends on an element that only exists in Forkbook's preview HTML
   tags: ['!vitest'],
 };
 

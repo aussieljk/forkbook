@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 
-import { Form } from 'storybook/internal/components';
+import { Form } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 

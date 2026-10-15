@@ -1,6 +1,6 @@
-import type { StoryDocsPayload, StoryDocsProviderInput } from 'storybook/internal/types';
+import type { StoryDocsPayload, StoryDocsProviderInput } from '@aussieljk/forkbook/internal/types';
 
-import { getStoryImportPathFromEntry } from 'storybook/internal/common';
+import { getStoryImportPathFromEntry } from '@aussieljk/forkbook/internal/common';
 import path from 'pathe';
 
 import { buildStoryDocsFromResolved } from '../componentManifest/buildReactComponentDocgen.ts';

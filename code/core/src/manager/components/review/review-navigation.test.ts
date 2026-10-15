@@ -244,7 +244,7 @@ describe('buildSummaryBackHref', () => {
     expect(buildSummaryBackHref('?path=/story/foo')).toBe('?path=/story/foo');
   });
 
-  it('falls back to the Storybook root when nothing is recorded', () => {
+  it('falls back to the Forkbook root when nothing is recorded', () => {
     expect(buildSummaryBackHref(null)).toBe('/');
     expect(buildSummaryBackHref(undefined)).toBe('/');
   });

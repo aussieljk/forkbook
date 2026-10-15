@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { useTheme } from 'storybook/theming';
+import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { useMediaQuery } from '../../hooks/useMedia.tsx';
 

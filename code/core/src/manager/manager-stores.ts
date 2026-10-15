@@ -5,4 +5,4 @@ export {
   internal_fullTestProviderStore,
   experimental_getTestProviderStore,
   experimental_useTestProviderStore,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';

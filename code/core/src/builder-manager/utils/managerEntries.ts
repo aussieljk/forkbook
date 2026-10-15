@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, parse, relative, sep } from 'node:path';
 
-import { resolvePathInStorybookCache } from 'storybook/internal/common';
+import { resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';

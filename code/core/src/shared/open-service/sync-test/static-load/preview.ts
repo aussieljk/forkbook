@@ -1,4 +1,4 @@
-import { registerService } from 'storybook/preview-api';
+import { registerService } from '@aussieljk/forkbook/preview-api';
 
 import { staticLoadSyncServiceDef } from './definition.ts';
 

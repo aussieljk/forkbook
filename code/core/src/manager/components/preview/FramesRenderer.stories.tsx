@@ -1,10 +1,10 @@
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { FramesRenderer } from './FramesRenderer.tsx';
 
-// Use the `Icons` composed ref that this Storybook already references, so the active ref frame
+// Use the `Icons` composed ref that this Forkbook already references, so the active ref frame
 // renders a real story instead of a non-existent URL.
 const refId = 'icons';
 const refUrl = 'https://main--64b56e737c0aeefed9d5e675.chromatic.com';
@@ -69,7 +69,7 @@ const meta = preview.meta({
 /**
  * Regression test for #34553: when a composed-ref story is the initial selection, the local
  * preview frame must still point at the host's own iframe URL. Otherwise the local frame
- * stays stuck on the ref's Storybook (it is only set once) and host stories never render.
+ * stays stuck on the ref's Forkbook (it is only set once) and host stories never render.
  */
 export const RefStoryKeepsLocalPreviewOnHost = meta.story({
   play: async ({ canvasElement }) => {

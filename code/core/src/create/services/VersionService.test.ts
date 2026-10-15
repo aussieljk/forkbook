@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 
 import { VersionService } from './VersionService.ts';
 
-vi.mock('storybook/internal/common', async () => {
-  const actual = await vi.importActual('storybook/internal/common');
+vi.mock('@aussieljk/forkbook/internal/common', async () => {
+  const actual = await vi.importActual('@aussieljk/forkbook/internal/common');
   return {
     ...actual,
     versions: {
-      storybook: '8.0.0',
+      '@aussieljk/forkbook': '8.0.0',
     },
   };
 });
@@ -26,7 +26,7 @@ describe('VersionService', () => {
   });
 
   describe('getCurrentVersion', () => {
-    it('should return the current Storybook version', () => {
+    it('should return the current Forkbook version', () => {
       expect(versionService.getCurrentVersion()).toBe('8.0.0');
     });
   });
@@ -38,7 +38,7 @@ describe('VersionService', () => {
       const latestVersion = await versionService.getLatestVersion(mockPackageManager);
 
       expect(latestVersion).toBe('8.1.0');
-      expect(mockPackageManager.latestVersion).toHaveBeenCalledWith('storybook');
+      expect(mockPackageManager.latestVersion).toHaveBeenCalledWith('@aussieljk/forkbook');
     });
   });
 

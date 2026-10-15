@@ -1,5 +1,11 @@
-import { createFileSystemCache, resolvePathInStorybookCache } from 'storybook/internal/common';
-import type { StoryTestResult, StoryTestResultHistory } from 'storybook/internal/core-server';
+import {
+  createFileSystemCache,
+  resolvePathInStorybookCache,
+} from '@aussieljk/forkbook/internal/common';
+import type {
+  StoryTestResult,
+  StoryTestResultHistory,
+} from '@aussieljk/forkbook/internal/core-server';
 
 const CACHE_KEY = 'agent-self-healing-story-history';
 
@@ -15,7 +21,7 @@ export async function readStoryHistory(): Promise<StoryTestResultHistory> {
 /**
  * Merge the current run's results into the persisted history (keeping the most
  * recent result per storyId) and return the full set of stories ever observed.
- * The history lives only on disk in the Storybook cache — its entries (which
+ * The history lives only on disk in the Forkbook cache — its entries (which
  * include storyIds) are never sent in telemetry.
  */
 export async function mergeAndWriteStoryHistory(

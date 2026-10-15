@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import type { DocsOptions, Options, Ref, TagsOptions } from 'storybook/internal/types';
+import type { DocsOptions, Options, Ref, TagsOptions } from '@aussieljk/forkbook/internal/types';
 
 import { render } from 'ejs';
 import { join } from 'pathe';
@@ -8,7 +8,7 @@ import { join } from 'pathe';
 import { resolvePackageDir } from '../../shared/utils/module.ts';
 
 export const getTemplatePath = (template: string) => {
-  return join(resolvePackageDir('storybook'), 'assets/server', template);
+  return join(resolvePackageDir('@aussieljk/forkbook'), 'assets/server', template);
 };
 
 export const readTemplate = async (template: string) => {
@@ -56,7 +56,7 @@ export const renderHTML = async (
   );
 
   return render(templateRef, {
-    title: titleRef ? `${titleRef} - Storybook` : 'Storybook',
+    title: titleRef ? `${titleRef} - Forkbook` : 'Forkbook',
     files: { js: jsFiles, css: cssFiles },
     favicon: customHeadHasFavicon(headRef) ? '' : await favicon,
     globals: {
@@ -65,9 +65,9 @@ export const renderHTML = async (
       LOGLEVEL: JSON.stringify(await logLevel, null, 2),
       DOCS_OPTIONS: JSON.stringify(await docsOptions, null, 2),
       CONFIG_TYPE: JSON.stringify(await configType, null, 2),
-      // Opt-in via STORYBOOK_DOCGEN_STORY_PREPARED: request server docgen for the Controls panel at
+      // Opt-in via FORKBOOK_DOCGEN_STORY_PREPARED: request server docgen for the Controls panel at
       // STORY_PREPARED instead of the default STORY_RENDERED. See useStoryDocgenGateReady.
-      DOCGEN_STORY_PREPARED: JSON.stringify(process.env.STORYBOOK_DOCGEN_STORY_PREPARED === 'true'),
+      DOCGEN_STORY_PREPARED: JSON.stringify(process.env.FORKBOOK_DOCGEN_STORY_PREPARED === 'true'),
       // These two need to be double stringified because the UI expects a string
       VERSIONCHECK: JSON.stringify(JSON.stringify(versionCheck), null, 2),
       TAGS_OPTIONS: JSON.stringify(await tagsOptions, null, 2),

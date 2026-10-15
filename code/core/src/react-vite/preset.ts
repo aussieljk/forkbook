@@ -1,6 +1,6 @@
-import type { PresetProperty } from 'storybook/internal/types';
+import type { PresetProperty } from '@aussieljk/forkbook/internal/types';
 
 export const core: PresetProperty<'core'> = {
-  builder: import.meta.resolve('storybook/builder-vite'),
-  renderer: import.meta.resolve('storybook/react/preset'),
+  builder: import.meta.resolve('@aussieljk/forkbook/builder-vite'),
+  renderer: import.meta.resolve('@aussieljk/forkbook/react/preset'),
 };

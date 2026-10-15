@@ -1,4 +1,4 @@
-import type { Conditional } from 'storybook/internal/types';
+import type { Conditional } from '@aussieljk/forkbook/internal/types';
 
 // TODO ?
 export interface JsDocParam {

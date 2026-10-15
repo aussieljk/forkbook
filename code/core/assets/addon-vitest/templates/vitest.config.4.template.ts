@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { defineConfig } from 'vitest/config';
 
-import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
+import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
 
 import { playwright } from '@vitest/browser-playwright';
 
@@ -17,7 +17,7 @@ export default defineConfig({
       {
         extends: true,
         plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
+          // The plugin will run tests for the stories defined in your Forkbook config
           // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
           storybookTest({ configDir: path.join(dirname, 'CONFIG_DIR') }),
         ],

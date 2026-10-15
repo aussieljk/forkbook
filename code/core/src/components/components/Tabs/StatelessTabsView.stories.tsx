@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import { Button, EmptyTabContent } from 'storybook/internal/components';
+import { Button, EmptyTabContent } from '@aussieljk/forkbook/internal/components';
 
 import { CrossIcon, ExpandIcon } from '@storybook/icons';
 
-import { fn } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { StatelessTab } from './StatelessTab.tsx';
 import { StatelessTabList } from './StatelessTabList.tsx';
 import { StatelessTabPanel } from './StatelessTabPanel.tsx';

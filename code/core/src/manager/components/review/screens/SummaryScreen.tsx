@@ -16,7 +16,7 @@ import {
   IconButton,
   ScrollArea,
   ToggleButton,
-} from 'storybook/internal/components';
+} from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 
@@ -102,7 +102,7 @@ const formatCreatedAgo = (createdAt: number, nowMs: number): string => {
 
 export interface SummaryScreenProps {
   state: ReviewState | null;
-  /** Story id → component title + name, resolved from the Storybook index. */
+  /** Story id → component title + name, resolved from the Forkbook index. */
   storyInfo?: Record<string, StoryInfo>;
   /** Builds the (frozen) preview iframe src for a story thumbnail. */
   getStoryPreviewHref: (storyId: string) => string;
@@ -181,7 +181,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
             padding="small"
             ariaLabel="Copy prompt to refresh this review"
             ariaLabelOnCopy="Prompt copied to clipboard"
-            content="Generate a Storybook review including my latest changes using the review-create tool."
+            content="Generate a Forkbook review including my latest changes using the review-create tool."
             childrenOnCopy={
               <>
                 <CheckIcon /> Copy prompt

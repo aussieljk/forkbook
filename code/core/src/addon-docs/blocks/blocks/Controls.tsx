@@ -1,11 +1,15 @@
 import type { FC } from 'react';
 import React, { useContext, useId } from 'react';
 
-import type { Args, Globals, Renderer, StrictArgTypes } from 'storybook/internal/csf';
-import type { DocsContextProps, ModuleExports, PreparedStory } from 'storybook/internal/types';
+import type { Args, Globals, Renderer, StrictArgTypes } from '@aussieljk/forkbook/internal/csf';
+import type {
+  DocsContextProps,
+  ModuleExports,
+  PreparedStory,
+} from '@aussieljk/forkbook/internal/types';
 
-import type { PropDescriptor } from 'storybook/preview-api';
-import { filterArgTypes } from 'storybook/preview-api';
+import type { PropDescriptor } from '@aussieljk/forkbook/preview-api';
+import { filterArgTypes } from '@aussieljk/forkbook/preview-api';
 
 import type { SortType } from '../components';
 import { ArgsTable as PureArgsTable, TabbedArgsTable } from '../components';

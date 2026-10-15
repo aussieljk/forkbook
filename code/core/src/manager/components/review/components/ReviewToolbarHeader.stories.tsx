@@ -1,14 +1,14 @@
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, within } from '@aussieljk/forkbook/test';
 
-import { MemoryRouter } from 'storybook/internal/router';
+import { MemoryRouter } from '@aussieljk/forkbook/internal/router';
 import {
   ManagerContext,
   internal_fullStatusStore,
   type API,
   type State,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import { buildReviewChangesSummaryHref, buildReviewStoryHref } from '../review-navigation.ts';
 import { reviewServiceForStories as reviewService } from '../review-service-story-helpers.ts';
 import type { ReviewState } from '../review-state.ts';
@@ -203,7 +203,7 @@ export const NewStory = meta.story({
     internal_fullStatusStore.set([
       {
         storyId: 'manager-settings-checklist--default',
-        typeId: 'storybook/change-detection',
+        typeId: '@aussieljk/forkbook/change-detection',
         value: 'status-value:new',
         title: 'Change Detection',
         description: '',

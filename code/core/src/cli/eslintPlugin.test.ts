@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as find from 'empathic/find';
 import { dedent } from 'ts-dedent';
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { PackageJsonWithDepsAndDevDeps } from '../common/index.ts';
 import type { JsPackageManager } from '../common/js-package-manager/JsPackageManager.ts';
@@ -20,7 +20,7 @@ vi.mock('empathic/find', () => ({
   up: vi.fn(),
 }));
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 vi.mock(import('node:fs/promises'), async (importOriginal) => {
   const actual = await importOriginal();
@@ -85,7 +85,7 @@ describe('extractEslintInfo', () => {
     expect(result.eslintConfigFile).toBeUndefined();
   });
 
-  it('should extract ESLint info and detect ESLint config and Storybook plugin', async () => {
+  it('should extract ESLint info and detect ESLint config and Forkbook plugin', async () => {
     mockPackageManager.getAllDependencies.mockReturnValue({
       'eslint-plugin-storybook': '1.0.0',
       eslint: '7.0.0',
@@ -121,7 +121,7 @@ describe('configureEslintPlugin', () => {
       } satisfies Partial<JsPackageManager>;
 
       const mockConfigFile = dedent`{
-      "extends": ["plugin:storybook/recommended"]
+      "extends": ["plugin:@aussieljk/forkbook/recommended"]
     }`;
 
       vi.mocked(readFile).mockResolvedValue(mockConfigFile);
@@ -156,7 +156,7 @@ describe('configureEslintPlugin', () => {
         "{
           "extends": [
             "plugin:other",
-            "plugin:storybook/recommended"
+            "plugin:@aussieljk/forkbook/recommended"
           ]
         }"
       `);
@@ -202,7 +202,7 @@ describe('configureEslintPlugin', () => {
           "extends": [
             // Comment before existing item
             "plugin:other", // Inline comment for existing item
-            "plugin:storybook/recommended"
+            "plugin:@aussieljk/forkbook/recommended"
           ],
           "rules": {
             // Comment for rules object
@@ -213,7 +213,7 @@ describe('configureEslintPlugin', () => {
       `);
       // Check that the output contains the new extend AND the original comments
       expect(content).toContain('// Top-level comment');
-      expect(content).toContain('plugin:storybook/recommended');
+      expect(content).toContain('plugin:@aussieljk/forkbook/recommended');
       expect(content).toContain('// Trailing comment');
 
       // Optionally, check the full snapshot if formatting needs to be precise
@@ -224,7 +224,7 @@ describe('configureEslintPlugin', () => {
           "extends": [
             // Comment before existing item
             "plugin:other", // Inline comment for existing item
-            "plugin:storybook/recommended"
+            "plugin:@aussieljk/forkbook/recommended"
           ],
           "rules": {
             // Comment for rules object
@@ -244,7 +244,7 @@ describe('configureEslintPlugin', () => {
 
       const mockConfigFile = dedent`
         module.exports = {
-          extends: ['plugin:storybook/recommended'],
+          extends: ['plugin:@aussieljk/forkbook/recommended'],
         };
       `;
 
@@ -279,7 +279,7 @@ describe('configureEslintPlugin', () => {
       const [, content] = vi.mocked(writeFile).mock.calls[0];
       expect(content).toMatchInlineSnapshot(`
         "module.exports = {
-          extends: ["plugin:other", "plugin:storybook/recommended"],
+          extends: ["plugin:other", "plugin:@aussieljk/forkbook/recommended"],
         };"
       `);
     });
@@ -334,7 +334,7 @@ describe('configureEslintPlugin', () => {
       expect(content).not.toContain('import storybook');
     });
 
-    it('adds the config spread when CommonJS already requires the Storybook plugin', async () => {
+    it('adds the config spread when CommonJS already requires the Forkbook plugin', async () => {
       const mockPackageManager = {
         getAllDependencies: vi.fn(),
       } satisfies Partial<JsPackageManager>;

@@ -17,7 +17,7 @@ import {
 import { TOOLS_OPTION_SPECS } from './tool-tokens.ts';
 
 const LOCAL_BADGE = '[local]';
-const DEV_SERVER_BADGE = '[requires running Storybook]';
+const DEV_SERVER_BADGE = '[requires running Forkbook]';
 
 function optionLines(): string[] {
   const column = Math.max(...TOOLS_OPTION_SPECS.map((spec) => spec.flags.length)) + 2;
@@ -110,9 +110,9 @@ export function renderToolsHelpFromCatalog(catalog: ToolsetCatalog): string {
           .map((command) => `  ${command.path.padEnd(column)}${command.summary}  ${command.badge}`)
           .join('\n');
   const header = [
-    'Usage: npx storybook tools [options] [toolset] [tool] [args...]',
+    'Usage: npx forkbook tools [options] [toolset] [tool] [args...]',
     '',
-    `Storybook tools from the Storybook configuration at ${catalog.configDir}.`,
+    `Forkbook tools from the Forkbook configuration at ${catalog.configDir}.`,
     '',
     'Options:',
     ...optionLines(),
@@ -121,17 +121,17 @@ export function renderToolsHelpFromCatalog(catalog: ToolsetCatalog): string {
     commandBlock,
   ].join('\n');
   const notes = [
-    `${LOCAL_BADGE} tools run without a running Storybook.`,
-    `${DEV_SERVER_BADGE} tools need a running Storybook dev server; start it first.`,
+    `${LOCAL_BADGE} tools run without a running Forkbook.`,
+    `${DEV_SERVER_BADGE} tools need a running Forkbook dev server; start it first.`,
     'Individual `--key value` flags override entries of `--input`.',
-    'Run `npx storybook tools <toolset> <tool> --help` for the description, arguments and `--json` output of one tool.',
+    'Run `npx forkbook tools <toolset> <tool> --help` for the description, arguments and `--json` output of one tool.',
   ].join('\n');
   return [header, notes].join('\n\n');
 }
 
 export function renderToolsetHelpFromCatalog(entry: ToolsetCatalogEntry): string {
   return [
-    `Usage: npx storybook tools ${entry.id} <tool> [--key value ...]`,
+    `Usage: npx forkbook tools ${entry.id} <tool> [--key value ...]`,
     '',
     renderToolsetSection(entry),
   ].join('\n');
@@ -139,11 +139,11 @@ export function renderToolsetHelpFromCatalog(entry: ToolsetCatalogEntry): string
 
 export function renderMethodHelpFromCatalog(method: ToolsetCatalogMethod): string {
   return [
-    `Usage: npx storybook tools ${cliPath(method)} [--key value ...]`,
+    `Usage: npx forkbook tools ${cliPath(method)} [--key value ...]`,
     '',
     method.requiresDevServer
-      ? 'Execution: requires a running Storybook dev server; start it first.'
-      : 'Execution: local (no running Storybook required).',
+      ? 'Execution: requires a running Forkbook dev server; start it first.'
+      : 'Execution: local (no running Forkbook required).',
     '',
     ...methodBodyLines(method),
   ].join('\n');
@@ -165,12 +165,12 @@ export function renderToolsHelp(
   });
 }
 
-/** The focused view of one toolset (`storybook tools <toolset>`). */
+/** The focused view of one toolset (`forkbook tools <toolset>`). */
 export function renderToolsetHelp(toolset: AnyToolsetDefinition, ctx: ToolsetCtx): string {
   return renderToolsetHelpFromCatalog(toCatalogEntry(toolset, ctx));
 }
 
-/** The focused view of one tool (`storybook tools <toolset> <tool> --help`). */
+/** The focused view of one tool (`forkbook tools <toolset> <tool> --help`). */
 export function renderMethodHelp(
   toolset: AnyToolsetDefinition,
   methodKey: string,

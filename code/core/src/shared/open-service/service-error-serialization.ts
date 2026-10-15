@@ -4,7 +4,7 @@
  * A command invoked from a runtime that has no local handler runs on a peer; when it throws, the
  * thrown value has to cross the channel and be rethrown on the requester. `Error` instances are not
  * structured-cloneable in a way that survives a websocket (JSON) or postMessage transport with their
- * `name`, `stack`, `cause`, and Storybook-specific fields (`code`, `fromStorybook`, …) intact, so we
+ * `name`, `stack`, `cause`, and Forkbook-specific fields (`code`, `fromStorybook`, …) intact, so we
  * convert to and from a plain, transport-safe shape here.
  *
  * The conversion is recursive: an error's `cause` (and any nested arrays/objects, e.g. the
@@ -26,7 +26,7 @@ export interface SerializedError {
   stack?: string;
   /** The error's `cause`, itself serialized (another error, a plain object, an array, …). */
   cause?: unknown;
-  /** Extra own enumerable fields (e.g. Storybook's `code`, `fromStorybook`), serialized. */
+  /** Extra own enumerable fields (e.g. Forkbook's `code`, `fromStorybook`), serialized. */
   properties?: Record<string, unknown>;
 }
 
@@ -128,14 +128,14 @@ function fromTransportSafe(value: unknown): unknown {
 
 /**
  * Rebuilds an `Error` from a {@link SerializedError}, restoring its `name`, `stack`, `cause` chain,
- * and any extra fields (so a Storybook error arrives with `code`/`fromStorybook` intact).
+ * and any extra fields (so a Forkbook error arrives with `code`/`fromStorybook` intact).
  *
  * The result is a plain `Error`, not the original subclass — reconstructing arbitrary classes across
  * a realm boundary is neither possible nor needed; callers branch on the restored fields instead.
  */
 export function deserializeError(serialized: SerializedError): Error {
   // A generic Error is intentional: this reconstructs an arbitrary error thrown in another runtime
-  // (its original class cannot cross the realm boundary). Storybook-specific fields like `code` and
+  // (its original class cannot cross the realm boundary). Forkbook-specific fields like `code` and
   // `fromStorybook` are restored from `properties`, so callers can still branch on them.
   // eslint-disable-next-line local-rules/no-uncategorized-errors
   const error = new Error(serialized.message);

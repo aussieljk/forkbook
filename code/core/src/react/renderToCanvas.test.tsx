@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { FC } from 'react';
 import React, { Suspense, lazy, useState } from 'react';
 
-import type { RenderContext } from 'storybook/internal/types';
+import type { RenderContext } from '@aussieljk/forkbook/internal/types';
 
 import { renderToCanvas } from './renderToCanvas.tsx';
 import type { ReactRenderer } from './types.ts';

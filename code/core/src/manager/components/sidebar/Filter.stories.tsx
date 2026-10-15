@@ -1,13 +1,17 @@
 import React, { useMemo, useState } from 'react';
 
-import type { DocsIndexEntry, StoryIndex, StoryIndexEntry } from 'storybook/internal/types';
+import type {
+  DocsIndexEntry,
+  StoryIndex,
+  StoryIndexEntry,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, screen, userEvent, waitFor } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, screen, userEvent, waitFor } from '@aussieljk/forkbook/test';
 
 import { internal_fullStatusStore } from '../../manager-stores.mock.ts';
 

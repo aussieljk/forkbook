@@ -372,7 +372,7 @@ export type StepRunner<TRenderer extends Renderer = Renderer, TArgs = Args> = (
 
 export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = Args> {
   /**
-   * Wrapper components or Storybook decorators that wrap a story.
+   * Wrapper components or Forkbook decorators that wrap a story.
    *
    * Decorators defined in Meta will be applied to every story variation.
    *
@@ -391,7 +391,7 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
     (TRenderer['csf4'] extends true ? CoreTypes['parameters'] & TRenderer['parameters'] : unknown);
 
   /**
-   * Dynamic data that are provided (and possibly updated by) Storybook and its addons.
+   * Dynamic data that are provided (and possibly updated by) Forkbook and its addons.
    *
    * @see [Args](https://storybook.js.org/docs/writing-stories/args)
    */
@@ -399,7 +399,7 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
 
   /**
    * ArgTypes encode basic metadata for args, such as `name` and `description`. These get
-   * automatically filled in by Storybook Docs.
+   * automatically filled in by Forkbook Docs.
    *
    * @see [ArgTypes](https://storybook.js.org/docs/api/arg-types)
    */
@@ -460,9 +460,9 @@ export interface ProjectAnnotations<
    * (i.e. not on component or story level). When multiple hooks are specified, they are to be
    * executed sequentially (and awaited) in the following order:
    *
-   * - Addon hooks (in order of addons array in e.g. .storybook/main.js)
-   * - Annotation hooks (in order of previewAnnotations array in e.g. .storybook/main.js)
-   * - Preview hook (via e.g. .storybook/preview.js) Cleanup functions are executed sequentially in
+   * - Addon hooks (in order of addons array in e.g. .forkbook/main.js)
+   * - Annotation hooks (in order of previewAnnotations array in e.g. .forkbook/main.js)
+   * - Preview hook (via e.g. .forkbook/preview.js) Cleanup functions are executed sequentially in
    *   reverse order of initialization.
    */
   beforeAll?: BeforeAll;

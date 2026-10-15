@@ -1,24 +1,24 @@
-# Storybook Addon Measure
+# Forkbook Addon Measure
 
-Storybook addon for inspecting layouts and visualizing the box model.
+Forkbook addon for inspecting layouts and visualizing the box model.
 
 1. Press the <kbd>m</kbd> key to enable the addon:
 
 2. Hover over a DOM node
 
-3. Storybook will display the dimensions of the selected element—margin, padding, border, width and height—in pixels.
+3. Forkbook will display the dimensions of the selected element—margin, padding, border, width and height—in pixels.
 
 ![](https://user-images.githubusercontent.com/42671/119589961-dff9b380-bda1-11eb-9550-7ae28bc70bf4.gif)
 
 ## Usage
 
-This addon requires Storybook 6.3 or later. Measure is part of [essentials](https://storybook.js.org/docs/essentials) and so is installed in all new Storybooks by default. If you need to add it to your Storybook, you can run:
+This addon requires Forkbook 6.3 or later. Measure is part of [essentials](https://storybook.js.org/docs/essentials) and so is installed in all new Storybooks by default. If you need to add it to your Forkbook, you can run:
 
 ```sh
 npm i -D @storybook/addon-measure
 ```
 
-Add `"@storybook/addon-measure"` to the addons array in your `.storybook/main.js`:
+Add `"@storybook/addon-measure"` to the addons array in your `.forkbook/main.js`:
 
 ```js
 export default {

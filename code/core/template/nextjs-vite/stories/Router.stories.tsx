@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/nextjs-vite';
-import { getRouter } from 'storybook/nextjs-vite/router.mock';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+import { getRouter } from '@aussieljk/forkbook/nextjs-vite/router.mock';
 
 import Router, { useRouter } from 'next/router';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
 function Component() {
   const router = useRouter();

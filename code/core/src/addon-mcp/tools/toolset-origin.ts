@@ -1,9 +1,9 @@
 import { DEFAULT_MCP_ENDPOINT } from '../constants.ts';
 
 /**
- * Derives the Storybook root from the MCP request path.
+ * Derives the Forkbook root from the MCP request path.
  *
- * A Storybook served under a sub-path answers MCP at `<root><endpoint>`, so links into the UI have
+ * A Forkbook served under a sub-path answers MCP at `<root><endpoint>`, so links into the UI have
  * to be built from the request's own path rather than the bare origin.
  */
 function storybookRootFromRequest(
@@ -28,7 +28,7 @@ function storybookRootFromRequest(
 }
 
 /**
- * Derives the complete Storybook UI base URL for the toolset context, including any deployment
+ * Derives the complete Forkbook UI base URL for the toolset context, including any deployment
  * subpath. The trusted origin remains separate in the transport context for security checks.
  */
 export function resolveToolsetOrigin(context: {

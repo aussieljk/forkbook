@@ -55,7 +55,7 @@ describe('expanding story refs', () => {
     expect(Object.keys(manifests.componentManifest.components)).toEqual(['button', 'card']);
   });
 
-  it('fails the listing of a single Storybook, which has nothing to fall back on', async () => {
+  it('fails the listing of a single Forkbook, which has nothing to fall back on', async () => {
     const access = createProviderDocsAccess({ manifestProvider: providerWithBrokenStoryRefs() });
 
     await expect(access.list({ withStoryIds: true })).rejects.toThrow();

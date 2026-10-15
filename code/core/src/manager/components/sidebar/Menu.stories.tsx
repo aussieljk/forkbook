@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { TooltipLinkList } from 'storybook/internal/components';
+import { TooltipLinkList } from '@aussieljk/forkbook/internal/components';
 
 import { LinkIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, screen, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { useMenu } from '../../container/Menu.tsx';
 import { LayoutProvider } from '../layout/LayoutProvider.tsx';
@@ -132,7 +132,7 @@ export const Expanded: Story = {
     });
 
     await step('Check menu is open', async () => {
-      const aboutStorybookBtn = await screen.findByText(/About your Storybook/);
+      const aboutStorybookBtn = await screen.findByText(/About your Forkbook/);
       await expect(aboutStorybookBtn).toBeInTheDocument();
     });
   },
@@ -191,7 +191,7 @@ export const ExpandedWithShortcuts: Story = {
     });
     const menuButton = await waitFor(() => canvas.findByRole('switch'));
     await userEvent.click(menuButton);
-    const aboutStorybookBtn = await screen.findByText(/About your Storybook/);
+    const aboutStorybookBtn = await screen.findByText(/About your Forkbook/);
     await expect(aboutStorybookBtn).toBeInTheDocument();
     const releaseNotes = canvas.queryByText(/What's new/);
     await expect(releaseNotes).not.toBeInTheDocument();

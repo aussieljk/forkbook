@@ -1,6 +1,6 @@
-<h1>Storybook Docs FAQs</h1>
+<h1>Forkbook Docs FAQs</h1>
 
-You've read the [Storybook Docs README](../README.md). You're already familiar with both [DocsPage](./docspage.md) and [MDX](./mdx.md). You've even browsed our [Docs recipes](/./recipes.md). But Docs is a big project and you've still got questions! Maybe you'll find your answer here:
+You've read the [Forkbook Docs README](../README.md). You're already familiar with both [DocsPage](./docspage.md) and [MDX](./mdx.md). You've even browsed our [Docs recipes](/./recipes.md). But Docs is a big project and you've still got questions! Maybe you'll find your answer here:
 
 - [Does Docs support framework X?](#does-docs-support-framework-x)
 - [How does Docs interact with existing addons?](#how-does-docs-interact-with-existing-addons)
@@ -46,4 +46,4 @@ This is [Component Story Format (CSF)](https://medium.com/storybookjs/component-
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
 - Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
+- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)

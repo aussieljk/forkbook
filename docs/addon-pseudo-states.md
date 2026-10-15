@@ -1,8 +1,8 @@
 <img src="https://user-images.githubusercontent.com/321738/105224055-f6c29c00-5b5c-11eb-83c9-ba28a7fbadf2.gif" width="80" height="80" alt="">
 
-# Storybook Pseudo States
+# Forkbook Pseudo States
 
-Toggle CSS pseudo states for your components in Storybook.
+Toggle CSS pseudo states for your components in Forkbook.
 
 <p>
   <img src="https://user-images.githubusercontent.com/321738/105100903-51e98580-5aae-11eb-82bf-2b625c5a88a3.gif" width="560" alt="" />
@@ -21,13 +21,13 @@ Because this addon rewrites your stylesheets rather than toggle the actual brows
 To install the addon:
 
 ```sh
-npx storybook add storybook/addon-pseudo-states
+npx forkbook add @aussieljk/forkbook/addon-pseudo-states
 ```
 
-For Storybook versions before 9.0, use v4.0.3 of the addon:
+For Forkbook versions before 9.0, use v4.0.3 of the addon:
 
 ```sh
-npx storybook add storybook/addon-pseudo-states@4.0.3
+npx forkbook add @aussieljk/forkbook/addon-pseudo-states@4.0.3
 ```
 
 ### Setting default story states
@@ -66,7 +66,7 @@ This accepts a single CSS selector (string), or an array of CSS selectors on whi
 
 ### Overriding the default root element
 
-By default, we use `#storybook-root` (or `#root` before Storybook 7) element as the root element for all pseudo classes. If you need to render elements outside Storybook's root element, you can set `parameters.pseudo.rootSelector` to override it. This is convenient for portals, dialogs, tooltips, etc.
+By default, we use `#storybook-root` (or `#root` before Forkbook 7) element as the root element for all pseudo classes. If you need to render elements outside Forkbook's root element, you can set `parameters.pseudo.rootSelector` to override it. This is convenient for portals, dialogs, tooltips, etc.
 
 For example, consider a `Dialog` component that injects itself to the document's `body` node:
 
@@ -82,4 +82,4 @@ DialogButton.parameters = {
 };
 ```
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).

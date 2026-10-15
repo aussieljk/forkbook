@@ -1,8 +1,11 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { getBuilderOptions, resolvePathInStorybookCache } from 'storybook/internal/common';
-import type { Options } from 'storybook/internal/types';
+import {
+  getBuilderOptions,
+  resolvePathInStorybookCache,
+} from '@aussieljk/forkbook/internal/common';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type {
   ConfigEnv,
@@ -52,7 +55,7 @@ async function loadUserViteConfig(options: Options, type: PluginConfigType): Pro
   return loaded?.config ?? {};
 }
 
-// Mirrors Vite's own resolution: `publicDir` is relative to the root Storybook sets in
+// Mirrors Vite's own resolution: `publicDir` is relative to the root Forkbook sets in
 // `commonConfig`, and `false` or an empty string disables it.
 export async function resolveVitePublicDir(
   options: Options,
@@ -86,11 +89,11 @@ export async function commonConfig(
     _type
   );
 
-  // Storybook's Vite config is assembled from self-contained plugins.
+  // Forkbook's Vite config is assembled from self-contained plugins.
   // The config plugin handles base settings (root, cacheDir, resolve conditions, etc.),
   // while other plugins handle entry points, docgen, and runtime globals.
   // Shared vite plugins for mocking are defined in `./preset.ts` so that they can be
-  // shared between storybook/builder-vite and storybook/addon-vitest.
+  // shared between @aussieljk/forkbook/builder-vite and @aussieljk/forkbook/addon-vitest.
   const sbConfig: InlineConfig = {
     configFile: false,
     plugins: await pluginConfig(options),

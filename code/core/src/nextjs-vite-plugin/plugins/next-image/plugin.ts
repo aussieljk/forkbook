@@ -14,7 +14,7 @@ import { getAlias } from './alias/index.tsx';
 const warnedMessages = new Set<string>();
 const warnOnce = (message: string) => {
   if (!warnedMessages.has(message)) {
-    console.warn(`[storybook/internal/nextjs-vite-plugin] ${message}`);
+    console.warn(`[@aussieljk/forkbook/internal/nextjs-vite-plugin] ${message}`);
     warnedMessages.add(message);
   }
 };

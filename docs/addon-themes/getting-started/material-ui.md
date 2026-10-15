@@ -7,31 +7,31 @@ To get started, **install the package** as a dev dependency.
 yarn:
 
 ```zsh
-yarn add -D storybook/addon-themes
+yarn add -D @aussieljk/forkbook/addon-themes
 ```
 
 npm:
 
 ```zsh
-npm install -D storybook/addon-themes
+npm install -D @aussieljk/forkbook/addon-themes
 ```
 
 pnpm:
 
 ```zsh
-pnpm add -D storybook/addon-themes
+pnpm add -D @aussieljk/forkbook/addon-themes
 ```
 
 ## 🧩 Register Addon
 
-Now, **include the addon** in your `.storybook/main.js` file.
+Now, **include the addon** in your `.forkbook/main.js` file.
 
 ```diff
 export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-essentials',
-+   'storybook/addon-themes',
++   '@aussieljk/forkbook/addon-themes',
   ],
 };
 ```
@@ -40,7 +40,7 @@ export default {
 
 `@mui/material` requires Google's Roboto and Material Icon fonts to render everything as intended. I'd recommend getting them from [fontsource](https://github.com/fontsource/fontsource) so that they are version locked dependencies that doesn't require a CDN.
 
-These can be imported into your `.storybook/preview.js` file.
+These can be imported into your `.forkbook/preview.js` file.
 
 ```diff
 import { Preview } from '@storybook/your-renderer';
@@ -63,12 +63,12 @@ export default preview;
 
 While Material UI comes with a default theme that works out of the box. You can create your own theme(s) and provide them to your stories with our `withThemeFromJSXProvider` decorator.
 
-Make the following changes to your `.storybook/preview.js`:
+Make the following changes to your `.forkbook/preview.js`:
 
 ```diff
 -import { Preview } from '@storybook/your-renderer';
 +import { Preview, Renderer } from '@storybook/your-renderer';
-+import { withThemeFromJSXProvider } from 'storybook/addon-themes';
++import { withThemeFromJSXProvider } from '@aussieljk/forkbook/addon-themes';
 +import { CssBaseline, ThemeProvider } from '@mui/material';
 +import { lightTheme, darkTheme } from '../src/themes'; // Import your custom theme configs
 

@@ -1,4 +1,4 @@
-import type { types as t } from 'storybook/internal/babel';
+import type { types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { readFileSync } from 'node:fs';
 

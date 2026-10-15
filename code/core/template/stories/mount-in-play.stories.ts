@@ -1,4 +1,4 @@
-import { expect, fn } from 'storybook/test';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
 const meta = { component: globalThis.__TEMPLATE_COMPONENTS__.Button };
 

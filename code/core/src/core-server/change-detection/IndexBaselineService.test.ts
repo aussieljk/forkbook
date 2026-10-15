@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import type { StoryIndexGenerator } from '../utils/StoryIndexGenerator.ts';
 import { GitDiffProvider } from './GitDiffProvider.ts';

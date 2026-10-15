@@ -4,7 +4,7 @@ import { dirname, join, resolve as resolvePath } from 'pathe';
 
 // eslint-disable-next-line depend/ban-dependencies
 import { execa, type ExecaError } from 'execa';
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { ChangeDetectionFailureError, ChangeDetectionUnavailableError } from './errors.ts';
 

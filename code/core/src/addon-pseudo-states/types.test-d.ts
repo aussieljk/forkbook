@@ -1,6 +1,6 @@
 import { describe, expectTypeOf, it } from 'vitest';
 
-import { definePreview } from 'storybook/internal/csf';
+import { definePreview } from '@aussieljk/forkbook/internal/csf';
 
 import pseudoAddon from './index.ts';
 import type { PseudoParameter } from './types.ts';

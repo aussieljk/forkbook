@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import React from 'react';
 
-import type { StatusValue } from 'storybook/internal/types';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 import {
   CHANGE_DETECTION_STATUS_TYPE_ID,
   NON_AGGREGATED_STATUS_TYPE_IDS,
@@ -10,13 +10,13 @@ import {
   type StatusByTypeId,
   type StatusesByStoryIdAndTypeId,
   type StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { CircleIcon } from '@storybook/icons';
 
 import memoizerific from 'memoizerific';
 import { transparentize } from 'polished';
-import type { StorybookTheme as Theme } from 'storybook/theming';
+import type { StorybookTheme as Theme } from '@aussieljk/forkbook/theming';
 
 import { UseSymbol } from '../components/sidebar/IconSymbols.tsx';
 import { getDescendantIds } from './tree.ts';

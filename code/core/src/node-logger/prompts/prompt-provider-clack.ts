@@ -18,23 +18,20 @@ import type {
 import { PromptProvider } from './prompt-provider-base.ts';
 
 export const getCurrentTaskLog = (): ReturnType<typeof clack.taskLog> | null => {
-  if (globalThis.STORYBOOK_CURRENT_TASK_LOG) {
-    return globalThis.STORYBOOK_CURRENT_TASK_LOG[globalThis.STORYBOOK_CURRENT_TASK_LOG.length - 1];
+  if (globalThis.FORKBOOK_CURRENT_TASK_LOG) {
+    return globalThis.FORKBOOK_CURRENT_TASK_LOG[globalThis.FORKBOOK_CURRENT_TASK_LOG.length - 1];
   } else {
     return null;
   }
 };
 
 const setCurrentTaskLog = (taskLog: any) => {
-  globalThis.STORYBOOK_CURRENT_TASK_LOG = [
-    ...(globalThis.STORYBOOK_CURRENT_TASK_LOG || []),
-    taskLog,
-  ];
+  globalThis.FORKBOOK_CURRENT_TASK_LOG = [...(globalThis.FORKBOOK_CURRENT_TASK_LOG || []), taskLog];
 };
 
 const clearCurrentTaskLog = () => {
-  if (globalThis.STORYBOOK_CURRENT_TASK_LOG) {
-    globalThis.STORYBOOK_CURRENT_TASK_LOG.pop();
+  if (globalThis.FORKBOOK_CURRENT_TASK_LOG) {
+    globalThis.FORKBOOK_CURRENT_TASK_LOG.pop();
   }
 };
 

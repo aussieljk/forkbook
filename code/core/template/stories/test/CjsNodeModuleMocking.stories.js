@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 import { v4 } from 'uuid';
 
 // This story is used to test the node module mocking for modules which have an exports field in their package.json.

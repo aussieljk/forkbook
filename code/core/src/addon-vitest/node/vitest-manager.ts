@@ -2,9 +2,9 @@ import { existsSync, readFileSync } from 'node:fs';
 
 import type { CoverageOptions, TestProject, TestSpecification, Vitest } from 'vitest/node';
 
-import { getProjectRoot, resolvePathInStorybookCache } from 'storybook/internal/common';
-import { Tag } from 'storybook/internal/core-server';
-import type { StoryId, StoryIndexEntry } from 'storybook/internal/types';
+import { getProjectRoot, resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import { Tag } from '@aussieljk/forkbook/internal/core-server';
+import type { StoryId, StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import * as find from 'empathic/find';
 import * as walk from 'empathic/walk';
@@ -13,7 +13,7 @@ import path, { dirname, join, normalize, resolve } from 'pathe';
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
-import { COVERAGE_DIRECTORY, STORYBOOK_TEST_PROVIDE_KEY } from '../constants.ts';
+import { COVERAGE_DIRECTORY, FORKBOOK_TEST_PROVIDE_KEY } from '../constants.ts';
 import { log } from '../logger.ts';
 import type { TriggerRunEvent } from '../types.ts';
 import type { StorybookCoverageReporterOptions } from './coverage-reporter.ts';
@@ -21,11 +21,11 @@ import { StorybookReporter } from './reporter.ts';
 import type { TestManager } from './test-manager.ts';
 
 const VITEST_CONFIG_FILE_EXTENSIONS = ['mts', 'mjs', 'cts', 'cjs', 'ts', 'tsx', 'js', 'jsx'];
-// We have to tell Vitest that it runs as part of Storybook
+// We have to tell Vitest that it runs as part of Forkbook
 process.env.VITEST_STORYBOOK = 'true';
 
 /**
- * The Storybook vitest plugin adds double space characters so that it's possible to do a regex for
+ * The Forkbook vitest plugin adds double space characters so that it's possible to do a regex for
  * all test run use cases. Otherwise, if there were two unrelated stories like "Primary Button" and
  * "Primary Button Mobile", once you run tests for "Primary Button" and its children it would also
  * match "Primary Button Mobile". As it turns out, this limitation is also present in the Vitest
@@ -53,7 +53,7 @@ export class VitestManager {
     this.testNameSeparator = Number.parseInt(version, 10) >= 5 ? ' > ' : ' ';
 
     const storybookCoverageReporter: [string, StorybookCoverageReporterOptions] = [
-      'storybook/addon-vitest/internal/coverage-reporter',
+      '@aussieljk/forkbook/addon-vitest/internal/coverage-reporter',
       {
         testManager: this.testManager,
       },
@@ -71,7 +71,7 @@ export class VitestManager {
         : { enabled: false }
     ) as CoverageOptions;
 
-    // In monorepos, the Storybook configDir (e.g. packages/web-app/.storybook) identifies
+    // In monorepos, the Forkbook configDir (e.g. packages/web-app/.forkbook) identifies
     // the sub-package. We start the Vitest config search from its parent (the package root)
     // and traverse upward to the project root, so configs in both sub-packages and the
     // monorepo root are found. Without this, find.any defaults to process.cwd() which may
@@ -102,7 +102,10 @@ export class VitestManager {
         if (maybe && existsSync(maybe)) {
           firstVitestConfig ??= dirname(maybe);
           const content = readFileSync(maybe, 'utf8');
-          if (content.includes('storybookTest') || content.includes('storybook/addon-vitest')) {
+          if (
+            content.includes('storybookTest') ||
+            content.includes('@aussieljk/forkbook/addon-vitest')
+          ) {
             vitestConfigLocation = dirname(maybe);
             break;
           }
@@ -113,7 +116,7 @@ export class VitestManager {
       }
     }
 
-    const projectName = 'storybook:' + process.env.STORYBOOK_CONFIG_DIR;
+    const projectName = 'storybook:' + process.env.FORKBOOK_CONFIG_DIR;
 
     const vitestConfigFallbackLocation = firstVitestConfig || packageRoot || process.cwd();
 
@@ -128,7 +131,7 @@ export class VitestManager {
         // Do we want to enable Vite's default reporter?
         // The output in the terminal might be too spamy and it might be better to
         // find a way to just show errors and warnings for example
-        // Otherwise it might be hard for the user to discover Storybook related logs
+        // Otherwise it might be hard for the user to discover Forkbook related logs
         reporters: ['default', new StorybookReporter(this.testManager)],
         coverage: coverageOptions,
       });
@@ -136,8 +139,8 @@ export class VitestManager {
       const originalMessage = String(err.message);
       if (originalMessage.includes('Found multiple projects')) {
         const custom = [
-          'Storybook was unable to start the test run because you have multiple Vitest projects (or browsers) in headed mode.',
-          'Please set `headless: true` in your Storybook vitest config.\n\n',
+          'Forkbook was unable to start the test run because you have multiple Vitest projects (or browsers) in headed mode.',
+          'Please set `headless: true` in your Forkbook vitest config.\n\n',
         ].join('\n');
 
         if (!originalMessage.startsWith(custom)) {
@@ -236,7 +239,7 @@ export class VitestManager {
   }
 
   /**
-   * Builds the exact Vitest name-pattern fragment for one selected Storybook entry.
+   * Builds the exact Vitest name-pattern fragment for one selected Forkbook entry.
    *
    * The pattern differs by entry type:
    *
@@ -369,7 +372,7 @@ export class VitestManager {
   }
 
   private provideRunConfig() {
-    this.vitest?.provide(STORYBOOK_TEST_PROVIDE_KEY, this.getCurrentRunConfig());
+    this.vitest?.provide(FORKBOOK_TEST_PROVIDE_KEY, this.getCurrentRunConfig());
   }
 
   async runTests(runPayload: TriggerRunEvent['payload']) {

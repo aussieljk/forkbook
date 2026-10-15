@@ -1,4 +1,4 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
 import type { ControlsTypes } from './types.ts';
 

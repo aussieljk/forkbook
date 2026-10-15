@@ -1,4 +1,4 @@
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { mergeWith } from 'es-toolkit/object';
 import { isEqual } from 'es-toolkit/predicate';

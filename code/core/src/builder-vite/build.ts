@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/node-logger';
-import type { Options } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 import type { InlineConfig } from 'vite';
@@ -23,8 +23,8 @@ export async function build(options: Options) {
   config.build = mergeConfig(config, {
     build: {
       outDir: options.outputDir,
-      emptyOutDir: false, // do not clean before running Vite build - Storybook has already added assets in there!
-      // Storybook copies the public dir itself through the `staticDirs` preset so that its own
+      emptyOutDir: false, // do not clean before running Vite build - Forkbook has already added assets in there!
+      // Forkbook copies the public dir itself through the `staticDirs` preset so that its own
       // output files and user `staticDirs` take precedence over public assets.
       copyPublicDir: false,
       rolldownOptions: {
@@ -85,7 +85,7 @@ export async function build(options: Options) {
   const hasTurbosnapPlugin =
     finalConfig.plugins && (await hasVitePlugins(finalConfig.plugins, [turbosnapPluginName]));
   if (hasTurbosnapPlugin) {
-    logger.warn(dedent`Found '${turbosnapPluginName}' which is now included by default in Storybook 8.
+    logger.warn(dedent`Found '${turbosnapPluginName}' which is now included by default in Forkbook 8.
       Removing from your plugins list. Ensure you pass \`--stats-json\` to generate stats.
 
       For more information, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#turbosnap-vite-plugin-is-no-longer-needed`);

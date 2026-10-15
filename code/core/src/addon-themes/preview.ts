@@ -1,4 +1,4 @@
-import type { ProjectAnnotations, Renderer } from 'storybook/internal/types';
+import type { ProjectAnnotations, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { GLOBAL_KEY as KEY } from './constants.ts';
 

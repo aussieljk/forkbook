@@ -8,13 +8,13 @@ import React, {
   useState,
 } from 'react';
 
-import { once } from 'storybook/internal/client-logger';
-import { ActionList, Card } from 'storybook/internal/components';
+import { once } from '@aussieljk/forkbook/internal/client-logger';
+import { ActionList, Card } from '@aussieljk/forkbook/internal/components';
 import type {
   Addon_Collection,
   Addon_TestProviderType,
   TestProviderStateByProviderId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { ChevronSmallUpIcon, PlayAllHollowIcon, SweepIcon } from '@storybook/icons';
 

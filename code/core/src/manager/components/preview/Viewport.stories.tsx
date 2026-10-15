@@ -1,8 +1,8 @@
-import { ManagerContext } from 'storybook/manager-api';
-import { fn } from 'storybook/test';
-import type { ViewportMap } from 'storybook/viewport';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { fn } from '@aussieljk/forkbook/test';
+import type { ViewportMap } from '@aussieljk/forkbook/viewport';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Viewport } from './Viewport.tsx';
 
 const managerContext: any = {

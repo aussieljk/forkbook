@@ -2,9 +2,9 @@ import type {
   API_IndexHash,
   API_PreparedStoryIndex,
   StatusesByStoryIdAndTypeId,
-} from 'storybook/internal/types';
-import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
-import type { API } from 'storybook/manager-api';
+} from '@aussieljk/forkbook/internal/types';
+import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
+import type { API } from '@aussieljk/forkbook/manager-api';
 
 import { fallbackStoryInfo, type StoryChangeStatus, type StoryInfo } from './review-types.ts';
 import type { ReviewState } from './review-state.ts';

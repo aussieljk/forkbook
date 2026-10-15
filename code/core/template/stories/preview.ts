@@ -1,4 +1,4 @@
-import type { GlobalTypes, PartialStoryFn, StoryContext } from 'storybook/internal/types';
+import type { GlobalTypes, PartialStoryFn, StoryContext } from '@aussieljk/forkbook/internal/types';
 
 declare global {
   interface Window {

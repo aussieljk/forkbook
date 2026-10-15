@@ -1,4 +1,4 @@
-import { type NodePath, type types as t } from 'storybook/internal/babel';
+import { type NodePath, type types as t } from '@aussieljk/forkbook/internal/babel';
 
 import type { CsfFile } from '../CsfFile.ts';
 import { normalizeStoryDeclaration } from './normalize-story.ts';

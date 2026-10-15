@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { ModalDecorator } from 'storybook/internal/components';
+import { ModalDecorator } from '@aussieljk/forkbook/internal/components';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fireEvent, fn, screen, within } from 'storybook/test';
+import { expect, fireEvent, fn, screen, within } from '@aussieljk/forkbook/test';
 
 import { SaveStory } from './SaveStory.tsx';
 

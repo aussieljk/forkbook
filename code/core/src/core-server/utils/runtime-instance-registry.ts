@@ -4,8 +4,8 @@ import { existsSync, rmSync } from 'node:fs';
 import { chmod, mkdir, readFile, readdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { homedir, userInfo } from 'node:os';
 
-import { findStorybookPackageRoot, normalizeAddonName } from 'storybook/internal/common';
-import type { StorybookConfig } from 'storybook/internal/types';
+import { findStorybookPackageRoot, normalizeAddonName } from '@aussieljk/forkbook/internal/common';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { join, resolve } from 'pathe';
 
@@ -13,7 +13,7 @@ import { CLAUDE_PREVIEW_AGENT_NAME } from '../../shared/constants/agent-provenan
 import { isClaudePreviewLaunch } from '../../shared/utils/agent-environment.ts';
 import { detectAgent } from '../../telemetry/detect-agent.ts';
 
-const STORYBOOK_MCP_ADDON = 'storybook/addon-mcp';
+const FORKBOOK_MCP_ADDON = '@aussieljk/forkbook/addon-mcp';
 const DEFAULT_MCP_ENDPOINT = '/mcp';
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;
@@ -57,7 +57,7 @@ export type RuntimeInstanceRecord = {
   pid: number;
   cwd: string;
   /**
-   * Resolved config directory of the running Storybook. Lets `storybook tools` find this instance
+   * Resolved config directory of the running Forkbook. Lets `forkbook tools` find this instance
    * from a different cwd in a monorepo (storybookjs/storybook#35359). Optional because records
    * written by older Storybooks lack it.
    */
@@ -70,7 +70,7 @@ export type RuntimeInstanceRecord = {
   storybookVersion: string;
   /**
    * Realpathed root of the `storybook` package this dev server actually runs, derived from the
-   * server's own module location. `storybook tools` attaches in-process when its own root is the
+   * server's own module location. `forkbook tools` attaches in-process when its own root is the
    * same installation, and spawns its child host from this root otherwise. Omitted when the root
    * cannot be derived, which makes attach refuse.
    */
@@ -98,7 +98,7 @@ export type RuntimeInstanceRegistryCleanupDecision =
   | { action: 'check-pid'; pid: number };
 
 export function getDefaultRuntimeInstanceRegistryDir() {
-  return join(homedir(), '.storybook', 'instances');
+  return join(homedir(), '.forkbook', 'instances');
 }
 
 export function getStorybookBaseUrl(address: string) {
@@ -111,7 +111,7 @@ export function getMcpMetadataFromMainConfig(
 ): RuntimeInstanceRecord['mcp'] {
   // Normalize entries so addons registered via `getAbsolutePath()` are recognized, not just bare names.
   const addon = mainConfig.addons?.find(
-    (entry) => normalizeAddonName(entry) === STORYBOOK_MCP_ADDON
+    (entry) => normalizeAddonName(entry) === FORKBOOK_MCP_ADDON
   );
 
   if (!addon) {

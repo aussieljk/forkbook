@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getStoryTitle } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { getStoryTitle } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { type RawSourceMap, SourceMapConsumer } from 'source-map';
 
 import { Tag } from '../../shared/constants/tags.ts';
 import { vitestTransform as originalTransform } from './transformer.ts';
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return {
     ...actual,
     getStoryTitle: vi.fn(() => 'automatic/calculated/title'),
@@ -29,7 +29,7 @@ const transform = async ({
     exclude: [] as string[],
     skip: [] as string[],
   },
-  configDir = '.storybook',
+  configDir = '.forkbook',
   stories = [],
   previewLevelTags = [],
 }) => {
@@ -65,7 +65,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             component: Button,
             title: "automatic/calculated/title"
@@ -100,7 +100,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title",
             component: Button
@@ -136,7 +136,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const meta = {
             component: Button,
             title: "automatic/calculated/title"
@@ -173,7 +173,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const meta = {
             title: "automatic/calculated/title",
             component: Button
@@ -211,7 +211,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             component: Button,
             title: "automatic/calculated/title"
@@ -244,7 +244,7 @@ describe('transformer', () => {
 
           expect(result.code).toMatchInlineSnapshot(`
             import { test as _test, expect as _expect } from "vitest";
-            import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+            import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
             const _meta = {
               component: Button,
               title: "automatic/calculated/title"
@@ -274,7 +274,7 @@ describe('transformer', () => {
           const result = await transform({ code: code });
           expect(result.code).toMatchInlineSnapshot(`
             import { test as _test, expect as _expect } from "vitest";
-            import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+            import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
             const _meta = {
               component: Button,
               title: "automatic/calculated/title"
@@ -312,7 +312,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -352,7 +352,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -393,7 +393,7 @@ describe('transformer', () => {
         const result = await transform({ code });
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -440,7 +440,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title",
             component: Button,
@@ -503,7 +503,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -540,7 +540,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -575,7 +575,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -611,7 +611,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -722,7 +722,7 @@ describe('transformer', () => {
 
         expect(transformedCode).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const meta = {
             title: "automatic/calculated/title",
             component: Button
@@ -774,7 +774,7 @@ describe('transformer', () => {
     describe('default exports (meta)', () => {
       it('should add title to inline default export if not present', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ component: Button });
         export const Story = meta.story({});
       `;
@@ -785,8 +785,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             component: Button,
             title: "automatic/calculated/title"
@@ -809,15 +809,15 @@ describe('transformer', () => {
     describe('named exports (stories)', () => {
       it("should use the story's name as test title", async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ component: Button });
         export const Primary = meta.story({ name: "custom name" });`;
         const result = await transform({ code });
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             component: Button,
             title: "automatic/calculated/title"
@@ -840,7 +840,7 @@ describe('transformer', () => {
 
       it('should add test statement to const declared exported stories', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ component: Button });
         const Primary = meta.story({
           args: {
@@ -855,8 +855,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             component: Button,
             title: "automatic/calculated/title"
@@ -882,7 +882,7 @@ describe('transformer', () => {
 
       it('should add test statement to const declared renamed exported stories', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ component: Button });
         const Primary = meta.story({
           args: {
@@ -897,8 +897,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             component: Button,
             title: "automatic/calculated/title"
@@ -939,7 +939,7 @@ describe('transformer', () => {
         const result = await transform({ code });
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title"
           };
@@ -986,7 +986,7 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
           const _meta = {
             title: "automatic/calculated/title",
             component: Button,
@@ -1033,7 +1033,7 @@ describe('transformer', () => {
       });
       it('should support test annotation', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({ component: Button });
         export const A = meta.story({});
         A.test("foo", { args: { primary: true }}, () => {});
@@ -1044,8 +1044,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             component: Button,
             title: "automatic/calculated/title"
@@ -1092,7 +1092,7 @@ describe('transformer', () => {
     describe('test syntax', () => {
       it('should add test statement to story tests', async () => {
         const code = `
-          import { config } from '#.storybook/preview';
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({});
           export const Primary = meta.story({});
           Primary.test("foo", () => {});
@@ -1101,8 +1101,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1135,7 +1135,7 @@ describe('transformer', () => {
     describe('tags filtering mechanism', () => {
       it('should only include stories from tags.include', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({});
         export const Included = meta.story({ tags: ['include-me'] });
 
@@ -1149,8 +1149,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1173,7 +1173,7 @@ describe('transformer', () => {
 
       it('should exclude stories from tags.exclude', async () => {
         const code = `
-          import { config } from '#.storybook/preview';
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({});
           export const Included = meta.story({});
 
@@ -1187,8 +1187,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1211,7 +1211,7 @@ describe('transformer', () => {
 
       it('should pass skip tags to testStory call using tags.skip', async () => {
         const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({});
         export const Skipped = meta.story({ tags: ['skip-me'] });
       `;
@@ -1223,8 +1223,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1246,7 +1246,7 @@ describe('transformer', () => {
 
       it('should pass skip tags to child .test() calls using tags.skip', async () => {
         const code = `
-          import { config } from '#.storybook/preview';
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({});
           export const Primary = meta.story({});
           Primary.test("runs", () => {});
@@ -1260,8 +1260,8 @@ describe('transformer', () => {
 
         expect(result.code).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1305,7 +1305,7 @@ describe('transformer', () => {
     describe('source map calculation', () => {
       it('should remap the location of an inline named export to its relative testStory function', async () => {
         const originalCode = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({});
         export const Primary = meta.story({});
         Primary.test("foo", () => {});
@@ -1317,8 +1317,8 @@ describe('transformer', () => {
 
         expect(transformedCode).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1375,7 +1375,7 @@ describe('transformer', () => {
 
       it.skip('should remap the location of story tests', async () => {
         const originalCode = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         const meta = config.meta({});
         export const Primary = meta.story({});
         Primary.test("foo", () => {});
@@ -1387,8 +1387,8 @@ describe('transformer', () => {
 
         expect(transformedCode).toMatchInlineSnapshot(`
           import { test as _test, expect as _expect, describe as _describe } from "vitest";
-          import { testStory as _testStory, convertToFilePath } from "storybook/addon-vitest/internal/test-utils";
-          import { config } from '#.storybook/preview';
+          import { testStory as _testStory, convertToFilePath } from "@aussieljk/forkbook/addon-vitest/internal/test-utils";
+          import { config } from '#.forkbook/preview';
           const meta = config.meta({
             title: "automatic/calculated/title"
           });
@@ -1477,14 +1477,14 @@ describe('transformer', () => {
 
       await transform({ code });
       expect(warnSpy.mock.calls[0]).toMatchInlineSnapshot(`
-        [Storybook]: Could not calculate story title for "src/components/Button.stories.js".
-        Please make sure that this file matches the globs included in the "stories" field in your Storybook configuration at ".storybook".
+        [Forkbook]: Could not calculate story title for "src/components/Button.stories.js".
+        Please make sure that this file matches the globs included in the "stories" field in your Forkbook configuration at ".forkbook".
       `);
     });
 
     it('should error when the factory meta configuration is not an object literal', async () => {
       const code = `
-        import { config } from '#.storybook/preview';
+        import { config } from '#.forkbook/preview';
         import sharedMeta from './shared-meta';
         const meta = config.meta(sharedMeta);
         export const Primary = meta.story({});
@@ -1505,7 +1505,7 @@ describe('transformer', () => {
 
       await transform({ code });
       expect(warnSpy.mock.calls[0]).toMatchInlineSnapshot(`
-        [Storybook]: Could not transform "Primary" story into test at "src/components/Button.stories.js".
+        [Forkbook]: Could not transform "Primary" story into test at "src/components/Button.stories.js".
         Please make sure to define stories in the same file and not re-export stories coming from other files".
       `);
     });

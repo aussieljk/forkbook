@@ -21,7 +21,7 @@ function eachOutput(config: UserConfig, fn: (output: RolldownOutput) => void) {
   fn(options.output);
 }
 
-/** Storybook's preview needs modules to run in import order. */
+/** Forkbook's preview needs modules to run in import order. */
 export function ensureStrictExecutionOrder(config: UserConfig) {
   eachOutput(config, (output) => {
     output.strictExecutionOrder = true;

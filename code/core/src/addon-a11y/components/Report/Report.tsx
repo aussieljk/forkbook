@@ -1,7 +1,7 @@
 import type { ComponentProps, FC } from 'react';
 import React from 'react';
 
-import { Badge, Button, EmptyTabContent } from 'storybook/internal/components';
+import { Badge, Button, EmptyTabContent } from '@aussieljk/forkbook/internal/components';
 
 import { ChevronSmallDownIcon } from '@storybook/icons';
 

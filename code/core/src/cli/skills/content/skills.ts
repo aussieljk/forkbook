@@ -1,5 +1,5 @@
 /**
- * The Storybook skills: agent-facing instruction documents served by `storybook skills <id>`
+ * The Forkbook skills: agent-facing instruction documents served by `forkbook skills <id>`
  * and, on the MCP side, by addon-mcp (server instructions and the story-instructions tool). The
  * ids are public CLI vocabulary — plugin stubs (M7) will reference them — so treat renames as
  * breaking.
@@ -15,7 +15,7 @@ export const SKILLS: Record<SkillId, { blurb: string }> = {
   },
   'write-story': {
     blurb:
-      'How to write, update, and test Storybook stories for this project: imports, patterns, and conventions.',
+      'How to write, update, and test Forkbook stories for this project: imports, patterns, and conventions.',
   },
   setup: {
     blurb: 'Setup instructions to write stories for the real components in this project.',

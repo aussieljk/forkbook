@@ -1,6 +1,6 @@
 /**
  * Parses the `reactComponentMeta` docgen payload into a simple props list. The dev server and the
- * hosted `storybook/mcp` package (which bundles this entry) both use this parser. The types below
+ * hosted `@aussieljk/forkbook/mcp` package (which bundles this entry) both use this parser. The types below
  * are only the fields that the parser reads.
  */
 

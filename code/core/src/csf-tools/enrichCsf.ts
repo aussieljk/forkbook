@@ -1,5 +1,5 @@
-import { generate, types as t } from 'storybook/internal/babel';
-import { type CsfEnricher } from 'storybook/internal/types';
+import { generate, types as t } from '@aussieljk/forkbook/internal/babel';
+import { type CsfEnricher } from '@aussieljk/forkbook/internal/types';
 
 import type { CsfFile } from './CsfFile.ts';
 

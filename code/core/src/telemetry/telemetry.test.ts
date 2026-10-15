@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 
+// Telemetry sends only when a server is set.
+vi.hoisted(() => {
+  process.env.FORKBOOK_TELEMETRY_URL = 'https://telemetry.example/event-log';
+});
+
 import { fetch } from './fetch.ts';
 import { sendTelemetry } from './telemetry.ts';
 
@@ -147,4 +152,15 @@ it('await all pending telemetry when passing in immediate = true', async () => {
 
   expect(fetchMock).toHaveBeenCalledTimes(3);
   expect(numberOfResolvedTasks).toBe(3);
+});
+
+it('sends nothing without a telemetry server', async () => {
+  vi.resetModules();
+  delete process.env.FORKBOOK_TELEMETRY_URL;
+  const { sendTelemetry: send } = await import('./telemetry.ts');
+  fetchMock.mockClear();
+
+  await send({ eventType: 'dev', payload: {} }, { immediate: true });
+
+  expect(fetchMock).not.toHaveBeenCalled();
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@storybook/icons';
 
@@ -80,7 +80,7 @@ const Exception = ({ exception }: { exception: Call['exception'] }) => {
         </pre>
         <p className={styles.errorExplainer}>
           The component failed to render properly. Automated component tests will not run until this
-          is resolved. Check the full error message in Storybook’s canvas to debug.
+          is resolved. Check the full error message in Forkbook’s canvas to debug.
         </p>
       </div>
     );

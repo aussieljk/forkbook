@@ -11,22 +11,22 @@ describe('server store leadership', () => {
     void universalTestProviderStore.actor;
   });
 
-  it('switches from follower to leader when STORYBOOK_ATTACHED_TOOLS is cleared', () => {
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', 'true');
+  it('switches from follower to leader when FORKBOOK_ATTACHED_TOOLS is cleared', () => {
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', 'true');
     expect(universalStatusStore.actor.type).toBe(UniversalStore.ActorType.FOLLOWER);
     expect(universalTestProviderStore.actor.type).toBe(UniversalStore.ActorType.FOLLOWER);
 
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', '');
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', '');
     expect(universalStatusStore.actor.type).toBe(UniversalStore.ActorType.LEADER);
     expect(universalTestProviderStore.actor.type).toBe(UniversalStore.ActorType.LEADER);
   });
 
-  it('switches from leader to follower when STORYBOOK_ATTACHED_TOOLS is set', () => {
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', '');
+  it('switches from leader to follower when FORKBOOK_ATTACHED_TOOLS is set', () => {
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', '');
     expect(universalStatusStore.actor.type).toBe(UniversalStore.ActorType.LEADER);
     expect(universalTestProviderStore.actor.type).toBe(UniversalStore.ActorType.LEADER);
 
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', 'true');
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', 'true');
     expect(universalStatusStore.actor.type).toBe(UniversalStore.ActorType.FOLLOWER);
     expect(universalTestProviderStore.actor.type).toBe(UniversalStore.ActorType.FOLLOWER);
   });

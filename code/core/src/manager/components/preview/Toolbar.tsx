@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
-import { AbstractToolbar, Button } from 'storybook/internal/components';
-import { Addon_TypesEnum, type Addon_BaseType } from 'storybook/internal/types';
+import { AbstractToolbar, Button } from '@aussieljk/forkbook/internal/components';
+import { Addon_TypesEnum, type Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { CloseIcon, ExpandIcon } from '@storybook/icons';
 
@@ -15,7 +15,7 @@ import {
   type Combo,
   type LeafEntry,
   type State,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';

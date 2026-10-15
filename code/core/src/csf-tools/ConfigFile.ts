@@ -7,8 +7,8 @@ import {
   recast,
   types as t,
   traverse,
-} from 'storybook/internal/babel';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/babel';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { dedent } from 'ts-dedent';
 import invariant from 'tiny-invariant';
@@ -896,13 +896,13 @@ export class ConfigFile implements CsfObject {
    * @example
    * ```ts
    * const manager = loadConfig(`
-   *   import { addons } from 'storybook/manager-api';
+   *   import { addons } from '@aussieljk/forkbook/manager-api';
    *   addons.setConfig({ showNav: false });
    * `).parse();
    * const [object] = manager.callArguments({
    *   importedName: 'addons',
    *   methodName: 'setConfig',
-   *   moduleNames: ['storybook/manager-api'],
+   *   moduleNames: ['@aussieljk/forkbook/manager-api'],
    * });
    * object.group(['layout'], ['showNav']);
    * object.getValue(['layout']); // { showNav: false }
@@ -1519,7 +1519,7 @@ export const isCsfFactoryPreview = (previewConfig: ConfigFile) => {
   return !!program.body.find((node) => {
     return (
       t.isImportDeclaration(node) &&
-      node.source.value.includes('storybook') &&
+      (node.source.value.includes('storybook') || node.source.value.includes('forkbook')) &&
       node.specifiers.some((specifier) => {
         return (
           t.isImportSpecifier(specifier) &&

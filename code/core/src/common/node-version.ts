@@ -7,7 +7,7 @@ export interface MinNodeVersion {
 }
 
 /**
- * Minimum Node.js versions supported by Storybook.
+ * Minimum Node.js versions supported by Forkbook.
  * This is the single source of truth — all version checks should reference this.
  */
 export const MIN_SUPPORTED_NODE_VERSIONS: readonly MinNodeVersion[] = [

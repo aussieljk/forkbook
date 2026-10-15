@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { groupBy } from 'storybook/internal/common';
+import { groupBy } from '@aussieljk/forkbook/internal/common';
 
 import type {
   ComponentManifest,

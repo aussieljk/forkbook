@@ -1,4 +1,4 @@
-import { once } from 'storybook/internal/client-logger';
+import { once } from '@aussieljk/forkbook/internal/client-logger';
 
 import { isEqual as deepEqual, isPlainObject } from 'es-toolkit/predicate';
 import memoize from 'memoizerific';

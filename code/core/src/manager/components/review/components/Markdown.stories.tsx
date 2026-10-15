@@ -1,6 +1,6 @@
-import { expect, within } from 'storybook/test';
+import { expect, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../../.storybook/preview.tsx';
+import preview from '../../../../../../.forkbook/preview.tsx';
 import { Markdown } from './Markdown.tsx';
 
 const meta = preview.meta({

@@ -6,7 +6,7 @@ describe('postinstallAddon', () => {
   it('skips an installed addon without a postinstall hook quietly', async () => {
     const logger = { warn: vi.fn() };
 
-    await postinstallAddon('storybook/addon-docs', { logger } as never);
+    await postinstallAddon('@aussieljk/forkbook/addon-docs', { logger } as never);
 
     expect(logger.warn).not.toHaveBeenCalled();
   });

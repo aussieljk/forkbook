@@ -1,12 +1,12 @@
 import type { PropsWithChildren } from 'react';
 import React, { Component, createContext, memo, useCallback, useEffect, useRef } from 'react';
 
-import { ActionList, PopoverProvider, ToggleButton } from 'storybook/internal/components';
-import type { Addon_BaseType } from 'storybook/internal/types';
+import { ActionList, PopoverProvider, ToggleButton } from '@aussieljk/forkbook/internal/components';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { UndoIcon, ZoomIcon } from '@storybook/icons';
 
-import { types, useStorybookApi } from 'storybook/manager-api';
+import { types, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { Shortcut } from '../../Shortcut.tsx';
 import { NumericInput } from '../NumericInput.tsx';

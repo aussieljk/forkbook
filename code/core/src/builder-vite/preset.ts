@@ -1,5 +1,5 @@
-import { findConfigFile } from 'storybook/internal/common';
-import type { Options, PresetPropertyFn } from 'storybook/internal/types';
+import { findConfigFile } from '@aussieljk/forkbook/internal/common';
+import type { Options, PresetPropertyFn } from '@aussieljk/forkbook/internal/types';
 
 import type { PluginOption } from 'vite';
 
@@ -15,8 +15,8 @@ import { resolveVitePublicDir } from './vite-config.ts';
 export const optimizeViteDeps: string[] = [previewRuntimePath];
 
 /**
- * Preset that provides the core Storybook Vite plugins shared between `storybook/builder-vite` and
- * `storybook/addon-vitest`.
+ * Preset that provides the core Forkbook Vite plugins shared between `@aussieljk/forkbook/builder-vite` and
+ * `@aussieljk/forkbook/addon-vitest`.
  */
 export async function viteCorePlugins(
   _: PluginOption[],
@@ -43,7 +43,7 @@ export async function viteCorePlugins(
 }
 
 export const staticDirs: PresetPropertyFn<'staticDirs'> = async (values = [], options) => {
-  // In dev mode Vite serves the public dir itself, after Storybook's `staticDirs` middleware.
+  // In dev mode Vite serves the public dir itself, after Forkbook's `staticDirs` middleware.
   if (options.configType !== 'PRODUCTION') {
     return values;
   }

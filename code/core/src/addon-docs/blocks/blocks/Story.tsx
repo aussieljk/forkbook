@@ -7,8 +7,8 @@ import type {
   PreparedStory,
   Renderer,
   StoryId,
-} from 'storybook/internal/types';
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
+} from '@aussieljk/forkbook/internal/types';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 
 import { Story as PureStory, StorySkeleton } from '../components';
 import type { DocsContextProps } from './DocsContext';
@@ -24,7 +24,7 @@ type StoryRefProps = {
    * Pass the export defining a story to render that story
    *
    * ```jsx
-   * import { Meta, Story } from 'storybook/addon-docs/blocks';
+   * import { Meta, Story } from '@aussieljk/forkbook/addon-docs/blocks';
    * import * as ButtonStories from './Button.stories';
    *
    * <Meta of={ButtonStories} />
@@ -36,7 +36,7 @@ type StoryRefProps = {
    * Pass all exports of the CSF file if this MDX file is unattached
    *
    * ```jsx
-   * import { Story } from 'storybook/addon-docs/blocks';
+   * import { Story } from '@aussieljk/forkbook/addon-docs/blocks';
    * import * as ButtonStories from './Button.stories';
    *
    * <Story of={ButtonStories.Primary} meta={ButtonStories} />;

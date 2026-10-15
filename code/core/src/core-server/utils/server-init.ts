@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { logger } from 'storybook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import http from 'http';
 import https from 'https';

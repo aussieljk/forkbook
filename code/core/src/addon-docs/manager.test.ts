@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
 
-import { PANEL_ID } from 'storybook/internal/docs-tools';
+import { PANEL_ID } from '@aussieljk/forkbook/internal/docs-tools';
 
-import { addons } from 'storybook/manager-api';
+import { addons } from '@aussieljk/forkbook/manager-api';
 
 import './manager.tsx';
 
-vi.mock('storybook/manager-api', () => ({
+vi.mock('@aussieljk/forkbook/manager-api', () => ({
   addons: {
     register: (_id: string, register: () => void) => register(),
     add: vi.fn(),

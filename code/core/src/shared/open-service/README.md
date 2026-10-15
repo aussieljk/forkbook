@@ -1,6 +1,6 @@
 # Open Service
 
-`open-service` is a small schema-driven service system for Storybook internals.
+`open-service` is a small schema-driven service system for Forkbook internals.
 
 Its goals are:
 
@@ -18,9 +18,9 @@ fit together, where behavior lives, and how to define new services correctly.
 
 External callers import from one of these entrypoints:
 
-- `storybook/open-service` for environment-agnostic service definitions — `defineService` and shared types (no React, no registration)
-- `storybook/manager-api` for manager addons — `registerService` (relay hub), `useServiceQuery`, `useServiceCommand`, and shared types
-- `storybook/preview-api` for preview code — `registerService` (leaf) and shared types (no React hooks)
+- `@aussieljk/forkbook/open-service` for environment-agnostic service definitions — `defineService` and shared types (no React, no registration)
+- `@aussieljk/forkbook/manager-api` for manager addons — `registerService` (relay hub), `useServiceQuery`, `useServiceCommand`, and shared types
+- `@aussieljk/forkbook/preview-api` for preview code — `registerService` (leaf) and shared types (no React hooks)
 - [server.ts](./server.ts) for server-side registration, discovery, and static snapshot writing
 
 `registerService` is the **single** registration function across every runtime. It lives in
@@ -59,8 +59,8 @@ Internal tests and implementation code may import from the individual modules di
 
 - [index.ts](./index.ts): environment-agnostic barrel for definition helpers and shared types
 - [server.ts](./server.ts): server entrypoint that re-exports registration APIs (relay hub) and owns static snapshot building/writing
-- [manager.ts](./manager.ts): manager entrypoint (`relay: true`) re-exported via `storybook/manager-api`; adds `useServiceQuery` and `useServiceCommand`
-- [preview.ts](./preview.ts): preview entrypoint (`relay: false`, leaf) re-exported via `storybook/preview-api`; registration only, no React hooks
+- [manager.ts](./manager.ts): manager entrypoint (`relay: true`) re-exported via `@aussieljk/forkbook/manager-api`; adds `useServiceQuery` and `useServiceCommand`
+- [preview.ts](./preview.ts): preview entrypoint (`relay: false`, leaf) re-exported via `@aussieljk/forkbook/preview-api`; registration only, no React hooks
 - [types.ts](./types.ts): core type model for definitions, contexts, runtime instances, and static build data
 - [service-definition.ts](./service-definition.ts): `defineService()` typing that preserves inline inference when declaring services
 - [toolset-definition.ts](./toolset-definition.ts): `defineToolset()` typing for public toolsets and their handler context
@@ -140,7 +140,7 @@ An error whose message speaks to the agent and names its own recovery declares `
 property — never by keeping a class list, which misclassifies across bundle copies.
 
 `ctx` is `{ transport: 'cli' | 'mcp' | 'sdk', origin?, getService }`. `origin` is the complete
-Storybook UI base URL, including a deployment subpath; the MCP adapter derives it from the request.
+Forkbook UI base URL, including a deployment subpath; the MCP adapter derives it from the request.
 Descriptions that name a sibling tool must render it through `getToolName(ctx)` rather than hardcoding
 a spelling, so the same sentence reads as the derived MCP tool name, the CLI command, or the SDK
 dotted reference for the active transport. MCP names are derived from the toolset id and method key
@@ -155,10 +155,10 @@ preset-independent so manager- or preview-realm toolsets can use it later). A to
 registered wherever a consumer resolves it, including consumers that only read its descriptions and
 schemas: `getToolset(id)` throws on an unregistered id rather than silently dropping a tool.
 Adapters resolve one toolset with `getToolset(id)` or take the whole set via
-`getRegisteredToolsets()`; `storybook/addon-mcp`, `storybook/mcp`, and the `storybook tools` CLI
+`getRegisteredToolsets()`; `@aussieljk/forkbook/addon-mcp`, `@aussieljk/forkbook/mcp`, and the `forkbook tools` CLI
 consume them today.
 
-Telemetry classification belongs in Storybook-owned telemetry calls, not on the generic toolset
+Telemetry classification belongs in Forkbook-owned telemetry calls, not on the generic toolset
 definition. A handler returns at most one usage report on its outcome, `telemetry: { payload }`.
 `invokeToolsetMethod` — the one way every surface runs a method — names the report after the
 registration: `toolset`, `tool` in CLI spelling, and the generated `event`
@@ -166,7 +166,7 @@ registration: `toolset`, `tool` in CLI spelling, and the generated `event`
 record. The MCP adapter forwards it as its `addon-mcp` event, but under the pre-toolset event name
 the addon keeps per tool (`tool:getStoriesByComponent`), so MCP usage data stays continuous across
 versions. Toolsets never name events themselves. Third-party toolsets do not need to participate in
-Storybook's telemetry taxonomy.
+Forkbook's telemetry taxonomy.
 
 Core owns `docs`, `stories`, and `review`. Addon-vitest owns the complete `test` toolset—its schemas,
 channel protocol, formatting, telemetry, and tests—and registers it beside its responder from the
@@ -174,10 +174,10 @@ same `services` hook. Core exports only the generic story-selector primitives th
 
 The docs toolset is runtime-agnostic behind `DocsAccess` (`list` and `resolve`). Service, manifest,
 and provider accesses feed the same definition; composition combines accesses rather than owning a
-second engine. `storybook/internal/toolsets-docs` is a portable entry consumed by both MCP packages,
+second engine. `@aussieljk/forkbook/internal/toolsets-docs` is a portable entry consumed by both MCP packages,
 so its bundled declaration must remain flat and import only its declared allowlist.
 
-The `storybook tools` CLI is a slim shell over `storybook/internal/tools`. Default mode is `auto`:
+The `forkbook tools` CLI is a slim shell over `@aussieljk/forkbook/internal/tools`. Default mode is `auto`:
 attach to a matching running instance as a delegated leaf, and fall back to a local host when
 `createTools` cannot attach. `--attach` requires attachment (gate failures are errors).
 `--no-attach` forces local. Toolset handlers run in the SDK process, and attached service commands
@@ -298,7 +298,7 @@ Services and operations can be hidden from discovery APIs without disabling them
   still invoke the operation through a service handle, and TypeScript types remain available.
   Operations may be marked internal even on a non-internal service.
 
-All core Storybook OSA services are currently `internal: true`. Treat them as unstable: Storybook
+All core Forkbook OSA services are currently `internal: true`. Treat them as unstable: Forkbook
 may break their ids, state shapes, and operations without a public semver bump. Prefer public
 toolsets (`defineToolset`) for MCP/CLI surfaces.
 
@@ -364,7 +364,7 @@ a service is referenced from many call sites.
 ### Core service typing
 
 Core services under `services/` are typed at the module-level `getService` entrypoints
-(`storybook/manager-api`, `storybook/preview-api`, and the server import). Known ids such as
+(`@aussieljk/forkbook/manager-api`, `@aussieljk/forkbook/preview-api`, and the server import). Known ids such as
 `getService('core/docgen')` resolve to the correct instance type without an explicit generic;
 unknown ids still fall back to `RuntimeService`, and addon services can keep using
 `getService<MyService>('my-addon/service')`.
@@ -424,7 +424,7 @@ Handling of extra object fields depends on the schema implementation you choose.
 
 ## Server Registration Flow
 
-Server-side registration happens through the `services` preset hook. Storybook calls `await presets.apply('services')` during dev startup, static builds, and in the `storybook tools` CLI, and each service author's preset implementation is responsible for calling `registerService(...)` directly.
+Server-side registration happens through the `services` preset hook. Forkbook calls `await presets.apply('services')` during dev startup, static builds, and in the `forkbook tools` CLI, and each service author's preset implementation is responsible for calling `registerService(...)` directly.
 
 That split is intentional:
 
@@ -443,10 +443,10 @@ more than once in the same process, which catches misconfigured preset wiring ea
 
 Registration must not start subscriptions that execute commands, because the attached tools CLI registers the same services. Its first [state sync](#state-sync-multi-master) advances every query from the initial state to the dev server's current one, so such a subscription would treat old changes as new and send their commands to the dev server. Export the subscription next to `register…Service` and start it from the `experimental_devServer` preset hook, which only the dev server applies; in [common-preset.ts](../../core-server/presets/common-preset.ts), `services` queues it beside the registration and `experimental_devServer` starts the queue. `experimental_devServer` applies `services` through `applyServicesPresetOnce` and awaits it, so the dev server needs no separate `services` call and the queue is always complete.
 
-The internal Storybook config registers an example debug service through a dedicated preset file
-([`code/.storybook/services-preset.ts`](../../../../.storybook/services-preset.ts)), gated on
-`STORYBOOK_OPEN_SERVICE_DEBUG=true`. The flag stays unset by default so normal `yarn storybook:ui`
-and `yarn storybook:ui:build` runs do not register the debug service.
+The internal Forkbook config registers an example debug service through a dedicated preset file
+([`code/.forkbook/services-preset.ts`](../../../../.forkbook/services-preset.ts)), gated on
+`FORKBOOK_OPEN_SERVICE_DEBUG=true`. The flag stays unset by default so normal `yarn forkbook:ui`
+and `yarn forkbook:ui:build` runs do not register the debug service.
 
 ## Runtime Flow
 
@@ -618,7 +618,7 @@ If multiple tasks resolve to the same path, their states are deep-merged.
 
 `writeOpenServiceStaticFiles(outputDir)` then writes those logical paths underneath `<outputDir>/services`, converting slash-separated logical keys into native filesystem paths for the current operating system.
 
-In a static Storybook build (`CONFIG_TYPE === 'PRODUCTION'`), manager and preview runtimes pass a browser static loader into `registerService`. For every query that declares `staticPath`, the runtime swaps the authored `load` hook for a fetch of `./services/<serviceId>/<staticPath>` relative to the served HTML root (the same convention as `./index.json`), then applies the JSON snapshot via `applyStatePatch(..., { preserveMissingKeys: true })` so snapshots for one query input do not delete state populated by other inputs. Development mode keeps running `load` normally against the dev server.
+In a static Forkbook build (`CONFIG_TYPE === 'PRODUCTION'`), manager and preview runtimes pass a browser static loader into `registerService`. For every query that declares `staticPath`, the runtime swaps the authored `load` hook for a fetch of `./services/<serviceId>/<staticPath>` relative to the served HTML root (the same convention as `./index.json`), then applies the JSON snapshot via `applyStatePatch(..., { preserveMissingKeys: true })` so snapshots for one query input do not delete state populated by other inputs. Development mode keeps running `load` normally against the dev server.
 
 Static path rules:
 
@@ -782,7 +782,7 @@ Snapshots and static JSON apply through `applyStatePatch` (in [service-sync.ts](
 
 ### Channel setup
 
-There is no open-service-specific channel install step. `getChannel()` from `storybook/internal/channels` reads the live channel: the manager sets it through `addons.setChannel`, both builders inject it into the preview iframe, and the dev server installs it in the `services` preset before any service registers. `registerService` wires the runtime to that channel at registration; there is no separate connect step. Server registration uses `relay: true`, manager registration `relay: true`, and preview registration `relay: false`.
+There is no open-service-specific channel install step. `getChannel()` from `@aussieljk/forkbook/internal/channels` reads the live channel: the manager sets it through `addons.setChannel`, both builders inject it into the preview iframe, and the dev server installs it in the `services` preset before any service registers. `registerService` wires the runtime to that channel at registration; there is no separate connect step. Server registration uses `relay: true`, manager registration `relay: true`, and preview registration `relay: false`.
 
 `registerService` throws `OpenServiceMissingChannelError` when no channel is installed. Unit tests install a mock channel with `setChannel(mock)`, or call `clearChannel()` to assert that registration fails without one.
 
@@ -828,7 +828,7 @@ Every registered runtime plays **both** roles at once, decided per command:
 Outside [delegated mode](#delegated-mode), a runtime never requests a command it implements (it runs
 that locally), so a responder never answers its own invoke echo: `onInvoke` only acts on commands in
 its `implementedCommandNames` set. A delegated runtime does request commands it implements — that is
-how dispatch reaches the Storybook it attached to.
+how dispatch reaches the Forkbook it attached to.
 
 ### Events
 
@@ -847,7 +847,7 @@ several services routes them correctly.
 - `runtimeId` is the id of the runtime that emitted the envelope — the requester on an invoke, the
   responder on a reply.
 - `error` is a transport-safe serialization of the thrown value, including its full `cause` chain (and
-  arrays such as the `.loaded()` drain's `cause.aggregated`) plus Storybook fields like
+  arrays such as the `.loaded()` drain's `cause.aggregated`) plus Forkbook fields like
   `code`/`fromStorybook`. See [service-error-serialization.ts](./service-error-serialization.ts);
   `Error` instances cannot cross a websocket (JSON) or postMessage (structured clone) boundary intact,
   so they are flattened to a plain shape and rebuilt into a real `Error` on the requester.
@@ -931,8 +931,8 @@ command that the server will answer), so absence-of-ack stays their only signal.
 
 ### Delegated mode
 
-A runtime that attaches to an already-running Storybook (rather than starting its own) must not
-dispatch commands locally: the Storybook it attached to owns the story index, the module graph, and
+A runtime that attaches to an already-running Forkbook (rather than starting its own) must not
+dispatch commands locally: the Forkbook it attached to owns the story index, the module graph, and
 the providers, so it is the implementer for every command. Loads, toolset methods, and query handlers
 still run in this process. `setDelegatedMode(true)` in [service-registry.ts](./service-registry.ts)
 puts command dispatch in that role; `isDelegatedMode()` reads it and the default is `false`. The flag
@@ -954,7 +954,7 @@ What changes is **dispatch**, not registration:
 The flag is runtime-wide and read at registration time, like the installed channel, so set it once at
 the entry boundary before the first `registerService` call. `clearRegistry()` resets it.
 
-Genuine configuration drift — the attached Storybook does not register the service or the command
+Genuine configuration drift — the attached Forkbook does not register the service or the command
 this runtime's configuration does — is reported positively rather than inferred: command events are
 not relayed across a hub's transports, so the attached instance is the only runtime that ever sees
 a delegated caller's invoke, and its `services:command-unhandled` reply is authoritative. The
@@ -966,11 +966,11 @@ re-registration) — and each of those degrades to the timeout below.
 
 When nothing acknowledges within `REMOTE_COMMAND_ACK_TIMEOUT_MS` (and no unhandled reply arrived),
 the resulting `OpenServiceRemoteCommandUnhandledError` carries delegation-specific guidance instead
-of "not implemented in any connected runtime": the attached Storybook did not acknowledge the
+of "not implemented in any connected runtime": the attached Forkbook did not acknowledge the
 command in time (it may be busy or unreachable), and — delivery being at-least-once — the command
 may still have executed there, which a retry should take into account.
 
-The `storybook tools` SDK is the attached caller: it sets this flag, then loads the instance
+The `forkbook tools` SDK is the attached caller: it sets this flag, then loads the instance
 config. See [cli/tools/architecture.md](../../cli/tools/architecture.md).
 
 ## React Hooks
@@ -980,7 +980,7 @@ config. See [cli/tools/architecture.md](../../cli/tools/architecture.md).
 Subscribes to a service query and returns its [`QueryState`](#query-state) (the current `data` plus the `load` lifecycle), re-rendering when the state changes. Pass the **query directly** so its input/output types infer per query.
 
 ```tsx
-import { useServiceQuery } from 'storybook/manager-api';
+import { useServiceQuery } from '@aussieljk/forkbook/manager-api';
 
 // With input
 const { data, isInitialLoading, isError, error } = useServiceQuery(service.queries.recordFields, {
@@ -1009,7 +1009,7 @@ The first render is seeded synchronously: `useSyncExternalStore` reads `getSnaps
 Returns a stable reference to a service command. The reference is stable as long as `service` and `commandName` do not change, so it is safe to pass to child components or include in effect dependency arrays.
 
 ```tsx
-import { useServiceCommand } from 'storybook/manager-api';
+import { useServiceCommand } from '@aussieljk/forkbook/manager-api';
 
 const assignField = useServiceCommand(service, 'assignRecordField');
 
@@ -1029,7 +1029,7 @@ Define queries and commands inline inside `defineService()` so the service-level
 ```ts
 import * as v from 'valibot';
 
-import { defineService } from 'storybook/open-service';
+import { defineService } from '@aussieljk/forkbook/open-service';
 import { registerService } from './server.ts';
 
 type ExampleState = {
@@ -1089,7 +1089,7 @@ const ready = await exampleService.queries.value.loaded({ entryId: 'a' });
 - **Keep `load` bodies minimal — a load triggers commands, it never computes.** Push input resolution, side effects, and state mutation into the command itself so it stays callable, testable, reusable, and delegable to another runtime.
 - Query handlers are strict readers: sync, no commands, no `setState`.
 - Use commands for all state mutation.
-- Manager addons import from `storybook/manager-api`; preview code imports from `storybook/preview-api`. Server presets use [server.ts](./server.ts). Import modules in this directory directly only from tests or implementation code.
+- Manager addons import from `@aussieljk/forkbook/manager-api`; preview code imports from `@aussieljk/forkbook/preview-api`. Server presets use [server.ts](./server.ts). Import modules in this directory directly only from tests or implementation code.
 - Use `.loaded()` when a caller wants to fire the load and await the full state; use `.get()` when a synchronous "current best" read (no load) is fine.
 - No channel install is needed in manager/preview — `getChannel()` returns the channel `addons.setChannel` installed.
 - Call `clearRegistry()` in `afterEach` in tests that register services. Use `setChannel(mock)` before `registerService` when a test needs sync. Node bootstraps a noop channel at import; browser preview gets the real channel from builders before `preview.ts` loads.

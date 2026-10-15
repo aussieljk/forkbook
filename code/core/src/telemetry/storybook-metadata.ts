@@ -9,10 +9,10 @@ import {
   isCI,
   loadMainConfig,
   versions,
-} from 'storybook/internal/common';
-import { getInterpretedFile } from 'storybook/internal/common';
-import { readConfig } from 'storybook/internal/csf-tools';
-import type { PackageJson, StorybookConfig } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import { getInterpretedFile } from '@aussieljk/forkbook/internal/common';
+import { readConfig } from '@aussieljk/forkbook/internal/csf-tools';
+import type { PackageJson, StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { RN_STORYBOOK_DIR } from '../shared/constants/config-folder.ts';
 
@@ -103,7 +103,7 @@ export const sanitizeAddonName = (name: string) => {
 };
 
 // Analyze a combination of information from main.js and package.json
-// to provide telemetry over a Storybook project
+// to provide telemetry over a Forkbook project
 export const computeStorybookMetadata = async ({
   packageJsonPath,
   packageJson,
@@ -160,7 +160,7 @@ export const computeStorybookMetadata = async ({
   if (!mainConfig) {
     return {
       ...metadata,
-      storybookVersionSpecifier: versions.storybook,
+      storybookVersionSpecifier: versions['@aussieljk/forkbook'],
       language,
     };
   }
@@ -238,9 +238,11 @@ export const computeStorybookMetadata = async ({
 
   const addonNames = Object.keys(addons);
 
-  // all Storybook deps minus the addons
+  // all Forkbook deps minus the addons
   const storybookPackages = Object.keys(allDependencies)
-    .filter((dep) => dep.includes('storybook') && !addonNames.includes(dep))
+    .filter(
+      (dep) => (dep.includes('storybook') || dep.includes('forkbook')) && !addonNames.includes(dep)
+    )
     .reduce((acc, dep) => {
       return {
         ...acc,
@@ -334,8 +336,8 @@ function resolveDefaultConfigDir(packageJson: PackageJson): string {
     Scenarios:
     1. user changed it to something else e.g. "storybook:dev"
     2. they are using nx where the storybook config is defined somewhere else
-    3. React Native on-device Storybook uses `.rnstorybook` and `storybook:ios`/`storybook:android`
-       scripts (no `storybook` script), so the `.storybook` default never finds the config.
+    3. React Native on-device Forkbook uses `.rnstorybook` and `storybook:ios`/`storybook:android`
+       scripts (no `storybook` script), so the `.forkbook` default never finds the config.
   */
   const fromScript = getStorybookConfiguration(
     String((packageJson?.scripts as Record<string, unknown> | undefined)?.storybook || ''),
@@ -351,7 +353,7 @@ function resolveDefaultConfigDir(packageJson: PackageJson): string {
     return RN_STORYBOOK_DIR;
   }
 
-  return '.storybook';
+  return '.forkbook';
 }
 
 export const getStorybookMetadata = async (_configDir?: string) => {

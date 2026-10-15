@@ -7,9 +7,9 @@
  */
 
 import type { StandardSchemaV1 } from '@standard-schema/spec';
-import { getService } from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
-import { OpenServiceToolsetOutputMismatchError } from 'storybook/internal/server-errors';
+import { getService } from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { OpenServiceToolsetOutputMismatchError } from '@aussieljk/forkbook/internal/server-errors';
 import {
   getToolset,
   invokeToolsetMethod,
@@ -22,7 +22,7 @@ import {
   type ToolsetMethod,
   type ToolsetMethodId,
   type ToolsetMethodReport,
-} from 'storybook/open-service';
+} from '@aussieljk/forkbook/open-service';
 import type { McpServer } from 'tmcp';
 
 import { collectTelemetry } from '../telemetry.ts';

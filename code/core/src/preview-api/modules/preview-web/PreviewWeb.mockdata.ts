@@ -8,14 +8,14 @@ import {
   STORY_MISSING,
   STORY_RENDER_PHASE_CHANGED,
   STORY_THREW_EXCEPTION,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import type {
   ModuleImportFn,
   ProjectAnnotations,
   Renderer,
   StoryIndex,
   TeardownRenderToCanvas,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { EventEmitter } from 'events';
 

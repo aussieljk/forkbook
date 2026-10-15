@@ -5,8 +5,8 @@ import {
   RESULT_WHATS_NEW_DATA,
   SET_WHATS_NEW_CACHE,
   TOGGLE_WHATS_NEW_NOTIFICATIONS,
-} from 'storybook/internal/core-events';
-import type { WhatsNewCache, WhatsNewData } from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { WhatsNewCache, WhatsNewData } from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
 
@@ -30,7 +30,7 @@ because:
 A. if we import the icon from @storybook/icons, the CJS output can't tree-shake the package, so it increases the bundle size with +200KB
 B. we can't rely on the globalization by the manager, because react native also uses this manager-api and doesn't do the globalization
 
-TODO: turn this into an import again when we go ESM-only in Storybook 10, as the ESM output tree-shakes fine
+TODO: turn this into an import again when we go ESM-only in Forkbook 10, as the ESM output tree-shakes fine
 */
 const StorybookIcon = ({ color = 'currentColor', size = 14 }) => {
   return (
@@ -125,7 +125,7 @@ export const init: ModuleFn = ({ fullAPI, store, provider }) => {
         link: '/settings/whats-new',
         content: {
           headline: whatsNewData.title,
-          subHeadline: "Learn what's new in Storybook",
+          subHeadline: "Learn what's new in Forkbook",
         },
         icon: <StorybookIcon />,
         onClear({ dismissed }: any) {

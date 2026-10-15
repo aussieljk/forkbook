@@ -1,6 +1,6 @@
-import { cache, isCI } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import type { CoreConfig } from 'storybook/internal/types';
+import { cache, isCI } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -30,10 +30,10 @@ export const getHostValidationWarning = ({
       id: 'allowed-hosts',
       message: dedent`
         Host validation is disabled because core.allowedHosts is set to true.
-        Any website open in your browser can send requests to this Storybook.
+        Any website open in your browser can send requests to this Forkbook.
         Such a website can read your stories and source files. It can also write files in your project through the WebSocket channel and the MCP server.
 
-        Set core.allowedHosts to a list of hostnames in .storybook/main.ts to restrict access.
+        Set core.allowedHosts to a list of hostnames in .forkbook/main.ts to restrict access.
         Learn more: ${DOCS_URL}
       `,
     };
@@ -42,10 +42,10 @@ export const getHostValidationWarning = ({
     return {
       id: 'all-interfaces',
       message: dedent`
-        Storybook is listening on all network interfaces because --host is set to 0.0.0.0.
-        Anyone on your network can open this Storybook. They can read your stories and source files, and they can write files in your project through the WebSocket channel and the MCP server.
+        Forkbook is listening on all network interfaces because --host is set to 0.0.0.0.
+        Anyone on your network can open this Forkbook. They can read your stories and source files, and they can write files in your project through the WebSocket channel and the MCP server.
 
-        Remove --host 0.0.0.0 to listen on localhost only. Also set core.allowedHosts to a list of hostnames in .storybook/main.ts to keep host validation enabled.
+        Remove --host 0.0.0.0 to listen on localhost only. Also set core.allowedHosts to a list of hostnames in .forkbook/main.ts to keep host validation enabled.
         Learn more: ${DOCS_URL}
       `,
     };
@@ -77,12 +77,12 @@ export async function warnOnDisabledHostValidation(options: HostValidationWarnin
       {
         value: 'continue',
         label: 'Continue',
-        hint: 'Start Storybook with host validation disabled',
+        hint: 'Start Forkbook with host validation disabled',
       },
       {
         value: 'dont-ask',
         label: "Continue and don't ask again",
-        hint: 'Start Storybook and skip this question in the future',
+        hint: 'Start Forkbook and skip this question in the future',
       },
       { value: 'abort', label: 'Abort' },
     ],

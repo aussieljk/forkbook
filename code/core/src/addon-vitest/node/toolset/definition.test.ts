@@ -1,5 +1,5 @@
-import type { StoryIndex } from 'storybook/internal/types';
-import { invokeToolsetMethod, type ToolsetCtx } from 'storybook/open-service';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
+import { invokeToolsetMethod, type ToolsetCtx } from '@aussieljk/forkbook/open-service';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as v from 'valibot';
@@ -41,7 +41,7 @@ function componentTest(
 ) {
   return {
     storyId,
-    typeId: 'storybook/component-test',
+    typeId: '@aussieljk/forkbook/component-test',
     value,
     title: 'Component Test',
     description,
@@ -51,7 +51,7 @@ function componentTest(
 function a11yCheck(storyId: string, value: 'status-value:success' | 'status-value:error') {
   return {
     storyId,
-    typeId: 'storybook/a11y',
+    typeId: '@aussieljk/forkbook/a11y',
     value,
     title: 'Accessibility tests',
     description: '',

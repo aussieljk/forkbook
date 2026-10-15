@@ -1,8 +1,8 @@
 // a separate module so tests can mock it and create stores with arbitrary ids
 const FIRST_PARTY_STORE_IDS = new Set([
-  'storybook/status',
-  'storybook/test-provider',
-  'storybook/test',
+  '@aussieljk/forkbook/status',
+  '@aussieljk/forkbook/test-provider',
+  '@aussieljk/forkbook/test',
 ]);
 
 export const isFirstPartyStoreId = (id: string) => FIRST_PARTY_STORE_IDS.has(id);

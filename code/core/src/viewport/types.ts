@@ -39,7 +39,7 @@ export interface ViewportParameters {
   viewport?: {
     /**
      * Removes the tool and disables the feature's behavior. If you wish to turn off this feature
-     * for the entire Storybook, you can set the option in your `main.js|ts` configuration file.
+     * for the entire Forkbook, you can set the option in your `main.js|ts` configuration file.
      *
      * @see https://storybook.js.org/docs/essentials/viewport#disable
      */

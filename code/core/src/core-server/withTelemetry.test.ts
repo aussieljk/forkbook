@@ -1,21 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { cache, isCI, loadAllPresets, loadMainConfig } from 'storybook/internal/common';
-import { prompt } from 'storybook/internal/node-logger';
+import { cache, isCI, loadAllPresets, loadMainConfig } from '@aussieljk/forkbook/internal/common';
+import { prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   ErrorCollector,
   isTelemetryStateResolved,
   oneWayHash,
   setTelemetryEnabled,
   telemetry,
-} from 'storybook/internal/telemetry';
-import type { StorybookConfigRaw } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/telemetry';
+import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { getErrorLevel, sendTelemetryError, withTelemetry } from './withTelemetry.ts';
 
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const cliOptions = {};
 const originalStdoutIsTTY = process.stdout.isTTY;
@@ -80,7 +80,7 @@ describe('withTelemetry', () => {
 
     await withTelemetry('dev', { cliOptions }, run);
 
-    expect(loadMainConfig).toHaveBeenCalledWith({ configDir: '.storybook' });
+    expect(loadMainConfig).toHaveBeenCalledWith({ configDir: '.forkbook' });
     expect(setTelemetryEnabled).toHaveBeenCalledWith(true);
     expect(callOrder).toEqual(['setTelemetryEnabled', 'run']);
   });
@@ -534,7 +534,7 @@ describe('withTelemetry', () => {
       withTelemetry('dev', { cliOptions: {}, printError: vi.fn() }, run)
     ).rejects.toThrow('preset loading failed');
 
-    expect(loadMainConfig).toHaveBeenCalledWith({ configDir: '.storybook' });
+    expect(loadMainConfig).toHaveBeenCalledWith({ configDir: '.forkbook' });
     expect(setTelemetryEnabled).toHaveBeenCalledWith(false);
   });
 });

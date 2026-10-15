@@ -32,7 +32,7 @@ const HIDDEN_JSDOC_TAG_NAMES = new Set([
   // Consumed by `extractComponentDescription` as the description, which is rendered on its own.
   'desc',
   'description',
-  // Storybook's own description override, consumed alongside `desc`.
+  // Forkbook's own description override, consumed alongside `desc`.
   'describe',
   // Consumed into the `summary` field, which the component listing already prints.
   'summary',

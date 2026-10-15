@@ -1,6 +1,6 @@
 import { existsSync, realpathSync } from 'node:fs';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { basename, dirname, extname, join, normalize, resolve } from 'pathe';
 
@@ -34,7 +34,7 @@ export type ModuleGraphAccess = {
 const SOURCE_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'] as const;
 const INDEX_BASENAMES = SOURCE_EXTENSIONS.map((ext) => `index${ext}`);
 
-/** Storybook import paths always use forward slashes, even on Windows. */
+/** Forkbook import paths always use forward slashes, even on Windows. */
 function slash(filePath: string): string {
   return filePath.replace(/\\/g, '/');
 }
@@ -131,16 +131,16 @@ function buildStoryIdsByFile(storyIndex: StoryIndex): Map<string, Set<string>> {
 export function reasonForStatus(status: ModuleGraphStatus): string {
   switch (status.value) {
     case 'booting':
-      return "Storybook's story module graph hasn't built yet — it is still being constructed. Retry shortly.";
+      return "Forkbook's story module graph hasn't built yet — it is still being constructed. Retry shortly.";
     case 'unavailable':
       // The service's own reason names the adapter-specific cause; the remedy sentence stays
       // appended because the agent's next move is to check how the dev server runs, which that
       // reason does not say.
-      return `Storybook's story dependency graph is unavailable: ${status.reason}. Make sure the dev server is running with a builder that supports change detection.`;
+      return `Forkbook's story dependency graph is unavailable: ${status.reason}. Make sure the dev server is running with a builder that supports change detection.`;
     case 'error':
-      return `Storybook's story module graph failed to build: ${status.error.message}`;
+      return `Forkbook's story module graph failed to build: ${status.error.message}`;
     case 'ready':
-      return "Storybook's story module graph is ready.";
+      return "Forkbook's story module graph is ready.";
     default: {
       const exhaustive: never = status;
       return exhaustive;
@@ -176,7 +176,7 @@ export interface ResolveComponentStoriesDeps {
   getStoryIndex: () => Promise<StoryIndex>;
   /**
    * The `core/module-graph` service, or `undefined` when it isn't registered in this process (e.g.
-   * a builder without change detection, or an older Storybook without the open-service API).
+   * a builder without change detection, or an older Forkbook without the open-service API).
    */
   moduleGraph: ModuleGraphAccess | undefined;
   /** Defaults to `process.cwd()`, matching the dev server. */
@@ -193,7 +193,7 @@ interface ResolvedComponent {
 }
 
 /**
- * Looks up stories that consume each component path via Storybook's `core/module-graph` reverse
+ * Looks up stories that consume each component path via Forkbook's `core/module-graph` reverse
  * index. Returns `{ available: false }` when the graph isn't ready; otherwise per-path results.
  *
  * The unavailable/booting/error cases are reported rather than flattened into "no matches" so a
@@ -209,7 +209,7 @@ export async function resolveComponentStories(
     return {
       available: false,
       reason:
-        "Storybook's story module graph is unavailable. This Storybook version may not ship the open-service API, the module-graph service isn't registered (e.g. a builder without change detection), or the dev server is not running.",
+        "Forkbook's story module graph is unavailable. This Forkbook version may not ship the open-service API, the module-graph service isn't registered (e.g. a builder without change detection), or the dev server is not running.",
     };
   }
 

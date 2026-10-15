@@ -1,6 +1,6 @@
 import { relative } from 'node:path';
 
-import { executeCommandSync, getProjectRoot } from 'storybook/internal/common';
+import { executeCommandSync, getProjectRoot } from '@aussieljk/forkbook/internal/common';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';

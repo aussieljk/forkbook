@@ -1,4 +1,4 @@
-import type { ComponentImportRef } from 'storybook/internal/csf-tools';
+import type { ComponentImportRef } from '@aussieljk/forkbook/internal/csf-tools';
 
 import type { ComponentDoc } from './componentMeta/componentMetaExtractor.ts';
 

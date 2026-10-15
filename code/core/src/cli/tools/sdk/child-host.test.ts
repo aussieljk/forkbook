@@ -12,7 +12,7 @@ describe('runChildHost', () => {
   const send = vi.fn();
   const handlers: Array<(message: unknown) => void> = [];
   const close = vi.fn(async () => {});
-  const describe = vi.fn(async () => ({ configDir: '/repo/.storybook', toolsets: [] }));
+  const describe = vi.fn(async () => ({ configDir: '/repo/.forkbook', toolsets: [] }));
   const call = vi.fn(
     async (
       _ref: string,
@@ -32,17 +32,17 @@ describe('runChildHost', () => {
     describe.mockReset();
     call.mockReset();
     handlers.length = 0;
-    vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', undefined);
-    vi.stubEnv('STORYBOOK_TOOLS_CHILD_HOST', undefined);
+    vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', undefined);
+    vi.stubEnv('FORKBOOK_TOOLS_CHILD_HOST', undefined);
     vi.mocked(createTools).mockReset();
     vi.mocked(createTools).mockResolvedValue({
       mode: 'attached',
       requestedMode: 'attached',
       host: 'in-process',
       clientInfo: { name: 'storybook-tools-sdk', version: '10.2.0', kind: 'sdk' },
-      storybook: { version: '10.2.0', configDir: '/repo/.storybook', url: 'http://localhost:6006' },
+      storybook: { version: '10.2.0', configDir: '/repo/.forkbook', url: 'http://localhost:6006' },
       runtime: {
-        configDir: '/repo/.storybook',
+        configDir: '/repo/.forkbook',
         toolsets: [],
         getService: () => {
           throw new Error('unused');
@@ -53,7 +53,7 @@ describe('runChildHost', () => {
       close,
     } as unknown as Tools);
     describe.mockResolvedValue({
-      configDir: '/repo/.storybook',
+      configDir: '/repo/.forkbook',
       toolsets: [],
     } satisfies ToolsetCatalog);
     call.mockImplementation(async (_ref, _input, options) => {
@@ -73,9 +73,9 @@ describe('runChildHost', () => {
       mode: 'local',
       host: 'in-process',
       clientInfo: { name: 'storybook-tools-sdk', version: '10.2.0', kind: 'sdk' },
-      storybook: { version: '10.2.0', configDir: '/repo/.storybook' },
+      storybook: { version: '10.2.0', configDir: '/repo/.forkbook' },
       runtime: {
-        configDir: '/repo/.storybook',
+        configDir: '/repo/.forkbook',
         toolsets: [],
         getService: () => {
           throw new Error('unused');
@@ -108,7 +108,7 @@ describe('runChildHost', () => {
       mode: 'local',
       autoSpawn: false,
     });
-    expect(process.env.STORYBOOK_ATTACHED_TOOLS).toBeUndefined();
+    expect(process.env.FORKBOOK_ATTACHED_TOOLS).toBeUndefined();
   });
 
   it('boots attached tools with autoSpawn declined and answers describe/call/close', async () => {
@@ -144,7 +144,7 @@ describe('runChildHost', () => {
         expect.objectContaining({
           type: 'result',
           id: '1',
-          value: { configDir: '/repo/.storybook', toolsets: [] },
+          value: { configDir: '/repo/.forkbook', toolsets: [] },
         })
       )
     );

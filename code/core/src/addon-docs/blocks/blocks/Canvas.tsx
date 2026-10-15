@@ -2,9 +2,9 @@
 import React, { useCallback, useContext } from 'react';
 import type { FC } from 'react';
 
-import { FORCE_REMOUNT } from 'storybook/internal/core-events';
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
-import type { ModuleExport, ModuleExports } from 'storybook/internal/types';
+import { FORCE_REMOUNT } from '@aussieljk/forkbook/internal/core-events';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { ModuleExport, ModuleExports } from '@aussieljk/forkbook/internal/types';
 
 import type { Layout, PreviewProps as PurePreviewProps } from '../components';
 import { Preview as PurePreview } from '../components';
@@ -22,7 +22,7 @@ type CanvasProps = Pick<PurePreviewProps, 'withToolbar' | 'additionalActions' | 
    * Pass the export defining a story to render that story
    *
    * ```jsx
-   * import { Meta, Canvas } from 'storybook/addon-docs/blocks';
+   * import { Meta, Canvas } from '@aussieljk/forkbook/addon-docs/blocks';
    * import * as ButtonStories from './Button.stories';
    *
    * <Meta of={ButtonStories} />
@@ -34,7 +34,7 @@ type CanvasProps = Pick<PurePreviewProps, 'withToolbar' | 'additionalActions' | 
    * Pass all exports of the CSF file if this MDX file is unattached
    *
    * ```jsx
-   * import { Canvas } from 'storybook/addon-docs/blocks';
+   * import { Canvas } from '@aussieljk/forkbook/addon-docs/blocks';
    * import * as ButtonStories from './Button.stories';
    *
    * <Canvas of={ButtonStories.Primary} meta={ButtonStories} />;

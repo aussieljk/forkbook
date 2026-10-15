@@ -1,9 +1,9 @@
-import { AddonVitestService } from 'storybook/internal/cli';
-import type { JsPackageManager } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import { MinimumReleaseAgeHandledError } from 'storybook/internal/server-errors';
-import { ErrorCollector } from 'storybook/internal/telemetry';
-import { Feature } from 'storybook/internal/types';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
+import { ErrorCollector } from '@aussieljk/forkbook/internal/telemetry';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import type { DependencyCollector } from '../dependency-collector.ts';
 

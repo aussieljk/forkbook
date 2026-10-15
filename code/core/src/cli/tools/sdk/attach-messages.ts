@@ -2,16 +2,16 @@ import type { StorybookInstanceRecord } from '../instances/types.ts';
 import type { ToolsStorybookInfo } from './types.ts';
 
 const RESTART_GUIDANCE =
-  'From your project directory, restart Storybook (for example `npx storybook dev`) and re-run this command from there.';
+  'From your project directory, restart Forkbook (for example `npx forkbook dev`) and re-run this command from there.';
 
 export function formatNoInstance(records: StorybookInstanceRecord[]): string {
   const lines = [
-    'No running Storybook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+    'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
   ];
   if (records.length > 0) {
     lines.push(
       '',
-      'Running Storybook instances that did not match this project — target one by re-running this command from its project directory, or with `--config-dir <dir>`:'
+      'Running Forkbook instances that did not match this project — target one by re-running this command from its project directory, or with `--config-dir <dir>`:'
     );
     for (const record of records) {
       const configDir = record.configDir ? `; configDir \`${record.configDir}\`` : '';
@@ -23,7 +23,7 @@ export function formatNoInstance(records: StorybookInstanceRecord[]): string {
 
 export function formatPortMismatch(port: number, candidates: StorybookInstanceRecord[]): string {
   const lines = [
-    `No running Storybook instance is on port ${port}. Retry with one of the running instances below, or omit \`--port\` to match on the project's cwd/config dir instead:`,
+    `No running Forkbook instance is on port ${port}. Retry with one of the running instances below, or omit \`--port\` to match on the project's cwd/config dir instead:`,
   ];
   for (const record of candidates) {
     lines.push(`- ${record.url} (port \`${record.port}\`, cwd \`${record.cwd}\`)`);
@@ -32,11 +32,11 @@ export function formatPortMismatch(port: number, candidates: StorybookInstanceRe
 }
 
 export function formatOldServer(version: string): string {
-  return `Restart Storybook (v${version}+) to enable attach. The running instance was started with an older Storybook that does not publish a channel token.`;
+  return `Restart Forkbook (v${version}+) to enable attach. The running instance was started with an older Forkbook that does not publish a channel token.`;
 }
 
 export function formatConnectionFailed(record: StorybookInstanceRecord): string {
-  return `Could not connect to the Storybook at ${record.url}. The instance registry may be stale — if that Storybook is no longer running, start it again (for example \`npm run storybook\`) and retry.`;
+  return `Could not connect to the Forkbook at ${record.url}. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run storybook\`) and retry.`;
 }
 
 // Symmetric fact-only report: every path shown is a stored or compared fact, and no path appears
@@ -57,7 +57,7 @@ export function formatInstallationMismatch({
 }): string {
   const instanceConfigDir = configDir ? `; config dir \`${configDir}\`` : '';
   return [
-    'The running Storybook and this CLI are different `storybook` installations:',
+    'The running Forkbook and this CLI are different `storybook` installations:',
     `- running instance: \`${instancePath}\` (version ${instanceVersion ?? 'unknown'}${instanceConfigDir})`,
     `- this CLI: \`${callerPath}\` (version ${callerVersion})`,
     `They must be the same installation. ${RESTART_GUIDANCE}`,
@@ -65,11 +65,11 @@ export function formatInstallationMismatch({
 }
 
 export function formatUnknownInstallation(): string {
-  return `Could not verify that the running Storybook and this CLI are the same \`storybook\` installation. ${RESTART_GUIDANCE}`;
+  return `Could not verify that the running Forkbook and this CLI are the same \`storybook\` installation. ${RESTART_GUIDANCE}`;
 }
 
 export function formatAttachFallback(remediation: string): string {
-  return `${remediation}\n\nFalling back to loading this project's Storybook configuration.`;
+  return `${remediation}\n\nFalling back to loading this project's Forkbook configuration.`;
 }
 
 /**
@@ -80,7 +80,7 @@ export function formatMultiInstanceNotice(
   storybook: Pick<ToolsStorybookInfo, 'url' | 'port' | 'pid' | 'cwd' | 'configDir' | 'siblings'>
 ): string {
   const lines = [
-    `Warning: Multiple Storybook instances match this project. This command used ${storybook.url ?? 'the selected instance'}${instanceDetails(storybook)}.`,
+    `Warning: Multiple Forkbook instances match this project. This command used ${storybook.url ?? 'the selected instance'}${instanceDetails(storybook)}.`,
     '',
     'Other matching instances — target one with `--port <port>`:',
   ];

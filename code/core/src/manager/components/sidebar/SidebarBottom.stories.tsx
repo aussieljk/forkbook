@@ -4,12 +4,12 @@ import {
   type Addon_Collection,
   type Addon_TestProviderType,
   Addon_TypesEnum,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { type API, ManagerContext } from 'storybook/manager-api';
-import { expect, fireEvent, fn, waitFor, within } from 'storybook/test';
+import { type API, ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fireEvent, fn, waitFor, within } from '@aussieljk/forkbook/test';
 
 import type { TestProviderStateByProviderId } from '../../../shared/test-provider-store/index.ts';
 import { SidebarBottomBase } from './SidebarBottom.tsx';

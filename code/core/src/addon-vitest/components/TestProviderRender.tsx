@@ -7,14 +7,14 @@ import {
   ProgressSpinner,
   ToggleButton,
   announce,
-} from 'storybook/internal/components';
-import type { API_HashEntry, TestProviderState } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/components';
+import type { API_HashEntry, TestProviderState } from '@aussieljk/forkbook/internal/types';
 
 import { EyeIcon, InfoIcon, PlayHollowIcon, StopAltIcon } from '@storybook/icons';
 
 import { store } from '#manager-store';
-import type { API } from 'storybook/manager-api';
-import { addons } from 'storybook/manager-api';
+import type { API } from '@aussieljk/forkbook/manager-api';
+import { addons } from '@aussieljk/forkbook/manager-api';
 
 import {
   A11Y_ADDON_ID,

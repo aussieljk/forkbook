@@ -1,27 +1,27 @@
-import { getPackageDetails } from 'storybook/internal/common';
-import { Feature } from 'storybook/internal/types';
+import { getPackageDetails } from '@aussieljk/forkbook/internal/common';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 export interface AddonConfiguration {
   addonsForMain: Array<string | { name: string; [key: string]: any }>;
   addonPackages: string[];
 }
 
-/** Module for managing Storybook addons */
+/** Module for managing Forkbook addons */
 export class AddonService {
   /** Get addons based on selected features */
   getAddonsForFeatures(features: Set<Feature>): string[] {
     const addons: string[] = [];
 
     if (features.has(Feature.TEST)) {
-      addons.push('storybook/addon-vitest');
+      addons.push('@aussieljk/forkbook/addon-vitest');
     }
 
     if (features.has(Feature.A11Y)) {
-      addons.push('storybook/addon-a11y');
+      addons.push('@aussieljk/forkbook/addon-a11y');
     }
 
     if (features.has(Feature.DOCS)) {
-      addons.push('storybook/addon-docs');
+      addons.push('@aussieljk/forkbook/addon-docs');
     }
 
     return addons;

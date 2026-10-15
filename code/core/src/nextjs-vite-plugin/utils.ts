@@ -4,7 +4,7 @@ import type { UserConfig } from 'vite';
 
 const require = createRequire(import.meta.url);
 
-export const VITEST_PLUGIN_NAME = 'storybook/internal/nextjs-vite-plugin';
+export const VITEST_PLUGIN_NAME = '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
 export const isVitestEnv = process.env.VITEST === 'true';
 

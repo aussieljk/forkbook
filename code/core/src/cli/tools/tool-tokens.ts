@@ -27,7 +27,7 @@ export type ParsedToolsTokens =
   | { ok: false; error: string };
 
 /**
- * Parse the pass-through tokens after `storybook tools <toolset> <tool>` into tool arguments.
+ * Parse the pass-through tokens after `forkbook tools <toolset> <tool>` into tool arguments.
  *
  * - `--key value` and `--key=value` become tool arguments; values are coerced by attempting
  *   `JSON.parse`, falling back to the raw string.
@@ -197,26 +197,26 @@ export function parsePort(
 }
 
 /**
- * The generic flags of `storybook tools`, in display order. One list serves both the commander
+ * The generic flags of `forkbook tools`, in display order. One list serves both the commander
  * registration and the help renderer: commander's own help is disabled (the command surface is
  * derived from the target project's toolset registry at runtime), so the custom help must document
  * these flags itself and would otherwise drift from the registration.
  */
 export const TOOLS_OPTION_SPECS: ReadonlyArray<{ flags: string; description: string }> = [
-  { flags: '--cwd <path>', description: 'Project directory of the target Storybook' },
+  { flags: '--cwd <path>', description: 'Project directory of the target Forkbook' },
   {
     flags: '-c, --config-dir <dir-name>',
-    description: 'Storybook config directory of the target Storybook',
+    description: 'Forkbook config directory of the target Forkbook',
   },
   {
     flags: '-p, --port <number>',
     description:
-      'Port of a running Storybook; targets that instance directly, no --cwd or --config-dir needed',
+      'Port of a running Forkbook; targets that instance directly, no --cwd or --config-dir needed',
   },
   {
     flags: '--attach',
     description:
-      'Require attaching to a running Storybook; gate failures are errors instead of a local fallback',
+      'Require attaching to a running Forkbook; gate failures are errors instead of a local fallback',
   },
   {
     flags: '--no-attach',
@@ -233,6 +233,6 @@ export const TOOLS_OPTION_SPECS: ReadonlyArray<{ flags: string; description: str
   { flags: '-o, --output <path>', description: 'Write the result to a file instead of stdout' },
   {
     flags: '-h, --help',
-    description: 'List the tools of the target Storybook, or show one tool with its arguments',
+    description: 'List the tools of the target Forkbook, or show one tool with its arguments',
   },
 ];

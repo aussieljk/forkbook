@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-import { storyNameFromExport } from 'storybook/internal/csf';
-import type { Args, StoryContext, StrictArgTypes } from 'storybook/internal/types';
+import { storyNameFromExport } from '@aussieljk/forkbook/internal/csf';
+import type { Args, StoryContext, StrictArgTypes } from '@aussieljk/forkbook/internal/types';
 
-import type { StoryObj } from 'storybook/react';
+import type { StoryObj } from '@aussieljk/forkbook/react';
 
-import { PureArgsTable as ArgsTable } from 'storybook/addon-docs/blocks';
+import { PureArgsTable as ArgsTable } from '@aussieljk/forkbook/addon-docs/blocks';
 
-import { getService, inferControls } from 'storybook/preview-api';
-import { ThemeProvider, convert, themes } from 'storybook/theming';
+import { getService, inferControls } from '@aussieljk/forkbook/preview-api';
+import { ThemeProvider, convert, themes } from '@aussieljk/forkbook/theming';
 
 import { component as TsImportedTypesComponent } from './docgen-components/8143-ts-imported-types/input';
 import { component as TsReactFcGenericsComponent } from './docgen-components/8143-ts-react-fc-generics/input';

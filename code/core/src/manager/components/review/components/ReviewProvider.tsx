@@ -8,9 +8,9 @@ import React, {
   type ReactNode,
 } from 'react';
 
-import { useNavigate } from 'storybook/internal/router';
-import type { StatusesByStoryIdAndTypeId } from 'storybook/internal/types';
-import { REVIEW_STATUS_TYPE_ID } from 'storybook/internal/types';
+import { useNavigate } from '@aussieljk/forkbook/internal/router';
+import type { StatusesByStoryIdAndTypeId } from '@aussieljk/forkbook/internal/types';
+import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 import {
   experimental_getStatusStore,
   experimental_useStatusStore,
@@ -18,7 +18,7 @@ import {
   useServiceQuery,
   useStorybookApi,
   useStorybookState,
-} from 'storybook/manager-api';
+} from '@aussieljk/forkbook/manager-api';
 
 import {
   AUTO_ENTERED_SESSION_KEY,

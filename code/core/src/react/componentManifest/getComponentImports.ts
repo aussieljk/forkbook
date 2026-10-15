@@ -1,13 +1,13 @@
 import { dirname } from 'node:path';
 
-import { type NodePath, types as t } from 'storybook/internal/babel';
+import { type NodePath, types as t } from '@aussieljk/forkbook/internal/babel';
 import {
   type CsfFile,
   buildImportStatements,
   collectImportBindings,
   resolveComponentImport,
-} from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { ComponentRef } from './types.ts';
 import { cachedResolveImport, matchPath } from './utils.ts';

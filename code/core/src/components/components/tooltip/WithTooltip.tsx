@@ -2,13 +2,13 @@ import type { FC, HTMLAttributes, ReactNode } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { deprecate } from 'storybook/internal/client-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
 import { global } from '@storybook/global';
 
 import type { PopperOptions, Config as ReactPopperTooltipConfig } from 'react-popper-tooltip';
 import { usePopperTooltip } from 'react-popper-tooltip';
-import type { Color } from 'storybook/theming';
+import type { Color } from '@aussieljk/forkbook/theming';
 
 import { PortalTheme } from '../shared/PortalTheme.tsx';
 import styles from './WithTooltip.module.css';
@@ -292,14 +292,14 @@ const WithToolTipState = ({
 
 const DeprecatedPure: FC<WithTooltipPureProps> = (props: WithTooltipPureProps) => {
   deprecate(
-    'WithTooltipPure is deprecated and will be removed in Storybook 11. Please use WithTooltip instead.'
+    'WithTooltipPure is deprecated and will be removed in Forkbook 11. Please use WithTooltip instead.'
   );
   return <WithTooltipPure data-deprecated="WithTooltipPure" {...props} />;
 };
 
 const DeprecatedState: FC<WithTooltipStateProps> = (props: WithTooltipStateProps) => {
   deprecate(
-    'WithToolTipState is deprecated and will be removed in Storybook 11. Please use WithTooltip instead.'
+    'WithToolTipState is deprecated and will be removed in Forkbook 11. Please use WithTooltip instead.'
   );
   return <WithToolTipState data-deprecated="WithToolTipState" {...props} />;
 };

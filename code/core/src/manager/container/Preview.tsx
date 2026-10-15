@@ -1,12 +1,16 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import type { Addon_BaseType, Addon_Collection, Addon_WrapperType } from 'storybook/internal/types';
-import { Addon_TypesEnum } from 'storybook/internal/types';
+import type {
+  Addon_BaseType,
+  Addon_Collection,
+  Addon_WrapperType,
+} from '@aussieljk/forkbook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import memoizerific from 'memoizerific';
-import type { State, StoriesHash } from 'storybook/manager-api';
-import { Consumer } from 'storybook/manager-api';
+import type { State, StoriesHash } from '@aussieljk/forkbook/manager-api';
+import { Consumer } from '@aussieljk/forkbook/manager-api';
 
 import { Preview } from '../components/preview/Preview.tsx';
 import { filterToolsSide, fullScreenTool } from '../components/preview/Toolbar.tsx';
@@ -56,10 +60,10 @@ const splitTitleAddExtraSpace = (input: string) =>
 const getDescription = (item: Item) => {
   if (item?.type === 'story' || item?.type === 'docs') {
     const { title, name } = item;
-    return title && name ? splitTitleAddExtraSpace(`${title} - ${name} ⋅ Storybook`) : 'Storybook';
+    return title && name ? splitTitleAddExtraSpace(`${title} - ${name} ⋅ Forkbook`) : 'Forkbook';
   }
 
-  return item?.name ? `${item.name} ⋅ Storybook` : 'Storybook';
+  return item?.name ? `${item.name} ⋅ Forkbook` : 'Forkbook';
 };
 
 const mapper = ({

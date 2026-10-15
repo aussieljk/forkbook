@@ -2,9 +2,9 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel, type ChannelTransport } from 'storybook/internal/channels';
-import { executeNodeCommand } from 'storybook/internal/common';
-import type { Options, StoryIndex } from 'storybook/internal/types';
+import { Channel, type ChannelTransport } from '@aussieljk/forkbook/internal/channels';
+import { executeNodeCommand } from '@aussieljk/forkbook/internal/common';
+import type { Options, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import {
   STATUS_STORE_CHANNEL_EVENT_NAME,
@@ -55,8 +55,8 @@ const child = vi.hoisted(() => ({
   kill: vi.fn(),
 }));
 
-vi.mock('storybook/internal/common', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/common')>();
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>();
   return {
     ...actual,
     executeNodeCommand: vi.fn().mockReturnValue(child),
@@ -73,8 +73,8 @@ vi.mock('../../shared/utils/module', () => ({
     .mockImplementation(() => 'file://' + join(__dirname, '..', '..', 'dist', 'node', 'vitest.js')),
 }));
 
-vi.mock('storybook/internal/core-server', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('storybook/internal/core-server')>();
+vi.mock('@aussieljk/forkbook/internal/core-server', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@aussieljk/forkbook/internal/core-server')>();
   return {
     ...actual,
     internal_universalStatusStore: {
@@ -105,20 +105,20 @@ const mockChannel = new Channel({ transport });
 
 describe('bootTestRunner', () => {
   let mockStore: InstanceType<
-    typeof import('storybook/internal/core-server').experimental_MockUniversalStore<
+    typeof import('@aussieljk/forkbook/internal/core-server').experimental_MockUniversalStore<
       StoreState,
       StoreEvent
     >
   >;
   const mockOptions = {
-    configDir: '.storybook',
+    configDir: '.forkbook',
     presets: {
       apply: vi.fn(async (key: string, fallback?: unknown) => {
         switch (key) {
           case 'storyIndexGenerator':
             return storyIndexGenerator;
           case 'previewAnnotations':
-            return ['/project/.storybook/preview.ts'];
+            return ['/project/.forkbook/preview.ts'];
           default:
             return fallback;
         }
@@ -128,7 +128,7 @@ describe('bootTestRunner', () => {
 
   beforeEach(async () => {
     const { experimental_MockUniversalStore: MockUniversalStore } =
-      await import('storybook/internal/core-server');
+      await import('@aussieljk/forkbook/internal/core-server');
     mockStore = new MockUniversalStore<StoreState, StoreEvent>(storeOptions);
     vi.mocked(executeNodeCommand).mockClear();
     vi.mocked(log).mockClear();
@@ -148,8 +148,8 @@ describe('bootTestRunner', () => {
           TEST: 'true',
           VITEST: 'true',
           VITEST_CHILD_PROCESS: 'true',
-          STORYBOOK_CONFIG_DIR: '.storybook',
-          STORYBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(['/project/.storybook/preview.ts']),
+          FORKBOOK_CONFIG_DIR: '.forkbook',
+          FORKBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(['/project/.forkbook/preview.ts']),
         },
         extendEnv: true,
       },
@@ -220,7 +220,7 @@ describe('bootTestRunner', () => {
         },
       ],
       from: 'server',
-      type: 'UNIVERSAL_STORE:storybook/test',
+      type: 'UNIVERSAL_STORE:@aussieljk/forkbook/test',
     });
 
     message({ type: 'some-event', args: ['foo'] });
@@ -263,7 +263,7 @@ describe('bootTestRunner', () => {
     message({ type: 'ready' });
     await promise;
 
-    const { internal_UniversalStore } = await import('storybook/internal/core-server');
+    const { internal_UniversalStore } = await import('@aussieljk/forkbook/internal/core-server');
     (internal_UniversalStore as any).__prepare(
       mockChannel,
       internal_UniversalStore.Environment.SERVER
@@ -274,7 +274,7 @@ describe('bootTestRunner', () => {
       transport.send.mockClear();
 
       message({
-        type: 'UNIVERSAL_STORE:storybook/test',
+        type: 'UNIVERSAL_STORE:@aussieljk/forkbook/test',
         args: [
           {
             event: { type: '__SET_STATE', payload: { state: leader.getState() } },
@@ -291,11 +291,11 @@ describe('bootTestRunner', () => {
 
       expect(transport.send).toHaveBeenCalledTimes(1);
       const [forwarded] = transport.send.mock.calls[0];
-      expect(forwarded.type).toBe('UNIVERSAL_STORE:storybook/test');
+      expect(forwarded.type).toBe('UNIVERSAL_STORE:@aussieljk/forkbook/test');
       expect(forwarded.args[0].eventInfo.actor.id).toBe('child-follower');
       expect(forwarded.args[0].eventInfo.forwardingActor).toBeDefined();
     } finally {
-      mockChannel.removeAllListeners('UNIVERSAL_STORE:storybook/test');
+      mockChannel.removeAllListeners('UNIVERSAL_STORE:@aussieljk/forkbook/test');
     }
   });
 

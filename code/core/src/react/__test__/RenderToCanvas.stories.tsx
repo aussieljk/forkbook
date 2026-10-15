@@ -1,8 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
-import type { StoryContextForRender } from 'storybook/internal/types';
+import type { StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
 import type { Meta, StoryObj } from '../index.ts';
 import type { ReactRenderer } from '../types.ts';

@@ -1,6 +1,6 @@
 import React, { type FC, useRef } from 'react';
 
-import { Button, Link, PopoverProvider } from 'storybook/internal/components';
+import { Button, Link, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
 import { CheckIcon, CopyIcon, TransferIcon } from '@storybook/icons';
 import { useLandmark } from '../../../hooks/useLandmark.ts';

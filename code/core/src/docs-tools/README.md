@@ -1,4 +1,4 @@
-# Storybook Docs Utils
+# Forkbook Docs Utils
 
 Shared utility functions for frameworks to implement docs:
 

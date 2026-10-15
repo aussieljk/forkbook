@@ -1,5 +1,5 @@
 import { startCase } from 'es-toolkit/string';
-import { addons } from 'storybook/manager-api';
+import { addons } from '@aussieljk/forkbook/manager-api';
 
 addons.setConfig({
   sidebar: {

@@ -1,22 +1,22 @@
 import { resolve } from 'node:path';
 
-import { installSkills, supportsSkills, supportsAiSetup } from 'storybook/internal/cli';
+import { installSkills, supportsSkills, supportsAiSetup } from '@aussieljk/forkbook/internal/cli';
 import {
   HandledError,
   PackageManagerName,
   cache,
   executeCommand,
   type JsPackageManager,
-} from 'storybook/internal/common';
-import { getServerPort, withTelemetry } from 'storybook/internal/core-server';
-import { logTracker, logger } from 'storybook/internal/node-logger';
-import { setTelemetryEnabled, telemetry } from 'storybook/internal/telemetry';
+} from '@aussieljk/forkbook/internal/common';
+import { getServerPort, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import { logTracker, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { setTelemetryEnabled, telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import type {
   SupportedBuilder,
   SupportedFramework,
   SupportedRenderer,
-} from 'storybook/internal/types';
-import { Feature } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import {
   executeAddonConfiguration,
@@ -61,7 +61,7 @@ async function checkFeatureSupport(
 }
 
 /**
- * Main entry point for Storybook initialization
+ * Main entry point for Forkbook initialization
  *
  * This is a clean, command-based orchestration that replaces the monolithic 986-line implementation
  * with a modular, testable approach.
@@ -121,7 +121,7 @@ export async function doInitiate(options: CommandOptions): Promise<
 
   if (selectedFeatures.has(Feature.AI) && !isAiAvailable) {
     logger.warn(
-      'The AI features are not available for this framework yet, so the Storybook skills are not installed.'
+      'The AI features are not available for this framework yet, so the Forkbook skills are not installed.'
     );
     selectedFeatures.delete(Feature.AI);
   }
@@ -169,7 +169,7 @@ export async function doInitiate(options: CommandOptions): Promise<
     options,
   });
 
-  // Step 8: Install the official Storybook skills for AI agents
+  // Step 8: Install the official Forkbook skills for AI agents
   const hasAiFeature = selectedFeatures.has(Feature.AI);
   if (hasAiFeature) {
     await telemetryService.trackSkills(
@@ -183,7 +183,7 @@ export async function doInitiate(options: CommandOptions): Promise<
     // (checklist item, copy-prompt button) on the user's actual choice — not on
     // a telemetry-event side effect. Scoped to the project's configDir so a
     // monorepo with hoisted `node_modules/.cache` doesn't leak the flag across
-    // sibling Storybook projects. This is a tiny local file with no PII, so it
+    // sibling Forkbook projects. This is a tiny local file with no PII, so it
     // is written even when telemetry is disabled.
     await cache
       .set('ai-init-opt-in', {
@@ -202,7 +202,7 @@ export async function doInitiate(options: CommandOptions): Promise<
     showAiInstructions: hasAiFeature && isAiSetupAvailable,
     logfile: options.logfile,
     storybookCommand,
-    setupSkillCommand: packageManager.getPackageCommand(['storybook', 'skills', 'setup']),
+    setupSkillCommand: packageManager.getPackageCommand(['forkbook', 'skills', 'setup']),
   });
 
   // Step 10: Track telemetry (pass configDir so RN `.rnstorybook` metadata is resolved)
@@ -221,10 +221,10 @@ export async function doInitiate(options: CommandOptions): Promise<
 
 const handleCommandFailure = async (logFilePath: string | boolean | undefined): Promise<never> => {
   const logFile = await logTracker.writeToFile(logFilePath);
-  logger.error('Storybook encountered an error during initialization');
+  logger.error('Forkbook encountered an error during initialization');
 
   logger.log(`Debug logs are written to: ${logFile}`);
-  logger.outro('Storybook exited with an error');
+  logger.outro('Forkbook exited with an error');
   process.exit(1);
 };
 
@@ -257,7 +257,7 @@ export async function initiate(options: CommandOptions): Promise<void> {
   }
 }
 
-/** Run Storybook dev server after installation */
+/** Run Forkbook dev server after installation */
 async function runStorybookDev(result: {
   packageManager: JsPackageManager;
   storybookCommand?: string | null;
@@ -302,6 +302,6 @@ async function runStorybookDev(result: {
       stdio: 'inherit',
     });
   } catch {
-    // Do nothing here, as the command above will spawn a `storybook dev` process which does the error handling already
+    // Do nothing here, as the command above will spawn a `forkbook dev` process which does the error handling already
   }
 }

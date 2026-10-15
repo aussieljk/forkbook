@@ -1,6 +1,6 @@
 import { basename } from 'node:path';
 
-import type { Path } from 'storybook/internal/types';
+import type { Path } from '@aussieljk/forkbook/internal/types';
 
 /**
  * Calculate a name to use for a docs entry if not specified. The rule is:

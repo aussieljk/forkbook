@@ -1,4 +1,4 @@
-import type { InputType } from 'storybook/internal/types';
+import type { InputType } from '@aussieljk/forkbook/internal/types';
 
 import type { IconsProps } from '../components/components/icon/icon.tsx';
 

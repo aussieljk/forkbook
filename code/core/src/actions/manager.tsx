@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { Title } from './components/Title.tsx';
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from './constants.ts';

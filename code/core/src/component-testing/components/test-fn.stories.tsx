@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type { StoryContext } from 'storybook/react-vite';
+import type { StoryContext } from '@aussieljk/forkbook/react-vite';
 
-import { expect, fn } from 'storybook/test';
+import { expect, fn } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../.storybook/preview.tsx';
+import preview from '../../../../.forkbook/preview.tsx';
 
 const Button = (args: React.ComponentProps<'button'>) => <button {...args} />;
 

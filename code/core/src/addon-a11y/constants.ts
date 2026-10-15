@@ -1,4 +1,4 @@
-export const ADDON_ID = 'storybook/a11y';
+export const ADDON_ID = '@aussieljk/forkbook/a11y';
 export const PANEL_ID = `${ADDON_ID}/panel`;
 export const PARAM_KEY = `a11y`;
 export const VISION_GLOBAL_KEY = `vision`;
@@ -12,9 +12,9 @@ const MANUAL = `${ADDON_ID}/manual`;
 export const DOCUMENTATION_LINK = 'writing-tests/accessibility-testing';
 export const DOCUMENTATION_DISCREPANCY_LINK = `${DOCUMENTATION_LINK}#why-are-my-tests-failing-in-different-environments`;
 
-export const TEST_PROVIDER_ID = 'storybook/addon-a11y/test-provider';
+export const TEST_PROVIDER_ID = '@aussieljk/forkbook/addon-a11y/test-provider';
 
 export const EVENTS = { RESULT, REQUEST, RUNNING, ERROR, MANUAL };
 
-export const STATUS_TYPE_ID_COMPONENT_TEST = 'storybook/component-test';
-export const STATUS_TYPE_ID_A11Y = 'storybook/a11y';
+export const STATUS_TYPE_ID_COMPONENT_TEST = '@aussieljk/forkbook/component-test';
+export const STATUS_TYPE_ID_A11Y = '@aussieljk/forkbook/a11y';

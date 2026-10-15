@@ -7,7 +7,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { deprecate } from 'storybook/internal/node-logger';
+import { deprecate } from '@aussieljk/forkbook/internal/node-logger';
 
 import { transformSync } from 'esbuild';
 import { dedent } from 'ts-dedent';

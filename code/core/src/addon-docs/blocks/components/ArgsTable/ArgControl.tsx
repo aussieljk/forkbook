@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Link } from 'storybook/internal/components';
+import { Link } from '@aussieljk/forkbook/internal/components';
 
 import {
   BooleanControl,

@@ -30,7 +30,7 @@ type SetState = (a: any, b: any) => any;
 export interface Upstream {
   /**
    * Whether to allow persistence of state to local/sessionStorage. This is used to disable
-   * persistence in Storybook's own tests. True by default.
+   * persistence in Forkbook's own tests. True by default.
    */
   allowPersistence?: boolean;
   getState: GetState;

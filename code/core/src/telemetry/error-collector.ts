@@ -1,12 +1,12 @@
 /**
- * Service for collecting errors during Storybook initialization.
+ * Service for collecting errors during Forkbook initialization.
  *
- * This singleton class exists to accumulate non-fatal errors that occur during the Storybook's
+ * This singleton class exists to accumulate non-fatal errors that occur during the Forkbook's
  * processes. Instead of immediately reporting errors to telemetry (which could interrupt the
  * process), errors are collected here and then batch-reported at the end of initialization via the
  * telemetry system.
  *
- * This allows Storybook to continue e.g. initialization even when non-critical errors occur,
+ * This allows Forkbook to continue e.g. initialization even when non-critical errors occur,
  * ensuring a better user experience while still capturing all errors for telemetry and debugging
  * purposes.
  */

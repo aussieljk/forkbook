@@ -1,7 +1,7 @@
 import type { BuildEntries, BuildEntry } from '../../../scripts/build/utils/entry-utils.ts';
 
 // Mock modules are resolved/aliased at runtime; skip d.ts emission so the
-// type bundler does not walk storybook/test → vitest declaration graphs.
+// type bundler does not walk @aussieljk/forkbook/test → vitest declaration graphs.
 const mockEntries: BuildEntry[] = [
   {
     exportEntries: [
@@ -112,7 +112,7 @@ const mockEntries: BuildEntry[] = [
 const config: BuildEntries = {
   entries: {
     // Mock modules are loaded by Vite/Vitest via package exports; browser platform
-    // matches how storybook/nextjs-vite ships its own export-mocks.
+    // matches how @aussieljk/forkbook/nextjs-vite ships its own export-mocks.
     browser: [...mockEntries],
     node: [
       {

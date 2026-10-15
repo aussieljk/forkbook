@@ -2,19 +2,19 @@ import {
   RESET_STORY_ARGS,
   STORY_ARGS_UPDATED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import type {
   ArgsStoryFn,
   PartialStoryFn,
   PlayFunctionContext,
   StoryContext,
   StoryContextForRender,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global as globalThis } from '@storybook/global';
 
-import { useEffect } from 'storybook/preview-api';
-import { expect, within } from 'storybook/test';
+import { useEffect } from '@aussieljk/forkbook/preview-api';
+import { expect, within } from '@aussieljk/forkbook/test';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Pre,

@@ -3,8 +3,12 @@ import {
   frameworkPackages,
   frameworkToRenderer,
   getFrameworkName,
-} from 'storybook/internal/common';
-import { type Options, type SecurityConfig, SupportedBuilder } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/common';
+import {
+  type Options,
+  type SecurityConfig,
+  SupportedBuilder,
+} from '@aussieljk/forkbook/internal/types';
 
 export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
   const globals: Record<string, any> = {};
@@ -22,10 +26,10 @@ export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
     // Manager only needs the token currently, so we don't pass any other channel options.
     globals.CHANNEL_OPTIONS = { wsToken: channelOptions?.wsToken };
   }
-  globals.STORYBOOK_BUILDER = builder;
-  globals.STORYBOOK_FRAMEWORK = framework;
-  globals.STORYBOOK_RENDERER = renderer;
-  globals.STORYBOOK_NETWORK_ADDRESS = options.host ? options.networkAddress : undefined;
+  globals.FORKBOOK_BUILDER = builder;
+  globals.FORKBOOK_FRAMEWORK = framework;
+  globals.FORKBOOK_RENDERER = renderer;
+  globals.FORKBOOK_NETWORK_ADDRESS = options.host ? options.networkAddress : undefined;
 
   const security = await options.presets.apply<SecurityConfig | undefined>('security');
   if (security?.insecureIframeMessaging) {

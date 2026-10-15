@@ -1,4 +1,4 @@
-import type { SBType } from 'storybook/internal/types';
+import type { SBType } from '@aussieljk/forkbook/internal/types';
 
 import type { DocgenType } from './docgen/types.ts';
 

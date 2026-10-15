@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType } from 'storybook/internal/cli';
-import { type JsPackageManager, PackageManagerName } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { type JsPackageManager, PackageManagerName } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   Feature,
   SupportedBuilder,
   SupportedFramework,
   SupportedLanguage,
   SupportedRenderer,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { DependencyCollector } from '../dependency-collector.ts';
 import { generatorRegistry } from '../generators/GeneratorRegistry.ts';
@@ -18,7 +18,7 @@ import { AddonService } from '../services/index.ts';
 import type { FrameworkDetectionResult } from './FrameworkDetectionCommand.ts';
 import { GeneratorExecutionCommand } from './GeneratorExecutionCommand.ts';
 
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('../generators/GeneratorRegistry', { spy: true });
 vi.mock('../generators/baseGenerator', { spy: true });
 vi.mock('../services', { spy: true });
@@ -74,7 +74,7 @@ describe('GeneratorExecutionCommand', () => {
     vi.mocked(generatorRegistry.get).mockReturnValue(mockGenerator as any);
     vi.mocked(logger.warn).mockImplementation(() => {});
     vi.mocked(baseGenerator).mockResolvedValue({
-      configDir: '.storybook',
+      configDir: '.forkbook',
       storybookCommand: undefined,
       shouldRunDev: undefined,
     });
@@ -86,8 +86,8 @@ describe('GeneratorExecutionCommand', () => {
     it('should execute generator with all features', async () => {
       const selectedFeatures = new Set([Feature.DOCS, Feature.TEST]);
       mockAddonService.getAddonsForFeatures.mockReturnValue([
-        'storybook/addon-vitest',
-        'storybook/addon-docs',
+        '@aussieljk/forkbook/addon-vitest',
+        '@aussieljk/forkbook/addon-docs',
       ]);
       const options = {
         skipInstall: false,
@@ -129,9 +129,9 @@ describe('GeneratorExecutionCommand', () => {
     it('should pass correct options to generator', async () => {
       const selectedFeatures = new Set([Feature.DOCS, Feature.TEST, Feature.A11Y]);
       mockAddonService.getAddonsForFeatures.mockReturnValue([
-        'storybook/addon-vitest',
-        'storybook/addon-a11y',
-        'storybook/addon-docs',
+        '@aussieljk/forkbook/addon-vitest',
+        '@aussieljk/forkbook/addon-a11y',
+        '@aussieljk/forkbook/addon-docs',
       ]);
       const options = {
         skipInstall: true,
@@ -172,9 +172,9 @@ describe('GeneratorExecutionCommand', () => {
         }),
         expect.objectContaining({
           extraAddons: expect.arrayContaining([
-            'storybook/addon-vitest',
-            'storybook/addon-a11y',
-            'storybook/addon-docs',
+            '@aussieljk/forkbook/addon-vitest',
+            '@aussieljk/forkbook/addon-a11y',
+            '@aussieljk/forkbook/addon-docs',
           ]),
           extraPackages: [],
         })

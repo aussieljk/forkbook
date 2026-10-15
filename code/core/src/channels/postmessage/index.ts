@@ -1,6 +1,6 @@
 /// <reference path="../../typings.d.ts" />
-import { logger, pretty } from 'storybook/internal/client-logger';
-import * as EVENTS from 'storybook/internal/core-events';
+import { logger, pretty } from '@aussieljk/forkbook/internal/client-logger';
+import * as EVENTS from '@aussieljk/forkbook/internal/core-events';
 
 import { isJSON, parse, stringify } from 'telejson';
 import invariant from 'tiny-invariant';
@@ -91,7 +91,7 @@ export class PostMessageTransport implements ChannelTransport {
     this.buffer = [];
     this.originValidator = getOriginValidator();
     this.insecureIframeMessaging = globalThis.INSECURE_IFRAME_MESSAGING === true;
-    // A built Storybook addresses its messages to any origin, so a ref whose URL redirects to
+    // A built Forkbook addresses its messages to any origin, so a ref whose URL redirects to
     // another origin keeps receiving them.
     this.pinsTargetOrigin =
       globalThis.CONFIG_TYPE === 'DEVELOPMENT' && !this.insecureIframeMessaging;
@@ -322,10 +322,10 @@ export class PostMessageTransport implements ChannelTransport {
     }
     this.warnOnceAboutRejectedSender(
       rawEvent,
-      `Ignored Storybook channel message from unexpected origin "${rawEvent.origin}". ` +
+      `Ignored Forkbook channel message from unexpected origin "${rawEvent.origin}". ` +
         `While it runs in dev mode, this preview only accepts messages from local hosts and its own origin. ` +
         `To accept messages from any origin, set "security.insecureIframeMessaging" to true ` +
-        `in the main config of the Storybook serving this preview.`
+        `in the main config of the Forkbook serving this preview.`
     );
     return false;
   }
@@ -349,7 +349,7 @@ export class PostMessageTransport implements ChannelTransport {
       }
       this.warnOnceAboutRejectedSender(
         rawEvent,
-        `Ignored Storybook channel message from a registered preview iframe that is on origin ` +
+        `Ignored Forkbook channel message from a registered preview iframe that is on origin ` +
           `"${rawEvent.origin}" instead of "${expectedOrigin}". While it runs in dev mode, the manager ` +
           `only accepts channel messages from the origin each preview iframe was given, so a page the ` +
           `iframe navigated to cannot send them. To accept messages from any origin, set ` +
@@ -361,9 +361,9 @@ export class PostMessageTransport implements ChannelTransport {
     if (!senderFrame?.hasAttribute('data-is-storybook-thumbnail')) {
       this.warnOnceAboutRejectedSender(
         rawEvent,
-        `Ignored Storybook channel message from a window that is not a registered preview iframe ` +
+        `Ignored Forkbook channel message from a window that is not a registered preview iframe ` +
           `(origin "${rawEvent.origin}"). The manager only accepts channel messages from its own ` +
-          `preview and composed Storybook iframes, never from a page that embeds it. ` +
+          `preview and composed Forkbook iframes, never from a page that embeds it. ` +
           `To accept messages from any window, set "security.insecureIframeMessaging" to true.`
       );
     }

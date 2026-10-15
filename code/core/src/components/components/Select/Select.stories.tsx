@@ -1,14 +1,14 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { Button, Toolbar } from 'storybook/internal/components';
+import { Button, Toolbar } from '@aussieljk/forkbook/internal/components';
 
 import { LinuxIcon } from '@storybook/icons';
 
-import type { StoryAnnotations } from 'storybook/internal/types';
-import { expect, fn, screen, userEvent, within } from 'storybook/test';
+import type { StoryAnnotations } from '@aussieljk/forkbook/internal/types';
+import { expect, fn, screen, userEvent, within } from '@aussieljk/forkbook/test';
 
-import preview from '../../../../../.storybook/preview.tsx';
+import preview from '../../../../../.forkbook/preview.tsx';
 import { Select } from './Select.tsx';
 
 const meta = preview.meta({

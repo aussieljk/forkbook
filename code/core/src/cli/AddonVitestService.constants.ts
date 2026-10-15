@@ -17,7 +17,7 @@ export const LATEST_VITEST_TYPES_NODE_PEER = '^22.0.0 || >=24.0.0';
 /**
  * Vitest range installed when the project does not declare its own Vitest version AND its
  * `@types/node` range conflicts with LATEST_VITEST_TYPES_NODE_PEER. `^4` is the family
- * storybook/addon-vitest's devDependencies are tested against. Keep this in sync with the
+ * @aussieljk/forkbook/addon-vitest's devDependencies are tested against. Keep this in sync with the
  * addon's supported majors.
  */
 export const VITEST_FALLBACK_SPECIFIER = '^4';

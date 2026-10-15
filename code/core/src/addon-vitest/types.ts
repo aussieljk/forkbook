@@ -1,7 +1,7 @@
-import type { internal_UniversalStore } from 'storybook/internal/core-server';
-import type { Status, StoryId } from 'storybook/internal/types';
-import type { API_HashEntry } from 'storybook/internal/types';
-import type { Report } from 'storybook/preview-api';
+import type { internal_UniversalStore } from '@aussieljk/forkbook/internal/core-server';
+import type { Status, StoryId } from '@aussieljk/forkbook/internal/types';
+import type { API_HashEntry } from '@aussieljk/forkbook/internal/types';
+import type { Report } from '@aussieljk/forkbook/preview-api';
 
 export interface VitestError extends Error {
   VITEST_TEST_PATH?: string;

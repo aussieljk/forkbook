@@ -1,16 +1,16 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { useState } from 'react';
 
-import { LocationProvider } from 'storybook/internal/router';
+import { LocationProvider } from '@aussieljk/forkbook/internal/router';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { startCase } from 'es-toolkit/string';
-import { action } from 'storybook/actions';
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import { isChromatic } from '../../../../../.storybook/isChromatic.ts';
+import { isChromatic } from '../../../../../.forkbook/isChromatic.ts';
 import {
   MINIMUM_HORIZONTAL_PANEL_HEIGHT_PX,
   MINIMUM_RIGHT_PANEL_WIDTH_PX,

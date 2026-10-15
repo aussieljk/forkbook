@@ -1,8 +1,8 @@
 import { relative } from 'node:path';
 
-import { normalizeStories, normalizeStoryPath } from 'storybook/internal/common';
-import { sanitize, storyNameFromExport, toId } from 'storybook/internal/csf/csf-utils';
-import type { Options, StoriesEntry } from 'storybook/internal/types';
+import { normalizeStories, normalizeStoryPath } from '@aussieljk/forkbook/internal/common';
+import { sanitize, storyNameFromExport, toId } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import type { Options, StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -34,7 +34,7 @@ export async function getStoryId(data: StoryIdData, options: Options) {
   if (autoTitle === undefined) {
     // eslint-disable-next-line local-rules/no-uncategorized-errors
     throw new Error(dedent`
-    The new story file was successfully generated, but we are unable to index it. Please ensure that the new Story file is matched by the 'stories' glob pattern in your Storybook configuration.
+    The new story file was successfully generated, but we are unable to index it. Please ensure that the new Story file is matched by the 'stories' glob pattern in your Forkbook configuration.
     `);
   }
 

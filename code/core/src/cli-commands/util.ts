@@ -1,4 +1,4 @@
-import { getProjectRoot } from 'storybook/internal/common';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
 
 /**
  * Shortens a path to the relative path from the project root

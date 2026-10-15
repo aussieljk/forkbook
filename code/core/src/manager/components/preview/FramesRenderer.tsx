@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import React, { Fragment, useRef } from 'react';
 
-import { Button } from 'storybook/internal/components';
+import { Button } from '@aussieljk/forkbook/internal/components';
 
-import type { Combo } from 'storybook/manager-api';
-import { Consumer } from 'storybook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
+import { Consumer } from '@aussieljk/forkbook/manager-api';
 
 import { Viewport } from './Viewport.tsx';
 import type { FramesRendererProps } from './utils/types.tsx';
@@ -55,7 +55,7 @@ export const FramesRenderer: FC<FramesRendererProps> = ({
     // The local preview iframe must always use the host's own URL, so pass `refId: undefined`
     // explicitly. Passing the current story's `refId` makes getStoryHrefs return the composed
     // ref's iframe URL, and since this is only set once, the local frame would stay stuck on
-    // the ref's Storybook when a ref story is loaded first (#34553).
+    // the ref's Forkbook when a ref story is loaded first (#34553).
     frames['storybook-preview-iframe'] = api.getStoryHrefs(storyId, {
       queryParams: { ...queryParams, ...(version && { version }) },
       refId: undefined,

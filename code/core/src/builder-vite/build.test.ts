@@ -1,5 +1,5 @@
-import { Channel } from 'storybook/internal/channels';
-import type { Presets } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
 import type { InlineConfig, Plugin } from 'vite';
 import { resolveConfig, build as viteBuild } from 'vite';
@@ -13,7 +13,7 @@ vi.mock(import('vite'), async (importOriginal) => ({
   loadConfigFromFile: vi.fn(async () => null),
 }));
 
-it('keeps Vite from copying the public dir, which Storybook copies through staticDirs', async () => {
+it('keeps Vite from copying the public dir, which Forkbook copies through staticDirs', async () => {
   await build({
     configType: 'PRODUCTION',
     configDir: '',
@@ -33,9 +33,9 @@ it('keeps Vite from copying the public dir, which Storybook copies through stati
   );
 });
 
-it("re-asserts Storybook's build options when a user plugin's config hook overrides them", async () => {
+it("re-asserts Forkbook's build options when a user plugin's config hook overrides them", async () => {
   // Mimics @adonisjs/vite, whose `config` hook returns hardcoded build options that would
-  // otherwise win Vite's config merge and empty Storybook's output directory mid-build.
+  // otherwise win Vite's config merge and empty Forkbook's output directory mid-build.
   const clobberingPlugin: Plugin = {
     name: 'test:clobber-build-options',
     enforce: 'post',

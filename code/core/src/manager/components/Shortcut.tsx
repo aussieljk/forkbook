@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { shortcutToHumanString } from 'storybook/manager-api';
+import { shortcutToHumanString } from '@aussieljk/forkbook/manager-api';
 
 import styles from './Shortcut.module.css';
 

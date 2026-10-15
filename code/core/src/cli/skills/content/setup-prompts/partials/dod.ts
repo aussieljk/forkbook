@@ -1,4 +1,4 @@
-import { getVitestStorybookRunCommand } from 'storybook/internal/common';
+import { getVitestStorybookRunCommand } from '@aussieljk/forkbook/internal/common';
 
 import { dedent } from 'ts-dedent';
 

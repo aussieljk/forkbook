@@ -2,8 +2,8 @@ import type {
   ChangeDetectionAdapter,
   FileChangeEvent,
   ModuleResolveConfig,
-} from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
+} from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { normalize } from 'pathe';
 import type { ViteDevServer } from 'vite';
@@ -21,8 +21,8 @@ export function createViteChangeDetectionAdapter(server: ViteDevServer): ChangeD
   return {
     /**
      * Snapshots the Vite resolver configuration (aliases, conditions, root) once at
-     * adapter creation time. If `vite.config.ts` is modified while Storybook is
-     * running, this snapshot becomes stale and Storybook must be restarted to pick
+     * adapter creation time. If `vite.config.ts` is modified while Forkbook is
+     * running, this snapshot becomes stale and Forkbook must be restarted to pick
      * up the updated aliases.
      *
      * A future improvement would subscribe to Vite's HMR config-reload event and

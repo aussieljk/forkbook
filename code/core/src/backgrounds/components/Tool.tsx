@@ -1,10 +1,10 @@
 import React, { Fragment, memo, useCallback } from 'react';
 
-import { Select, ToggleButton } from 'storybook/internal/components';
+import { Select, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
 import { CircleIcon, GridIcon, PhotoIcon } from '@storybook/icons';
 
-import { useGlobals, useParameter } from 'storybook/manager-api';
+import { useGlobals, useParameter } from '@aussieljk/forkbook/manager-api';
 
 import { PARAM_KEY as KEY } from '../constants.ts';
 import { DEFAULT_BACKGROUNDS } from '../defaults.ts';

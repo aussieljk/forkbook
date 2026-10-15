@@ -3,15 +3,19 @@ import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { getProjectRoot, isCI } from 'storybook/internal/common';
-import { logger } from 'storybook/internal/node-logger';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { getProjectRoot, isCI } from '@aussieljk/forkbook/internal/common';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   ExecaCommandFailedError,
   PackageInstallFailedError,
-} from 'storybook/internal/server-errors';
-import { isTelemetryModuleEnabled } from 'storybook/internal/telemetry';
-import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/server-errors';
+import { isTelemetryModuleEnabled } from '@aussieljk/forkbook/internal/telemetry';
+import {
+  SupportedBuilder,
+  SupportedFramework,
+  SupportedRenderer,
+} from '@aussieljk/forkbook/internal/types';
 
 import { vol } from 'memfs';
 
@@ -23,15 +27,14 @@ import {
 } from './installSkills.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
-vi.mock(import('storybook/internal/common'), async (importOriginal) => {
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
+vi.mock(import('@aussieljk/forkbook/internal/common'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
     getProjectRoot: vi.fn(),
     isCI: vi.fn(),
-    versions: { ...actual.versions, storybook: '10.6.0' },
   };
 });
 
@@ -70,7 +73,7 @@ describe('hasStorybookSkills', () => {
   const lock = (skills: Record<string, { source: string }>) =>
     vol.fromNestedJSON({ [LOCK_PATH]: JSON.stringify({ version: 1, skills }) });
 
-  it('is true when the lock file has a skill from the Storybook skills repository', async () => {
+  it('is true when the lock file has a skill from the Forkbook skills repository', async () => {
     lock({
       'find-skills': { source: 'vercel-labs/skills' },
       stories: { source: 'storybookjs/skills' },
@@ -123,14 +126,14 @@ describe('installSkills', () => {
     vi.mocked(logger.debug).mockImplementation(() => {});
   });
 
-  it('installs from the tag of the running Storybook version', async () => {
+  it('installs from the tag of the forked Storybook version', async () => {
     const result = await installSkills({ packageManager, source: 'ai-feature' });
 
     expect(packageManager.runPackageCommand).toHaveBeenCalledWith({
       args: [
         'skills@latest',
         'add',
-        'storybookjs/skills#v10.6.0',
+        'storybookjs/skills#v11.0.0-alpha.6',
         '--yes',
         '--agent',
         'claude-code',
@@ -146,7 +149,7 @@ describe('installSkills', () => {
     expect(result).toEqual({ result: 'installed', source: 'ai-feature' });
   });
 
-  it('disables Vercel telemetry when Storybook telemetry is disabled', async () => {
+  it('disables Vercel telemetry when Forkbook telemetry is disabled', async () => {
     vi.mocked(isTelemetryModuleEnabled).mockReturnValue(false);
 
     await installSkills({ packageManager, source: 'ai-feature' });
@@ -161,11 +164,11 @@ describe('installSkills', () => {
 
     expect(logger.log).toHaveBeenCalledWith(
       expect.stringContaining(
-        'npx skills@latest add storybookjs/skills#v10.6.0 --yes --agent claude-code universal --copy'
+        'npx skills@latest add storybookjs/skills#v11.0.0-alpha.6 --yes --agent claude-code universal --copy'
       )
     );
     expect(logger.log).toHaveBeenCalledWith(
-      'Remove the Storybook skills with: npx skills@latest remove'
+      'Remove the Forkbook skills with: npx skills@latest remove'
     );
   });
 
@@ -190,7 +193,7 @@ describe('installSkills', () => {
 
     expect(result).toEqual({ result: 'failed', source: 'refresh', exitCode: 1 });
     expect(logger.warn).toHaveBeenCalledWith(
-      'Could not install the Storybook skills, continuing without them. Install them later with: npx skills@latest add storybookjs/skills#v10.6.0'
+      'Could not install the Forkbook skills, continuing without them. Install them later with: npx skills@latest add storybookjs/skills#v11.0.0-alpha.6'
     );
   });
 });

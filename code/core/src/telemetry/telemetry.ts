@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import * as os from 'node:os';
 import { join } from 'node:path';
 
-import { isCI } from 'storybook/internal/common';
+import { isCI } from '@aussieljk/forkbook/internal/common';
 
 import retry from 'fetch-retry';
 import { nanoid } from 'nanoid';
@@ -19,7 +19,9 @@ import type { Options, TelemetryData } from './types.ts';
 
 const retryingFetch = retry(fetch);
 
-const URL = process.env.STORYBOOK_TELEMETRY_URL || 'https://storybook.js.org/event-log';
+// Forkbook sends no telemetry unless you give it a server. Events are still written to the local
+// event cache, which some features read.
+const URL = process.env.FORKBOOK_TELEMETRY_URL;
 
 let tasks: Promise<any>[] = [];
 
@@ -66,6 +68,9 @@ const prepareRequest = async (data: TelemetryData, context: Record<string, any>,
   const sessionId = await getSessionId();
   const eventId = nanoid();
   const body = { ...rest, eventType, eventId, sessionId, metadata, payload, context };
+  if (!URL) {
+    return;
+  }
   const signal = AbortSignal.timeout(30_000);
   const maxRetries = 3;
 
@@ -93,8 +98,9 @@ const prepareRequest = async (data: TelemetryData, context: Record<string, any>,
 
 function getVersionNumber() {
   try {
-    return JSON.parse(readFileSync(join(resolvePackageDir('storybook'), 'package.json'), 'utf8'))
-      .version;
+    return JSON.parse(
+      readFileSync(join(resolvePackageDir('@aussieljk/forkbook'), 'package.json'), 'utf8')
+    ).version;
   } catch (e) {
     return version;
   }

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 
-import type { IndexEntry } from 'storybook/internal/types';
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import { combineStorySorts, sortStoriesV7 } from './sortStories.ts';
 

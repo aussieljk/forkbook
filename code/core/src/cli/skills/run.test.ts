@@ -20,17 +20,17 @@ const toolset = (id: string, methodNames: string[]): ToolsetCatalogEntry => ({
 });
 
 const describedTools = (output: string) =>
-  [...output.matchAll(/^Usage: npx storybook tools (.+) \[--key value \.\.\.\]$/gm)].map(
+  [...output.matchAll(/^Usage: npx forkbook tools (.+) \[--key value \.\.\.\]$/gm)].map(
     ([, command]) => command
   );
 
 const deps = () => ({
   loadStorybook: vi.fn().mockResolvedValue({ presets: { apply: vi.fn() } }),
   resolveSkillInputs: vi.fn().mockResolvedValue({
-    framework: 'storybook/react-vite',
-    renderer: 'storybook/react',
+    framework: '@aussieljk/forkbook/react-vite',
+    renderer: '@aussieljk/forkbook/react',
     csfFactories: false,
-    previewFile: '.storybook/preview.ts',
+    previewFile: '.forkbook/preview.ts',
     typescript: true,
     moduleGraphSupported: true,
     docsEnabled: false,
@@ -43,11 +43,14 @@ const deps = () => ({
   }),
   getProjectInfo: vi.fn().mockResolvedValue({
     ok: true,
-    projectInfo: { rendererPackage: 'storybook/react', builderPackage: 'storybook/builder-vite' },
+    projectInfo: {
+      rendererPackage: '@aussieljk/forkbook/react',
+      builderPackage: '@aussieljk/forkbook/builder-vite',
+    },
   }),
   getSetupMarkdown: vi
     .fn()
-    .mockResolvedValue({ markdown: '# Storybook Setup', prompt: 'optimized-tests' }),
+    .mockResolvedValue({ markdown: '# Forkbook Setup', prompt: 'optimized-tests' }),
   describeToolsets: vi.fn(() => [
     toolset('stories', ['preview', 'changed', 'findByComponent']),
     toolset('review', ['create']),
@@ -104,7 +107,7 @@ describe('runSkillsCommand', () => {
     const d = deps();
     const result = await runSkillsCommand({ tokens: [], target: {} }, d);
     expect(result.exitCode).toBe(0);
-    expect(result.output).toContain('Usage: npx storybook skills [options] [id]');
+    expect(result.output).toContain('Usage: npx forkbook skills [options] [id]');
     expect(result.output).toContain('stories');
     expect(result.output).toContain('write-story');
     expect(result.output).toContain('setup');
@@ -115,7 +118,7 @@ describe('runSkillsCommand', () => {
     const d = deps();
     const result = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
     expect(result.exitCode).toBe(0);
-    expect(result.output).toContain('npx storybook tools');
+    expect(result.output).toContain('npx forkbook tools');
     expect(result.output).not.toContain('stories-preview** ');
   });
 
@@ -128,24 +131,24 @@ describe('runSkillsCommand', () => {
     });
 
     const stories = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
-    expect(stories.output).toContain('npx storybook tools docs show --id <id>');
+    expect(stories.output).toContain('npx forkbook tools docs show --id <id>');
 
     const writeStory = await runSkillsCommand({ tokens: ['write-story'], target: {} }, d);
-    expect(writeStory.output).toContain('npx storybook tools docs list');
+    expect(writeStory.output).toContain('npx forkbook tools docs list');
   });
 
   it('omits the docs workflow when the CLI docs gate is off', async () => {
     const d = deps();
     const stories = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
-    expect(stories.output).not.toContain('npx storybook tools docs');
+    expect(stories.output).not.toContain('npx forkbook tools docs');
   });
 
   it('write-story assembles CLI-transport story instructions', async () => {
     const d = deps();
     const result = await runSkillsCommand({ tokens: ['write-story'], target: {} }, d);
     expect(result.exitCode).toBe(0);
-    expect(result.output).toContain('storybook/react');
-    expect(result.output).toContain('npx storybook tools stories changed');
+    expect(result.output).toContain('@aussieljk/forkbook/react');
+    expect(result.output).toContain('npx forkbook tools stories changed');
   });
 
   it('stories teaches each command inline, without a command reference', async () => {
@@ -158,24 +161,24 @@ describe('runSkillsCommand', () => {
     const stories = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
 
     expect(describedTools(stories.output)).toEqual([]);
-    expect(stories.output).toContain("npx storybook tools test run --stories '[{");
-    expect(stories.output).toContain("npx storybook tools review create --input '{");
+    expect(stories.output).toContain("npx forkbook tools test run --stories '[{");
+    expect(stories.output).toContain("npx forkbook tools review create --input '{");
     expect(stories.output.length).toBeLessThan(10000);
   });
 
   it('--all prints each skill once', async () => {
     const result = await runSkillsCommand({ tokens: [], all: true, target: {} }, deps());
 
-    expect(result.output.split('# Storybook workflow')).toHaveLength(2);
+    expect(result.output.split('# Forkbook workflow')).toHaveLength(2);
     expect(result.output.split('# Writing User Interfaces')).toHaveLength(2);
-    expect(result.output.split('# Storybook Setup')).toHaveLength(2);
+    expect(result.output.split('# Forkbook Setup')).toHaveLength(2);
   });
 
   it('setup emits the setup markdown from the lightweight probe, without loading config', async () => {
     const d = deps();
     const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
     expect(result.exitCode).toBe(0);
-    expect(result.output).toBe('# Storybook Setup');
+    expect(result.output).toBe('# Forkbook Setup');
     expect(d.loadStorybook).not.toHaveBeenCalled();
   });
 
@@ -185,23 +188,23 @@ describe('runSkillsCommand', () => {
 
     expect(setup.setupRun).toEqual({
       projectInfo: {
-        rendererPackage: 'storybook/react',
-        builderPackage: 'storybook/builder-vite',
+        rendererPackage: '@aussieljk/forkbook/react',
+        builderPackage: '@aussieljk/forkbook/builder-vite',
       },
       prompt: 'optimized-tests',
     });
     expect(all.setupRun).toBeUndefined();
   });
 
-  it.each(['storybook/react'])('setup accepts renderer %s', async (rendererPackage) => {
+  it.each(['@aussieljk/forkbook/react'])('setup accepts renderer %s', async (rendererPackage) => {
     const d = deps();
-    const projectInfo = { rendererPackage, builderPackage: 'storybook/builder-vite' };
+    const projectInfo = { rendererPackage, builderPackage: '@aussieljk/forkbook/builder-vite' };
     d.getProjectInfo.mockResolvedValue({ ok: true, projectInfo });
 
     const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
 
     expect(result.exitCode).toBe(0);
-    expect(result.output).toBe('# Storybook Setup');
+    expect(result.output).toBe('# Forkbook Setup');
     expect(d.getSetupMarkdown).toHaveBeenCalledWith(projectInfo);
   });
 
@@ -218,7 +221,7 @@ describe('runSkillsCommand', () => {
     const d = deps();
     d.getProjectInfo.mockResolvedValue({
       ok: true,
-      projectInfo: { rendererPackage, builderPackage: 'storybook/builder-vite' },
+      projectInfo: { rendererPackage, builderPackage: '@aussieljk/forkbook/builder-vite' },
     });
 
     const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
@@ -235,7 +238,7 @@ describe('runSkillsCommand', () => {
       ok: true,
       projectInfo: {
         rendererPackage: '@storybook/svelte',
-        builderPackage: 'storybook/builder-vite',
+        builderPackage: '@aussieljk/forkbook/builder-vite',
       },
     });
 
@@ -247,7 +250,7 @@ describe('runSkillsCommand', () => {
     expect(d.getSetupMarkdown).not.toHaveBeenCalled();
   });
 
-  it.each(['storybook/react'])(
+  it.each(['@aussieljk/forkbook/react'])(
     'setup rejects renderer %s without the Vite builder',
     async (rendererPackage) => {
       const d = deps();
@@ -288,13 +291,13 @@ describe('runSkillsCommand', () => {
     expect(d.getProjectInfo).toHaveBeenCalledWith({ configDir: '.' });
   });
 
-  it('reports a clean one-line message when loading the target Storybook fails, no stack trace', async () => {
+  it('reports a clean one-line message when loading the target Forkbook fails, no stack trace', async () => {
     const d = deps();
-    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .storybook/main.ts'));
+    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
     const result = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
     expect(result.exitCode).toBe(1);
     expect(result.errorOutput).toBe(
-      'Could not load the Storybook configuration for this project: Cannot find module .storybook/main.ts'
+      'Could not load the Forkbook configuration for this project: Cannot find module .forkbook/main.ts'
     );
   });
 
@@ -311,19 +314,19 @@ describe('runSkillsCommand', () => {
     const result = await runSkillsCommand({ tokens: [], all: true, target: {} }, d);
     expect(result.exitCode).toBe(0);
     expect(result.skill).toBe('all');
-    expect(result.output).toContain('# Storybook Setup');
-    expect(result.output).toContain('npx storybook tools stories changed');
-    expect(result.output).toContain('storybook/react');
+    expect(result.output).toContain('# Forkbook Setup');
+    expect(result.output).toContain('npx forkbook tools stories changed');
+    expect(result.output).toContain('@aussieljk/forkbook/react');
     expect(d.loadStorybook).toHaveBeenCalledTimes(1);
     expect(d.getProjectInfo).toHaveBeenCalledTimes(1);
   });
 
   it('--all fails as a whole when the configuration cannot be loaded', async () => {
     const d = deps();
-    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .storybook/main.ts'));
+    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
     const result = await runSkillsCommand({ tokens: [], all: true, target: {} }, d);
     expect(result.exitCode).toBe(1);
     expect(result.output).toBe('');
-    expect(result.errorOutput).toContain('Cannot find module .storybook/main.ts');
+    expect(result.errorOutput).toContain('Cannot find module .forkbook/main.ts');
   });
 });

@@ -1,7 +1,7 @@
 // The one choreography every renderer's snippet generator shares: resolve the meta's members once,
 // resolve each story's binding, merge their args, and read every value through to something that
 // means the same where the snippet lands.
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 
 import type { CsfFile } from '../CsfFile.ts';
 import { type ImportRef } from './import-statements.ts';

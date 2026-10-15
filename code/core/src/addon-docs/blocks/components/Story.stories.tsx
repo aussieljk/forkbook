@@ -1,18 +1,18 @@
 import React from 'react';
 
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   RESET_STORY_ARGS,
   STORY_ARGS_UPDATED,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import type { PlayFunctionContext } from 'storybook/internal/csf';
-import type { ModuleExport, WebRenderer } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/csf';
+import type { ModuleExport, WebRenderer } from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, ReactRenderer, StoryObj } from 'storybook/react-vite';
+import type { Meta, ReactRenderer, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import type { PreviewWeb } from 'storybook/preview-api';
-import { within } from 'storybook/test';
+import type { PreviewWeb } from '@aussieljk/forkbook/preview-api';
+import { within } from '@aussieljk/forkbook/test';
 
 import type { DocsContextProps } from '../blocks';
 import * as ButtonStories from '../examples/Button.stories';

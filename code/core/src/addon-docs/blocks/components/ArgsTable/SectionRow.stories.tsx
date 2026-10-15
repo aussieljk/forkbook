@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { ResetWrapper } from 'storybook/internal/components';
+import { ResetWrapper } from '@aussieljk/forkbook/internal/components';
 
 import { TableWrapper } from './ArgsTable';
 import { SectionRow } from './SectionRow';

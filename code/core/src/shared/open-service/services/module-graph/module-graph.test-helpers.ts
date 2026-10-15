@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import type { StoryIndex } from 'storybook/internal/types';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { registerService } from '../../server.ts';
 import { registerModuleGraphIndexService } from '../module-graph-index/server.ts';

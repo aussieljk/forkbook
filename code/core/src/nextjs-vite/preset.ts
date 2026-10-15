@@ -2,26 +2,26 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { PresetProperty } from 'storybook/internal/types';
+import type { PresetProperty } from '@aussieljk/forkbook/internal/types';
 
-import type { StorybookConfigVite } from 'storybook/builder-vite';
+import type { StorybookConfigVite } from '@aussieljk/forkbook/builder-vite';
 
 import semver from 'semver';
-import vitePluginStorybookNextjs from 'storybook/internal/nextjs-vite-plugin';
+import vitePluginStorybookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
 import { normalizePostCssConfig } from './find-postcss-config.ts';
 import type { FrameworkOptions } from './types.ts';
 import { getNextjsVersion } from './utils.ts';
 
 export const core: PresetProperty<'core'> = {
-  builder: import.meta.resolve('storybook/builder-vite'),
-  renderer: import.meta.resolve('storybook/react/preset'),
+  builder: import.meta.resolve('@aussieljk/forkbook/builder-vite'),
+  renderer: import.meta.resolve('@aussieljk/forkbook/react/preset'),
 };
 
 export const previewAnnotations: PresetProperty<'previewAnnotations'> = (entry = []) => {
   const annotations = [
     ...entry,
-    fileURLToPath(import.meta.resolve('storybook/nextjs-vite/preview')),
+    fileURLToPath(import.meta.resolve('@aussieljk/forkbook/nextjs-vite/preview')),
   ];
 
   const nextjsVersion = getNextjsVersion();
@@ -29,18 +29,20 @@ export const previewAnnotations: PresetProperty<'previewAnnotations'> = (entry =
 
   // TODO: Remove this once we only support Next.js v16 and above
   if (!isNext16orNewer) {
-    annotations.push(fileURLToPath(import.meta.resolve('storybook/nextjs-vite/config/preview')));
+    annotations.push(
+      fileURLToPath(import.meta.resolve('@aussieljk/forkbook/nextjs-vite/config/preview'))
+    );
   }
 
   return annotations;
 };
 
 export const optimizeViteDeps = [
-  'storybook/nextjs-vite/link.mock',
-  'storybook/nextjs-vite/navigation.mock',
-  'storybook/nextjs-vite/router.mock',
-  'storybook/nextjs-vite > styled-jsx',
-  'storybook/nextjs-vite > styled-jsx/style',
+  '@aussieljk/forkbook/nextjs-vite/link.mock',
+  '@aussieljk/forkbook/nextjs-vite/navigation.mock',
+  '@aussieljk/forkbook/nextjs-vite/router.mock',
+  '@aussieljk/forkbook/nextjs-vite > styled-jsx',
+  '@aussieljk/forkbook/nextjs-vite > styled-jsx/style',
   '@opentelemetry/api',
 ];
 

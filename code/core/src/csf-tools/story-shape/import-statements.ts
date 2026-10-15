@@ -1,4 +1,4 @@
-import { babelParse, babelPrint, types as t } from 'storybook/internal/babel';
+import { babelParse, babelPrint, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { type ImportBinding, importedName, isTypeSpecifier } from './imports.ts';
 

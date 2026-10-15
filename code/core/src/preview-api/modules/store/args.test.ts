@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { once } from 'storybook/internal/client-logger';
-import type { SBType } from 'storybook/internal/types';
+import { once } from '@aussieljk/forkbook/internal/client-logger';
+import type { SBType } from '@aussieljk/forkbook/internal/types';
 
 import {
   UNTARGETED,
@@ -21,7 +21,7 @@ const boolObjectType: SBType = { name: 'object', value: { bool: booleanType } };
 const reactNodeType: SBType = { name: 'other', value: 'ReactNode' };
 const otherUnionType: SBType = { name: 'other', value: 'small | default' };
 
-vi.mock('storybook/internal/client-logger');
+vi.mock('@aussieljk/forkbook/internal/client-logger');
 
 enum ArgsMapTestEnumWithoutInitializer {
   EnumValue,
@@ -136,7 +136,7 @@ describe('mapArgsToTypes', () => {
     expect(mapArgsToTypes({ a: Symbol('foo') }, { a: { type: reactNodeType } })).toStrictEqual({});
   });
 
-  // Types Storybook can't model (e.g. TS/Vue string-union selects) are extracted as `other`.
+  // Types Forkbook can't model (e.g. TS/Vue string-union selects) are extracted as `other`.
   // Their primitive values must survive deserialization, or they get dropped from the URL and
   // lost on reload / "open in new tab" (#29076). Non-primitive `other` values stay dropped.
   it('passes primitives for non-ReactNode other types', () => {

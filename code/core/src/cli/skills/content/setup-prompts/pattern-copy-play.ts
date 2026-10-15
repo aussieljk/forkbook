@@ -10,7 +10,10 @@
  * Update this header when iterating: bump the iteration number and link the
  * latest eval run so reviewers can compare variants without spelunking git.
  */
-import { getMswInitCommand, getVitestStorybookRunCommand } from 'storybook/internal/common';
+import {
+  getMswInitCommand,
+  getVitestStorybookRunCommand,
+} from '@aussieljk/forkbook/internal/common';
 
 import { dedent } from 'ts-dedent';
 
@@ -22,9 +25,9 @@ function getDocsReferenceSection(projectInfo: ProjectInfo): string {
   const docsUrl = (path: string) => getDocsMarkdownUrl(path, projectInfo);
 
   return dedent`
-    ### Storybook Documentation Reference
+    ### Forkbook Documentation Reference
 
-    Use the following references to look up Storybook APIs, concepts, or examples:
+    Use the following references to look up Forkbook APIs, concepts, or examples:
 
     - Full docs index: https://storybook.js.org/llms.txt
     - See code snippets only with codeOnly=true param e.g. ${docsUrl('writing-stories')}&codeOnly=true
@@ -36,7 +39,7 @@ function getDocsReferenceSection(projectInfo: ProjectInfo): string {
     - Play functions: ${docsUrl('writing-stories/play-function')}
     - Vitest integration: ${docsUrl('writing-tests/integrations/vitest-addon')}
 
-    Fetch these URLs directly when you need guidance on Storybook APIs or patterns.
+    Fetch these URLs directly when you need guidance on Forkbook APIs or patterns.
   `;
 }
 
@@ -51,7 +54,7 @@ function getPreviewConfigExample(projectInfo: ProjectInfo): string {
       import '../src/index.css'; // import global styles
       import MockDate from 'mockdate';
 
-      import { definePreview } from 'storybook/preview';
+      import { definePreview } from '@aussieljk/forkbook/preview';
       import { SessionProvider } from '../src/contexts/SessionContext';
 
       export default definePreview({
@@ -107,7 +110,7 @@ function getMockDateExample(projectInfo: ProjectInfo): string {
     return dedent`
       \`\`\`tsx
       import MockDate from 'mockdate';
-      import { definePreview } from 'storybook/preview';
+      import { definePreview } from '@aussieljk/forkbook/preview';
 
       export default definePreview({
         async beforeEach() {
@@ -142,7 +145,7 @@ function getMswPreviewExample(projectInfo: ProjectInfo): string {
     return dedent`
       \`\`\`tsx
       // ${configDir}/preview.tsx
-      import { definePreview } from 'storybook/preview';
+      import { definePreview } from '@aussieljk/forkbook/preview';
       import addonMsw from 'msw-storybook-addon';
       import { mswHandlers } from './msw-handlers';
 
@@ -179,8 +182,8 @@ function getStoryExample(projectInfo: ProjectInfo): string {
   if (projectInfo.hasCsfFactoryPreview) {
     return dedent`
       \`\`\`tsx
-      import preview from '#.storybook/preview';
-      import { expect } from 'storybook/test';
+      import preview from '#.forkbook/preview';
+      import { expect } from '@aussieljk/forkbook/test';
       import { SomeComponent } from './SomeComponent';
 
       const meta = preview.meta({
@@ -203,7 +206,7 @@ function getStoryExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`tsx
     import type { Meta, StoryObj } from '${typeImport}';
-    import { expect } from 'storybook/test';
+    import { expect } from '@aussieljk/forkbook/test';
     import { SomeComponent } from './SomeComponent';
 
     const meta = {
@@ -250,8 +253,8 @@ function getArgsStoryExample(projectInfo: ProjectInfo): string {
   if (projectInfo.hasCsfFactoryPreview) {
     return dedent`
       \`\`\`tsx
-      import preview from '#.storybook/preview';
-      import { expect } from 'storybook/test';
+      import preview from '#.forkbook/preview';
+      import { expect } from '@aussieljk/forkbook/test';
       import { Button } from './Button';
 
       const meta = preview.meta({
@@ -288,7 +291,7 @@ function getArgsStoryExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`tsx
     import type { Meta, StoryObj } from '${typeImport}';
-    import { expect } from 'storybook/test';
+    import { expect } from '@aussieljk/forkbook/test';
     import { Button } from './Button';
 
     const meta = {
@@ -327,8 +330,8 @@ function getRenderCompositionExample(projectInfo: ProjectInfo): string {
   if (projectInfo.hasCsfFactoryPreview) {
     return dedent`
       \`\`\`tsx
-      import preview from '#.storybook/preview';
-      import { expect } from 'storybook/test';
+      import preview from '#.forkbook/preview';
+      import { expect } from '@aussieljk/forkbook/test';
       import { Button } from './Button';
       import { Card } from './Card';
 
@@ -357,7 +360,7 @@ function getRenderCompositionExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`tsx
     import type { Meta, StoryObj } from '${typeImport}';
-    import { expect } from 'storybook/test';
+    import { expect } from '@aussieljk/forkbook/test';
     import { Button } from './Button';
     import { Card } from './Card';
 
@@ -388,8 +391,8 @@ function getPageStoryExample(projectInfo: ProjectInfo): string {
   if (projectInfo.hasCsfFactoryPreview) {
     return dedent`
       \`\`\`tsx
-      import preview from '#.storybook/preview';
-      import { expect } from 'storybook/test';
+      import preview from '#.forkbook/preview';
+      import { expect } from '@aussieljk/forkbook/test';
       import { ProductPage } from './ProductPage';
 
       const meta = preview.meta({
@@ -414,7 +417,7 @@ function getPageStoryExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`tsx
     import type { Meta, StoryObj } from '${typeImport}';
-    import { expect } from 'storybook/test';
+    import { expect } from '@aussieljk/forkbook/test';
     import { ProductPage } from './ProductPage';
 
     const meta = {
@@ -442,7 +445,7 @@ export function instructions(projectInfo: ProjectInfo): string {
   const typeImport = getTypeImportSource(projectInfo);
   const mswInit = getMswInitCommand(projectInfo.packageManager);
   const mswAddonAdd = projectInfo.packageManager.getPackageCommand([
-    'storybook',
+    'forkbook',
     'add',
     'msw-storybook-addon@3',
   ]);
@@ -452,12 +455,12 @@ export function instructions(projectInfo: ProjectInfo): string {
   );
 
   return dedent`
-    Attention: The following instructions must be followed in order to successfully set up Storybook in this project. Do not skip steps or attempt to do them out of order.
+    Attention: The following instructions must be followed in order to successfully set up Forkbook in this project. Do not skip steps or attempt to do them out of order.
 
-    Your goal is to make Storybook fully functional in this project by analyzing the codebase,
+    Your goal is to make Forkbook fully functional in this project by analyzing the codebase,
     configuring the preview with the right decorators, and writing stories for some components.
 
-    The end state should be a Storybook where any component — from a small button to a full page — can be added without story-specific workarounds. All necessary providers, CSS, browser state, and network mocks should live in the shared preview so that just rendering the component in the story is enough.
+    The end state should be a Forkbook where any component — from a small button to a full page — can be added without story-specific workarounds. All necessary providers, CSS, browser state, and network mocks should live in the shared preview so that just rendering the component in the story is enough.
 
     After each created story, run Vitest to verify it renders.
     If the test fails, read the error, fix the issue, and re-run until it passes before moving on.
@@ -498,7 +501,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     );
     \`\`\`
 
-    That means Storybook should copy:
+    That means Forkbook should copy:
 
     - the \`index.css\` import
     - the \`SessionProvider\`
@@ -525,7 +528,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     const savedTheme = localStorage.getItem("theme");
     \`\`\`
 
-    That means the default Storybook setup should discover and prepare:
+    That means the default Forkbook setup should discover and prepare:
 
     - provider state
     - MSW handlers for queries
@@ -533,7 +536,7 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     ### Step 2: Build one default app environment in preview
 
-    Set up Storybook once so most stories work without story-specific setup.
+    Set up Forkbook once so most stories work without story-specific setup.
 
     Start with the smallest faithful environment:
 
@@ -544,7 +547,7 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     It is fine to seed browser state such as \`localStorage\`, \`sessionStorage\`, and cookies when the app reads them during render.
     Seed only the specific app-owned keys and values you need.
-    Do not clear all \`localStorage\`, \`sessionStorage\`, or cookies, and do not reset Storybook's own state.
+    Do not clear all \`localStorage\`, \`sessionStorage\`, or cookies, and do not reset Forkbook's own state.
     Do not mock or redefine the browser runtime itself.
     The stories run in Vitest browser mode, so the real browser environment should already exist.
 
@@ -563,7 +566,7 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     ### Step 3: Support portals with preview-body.html
 
-    If the app uses portals, copy that setup into Storybook too.
+    If the app uses portals, copy that setup into Forkbook too.
 
     Look for patterns like:
 
@@ -578,7 +581,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     return createPortal(<ModalContent />, document.getElementById("portal-root")!);
     \`\`\`
 
-    That means Storybook should create the same portal root in \`${configDir}/preview-body.html\`:
+    That means Forkbook should create the same portal root in \`${configDir}/preview-body.html\`:
 
     \`\`\`html
     <!-- ${configDir}/preview-body.html -->
@@ -599,15 +602,15 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     ### Step 4: Mock side effects globally
 
-    All network/data queries should be handled by the default Storybook environment.
+    All network/data queries should be handled by the default Forkbook environment.
 
     - Always use \`msw-storybook-addon\` for query mocking.
     - If you introduce MSW, register the addon with \`${mswAddonAdd}\` (which also adds it to the main config) and run \`${mswInit}\` to create the worker file.${
       projectInfo.hasCsfFactoryPreview
-        ? " If `storybook add` injects `import * as mswStorybookAddon from 'msw-storybook-addon/preview'` and a `mswStorybookAddon` entry into `definePreview` `addons`, remove both — that form breaks TypeScript inference for the entire preview; use `addonMsw()` instead."
+        ? " If `forkbook add` injects `import * as mswStorybookAddon from 'msw-storybook-addon/preview'` and a `mswStorybookAddon` entry into `definePreview` `addons`, remove both — that form breaks TypeScript inference for the entire preview; use `addonMsw()` instead."
         : ''
     }
-    - Make sure Storybook serves \`./public\` as a static dir so \`mockServiceWorker.js\` is available.
+    - Make sure Forkbook serves \`./public\` as a static dir so \`mockServiceWorker.js\` is available.
     - Do not mock \`fetch\` directly.
     - Network/data queries should return deterministic mock data.
     - If you need to change dependencies, first check the lockfile and use that package manager for the change.
@@ -721,7 +724,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     Every named story export must have a \`play\` function.
     The \`play\` function is not optional, even for simple stories.
 
-    The purpose of the \`play\` function is to prove that the story actually works in the copied Storybook environment:
+    The purpose of the \`play\` function is to prove that the story actually works in the copied Forkbook environment:
 
     - the story renders something real and non-empty
     - the decorators provide the needed context
@@ -732,14 +735,14 @@ export function instructions(projectInfo: ProjectInfo): string {
     Use \`play\` functions to verify behavior, not just to click around.
     A story without assertions is incomplete.
 
-    Use tools from \`storybook/test\` such as:
+    Use tools from \`@aussieljk/forkbook/test\` such as:
 
     - \`expect\`
     - \`waitFor\`
 
     Prefer \`canvas\` and \`userEvent\` from the \`play\` context.
     Do not destructure \`canvasElement\` just to create \`const canvas = within(canvasElement)\`.
-    Do not import \`userEvent\` from \`storybook/test\`; use \`userEvent\` from the \`play\` context instead.
+    Do not import \`userEvent\` from \`@aussieljk/forkbook/test\`; use \`userEvent\` from the \`play\` context instead.
     Only use \`canvasElement.ownerDocument\` when you need to query outside the canvas, such as for portals.
 
     Example:

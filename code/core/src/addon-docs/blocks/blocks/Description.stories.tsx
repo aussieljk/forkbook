@@ -1,9 +1,13 @@
-import type { ModuleExport, StoryContext, StoryDocsPayload } from 'storybook/internal/types';
-import { registerService } from 'storybook/preview-api';
+import type {
+  ModuleExport,
+  StoryContext,
+  StoryDocsPayload,
+} from '@aussieljk/forkbook/internal/types';
+import { registerService } from '@aussieljk/forkbook/preview-api';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 import invariant from 'tiny-invariant';
 
 import { Button as ButtonComponent } from '../examples/Button';

@@ -1,9 +1,9 @@
 /* eslint-disable local-rules/no-uncategorized-errors */
-import { types as t } from 'storybook/internal/babel';
-import { getStoryTitle } from 'storybook/internal/common';
-import { combineTags } from 'storybook/internal/csf/csf-utils';
-import { logger } from 'storybook/internal/node-logger';
-import type { StoriesEntry, Tag } from 'storybook/internal/types';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
+import { getStoryTitle } from '@aussieljk/forkbook/internal/common';
+import { combineTags } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { StoriesEntry, Tag } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -27,7 +27,7 @@ const isValidTest = (storyTags: string[], tagsFilter: TagsFilter) => {
 };
 /**
  * TODO: the functionality in this file can be moved back to the vitest plugin itself It can use
- * `storybook/internal/babel` for all it's babel needs, without duplicating babel embedding in our
+ * `@aussieljk/forkbook/internal/babel` for all it's babel needs, without duplicating babel embedding in our
  * bundles.
  */
 
@@ -44,7 +44,7 @@ const getLiteralWithZeroWidthSpace = (testTitle: string) =>
   t.stringLiteral(`${testTitle}${DOUBLE_SPACES}`);
 
 /**
- * In Storybook users might be importing stories from other story files. As a side effect, tests can
+ * In Forkbook users might be importing stories from other story files. As a side effect, tests can
  * get re-triggered. To avoid this, we add a guard to only run tests if the current file is the one
  * running the test.
  *
@@ -135,8 +135,8 @@ export async function vitestTransform({
       if (result === 'unknown') {
         logger.warn(
           dedent`
-            [Storybook]: Could not calculate story title for "${fileName}".
-            Please make sure that this file matches the globs included in the "stories" field in your Storybook configuration at "${configDir}".
+            [Forkbook]: Could not calculate story title for "${fileName}".
+            Please make sure that this file matches the globs included in the "stories" field in your Forkbook configuration at "${configDir}".
           `
         );
       }
@@ -152,7 +152,7 @@ export async function vitestTransform({
 
   if (!metaNode || parsed._metaNodeIsSynthetic || !parsed._meta) {
     throw new Error(
-      'The Storybook vitest plugin could not detect the meta (default export) object in the story file. \n\nPlease make sure you have a default export with the meta object. If you are using a different export format that is not supported, please file an issue with details about your use case.'
+      'The Forkbook vitest plugin could not detect the meta (default export) object in the story file. \n\nPlease make sure you have a default export with the meta object. If you are using a different export format that is not supported, please file an issue with details about your use case.'
     );
   }
 
@@ -353,7 +353,7 @@ export async function vitestTransform({
       if (node === null) {
         logger.warn(
           dedent`
-            [Storybook]: Could not transform "${exportName}" story into test at "${fileName}".
+            [Forkbook]: Could not transform "${exportName}" story into test at "${fileName}".
             Please make sure to define stories in the same file and not re-export stories coming from other files".
           `
         );
@@ -409,7 +409,7 @@ export async function vitestTransform({
         t.importSpecifier(testStoryId, t.identifier('testStory')),
         t.importSpecifier(t.identifier('convertToFilePath'), t.identifier('convertToFilePath')),
       ],
-      t.stringLiteral('storybook/addon-vitest/internal/test-utils')
+      t.stringLiteral('@aussieljk/forkbook/addon-vitest/internal/test-utils')
     ),
   ];
 

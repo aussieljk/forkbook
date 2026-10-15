@@ -1,4 +1,7 @@
-import { getMswInitCommand, getVitestStorybookRunCommand } from 'storybook/internal/common';
+import {
+  getMswInitCommand,
+  getVitestStorybookRunCommand,
+} from '@aussieljk/forkbook/internal/common';
 
 import { dedent } from 'ts-dedent';
 
@@ -69,16 +72,16 @@ function missingVitestAddonNote(
   { addons }: ProjectInfo,
   packageManager: InstructionsContext['packageManager']
 ): string {
-  if (addons.includes('storybook/addon-vitest')) {
+  if (addons.includes('@aussieljk/forkbook/addon-vitest')) {
     return '';
   }
   const add = packageManager.getPackageCommand([
-    'storybook',
+    'forkbook',
     'add',
-    'storybook/addon-vitest',
+    '@aussieljk/forkbook/addon-vitest',
     '--yes',
   ]);
-  return `This project doesn't have \`storybook/addon-vitest\` yet, which runs stories as tests. Add it first with \`${add}\`; the steps below need it.\n\n`;
+  return `This project doesn't have \`@aussieljk/forkbook/addon-vitest\` yet, which runs stories as tests. Add it first with \`${add}\`; the steps below need it.\n\n`;
 }
 
 export function verifyStep(
@@ -146,7 +149,7 @@ export function verifyWithAllowedFailureStep(
 export function cleanupStep(): { title: string; body: string } {
   return {
     title: `Clean up`,
-    body: "Before finishing, remove debug code, broad mocks added during diagnosis, unused deps, and eval artifacts. If you managed to write successful stories, delete the examples that `storybook init` generated (a `stories/` folder with `Configure.mdx` next to `Button`, `Header`, and `Page`). Don't delete any other stories.",
+    body: "Before finishing, remove debug code, broad mocks added during diagnosis, unused deps, and eval artifacts. If you managed to write successful stories, delete the examples that `forkbook init` generated (a `stories/` folder with `Configure.mdx` next to `Button`, `Header`, and `Page`). Don't delete any other stories.",
   };
 }
 
@@ -168,7 +171,7 @@ export function buildSharedPreviewStep(
 
   return {
     title: 'Build the shared preview',
-    body: dedent`    Set up Storybook **once** so most stories work without per-story setup. **Edit the existing \`${configDir}/preview.${tsx}\`** (created by \`storybook init\`) — add to its existing config object, don't replace it. Add MSW only if a selected story makes network requests. Add MockDate only if a selected story's rendered output depends on the current date or time. Omit their imports and hooks otherwise.
+    body: dedent`    Set up Forkbook **once** so most stories work without per-story setup. **Edit the existing \`${configDir}/preview.${tsx}\`** (created by \`forkbook init\`) — add to its existing config object, don't replace it. Add MSW only if a selected story makes network requests. Add MockDate only if a selected story's rendered output depends on the current date or time. Omit their imports and hooks otherwise.
 
     The example below shows both optional paths. Merge only the pieces the selected stories need into what's already there:
 
@@ -178,7 +181,7 @@ export function buildSharedPreviewStep(
 
     - ${isReact ? "Use the **real** provider tree and the **real** root CSS import. Don't invent providers." : "Use the **real** application setup and the **real** root CSS import. Configure shared services, plugins, routing, and state using the installed framework's setup APIs. Don't invent providers."}
     - If the app's CSS is loaded via \`<link>\` in \`index.html\` (rather than imported in JS), import the same file from preview so stories render with the same styles.
-    - Seed only the specific browser-state keys the app actually reads. Do **not** clear all of \`localStorage\`/\`sessionStorage\`/cookies, and do not reset Storybook's own state.
+    - Seed only the specific browser-state keys the app actually reads. Do **not** clear all of \`localStorage\`/\`sessionStorage\`/cookies, and do not reset Forkbook's own state.
     - Use \`mockdate\` only when render output depends on the date.
     - Do not mock \`window\`, \`document\`, \`navigator\`, observers, or \`fetch\` directly.
     `,
@@ -207,20 +210,20 @@ export function mswStep(
 ): { title: string; body: string } {
   const mswInit = getMswInitCommand(packageManager);
   const mswAddonAdd = packageManager.getPackageCommand([
-    'storybook',
+    'forkbook',
     'add',
     'msw-storybook-addon@3',
   ]);
   const csfNextNote = projectInfo.hasCsfFactoryPreview
     ? `
 
-    If \`storybook add\` injects \`import * as mswStorybookAddon from 'msw-storybook-addon/preview'\` and a \`mswStorybookAddon\` entry into your \`definePreview\` \`addons\`, remove both — that form breaks TypeScript inference for the entire preview. Register the addon with \`addonMsw()\` as shown below instead.
+    If \`forkbook add\` injects \`import * as mswStorybookAddon from 'msw-storybook-addon/preview'\` and a \`mswStorybookAddon\` entry into your \`definePreview\` \`addons\`, remove both — that form breaks TypeScript inference for the entire preview. Register the addon with \`addonMsw()\` as shown below instead.
 `
     : '';
 
   return {
     title: 'Add only the test infrastructure the selected stories need',
-    body: `If a selected story makes network requests during rendering or interaction, register \`msw-storybook-addon\` with \`storybook add\` (which also adds it to the \`addons\` field of \`${configDir}/main.${ts}\`), install MSW, and generate the worker script:
+    body: `If a selected story makes network requests during rendering or interaction, register \`msw-storybook-addon\` with \`forkbook add\` (which also adds it to the \`addons\` field of \`${configDir}/main.${ts}\`), install MSW, and generate the worker script:
 
     \`\`\`bash
     ${mswAddonAdd}
@@ -395,9 +398,9 @@ export function interactionPlayStep(
 
     Imports & play context — get this right or vitest will fail in subtle ways:
 
-    - \`expect\` and \`waitFor\` come from \`'storybook/test'\` — import those.
-    - \`canvas\`, \`userEvent\`, and \`canvasElement\` come from the **play arguments**: \`async ({ canvas, userEvent, canvasElement }) => { ... }\`. **Do not** \`import { userEvent } from 'storybook/test'\` and **do not** write \`const canvas = within(canvasElement)\` — both are already provided.
-    - For **portal queries only**, query via \`canvasElement.ownerDocument.body\`. You may import \`within\` from \`'storybook/test'\` for that case (e.g. \`within(canvasElement.ownerDocument.body).findByTestId(...)\`). Don't use \`within\` for anything else.
+    - \`expect\` and \`waitFor\` come from \`'@aussieljk/forkbook/test'\` — import those.
+    - \`canvas\`, \`userEvent\`, and \`canvasElement\` come from the **play arguments**: \`async ({ canvas, userEvent, canvasElement }) => { ... }\`. **Do not** \`import { userEvent } from '@aussieljk/forkbook/test'\` and **do not** write \`const canvas = within(canvasElement)\` — both are already provided.
+    - For **portal queries only**, query via \`canvasElement.ownerDocument.body\`. You may import \`within\` from \`'@aussieljk/forkbook/test'\` for that case (e.g. \`within(canvasElement.ownerDocument.body).findByTestId(...)\`). Don't use \`within\` for anything else.
 
     ${getInteractionPlayExample(projectInfo)}`,
   };

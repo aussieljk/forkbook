@@ -1,8 +1,8 @@
-import type { CleanupCallback } from 'storybook/internal/csf';
+import type { CleanupCallback } from '@aussieljk/forkbook/internal/csf';
 import {
   CalledExtractOnStoreError,
   MissingStoryFromCsfFileError,
-} from 'storybook/internal/preview-errors';
+} from '@aussieljk/forkbook/internal/preview-errors';
 import type {
   CSFFile,
   IndexEntry,
@@ -17,7 +17,7 @@ import type {
   StoryContextForEnhancers,
   StoryId,
   StoryIndex,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { omitBy, pick } from 'es-toolkit/object';
 import memoize from 'memoizerific';

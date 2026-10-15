@@ -2,7 +2,7 @@
  * Reader-side types for the runtime instance registry the dev server writes. The writer side lives
  * in `code/core/src/core-server/utils/runtime-instance-registry.ts`; this reader is intentionally
  * more lenient (extra statuses, optional fields) so it also accepts records written by older
- * Storybook versions and external wrappers.
+ * Forkbook versions and external wrappers.
  */
 import * as v from 'valibot';
 
@@ -14,8 +14,8 @@ export const McpStatusSchema = v.picklist(['not-installed', 'starting', 'ready',
 export type McpStatus = v.InferOutput<typeof McpStatusSchema>;
 
 /**
- * A single Storybook runtime record written under the registry dir (default
- * `~/.storybook/instances`). One file per running `storybook dev` instance.
+ * A single Forkbook runtime record written under the registry dir (default
+ * `~/.forkbook/instances`). One file per running `forkbook dev` instance.
  * Spec: storybookjs/storybook#34826.
  */
 export const StorybookInstanceRecordSchema = v.object({
@@ -24,7 +24,7 @@ export const StorybookInstanceRecordSchema = v.object({
   pid: v.pipe(v.number(), v.minValue(1), v.integer()),
   cwd: v.string(),
   /**
-   * Resolved config directory of the running Storybook, used as a second matching key so
+   * Resolved config directory of the running Forkbook, used as a second matching key so
    * monorepo instances are found from a different cwd (storybookjs/storybook#35359). Optional:
    * records written by Storybooks older than 10.5 lack it.
    */

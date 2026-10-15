@@ -65,7 +65,8 @@ describe('docs toolset stays runtime-agnostic', () => {
 
     const offenders = [...reached.entries()].filter(
       ([target]) =>
-        target.includes('storybook/internal/core-server') || target.includes('core-server/')
+        target.includes('@aussieljk/forkbook/internal/core-server') ||
+        target.includes('core-server/')
     );
 
     expect(

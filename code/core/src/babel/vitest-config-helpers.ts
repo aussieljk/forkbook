@@ -1,7 +1,7 @@
 /**
  * Shared AST helpers for analyzing and determining whether a Vitest/Vite config file can be
- * auto-updated by Storybook. Extracted from the addon-vitest postinstall logic so the same
- * capability checks are used during `storybook init` (AddonVitestService) and during the actual
+ * auto-updated by Forkbook. Extracted from the addon-vitest postinstall logic so the same
+ * capability checks are used during `forkbook init` (AddonVitestService) and during the actual
  * config update (updateVitestFile).
  */
 import type * as t from '@babel/types';

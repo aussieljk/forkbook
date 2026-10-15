@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ProjectType } from 'storybook/internal/cli';
-import { getProcessAncestry } from 'storybook/internal/common';
-import { telemetry } from 'storybook/internal/telemetry';
-import { Feature } from 'storybook/internal/types';
+import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import { getProcessAncestry } from '@aussieljk/forkbook/internal/common';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import { TelemetryService } from './TelemetryService.ts';
 
-vi.mock('storybook/internal/telemetry', { spy: true });
-vi.mock('storybook/internal/common', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('storybook/internal/common')>()),
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@aussieljk/forkbook/internal/common')>()),
   getProcessAncestry: vi.fn(),
 }));
 

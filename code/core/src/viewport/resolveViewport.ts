@@ -1,4 +1,4 @@
-import type { Globals } from 'storybook/internal/csf';
+import type { Globals } from '@aussieljk/forkbook/internal/csf';
 
 import { PARAM_KEY, RESPONSIVE_VIEWPORT_VALUE } from './constants.ts';
 import type { GlobalState, GlobalStateUpdate, ViewportMap, ViewportType } from './types.ts';

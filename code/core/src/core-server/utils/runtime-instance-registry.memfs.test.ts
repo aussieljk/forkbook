@@ -18,7 +18,7 @@ vi.mock('node:fs', { spy: true });
 vi.mock('node:fs/promises', { spy: true });
 vi.mock('node:child_process', { spy: true });
 
-const REGISTRY_DIR = '/home/tester/.storybook/instances';
+const REGISTRY_DIR = '/home/tester/.forkbook/instances';
 
 beforeEach(async () => {
   vol.reset();

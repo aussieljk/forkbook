@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import * as v from 'valibot';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -50,7 +50,7 @@ const RESHAPED_MANIFEST_URL = 'https://reshaped.example.com/manifests/components
 describe('services preset hook: docs toolset', () => {
   beforeEach(() => {
     clearToolsetRegistry();
-    vi.stubGlobal('STORYBOOK_SERVICES_LOADED', false);
+    vi.stubGlobal('FORKBOOK_SERVICES_LOADED', false);
     // Serves only the Reshaped components manifest; anything else is a 404, like a static host.
     vi.stubGlobal(
       'fetch',
@@ -75,7 +75,7 @@ describe('services preset hook: docs toolset', () => {
   });
 
   describe('with refs', () => {
-    it('lists the local Storybook and every composed ref under its own heading', async () => {
+    it('lists the local Forkbook and every composed ref under its own heading', async () => {
       await services(undefined, optionsWithRefs(RESHAPED));
       expect(fetch).not.toHaveBeenCalled();
 
@@ -93,7 +93,7 @@ describe('services preset hook: docs toolset', () => {
       });
     });
 
-    it('defaults show to the local Storybook and answers an unknown storybookId with the available sources', async () => {
+    it('defaults show to the local Forkbook and answers an unknown storybookId with the available sources', async () => {
       await services(undefined, optionsWithRefs(RESHAPED));
       const { show, showStory } = getToolset('docs').methods;
 
@@ -106,7 +106,7 @@ describe('services preset hook: docs toolset', () => {
 
       const unknown = await show.handler({ id: 'button', storybookId: 'nope' } as never, cliCtx);
       expect(unknown.ok).toBe(false);
-      expect(unknown.markdown).toContain('Storybook source not found: "nope"');
+      expect(unknown.markdown).toContain('Forkbook source not found: "nope"');
 
       const found = await show.handler({ id: 'button', storybookId: 'reshaped' } as never, cliCtx);
       expect(found.ok).toBe(true);

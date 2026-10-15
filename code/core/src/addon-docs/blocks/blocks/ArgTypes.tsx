@@ -1,12 +1,12 @@
 import type { FC } from 'react';
 import React, { useContext } from 'react';
 
-import type { Args, Parameters, Renderer, StrictArgTypes } from 'storybook/internal/csf';
-import { InvalidBlockOfPropError } from 'storybook/internal/preview-errors';
-import type { ModuleExports } from 'storybook/internal/types';
+import type { Args, Parameters, Renderer, StrictArgTypes } from '@aussieljk/forkbook/internal/csf';
+import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { ModuleExports } from '@aussieljk/forkbook/internal/types';
 
-import type { PropDescriptor } from 'storybook/preview-api';
-import { filterArgTypes } from 'storybook/preview-api';
+import type { PropDescriptor } from '@aussieljk/forkbook/preview-api';
+import { filterArgTypes } from '@aussieljk/forkbook/preview-api';
 
 import type { SortType } from '../components';
 import { ArgsTableError, ArgsTable as PureArgsTable, TabbedArgsTable } from '../components';

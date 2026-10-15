@@ -1,4 +1,4 @@
-import { registerService } from 'storybook/internal/common';
+import { registerService } from '@aussieljk/forkbook/internal/common';
 import { concurrentWritesSyncServiceDef } from './definition.ts';
 
 export function registerConcurrentWritesSyncService() {

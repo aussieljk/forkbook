@@ -17,7 +17,7 @@ vi.mock('./common-glob-options', () => ({
   commonGlobOptions: mocks.commonGlobOptions,
 }));
 
-vi.mock('storybook/internal/node-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logger: {
     log: mocks.loggerLog,
   },

@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';
 
-import { getProjectRoot } from 'storybook/internal/common';
-import { CLI_COLORS, logTracker, logger } from 'storybook/internal/node-logger';
-import { ErrorCollector } from 'storybook/internal/telemetry';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS, logTracker, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { ErrorCollector } from '@aussieljk/forkbook/internal/telemetry';
 
 import * as find from 'empathic/find';
 import { dedent } from 'ts-dedent';
@@ -13,7 +13,7 @@ export type FinalizationCommandOptions = {
   showAgentFollowUp: boolean;
   /** When true, show the "paste this prompt to your AI agent" instructions */
   showAiInstructions: boolean;
-  /** Package-manager-aware `storybook skills setup` command shown to agents */
+  /** Package-manager-aware `forkbook skills setup` command shown to agents */
   setupSkillCommand: string;
 };
 
@@ -22,11 +22,11 @@ type ExecuteFinalizationParams = {
 };
 
 /**
- * Command for finalizing Storybook installation
+ * Command for finalizing Forkbook installation
  *
  * Responsibilities:
  *
- * - Update .gitignore with Storybook entries
+ * - Update .gitignore with Forkbook entries
  * - Print success message
  * - Display feature summary
  * - Show next steps
@@ -48,7 +48,7 @@ export class FinalizationCommand {
     }
   }
 
-  /** Update .gitignore with Storybook-specific entries */
+  /** Update .gitignore with Forkbook-specific entries */
   private async updateGitignore(): Promise<void> {
     const foundGitIgnoreFile = find.up('.gitignore');
     const rootDirectory = getProjectRoot();
@@ -75,7 +75,7 @@ export class FinalizationCommand {
 
   private async printFailureMessage(storybookCommand?: string | null): Promise<void> {
     logger.warn(
-      'Storybook setup completed, but some non-blocking errors occurred. Please check the log file below for details.'
+      'Forkbook setup completed, but some non-blocking errors occurred. Please check the log file below for details.'
     );
     this.printNextSteps(storybookCommand);
 
@@ -93,19 +93,19 @@ export class FinalizationCommand {
     if (this.options.showAgentFollowUp) {
       logger.step(
         CLI_COLORS.storybook(
-          dedent`Storybook is installed but is not entirely set up yet.
+          dedent`Forkbook is installed but is not entirely set up yet.
           To finish setting up, now run \`${this.options.setupSkillCommand}\` and follow its instructions precisely.`
         )
       );
     } else {
-      logger.step(CLI_COLORS.success('Storybook was successfully installed in your project!'));
+      logger.step(CLI_COLORS.success('Forkbook was successfully installed in your project!'));
     }
     this.printNextSteps(storybookCommand);
   }
 
   private printNextSteps(storybookCommand?: string | null): void {
     if (storybookCommand) {
-      logger.log(`To run Storybook, run ${CLI_COLORS.cta(storybookCommand)}. CTRL+C to stop.`);
+      logger.log(`To run Forkbook, run ${CLI_COLORS.cta(storybookCommand)}. CTRL+C to stop.`);
     }
 
     // We don't want to tell agents about Discord, and we want to customise their docs URL.
@@ -115,7 +115,7 @@ export class FinalizationCommand {
     `);
     } else {
       logger.log(dedent`
-      Want to learn more about Storybook? ${CLI_COLORS.cta('https://storybook.js.org/')}
+      Want to learn more about Forkbook? ${CLI_COLORS.cta('https://storybook.js.org/')}
       Having trouble or want to chat? ${CLI_COLORS.cta('https://discord.gg/storybook/')}
     `);
     }

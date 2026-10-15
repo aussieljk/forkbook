@@ -2,7 +2,7 @@
  * The docs toolset's one environment-specific dependency.
  *
  * Everything that differs between runtimes — live open services, the manifests core builds itself,
- * or manifest files fetched from a hosted Storybook — is hidden behind this seam, so the toolset
+ * or manifest files fetched from a hosted Forkbook — is hidden behind this seam, so the toolset
  * definition stays a pure mapping from ids to formatted output.
  */
 

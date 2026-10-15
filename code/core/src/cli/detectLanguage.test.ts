@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { SupportedLanguage } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import * as memfs from 'memfs';
 import { vol } from 'memfs';

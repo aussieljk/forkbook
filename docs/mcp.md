@@ -1,15 +1,15 @@
-# Storybook MCP
+# Forkbook MCP
 
-Reusable MCP package for Storybook component and docs knowledge.
+Reusable MCP package for Forkbook component and docs knowledge.
 
-Learn more about Storybook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
 
-## Self-hosting `storybook/mcp`
+## Self-hosting `@aussieljk/forkbook/mcp`
 
 This package is a library: the tarball ships one module and no executable. It declares no `bin`,
 starts no process, and has no CLI. You register its tools on an MCP server you own, using the
-snippets below. If you want a running Storybook MCP server with no code at all, use the dev server
-instead — `storybook dev` serves one at `/mcp` through `storybook/addon-mcp`.
+snippets below. If you want a running Forkbook MCP server with no code at all, use the dev server
+instead — `forkbook dev` serves one at `/mcp` through `@aussieljk/forkbook/addon-mcp`.
 
 ### Prerequisites
 
@@ -20,7 +20,7 @@ instead — `storybook dev` serves one at `/mcp` through `storybook/addon-mcp`.
 
 ### Example implementation
 
-The Storybook repository has a local HTTP server built on this package,
+The Forkbook repository has a local HTTP server built on this package,
 [`serve.ts`](https://github.com/storybookjs/storybook/blob/next/code/lib/mcp/serve.ts), that loads
 manifests from a directory or URL. It is a development harness and is not part of the published
 package.
@@ -30,7 +30,7 @@ The snippets below cover the common self-hosting patterns.
 #### Minimal implementation
 
 ```ts
-import { createStorybookMcpHandler } from 'storybook/mcp';
+import { createStorybookMcpHandler } from '@aussieljk/forkbook/mcp';
 
 const storybookMcpHandler = await createStorybookMcpHandler();
 
@@ -103,7 +103,7 @@ A fetch-compatible request handler for your `/mcp` endpoint.
 ##### Example
 
 ```ts
-import { createStorybookMcpHandler } from 'storybook/mcp';
+import { createStorybookMcpHandler } from '@aussieljk/forkbook/mcp';
 
 const mcp = await createStorybookMcpHandler({
   manifestProvider: async (_request, path) => {
@@ -122,7 +122,7 @@ export async function handleRequest(request: Request) {
 
 #### Handler options and request context
 
-`storybook/mcp` uses the same core fields in two places:
+`@aussieljk/forkbook/mcp` uses the same core fields in two places:
 
 - Handler creation (`createStorybookMcpHandler(options)`)
 - Per-request override (`handler(request, context)`)
@@ -242,7 +242,7 @@ Optional callback after `docs-show` runs:
 
 Type: `Source[]`
 
-Optional multi-source configuration for composing multiple Storybook MCP sources. This is supported but relatively uncommon for most user setups.
+Optional multi-source configuration for composing multiple Forkbook MCP sources. This is supported but relatively uncommon for most user setups.
 
 #### `Source`
 
@@ -256,7 +256,7 @@ type Source = {
 };
 ```
 
-Represents one Storybook source in multi-source mode.
+Represents one Forkbook source in multi-source mode.
 
 #### `SourceManifests`
 
@@ -285,15 +285,15 @@ type RequiresOwnMcpNotice = {
 };
 ```
 
-Indicates that a composed Storybook source cannot be read through the local MCP proxy and should be accessed through its own MCP endpoint instead.
+Indicates that a composed Forkbook source cannot be read through the local MCP proxy and should be accessed through its own MCP endpoint instead.
 
 #### Tool registration exports
 
-Use these when you want to build your own [`tmcp`](https://github.com/paoloricciuti/tmcp/) server instead of using `createStorybookMcpHandler`, while still reusing Storybook's docs tools.
+Use these when you want to build your own [`tmcp`](https://github.com/paoloricciuti/tmcp/) server instead of using `createStorybookMcpHandler`, while still reusing Forkbook's docs tools.
 
 This approach is useful when you need to:
 
-- register Storybook tools alongside your own custom tools,
+- register Forkbook tools alongside your own custom tools,
 - customize transport/session setup yourself,
 - or conditionally enable tools based on your own server context.
 
@@ -310,7 +310,7 @@ import {
   addGetDocumentationTool,
   addListAllDocumentationTool,
   type StorybookContext,
-} from 'storybook/mcp';
+} from '@aussieljk/forkbook/mcp';
 
 const adapter = new ValibotJsonSchemaAdapter();
 const server = new McpServer(

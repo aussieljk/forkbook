@@ -1,8 +1,8 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 
-import { logger } from 'storybook/internal/node-logger';
-import type { PackageJson } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { PackageJson } from '@aussieljk/forkbook/internal/types';
 
 import * as resolve from 'empathic/resolve';
 

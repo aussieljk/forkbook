@@ -1,11 +1,11 @@
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import {
   FORCE_RE_RENDER,
   RESET_STORY_ARGS,
   STORY_RENDERED,
   UPDATE_GLOBALS,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import type {
   Args,
   DecoratorApplicator,
@@ -14,7 +14,7 @@ import type {
   Renderer,
   StoryContext,
   StoryId,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
@@ -156,10 +156,10 @@ function hookify<TRenderer extends Renderer>(fn: AbstractFunction) {
     }
     hooks.nextHookIndex = 0;
 
-    const prevContext = global.STORYBOOK_HOOKS_CONTEXT;
-    global.STORYBOOK_HOOKS_CONTEXT = hooks;
+    const prevContext = global.FORKBOOK_HOOKS_CONTEXT;
+    global.FORKBOOK_HOOKS_CONTEXT = hooks;
     const result = fn(...args);
-    global.STORYBOOK_HOOKS_CONTEXT = prevContext;
+    global.FORKBOOK_HOOKS_CONTEXT = prevContext;
 
     if (hooks.currentPhase === 'UPDATE' && hooks.getNextHook() != null) {
       throw new Error(
@@ -205,7 +205,7 @@ export const applyHooks =
         numberOfRenders += 1;
         if (numberOfRenders > RENDER_LIMIT) {
           throw new Error(
-            'Too many re-renders. Storybook limits the number of renders to prevent an infinite loop.'
+            'Too many re-renders. Forkbook limits the number of renders to prevent an infinite loop.'
           );
         }
       }
@@ -219,15 +219,15 @@ const areDepsEqual = (deps: any[], nextDeps: any[]) =>
 
 const invalidHooksError = () =>
   new Error(
-    'Storybook preview hooks can only be called inside decorators and story functions.\n\n' +
-      "When combining Storybook hooks (e.g. useArgs) with framework hooks (e.g. React's useState, useEffect, useRef) in the same render function, use Storybook's equivalents from 'storybook/preview-api' instead: useState, useEffect, useRef, useMemo, useCallback, useReducer."
+    'Forkbook preview hooks can only be called inside decorators and story functions.\n\n' +
+      "When combining Forkbook hooks (e.g. useArgs) with framework hooks (e.g. React's useState, useEffect, useRef) in the same render function, use Forkbook's equivalents from '@aussieljk/forkbook/preview-api' instead: useState, useEffect, useRef, useMemo, useCallback, useReducer."
   );
 
 function getHooksContextOrNull<
   TRenderer extends Renderer,
   TArgs extends Args = Args,
 >(): HooksContext<TRenderer, TArgs> | null {
-  return global.STORYBOOK_HOOKS_CONTEXT || null;
+  return global.FORKBOOK_HOOKS_CONTEXT || null;
 }
 
 function getHooksContextOrThrow<
@@ -263,7 +263,7 @@ function useHook(name: string, callback: (hook: Hook) => void, deps?: any[] | un
 
     if (hook.name !== name) {
       logger.warn(
-        `Storybook has detected a change in the order of Hooks${
+        `Forkbook has detected a change in the order of Hooks${
           hooks.currentDecoratorName ? ` called by ${hooks.currentDecoratorName}` : ''
         }. This will lead to bugs and errors if not fixed.`
       );
@@ -377,7 +377,7 @@ function triggerUpdate() {
     try {
       addons.getChannel().emit(FORCE_RE_RENDER);
     } catch (e) {
-      logger.warn('State updates of Storybook preview hooks work only in browser');
+      logger.warn('State updates of Forkbook preview hooks work only in browser');
     }
   }
 }
@@ -512,7 +512,7 @@ export interface EventMap {
 }
 
 /**
- * Subscribes to events emitted by the Storybook channel and returns a function to emit events.
+ * Subscribes to events emitted by the Forkbook channel and returns a function to emit events.
  *
  * @example
  *
@@ -525,7 +525,7 @@ export interface EventMap {
  * @param {EventMap} eventMap A map of event listeners to subscribe to.
  * @param {any[]} [deps=[]] An optional array of dependencies. If any of the dependencies change,
  *   the event listeners will be re-subscribed. Default is `[]`
- * @returns {(...args: any[]) => void} A function to emit events to the Storybook channel.
+ * @returns {(...args: any[]) => void} A function to emit events to the Forkbook channel.
  */
 export function useChannel(eventMap: EventMap, deps: any[] = []) {
   const channel = addons.getChannel();

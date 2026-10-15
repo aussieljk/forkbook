@@ -1,5 +1,5 @@
 // oxlint-disable no-named-as-default-member
-import events from 'storybook/internal/core-events';
+import events from '@aussieljk/forkbook/internal/core-events';
 
 export type EventSender = 'manager' | 'preview' | 'server' | 'any';
 

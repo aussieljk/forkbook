@@ -1,4 +1,4 @@
-import { type NodePath, types as t } from 'storybook/internal/babel';
+import { type NodePath, types as t } from '@aussieljk/forkbook/internal/babel';
 
 export interface ImportBinding {
   /** Module specifier the local name is imported from. */

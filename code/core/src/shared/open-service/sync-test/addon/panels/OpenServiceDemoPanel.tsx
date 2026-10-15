@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useServiceCommand, useServiceQuery } from 'storybook/manager-api';
+import { useServiceCommand, useServiceQuery } from '@aussieljk/forkbook/manager-api';
 
 import type {
   ConcurrentWritesSyncService,

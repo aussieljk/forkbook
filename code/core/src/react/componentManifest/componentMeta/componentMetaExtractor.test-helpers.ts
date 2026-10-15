@@ -3,7 +3,7 @@ import * as path from 'node:path';
 
 import { afterAll } from 'vitest';
 
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { type StoryRef, getComponents } from '../getComponentImports.ts';
 import { findMatchingComponent } from '../resolveComponents.ts';

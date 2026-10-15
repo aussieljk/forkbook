@@ -1,6 +1,9 @@
-import { sanitize } from 'storybook/internal/csf';
-import type { ModuleExports, NormalizedComponentAnnotations } from 'storybook/internal/types';
-import type { Renderer } from 'storybook/internal/types';
+import { sanitize } from '@aussieljk/forkbook/internal/csf';
+import type {
+  ModuleExports,
+  NormalizedComponentAnnotations,
+} from '@aussieljk/forkbook/internal/types';
+import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { normalizeInputTypes } from './normalizeInputTypes.ts';
 

@@ -1,4 +1,4 @@
-import { createStoryArgsResolver, loadCsf } from 'storybook/internal/csf-tools';
+import { createStoryArgsResolver, loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 
 import { describe, expect, it } from 'vitest';
 
@@ -71,7 +71,7 @@ describe('authoredSource', () => {
     expect(
       authoredSourceOf(
         dedent`
-          import preview from '../.storybook/preview';
+          import preview from '../.forkbook/preview';
           const meta = preview.meta({ title: 'Example/Button' });
           const Base = meta.story({
             parameters: {

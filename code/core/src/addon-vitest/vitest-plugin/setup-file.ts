@@ -1,13 +1,13 @@
 import { afterEach, beforeAll, beforeEach, inject, vi } from 'vitest';
 import type { RunnerTask } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import { getChannel, setChannel } from 'storybook/internal/channels';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import { getChannel, setChannel } from '@aussieljk/forkbook/internal/channels';
 
-import { COMPONENT_TESTING_PANEL_ID, STORYBOOK_TEST_FEATURES_PROVIDE_KEY } from '../constants.ts';
+import { COMPONENT_TESTING_PANEL_ID, FORKBOOK_TEST_FEATURES_PROVIDE_KEY } from '../constants.ts';
 
 // Vitest 5 replaces the Vite define without exposing it on the runtime global.
-const features = inject(STORYBOOK_TEST_FEATURES_PROVIDE_KEY);
+const features = inject(FORKBOOK_TEST_FEATURES_PROVIDE_KEY);
 if (features) {
   vi.stubGlobal('FEATURES', features);
   beforeEach(() => vi.stubGlobal('FEATURES', features));
@@ -61,7 +61,7 @@ export const modifyErrorMessage = ({ task }: { task: Task }) => {
     const currentError = task.result.errors[0];
     const storybookUrl = import.meta.env.__STORYBOOK_URL__;
     const storyUrl = `${storybookUrl}/?path=/story/${meta.storyId}&addonPanel=${COMPONENT_TESTING_PANEL_ID}`;
-    currentError.message = `\n\x1B[34mClick to debug the error directly in Storybook: ${storyUrl}\x1B[39m\n\n${currentError.message}`;
+    currentError.message = `\n\x1B[34mClick to debug the error directly in Forkbook: ${storyUrl}\x1B[39m\n\n${currentError.message}`;
   }
 };
 

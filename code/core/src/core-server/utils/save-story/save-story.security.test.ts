@@ -3,22 +3,25 @@ import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Channel } from 'storybook/internal/channels';
-import { getProjectRoot } from 'storybook/internal/common';
-import type { ResponseData, SaveStoryResponsePayload } from 'storybook/internal/core-events';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
+import type {
+  ResponseData,
+  SaveStoryResponsePayload,
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   SAVE_STORY_REQUEST,
   SAVE_STORY_RESPONSE,
   STORY_RENDERED,
-} from 'storybook/internal/core-events';
-import type { Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { initializeSaveStory } from './save-story.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const mocksDir = join(__dirname, 'mocks');
 const storyFile = join(mocksDir, 'csf-variances.stories.tsx');

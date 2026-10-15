@@ -2,7 +2,7 @@ import * as path from 'node:path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import type { IndexEntry } from 'storybook/internal/types';
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
 import { dedent } from 'ts-dedent';
 
 import { ComponentMetaManager } from '../componentManifest/componentMeta/ComponentMetaManager.ts';

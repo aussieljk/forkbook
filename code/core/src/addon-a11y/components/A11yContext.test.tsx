@@ -9,16 +9,16 @@ import {
   STORY_FINISHED,
   STORY_RENDER_PHASE_CHANGED,
   type StoryFinishedPayload,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 
 import type { AxeResults } from 'axe-core';
-import * as api from 'storybook/manager-api';
+import * as api from '@aussieljk/forkbook/manager-api';
 
 import { EVENTS, UI_STATE_ID } from '../constants.ts';
 import { RuleType } from '../types.ts';
 import { A11yContextProvider, useA11yContext } from './A11yContext.tsx';
 
-vi.mock('storybook/manager-api');
+vi.mock('@aussieljk/forkbook/manager-api');
 const mockedApi = vi.mocked(api);
 
 const storyId = 'button--primary';

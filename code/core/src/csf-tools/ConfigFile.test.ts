@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import * as babelParser from '@babel/parser';
-import { babelPrint, parserOptions } from 'storybook/internal/babel';
+import { babelPrint, parserOptions } from '@aussieljk/forkbook/internal/babel';
 
 import { dedent } from 'ts-dedent';
 
@@ -62,7 +62,7 @@ describe('ConfigFile', () => {
   describe('callArguments', () => {
     it('finds binding-safe method calls on aliased named imports', () => {
       const config = loadConfig(dedent`
-        import { addons as managerAddons } from 'storybook/manager-api';
+        import { addons as managerAddons } from '@aussieljk/forkbook/manager-api';
 
         managerAddons.setConfig({ showNav: false });
         managerAddons['setConfig']({ showPanel: false });
@@ -75,7 +75,7 @@ describe('ConfigFile', () => {
       const calls = config.callArguments({
         importedName: 'addons',
         methodName: 'setConfig',
-        moduleNames: ['storybook/manager-api', '@storybook/manager-api'],
+        moduleNames: ['@aussieljk/forkbook/manager-api', '@storybook/manager-api'],
       });
 
       expect(calls).toHaveLength(2);
@@ -92,7 +92,7 @@ describe('ConfigFile', () => {
     it('ignores other modules and type-only imports', () => {
       const config = loadConfig(dedent`
         import { addons } from 'other-package';
-        import type { addons as typeAddons } from 'storybook/manager-api';
+        import type { addons as typeAddons } from '@aussieljk/forkbook/manager-api';
         addons.setConfig({ showNav: false });
         typeAddons.setConfig({ showPanel: false });
       `).parse();
@@ -101,14 +101,14 @@ describe('ConfigFile', () => {
         config.callArguments({
           importedName: 'addons',
           methodName: 'setConfig',
-          moduleNames: ['storybook/manager-api'],
+          moduleNames: ['@aussieljk/forkbook/manager-api'],
         })
       ).toHaveLength(0);
     });
 
     it('finds binding-safe method calls on destructured CommonJS imports', () => {
       const config = loadConfig(dedent`
-        const { addons: managerAddons } = require('storybook/manager-api');
+        const { addons: managerAddons } = require('@aussieljk/forkbook/manager-api');
 
         managerAddons.setConfig({ showNav: false });
 
@@ -120,7 +120,7 @@ describe('ConfigFile', () => {
       const calls = config.callArguments({
         importedName: 'addons',
         methodName: 'setConfig',
-        moduleNames: ['storybook/manager-api'],
+        moduleNames: ['@aussieljk/forkbook/manager-api'],
       });
 
       expect(calls).toHaveLength(1);
@@ -129,12 +129,12 @@ describe('ConfigFile', () => {
 
     it('finds same-named imported bindings in different scopes', () => {
       const config = loadConfig(dedent`
-        import { addons } from 'storybook/manager-api';
+        import { addons } from '@aussieljk/forkbook/manager-api';
 
         addons.setConfig({ showNav: false });
 
         function configure() {
-          const { addons } = require('storybook/manager-api');
+          const { addons } = require('@aussieljk/forkbook/manager-api');
           addons.setConfig({ showPanel: false });
         }
       `).parse();
@@ -142,7 +142,7 @@ describe('ConfigFile', () => {
       const calls = config.callArguments({
         importedName: 'addons',
         methodName: 'setConfig',
-        moduleNames: ['storybook/manager-api'],
+        moduleNames: ['@aussieljk/forkbook/manager-api'],
       });
 
       expect(calls).toHaveLength(2);
@@ -152,7 +152,7 @@ describe('ConfigFile', () => {
 
     it('ignores other bindings from the same CommonJS destructuring', () => {
       const config = loadConfig(dedent`
-        const { addons, unrelated } = require('storybook/manager-api');
+        const { addons, unrelated } = require('@aussieljk/forkbook/manager-api');
 
         addons.setConfig({ showNav: false });
         unrelated.setConfig({ showPanel: false });
@@ -161,7 +161,7 @@ describe('ConfigFile', () => {
       const calls = config.callArguments({
         importedName: 'addons',
         methodName: 'setConfig',
-        moduleNames: ['storybook/manager-api'],
+        moduleNames: ['@aussieljk/forkbook/manager-api'],
       });
 
       expect(calls).toHaveLength(1);
@@ -294,7 +294,7 @@ describe('ConfigFile', () => {
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
               const config: StorybookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
@@ -354,7 +354,7 @@ describe('ConfigFile', () => {
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
               const config: StorybookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
@@ -391,7 +391,7 @@ describe('ConfigFile', () => {
     describe('factory config', () => {
       it('parses correctly', () => {
         const source = dedent`
-          import { definePreview } from 'storybook/react-vite';
+          import { definePreview } from '@aussieljk/forkbook/react-vite';
 
           const config = definePreview({
             framework: 'foo',
@@ -406,7 +406,7 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            import { definePreview } from 'storybook/react-vite';
+            import { definePreview } from '@aussieljk/forkbook/react-vite';
             export const foo = definePreview({ core: { builder: 'vite' } });
             `
           )
@@ -417,7 +417,7 @@ describe('ConfigFile', () => {
           getField(
             ['tags'],
             dedent`
-              import { definePreview } from 'storybook/react-vite';
+              import { definePreview } from '@aussieljk/forkbook/react-vite';
               const parameters = {};
               export const config = definePreview({
                 parameters,
@@ -429,7 +429,7 @@ describe('ConfigFile', () => {
       });
       it('parses correctly with .type<T>() chaining on export default', () => {
         const source = dedent`
-          import { definePreview } from 'storybook/react-vite';
+          import { definePreview } from '@aussieljk/forkbook/react-vite';
 
           export default definePreview({
             parameters: {
@@ -738,14 +738,14 @@ describe('ConfigFile', () => {
             ['core', 'builder'],
             'vite',
             dedent`
-              import { definePreview } from 'storybook/react-vite';
+              import { definePreview } from '@aussieljk/forkbook/react-vite';
               export const foo = definePreview({
                 addons: [],
               });
             `
           )
         ).toMatchInlineSnapshot(`
-          import { definePreview } from 'storybook/react-vite';
+          import { definePreview } from '@aussieljk/forkbook/react-vite';
           export const foo = definePreview({
             addons: [],
 
@@ -761,14 +761,14 @@ describe('ConfigFile', () => {
             ['core', 'builder'],
             'vite',
             dedent`
-              import { definePreview } from 'storybook/react-vite';
+              import { definePreview } from '@aussieljk/forkbook/react-vite';
               export const foo = definePreview({
                 core: { foo: 'bar' },
               });
             `
           )
         ).toMatchInlineSnapshot(`
-          import { definePreview } from 'storybook/react-vite';
+          import { definePreview } from '@aussieljk/forkbook/react-vite';
           export const foo = definePreview({
             core: {
               foo: 'bar',
@@ -783,14 +783,14 @@ describe('ConfigFile', () => {
             ['core', 'builder'],
             'vite',
             dedent`
-              import { definePreview } from 'storybook/react-vite';
+              import { definePreview } from '@aussieljk/forkbook/react-vite';
               export const foo = definePreview({
                 core: { builder: 'old-builder' },
               });
             `
           )
         ).toMatchInlineSnapshot(`
-          import { definePreview } from 'storybook/react-vite';
+          import { definePreview } from '@aussieljk/forkbook/react-vite';
           export const foo = definePreview({
             core: { builder: 'vite' },
           });
@@ -1169,7 +1169,7 @@ describe('ConfigFile', () => {
 
   describe('quote inference under EOL reconstruction', () => {
     it('keeps single quotes when token offsets index a CRLF reconstruction (Windows)', () => {
-      const source = `export default {\n  framework: 'storybook/react-vite',\n};\n`;
+      const source = `export default {\n  framework: '@aussieljk/forkbook/react-vite',\n};\n`;
       // On Windows, recast rebuilds the parser input with `os.EOL` before babel sees it, so
       // babel's token offsets index a CRLF string while `_code` is the original LF source.
       // Parsing the CRLF variant directly with @babel/parser recreates exactly that
@@ -1185,7 +1185,7 @@ describe('ConfigFile', () => {
 
     it('infers quotes and prints LF output for CRLF sources', () => {
       const source = [
-        "import { addons } from 'storybook/manager-api';",
+        "import { addons } from '@aussieljk/forkbook/manager-api';",
         '',
         'export const tags = [];',
       ].join('\r\n');
@@ -1203,7 +1203,7 @@ describe('ConfigFile', () => {
     describe('getNameFromPath', () => {
       it(`supports string literal node`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = {
             framework: 'foo',
@@ -1217,7 +1217,7 @@ describe('ConfigFile', () => {
       describe('satisfies', () => {
         it(`supports string literal node`, () => {
           const source = dedent`
-            import type { StorybookConfig } from 'storybook/react-vite';
+            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
   
             const config = {
               framework: 'foo',
@@ -1230,7 +1230,7 @@ describe('ConfigFile', () => {
 
         it(`supports string literal node without variables`, () => {
           const source = dedent`
-            import type { StorybookConfig } from 'storybook/react-vite';
+            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
   
             export default {
               framework: 'foo',
@@ -1242,7 +1242,7 @@ describe('ConfigFile', () => {
 
         it(`supports object expression node with name property`, () => {
           const source = dedent`
-            import type { StorybookConfig } from 'storybook/react-vite';
+            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
   
             const config = {
               framework: { name: 'foo', options: { bar: require('baz') } },
@@ -1258,7 +1258,7 @@ describe('ConfigFile', () => {
 
       it(`supports object expression node with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = {
             framework: { name: 'foo', options: { bar: require('baz') } },
@@ -1273,7 +1273,7 @@ describe('ConfigFile', () => {
 
       it(`supports wrapped names`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = {
             framework: getAbsolutePath('foo'),
@@ -1286,7 +1286,7 @@ describe('ConfigFile', () => {
 
       it(`returns undefined when accessing a field that does not exist`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = { }
           export default config;
@@ -1297,7 +1297,7 @@ describe('ConfigFile', () => {
 
       it(`throws an error when node is of unexpected type`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = {
             framework: makesNoSense(),
@@ -1314,7 +1314,7 @@ describe('ConfigFile', () => {
     describe('getNamesFromPath', () => {
       it(`supports an array with string literal and object expression with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
           const config: StorybookConfig = {
             addons: [
@@ -1337,7 +1337,7 @@ describe('ConfigFile', () => {
         describe('default export', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
     
               const config = {
                 addons: [
@@ -1358,7 +1358,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
     
               export default {
                 addons: [
@@ -1380,7 +1380,7 @@ describe('ConfigFile', () => {
         describe('module exports', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
     
               const config = {
                 addons: [
@@ -1401,7 +1401,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from 'storybook/react-vite';
+              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
     
               module.exports = {
                 addons: [
@@ -1424,7 +1424,7 @@ describe('ConfigFile', () => {
 
     it(`returns undefined when accessing a field that does not exist`, () => {
       const source = dedent`
-        import type { StorybookConfig } from 'storybook/react-vite';
+        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
         const config: StorybookConfig = { }
         export default config;
@@ -1441,7 +1441,7 @@ describe('ConfigFile', () => {
          * Copyright Example
          */
 
-        import type { StorybookConfig } from 'storybook/react-vite';
+        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
         const config: StorybookConfig = { stories: [] };
         export default config;
@@ -1456,7 +1456,7 @@ describe('ConfigFile', () => {
          * Copyright Example
          */
 
-        import type { StorybookConfig } from 'storybook/react-vite';
+        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
 
         import { dirname } from 'node:path';
         import { fileURLToPath } from 'node:url';
@@ -2113,7 +2113,7 @@ describe('ConfigFile', () => {
   describe('parse', () => {
     it("export { X } with X is import { X } from 'another-file'", () => {
       const source = dedent`
-          import type { StorybookConfig } from 'storybook/react-vite';
+          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
           import { path } from 'path';
 
           export { path };

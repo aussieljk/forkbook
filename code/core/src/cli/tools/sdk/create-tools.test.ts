@@ -1,7 +1,7 @@
 import { resolve } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { telemetry } from 'storybook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import * as v from 'valibot';
 
@@ -20,9 +20,9 @@ import {
 import { bootstrapToolsRuntime, type ToolsRuntime } from './local-runtime.ts';
 
 vi.mock('./local-runtime.ts', { spy: true });
-vi.mock('storybook/internal/telemetry', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 
-const CONFIG_DIR = '/repo/.storybook';
+const CONFIG_DIR = '/repo/.forkbook';
 const ELSEWHERE = resolve('/elsewhere');
 
 const echo = defineToolset({
@@ -44,7 +44,7 @@ const echo = defineToolset({
     },
     live: {
       title: 'Need a dev server',
-      description: 'Needs a running Storybook.',
+      description: 'Needs a running Forkbook.',
       input: v.strictObject({}),
       requiresDevServer: true,
       handler: async () => ({ ok: true as const, data: {}, markdown: '' }),
@@ -110,13 +110,13 @@ describe('createTools', () => {
   it('loads the target configuration in this process when cwd already matches', async () => {
     const tools = await createTools({
       cwd: process.cwd(),
-      configDir: '.storybook',
+      configDir: '.forkbook',
       mode: 'local',
     });
 
     expect(bootstrapToolsRuntime).toHaveBeenCalledWith({
       cwd: process.cwd(),
-      configDir: '.storybook',
+      configDir: '.forkbook',
     });
     expect(spawnChild).not.toHaveBeenCalled();
     expect(tools.mode).toBe('local');
@@ -142,7 +142,7 @@ describe('createTools', () => {
 
     const cwdBefore = process.cwd();
     const tools = await createTools(
-      { cwd: '/elsewhere', configDir: '.storybook', mode: 'local' },
+      { cwd: '/elsewhere', configDir: '.forkbook', mode: 'local' },
       { spawnChild }
     );
 
@@ -176,7 +176,7 @@ describe('createTools', () => {
   });
 
   it('does not spawn a nested child host when already running as one', async () => {
-    vi.stubEnv('STORYBOOK_TOOLS_CHILD_HOST', 'true');
+    vi.stubEnv('FORKBOOK_TOOLS_CHILD_HOST', 'true');
 
     await expect(
       createTools({ cwd: '/elsewhere', mode: 'local' }, { spawnChild })
@@ -195,7 +195,7 @@ describe('createTools', () => {
     expect(named.clientInfo).toEqual({ name: 'storybook-cli', version: '1.2.3', kind: 'cli' });
   });
 
-  it('joins a running Storybook in attached mode without loading the local runtime', async () => {
+  it('joins a running Forkbook in attached mode without loading the local runtime', async () => {
     const attach = vi.fn(async () => ({
       runtime: makeRuntime(),
       record: {
@@ -222,10 +222,10 @@ describe('createTools', () => {
     });
   });
 
-  it('sets STORYBOOK_ATTACHED_TOOLS before attaching so store construction stays a follower', async () => {
-    delete process.env.STORYBOOK_ATTACHED_TOOLS;
+  it('sets FORKBOOK_ATTACHED_TOOLS before attaching so store construction stays a follower', async () => {
+    delete process.env.FORKBOOK_ATTACHED_TOOLS;
     const attach = vi.fn(async () => {
-      expect(process.env.STORYBOOK_ATTACHED_TOOLS).toBe('true');
+      expect(process.env.FORKBOOK_ATTACHED_TOOLS).toBe('true');
       return {
         runtime: makeRuntime(),
         record: { url: 'http://localhost:6006', pid: 123, configDir: CONFIG_DIR },
@@ -296,7 +296,7 @@ describe('createTools', () => {
       new AttachUnavailableError({
         reason: 'port-mismatch',
         instances: [],
-        remediation: 'No Storybook instance for this project is running on port 9999.',
+        remediation: 'No Forkbook instance for this project is running on port 9999.',
       })
     );
 
@@ -311,7 +311,7 @@ describe('createTools', () => {
       new AttachUnavailableError({
         reason: 'port-mismatch',
         instances: [],
-        remediation: 'No Storybook instance for this project is running on port 9999.',
+        remediation: 'No Forkbook instance for this project is running on port 9999.',
       })
     );
 
@@ -396,7 +396,7 @@ describe('createTools', () => {
   it('falls back to local with an environment-mismatch gate reason in auto mode', async () => {
     vi.mocked(attach).mockRejectedValueOnce(
       new EnvironmentMismatchError({
-        reason: 'The running Storybook and this CLI are different `storybook` installations:',
+        reason: 'The running Forkbook and this CLI are different `storybook` installations:',
       })
     );
 
@@ -428,7 +428,7 @@ describe('createTools', () => {
         reason: 'no-instance',
         instances: [],
         remediation:
-          'No running Storybook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+          'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
       })
     );
 
@@ -463,7 +463,7 @@ describe('createTools', () => {
         reason: 'no-instance',
         instances: [],
         remediation:
-          'No running Storybook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+          'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
       })
     );
     vi.mocked(spawnChild).mockResolvedValue(spawned);
@@ -488,7 +488,7 @@ describe('createTools', () => {
       throw new AttachUnavailableError({
         reason: 'connection-failed',
         instances: [],
-        remediation: 'Could not connect to the Storybook at http://localhost:6006.',
+        remediation: 'Could not connect to the Forkbook at http://localhost:6006.',
       });
     });
 
@@ -516,7 +516,7 @@ describe('createTools', () => {
           throw new AttachUnavailableError({
             reason: 'no-instance',
             instances: [],
-            remediation: 'No running Storybook.',
+            remediation: 'No running Forkbook.',
           });
         },
       }
@@ -533,7 +533,7 @@ describe('createTools', () => {
       throw new AttachUnavailableError({
         reason: 'no-instance',
         instances: [],
-        remediation: 'No running Storybook was found for this project.',
+        remediation: 'No running Forkbook was found for this project.',
       });
     };
 
@@ -606,7 +606,7 @@ describe('createTools', () => {
 
     await expect(failure).rejects.toMatchObject({ data: { reason: 'config-load-failed' }, cause });
     await expect(failure).rejects.toThrow(
-      'Could not load the Storybook configuration for this project: No configuration files found'
+      'Could not load the Forkbook configuration for this project: No configuration files found'
     );
   });
 });
@@ -637,7 +637,7 @@ describe('describe', () => {
     });
   });
 
-  it('marks the methods that need a running Storybook', async () => {
+  it('marks the methods that need a running Forkbook', async () => {
     const tools = await createTools({ mode: 'local' });
 
     const catalog = await tools.describe();
@@ -739,7 +739,7 @@ describe('call', () => {
     await expect(tools.call('echo')).rejects.toThrow('Expected `toolsetId.methodName`');
   });
 
-  it('rejects a method that needs a running Storybook with attach guidance', async () => {
+  it('rejects a method that needs a running Forkbook with attach guidance', async () => {
     const tools = await createTools({ mode: 'local' });
 
     const failure = tools.call('echo.live');
@@ -749,7 +749,7 @@ describe('call', () => {
       data: { reason: 'no-instance', instances: [] },
       agentFacing: true,
     });
-    await expect(failure).rejects.toThrow('needs a running Storybook dev server');
+    await expect(failure).rejects.toThrow('needs a running Forkbook dev server');
   });
 
   it('rejects an already-aborted signal before running anything', async () => {
@@ -807,7 +807,7 @@ describe('call', () => {
       catalog.toolsets[0].methods.find((method) => method.ref === 'echo.sibling')?.description;
 
     expect(siblingOf(sdkCatalog)).toBe('See echo.ok.');
-    expect(siblingOf(cliCatalog)).toBe('See npx storybook tools echo ok.');
+    expect(siblingOf(cliCatalog)).toBe('See npx forkbook tools echo ok.');
   });
 
   it('rejects prototype-named refs as unknown methods', async () => {
@@ -930,7 +930,7 @@ describe('tools-command telemetry', () => {
   });
 
   it('does not emit an SDK invocation from a child host process', async () => {
-    vi.stubEnv('STORYBOOK_TOOLS_CHILD_HOST', 'true');
+    vi.stubEnv('FORKBOOK_TOOLS_CHILD_HOST', 'true');
     const tools = await createTools({ mode: 'local' });
 
     await tools.call('echo.ok', { value: 'hello' });
@@ -943,7 +943,7 @@ describe('tools-command telemetry', () => {
       throw new AttachUnavailableError({
         reason: 'no-instance',
         instances: [],
-        remediation: 'No running Storybook was found for this project.',
+        remediation: 'No running Forkbook was found for this project.',
       });
     });
     const tools = await createTools({}, { attach });
@@ -966,12 +966,12 @@ describe('tools-command telemetry', () => {
     ]);
   });
 
-  it('emits attach-gate when attached mode cannot join a running Storybook', async () => {
+  it('emits attach-gate when attached mode cannot join a running Forkbook', async () => {
     const attach = vi.fn(async () => {
       throw new AttachUnavailableError({
         reason: 'connection-failed',
         instances: [],
-        remediation: 'Could not connect to the Storybook at http://localhost:6006.',
+        remediation: 'Could not connect to the Forkbook at http://localhost:6006.',
       });
     });
 
@@ -996,7 +996,7 @@ describe('tools-command telemetry', () => {
       throw new AttachUnavailableError({
         reason: 'no-instance',
         instances: [],
-        remediation: 'No running Storybook.',
+        remediation: 'No running Forkbook.',
       });
     });
 

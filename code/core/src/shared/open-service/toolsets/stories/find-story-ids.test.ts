@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { StoryIndex, StoryIndexEntry } from 'storybook/internal/types';
+import type { StoryIndex, StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 
 import { findStoryIds } from './find-story-ids.ts';
 import type { StoryInput } from './story-input.ts';
@@ -397,7 +397,7 @@ describe('findStoryIds', () => {
     const result = findStoryIds(mockStoryIndex, stories);
 
     expect((result[0] as { errorMessage: string }).errorMessage).toBe(
-      `No story found for export name "NonExistent" with absolute file path "${process.cwd()}/src/NonExistent.stories.tsx". Storybook has no stories indexed for that file. Check the path, and that the file matches the \`stories\` globs in the Storybook config`
+      `No story found for export name "NonExistent" with absolute file path "${process.cwd()}/src/NonExistent.stories.tsx". Forkbook has no stories indexed for that file. Check the path, and that the file matches the \`stories\` globs in the Forkbook config`
     );
   });
 

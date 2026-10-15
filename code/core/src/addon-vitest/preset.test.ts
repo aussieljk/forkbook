@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { clearToolsetRegistry, getToolset } from 'storybook/open-service';
-import type { Options } from 'storybook/internal/types';
+import { clearToolsetRegistry, getToolset } from '@aussieljk/forkbook/open-service';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { TRIGGER_TEST_RUN_REQUEST } from './constants.ts';
 import { services } from './preset.ts';
@@ -30,7 +30,7 @@ describe('services preset hook', () => {
   });
 
   // Consumers resolve the `test` toolset for its descriptions and schemas alone, without a dev
-  // server: `storybook tools` in local mode applies `services` but never starts one, and a
+  // server: `forkbook tools` in local mode applies `services` but never starts one, and a
   // non-Vite dev server returns from `experimental_serverChannel` before it could register. Both
   // used to hit an unregistered toolset and fail hard.
   it('registers the test toolset without a server channel', async () => {
@@ -40,10 +40,10 @@ describe('services preset hook', () => {
   });
 
   // The offering and answering surfaces must not drift apart: the same hook that registers the
-  // toolset wires the responder that answers its requests, which is what lets `storybook tools
+  // toolset wires the responder that answers its requests, which is what lets `forkbook tools
   // test run` work without a dev server.
   it('wires the test-run responder next to the registration for Vite projects', async () => {
-    const options = makeOptions({ core: { builder: 'storybook/builder-vite' } });
+    const options = makeOptions({ core: { builder: '@aussieljk/forkbook/builder-vite' } });
 
     await services(undefined, options);
 

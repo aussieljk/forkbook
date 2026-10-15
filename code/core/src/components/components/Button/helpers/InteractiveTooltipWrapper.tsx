@@ -1,6 +1,6 @@
 import React, { type DOMAttributes, type ReactElement, useMemo } from 'react';
 
-import { type API_KeyCollection, shortcutToHumanString } from 'storybook/manager-api';
+import { type API_KeyCollection, shortcutToHumanString } from '@aussieljk/forkbook/manager-api';
 
 import type { PopperPlacement } from '../../shared/overlayHelpers.tsx';
 import { TooltipNote } from '../../tooltip/TooltipNote.tsx';

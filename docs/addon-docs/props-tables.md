@@ -2,9 +2,9 @@
   <img src="./media/props-tables-hero.png" width="100%" />
 </center>
 
-<h1>Storybook Docs Props Tables</h1>
+<h1>Forkbook Docs Props Tables</h1>
 
-Storybook Docs automatically generates props tables for components in supported frameworks. This document is a consolidated summary of prop tables, provides instructions for reporting bugs, and list known limitations for each framework.
+Forkbook Docs automatically generates props tables for components in supported frameworks. This document is a consolidated summary of prop tables, provides instructions for reporting bugs, and list known limitations for each framework.
 
 - [Usage](#usage)
   - [DocsPage](#docspage)
@@ -41,7 +41,7 @@ To use the props table in [MDX](./mdx.md), use the `ArgsTable` block:
 
 ```js
 // MyComponent.stories.mdx
-import { ArgsTable } from 'storybook/addon-docs';
+import { ArgsTable } from '@aussieljk/forkbook/addon-docs';
 import { MyComponent } from './MyComponent';
 
 # My Component!
@@ -59,7 +59,7 @@ Starting in SB 6.0, the `ArgsTable` block has built-in `Controls` (formerly know
 
 <br/>
 
-These controls are implemented to appear automatically in the props table when your story accepts [Storybook Args](https://storybook.js.org/docs/api/csf#args-story-inputs) as its input. This is done slightly differently depending on whether you're using `DocsPage` or `MDX`.
+These controls are implemented to appear automatically in the props table when your story accepts [Forkbook Args](https://storybook.js.org/docs/api/csf#args-story-inputs) as its input. This is done slightly differently depending on whether you're using `DocsPage` or `MDX`.
 
 **DocsPage.** In [DocsPage](./docspage.md), simply write your story to consume args and the auto-generated props table will display controls in the right-most column:
 
@@ -96,7 +96,7 @@ You can customize what's shown in the props table by [customizing the `ArgTypes`
 
 > **NOTE:** This API is experimental and may change outside of the typical semver release cycle
 
-When you declare a `component` in for your `DocsPage` [as described above](#docspage) or use the `<ArgsTable story="xxx" />` construct [in MDX](#controls), the props table shows the `story.argTypes` that gets extracted by Storybook.
+When you declare a `component` in for your `DocsPage` [as described above](#docspage) or use the `<ArgsTable story="xxx" />` construct [in MDX](#controls), the props table shows the `story.argTypes` that gets extracted by Forkbook.
 
 Consider the following input:
 
@@ -159,7 +159,7 @@ export default {
 };
 ```
 
-These values--`description`, `table.type`, and `controls.type`--get merged over the defaults that are extracted by Storybook. The final merged values would be:
+These values--`description`, `table.type`, and `controls.type`--get merged over the defaults that are extracted by Forkbook. The final merged values would be:
 
 ```js
 const argTypes = {
@@ -180,7 +180,7 @@ const argTypes = {
 
 This would render a row with a modified description, a type display with a dropdown that shows the detail, and no control.
 
-> **NOTE:** `storybook/addon-docs` provide shorthand for common tasks:
+> **NOTE:** `@aussieljk/forkbook/addon-docs` provide shorthand for common tasks:
 >
 > - `type: 'number'` is shorthand for `type: { name: 'number' }`
 > - `control: 'radio'` is shorthand for `control: { type: 'radio' }`
@@ -233,4 +233,4 @@ This package relies on a variety of sub-packages to extract property information
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
 - Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
+- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)

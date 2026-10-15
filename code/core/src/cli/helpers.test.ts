@@ -3,8 +3,8 @@ import fsp from 'node:fs/promises';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { JsPackageManager } from 'storybook/internal/common';
-import { Feature, SupportedLanguage, SupportedRenderer } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { Feature, SupportedLanguage, SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 import { sep } from 'path';
 
@@ -36,7 +36,7 @@ vi.mock('node:fs', async (importOriginal) => {
   };
 });
 vi.mock('./dirs', () => ({
-  getRendererDir: (renderer: string) => normalizePath(`storybook/template/${renderer}`),
+  getRendererDir: (renderer: string) => normalizePath(`@aussieljk/forkbook/template/${renderer}`),
 }));
 
 vi.mock('node:fs/promises', async (importOriginal) => {
@@ -152,36 +152,38 @@ describe('Helpers', () => {
     `should copy $expected when folder $exists exists for language $language`,
     async ({ language, exists, expected }) => {
       const componentsDirectory = exists.map((folder: string) =>
-        normalizePath(`storybook/template/react/cli/${folder}`)
+        normalizePath(`@aussieljk/forkbook/template/react/cli/${folder}`)
       );
       fsMocks.existsSync.mockImplementation(
         (filePath) =>
           componentsDirectory.includes(filePath) ||
-          filePath === normalizePath('storybook/template/react/cli')
+          filePath === normalizePath('@aussieljk/forkbook/template/react/cli')
       );
       await helpers.copyTemplateFiles({
         templateLocation: SupportedRenderer.REACT,
         language,
         packageManager: packageManagerMock,
-        commonAssetsDir: normalizePath('storybook/assets/create/rendererAssets/common'),
+        commonAssetsDir: normalizePath('@aussieljk/forkbook/assets/create/rendererAssets/common'),
         features: new Set([Feature.DOCS, Feature.TEST]),
       });
 
       expect(fsp.cp).toHaveBeenNthCalledWith(
         1,
-        normalizePath('storybook/assets/create/rendererAssets/common'),
+        normalizePath('@aussieljk/forkbook/assets/create/rendererAssets/common'),
         './stories',
         expect.anything()
       );
 
-      const expectedDirectory = normalizePath(`storybook/template/react/cli${expected}`);
+      const expectedDirectory = normalizePath(`@aussieljk/forkbook/template/react/cli${expected}`);
       expect(fsp.cp).toHaveBeenNthCalledWith(2, expectedDirectory, './stories', expect.anything());
     }
   );
 
   it(`should copy to src folder when exists`, async () => {
     vi.mocked(fs.existsSync).mockImplementation((filePath) => {
-      return filePath === normalizePath('storybook/template/react/cli') || filePath === './src';
+      return (
+        filePath === normalizePath('@aussieljk/forkbook/template/react/cli') || filePath === './src'
+      );
     });
     await helpers.copyTemplateFiles({
       templateLocation: SupportedRenderer.REACT,
@@ -194,7 +196,7 @@ describe('Helpers', () => {
 
   it(`should copy to root folder when src doesn't exist`, async () => {
     vi.mocked(fs.existsSync).mockImplementation((filePath) => {
-      return filePath === normalizePath('storybook/template/react/cli');
+      return filePath === normalizePath('@aussieljk/forkbook/template/react/cli');
     });
     await helpers.copyTemplateFiles({
       templateLocation: SupportedRenderer.REACT,

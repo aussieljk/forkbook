@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React, { memo } from 'react';
 
-import { deprecate, logger } from 'storybook/internal/client-logger';
+import { deprecate, logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import * as StorybookIcons from '@storybook/icons';
 
@@ -24,7 +24,7 @@ export interface IconsProps extends ComponentProps<'svg'> {
 
 // TODO: Remove in SB11
 /**
- * @deprecated No longer used, will be removed in Storybook 9.0 Please use the `@storybook/icons`
+ * @deprecated No longer used, will be removed in Forkbook 9.0 Please use the `@storybook/icons`
  *   package instead.
  */
 export const Icons = ({
@@ -62,7 +62,7 @@ export interface SymbolsProps {
 
 // TODO: Remove in SB11
 /**
- * @deprecated No longer used, will be removed in Storybook 9.0 Please use the `@storybook/icons`
+ * @deprecated No longer used, will be removed in Forkbook 9.0 Please use the `@storybook/icons`
  *   package instead.
  */
 export const Symbols = memo<SymbolsProps>(function Symbols({ icons: keys = Object.keys(icons) }) {

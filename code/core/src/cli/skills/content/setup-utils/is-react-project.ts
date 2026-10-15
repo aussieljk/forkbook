@@ -5,5 +5,5 @@ export function isReactProject(projectInfo: ProjectInfo): boolean {
   const renderer =
     projectInfo.rendererPackage ??
     (projectInfo.framework ? frameworkToRendererMap[projectInfo.framework] : undefined);
-  return renderer === 'storybook/react';
+  return renderer === '@aussieljk/forkbook/react';
 }

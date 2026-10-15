@@ -1,4 +1,4 @@
-import type { CleanupCallback } from 'storybook/internal/csf';
+import type { CleanupCallback } from '@aussieljk/forkbook/internal/csf';
 
 const ANIMATION_TIMEOUT = 5000;
 

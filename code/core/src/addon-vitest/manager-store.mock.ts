@@ -2,10 +2,10 @@ import type {
   StatusStoreByTypeId,
   TestProviderState,
   TestProviderStoreById,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import { experimental_MockUniversalStore } from 'storybook/manager-api';
-import * as testUtils from 'storybook/test';
+import { experimental_MockUniversalStore } from '@aussieljk/forkbook/manager-api';
+import * as testUtils from '@aussieljk/forkbook/test';
 
 import {
   ADDON_ID,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Decorator } from 'storybook/react-vite';
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
 
 import SettingsFooter from './SettingsFooter.tsx';
 

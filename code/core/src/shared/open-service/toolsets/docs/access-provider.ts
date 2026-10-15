@@ -1,7 +1,7 @@
 /**
  * Docs access backed by manifest files, wherever they are served from.
  *
- * This is the access a hosted Storybook uses: the manifests arrive as JSON over a provider (HTTP by
+ * This is the access a hosted Forkbook uses: the manifests arrive as JSON over a provider (HTTP by
  * default, but the caller can supply any fetcher — S3, a static bundle, an authenticated proxy), so
  * they are untrusted input and are validated on arrival. In the split/ref (v1) format the index
  * rows only carry `$ref`s to externalized payloads, which are followed here so the toolset always
@@ -35,7 +35,7 @@ import { ManifestGetError, RequiresOwnMcpError, type Source } from './sources.ts
 /** Cap on in-flight story `$ref` fetches while expanding one source's listing. */
 const STORY_REF_CONCURRENCY = 16;
 
-/** Where the top-level manifests live, relative to the Storybook build. */
+/** Where the top-level manifests live, relative to the Forkbook build. */
 export const COMPONENT_MANIFEST_PATH = './manifests/components.json';
 export const DOCS_MANIFEST_PATH = './manifests/docs.json';
 
@@ -164,7 +164,7 @@ export async function fetchManifests(
     }
     const is404 = reason instanceof ManifestGetError && reason.message.includes('404');
     const hint = is404
-      ? `\nHint: The Storybook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Storybook versions) to its main.ts config.`
+      ? `\nHint: The Forkbook at this URL may not have the component manifest enabled. Add \`features: { componentsManifest: true }\` (or \`features: { experimentalComponentsManifest: true }\` for older Forkbook versions) to its main.ts config.`
       : '';
     throw new ManifestGetError(
       `Failed to get component manifest: ${reason instanceof Error ? reason.message : String(reason)}${hint}`,
@@ -231,7 +231,7 @@ export function parseManifestRef(ref: string): { path: string; pointer: string[]
  *
  * These check the shape the adapters actually read, not the full docgen format: the payloads carry
  * renderer-specific fields that core must pass through untouched, so a strict schema here would
- * reject valid manifests. What matters is that a hosted Storybook cannot hand the adapters a string
+ * reject valid manifests. What matters is that a hosted Forkbook cannot hand the adapters a string
  * or an array where they expect a record.
  */
 /**
@@ -452,7 +452,7 @@ export function createProviderDocsAccess({
 
       // The split/ref format keeps stories behind a `$ref`, so resolve them only when story ids
       // were asked for and plain listing stays cheap. One `$ref` per component means a large
-      // Storybook would otherwise open hundreds of connections to the host at once.
+      // Forkbook would otherwise open hundreds of connections to the host at once.
       if (withStoryIds) {
         const components = manifests.componentManifest.components as Record<
           string,
@@ -473,7 +473,7 @@ export function createProviderDocsAccess({
           }
         } catch (error) {
           // One composed source must not lose its whole listing because a single story `$ref` was
-          // unreachable: leave its rows unresolved instead. A single Storybook has no other source
+          // unreachable: leave its rows unresolved instead. A single Forkbook has no other source
           // to fall back on, so there the failure is the answer.
           if (!source) {
             throw error;
@@ -485,7 +485,7 @@ export function createProviderDocsAccess({
     },
 
     async resolve(id): Promise<ResolvedDocsEntry | undefined> {
-      // The in-process services back the local Storybook only, so a source with a URL always goes
+      // The in-process services back the local Forkbook only, so a source with a URL always goes
       // through the fetch path below.
       if (resolveEntry && !source?.url) {
         return resolveEntry(id, source);

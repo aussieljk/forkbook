@@ -1,9 +1,9 @@
 import type { CSSProperties, FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Children, useCallback, useContext, useId, useMemo, useState } from 'react';
 
-import { logger } from 'storybook/internal/client-logger';
-import type { ActionItem } from 'storybook/internal/components';
-import { Bar, Button, ToggleButton, Zoom } from 'storybook/internal/components';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import type { ActionItem } from '@aussieljk/forkbook/internal/components';
+import { Bar, Button, ToggleButton, Zoom } from '@aussieljk/forkbook/internal/components';
 
 import { CopyIcon, MarkupIcon } from '@storybook/icons';
 
@@ -79,7 +79,8 @@ export const Preview: FC<PreviewProps> = ({
   const context = useContext(DocsContext);
 
   const copyToClipboard = useCallback(async (text: string) => {
-    const { createCopyToClipboardFunction } = await import('storybook/internal/components');
+    const { createCopyToClipboardFunction } =
+      await import('@aussieljk/forkbook/internal/components');
     await createCopyToClipboardFunction()(text);
   }, []);
 

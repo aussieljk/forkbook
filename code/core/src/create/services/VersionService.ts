@@ -1,18 +1,18 @@
-import type { JsPackageManager, getProcessAncestry } from 'storybook/internal/common';
-import { versions } from 'storybook/internal/common';
+import type { JsPackageManager, getProcessAncestry } from '@aussieljk/forkbook/internal/common';
+import { versions } from '@aussieljk/forkbook/internal/common';
 
 import { lt, prerelease } from 'semver';
 
-/** Service for handling version-related operations during Storybook initialization */
+/** Service for handling version-related operations during Forkbook initialization */
 export class VersionService {
-  /** Get the current Storybook version */
+  /** Get the current Forkbook version */
   getCurrentVersion(): string {
-    return versions.storybook;
+    return versions['@aussieljk/forkbook'];
   }
 
-  /** Get the latest Storybook version from the package manager */
+  /** Get the latest Forkbook version from the package manager */
   async getLatestVersion(packageManager: JsPackageManager): Promise<string | null> {
-    return packageManager.latestVersion('storybook');
+    return packageManager.latestVersion('@aussieljk/forkbook');
   }
 
   /** Check if the current version is a prerelease version */
@@ -25,7 +25,7 @@ export class VersionService {
     return lt(currentVersion, latestVersion);
   }
 
-  /** Extract CLI integration from process ancestry. Detects if Storybook was invoked via vike. */
+  /** Extract CLI integration from process ancestry. Detects if Forkbook was invoked via vike. */
   getCliIntegrationFromAncestry(
     ancestry: ReturnType<typeof getProcessAncestry>
   ): string | undefined {

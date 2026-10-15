@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { fn } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { fn } from '@aussieljk/forkbook/test';
 
 import { CallStates } from '../../instrumenter/types.ts';
 import { TestDiscrepancyMessage } from './TestDiscrepancyMessage.tsx';

@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/node-logger';
-import type { Options } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { resolveCompositionSources } from './resolve-composition-sources.ts';

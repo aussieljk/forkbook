@@ -1,10 +1,10 @@
-import type { Presets } from 'storybook/internal/types';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
 declare global {
-  var STORYBOOK_SERVICES_PRESET_PROMISE: Promise<void> | undefined;
+  var FORKBOOK_SERVICES_PRESET_PROMISE: Promise<void> | undefined;
 }
 
-globalThis.STORYBOOK_SERVICES_PRESET_PROMISE = undefined;
+globalThis.FORKBOOK_SERVICES_PRESET_PROMISE = undefined;
 
 /**
  * Applies the 'services' preset, but only once, as the services must not be registered multiple times.
@@ -12,10 +12,10 @@ globalThis.STORYBOOK_SERVICES_PRESET_PROMISE = undefined;
  * This is to ensure that we don't apply the preset multiple times in dev mode, which can lead to issues with the telemetry service and other services that are meant to be singletons.
  */
 export async function applyServicesPresetOnce(presets: Presets): Promise<void> {
-  return (globalThis.STORYBOOK_SERVICES_PRESET_PROMISE ??= presets.apply('services'));
+  return (globalThis.FORKBOOK_SERVICES_PRESET_PROMISE ??= presets.apply('services'));
 }
 
 /** Clears the one-shot so a later configuration load can apply the `services` preset again. */
 export function resetServicesPresetOnce(): void {
-  globalThis.STORYBOOK_SERVICES_PRESET_PROMISE = undefined;
+  globalThis.FORKBOOK_SERVICES_PRESET_PROMISE = undefined;
 }

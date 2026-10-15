@@ -1,4 +1,4 @@
-import type { DecoratorFunction } from 'storybook/internal/types';
+import type { DecoratorFunction } from '@aussieljk/forkbook/internal/types';
 
 import { jsxDecorator } from './docs/jsxDecorator.tsx';
 import type { ReactRenderer } from './types.ts';

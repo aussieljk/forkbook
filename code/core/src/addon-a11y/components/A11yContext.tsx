@@ -15,15 +15,15 @@ import {
   STORY_HOT_UPDATED,
   STORY_RENDER_PHASE_CHANGED,
   type StoryFinishedPayload,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 
-import type { ClickEventDetails, HighlightMenuItem } from 'storybook/highlight';
+import type { ClickEventDetails, HighlightMenuItem } from '@aussieljk/forkbook/highlight';
 import {
   HIGHLIGHT,
   HIGHLIGHT_MENU_CLICK,
   REMOVE_HIGHLIGHT,
   SCROLL_INTO_VIEW,
-} from 'storybook/highlight';
+} from '@aussieljk/forkbook/highlight';
 import {
   experimental_getStatusStore,
   experimental_useStatusStore,
@@ -33,9 +33,9 @@ import {
   useParameter,
   useStorybookApi,
   useStorybookState,
-} from 'storybook/manager-api';
-import type { Report } from 'storybook/preview-api';
-import { convert, themes } from 'storybook/theming';
+} from '@aussieljk/forkbook/manager-api';
+import type { Report } from '@aussieljk/forkbook/preview-api';
+import { convert, themes } from '@aussieljk/forkbook/theming';
 
 import { getFriendlySummaryForAxeResult, getTitleForAxeResult } from '../axeRuleMappingHelper.ts';
 import {
@@ -148,15 +148,15 @@ export const A11yContextProvider: FC<PropsWithChildren> = (props) => {
   );
 
   useEffect(() => {
-    const unsubscribe = experimental_getStatusStore('storybook/component-test').onAllStatusChange(
-      (statuses, previousStatuses) => {
-        const current = statuses[storyId]?.[STATUS_TYPE_ID_COMPONENT_TEST];
-        const previous = previousStatuses[storyId]?.[STATUS_TYPE_ID_COMPONENT_TEST];
-        if (current?.value === 'status-value:error' && previous?.value !== 'status-value:error') {
-          setState((prev) => ({ ...prev, status: 'component-test-error' }));
-        }
+    const unsubscribe = experimental_getStatusStore(
+      '@aussieljk/forkbook/component-test'
+    ).onAllStatusChange((statuses, previousStatuses) => {
+      const current = statuses[storyId]?.[STATUS_TYPE_ID_COMPONENT_TEST];
+      const previous = previousStatuses[storyId]?.[STATUS_TYPE_ID_COMPONENT_TEST];
+      if (current?.value === 'status-value:error' && previous?.value !== 'status-value:error') {
+        setState((prev) => ({ ...prev, status: 'component-test-error' }));
       }
-    );
+    });
     return unsubscribe;
   }, [setState, storyId]);
 
@@ -335,7 +335,8 @@ export const A11yContextProvider: FC<PropsWithChildren> = (props) => {
   }, [emit, parameters, setState, storyId]);
 
   const handleCopyLink = useCallback(async (linkPath: string) => {
-    const { createCopyToClipboardFunction } = await import('storybook/internal/components');
+    const { createCopyToClipboardFunction } =
+      await import('@aussieljk/forkbook/internal/components');
     await createCopyToClipboardFunction()(`${window.location.origin}${linkPath}`);
   }, []);
 

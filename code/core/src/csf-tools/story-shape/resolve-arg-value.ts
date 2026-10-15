@@ -1,6 +1,6 @@
 // Reads an arg value written as a name through to the definition it refers to, and reports what
 // printing the result still depends on.
-import { type NodePath, traverse, types as t } from 'storybook/internal/babel';
+import { type NodePath, traverse, types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { type ImportRef } from './import-statements.ts';
 import { type ImportBinding, collectImportBindings } from './imports.ts';

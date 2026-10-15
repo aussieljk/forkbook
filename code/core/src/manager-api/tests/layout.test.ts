@@ -1,10 +1,10 @@
 import type { Mock } from 'vitest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { API_Provider } from 'storybook/internal/types';
+import type { API_Provider } from '@aussieljk/forkbook/internal/types';
 
 import EventEmitter from 'events';
-import { themes } from 'storybook/theming';
+import { themes } from '@aussieljk/forkbook/theming';
 
 import type { ModuleArgs } from '../lib/types.tsx';
 import type { SubState as AddonsSubState } from '../modules/addons.ts';
@@ -25,7 +25,7 @@ describe('layout API', () => {
   beforeEach(() => {
     currentState = {
       ...getDefaultLayoutState(),
-      selectedPanel: 'storybook/internal/action/panel',
+      selectedPanel: '@aussieljk/forkbook/internal/action/panel',
       theme: themes.light,
       singleStory: false,
     };
@@ -476,14 +476,14 @@ describe('layout API', () => {
     });
 
     it('should set selectedPanel initially', () => {
-      const panelName = 'storybook/a11y/panel';
+      const panelName = '@aussieljk/forkbook/a11y/panel';
       layoutApi.setOptions({ selectedPanel: panelName });
 
       expect(getLastSetStateArgs()[0].selectedPanel).toEqual(panelName);
     });
 
     it('should change selectedPanel if it is defined in the options and is different', () => {
-      const panelName = 'storybook/a11y/panel';
+      const panelName = '@aussieljk/forkbook/a11y/panel';
       layoutApi.setOptions({});
       layoutApi.setOptions({ selectedPanel: panelName });
 

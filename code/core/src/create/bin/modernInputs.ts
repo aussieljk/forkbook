@@ -4,8 +4,8 @@ export type Framework = (typeof supportedFrameworks)[number];
 export const supportedFrameworks = ['nextjs-vite', 'react-vite', 'react-native'] as const;
 
 export const supportedFrameworksPackages = {
-  'react-vite': 'storybook/react-vite',
-  'nextjs-vite': 'storybook/nextjs-vite',
+  'react-vite': '@aussieljk/forkbook/react-vite',
+  'nextjs-vite': '@aussieljk/forkbook/nextjs-vite',
   'react-native': '@storybook/react-native',
 } satisfies Record<Framework, string>;
 

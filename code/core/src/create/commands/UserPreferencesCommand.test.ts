@@ -1,19 +1,19 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AddonVitestService } from 'storybook/internal/cli';
-import { PackageManagerName, isCI } from 'storybook/internal/common';
-import { logger, prompt } from 'storybook/internal/node-logger';
-import type { SupportedBuilder, SupportedRenderer } from 'storybook/internal/types';
-import { Feature } from 'storybook/internal/types';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
+import { PackageManagerName, isCI } from '@aussieljk/forkbook/internal/common';
+import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
+import type { SupportedBuilder, SupportedRenderer } from '@aussieljk/forkbook/internal/types';
+import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import type { CommandOptions } from '../generators/types.ts';
 import { FeatureCompatibilityService } from '../services/FeatureCompatibilityService.ts';
 import { TelemetryService } from '../services/TelemetryService.ts';
 import { UserPreferencesCommand, executeUserPreferences } from './UserPreferencesCommand.ts';
 
-vi.mock('storybook/internal/cli', { spy: true });
-vi.mock('storybook/internal/common', { spy: true });
-vi.mock('storybook/internal/node-logger', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/cli', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('../services/FeatureCompatibilityService', { spy: true });
 vi.mock('../services/TelemetryService', { spy: true });
 
@@ -195,7 +195,7 @@ describe('UserPreferencesCommand', () => {
 
       expect(prompt.confirm).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: 'Do you want AI features, like skills and prompts, in your Storybook?',
+          message: 'Do you want AI features, like skills and prompts, in your Forkbook?',
           initialValue: true,
         }),
         expect.objectContaining({ onCancel: expect.any(Function) })
@@ -301,7 +301,7 @@ describe('UserPreferencesCommand', () => {
 
       expect(prompt.confirm).toHaveBeenCalledWith(
         expect.objectContaining({
-          message: 'Do you want AI features, like skills, in your Storybook?',
+          message: 'Do you want AI features, like skills, in your Forkbook?',
         }),
         expect.anything()
       );

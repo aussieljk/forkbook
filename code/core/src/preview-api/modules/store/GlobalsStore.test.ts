@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { GlobalsStore } from './GlobalsStore.ts';
 
-vi.mock('storybook/internal/client-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/client-logger', () => ({
   logger: {
     warn: vi.fn(),
   },

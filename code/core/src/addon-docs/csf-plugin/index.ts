@@ -1,4 +1,4 @@
-import type { EnrichCsfOptions } from 'storybook/internal/csf-tools';
+import type { EnrichCsfOptions } from '@aussieljk/forkbook/internal/csf-tools';
 
 import type { Plugin } from 'vite';
 

@@ -51,7 +51,7 @@ function formatChangedFilesOutsideStories(
   const notes: string[] = [];
   if (changedConfigFiles.length > 0) {
     notes.push(
-      `Changed files in the Storybook config directory, which can affect every story: ${formatQuotedList(changedConfigFiles)}.`
+      `Changed files in the Forkbook config directory, which can affect every story: ${formatQuotedList(changedConfigFiles)}.`
     );
   }
   if (unreachableFiles.length > 0) {

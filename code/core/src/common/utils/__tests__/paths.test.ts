@@ -37,7 +37,7 @@ describe('paths - normalizeStoryPath()', () => {
   });
 
   it('adds "./" to a hidden folder', () => {
-    const filename = join('.storybook', 'Comp.story.js');
+    const filename = join('.forkbook', 'Comp.story.js');
     expect(normalizeStoryPath(filename)).toEqual(`.${sep}${filename}`);
   });
 

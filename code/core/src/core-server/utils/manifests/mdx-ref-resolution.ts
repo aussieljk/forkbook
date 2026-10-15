@@ -14,7 +14,7 @@
  */
 import { readFile } from 'node:fs/promises';
 
-import type { Manifests } from 'storybook/internal/types';
+import type { Manifests } from '@aussieljk/forkbook/internal/types';
 
 import { join } from 'pathe';
 import invariant from 'tiny-invariant';

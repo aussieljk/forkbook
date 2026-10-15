@@ -1,4 +1,4 @@
-import { isPreservingSymlinks } from 'storybook/internal/common';
+import { isPreservingSymlinks } from '@aussieljk/forkbook/internal/common';
 
 import { type Plugin } from 'vite';
 
@@ -7,13 +7,13 @@ export interface StorybookConfigPluginOptions {
 }
 
 /**
- * A Vite plugin that provides the base Storybook configuration.
+ * A Vite plugin that provides the base Forkbook configuration.
  *
  * This handles:
  *
- * - Adding Storybook resolve conditions (`storybook`, `stories`, `test`)
- * - Setting up environment variable prefixes (`VITE_`, `STORYBOOK_`)
- * - Allowing the Storybook config directory in Vite's filesystem restrictions
+ * - Adding Forkbook resolve conditions (`storybook`, `stories`, `test`)
+ * - Setting up environment variable prefixes (`VITE_`, `FORKBOOK_`)
+ * - Allowing the Forkbook config directory in Vite's filesystem restrictions
  * - Preserving symlinks when applicable
  */
 export function storybookConfigPlugin(options: StorybookConfigPluginOptions): Plugin[] {
@@ -31,10 +31,10 @@ export function storybookConfigPlugin(options: StorybookConfigPluginOptions): Pl
           ? Array.from(
               new Set([
                 ...(Array.isArray(existingEnvPrefix) ? existingEnvPrefix : [existingEnvPrefix]),
-                'STORYBOOK_',
+                'FORKBOOK_',
               ])
             )
-          : ['VITE_', 'STORYBOOK_'];
+          : ['VITE_', 'FORKBOOK_'];
 
         return {
           resolve: {

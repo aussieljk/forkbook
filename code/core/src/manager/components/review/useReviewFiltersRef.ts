@@ -1,7 +1,7 @@
 import { type MutableRefObject, useRef } from 'react';
 
-import { useStorybookState } from 'storybook/manager-api';
-import type { StatusValue } from 'storybook/internal/types';
+import { useStorybookState } from '@aussieljk/forkbook/manager-api';
+import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import { type ReviewModeFilters } from './review-mode.ts';
 

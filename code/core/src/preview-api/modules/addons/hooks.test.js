@@ -4,24 +4,24 @@ import { useParameter, useStoryContext } from './hooks';
 
 describe('addons/hooks', () => {
   beforeEach(() => {
-    global.STORYBOOK_HOOKS_CONTEXT = undefined;
+    global.FORKBOOK_HOOKS_CONTEXT = undefined;
   });
 
   afterEach(() => {
-    global.STORYBOOK_HOOKS_CONTEXT = undefined;
+    global.FORKBOOK_HOOKS_CONTEXT = undefined;
   });
 
   describe('useStoryContext', () => {
     it('should throw', () => {
       expect(() => useStoryContext()).toThrowError(
-        'Storybook preview hooks can only be called inside decorators and story functions.'
+        'Forkbook preview hooks can only be called inside decorators and story functions.'
       );
     });
   });
 
   describe('useParameter', () => {
     beforeEach(() => {
-      global.STORYBOOK_HOOKS_CONTEXT = {
+      global.FORKBOOK_HOOKS_CONTEXT = {
         currentContext: {
           parameters: {
             'undefined key': undefined,

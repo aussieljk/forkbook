@@ -1,4 +1,4 @@
-import type { Options } from 'storybook/internal/types';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type { Plugin } from 'vite';
 
@@ -8,7 +8,7 @@ import { stripStoryHMRBoundary } from './strip-story-hmr-boundaries.ts';
 
 /**
  * A composite Vite plugin that manages the generation and injection of virtual entry points for
- * Storybook stories. This is builder-specific and NOT shared with addon-vitest.
+ * Forkbook stories. This is builder-specific and NOT shared with addon-vitest.
  */
 export async function storybookEntryPlugin(options: Options): Promise<Plugin[]> {
   return [

@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Select } from 'storybook/internal/components';
+import { Select } from '@aussieljk/forkbook/internal/components';
 
-import { useGlobals, useStorybookApi } from 'storybook/manager-api';
+import { useGlobals, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import { Icons } from '../../components/components/icon/icon.tsx';
 import type { ToolbarMenuProps } from '../types.ts';
 import { getSelectedItem } from '../utils/get-selected.ts';

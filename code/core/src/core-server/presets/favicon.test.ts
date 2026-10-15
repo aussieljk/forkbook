@@ -2,8 +2,8 @@ import * as fs from 'node:fs';
 
 import { expect, it, vi } from 'vitest';
 
-import { logger } from 'storybook/internal/node-logger';
-import { type Presets } from 'storybook/internal/types';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { type Presets } from '@aussieljk/forkbook/internal/types';
 
 import { dirname, join, normalize } from 'pathe';
 
@@ -14,7 +14,7 @@ vi.mock('../utils/constants', () => {
   return {
     defaultStaticDirs: [{ from: './from', to: './to' }],
     defaultFavicon: join(
-      dirname(require.resolve('storybook/package.json')),
+      dirname(require.resolve('@aussieljk/forkbook/package.json')),
       '/assets/browser/favicon.svg'
     ),
   };
@@ -25,7 +25,7 @@ vi.mock('../../shared/utils/module', () => ({
 }));
 
 const defaultFavicon = join(
-  dirname(require.resolve('storybook/package.json')),
+  dirname(require.resolve('@aussieljk/forkbook/package.json')),
   '/assets/browser/favicon.svg'
 );
 
@@ -46,7 +46,7 @@ const createOptions = (locations: string[]): Parameters<typeof m.favicon>[1] => 
   } as Presets,
 });
 
-vi.mock('storybook/internal/node-logger', () => {
+vi.mock('@aussieljk/forkbook/internal/node-logger', () => {
   return {
     logger: {
       debug: vi.fn(() => {}),

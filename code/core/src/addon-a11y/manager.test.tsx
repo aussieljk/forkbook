@@ -1,14 +1,14 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi } from 'vitest';
 
-import type { Addon_BaseType } from 'storybook/internal/types';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import * as api from 'storybook/manager-api';
+import * as api from '@aussieljk/forkbook/manager-api';
 
 import { PANEL_ID } from './constants.ts';
 import './manager.tsx';
 
-vi.mock('storybook/manager-api');
+vi.mock('@aussieljk/forkbook/manager-api');
 const mockedApi = vi.mocked<api.API>(api as any);
 mockedApi.useStorybookApi = vi.fn(() => ({ getSelectedPanel: vi.fn() }));
 mockedApi.useAddonState = vi.fn();

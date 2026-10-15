@@ -1,14 +1,18 @@
 import type { ProfilerOnRenderCallback } from 'react';
 import React, { Profiler, memo, useCallback, useRef, useState } from 'react';
 
-import { Button } from 'storybook/internal/components';
-import { SourceType } from 'storybook/internal/docs-tools';
-import type { ModuleExport, StoryContext, StoryDocsPayload } from 'storybook/internal/types';
-import { registerService } from 'storybook/preview-api';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import { SourceType } from '@aussieljk/forkbook/internal/docs-tools';
+import type {
+  ModuleExport,
+  StoryContext,
+  StoryDocsPayload,
+} from '@aussieljk/forkbook/internal/types';
+import { registerService } from '@aussieljk/forkbook/preview-api';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 import { dedent } from 'ts-dedent';
 import invariant from 'tiny-invariant';
 

@@ -28,7 +28,7 @@
 
 import * as v from 'valibot';
 
-import { logger } from 'storybook/internal/client-logger';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import {
   OpenServiceRemoteCommandConfigDriftError,
@@ -341,7 +341,7 @@ export function connectRuntimeToChannel(
  * - **Non-implementer**: a non-delegated runtime that hosts the service but not the invoked
  *   command's handler replies `services:command-unhandled` instead of staying silent. Only a
  *   delegated requester acts on that reply (rejecting with config-drift guidance, since the
- *   Storybook it attached to is the only runtime that sees its invokes); other requesters ignore
+ *   Forkbook it attached to is the only runtime that sees its invokes); other requesters ignore
  *   it, because one peer's report cannot speak for the others.
  *
  * Both roles coexist on one runtime: it responds for the commands it implements and requests the
@@ -365,7 +365,7 @@ export function connectRuntimeToChannel(
  *
  * ## Delegated mode
  *
- * A delegated runtime (one attached to an already-running Storybook) owns no dispatch at all: it
+ * A delegated runtime (one attached to an already-running Forkbook) owns no dispatch at all: it
  * requests *every* command over the channel and answers no invoke, because the runtime it attached
  * to is the implementer. Local handlers stay registered and inspectable but never run, so a service
  * author writes the same definition either way.
@@ -504,7 +504,7 @@ export function connectCommandTransport(context: {
     clearTimeout(entry.noAckTimer);
   };
 
-  // Only for a delegated requester is one peer's report authoritative (the attached Storybook is
+  // Only for a delegated requester is one peer's report authoritative (the attached Forkbook is
   // the only runtime that sees its invokes); elsewhere absence-of-ack stays the only signal.
   const onUnhandled = (payload: unknown): void => {
     const report = v.safeParse(commandUnhandledSchema, payload);

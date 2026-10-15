@@ -1,4 +1,4 @@
-import { registerService } from 'storybook/manager-api';
+import { registerService } from '@aussieljk/forkbook/manager-api';
 
 import { reviewServiceDef } from '../../../shared/open-service/services/review/definition.ts';
 import {

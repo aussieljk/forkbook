@@ -2,8 +2,8 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-import { NoStatsForViteDevError } from 'storybook/internal/server-errors';
-import type { Builder, Middleware, Options } from 'storybook/internal/types';
+import { NoStatsForViteDevError } from '@aussieljk/forkbook/internal/server-errors';
+import type { Builder, Middleware, Options } from '@aussieljk/forkbook/internal/types';
 
 import type { ViteDevServer } from 'vite';
 
@@ -21,7 +21,7 @@ export * from './types.ts';
 function iframeHandler(options: Options, server: ViteDevServer): Middleware {
   return async (req, res) => {
     const indexHtml = await readFile(
-      fileURLToPath(import.meta.resolve('storybook/builder-vite/input/iframe.html')),
+      fileURLToPath(import.meta.resolve('@aussieljk/forkbook/builder-vite/input/iframe.html')),
       {
         encoding: 'utf8',
       }
@@ -42,7 +42,7 @@ export async function bail(): Promise<void> {
 
 /**
  * Returns a {@link ChangeDetectionAdapter} bound to the Vite dev server created by `start()`, or —
- * when `options` are passed by a consumer that runs without a dev server (the `storybook tools`
+ * when `options` are passed by a consumer that runs without a dev server (the `forkbook tools`
  * CLI) — a headless adapter that resolves the same config server-lessly.
  *
  * Throws if called without options before `start()` has resolved (i.e. before the Vite dev server

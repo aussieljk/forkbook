@@ -3,8 +3,8 @@
     "welcome--to-storybook": {
       "id": "welcome--to-storybook",
       "kind": "Welcome",
-      "name": "to Storybook",
-      "story": "to Storybook",
+      "name": "to Forkbook",
+      "story": "to Forkbook",
       "parameters": {}
     },
     "button--text": {

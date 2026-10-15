@@ -1,10 +1,16 @@
 import React from 'react';
 
-import { Button, Select } from 'storybook/internal/components';
+import { Button, Select } from '@aussieljk/forkbook/internal/components';
 
 import { PaintBrushIcon } from '@storybook/icons';
 
-import { addons, useAddonState, useChannel, useGlobals, useParameter } from 'storybook/manager-api';
+import {
+  addons,
+  useAddonState,
+  useChannel,
+  useGlobals,
+  useParameter,
+} from '@aussieljk/forkbook/manager-api';
 
 import {
   DEFAULT_ADDON_STATE,

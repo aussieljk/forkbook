@@ -1,8 +1,8 @@
-import storybookConfig from '../../code/core/build-config.ts';
+import forkbookConfig from '../../code/core/build-config.ts';
 import type { BuildEntriesByPackageName } from './utils/entry-utils.ts';
 
 export const buildEntries = {
-  storybook: storybookConfig,
+  '@aussieljk/forkbook': forkbookConfig,
 } satisfies BuildEntriesByPackageName;
 
 export function isBuildEntries(key: string): key is keyof typeof buildEntries {

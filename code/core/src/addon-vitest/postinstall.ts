@@ -2,22 +2,22 @@ import * as fs from 'node:fs/promises';
 import { writeFile } from 'node:fs/promises';
 import os from 'node:os';
 
-import { babelParse, generate, traverse } from 'storybook/internal/babel';
-import { AddonVitestService } from 'storybook/internal/cli';
+import { babelParse, generate, traverse } from '@aussieljk/forkbook/internal/babel';
+import { AddonVitestService } from '@aussieljk/forkbook/internal/cli';
 import {
   JsPackageManagerFactory,
   formatFileContent,
   getProjectRoot,
   getStorybookInfo,
   versions,
-} from 'storybook/internal/common';
-import { CLI_COLORS } from 'storybook/internal/node-logger';
-import type { StorybookError } from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/common';
+import { CLI_COLORS } from '@aussieljk/forkbook/internal/node-logger';
+import type { StorybookError } from '@aussieljk/forkbook/internal/server-errors';
 import {
   AddonVitestPostinstallConfigUpdateError,
   AddonVitestPostinstallError,
   AddonVitestPostinstallPrerequisiteCheckError,
-} from 'storybook/internal/server-errors';
+} from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
 import { dirname, relative, resolve } from 'pathe';
@@ -27,18 +27,18 @@ import { type PostinstallOptions } from '../cli-commands/add.ts';
 import { DOCUMENTATION_LINK } from './constants.ts';
 import { loadTemplate, updateConfigFile } from './updateVitestFile.ts';
 
-const ADDON_NAME = 'storybook/addon-vitest' as const;
+const ADDON_NAME = '@aussieljk/forkbook/addon-vitest' as const;
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.cts', '.mts', '.cjs', '.mjs'];
-const STORYBOOK_TEST_PLUGIN_SOURCE = `${ADDON_NAME}/vitest-plugin`;
+const FORKBOOK_TEST_PLUGIN_SOURCE = `${ADDON_NAME}/vitest-plugin`;
 
 /**
- * The Vitest config templates resolve the Storybook config dir against the
+ * The Vitest config templates resolve the Forkbook config dir against the
  * generated config file's own directory (`path.join(dirname, CONFIG_DIR)`).
  * So CONFIG_DIR must be the path FROM that file's directory TO the config dir,
  * not the cwd-relative `--config-dir` value. Otherwise, in a monorepo where the
  * config file is created inside the project (e.g. `apps/x/vitest.config.ts`) but
- * `--config-dir apps/x/.storybook` is passed from the repo root, the path gets
- * doubled to `apps/x/apps/x/.storybook`.
+ * `--config-dir apps/x/.forkbook` is passed from the repo root, the path gets
+ * doubled to `apps/x/apps/x/.forkbook`.
  */
 export const getTemplateConfigDir = (configFilePath: string, configDir: string): string =>
   relative(dirname(configFilePath), configDir);
@@ -61,7 +61,7 @@ export default async function postInstall(options: PostinstallOptions) {
 
   const addonVitestService = new AddonVitestService(packageManager);
 
-  // Skip the module cache: `storybook add` may have rewritten the main config earlier in this same
+  // Skip the module cache: `forkbook add` may have rewritten the main config earlier in this same
   // process, and the cached version would still report the old config.
   const info = await getStorybookInfo(options.configDir, undefined, { skipCache: true });
   // only install these dependencies if they are not already installed
@@ -82,7 +82,7 @@ export default async function postInstall(options: PostinstallOptions) {
     reasons.push(
       dedent`
         You can fix these issues and rerun the command to reinstall. If you wish to roll back the installation, remove ${ADDON_NAME} from the "addons" array
-        in your main Storybook config file and remove the dependency from your package.json file.
+        in your main Forkbook config file and remove the dependency from your package.json file.
 
         Please check the documentation for more information about its requirements and installation:
         https://storybook.js.org/docs/next/${DOCUMENTATION_LINK}
@@ -168,7 +168,7 @@ export default async function postInstall(options: PostinstallOptions) {
     await writeFile('vitest.shims.d.ts', '/// <reference types="@vitest/browser-playwright" />');
   }
 
-  // If there's an existing Vite/Vitest config, we update it to include the Storybook Addon Vitest plugin.
+  // If there's an existing Vite/Vitest config, we update it to include the Forkbook Addon Vitest plugin.
   if (rootConfig) {
     let target, updated;
     const configFile = await fs.readFile(rootConfig, 'utf8');
@@ -190,7 +190,7 @@ export default async function postInstall(options: PostinstallOptions) {
 
     if (alreadyConfigured) {
       logger.step(
-        CLI_COLORS.success('Vitest for Storybook is already properly configured. Skipping setup.')
+        CLI_COLORS.success('Vitest for Forkbook is already properly configured. Skipping setup.')
       );
     } else if (target && updated) {
       logger.step(`Updating your ${vitestConfigFile ? 'Vitest' : 'Vite'} config file:`);
@@ -235,9 +235,11 @@ export default async function postInstall(options: PostinstallOptions) {
   const runCommand = rootConfig ? `npx vitest --project=storybook` : `npx vitest`;
 
   if (errors.length === 0) {
-    logger.step(CLI_COLORS.success('storybook/addon-vitest setup completed successfully'));
+    logger.step(
+      CLI_COLORS.success('@aussieljk/forkbook/addon-vitest setup completed successfully')
+    );
     logger.log(dedent`
-        storybook/addon-vitest is now configured and you're ready to run your tests!
+        @aussieljk/forkbook/addon-vitest is now configured and you're ready to run your tests!
         Here are a couple of tips to get you started:
 
         • You can run tests with "${CLI_COLORS.cta(runCommand)}"
@@ -250,7 +252,7 @@ export default async function postInstall(options: PostinstallOptions) {
     logger.warn(
       dedent`
         Done, but with errors!
-        storybook/addon-vitest was installed successfully, but there were some errors during the setup process. Please refer to the documentation to complete the setup manually and check the errors above:
+        @aussieljk/forkbook/addon-vitest was installed successfully, but there were some errors during the setup process. Please refer to the documentation to complete the setup manually and check the errors above:
         https://storybook.js.org/docs/next/${DOCUMENTATION_LINK}#manual-setup-advanced
       `
     );
@@ -259,7 +261,7 @@ export default async function postInstall(options: PostinstallOptions) {
 }
 
 function isStorybookTestPluginSource(value: string) {
-  return value === STORYBOOK_TEST_PLUGIN_SOURCE;
+  return value === FORKBOOK_TEST_PLUGIN_SOURCE;
 }
 
 export function isConfigAlreadySetup(_configPath: string, configContent: string) {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { Addon_TypesEnum as types } from 'storybook/internal/types';
+import { Addon_TypesEnum as types } from '@aussieljk/forkbook/internal/types';
 
 import { init as initAddons } from '../modules/addons';
 
@@ -20,8 +20,8 @@ const PANELS = {
 };
 
 const TEST_PROVIDERS = {
-  'storybook/test/test-provider': {
-    id: 'storybook/test/test-provider',
+  '@aussieljk/forkbook/test/test-provider': {
+    id: '@aussieljk/forkbook/test/test-provider',
     title: 'Component tests',
   },
 };
@@ -146,7 +146,9 @@ describe('Addons API', () => {
             return {
               'provider-with-clear': { id: 'provider-with-clear', clear: clearA },
               // simulates change-detection provider — no clear()
-              'storybook/change-detection': { id: 'storybook/change-detection' },
+              '@aussieljk/forkbook/change-detection': {
+                id: '@aussieljk/forkbook/change-detection',
+              },
             };
           }
           return null;

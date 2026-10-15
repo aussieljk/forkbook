@@ -1,7 +1,7 @@
-import type { JsPackageManager } from 'storybook/internal/common';
-import { getPrettyPackageManagerName } from 'storybook/internal/common';
-import type { SupportedRenderer } from 'storybook/internal/types';
-import { SupportedLanguage } from 'storybook/internal/types';
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import { getPrettyPackageManagerName } from '@aussieljk/forkbook/internal/common';
+import type { SupportedRenderer } from '@aussieljk/forkbook/internal/types';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import { detectLanguage } from '../detectLanguage.ts';
 import { getStorybookData } from '../getStorybookData.ts';
@@ -11,7 +11,7 @@ export interface ProjectInfo {
   storybookVersion: string | undefined;
   majorVersion: number | undefined;
   framework: string | null;
-  /** The full renderer package name, e.g. "storybook/react" */
+  /** The full renderer package name, e.g. "@aussieljk/forkbook/react" */
   rendererPackage: string | null;
   /** The short renderer name for docs URLs, e.g. "react" */
   renderer?: SupportedRenderer;
@@ -27,7 +27,7 @@ export interface ProjectInfo {
   packageManagerName?: string;
   /** Whether the project's preview file uses the CSF Factory format. */
   hasCsfFactoryPreview: boolean;
-  /** Whether the user has requested to be onboarded into Storybook. */
+  /** Whether the user has requested to be onboarded into Forkbook. */
   /** The monorepo tool detected at the project root, if any. */
   monorepoType: MonorepoType;
 }
@@ -51,7 +51,7 @@ export async function getProjectInfo(opts: { configDir?: string }): Promise<Proj
       return {
         ok: false,
         message:
-          'Could not detect framework, renderer, or builder from your Storybook config. Make sure you are running this command from your project root, or specify --config-dir.',
+          'Could not detect framework, renderer, or builder from your Forkbook config. Make sure you are running this command from your project root, or specify --config-dir.',
       };
     }
 
@@ -83,7 +83,7 @@ export async function getProjectInfo(opts: { configDir?: string }): Promise<Proj
   } catch (err) {
     return {
       ok: false,
-      message: `Failed to read Storybook configuration: ${err instanceof Error ? err.message : String(err)}\nMake sure you are running this command from your project root, or specify --config-dir.`,
+      message: `Failed to read Forkbook configuration: ${err instanceof Error ? err.message : String(err)}\nMake sure you are running this command from your project root, or specify --config-dir.`,
     };
   }
 }

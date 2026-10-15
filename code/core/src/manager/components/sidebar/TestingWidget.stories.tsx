@@ -1,18 +1,18 @@
 import type { CSSProperties, ReactNode } from 'react';
 import React from 'react';
 
-import { Channel, type Listener } from 'storybook/internal/channels';
-import type { TestProviderStateByProviderId } from 'storybook/internal/types';
+import { Channel, type Listener } from '@aussieljk/forkbook/internal/channels';
+import type { TestProviderStateByProviderId } from '@aussieljk/forkbook/internal/types';
 import {
   type Addon_Collection,
   type Addon_TestProviderType,
   Addon_TypesEnum,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from 'storybook/manager-api';
-import { expect, fireEvent, fn, waitFor } from 'storybook/test';
+import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { expect, fireEvent, fn, waitFor } from '@aussieljk/forkbook/test';
 
 import { internal_fullTestProviderStore } from '../../manager-stores.mock.ts';
 import { TestingWidget } from './TestingWidget.tsx';

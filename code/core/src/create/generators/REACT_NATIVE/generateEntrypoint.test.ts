@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
-import { SupportedLanguage } from 'storybook/internal/types';
+import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
 import { describe, expect, it, vi } from 'vitest';
 

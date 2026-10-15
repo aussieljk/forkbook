@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
  */
 export function getMockerRuntime(): string {
   return readFileSync(
-    fileURLToPath(import.meta.resolve('storybook/internal/mocking-utils/mocker-runtime')),
+    fileURLToPath(import.meta.resolve('@aussieljk/forkbook/internal/mocking-utils/mocker-runtime')),
     'utf-8'
   );
 }

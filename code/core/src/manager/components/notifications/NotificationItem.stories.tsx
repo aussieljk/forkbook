@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LocationProvider } from 'storybook/internal/router';
+import { LocationProvider } from '@aussieljk/forkbook/internal/router';
 
 import {
   AccessibilityIcon as AccessibilityIconIcon,
@@ -8,10 +8,10 @@ import {
   FaceHappyIcon,
 } from '@storybook/icons';
 
-import type { Meta, StoryObj } from 'storybook/react-vite';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { action } from 'storybook/actions';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { action } from '@aussieljk/forkbook/actions';
+import { expect, fn, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import NotificationItem from './NotificationItem.tsx';
 
@@ -48,7 +48,7 @@ export const Simple: Story = {
       id: '1',
       onClear,
       content: {
-        headline: 'Storybook cool!',
+        headline: 'Forkbook cool!',
       },
     },
   },
@@ -61,7 +61,7 @@ export const Timeout: Story = {
       onClear,
       onClick,
       content: {
-        headline: 'Storybook cool!',
+        headline: 'Forkbook cool!',
       },
       duration: 3000,
     },
@@ -98,13 +98,13 @@ export const Clickable: Story = {
       onClear,
       onClick,
       content: {
-        headline: 'Storybook cool!',
+        headline: 'Forkbook cool!',
       },
     },
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    const notification = await canvas.findByText('Storybook cool!');
+    const notification = await canvas.findByText('Forkbook cool!');
     await userEvent.click(notification);
     await expect(args.notification.onClick).toHaveBeenCalledWith({ onDismiss: expect.anything() });
   },
@@ -116,7 +116,7 @@ export const Link: Story = {
       id: '3',
       onClear,
       content: {
-        headline: 'Storybook X.X is available! Download now »',
+        headline: 'Forkbook X.X is available! Download now »',
       },
       link: '/some/path',
     },
@@ -129,7 +129,7 @@ export const LinkIconWithColor: Story = {
       id: '4',
       onClear,
       content: {
-        headline: 'Storybook with a smile!',
+        headline: 'Forkbook with a smile!',
       },
       icon: <FaceHappyIcon color="hotpink" />,
       link: '/some/path',
@@ -143,7 +143,7 @@ export const LinkIconWithColorSubHeadline: Story = {
       id: '5',
       onClear,
       content: {
-        headline: 'Storybook X.X is available with a smile! Download now »',
+        headline: 'Forkbook X.X is available with a smile! Download now »',
         subHeadline: 'This link also has a sub headline',
       },
       icon: <FaceHappyIcon color="tomato" />,
@@ -158,7 +158,7 @@ export const BookIcon: Story = {
       id: '6',
       onClear,
       content: {
-        headline: 'Storybook has a book icon!',
+        headline: 'Forkbook has a book icon!',
       },
       icon: <BookIconIcon />,
       link: undefined,
@@ -172,7 +172,7 @@ export const StrongSubHeadline: Story = {
       id: '7',
       onClear,
       content: {
-        headline: 'Storybook has a book icon!',
+        headline: 'Forkbook has a book icon!',
         subHeadline: <strong>Strong subHeadline</strong>,
       },
       icon: <BookIconIcon />,
@@ -187,10 +187,10 @@ export const StrongEmphasizedSubHeadline: Story = {
       id: '8',
       onClear,
       content: {
-        headline: 'Storybook cool!',
+        headline: 'Forkbook cool!',
         subHeadline: (
           <span>
-            <em>Emphasized</em> normal <strong>strong Storybook!</strong>
+            <em>Emphasized</em> normal <strong>strong Forkbook!</strong>
           </span>
         ),
       },
@@ -206,7 +206,7 @@ export const BookIconSubHeadline: Story = {
       id: '9',
       onClear,
       content: {
-        headline: 'Storybook has a book icon!',
+        headline: 'Forkbook has a book icon!',
         subHeadline: 'Find out more!',
       },
       icon: <BookIconIcon />,
@@ -221,7 +221,7 @@ export const BookIconLongSubHeadline: Story = {
       id: '10',
       onClear,
       content: {
-        headline: 'Storybook has a book icon!',
+        headline: 'Forkbook has a book icon!',
         subHeadline:
           'Find out more! by clicking on buttons and downloading some applications. Find out more! by clicking on buttons and downloading some applications',
       },
@@ -237,7 +237,7 @@ export const AccessibilityIcon: Story = {
       id: '11',
       onClear,
       content: {
-        headline: 'Storybook has a accessibility icon!',
+        headline: 'Forkbook has a accessibility icon!',
         subHeadline: 'It is here!',
       },
       icon: <AccessibilityIconIcon />,
@@ -267,7 +267,7 @@ export const AccessibilityGoldIconLongHeadLineNoSubHeadline: Story = {
       id: '13',
       onClear,
       content: {
-        headline: 'Storybook notifications has a accessibility icon it can be any color!',
+        headline: 'Forkbook notifications has a accessibility icon it can be any color!',
       },
       icon: <AccessibilityIconIcon color="gold" />,
       link: undefined,

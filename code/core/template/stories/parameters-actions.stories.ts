@@ -1,6 +1,6 @@
 import { global as globalThis } from '@storybook/global';
 
-import { withActions } from 'storybook/actions/decorator';
+import { withActions } from '@aussieljk/forkbook/actions/decorator';
 
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

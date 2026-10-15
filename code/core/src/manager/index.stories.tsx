@@ -1,20 +1,20 @@
-import { Channel } from 'storybook/internal/channels';
-import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from 'storybook/internal/core-events';
-import { MemoryRouter } from 'storybook/internal/router';
-import type { Addon_Config, Addon_Types } from 'storybook/internal/types';
-import type { API_PreparedStoryIndex } from 'storybook/internal/types';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
+import { MemoryRouter } from '@aussieljk/forkbook/internal/router';
+import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
+import type { API_PreparedStoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { FailedIcon } from '@storybook/icons';
 
 import { HelmetProvider } from 'react-helmet-async';
-import { getChannel, setChannel } from 'storybook/internal/channels';
+import { getChannel, setChannel } from '@aussieljk/forkbook/internal/channels';
 
-import type { API, AddonStore } from 'storybook/manager-api';
-import { addons } from 'storybook/manager-api';
-import { screen, within } from 'storybook/test';
-import { color } from 'storybook/theming';
+import type { API, AddonStore } from '@aussieljk/forkbook/manager-api';
+import { addons } from '@aussieljk/forkbook/manager-api';
+import { screen, within } from '@aussieljk/forkbook/test';
+import { color } from '@aussieljk/forkbook/theming';
 
-import preview from '../../../.storybook/preview.tsx';
+import preview from '../../../.forkbook/preview.tsx';
 import './components/review/review-service-story-helpers.ts';
 import { Main } from './index.tsx';
 import Provider from './provider.ts';
@@ -86,7 +86,7 @@ class ReactProvider extends Provider {
         id: WS_DISCONNECTED_NOTIFICATION_ID,
         content: {
           headline: 'Connection lost',
-          subHeadline: 'Please restart your Storybook server and reload the page',
+          subHeadline: 'Please restart your Forkbook server and reload the page',
         },
         icon: <FailedIcon color={color.negative} />,
         link: undefined,
@@ -183,7 +183,7 @@ export const ConnectionLost = meta.story({
 export const AboutPage = meta.story({
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(await canvas.findByLabelText('Settings'));
-    await userEvent.click(await screen.findByRole('link', { name: /About your Storybook/i }));
+    await userEvent.click(await screen.findByRole('link', { name: /About your Forkbook/i }));
   },
 });
 

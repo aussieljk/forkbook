@@ -1,15 +1,15 @@
 import type { FC, ReactNode, SyntheticEvent } from 'react';
 import React, { useMemo } from 'react';
 
-import { Button, ScrollArea, TabsView } from 'storybook/internal/components';
-import { Location, Route } from 'storybook/internal/router';
-import type { Addon_PageType } from 'storybook/internal/types';
-import { Addon_TypesEnum } from 'storybook/internal/types';
+import { Button, ScrollArea, TabsView } from '@aussieljk/forkbook/internal/components';
+import { Location, Route } from '@aussieljk/forkbook/internal/router';
+import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 import { CloseIcon } from '@storybook/icons';
 
-import { types, useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import { types, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 
 import { menuTool } from '../components/preview/tools/menu.tsx';
 import { matchesKeyCode, matchesModifiers } from '../keybinding.ts';

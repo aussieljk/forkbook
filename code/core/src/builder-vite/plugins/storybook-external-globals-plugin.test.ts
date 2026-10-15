@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest';
 
-vi.mock('storybook/internal/preview/globals', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/preview/globals', { spy: true });
 
 import {
   ensurePreviewRuntimePrecedesGlobals,

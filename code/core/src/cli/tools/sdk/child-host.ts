@@ -27,7 +27,7 @@ export async function runChildHost({
   process.on('disconnect', () => {
     process.exit(0);
   });
-  process.env.STORYBOOK_TOOLS_CHILD_HOST = 'true';
+  process.env.FORKBOOK_TOOLS_CHILD_HOST = 'true';
 
   let tools: Tools | undefined;
   const controllers = new Map<string, AbortController>();

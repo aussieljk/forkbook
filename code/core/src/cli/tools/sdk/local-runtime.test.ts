@@ -1,11 +1,11 @@
-import type { Channel } from 'storybook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   experimental_loadStorybook,
   experimental_resetChangeDetectionReadiness,
   experimental_resetServicesPresetOnce,
   experimental_setChangeDetectionHost,
   prepareHeadlessUniversalStores,
-} from 'storybook/internal/core-server';
+} from '@aussieljk/forkbook/internal/core-server';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -19,7 +19,7 @@ import {
 } from '../../../shared/open-service/toolset-registry.ts';
 import { bootstrapToolsRuntime } from './local-runtime.ts';
 
-vi.mock('storybook/internal/core-server', { spy: true });
+vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 
 beforeEach(() => {
   clearToolsetRegistry();
@@ -43,7 +43,7 @@ describe('bootstrapToolsRuntime', () => {
     vi.mocked(experimental_loadStorybook).mockResolvedValue(options as never);
 
     await bootstrapToolsRuntime(
-      { cwd: process.cwd(), configDir: '.storybook' },
+      { cwd: process.cwd(), configDir: '.forkbook' },
       { setChangeDetectionHost }
     );
 
@@ -57,7 +57,7 @@ describe('bootstrapToolsRuntime', () => {
     vi.mocked(prepareHeadlessUniversalStores).mockReturnValue({} as Channel);
     vi.mocked(experimental_loadStorybook).mockResolvedValue({} as never);
 
-    await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.storybook' });
+    await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.forkbook' });
 
     expect(process.cwd()).toBe(cwdBefore);
   });
@@ -66,7 +66,7 @@ describe('bootstrapToolsRuntime', () => {
     const cwdBefore = process.cwd();
 
     await expect(
-      bootstrapToolsRuntime({ cwd: '/elsewhere', configDir: '.storybook' })
+      bootstrapToolsRuntime({ cwd: '/elsewhere', configDir: '.forkbook' })
     ).rejects.toThrow('requires process.cwd()');
     expect(process.cwd()).toBe(cwdBefore);
     expect(experimental_loadStorybook).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('bootstrapToolsRuntime', () => {
     vi.mocked(prepareHeadlessUniversalStores).mockReturnValue(channel);
     vi.mocked(experimental_loadStorybook).mockResolvedValue({} as never);
 
-    const runtime = await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.storybook' });
+    const runtime = await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.forkbook' });
     registerToolset(
       defineToolset({
         id: 'echo',

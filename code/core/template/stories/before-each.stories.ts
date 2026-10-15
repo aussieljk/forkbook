@@ -1,5 +1,5 @@
-/* eslint-disable storybook/prefer-pascal-case */
-import { expect } from 'storybook/test';
+/* eslint-disable @aussieljk/forkbook/prefer-pascal-case */
+import { expect } from '@aussieljk/forkbook/test';
 
 const meta = {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,

@@ -5,7 +5,7 @@ import type { Status } from '../../shared/status-store/index.ts';
 
 const modified: Status = {
   storyId: 'button--primary',
-  typeId: 'storybook/change-detection',
+  typeId: '@aussieljk/forkbook/change-detection',
   value: 'status-value:modified',
   title: 'Modified',
   description: '',
@@ -16,7 +16,7 @@ const modifiedStatuses = { [modified.storyId]: { [modified.typeId]: modified } }
 // fresh realm; two realms sharing a channel stand in for the dev server and the attached CLI.
 async function loadRealm(channel: Channel, { attached }: { attached: boolean }) {
   vi.resetModules();
-  vi.stubEnv('STORYBOOK_ATTACHED_TOOLS', attached ? 'true' : '');
+  vi.stubEnv('FORKBOOK_ATTACHED_TOOLS', attached ? 'true' : '');
   const { UniversalStore } = await import('../../shared/universal-store/index.ts');
   UniversalStore.__prepare(
     channel,

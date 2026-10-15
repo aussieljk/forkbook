@@ -1,5 +1,5 @@
-import { fn } from 'storybook/test';
-import type { Mock } from 'storybook/test';
+import { fn } from '@aussieljk/forkbook/test';
+import type { Mock } from '@aussieljk/forkbook/test';
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 type Callback = (...args: any[]) => Promise<any>;

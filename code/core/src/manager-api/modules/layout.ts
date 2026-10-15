@@ -1,18 +1,18 @@
-import { SET_CONFIG } from 'storybook/internal/core-events';
+import { SET_CONFIG } from '@aussieljk/forkbook/internal/core-events';
 import type {
   API_Layout,
   API_LayoutCustomisations,
   API_PanelPositions,
   API_UI,
   API_ViewMode,
-} from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
 import { pick, toMerged } from 'es-toolkit/object';
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
-import type { ThemeVars } from 'storybook/theming';
-import { create } from 'storybook/theming/create';
+import type { ThemeVars } from '@aussieljk/forkbook/theming';
+import { create } from '@aussieljk/forkbook/theming/create';
 
 import { isReviewManagerRoute } from '../../shared/review/routes.ts';
 import merge from '../lib/merge.ts';
@@ -49,28 +49,28 @@ export const isPagesViewMode = (viewMode: API_ViewMode): boolean =>
 
 export interface SubAPI {
   /**
-   * Toggles the fullscreen mode of the Storybook UI.
+   * Toggles the fullscreen mode of the Forkbook UI.
    *
    * @param toggled - Optional boolean value to set the fullscreen mode to. If not provided, it will
    *   toggle the current state.
    */
   toggleFullscreen: (toggled?: boolean) => void;
   /**
-   * Toggles the visibility of the panel in the Storybook UI.
+   * Toggles the visibility of the panel in the Forkbook UI.
    *
    * @param toggled - Optional boolean value to set the panel visibility to. If not provided, it
    *   will toggle the current state.
    */
   togglePanel: (toggled?: boolean) => void;
   /**
-   * Toggles the position of the panel in the Storybook UI.
+   * Toggles the position of the panel in the Forkbook UI.
    *
    * @param position - Optional string value to set the panel position to. If not provided, it will
    *   toggle between 'bottom' and 'right'.
    */
   togglePanelPosition: (position?: API_PanelPositions) => void;
   /**
-   * Toggles the visibility of the navigation bar in the Storybook UI.
+   * Toggles the visibility of the navigation bar in the Forkbook UI.
    *
    * @param toggled - Optional boolean value to set the navigation bar visibility to. If not
    *   provided, it will toggle the current state.
@@ -86,14 +86,14 @@ export interface SubAPI {
    */
   setMobileNavigation: (show: boolean) => void;
   /**
-   * Toggles the visibility of the toolbar in the Storybook UI.
+   * Toggles the visibility of the toolbar in the Forkbook UI.
    *
    * @param toggled - Optional boolean value to set the toolbar visibility to. If not provided, it
    *   will toggle the current state.
    */
   toggleToolbar: (toggled?: boolean) => void;
   /**
-   * Sets the options for the Storybook UI.
+   * Sets the options for the Forkbook UI.
    *
    * @param options - An object containing the options to set.
    */
@@ -102,11 +102,11 @@ export interface SubAPI {
   setSizes: (
     options: Partial<Pick<API_Layout, 'navSize' | 'bottomPanelHeight' | 'rightPanelWidth'>>
   ) => void;
-  /** GetIsFullscreen - Returns the current fullscreen mode of the Storybook UI. */
+  /** GetIsFullscreen - Returns the current fullscreen mode of the Forkbook UI. */
   getIsFullscreen: () => boolean;
-  /** GetIsPanelShown - Returns the current visibility of the panel in the Storybook UI. */
+  /** GetIsPanelShown - Returns the current visibility of the panel in the Forkbook UI. */
   getIsPanelShown: () => boolean;
-  /** GetIsNavShown - Returns the current visibility of the navigation bar in the Storybook UI. */
+  /** GetIsNavShown - Returns the current visibility of the navigation bar in the Forkbook UI. */
   getIsNavShown: () => boolean;
   /**
    * GetNavAvailability - Returns whether the sidebar/nav is shown, hidden (but can be shown by the

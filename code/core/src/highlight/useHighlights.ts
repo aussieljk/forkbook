@@ -1,8 +1,8 @@
 /// <reference path="./typings.d.ts" />
 /* eslint-env browser */
-import type { Channel } from 'storybook/internal/channels';
-import { logger } from 'storybook/internal/client-logger';
-import { STORY_RENDER_PHASE_CHANGED } from 'storybook/internal/core-events';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { logger } from '@aussieljk/forkbook/internal/client-logger';
+import { STORY_RENDER_PHASE_CHANGED } from '@aussieljk/forkbook/internal/core-events';
 
 import {
   HIGHLIGHT,

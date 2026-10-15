@@ -1,10 +1,10 @@
-import type { ToolAvailability } from 'storybook/internal/core-server';
-import { logger } from 'storybook/internal/node-logger';
+import type { ToolAvailability } from '@aussieljk/forkbook/internal/core-server';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   createCompositionDocsSources,
   createDocsToolset,
   type DocsToolset,
-} from 'storybook/internal/toolsets-docs';
+} from '@aussieljk/forkbook/internal/toolsets-docs';
 import type { McpServer } from 'tmcp';
 import type { AddonContext } from '../types.ts';
 import { withFriendlyErrors } from '../utils/format-validation-issues.ts';
@@ -16,7 +16,7 @@ import { addPreviewStoriesResource, PREVIEW_STORIES_RESOURCE_URI } from './previ
 // The error class must come from the same entry as `getToolset` (which throws it, via
 // `toolset-tools.ts`); a copy from another core entry is a different constructor and
 // `instanceof` would silently fail.
-import { OpenServiceMissingToolsetError, toMcpToolName } from 'storybook/open-service';
+import { OpenServiceMissingToolsetError, toMcpToolName } from '@aussieljk/forkbook/open-service';
 import { GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME } from './tool-names.ts';
 import {
   getToolsetToolMetadata,

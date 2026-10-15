@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { expect } from 'storybook/test';
+import { expect } from '@aussieljk/forkbook/test';
 
 import { DocumentWrapper } from './DocumentWrapper.tsx';
 

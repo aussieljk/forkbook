@@ -1,25 +1,25 @@
 import { writeFile } from 'node:fs/promises';
 import { basename, isAbsolute, join, relative } from 'node:path';
 
-import { types as t } from 'storybook/internal/babel';
-import type { Channel } from 'storybook/internal/channels';
-import { formatFileContent, getProjectRoot } from 'storybook/internal/common';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import { formatFileContent, getProjectRoot } from '@aussieljk/forkbook/internal/common';
 import type {
   RequestData,
   ResponseData,
   SaveStoryRequestPayload,
   SaveStoryResponsePayload,
-} from 'storybook/internal/core-events';
+} from '@aussieljk/forkbook/internal/core-events';
 import {
   SAVE_STORY_REQUEST,
   SAVE_STORY_RESPONSE,
   STORY_RENDERED,
-} from 'storybook/internal/core-events';
-import { storyNameFromExport, toId } from 'storybook/internal/csf/csf-utils';
-import { printCsf, readCsf } from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
-import { isExampleStoryId, telemetry } from 'storybook/internal/telemetry';
-import type { Options } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import { storyNameFromExport, toId } from '@aussieljk/forkbook/internal/csf/csf-utils';
+import { printCsf, readCsf } from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { isExampleStoryId, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { duplicateStoryWithNewName } from './duplicate-story-with-new-name.ts';
 import { updateArgsInCsfFile } from './update-args-in-csf-file.ts';

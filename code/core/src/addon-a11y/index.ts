@@ -1,4 +1,4 @@
-import { definePreviewAddon } from 'storybook/internal/csf';
+import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
 import * as addonAnnotations from './preview.tsx';
 import type { A11yTypes } from './types.ts';

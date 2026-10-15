@@ -4,8 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { SourceMap, type SourceMapPayload } from 'node:module';
 import { resolve } from 'node:path';
 
-import { formatCsf, loadCsf } from 'storybook/internal/csf-tools';
-import type { CsfEnricher } from 'storybook/internal/types';
+import { formatCsf, loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
+import type { CsfEnricher } from '@aussieljk/forkbook/internal/types';
 
 import { vol } from 'memfs';
 import { dedent } from 'ts-dedent';
@@ -17,7 +17,7 @@ vi.mock('node:fs/promises', { spy: true });
 const id = resolve('/src/Repro.stories.js');
 
 const originalCode = dedent`
-  import { expect } from 'storybook/test';
+  import { expect } from '@aussieljk/forkbook/test';
 
   export default {
     title: 'Repro',

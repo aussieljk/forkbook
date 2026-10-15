@@ -1,7 +1,7 @@
 /**
- * Storybook MCP App Script
+ * Forkbook MCP App Script
  *
- * This script runs inside Storybook's iframe and communicates dimensions
+ * This script runs inside Forkbook's iframe and communicates dimensions
  * to the parent preview.html frame via postMessage (cross-origin safe).
  *
  * Only activates when the iframe is loaded with `mcp-app=true` query parameter,

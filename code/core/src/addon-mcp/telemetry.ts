@@ -1,5 +1,5 @@
-import { logger } from 'storybook/internal/node-logger';
-import { telemetry } from 'storybook/internal/telemetry';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import type { McpServer } from 'tmcp';
 import type { AddonContext } from './types.ts';
 

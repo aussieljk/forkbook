@@ -1,12 +1,12 @@
-import { types as t } from 'storybook/internal/babel';
+import { types as t } from '@aussieljk/forkbook/internal/babel';
 import {
   type ConfigFile,
   isCsfFactoryPreview,
   readConfig,
   writeConfig,
-} from 'storybook/internal/csf-tools';
-import { logger } from 'storybook/internal/node-logger';
-import type { StorybookConfig } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/csf-tools';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 

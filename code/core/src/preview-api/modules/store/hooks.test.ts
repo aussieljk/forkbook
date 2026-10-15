@@ -6,8 +6,8 @@ import {
   STORY_RENDERED,
   UPDATE_GLOBALS,
   UPDATE_STORY_ARGS,
-} from 'storybook/internal/core-events';
-import type { DecoratorFunction, StoryContextForRender } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-events';
+import type { DecoratorFunction, StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
 import {
   HooksContext,
@@ -27,7 +27,7 @@ import {
 } from '../addons/index.ts';
 import { defaultDecorateStory } from './decorators.ts';
 
-vi.mock('storybook/internal/client-logger', () => ({
+vi.mock('@aussieljk/forkbook/internal/client-logger', () => ({
   logger: { warn: vi.fn(), log: vi.fn() },
 }));
 

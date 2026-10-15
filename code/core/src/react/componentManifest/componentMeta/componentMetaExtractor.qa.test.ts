@@ -512,7 +512,7 @@ describe('real-world component patterns', () => {
     });
   });
 
-  describe('standard Storybook fixtures', () => {
+  describe('standard Forkbook fixtures', () => {
     it('extracts the standard Button fixture', async () => {
       const entry = await extract(
         'Button',

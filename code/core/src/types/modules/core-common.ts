@@ -1,9 +1,9 @@
 // should be node:http, but that caused the ui/manager to fail to build, might be able to switch this back once ui/manager is in the core
-import type { ChannelLike } from 'storybook/internal/channels';
-import type { FileSystemCache } from 'storybook/internal/common';
-import type { StoryIndexGenerator } from 'storybook/internal/core-server';
-import type { CsfFile } from 'storybook/internal/csf-tools';
-import type { LogLevel } from 'storybook/internal/node-logger';
+import type { ChannelLike } from '@aussieljk/forkbook/internal/channels';
+import type { FileSystemCache } from '@aussieljk/forkbook/internal/common';
+import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import type { CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
+import type { LogLevel } from '@aussieljk/forkbook/internal/node-logger';
 
 import type { Server as HttpServer, IncomingMessage, ServerResponse } from 'http';
 import type { Server as NetServer } from 'net';
@@ -53,27 +53,27 @@ export interface CoreConfig {
       };
   renderer?: RendererName;
   channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
-  /** Disables the generation of project.json, a file containing Storybook metadata */
+  /** Disables the generation of project.json, a file containing Forkbook metadata */
   disableProjectJson?: boolean;
   /**
-   * Disables Storybook telemetry
+   * Disables Forkbook telemetry
    *
    * @see https://storybook.js.org/telemetry
    */
   disableTelemetry?: boolean;
 
-  /** Disables notifications for Storybook updates. */
+  /** Disables notifications for Forkbook updates. */
   disableWhatsNewNotifications?: boolean;
   /**
-   * Enable crash reports to be sent to Storybook telemetry
+   * Enable crash reports to be sent to Forkbook telemetry
    *
    * @see https://storybook.js.org/telemetry
    */
   enableCrashReports?: boolean;
   /**
-   * Configures which hostnames can reach the dev server. Storybook validates the `Host` header of
+   * Configures which hostnames can reach the dev server. Forkbook validates the `Host` header of
    * every request, and the `Origin` header of WebSocket connections and MCP requests, against this
-   * list. Requests that address Storybook as `localhost` or by the `--host` hostname are always
+   * list. Requests that address Forkbook as `localhost` or by the `--host` hostname are always
    * allowed. Set to `true` to disable host validation (insecure and strongly discouraged).
    */
   allowedHosts?: string[] | true;
@@ -195,13 +195,13 @@ export interface BuilderResult {
 }
 
 /**
- * Builder-supplied module resolution config consumed by Storybook's change-detection
+ * Builder-supplied module resolution config consumed by Forkbook's change-detection
  * dependency graph (and any future module-resolver consumer in core).
  *
  * Shape mirrors a subset of Vite's `resolve.*` options.
  */
 export interface ModuleResolveConfig {
-  /** Project root (where Storybook is started from). */
+  /** Project root (where Forkbook is started from). */
   projectRoot: string;
   /**
    * Builder-supplied alias map. Accepts both Vite shapes:
@@ -331,7 +331,7 @@ export interface Builder<Config, BuilderStats extends Stats = Stats> {
    * builder resolve config (alias, root, conditions), and (b) subscribe to file-system events.
    *
    * The dev server calls it with no arguments after `start()`, binding the adapter to the running
-   * builder. A consumer without a dev server (the `storybook tools` CLI) passes `options` so the
+   * builder. A consumer without a dev server (the `forkbook tools` CLI) passes `options` so the
    * builder can assemble its resolve config headlessly; builders that cannot work headlessly may
    * throw, which the caller treats as "no adapter".
    */
@@ -340,10 +340,10 @@ export interface Builder<Config, BuilderStats extends Stats = Stats> {
   ): import('../../shared/open-service/services/module-graph/engine/adapters/types.ts').ChangeDetectionAdapter;
 }
 
-/** Options for TypeScript usage within Storybook. */
+/** Options for TypeScript usage within Forkbook. */
 export interface TypescriptOptions {
   /**
-   * Enables type checking within Storybook.
+   * Enables type checking within Forkbook.
    *
    * @default false
    */
@@ -481,12 +481,12 @@ export type Manifests = { components?: ComponentsManifest } & Record<ManifestNam
 export type CsfEnricher = (csf: CsfFile, csfSource: CsfFile) => Promise<void>;
 
 /**
- * The feature flags configured under the `features` key in `.storybook/main.ts`.
+ * The feature flags configured under the `features` key in `.forkbook/main.ts`.
  *
  * Addons can declare their own feature flags through TypeScript module augmentation:
  *
  * ```ts
- * declare module 'storybook/internal/types' {
+ * declare module '@aussieljk/forkbook/internal/types' {
  *   interface StorybookFeatures {
  *     myAddonFeature?: boolean;
  *   }
@@ -560,7 +560,7 @@ export interface StorybookFeatures {
   /**
    * @temporary This feature flag is a migration assistant, and is scheduled to be removed.
    *
-   * Disallow implicit actions during rendering. This will be the default in Storybook 8.
+   * Disallow implicit actions during rendering. This will be the default in Forkbook 8.
    *
    * This will make sure that your story renders the same no matter if docgen is enabled or not.
    */
@@ -589,7 +589,7 @@ export interface StorybookFeatures {
   /**
    * Enable component manifest generation for MCP and other tooling integrations.
    *
-   * `storybook/react` defaults this to `true`. Set it to `false` to opt out.
+   * `@aussieljk/forkbook/react` defaults this to `true`. Set it to `false` to opt out.
    *
    * @default false // `true` for React
    */
@@ -597,7 +597,7 @@ export interface StorybookFeatures {
 
   /**
    * Enables the new code example generation for React components. You can see those examples when
-   * clicking on the "Show code" button in the Storybook UI.
+   * clicking on the "Show code" button in the Forkbook UI.
    *
    * We refactored the code examples by reading the actual source file. This should make the code
    * examples a lot faster, more readable and more accurate. They are not dynamic though, it won't
@@ -611,7 +611,7 @@ export interface StorybookFeatures {
   /**
    * Enable server-side component metadata extraction.
    *
-   * When true, Storybook registers the `core/docgen` service in the open-service registry and
+   * When true, Forkbook registers the `core/docgen` service in the open-service registry and
    * generates per-component docgen JSON snapshots during static builds. Renderer and addon
    * providers contribute through the `experimental_docgenProvider` preset.
    *
@@ -636,9 +636,9 @@ export interface StorybookFeatures {
 export interface SecurityConfig {
   /**
    * In dev mode, the manager and preview can only be embedded by a website running on localhost.
-   * This prevents attacks that hijack a local Storybook embedded in an iframe from a malicious domain.
+   * This prevents attacks that hijack a local Forkbook embedded in an iframe from a malicious domain.
    *
-   * If you need remote Storybooks to compose this Storybook while it is running in dev mode,
+   * If you need remote Storybooks to compose this Forkbook while it is running in dev mode,
    * you may set `insecureRemoteIframeEmbed` to `true`.
    *
    * Built Storybooks can still be embedded and composed without restrictions, and don't need
@@ -653,10 +653,10 @@ export interface SecurityConfig {
    * only accepts messages from its own preview iframes. In dev mode, a preview only accepts
    * messages from a manager on localhost, and both send messages only to the expected origin.
    *
-   * If you need remote Storybooks to compose this Storybook while it is running in dev mode,
+   * If you need remote Storybooks to compose this Forkbook while it is running in dev mode,
    * you may set `insecureIframeMessaging` to `true`.
    *
-   * Built previews accept messages from any origin, so composing a built Storybook doesn't need
+   * Built previews accept messages from any origin, so composing a built Forkbook doesn't need
    * this flag.
    *
    * @default false
@@ -666,7 +666,7 @@ export interface SecurityConfig {
 
 export interface StorybookConfigRaw {
   /**
-   * Sets the addons you want to use with Storybook.
+   * Sets the addons you want to use with Forkbook.
    *
    * @example
    *
@@ -718,7 +718,7 @@ export interface StorybookConfigRaw {
    * Lazy-load heavy SFC compilers inside the parser body — the function is awaited on first
    * use.
    *
-   * Used by Storybook's change-detection dependency graph. May be reused by other consumers
+   * Used by Forkbook's change-detection dependency graph. May be reused by other consumers
    * in the future (static build, dependency analysis CLIs).
    *
    * @experimental Subject to change before stable release.
@@ -753,12 +753,12 @@ export interface StorybookConfigRaw {
 }
 
 /**
- * The interface for Storybook configuration in `main.ts` files. This interface is public All values
+ * The interface for Forkbook configuration in `main.ts` files. This interface is public All values
  * should be wrapped with `PresetValue<>`, though there are a few exceptions: `addons`, `framework`
  */
 export interface StorybookConfig {
   /**
-   * Sets the addons you want to use with Storybook.
+   * Sets the addons you want to use with Forkbook.
    *
    * @example
    *
@@ -771,7 +771,7 @@ export interface StorybookConfig {
   core?: PresetValue<StorybookConfigRaw['core']>;
   security?: PresetValue<StorybookConfigRaw['security']>;
   /**
-   * Sets a list of directories of static files to be loaded by Storybook server
+   * Sets a list of directories of static files to be loaded by Forkbook server
    *
    * @example
    *
@@ -794,7 +794,7 @@ export interface StorybookConfig {
   build?: PresetValue<StorybookConfigRaw['build']>;
 
   /**
-   * Tells Storybook where to find stories.
+   * Tells Forkbook where to find stories.
    *
    * @example
    *
@@ -805,10 +805,10 @@ export interface StorybookConfig {
    */
   stories: PresetValue<StorybookConfigRaw['stories']>;
 
-  /** Framework, e.g. 'storybook/react-vite', required in v7 */
+  /** Framework, e.g. '@aussieljk/forkbook/react-vite', required in v7 */
   framework?: StorybookConfigRaw['framework'];
 
-  /** Controls how Storybook handles TypeScript files. */
+  /** Controls how Forkbook handles TypeScript files. */
   typescript?: PresetValue<StorybookConfigRaw['typescript']>;
 
   /** References external Storybooks */
@@ -826,7 +826,7 @@ export interface StorybookConfig {
   /** Modify or return babel config. */
   babelDefault?: PresetValue<StorybookConfigRaw['babelDefault']>;
 
-  /** Add additional scripts to run in the preview a la `.storybook/preview.js` */
+  /** Add additional scripts to run in the preview a la `.forkbook/preview.js` */
   previewAnnotations?: PresetValue<StorybookConfigRaw['previewAnnotations']>;
 
   /** Process CSF files for the story index. */
@@ -850,7 +850,7 @@ export interface StorybookConfig {
    * @example
    *
    * ```ts
-   * previewMainTemplate = '.storybook/index.ejs';
+   * previewMainTemplate = '.forkbook/index.ejs';
    * ```
    */
   previewMainTemplate?: PresetValue<StorybookConfigRaw['previewMainTemplate']>;
@@ -941,9 +941,9 @@ export interface CoreCommon_StorybookInfo {
  * @example
  *
  * ```ts
- * type Framework = CompatibleString<'storybook/nextjs-vite'>;
- * const framework: Framework = 'storybook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
- * path.dirname(require.resolve(path.join('storybook/nextjs-vite', 'package.json'))); // valid
+ * type Framework = CompatibleString<'@aussieljk/forkbook/nextjs-vite'>;
+ * const framework: Framework = '@aussieljk/forkbook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
+ * path.dirname(require.resolve(path.join('@aussieljk/forkbook/nextjs-vite', 'package.json'))); // valid
  * ```
  */
 export type CompatibleString<T extends string> = T | (string & {});

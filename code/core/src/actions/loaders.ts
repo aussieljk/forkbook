@@ -1,6 +1,6 @@
-import type { LoaderFunction } from 'storybook/internal/types';
+import type { LoaderFunction } from '@aussieljk/forkbook/internal/types';
 
-import { onMockCall } from 'storybook/test';
+import { onMockCall } from '@aussieljk/forkbook/test';
 
 import { action } from './runtime/index.ts';
 
@@ -17,7 +17,7 @@ const logActionsWhenMockCalled: LoaderFunction = (context) => {
     onMockCall((mock, args) => {
       const name = mock.getMockName();
 
-      // Default name provided by vi.fn() under storybook/test's pinned @vitest/spy@3.2.4,
+      // Default name provided by vi.fn() under @aussieljk/forkbook/test's pinned @vitest/spy@3.2.4,
       // which we don't want to log. Vitest 4's own spy defaults to 'vi.fn()' instead.
       if (name === 'spy') {
         return;

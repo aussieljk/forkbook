@@ -96,22 +96,28 @@ describe('js package manager util', () => {
     ).toBe('10.3.2');
   });
 
-  it('detects when Storybook minimum-age exclusions are already configured', () => {
+  it('detects when Forkbook minimum-age exclusions are already configured', () => {
     expect(
-      hasStorybookMinimumAgeExclusions(['storybook', '@storybook/*', 'eslint-plugin-storybook'])
+      hasStorybookMinimumAgeExclusions([
+        '@aussieljk/forkbook',
+        '@storybook/*',
+        'eslint-plugin-storybook',
+      ])
     ).toBe(true);
     expect(hasStorybookMinimumAgeExclusions(['storybook', '@storybook/react-vite'])).toBe(false);
-    expect(hasStorybookMinimumAgeExclusions(['*storybook*'])).toBe(true);
+    expect(hasStorybookMinimumAgeExclusions(['*forkbook*', '*storybook*'])).toBe(true);
   });
 
   it('builds the rerun command', () => {
-    expect(getStorybookRerunCommand('10.3.2')).toBe('npx storybook@10.3.2 init');
-    expect(getStorybookRerunCommand(null)).toBe('npx storybook@<compatible-version> init');
+    expect(getStorybookRerunCommand('10.3.2')).toBe('npx @aussieljk/forkbook@10.3.2 init');
+    expect(getStorybookRerunCommand(null)).toBe(
+      'npx @aussieljk/forkbook@<compatible-version> init'
+    );
   });
 
   it('builds package-manager-aware setup commands', () => {
-    const npm = new NPMProxy({ cwd: process.cwd(), configDir: '.storybook' });
-    const pnpm = new PNPMProxy({ cwd: process.cwd(), configDir: '.storybook' });
+    const npm = new NPMProxy({ cwd: process.cwd(), configDir: '.forkbook' });
+    const pnpm = new PNPMProxy({ cwd: process.cwd(), configDir: '.forkbook' });
 
     expect(getVitestStorybookRunCommand(npm)).toBe('npx vitest --project storybook run');
     expect(getVitestStorybookRunCommand(pnpm)).toBe('pnpm exec vitest --project storybook run');

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { EmptyTabContent, Link } from 'storybook/internal/components';
+import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
 import { DocumentIcon } from '@storybook/icons';
 
@@ -35,9 +35,9 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
         title="This story has no controls"
         description={
           <>
-            Storybook couldn&apos;t find or generate any controls for this story. Define{' '}
-            <code>args</code> or <code>argTypes</code>, or configure docgen to let Storybook
-            generate controls automatically.
+            Forkbook couldn&apos;t find or generate any controls for this story. Define{' '}
+            <code>args</code> or <code>argTypes</code>, or configure docgen to let Forkbook generate
+            controls automatically.
           </>
         }
         footer={

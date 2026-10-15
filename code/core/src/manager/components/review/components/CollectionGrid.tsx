@@ -1,6 +1,6 @@
 import React, { type CSSProperties, type FC } from 'react';
 
-import { Badge, Button, Loader } from 'storybook/internal/components';
+import { Badge, Button, Loader } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 

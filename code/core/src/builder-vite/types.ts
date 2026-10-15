@@ -1,8 +1,8 @@
-import type { Builder, Options } from 'storybook/internal/types';
+import type { Builder, Options } from '@aussieljk/forkbook/internal/types';
 
 import type { InlineConfig, UserConfig } from 'vite';
 
-// Storybook's Stats are optional Webpack related property
+// Forkbook's Stats are optional Webpack related property
 type ViteStats = {
   toJson: () => any;
 };

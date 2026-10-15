@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
-import { REVIEW_STATUS_TYPE_ID } from 'storybook/internal/types';
-import type { StatusByTypeId, StatusValue } from 'storybook/internal/types';
+import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
+import type { StatusByTypeId, StatusValue } from '@aussieljk/forkbook/internal/types';
 
 import { mockDataset } from '../components/sidebar/mockdata.ts';
 import { getChangeDetectionStatus, getGroupStatus, getMostCriticalStatusValue } from './status.tsx';
@@ -205,7 +205,10 @@ describe('dual-slot status splitting', () => {
 
   it('leaf with only change-detection status', () => {
     const statuses = {
-      'storybook/change-detection': makeStatus('storybook/change-detection', 'status-value:new'),
+      '@aussieljk/forkbook/change-detection': makeStatus(
+        '@aussieljk/forkbook/change-detection',
+        'status-value:new'
+      ),
     };
     const { changeStatus, testStatus } = getChangeDetectionStatus(statuses);
     expect(changeStatus).toBe('status-value:new');
@@ -214,11 +217,11 @@ describe('dual-slot status splitting', () => {
 
   it('leaf with both change-detection and test status', () => {
     const statuses = {
-      'storybook/change-detection': makeStatus(
-        'storybook/change-detection',
+      '@aussieljk/forkbook/change-detection': makeStatus(
+        '@aussieljk/forkbook/change-detection',
         'status-value:modified'
       ),
-      'storybook/vitest': makeStatus('storybook/vitest', 'status-value:error'),
+      '@aussieljk/forkbook/vitest': makeStatus('@aussieljk/forkbook/vitest', 'status-value:error'),
     };
     const { changeStatus, testStatus } = getChangeDetectionStatus(statuses);
     expect(changeStatus).toBe('status-value:modified');
@@ -227,7 +230,10 @@ describe('dual-slot status splitting', () => {
 
   it('leaf with only test status', () => {
     const statuses = {
-      'storybook/vitest': makeStatus('storybook/vitest', 'status-value:warning'),
+      '@aussieljk/forkbook/vitest': makeStatus(
+        '@aussieljk/forkbook/vitest',
+        'status-value:warning'
+      ),
     };
     const { changeStatus, testStatus } = getChangeDetectionStatus(statuses);
     expect(changeStatus).toBe('status-value:unknown');
@@ -237,7 +243,10 @@ describe('dual-slot status splitting', () => {
   it('ignores reviewing status for sidebar test slot', () => {
     const statuses = {
       [REVIEW_STATUS_TYPE_ID]: makeStatus(REVIEW_STATUS_TYPE_ID, 'status-value:reviewing'),
-      'storybook/vitest': makeStatus('storybook/vitest', 'status-value:success'),
+      '@aussieljk/forkbook/vitest': makeStatus(
+        '@aussieljk/forkbook/vitest',
+        'status-value:success'
+      ),
     };
     const { changeStatus, testStatus } = getChangeDetectionStatus(statuses);
     expect(changeStatus).toBe('status-value:unknown');
@@ -246,9 +255,9 @@ describe('dual-slot status splitting', () => {
 
   it('priority within change-detection slot: new beats modified beats affected', () => {
     const statuses = {
-      first: makeStatus('storybook/change-detection', 'status-value:affected'),
-      second: makeStatus('storybook/change-detection', 'status-value:modified'),
-      third: makeStatus('storybook/change-detection', 'status-value:new'),
+      first: makeStatus('@aussieljk/forkbook/change-detection', 'status-value:affected'),
+      second: makeStatus('@aussieljk/forkbook/change-detection', 'status-value:modified'),
+      third: makeStatus('@aussieljk/forkbook/change-detection', 'status-value:new'),
     } as unknown as StatusByTypeId;
 
     const { changeStatus, testStatus } = getChangeDetectionStatus(statuses);

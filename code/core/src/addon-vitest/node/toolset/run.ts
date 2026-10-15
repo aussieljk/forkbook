@@ -1,12 +1,12 @@
-import type { ChannelLike } from 'storybook/internal/channels';
+import type { ChannelLike } from '@aussieljk/forkbook/internal/channels';
 import {
   findStoryIds,
   type FoundStory,
   type NotFoundStory,
   type StoryInput,
-} from 'storybook/internal/core-server';
-import { OpenServiceTestRunTimeoutError } from 'storybook/internal/server-errors';
-import type { StoryIndex } from 'storybook/internal/types';
+} from '@aussieljk/forkbook/internal/core-server';
+import { OpenServiceTestRunTimeoutError } from '@aussieljk/forkbook/internal/server-errors';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { TRIGGER_TEST_RUN_REQUEST, TRIGGER_TEST_RUN_RESPONSE } from '../../constants.ts';
 import type { TestRunOutput, TestRunResult } from './definition.ts';
@@ -65,7 +65,7 @@ export type TriggerTestRunParams = {
 };
 
 /**
- * Triggers a test run over the Storybook channel and resolves with the matching response.
+ * Triggers a test run over the Forkbook channel and resolves with the matching response.
  * Terminal statuses (`completed` / `error` / `cancelled`) all resolve — callers map them.
  * Rejects on emit failure, unexpected status, or timeout so the serial run queue can unblock.
  */

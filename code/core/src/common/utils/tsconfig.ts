@@ -373,7 +373,7 @@ function readTsconfigConfig(configPath: string): TsconfigConfig | undefined {
   /*
    * Do NOT use `typescript.readConfigFile` (or any static `import 'typescript'`) here.
    *
-   * This module is exported from `storybook/internal/common`. A top-level TypeScript import
+   * This module is exported from `@aussieljk/forkbook/internal/common`. A top-level TypeScript import
    * pulls the full `typescript` package into every consumer of that barrel — including unit-test
    * processes that only touch unrelated helpers. That has OOM'd the CI Vitest runs (~4GB heap)
    * and timed out imports that load `common` transitively (e.g. docgen-harness loading react

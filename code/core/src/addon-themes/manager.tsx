@@ -1,4 +1,4 @@
-import { addons, types } from 'storybook/manager-api';
+import { addons, types } from '@aussieljk/forkbook/manager-api';
 
 import { ADDON_ID, PARAM_KEY, THEME_SWITCHER_ID } from './constants.ts';
 import { ThemeSwitcher } from './theme-switcher.tsx';

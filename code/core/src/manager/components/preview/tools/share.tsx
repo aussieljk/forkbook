@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Button } from 'storybook/internal/components';
-import { SHARE_ISOLATE_MODE } from 'storybook/internal/core-events';
-import type { Addon_BaseType } from 'storybook/internal/types';
+import { Button } from '@aussieljk/forkbook/internal/components';
+import { SHARE_ISOLATE_MODE } from '@aussieljk/forkbook/internal/core-events';
+import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { PopOutIcon } from '@storybook/icons';
 
-import { Consumer, types } from 'storybook/manager-api';
-import type { Combo } from 'storybook/manager-api';
+import { Consumer, types } from '@aussieljk/forkbook/manager-api';
+import type { Combo } from '@aussieljk/forkbook/manager-api';
 
 const mapper = ({ api, state }: Combo) => {
   const { storyId, refId } = state;
