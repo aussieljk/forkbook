@@ -1,31 +1,14 @@
-import type { ElementRef, ReactNode } from 'react';
-import React, { Fragment, forwardRef, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 
 import { ActionBar, ScrollArea } from 'storybook/internal/components';
 
 import { Inspector } from 'react-inspector';
-import type { Theme } from 'storybook/theming';
-import { styled, withTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import type { ActionDisplay } from '../../models/index.ts';
-import { Action, Counter, InspectorContainer } from './style.tsx';
-
-const UnstyledWrapped = forwardRef<HTMLDivElement, { children: ReactNode; className?: string }>(
-  ({ children, className }, ref) => (
-    <ScrollArea ref={ref} horizontal vertical className={className}>
-      {children}
-    </ScrollArea>
-  )
-);
-UnstyledWrapped.displayName = 'UnstyledWrapped';
-
-export const Wrapper = styled(UnstyledWrapped)({
-  margin: 0,
-  padding: '10px 5px 20px',
-});
+import styles from './index.module.css';
 
 interface InspectorProps {
-  theme: Theme & { addonActionsTheme?: string };
   sortObjectKeys: boolean;
   showNonenumerable: boolean;
   name: any;
@@ -33,9 +16,10 @@ interface InspectorProps {
   expandLevel?: number;
 }
 
-const ThemedInspector = withTheme(({ theme, ...props }: InspectorProps) => (
-  <Inspector theme={theme.addonActionsTheme || 'chromeLight'} table={false} {...props} />
-));
+const ThemedInspector = (props: InspectorProps) => {
+  const theme = useTheme();
+  return <Inspector theme={theme.addonActionsTheme || 'chromeLight'} table={false} {...props} />;
+};
 
 interface ActionLoggerProps {
   actions: ActionDisplay[];
@@ -44,7 +28,7 @@ interface ActionLoggerProps {
 }
 
 export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProps) => {
-  const wrapperRef = useRef<ElementRef<typeof Wrapper>>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapper = wrapperRef.current;
   const wasAtBottom = wrapper && wrapper.scrollHeight - wrapper.scrollTop === wrapper.clientHeight;
 
@@ -59,11 +43,11 @@ export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProp
 
   return (
     <Fragment>
-      <Wrapper ref={wrapperRef}>
+      <ScrollArea ref={wrapperRef} horizontal vertical className={styles.wrapper}>
         {actions.map((action: ActionDisplay) => (
-          <Action key={action.id}>
-            {action.count > 1 && <Counter>{action.count}</Counter>}
-            <InspectorContainer>
+          <div className={styles.action} key={action.id}>
+            {action.count > 1 && <div className={styles.counter}>{action.count}</div>}
+            <div className={styles.inspectorContainer}>
               <ThemedInspector
                 sortObjectKeys
                 showNonenumerable={false}
@@ -71,10 +55,10 @@ export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProp
                 data={action.data.args ?? action.data}
                 expandLevel={expandLevel}
               />
-            </InspectorContainer>
-          </Action>
+            </div>
+          </div>
         ))}
-      </Wrapper>
+      </ScrollArea>
       <ActionBar actionItems={[{ title: 'Clear', onClick: onClear }]} />
     </Fragment>
   );

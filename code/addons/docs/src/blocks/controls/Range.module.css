@@ -1,0 +1,172 @@
+/* Restyled using http://danielstern.ca/range.css/#/ */
+.input {
+  --track-bg: hsl(from var(--sb-input-background) h s calc(l - 2));
+  --track-border: hsl(0 0 0 / 0.44);
+
+  appearance: none;
+  background-color: transparent;
+  width: 100%;
+
+  &::-webkit-slider-runnable-track {
+    background: linear-gradient(
+      to right,
+      var(--sb-color-green) 0%,
+      var(--sb-color-green) var(--sb-range-progress),
+      var(--track-bg) var(--sb-range-progress),
+      var(--track-bg) 100%
+    );
+    border-radius: 6px;
+    box-shadow: var(--track-border) 0 0 0 1px inset;
+    cursor: pointer;
+    height: 6px;
+    width: 100%;
+  }
+
+  &::-moz-range-track {
+    background: linear-gradient(
+      to right,
+      var(--sb-color-green) 0%,
+      var(--sb-color-green) var(--sb-range-progress),
+      var(--track-bg) var(--sb-range-progress),
+      var(--track-bg) 100%
+    );
+    border-radius: 6px;
+    box-shadow: var(--track-border) 0 0 0 1px inset;
+    cursor: pointer;
+    height: 6px;
+    width: 100%;
+  }
+
+  &::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50px;
+    cursor: grab;
+    background: var(--sb-input-background);
+    border: 1px solid var(--track-border);
+    box-shadow: 0 1px 3px 0px rgb(from var(--sb-app-border-color) r g b / 0.2);
+    transition: all 150ms ease-out;
+    margin-top: -6px;
+    appearance: none;
+
+    &:hover {
+      background: hsl(from var(--sb-input-background) h s calc(l - 5));
+      transform: scale3d(1.1, 1.1, 1.1) translateY(-1px);
+      transition: all 50ms ease-out;
+    }
+
+    &:active {
+      background: var(--sb-input-background);
+      transform: scale3d(1, 1, 1) translateY(0px);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50px;
+    cursor: grab;
+    background: var(--sb-input-background);
+    border: 1px solid var(--track-border);
+    box-shadow: 0 1px 3px 0px rgb(from var(--sb-app-border-color) r g b / 0.2);
+    transition: all 150ms ease-out;
+
+    &:hover {
+      background: hsl(from var(--sb-input-background) h s calc(l - 5));
+      transform: scale3d(1.1, 1.1, 1.1) translateY(-1px);
+      transition: all 50ms ease-out;
+    }
+
+    &:active {
+      background: var(--sb-input-background);
+      transform: scale3d(1, 1, 1) translateY(0px);
+    }
+  }
+
+  &:focus {
+    outline: none;
+
+    &::-webkit-slider-runnable-track {
+      border-color: rgb(from var(--sb-color-secondary) r g b / 0.4);
+    }
+
+    &::-moz-range-track {
+      border-color: rgb(from var(--sb-color-secondary) r g b / 0.4);
+    }
+
+    &::-webkit-slider-thumb {
+      border-color: var(--sb-color-secondary);
+      box-shadow: 0 0px 5px 0px var(--sb-color-secondary);
+    }
+
+    &::-moz-range-thumb {
+      border-color: var(--sb-color-secondary);
+      box-shadow: 0 0px 5px 0px var(--sb-color-secondary);
+    }
+  }
+
+  &:disabled {
+    &::-webkit-slider-runnable-track {
+      cursor: not-allowed;
+    }
+
+    &::-moz-range-track {
+      cursor: not-allowed;
+    }
+
+    &::-webkit-slider-thumb {
+      cursor: not-allowed;
+    }
+
+    &::-moz-range-thumb {
+      cursor: not-allowed;
+    }
+  }
+}
+
+:where([data-sb-theme='dark']) .input {
+  --track-bg: hsl(from var(--sb-input-background) h s calc(l + 2));
+  --track-border: hsl(0 0 100 / 0.4);
+
+  &::-webkit-slider-thumb {
+    box-shadow: unset;
+  }
+
+  &::-moz-range-thumb {
+    box-shadow: unset;
+  }
+
+  &:focus {
+    &::-webkit-slider-thumb {
+      box-shadow: unset;
+    }
+
+    &::-moz-range-thumb {
+      box-shadow: unset;
+    }
+  }
+}
+
+.label {
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+
+.currentAndMax {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &[data-readonly] {
+    opacity: 0.5;
+  }
+}

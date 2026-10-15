@@ -1,5 +1,4 @@
-import type { animation, easing } from './animation.ts';
-import type { background, color, tokens, typography } from './base.ts';
+import type { background, color, easing, tokens, typography } from './base.ts';
 
 export interface ThemeVars extends ThemeVarsBase, ThemeVarsColors {}
 
@@ -57,7 +56,6 @@ export interface ThemeVarsColors {
 export type Color = typeof color;
 export type Background = typeof background;
 export type Typography = typeof typography;
-export type Animation = typeof animation;
 export type Easing = typeof easing;
 
 export type TextSize = number | string;
@@ -77,7 +75,6 @@ export interface StorybookTheme {
 
   background: Background;
   typography: Typography;
-  animation: Animation;
   easing: Easing;
 
   input: {

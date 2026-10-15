@@ -7,12 +7,13 @@ import type { API_IndexHash, API_Refs } from 'storybook/internal/types';
 import { BottomBarToggleIcon, MenuIcon } from '@storybook/icons';
 
 import { type API_KeyCollection, useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { useLandmark } from '../../../hooks/useLandmark.ts';
 import { useLayout } from '../../layout/LayoutProvider.tsx';
 import { MobileAddonsDrawer } from './MobileAddonsDrawer.tsx';
 import { MobileMenuDrawer } from './MobileMenuDrawer.tsx';
+import styles from './MobileNavigation.module.css';
 
 interface MobileNavigationProps {
   menu?: React.ReactNode;
@@ -114,12 +115,13 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
   );
 
   return (
-    <MobileBottomBar className="sb-bar" {...landmarkProps} ref={sectionRef}>
+    <header className={clsx('sb-bar', styles.bottomBar)} {...landmarkProps} ref={sectionRef}>
       <h2 id={headingId} className="sb-sr-only">
         Navigation controls
       </h2>
       {showMenu && (
-        <BottomBarButton
+        <Button
+          className={styles.bottomBarButton}
           padding="small"
           variant="ghost"
           onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
@@ -129,14 +131,15 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
           shortcut={navShortcut}
         >
           <MenuIcon />
-          <Text>{fullStoryName}</Text>
-        </BottomBarButton>
+          <p className={styles.text}>{fullStoryName}</p>
+        </Button>
       )}
       <span className="sb-sr-only" aria-current="page">
         Current page: {fullStoryAriaLabel}
       </span>
       {showPanel && (
-        <BottomBarButton
+        <Button
+          className={styles.bottomBarButton}
           padding="small"
           variant="ghost"
           onClick={() => setMobilePanelOpen(true)}
@@ -145,17 +148,18 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
           aria-controls={isMobilePanelOpen ? 'storybook-mobile-addon-panel' : undefined}
         >
           <BottomBarToggleIcon />
-        </BottomBarButton>
+        </Button>
       )}
-    </MobileBottomBar>
+    </header>
   );
 };
 
-export const MobileNavigation: FC<MobileNavigationProps & ComponentProps<typeof Container>> = ({
+export const MobileNavigation: FC<MobileNavigationProps & ComponentProps<'section'>> = ({
   menu,
   panel,
   showMenu = true,
   showPanel,
+  className,
   ...props
 }) => {
   const { isMobilePanelOpen, setMobilePanelOpen } = useLayout();
@@ -187,7 +191,7 @@ export const MobileNavigation: FC<MobileNavigationProps & ComponentProps<typeof 
   }, [showMenu, setMobileMenuOpen]);
 
   return (
-    <Container {...props}>
+    <section className={clsx(styles.container, className)} {...props}>
       {showMenu && (
         <MobileMenuDrawer
           id="storybook-mobile-menu"
@@ -219,52 +223,6 @@ export const MobileNavigation: FC<MobileNavigationProps & ComponentProps<typeof 
           navShortcut={navShortcut}
         />
       )}
-    </Container>
+    </section>
   );
 };
-
-const Container = styled.section(({ theme }) => ({
-  bottom: 0,
-  left: 0,
-  width: '100%',
-  zIndex: 10,
-  background: theme.barBg,
-  borderTop: `1px solid ${theme.appBorderColor}`,
-}));
-
-const MobileBottomBar = styled.header({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  height: 40,
-  padding: '0 6px',
-
-  /* Because Popper.js's tooltip is creating extra div layers, we have to
-   * punch through them to configure the button to ellipsize. */
-  '& > *:first-child': {
-    /* 6px padding * 2 + 28px for the orientation button */
-    maxWidth: 'calc(100% - 40px)',
-    '& > button': {
-      maxWidth: '100%',
-    },
-    '& > button p': {
-      textOverflow: 'ellipsis',
-    },
-  },
-});
-
-const BottomBarButton = styled(Button)({
-  WebkitLineClamp: 1,
-  flexShrink: 1,
-  p: {
-    textOverflow: 'ellipsis',
-  },
-});
-
-const Text = styled.p({
-  display: '-webkit-box',
-  WebkitLineClamp: 1,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
-});

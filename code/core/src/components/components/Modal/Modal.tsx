@@ -5,6 +5,7 @@ import type { DecoratorFunction } from 'storybook/internal/csf';
 
 import { Dialog } from '@base-ui/react/dialog';
 import { useTransitionState } from 'react-transition-state';
+import { themeToCssVars, useTheme } from 'storybook/theming';
 
 import { useMediaQuery } from '../../../manager/hooks/useMedia.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
@@ -107,6 +108,10 @@ function BaseModal({
   }
 
   const portalContainer = useContext(PortalContainerContext);
+  // The portal renders outside the ThemeProvider element, so the overlay and the dialog get the
+  // theme variables themselves. A wrapper element would change which element Base UI hides when
+  // modals are stacked.
+  const theme = useTheme();
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [{ status, isMounted }, toggle] = useTransitionState({
     timeout: reducedMotion ? 0 : transitionDuration,
@@ -180,7 +185,14 @@ function BaseModal({
       <Dialog.Portal container={containerElement}>
         <Dialog.Backdrop
           forceRender
-          render={<Components.Overlay $status={status} $transitionDuration={transitionDuration} />}
+          render={
+            <Components.Overlay
+              $status={status}
+              $transitionDuration={transitionDuration}
+              data-sb-theme={theme.base}
+              style={themeToCssVars(theme)}
+            />
+          }
         />
         <Dialog.Popup
           aria-label={ariaLabel}
@@ -196,7 +208,9 @@ function BaseModal({
               className={className}
               width={width}
               height={height}
+              data-sb-theme={theme.base}
               {...props}
+              style={{ ...themeToCssVars(theme), ...props.style }}
             />
           }
         >

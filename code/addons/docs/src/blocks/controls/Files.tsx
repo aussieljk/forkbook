@@ -3,10 +3,9 @@ import type { ChangeEvent, FC } from 'react';
 
 import { Form } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
-
 import { getControlId } from './helpers';
 import type { ControlProps } from './types';
+import styles from './Files.module.css';
 
 export interface FilesControlProps extends ControlProps<string[]> {
   /**
@@ -24,10 +23,6 @@ export interface FilesControlProps extends ControlProps<string[]> {
    */
   accept?: string;
 }
-
-const FileInput = styled(Form.Input)({
-  padding: 10,
-});
 
 function revokeOldUrls(urls: string[]) {
   urls.forEach((url) => {
@@ -73,7 +68,8 @@ export const FilesControl: FC<FilesControlProps> = ({
       <label htmlFor={controlId} className="sb-sr-only">
         {name}
       </label>
-      <FileInput
+      <Form.Input
+        className={styles.input}
         ref={inputElement}
         id={controlId}
         type="file"

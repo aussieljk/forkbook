@@ -1,13 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
+import { withClassName } from '../lib/withClassName.tsx';
+import { withMargin, withReset } from '../lib/common.tsx';
+import styles from './P.module.css';
 
-import { codeCommon, withMargin, withReset } from '../lib/common.tsx';
-
-export const P = styled.p(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  ...withMargin,
-  fontSize: theme.typography.size.s2,
-  lineHeight: '24px',
-  color: theme.color.defaultText,
-  '& code': codeCommon({ theme }) as CSSObject,
-}));
+export const P = withClassName('p', withReset, withMargin, styles.p);

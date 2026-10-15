@@ -1,0 +1,125 @@
+/* The state selectors are in :where(), so the rules keep the order of this file. */
+.childrenContainer {
+  display: block;
+  position: relative;
+  flex-wrap: wrap;
+  overflow: auto;
+  flex-direction: row;
+
+  & :global(.innerZoomElementWrapper) > * {
+    max-width: calc(100% - 20px);
+    display: inline-block;
+  }
+}
+
+.childrenContainer:where([data-flex]) {
+  display: flex;
+}
+
+.childrenContainer:where([data-column]) {
+  flex-direction: column;
+
+  & :global(.innerZoomElementWrapper) > * {
+    max-width: none;
+    width: calc(100% - 20px);
+    display: block;
+  }
+}
+
+.childrenContainer:where([data-layout='fullscreen']) :global(.innerZoomElementWrapper) > * {
+  max-width: 100%;
+}
+
+.childrenContainer:where([data-layout='fullscreen'][data-column])
+  :global(.innerZoomElementWrapper)
+  > * {
+  max-width: none;
+  width: 100%;
+}
+
+.childrenContainer:where([data-layout='padded'], [data-layout='centered']) {
+  padding: 0;
+
+  & :global(.innerZoomElementWrapper) > * {
+    width: auto;
+    border: 8px solid transparent !important;
+  }
+}
+
+.childrenContainer:where(
+  [data-layout='padded'][data-inline],
+  [data-layout='centered'][data-inline]
+) {
+  padding: 32px 22px;
+}
+
+.childrenContainer:where([data-layout='centered'][data-inline]) {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+}
+
+.childrenContainer:where([data-columns]) :global(.innerZoomElementWrapper) > * {
+  min-width: calc(100% / var(--preview-columns) - 20px);
+}
+
+.actionBar {
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+
+.trailingSnippetWarning {
+  margin-inline-start: auto;
+  margin-inline-end: 10px;
+}
+
+.previewContainer {
+  /* Set here, so the colour comes from this theme and not from the dark theme of the source. */
+  --preview-source-background: rgba(0, 0, 0, 0.85);
+
+  position: relative;
+  overflow: hidden;
+  margin: 25px 0 40px;
+
+  :global(h3) + & {
+    margin-top: 16px;
+  }
+}
+
+:where([data-sb-theme='dark']) .previewContainer {
+  --preview-source-background: hsl(from var(--sb-background-content) h s calc(l - 5));
+}
+
+.previewContainer:where([data-with-toolbar]) {
+  padding-top: 40px;
+}
+
+.source {
+  margin: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--sb-app-border-radius);
+  border-bottom-right-radius: var(--sb-app-border-radius);
+  border: none;
+  background: var(--preview-source-background);
+  color: var(--sb-color-lightest);
+
+  & button {
+    background: var(--preview-source-background);
+  }
+}
+
+.positionedToolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+}
+
+.skeleton :global(.docs-story) {
+  padding-top: 32px;
+  padding-bottom: 40px;
+}

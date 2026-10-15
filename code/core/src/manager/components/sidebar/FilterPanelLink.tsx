@@ -1,25 +1,25 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import { ActionList, Form } from 'storybook/internal/components';
 
 import { DeleteIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import type { FilterItem } from './FilterPanel.utils.ts';
+import styles from './FilterPanelLink.module.css';
 
-const MutedText = styled.span(({ theme }) => ({
-  color: theme.textMutedColor,
-}));
-
-export const StatusIcon = styled.span<{ $iconColor?: string | null }>(({ $iconColor }) => ({
-  display: 'contents',
-  color: $iconColor ?? undefined,
-  '> svg': {
-    transform: 'scale(1.3)',
-  },
-}));
+export const StatusIcon = ({
+  iconColor,
+  children,
+}: {
+  iconColor?: string | null;
+  children?: ReactNode;
+}) => (
+  <span className={styles.statusIcon} style={{ color: iconColor ?? undefined }}>
+    {children}
+  </span>
+);
 
 export const createFilterLink = ({
   id,
@@ -55,7 +55,7 @@ export const createFilterLink = ({
           <ActionList.Text>
             <span>
               {title}
-              {isExcluded && <MutedText> (excluded)</MutedText>}
+              {isExcluded && <span className={styles.mutedText}> (excluded)</span>}
             </span>
           </ActionList.Text>
           {isExcluded ? <s>{count}</s> : <span>{count}</span>}

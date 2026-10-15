@@ -1,0 +1,12 @@
+.wrapper {
+  display: flex;
+}
+
+.maxLength {
+  margin-left: 0.75rem;
+  padding-top: 0.35rem;
+
+  &[data-maxed] {
+    color: red;
+  }
+}

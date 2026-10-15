@@ -2,20 +2,9 @@ import React, { Fragment } from 'react';
 
 import { global } from '@storybook/global';
 
-import { styled } from 'storybook/theming';
+import styles from './ErrorFormatter.module.css';
 
 const { document } = global;
-
-const ErrorName = styled.strong(({ theme }) => ({
-  color: theme.color.orange,
-}));
-const ErrorImportant = styled.strong(({ theme }) => ({
-  color: theme.color.ancillary,
-  textDecoration: 'underline',
-}));
-const ErrorDetail = styled.em(({ theme }) => ({
-  color: theme.textMutedColor,
-}));
 
 const firstLineRegex = /(Error): (.*)\n/;
 const linesRegexChromium = /at (?:(.*) )?\(?(.+)\)?/;
@@ -68,18 +57,18 @@ export const ErrorFormatter = ({ error }: ErrorFormatterProps) => {
 
   return (
     <Fragment>
-      <span>{type}</span>: <ErrorName>{name}</ErrorName>
+      <span>{type}</span>: <strong className={styles.name}>{name}</strong>
       <br />
       {lines.map((l, i) =>
         l?.name ? (
           <Fragment key={i}>
-            {'  '}at <ErrorImportant>{l.name}</ErrorImportant> (
-            <ErrorDetail>{l.location}</ErrorDetail>)
+            {'  '}at <strong className={styles.important}>{l.name}</strong> (
+            <em className={styles.detail}>{l.location}</em>)
             <br />
           </Fragment>
         ) : (
           <Fragment key={i}>
-            {'  '}at <ErrorDetail>{l?.location}</ErrorDetail>
+            {'  '}at <em className={styles.detail}>{l?.location}</em>
             <br />
           </Fragment>
         )

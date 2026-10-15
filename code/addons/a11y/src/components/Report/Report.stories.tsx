@@ -2,17 +2,16 @@ import React from 'react';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { fn } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { results } from '../../results.mock.ts';
 import { RuleType } from '../../types.ts';
 import { Report } from './Report.tsx';
 
-const StyledWrapper = styled.div(({ theme }) => ({
-  backgroundColor: theme.background.content,
-  fontSize: theme.typography.size.s2 - 1,
-  color: theme.color.defaultText,
+const wrapperStyle: React.CSSProperties = {
+  backgroundColor: 'var(--sb-background-content)',
+  fontSize: 'calc(var(--sb-size-s2) - 1px)',
+  color: 'var(--sb-color-default-text)',
   display: 'block',
   height: '100%',
   position: 'absolute',
@@ -20,7 +19,7 @@ const StyledWrapper = styled.div(({ theme }) => ({
   right: 0,
   bottom: 0,
   overflow: 'auto',
-}));
+};
 
 const managerContext: any = {
   state: {},
@@ -35,9 +34,9 @@ const meta = preview.meta({
   decorators: [
     (Story) => (
       <ManagerContext.Provider value={managerContext}>
-        <StyledWrapper id="panel-tab-content">
+        <div id="panel-tab-content" style={wrapperStyle}>
           <Story />
-        </StyledWrapper>
+        </div>
       </ManagerContext.Provider>
     ),
   ],

@@ -1,0 +1,60 @@
+/* The animation duration is set inline from MOBILE_TRANSITION_DURATION. */
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 10px 0 0;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  overflow: auto;
+  color: var(--sb-color-default-text);
+  background: var(--sb-background-content);
+  animation-name: slideFromRight;
+
+  &[data-status='exiting'] {
+    animation-name: slideToRight;
+  }
+}
+
+.innerArea {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 25px 12px 20px;
+}
+
+.linkList {
+  padding: 0;
+}
+
+.bottomText {
+  font-size: calc(var(--sb-size-s2) - 1px);
+  margin-top: 30px;
+}
+
+.closeButton {
+  align-self: start;
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translate(20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideToRight {
+  from {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(20px, 0);
+  }
+}

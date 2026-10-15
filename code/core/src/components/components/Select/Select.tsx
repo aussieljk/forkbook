@@ -13,8 +13,7 @@ import React, {
 import { RefreshIcon } from '@storybook/icons';
 
 import { Popover as BasePopover } from '@base-ui/react/popover';
-import { darken, transparentize } from 'polished';
-import { styled, useTheme } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { Button, type ButtonProps } from '../Button/Button.tsx';
 import { Form } from '../Form/Form.tsx';
@@ -22,6 +21,8 @@ import { Popover } from '../Popover/Popover.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { SelectOption } from './SelectOption.tsx';
 import type { InternalOption, Option, ResetOption, Value } from './helpers.tsx';
+import { PortalTheme } from '../shared/PortalTheme.tsx';
+import styles from './Select.module.css';
 import {
   Listbox,
   PAGE_STEP_SIZE,
@@ -98,12 +99,6 @@ function valueToId(parentId: string, { value }: InternalOption | ResetOption): s
   return `${parentId}-opt-${String(value) ?? 'sb-reset'}`;
 }
 
-const SelectedOptionCount = styled.span(({ theme }) => ({
-  appearance: 'none',
-  color: theme.textMutedColor,
-  fontSize: 12,
-}));
-
 function setSelectedFromDefault(
   options: SelectProps['options'],
   defaultOptions: SelectProps['defaultOptions']
@@ -121,27 +116,6 @@ function setSelectedFromDefault(
     .map(optionToInternal);
 }
 
-const StyledButton = styled(Button)<ButtonProps & { $hasSelection?: boolean; $isOpen?: boolean }>(
-  ({ $isOpen: isOpen, $hasSelection: hasSelection, theme }) =>
-    isOpen || hasSelection
-      ? {
-          boxShadow: 'none',
-          background: transparentize(0.93, theme.barSelectedColor),
-          color:
-            theme.base === 'light' ? darken(0.1, theme.color.secondary) : theme.color.secondary,
-        }
-      : {}
-);
-
-const Underlay = styled.div({
-  position: 'fixed',
-  inset: 0,
-  // This will do for now, our popovers use the max z-index of 2147483647. We'll want to
-  // inherit a base from a CSS variable and add preset values to it in the future (e.g.
-  // 100 for underlay, 200 for overlay) if we start using Select in dialogs.
-  zIndex: 1000,
-});
-
 /*
  * This popover does not do any keyboard handling or focus management. It places its children
  * under the trigger. When clicking outside the popover, it closes.
@@ -151,7 +125,6 @@ const MinimalistPopover: FC<{
   handleClose: () => void;
   triggerRef: React.RefObject<HTMLElement>;
 }> = ({ children, handleClose, triggerRef }) => {
-  const theme = useTheme();
   const portalContainer = useContext(PortalContainerContext);
 
   return (
@@ -165,34 +138,36 @@ const MinimalistPopover: FC<{
       }}
     >
       <BasePopover.Portal container={portalContainer}>
-        <Underlay />
-        <BasePopover.Positioner
-          anchor={triggerRef}
-          side="bottom"
-          align="start"
-          sideOffset={8}
-          style={{ zIndex: 100000 }}
-        >
-          <BasePopover.Popup
-            role="presentation"
-            initialFocus={false}
-            finalFocus={false}
-            render={
-              <Popover
-                hasChrome
-                padding={0}
-                style={{
-                  maxHeight: 'min(504px, var(--available-height))',
-                  overflow: 'hidden auto',
-                  scrollbarColor: `${theme.barTextColor} transparent`,
-                  scrollbarWidth: 'thin',
-                }}
-              >
-                {children}
-              </Popover>
-            }
-          />
-        </BasePopover.Positioner>
+        <PortalTheme>
+          <div className={styles.underlay} />
+          <BasePopover.Positioner
+            anchor={triggerRef}
+            side="bottom"
+            align="start"
+            sideOffset={8}
+            style={{ zIndex: 100000 }}
+          >
+            <BasePopover.Popup
+              role="presentation"
+              initialFocus={false}
+              finalFocus={false}
+              render={
+                <Popover
+                  hasChrome
+                  padding={0}
+                  style={{
+                    maxHeight: 'min(504px, var(--available-height))',
+                    overflow: 'hidden auto',
+                    scrollbarColor: 'var(--sb-bar-text-color) transparent',
+                    scrollbarWidth: 'thin',
+                  }}
+                >
+                  {children}
+                </Popover>
+              }
+            />
+          </BasePopover.Positioner>
+        </PortalTheme>
       </BasePopover.Portal>
     </BasePopover.Root>
   );
@@ -216,6 +191,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       tooltip,
       ariaLabel,
       showSelectedOptionTitle = true,
+      className,
       ...props
     },
     ref
@@ -499,8 +475,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
 
     return (
       <>
-        <StyledButton
+        <Button
           {...props}
+          className={clsx(
+            (isOpen || selectedOptions.length > 0) && styles.highlightedButton,
+            className
+          )}
           variant="ghost"
           ariaLabel={finalAriaLabel}
           tooltip={tooltip ?? ariaLabel}
@@ -508,8 +488,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           id={id}
           ref={triggerRef}
           padding={padding}
-          $isOpen={isOpen}
-          $hasSelection={!!selectedOptions.length}
           // Can be removed once #32325 is fixed (Button will then provide aria-disabled)
           aria-disabled={disabled}
           disabled={disabled}
@@ -539,15 +517,16 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               {icon}
               {children}
               {!!selectedOptions.length && (
-                <SelectedOptionCount
+                <span
+                  className={styles.selectedOptionCount}
                   aria-label={`${selectedOptions.length} ${selectedOptions.length > 1 ? 'items' : 'item'} selected`}
                 >
                   {selectedOptions?.length}
-                </SelectedOptionCount>
+                </span>
               )}
             </>
           )}
-        </StyledButton>
+        </Button>
         {isOpen && (
           <MinimalistPopover handleClose={handleClose} triggerRef={triggerRef}>
             <Listbox

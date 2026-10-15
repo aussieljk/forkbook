@@ -1,0 +1,4 @@
+.h1 {
+  font-size: var(--sb-size-l1);
+  font-weight: var(--sb-weight-bold);
+}

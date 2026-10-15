@@ -2,22 +2,13 @@ import React from 'react';
 
 import { CheckIcon, CircleIcon, PlayIcon, StopAltIcon } from '@storybook/icons';
 
-import { transparentize } from 'polished';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import { type Call, CallStates } from '../../instrumenter/types.ts';
 
 export interface StatusIconProps {
   status: Call['status'];
 }
-
-const WarningContainer = styled.div({
-  width: 14,
-  height: 14,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-});
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
   const theme = useTheme();
@@ -34,9 +25,18 @@ export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
     }
     case CallStates.WAITING: {
       return (
-        <WarningContainer data-testid="icon-waiting">
-          <CircleIcon color={transparentize(0.5, '#CCCCCC')} size={6} />
-        </WarningContainer>
+        <div
+          style={{
+            width: 14,
+            height: 14,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          data-testid="icon-waiting"
+        >
+          <CircleIcon color="rgba(204, 204, 204, 0.5)" size={6} />
+        </div>
       );
     }
     default: {

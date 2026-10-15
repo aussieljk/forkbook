@@ -1,0 +1,252 @@
+/*
+ * The state selectors are in :where() so each rule has the specificity of one class. Components
+ * that add a class to a Button can then override these styles.
+ */
+.button {
+  --fg: var(--sb-color-secondary);
+  --bg: var(--sb-button-background);
+  --outline: var(--sb-button-border);
+
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 10px;
+  height: 28px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition-property: background, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+  vertical-align: top;
+  white-space: nowrap;
+  user-select: none;
+  margin: 0;
+  font-size: var(--sb-size-s1);
+  font-weight: var(--sb-weight-bold);
+  line-height: 1;
+  background: transparent;
+  color: var(--sb-input-color);
+  box-shadow: none;
+  border-radius: var(--sb-input-border-radius);
+  /* Making sure that the button never shrinks below its minimum size */
+  flex-shrink: 0;
+
+  & > svg {
+    flex: 0 0 auto;
+  }
+}
+
+.button:where([data-appearance='agentic']) {
+  --fg: var(--sb-fg-color-agentic);
+  --bg: var(--sb-bg-color-agentic);
+  --outline: var(--sb-border-color-agentic);
+}
+
+/* Size and padding */
+
+.button:where([data-size='medium']) {
+  height: 32px;
+  padding: 0 12px;
+}
+
+.button:where([data-padding='small']) {
+  padding: 0 7px;
+}
+
+.button:where([data-padding='small'][data-size='medium']) {
+  padding: 0 9px;
+}
+
+.button:where([data-padding='none']) {
+  padding: 0;
+}
+
+/* Disabled and read-only */
+
+.button:where([data-disabled]) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button:where([data-readonly]) {
+  cursor: inherit;
+  opacity: 1;
+}
+
+/* Variants */
+
+.button:where([data-variant='solid']) {
+  background: var(--fg);
+  color: var(--sb-color-lightest);
+}
+
+.button:where([data-variant='outline']) {
+  background: var(--bg);
+  color: var(--sb-input-color);
+  box-shadow: var(--outline) 0 0 0 1px inset;
+}
+
+.button:where([data-variant='outline'][data-appearance='agentic']) {
+  color: var(--sb-fg-color-agentic);
+}
+
+.button:where([data-variant='ghost']) {
+  color: var(--sb-text-muted-color);
+}
+
+.button:where([data-variant='ghost'][data-active]) {
+  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.93));
+  color: hsl(from var(--fg) h s calc(l - 10));
+}
+
+.button:where([data-variant='ghost'][data-active][data-appearance='agentic']) {
+  background: rgb(from var(--sb-bg-color-agentic) r g b / calc(alpha - 0.93));
+}
+
+/* Hover, active and focus. Read-only buttons have no interactive states. */
+
+.button:where(:not([data-readonly])) {
+  &:hover {
+    background: hsl(from var(--fg) h s calc(l - 2));
+  }
+
+  &:where([data-variant='solid']):hover {
+    background: hsl(from var(--fg) h s calc(l + 8));
+  }
+
+  &:where([data-variant='outline']):hover {
+    background: hsl(from var(--bg) h s calc(l - 2));
+  }
+
+  &:where([data-variant='ghost']):hover {
+    color: var(--fg);
+    background: rgb(from var(--fg) r g b / calc(alpha - 0.86));
+  }
+
+  &:active {
+    background: hsl(from var(--fg) h s calc(l - 2));
+  }
+
+  &:where([data-variant='outline']):active {
+    background: hsl(from var(--bg) h s calc(l - 2));
+  }
+
+  &:where([data-variant='ghost']):active {
+    color: var(--fg);
+    background: var(--sb-background-hoverable);
+  }
+
+  &:where([data-variant='ghost'][data-appearance='agentic']):active {
+    background: var(--sb-bg-color-agentic);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+    /* Should ensure focus outline gets drawn above next sibling */
+    z-index: 1;
+  }
+
+  &:where(:global(.sb-bar) *, :global(.sb-list) *):focus-visible {
+    outline-offset: 0;
+  }
+}
+
+/* Dark theme */
+
+:where([data-sb-theme='dark']) .button {
+  &:where([data-variant='solid']) {
+    background: hsl(from var(--fg) h s calc(l - 18));
+  }
+
+  &:where([data-variant='ghost'][data-active]) {
+    color: var(--fg);
+  }
+
+  &:where(:not([data-readonly])) {
+    &:hover {
+      background: hsl(from var(--fg) h s calc(l + 3));
+    }
+
+    &:where([data-variant='solid']):hover {
+      background: hsl(from var(--fg) h s calc(l - 27));
+    }
+
+    &:where([data-variant='outline']):hover {
+      background: hsl(from var(--bg) h s calc(l + 3));
+    }
+
+    &:where([data-variant='ghost']):hover {
+      background: rgb(from var(--fg) r g b / calc(alpha - 0.86));
+    }
+
+    &:active {
+      background: hsl(from var(--fg) h s calc(l + 3));
+    }
+
+    &:where([data-variant='outline']):active {
+      background: hsl(from var(--bg) h s calc(l + 3));
+    }
+
+    &:where([data-variant='ghost']):active {
+      background: var(--sb-background-hoverable);
+    }
+
+    &:where([data-variant='ghost'][data-appearance='agentic']):active {
+      background: var(--sb-bg-color-agentic);
+    }
+  }
+}
+
+/* Icon animations after a click */
+
+.button[data-animating='rotate360'] > svg {
+  animation: rotate360 1000ms ease-out;
+}
+
+.button[data-animating='glow'] > svg {
+  animation: glow 1000ms ease-out;
+}
+
+.button[data-animating='jiggle'] > svg {
+  animation: jiggle 1000ms ease-out;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  12.5%,
+  62.5% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  37.5%,
+  87.5% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

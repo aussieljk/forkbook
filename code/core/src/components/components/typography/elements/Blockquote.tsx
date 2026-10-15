@@ -1,18 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
-
+import { withClassName } from '../lib/withClassName.tsx';
 import { withMargin, withReset } from '../lib/common.tsx';
+import styles from './Blockquote.module.css';
 
-export const Blockquote = styled.blockquote(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  ...withMargin,
-  borderLeft: `4px solid ${theme.color.medium}`,
-  padding: '0 15px',
-  color: theme.color.dark,
-  '& > :first-of-type': {
-    marginTop: 0,
-  },
-  '& > :last-child': {
-    marginBottom: 0,
-  },
-}));
+export const Blockquote = withClassName('blockquote', withReset, withMargin, styles.blockquote);

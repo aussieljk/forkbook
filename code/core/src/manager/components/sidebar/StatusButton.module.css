@@ -1,0 +1,59 @@
+.statusLabel {
+  margin: 3px;
+}
+
+.statusLabel:where([data-status-color]),
+.statusButton:where([data-status-color]) {
+  color: var(--sb-status-color);
+}
+
+.statusButton {
+  transition: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+
+  &:hover {
+    color: var(--sb-color-secondary);
+    background: hsl(from var(--sb-color-secondary) h s calc(l + 40));
+  }
+
+  &:focus {
+    color: var(--sb-color-secondary);
+    border-color: var(--sb-color-secondary);
+    outline-offset: -2px;
+
+    &:not(:focus-visible) {
+      border-color: transparent;
+    }
+  }
+}
+
+:where([data-sb-theme='dark']) .statusButton:hover {
+  background: hsl(from var(--sb-color-secondary) h s calc(l - 30));
+}
+
+.statusButton:where([data-selected-item]):hover {
+  box-shadow: inset 0 0 0 2px var(--sb-color-secondary);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-selected='true'] .statusButton {
+  background: var(--sb-color-secondary);
+  box-shadow: 0 0 5px 5px var(--sb-color-secondary);
+
+  &:hover {
+    background: var(--sb-color-secondary);
+  }
+}
+
+:where([data-sb-theme='dark']) [data-selected='true'] .statusButton {
+  background: hsl(from var(--sb-color-secondary) h s calc(l - 18));
+  box-shadow: 0 0 5px 5px hsl(from var(--sb-color-secondary) h s calc(l - 18));
+
+  &:hover {
+    background: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+  }
+}

@@ -1,0 +1,103 @@
+.drag {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 100;
+
+  &::after {
+    content: '';
+    display: block;
+    background-color: var(--sb-color-secondary);
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/*
+ * The selectors are in :where() so the focus styles below win.
+ * This is an old code smell, where 10px matches the sidebar and 13px matches the addon panel.
+ * It should be tidied up at some point.
+ */
+.drag:where([aria-orientation='vertical']) {
+  width: 7px;
+  height: 100%;
+  top: 0;
+
+  &:where([data-overlapping][data-position='left']) {
+    width: 10px;
+  }
+
+  &:where([data-overlapping][data-position='right']) {
+    width: 13px;
+  }
+
+  &:where([data-position='left']) {
+    right: -7px;
+  }
+
+  &:where([data-position='right']) {
+    left: -7px;
+  }
+
+  &::after {
+    width: 1px;
+    height: 100%;
+    margin-left: 3px;
+  }
+
+  &:where([data-position='right'])::after {
+    margin-left: 6px;
+  }
+
+  &:hover {
+    cursor: col-resize;
+  }
+}
+
+.drag:where([aria-orientation='horizontal']) {
+  width: 100%;
+  height: 7px;
+  left: 0;
+
+  &:where([data-overlapping]) {
+    height: 13px;
+  }
+
+  &:where([data-position='bottom']) {
+    top: -7px;
+  }
+
+  &:where([data-position='top']) {
+    bottom: -7px;
+  }
+
+  &::after {
+    width: 100%;
+    height: 1px;
+    margin-top: 6px;
+  }
+
+  &:hover {
+    cursor: row-resize;
+  }
+}
+
+.drag:focus-visible {
+  opacity: 1;
+  outline: 2px solid transparent;
+  box-shadow: inset 0 0 0 4px var(--sb-color-secondary);
+
+  &[aria-orientation='vertical'] {
+    width: 7px;
+  }
+
+  &[aria-orientation='horizontal'] {
+    height: 7px;
+  }
+
+  @media (forced-colors: active) {
+    outline: 2px solid Highlight;
+  }
+}

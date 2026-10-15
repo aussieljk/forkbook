@@ -1,0 +1,10 @@
+.title {
+  font-weight: var(--sb-weight-bold);
+}
+
+.message {
+  padding: 30px;
+  text-align: center;
+  color: var(--sb-color-default-text);
+  font-size: calc(var(--sb-size-s2) - 1px);
+}

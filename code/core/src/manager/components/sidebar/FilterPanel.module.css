@@ -1,0 +1,9 @@
+.wrapper {
+  min-width: 240px;
+  max-width: 300px;
+  /* 15.5 items at 32px each + 8px padding */
+  max-height: 504px;
+  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}

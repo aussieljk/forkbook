@@ -1,20 +1,12 @@
+import type { ComponentProps } from 'react';
+import React from 'react';
+
 import { withReset } from 'storybook/internal/components';
 
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const breakpoint = 600;
+import styles from './Title.module.css';
 
-export const Title = styled.h1(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  color: theme.color.defaultText,
-  fontSize: theme.typography.size.m3,
-  fontWeight: theme.typography.weight.bold,
-  lineHeight: '32px',
-
-  [`@media (min-width: ${breakpoint}px)`]: {
-    fontSize: theme.typography.size.l1,
-    lineHeight: '36px',
-    marginBottom: '16px',
-  },
-}));
+export const Title = ({ className, ...props }: ComponentProps<'h1'>) => (
+  <h1 className={clsx(withReset, styles.title, className)} {...props} />
+);

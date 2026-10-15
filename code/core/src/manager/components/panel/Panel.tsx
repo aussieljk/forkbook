@@ -15,11 +15,11 @@ import type { Addon_BaseType } from 'storybook/internal/types';
 import { BottomBarIcon, CloseIcon, DocumentIcon, SidebarAltIcon } from '@storybook/icons';
 
 import type { State } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { focusableUIElements } from '../../../manager-api/modules/layout.ts';
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
+import styles from './Panel.module.css';
 
 export interface SafeTabProps {
   title: Addon_BaseType['title'];
@@ -63,12 +63,6 @@ class TabErrorBoundary extends Component<ErrorBoundaryProps, { hasError: boolean
   }
 }
 
-const Aside = styled.aside({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-});
-
 // Ensures we don't cause difficult-to-debug hooks violations
 // whether addon authors pass a React component ctor or anonymous function.
 function renderChild(RenderProp: Addon_BaseType['render']) {
@@ -110,7 +104,7 @@ export const AddonPanel = React.memo<{
 
   const tools = useMemo(
     () => (
-      <ActionsWrapper>
+      <div className={styles.actions}>
         {isDesktop ? (
           <>
             <Button
@@ -149,7 +143,7 @@ export const AddonPanel = React.memo<{
             <CloseIcon />
           </Button>
         )}
-      </ActionsWrapper>
+      </div>
     ),
     [actions, isDesktop, panelPosition, setMobilePanelOpen, shortcuts]
   );
@@ -161,7 +155,12 @@ export const AddonPanel = React.memo<{
   );
 
   return (
-    <Aside ref={asideRef} id={focusableUIElements.addonPanel} {...landmarkProps}>
+    <aside
+      className={styles.aside}
+      ref={asideRef}
+      id={focusableUIElements.addonPanel}
+      {...landmarkProps}
+    >
       <h2 id="storybook-panel-heading" className="sb-sr-only">
         Addon panel
       </h2>
@@ -182,14 +181,8 @@ export const AddonPanel = React.memo<{
         </StatelessTabList>
         {Object.keys(panels).length ? <PreRenderAddons panels={panels} /> : null}
       </StatelessTabsView>
-    </Aside>
+    </aside>
   );
 });
 
 AddonPanel.displayName = 'AddonPanel';
-
-const ActionsWrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 6,
-});

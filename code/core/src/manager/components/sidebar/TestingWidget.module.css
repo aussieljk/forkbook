@@ -1,0 +1,92 @@
+.hoverCard {
+  display: flex;
+  flex-direction: column-reverse;
+
+  &:hover #testing-module-collapse-toggle {
+    opacity: 1;
+  }
+}
+
+.collapsible {
+  overflow: hidden;
+  box-shadow: inset 0 -1px 0 var(--sb-app-border-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  cursor: default;
+  user-select: none;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 4px;
+  gap: 4px;
+
+  &[data-clickable] {
+    cursor: pointer;
+  }
+}
+
+.action {
+  display: flex;
+  flex-basis: 100%;
+  container-type: inline-size;
+}
+
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.collapseToggle {
+  opacity: 0;
+  transition: opacity 250ms;
+
+  &:focus,
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* The colours apply only when the filter is not pressed. */
+.statusFilter {
+  min-width: 28px;
+  outline-offset: -2px;
+
+  &:where([data-status='negative']) {
+    background: var(--sb-background-negative);
+    color: var(--sb-color-negative-text);
+  }
+
+  &:where([data-status='warning']) {
+    background: var(--sb-background-warning);
+    color: var(--sb-color-warning-text);
+  }
+}
+
+:where([data-sb-theme='dark']) .statusFilter {
+  &:where([data-status='negative']) {
+    background: rgb(from var(--sb-color-negative) r g b / 0.133);
+    color: var(--sb-color-negative);
+  }
+
+  &:where([data-status='warning']) {
+    background: rgb(from var(--sb-color-warning) r g b / 0.133);
+    color: var(--sb-color-warning);
+  }
+}
+
+.testProvider {
+  padding: 4px;
+
+  &:not(:last-child) {
+    box-shadow: inset 0 -1px 0 var(--sb-app-border-color);
+  }
+}

@@ -1,0 +1,17 @@
+/* Fixed colours from the base theme, not the current one. */
+.code {
+  line-height: 18px;
+  padding: 11px 1rem;
+  white-space: pre-wrap;
+  background: rgba(0, 0, 0, 0.05);
+  color: #2e3338;
+  border-radius: 3px;
+  margin: 1rem 0;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  font-family:
+    ui-monospace, Menlo, Monaco, 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
+    'Source Code Pro', 'Droid Sans Mono', 'Courier New', monospace;
+  font-size: 13px;
+}

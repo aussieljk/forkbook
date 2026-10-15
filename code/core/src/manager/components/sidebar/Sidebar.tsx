@@ -10,10 +10,8 @@ import type {
 import { global } from '@storybook/global';
 
 import { useStorybookApi, type State } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { focusableUIElements, isPagesViewMode } from '../../../manager-api/modules/layout.ts';
-import { MEDIA_DESKTOP_BREAKPOINT } from '../../constants.ts';
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import { Explorer } from './Explorer.tsx';
@@ -28,33 +26,9 @@ import { ShowChangesButton } from './ShowChangesButton.tsx';
 import { SidebarBottom } from './SidebarBottom.tsx';
 import type { CombinedDataset, Selection } from './types.ts';
 import { useLastViewed } from './useLastViewed.ts';
+import styles from './Sidebar.module.css';
 
 export const DEFAULT_REF_ID = 'storybook_internal';
-
-const Container = styled.header(({ theme }) => ({
-  position: 'absolute',
-  zIndex: 1,
-  left: 0,
-  top: 0,
-  bottom: 0,
-  right: 0,
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  background: theme.background.content,
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    background: theme.background.app,
-  },
-}));
-
-const Stack = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 16,
-  padding: '16px 12px 20px 12px',
-});
 
 const useCombination = (
   index: SidebarProps['index'],
@@ -137,8 +111,8 @@ export const Sidebar = React.memo(function Sidebar({
   const showReviewWidget = activeReviewStoryCount > 0;
 
   return (
-    <Container
-      className="container sidebar-container"
+    <header
+      className={`container sidebar-container ${styles.container}`}
       id={focusableUIElements.sidebarRegion}
       ref={headerRef}
       {...landmarkProps}
@@ -148,7 +122,7 @@ export const Sidebar = React.memo(function Sidebar({
       </h1>
       <IconSymbols />
       <ScrollArea vertical offset={3} scrollbarSize={6} scrollPadding="4rem">
-        <Stack>
+        <div className={styles.stack}>
           <div>
             <Heading
               className="sidebar-header"
@@ -205,9 +179,9 @@ export const Sidebar = React.memo(function Sidebar({
               </>
             )}
           </Search>
-        </Stack>
+        </div>
         {isMobile || isLoading ? null : <SidebarBottom isDevelopment={isDevelopment} />}
       </ScrollArea>
-    </Container>
+    </header>
   );
 });

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { styled } from 'storybook/theming';
-
 import type { API_Layout } from '../../../types/index.ts';
 import { Drag } from './Drag.tsx';
+import styles from './PanelContainer.module.css';
 
 interface PanelContainerProps {
   children: React.ReactNode;
@@ -13,18 +12,6 @@ interface PanelContainerProps {
   panelResizerRef: React.Ref<HTMLDivElement>;
   position: API_Layout['panelPosition'];
 }
-
-const Container = styled.div<{ position: API_Layout['panelPosition'] }>(({ theme, position }) => ({
-  gridArea: 'panel',
-  position: 'relative',
-  backgroundColor: theme.appContentBg,
-  borderTop: position === 'bottom' ? `1px solid ${theme.appBorderColor}` : undefined,
-  borderLeft: position === 'right' ? `1px solid ${theme.appBorderColor}` : undefined,
-}));
-
-const PanelSlot = styled.div({
-  height: '100%',
-});
 
 /**
  * Shows the addon panel and its resize drag handle. The drag handle is always rendered so users can
@@ -39,7 +26,7 @@ const PanelContainer = React.memo<PanelContainerProps>(function PanelContainer(p
     position === 'bottom' ? bottomPanelHeight === 0 : rightPanelWidth === 0;
 
   return (
-    <Container position={position}>
+    <div className={styles.container} data-position={position}>
       <Drag
         ref={panelResizerRef}
         position={position}
@@ -48,15 +35,16 @@ const PanelContainer = React.memo<PanelContainerProps>(function PanelContainer(p
         aria-valuenow={position === 'bottom' ? bottomPanelHeight : rightPanelWidth}
         aria-valuemax={panelMaxSize}
       />
-      <PanelSlot
+      <div
+        className={styles.slot}
         // This ensures that the panel content is not reachable by keyboard or assistive
         // tech when actually collapsed.
         hidden={shouldHidePanelContent ? true : undefined}
         aria-hidden={shouldHidePanelContent ? true : undefined}
       >
         {children}
-      </PanelSlot>
-    </Container>
+      </div>
+    </div>
   );
 });
 

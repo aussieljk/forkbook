@@ -4,18 +4,11 @@ import React from 'react';
 import { Button } from 'storybook/internal/components';
 
 import { AlertIcon } from '@storybook/icons';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './SnippetWarning.module.css';
 
 export const SNIPPET_WARNING_LABEL = 'Incomplete code snippet';
-
-const WarningButton = styled(Button)(({ theme }) => ({
-  color: theme.fgColor.warning,
-
-  '&:hover, &:focus-visible': {
-    color: theme.fgColor.warning,
-    background: theme.bgColor.warning,
-  },
-}));
 
 export interface SnippetWarningProps {
   /** Why the snippet is an incomplete example; see `StoryDoc.warning`. */
@@ -29,8 +22,8 @@ export const SnippetWarning: FC<SnippetWarningProps> = ({ warning, className }) 
   }
 
   return (
-    <WarningButton
-      className={className}
+    <Button
+      className={clsx(styles.warningButton, className)}
       // The label names the condition for screen readers; the tooltip carries the whole reason.
       ariaLabel={SNIPPET_WARNING_LABEL}
       tooltip={warning}
@@ -39,6 +32,6 @@ export const SnippetWarning: FC<SnippetWarningProps> = ({ warning, className }) 
       padding="small"
     >
       <AlertIcon />
-    </WarningButton>
+    </Button>
   );
 };

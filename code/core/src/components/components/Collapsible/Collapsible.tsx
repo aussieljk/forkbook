@@ -8,25 +8,21 @@ import React, {
   useState,
 } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const CollapsibleContent = styled.div<{ collapsed?: boolean }>(({ collapsed = false }) => ({
-  blockSize: collapsed ? 0 : 'auto',
-  contentVisibility: collapsed ? 'hidden' : 'visible',
-  transform: collapsed ? 'translateY(-10px)' : 'translateY(0)',
-  opacity: collapsed ? 0 : 1,
-  overflow: 'hidden',
+import styles from './Collapsible.module.css';
 
-  '@supports (interpolate-size: allow-keywords)': {
-    interpolateSize: 'allow-keywords',
-    transition: 'all var(--transition-duration, 0.2s)',
-    transitionBehavior: 'allow-discrete',
-  },
-
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-}));
+const CollapsibleContent = ({
+  collapsed = false,
+  className,
+  ...props
+}: ComponentProps<'div'> & { collapsed?: boolean }) => (
+  <div
+    className={clsx(styles.content, className)}
+    data-collapsed={collapsed || undefined}
+    {...props}
+  />
+);
 
 export const Collapsible = Object.assign(
   function Collapsible({

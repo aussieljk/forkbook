@@ -1,7 +1,6 @@
 import { opacify } from 'polished';
 
-import { animation, easing } from './animation.ts';
-import { background, color, tokens, typography } from './base.ts';
+import { background, color, easing, tokens, typography } from './base.ts';
 import { themes } from './create.ts';
 import { chromeDark, chromeLight, create as createSyntax } from './modules/syntax.ts';
 import type { Color, StorybookTheme, ThemeVars, ThemeVarsColors } from './types.ts';
@@ -139,7 +138,6 @@ export const convert = (inherit: ThemeVars = themes[getPreferredColorScheme()]):
       weight: typography.weight,
       size: typography.size,
     },
-    animation,
     easing,
 
     input: {

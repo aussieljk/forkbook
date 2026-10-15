@@ -1,0 +1,101 @@
+.collapseButton {
+  font-size: calc(var(--sb-size-s1) - 1px);
+  font-weight: var(--sb-weight-bold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sb-text-muted-color);
+  padding: 0 8px;
+}
+
+.leafNodeStyleWrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: var(--sb-color-default-text);
+  background: transparent;
+  min-height: 28px;
+  border-radius: 4px;
+  overflow: hidden;
+  --tree-node-background-hover: var(--sb-background-content);
+
+  /* MEDIA_DESKTOP_BREAKPOINT */
+  @media (min-width: 600px) {
+    --tree-node-background-hover: var(--sb-background-app);
+  }
+
+  &:hover,
+  &:focus {
+    --tree-node-background-hover: var(--sb-background-hoverable);
+    background: var(--tree-node-background-hover);
+    outline: none;
+  }
+
+  & [data-displayed='off'] {
+    visibility: hidden;
+  }
+
+  &:hover [data-displayed='off'] {
+    visibility: visible;
+  }
+
+  & [data-displayed='on'] + * {
+    visibility: hidden;
+  }
+
+  &:hover [data-displayed='off'] + * {
+    visibility: hidden;
+  }
+
+  &[data-selected='true'] {
+    --selected-background: var(--sb-color-secondary);
+    color: var(--sb-color-lightest);
+    background: var(--selected-background);
+    font-weight: var(--sb-weight-bold);
+
+    &:hover,
+    &:focus {
+      background: var(--selected-background);
+    }
+
+    & svg {
+      color: var(--sb-color-lightest);
+    }
+  }
+
+  & a {
+    color: currentColor;
+  }
+}
+
+:where([data-sb-theme='dark']) .leafNodeStyleWrapper[data-selected='true'] {
+  --selected-background: hsl(from var(--sb-color-secondary) h s calc(l - 18));
+}
+
+.skipToContentLink {
+  display: none;
+
+  @media (min-width: 600px) {
+    display: block;
+    font-size: 10px;
+    overflow: hidden;
+    width: 1px;
+    height: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    padding: 0;
+
+    &:focus {
+      opacity: 1;
+      padding: 5px 10px;
+      background: white;
+      color: var(--sb-color-secondary);
+      width: auto;
+    }
+  }
+}
+
+.statusSlots {
+  display: flex;
+  align-items: center;
+}

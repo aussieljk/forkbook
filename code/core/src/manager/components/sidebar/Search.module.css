@@ -1,0 +1,131 @@
+.searchBar {
+  display: flex;
+  flex-direction: row;
+  column-gap: 6px;
+}
+
+.screenReaderLabel {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.searchField {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px;
+  flex-grow: 1;
+  height: 32px;
+  width: 100%;
+  box-shadow: var(--sb-button-border) 0 0 0 1px inset;
+  border-radius: calc(var(--sb-app-border-radius) + 2px);
+
+  &[data-mobile] {
+    padding: 4px;
+    height: 36px;
+  }
+
+  &:has(input:focus),
+  &:has(input:active) {
+    background: var(--sb-background-app);
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: 2px;
+  }
+}
+
+.iconWrapper {
+  cursor: default;
+  flex: 0 0 28px;
+  height: 100%;
+  pointer-events: none;
+  color: var(--sb-text-muted-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  appearance: none;
+  height: 28px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: calc(var(--sb-size-s1) + 1px);
+  font-family: inherit;
+  transition: all 150ms;
+  color: var(--sb-color-default-text);
+  outline: 0;
+
+  &[data-mobile] {
+    font-size: 16px;
+  }
+
+  &::placeholder {
+    color: var(--sb-text-muted-color);
+    opacity: 1;
+  }
+
+  &:valid ~ code,
+  &:focus ~ code {
+    display: none;
+  }
+
+  &:invalid ~ svg {
+    display: none;
+  }
+
+  &:valid ~ svg {
+    display: block;
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+.focusKey {
+  margin: 5px;
+  margin-top: 6px;
+  height: 16px;
+  font-family: var(--sb-font-base);
+  line-height: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--sb-color-dark);
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+:where([data-sb-theme='dark']) .focusKey {
+  color: var(--sb-text-muted-color);
+}
+
+.focusKeyCmd {
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.focusContainer {
+  outline: 0;
+}

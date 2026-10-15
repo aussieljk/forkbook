@@ -1,0 +1,40 @@
+.collapseIcon {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 8px;
+  color: var(--sb-color-mediumdark);
+  border-right: 3px solid transparent;
+  border-left: 3px solid transparent;
+  border-top: 3px solid;
+  transition: transform 0.1s ease-out;
+
+  &[data-active] {
+    color: var(--sb-color-secondary);
+  }
+}
+
+.addonButton {
+  color: var(--sb-bar-text-color);
+
+  & .collapseIcon {
+    color: var(--sb-bar-text-color);
+  }
+
+  &[data-active],
+  &[data-pre-active] {
+    color: var(--sb-bar-selected-color);
+
+    & .collapseIcon {
+      color: var(--sb-bar-selected-color);
+    }
+  }
+
+  &:hover {
+    color: var(--sb-bar-hover-color);
+
+    & .collapseIcon {
+      color: var(--sb-bar-hover-color);
+    }
+  }
+}

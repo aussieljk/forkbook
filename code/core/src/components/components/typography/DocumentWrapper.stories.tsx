@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { expect } from 'storybook/test';
+
 import { DocumentWrapper } from './DocumentWrapper.tsx';
 
 export default {
@@ -206,3 +208,25 @@ export const WithDOM = () => (
     </p>
   </DocumentWrapper>
 );
+
+export const LinksAreUnderlined = {
+  render: () => (
+    <DocumentWrapper>
+      <p>
+        Check out <a href="https://example.com">this link</a> and also{' '}
+        <a href="https://another.com">this other link</a>.
+      </p>
+      <p>
+        Here is <a href="https://third.com">a third link</a> in another paragraph.
+      </p>
+    </DocumentWrapper>
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    // Links must not rely on colour alone (WCAG SC 1.4.1).
+    const links = canvasElement.querySelectorAll('a');
+    await expect(links.length).toBeGreaterThan(0);
+    links.forEach((link) => {
+      expect(getComputedStyle(link).textDecorationLine).toContain('underline');
+    });
+  },
+};

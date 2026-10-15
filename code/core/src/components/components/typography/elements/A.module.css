@@ -1,0 +1,48 @@
+.a {
+  font-size: inherit;
+  line-height: 24px;
+  color: var(--sb-color-secondary);
+  /* Ensure WCAG Level A compliance (SC 1.4.1), see https://www.w3.org/WAI/WCAG22/Techniques/failures/F73 */
+  text-decoration: underline;
+  text-decoration-thickness: 0.03125rem;
+  text-underline-offset: 0.11em;
+
+  &:global(.absent) {
+    color: #cc0000;
+  }
+
+  &:global(.anchor) {
+    display: block;
+    padding-left: 30px;
+    margin-left: -30px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    text-decoration: none;
+  }
+
+  &:global(.anchor):hover,
+  &:global(.anchor):focus {
+    text-decoration: underline;
+  }
+
+  & code {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 0.03125rem;
+    padding-left: 0;
+    padding-right: 0;
+
+    &::before {
+      content: '\00a0';
+      font-size: 0.5em;
+    }
+
+    &::after {
+      content: '\00a0';
+      font-size: 0.5em;
+    }
+  }
+}

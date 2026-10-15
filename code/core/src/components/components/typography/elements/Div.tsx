@@ -1,5 +1,4 @@
-import { styled } from 'storybook/theming';
-
+import { withClassName } from '../lib/withClassName.tsx';
 import { withReset } from '../lib/common.tsx';
 
-export const Div = styled.div(withReset);
+export const Div = withClassName('div', withReset);

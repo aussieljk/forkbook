@@ -1,0 +1,25 @@
+.container {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--sb-background-content);
+
+  /* MEDIA_DESKTOP_BREAKPOINT */
+  @media (min-width: 600px) {
+    background: var(--sb-background-app);
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 12px 20px 12px;
+}

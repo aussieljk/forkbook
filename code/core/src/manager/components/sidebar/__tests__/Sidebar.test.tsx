@@ -8,7 +8,7 @@ import React from 'react';
 import type { API_IndexHash } from 'storybook/internal/types';
 
 import type { HashEntry, Refs } from 'storybook/manager-api';
-import type { Theme } from 'storybook/theming';
+import type { StorybookTheme } from 'storybook/theming';
 import { ThemeProvider, ensure, themes } from 'storybook/theming';
 
 import { Sidebar } from '../Sidebar.tsx';
@@ -17,7 +17,7 @@ import type { SidebarProps } from '../Sidebar.tsx';
 const DOCS_NAME = 'Docs';
 
 const factory = (props: Partial<SidebarProps>): RenderResult => {
-  const theme: Theme = ensure(themes.light);
+  const theme: StorybookTheme = ensure(themes.light);
 
   return render(
     <ThemeProvider theme={theme}>

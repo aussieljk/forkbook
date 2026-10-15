@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type * as R from 'react-router-dom';
 
@@ -23,4 +23,6 @@ export type RenderData = Pick<RouterData, 'location'> & Other;
 export interface LinkProps {
   to: string;
   children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
 }

@@ -5,8 +5,7 @@ import type { ComponentTitle, StoryKind, StoryName } from 'storybook/internal/ty
 
 import { hrefTo, navigate } from '../../utils.ts';
 
-// FIXME: copied from Typography.Link. Code is duplicated to
-// avoid emotion dependency which breaks React 15.x back-compat
+// Copied from Typography.Link, so this addon does not depend on the Storybook UI components.
 
 // Cmd/Ctrl/Shift/Alt + Click should trigger default browser behaviour. Same applies to non-left clicks
 const LEFT_BUTTON = 0;

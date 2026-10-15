@@ -1,0 +1,30 @@
+.wrapper {
+  margin: 0;
+  padding: 10px 5px 20px;
+}
+
+.action {
+  display: flex;
+  padding: 0;
+  border-left: 5px solid transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.1s;
+  align-items: flex-start;
+  white-space: pre;
+}
+
+.counter {
+  background-color: rgb(from var(--sb-app-border-color) r g b / calc(alpha + 0.5));
+  color: var(--sb-color-inverse-text);
+  font-size: var(--sb-size-s1);
+  font-weight: var(--sb-weight-bold);
+  line-height: 1;
+  padding: 1px 5px;
+  border-radius: 20px;
+  margin: 2px 0px;
+}
+
+.inspectorContainer {
+  flex: 1;
+  padding: 0 0 0 5px;
+}

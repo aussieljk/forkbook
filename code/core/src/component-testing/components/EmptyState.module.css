@@ -1,0 +1,5 @@
+.links {
+  display: flex;
+  font-size: calc(var(--sb-size-s2) - 1px);
+  gap: 25px;
+}

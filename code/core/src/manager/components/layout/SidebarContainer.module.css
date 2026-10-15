@@ -1,0 +1,9 @@
+.container {
+  grid-area: sidebar;
+  position: relative;
+  border-right: 1px solid var(--sb-app-border-color);
+}
+
+.slot {
+  height: 100%;
+}

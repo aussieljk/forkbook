@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ReactNode } from 'react';
 import React from 'react';
-
-import { styled } from 'storybook/theming';
 
 import { IconSymbols, UseSymbol } from './IconSymbols.tsx';
 import { TypeIcon } from './TreeNode.tsx';
@@ -18,30 +17,30 @@ const STATUS_ICON_TYPES = [
   'affected',
 ] as const;
 
-const Grid = styled.div({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-  gap: 16,
-  padding: 16,
-});
+const Grid = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+      gap: 16,
+      padding: 16,
+    }}
+  >
+    {children}
+  </div>
+);
 
-const Item = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: 8,
-});
+const Item = ({ children }: { children: ReactNode }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+    {children}
+  </div>
+);
 
-const Label = styled.span(({ theme }) => ({
-  fontSize: theme.typography.size.s1,
-  color: theme.color.mediumdark,
-}));
-
-const StatusIcon = styled.svg(({ theme }) => ({
-  width: 14,
-  height: 14,
-  color: theme.color.defaultText,
-}));
+const Label = ({ children }: { children: ReactNode }) => (
+  <span style={{ fontSize: 'var(--sb-size-s1)', color: 'var(--sb-color-mediumdark)' }}>
+    {children}
+  </span>
+);
 
 const meta = {
   component: IconSymbols,
@@ -74,9 +73,12 @@ export const Default: Story = {
       ))}
       {STATUS_ICON_TYPES.map((type) => (
         <Item key={type}>
-          <StatusIcon viewBox="0 0 14 14">
+          <svg
+            viewBox="0 0 14 14"
+            style={{ width: 14, height: 14, color: 'var(--sb-color-default-text)' }}
+          >
             <UseSymbol type={type} />
-          </StatusIcon>
+          </svg>
           <Label>{type}</Label>
         </Item>
       ))}

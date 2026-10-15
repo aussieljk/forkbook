@@ -1,61 +1,12 @@
-import React, { type ComponentProps } from 'react';
+import React, { type ComponentProps, type CSSProperties } from 'react';
 
-import { keyframes, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './ProgressSpinner.module.css';
 
 const XMLNS = 'http://www.w3.org/2000/svg';
 
-const rotate = keyframes({
-  '0%': {
-    transform: 'rotate(0deg)',
-  },
-  '100%': {
-    transform: 'rotate(360deg)',
-  },
-});
-
-const Wrapper = styled.div<{ size: number }>(({ size }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
-  minWidth: size,
-  minHeight: size,
-}));
-
-const Circle = styled.svg<{ size: number; width: number; progress?: boolean; spinner?: boolean }>(
-  ({ size, width }) => ({
-    position: 'absolute',
-    width: `${size}px!important`,
-    height: `${size}px!important`,
-    transform: 'rotate(-90deg)',
-    circle: {
-      r: (size - Math.ceil(width)) / 2,
-      cx: size / 2,
-      cy: size / 2,
-      opacity: 0.15,
-      fill: 'transparent',
-      stroke: 'currentColor',
-      strokeWidth: width,
-      strokeLinecap: 'round',
-      strokeDasharray: Math.PI * (size - Math.ceil(width)),
-    },
-  }),
-  ({ progress }) =>
-    progress && {
-      circle: {
-        opacity: 0.75,
-      },
-    },
-  ({ spinner }) =>
-    spinner && {
-      animation: `${rotate} 1s linear infinite`,
-      circle: {
-        opacity: 0.25,
-      },
-    }
-);
-
-interface ProgressSpinnerProps extends Omit<ComponentProps<typeof Wrapper>, 'size'> {
+interface ProgressSpinnerProps extends ComponentProps<'div'> {
   percentage?: number;
   running?: boolean;
   size?: number;
@@ -63,31 +14,49 @@ interface ProgressSpinnerProps extends Omit<ComponentProps<typeof Wrapper>, 'siz
   children?: React.ReactNode;
 }
 
+const Circle = ({ variant, offset }: { variant?: 'spinner' | 'progress'; offset?: number }) => (
+  <svg className={styles.circle} data-variant={variant} xmlns={XMLNS}>
+    <circle strokeDashoffset={offset} />
+  </svg>
+);
+
 export const ProgressSpinner = ({
   percentage = undefined,
   running = true,
   size = 24,
   width = 1.5,
   children = null,
+  className,
+  style,
   ...props
-}: ProgressSpinnerProps) =>
-  typeof percentage === 'number' ? (
-    <Wrapper size={size} {...props}>
+}: ProgressSpinnerProps) => {
+  const diameter = size - Math.ceil(width);
+  const offset =
+    typeof percentage === 'number' ? Math.PI * diameter * (1 - percentage / 100) : undefined;
+
+  return (
+    <div
+      className={clsx(styles.wrapper, className)}
+      style={
+        {
+          '--spinner-size': `${size}px`,
+          '--spinner-radius': `${diameter / 2}px`,
+          '--spinner-center': `${size / 2}px`,
+          '--spinner-width': `${width}px`,
+          '--spinner-dasharray': `${Math.PI * diameter}`,
+          ...style,
+        } as CSSProperties
+      }
+      {...props}
+    >
       {children}
-      <Circle size={size} width={width} xmlns={XMLNS}>
-        <circle />
-      </Circle>
-      {running && (
-        <Circle size={size} width={width} xmlns={XMLNS} spinner>
-          <circle strokeDashoffset={Math.PI * (size - Math.ceil(width)) * (1 - percentage / 100)} />
-        </Circle>
+      {typeof percentage === 'number' && (
+        <>
+          <Circle />
+          {running && <Circle variant="spinner" offset={offset} />}
+          <Circle variant="progress" offset={offset} />
+        </>
       )}
-      <Circle size={size} width={width} xmlns={XMLNS} progress>
-        <circle strokeDashoffset={Math.PI * (size - Math.ceil(width)) * (1 - percentage / 100)} />
-      </Circle>
-    </Wrapper>
-  ) : (
-    <Wrapper size={size} {...props}>
-      {children}
-    </Wrapper>
+    </div>
   );
+};

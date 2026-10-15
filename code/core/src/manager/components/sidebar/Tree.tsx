@@ -1,4 +1,4 @@
-import type { MutableRefObject } from 'react';
+import type { ComponentProps, MutableRefObject } from 'react';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import { Button, ListItem } from 'storybook/internal/components';
@@ -17,7 +17,7 @@ import {
 import { CollapseIcon as CollapseIconSvg, ExpandAltIcon } from '@storybook/icons';
 
 import { internal_fullStatusStore as fullStatusStore } from '#manager-stores';
-import { darken } from 'polished';
+import { clsx } from 'clsx';
 import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
 import type {
   API,
@@ -26,10 +26,9 @@ import type {
   StoriesHash,
   StoryEntry,
 } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
-import { MEDIA_DESKTOP_BREAKPOINT } from '../../constants.ts';
 import {
   getChangeDetectionStatus,
   getGroupDualStatus,
@@ -64,97 +63,13 @@ import { CollapseIcon } from './components/CollapseIcon.tsx';
 import type { Highlight, Item } from './types.ts';
 import type { ExpandAction, ExpandedState } from './useExpanded.ts';
 import { useExpanded } from './useExpanded.ts';
+import styles from './Tree.module.css';
 
 export type ExcludesNull = <T>(x: T | null) => x is T;
 
-const CollapseButton = styled(Button)(({ theme }) => ({
-  fontSize: `${theme.typography.size.s1 - 1}px`,
-  fontWeight: theme.typography.weight.bold,
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color: theme.textMutedColor,
-  padding: '0 8px',
-}));
-
-export const LeafNodeStyleWrapper = styled.div(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  color: theme.color.defaultText,
-  background: 'transparent',
-  minHeight: 28,
-  borderRadius: 4,
-  overflow: 'hidden',
-  '--tree-node-background-hover': theme.background.content,
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    '--tree-node-background-hover': theme.background.app,
-  },
-
-  '&:hover, &:focus': {
-    '--tree-node-background-hover': theme.background.hoverable,
-    background: 'var(--tree-node-background-hover)',
-    outline: 'none',
-  },
-
-  '& [data-displayed="off"]': {
-    visibility: 'hidden',
-  },
-
-  '&:hover [data-displayed="off"]': {
-    visibility: 'visible',
-  },
-
-  '& [data-displayed="on"] + *': {
-    visibility: 'hidden',
-  },
-
-  '&:hover [data-displayed="off"] + *': {
-    visibility: 'hidden',
-  },
-
-  '&[data-selected="true"]': {
-    color: theme.color.lightest,
-    background: theme.base === 'dark' ? darken(0.18, theme.color.secondary) : theme.color.secondary,
-    fontWeight: theme.typography.weight.bold,
-
-    '&&:hover, &&:focus': {
-      background:
-        theme.base === 'dark' ? darken(0.18, theme.color.secondary) : theme.color.secondary,
-    },
-    svg: { color: theme.color.lightest },
-  },
-
-  a: { color: 'currentColor' },
-}));
-
-const SkipToContentLink = styled(Button)(({ theme }) => ({
-  display: 'none',
-  '@media (min-width: 600px)': {
-    display: 'block',
-    fontSize: '10px',
-    overflow: 'hidden',
-    width: 1,
-    height: '20px',
-    boxSizing: 'border-box',
-    opacity: 0,
-    padding: 0,
-
-    '&:focus': {
-      opacity: 1,
-      padding: '5px 10px',
-      background: 'white',
-      color: theme.color.secondary,
-      width: 'auto',
-    },
-  },
-}));
-
-const StatusSlots = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-});
+export const LeafNodeStyleWrapper = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div className={clsx(styles.leafNodeStyleWrapper, className)} {...props} />
+);
 
 export const ContextMenu = {
   ListItem,
@@ -292,13 +207,13 @@ const Node = React.memo<NodeProps>(function Node(props) {
             item.name}
         </LeafNode>
         {isSelected && (
-          <SkipToContentLink asChild ariaLabel={false}>
+          <Button className={styles.skipToContentLink} asChild ariaLabel={false}>
             <a href="#storybook-preview-wrapper">Skip to content</a>
-          </SkipToContentLink>
+          </Button>
         )}
         {contextMenu.node}
         {leafChangeIcon && testIcon ? (
-          <StatusSlots>
+          <div className={styles.statusSlots}>
             <StatusButton
               ariaLabel={`Change status: ${getStatusLabel(changeStatus)}`}
               data-testid="tree-change-status-button"
@@ -317,7 +232,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
             >
               {testIcon}
             </StatusButton>
-          </StatusSlots>
+          </div>
         ) : leafChangeIcon ? (
           <StatusButton
             ariaLabel={`Change status: ${getStatusLabel(changeStatus)}`}
@@ -353,7 +268,8 @@ const Node = React.memo<NodeProps>(function Node(props) {
         data-item-id={item.id}
         data-nodetype="root"
       >
-        <CollapseButton
+        <Button
+          className={styles.collapseButton}
           variant="ghost"
           ariaLabel={isExpanded ? 'Collapse' : 'Expand'}
           data-action="collapse-root"
@@ -365,7 +281,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
         >
           <CollapseIcon isExpanded={isExpanded} />
           {item.renderLabel?.(item, api) || item.name}
-        </CollapseButton>
+        </Button>
         {isExpanded && (
           <Button
             padding="small"
@@ -464,13 +380,13 @@ const Node = React.memo<NodeProps>(function Node(props) {
             item.name}
         </BranchNode>
         {isSelected && (
-          <SkipToContentLink asChild ariaLabel={false}>
+          <Button className={styles.skipToContentLink} asChild ariaLabel={false}>
             <a href="#storybook-preview-wrapper">Skip to content</a>
-          </SkipToContentLink>
+          </Button>
         )}
         {contextMenu.node}
         {branchChangeIcon && branchTestIcon ? (
-          <StatusSlots>
+          <div className={styles.statusSlots}>
             <StatusButton
               ariaLabel={`Change status: ${getStatusLabel(branchChange)}`}
               data-testid="tree-change-status-button"
@@ -489,7 +405,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
             >
               {branchTestIcon}
             </StatusButton>
-          </StatusSlots>
+          </div>
         ) : branchChangeIcon ? (
           <StatusButton
             ariaLabel={`Change status: ${getStatusLabel(branchChange)}`}
@@ -572,9 +488,9 @@ const Node = React.memo<NodeProps>(function Node(props) {
           item.name}
       </LeafNode>
       {isSelected && (
-        <SkipToContentLink ariaLabel={false} asChild>
+        <Button className={styles.skipToContentLink} ariaLabel={false} asChild>
           <a href="#storybook-preview-wrapper">Skip to content</a>
-        </SkipToContentLink>
+        </Button>
       )}
       {contextMenu.node}
       {leafStatusButton}

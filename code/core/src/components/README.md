@@ -2,4 +2,4 @@
 
 Storybook Components is a React UI components collection used by the UI of Storybook and Addons.
 
-All components use [`emotion`](https://emotion.sh) for styling.
+All components use CSS modules for styling. The theme comes from `--sb-*` CSS variables.

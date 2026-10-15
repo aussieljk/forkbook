@@ -1,0 +1,76 @@
+.aside {
+  width: 10rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  width: 10rem;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  overflow-y: auto;
+  font-family: var(--sb-font-base);
+  font-size: var(--sb-size-s2);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-overflow-scrolling: touch;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & > :global(.toc-wrapper) > :global(.toc-list),
+  & > :global(.toc-wrapper) > :global(.toc-list) :global(.toc-list) {
+    padding-left: 0;
+    border-left: solid 2px var(--sb-color-mediumlight);
+  }
+
+  & :global(.toc-list-item) {
+    position: relative;
+    list-style-type: none;
+    margin-left: 20px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  & :global(.toc-list-item)::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform: translateX(calc(-2px - 20px));
+    border-left: solid 2px var(--sb-color-mediumdark);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  & :global(.toc-list-item.is-active-li)::before {
+    opacity: 1;
+  }
+
+  & :global(.toc-list-item) > a {
+    color: var(--sb-color-default-text);
+    text-decoration: none;
+  }
+
+  & :global(.toc-list-item.is-active-li) > a {
+    font-weight: 600;
+    color: var(--sb-color-secondary);
+    text-decoration: none;
+  }
+}
+
+.heading {
+  font-weight: 600;
+  font-size: 0.875em;
+  color: var(--sb-color-default-text);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}

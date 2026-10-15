@@ -1,75 +1,21 @@
-import type { ComponentProps } from 'react';
+import type { CSSProperties, ComponentProps } from 'react';
 import React, { useRef, useState } from 'react';
 
-import { keyframes, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const slideIn = keyframes({
-  from: {
-    transform: 'translateY(var(--slide-in-from))',
-    opacity: 0,
-  },
-});
-
-const slideOut = keyframes({
-  to: {
-    transform: 'translateY(var(--slide-out-to))',
-    opacity: 0,
-  },
-});
-
-const Container = styled.div({
-  display: 'inline-grid',
-  gridTemplateColumns: '1fr',
-  justifyContent: 'center',
-  alignItems: 'center',
-});
-
-const Placeholder = styled.div({
-  gridArea: '1 / 1',
-  userSelect: 'none',
-  visibility: 'hidden',
-});
-
-const Text = styled.span<{
-  duration: number;
-  isExiting?: boolean;
-  isEntering?: boolean;
-  reverse?: boolean;
-}>(({ duration, isExiting, isEntering, reverse }) => {
-  let animation: string | undefined;
-
-  if (isExiting) {
-    animation = `${slideOut} ${duration}ms forwards`;
-  } else if (isEntering) {
-    animation = `${slideIn} ${duration}ms forwards`;
-  }
-
-  return {
-    gridArea: '1 / 1',
-    animation,
-    pointerEvents: isExiting ? 'none' : 'auto',
-    userSelect: isExiting ? 'none' : 'text',
-    '--slide-in-from': reverse ? '-100%' : '100%',
-    '--slide-out-to': reverse ? '100%' : '-100%',
-
-    '@media (prefers-reduced-motion: reduce)': {
-      animation: 'none',
-      opacity: isExiting ? 0 : 1,
-      transform: 'translateY(0)',
-    },
-  };
-});
+import styles from './TextFlip.module.css';
 
 export const TextFlip = ({
   text,
   duration = 250,
   placeholder,
+  className,
   ...props
 }: {
   text: string;
   duration?: number;
   placeholder?: string;
-} & ComponentProps<typeof Container>) => {
+} & ComponentProps<'div'>) => {
   const textRef = useRef(text);
   const [staleValue, setStaleValue] = useState(text);
 
@@ -78,24 +24,36 @@ export const TextFlip = ({
 
   textRef.current = text;
 
+  const style = { '--duration': `${duration}ms` } as CSSProperties;
+
   return (
-    <Container {...props}>
+    <div className={clsx(styles.container, className)} {...props}>
       {isAnimating && (
-        <Text
+        <span
           aria-hidden
-          duration={duration}
-          reverse={reverse}
-          isExiting
+          className={styles.text}
+          style={style}
+          data-reverse={reverse || undefined}
+          data-state="exiting"
           onAnimationEnd={() => setStaleValue(textRef.current)}
         >
           {staleValue}
-        </Text>
+        </span>
       )}
-      <Text duration={duration} reverse={reverse} isEntering={isAnimating}>
+      <span
+        className={styles.text}
+        style={style}
+        data-reverse={reverse || undefined}
+        data-state={isAnimating ? 'entering' : undefined}
+      >
         {text}
-      </Text>
-      {placeholder && <Placeholder aria-hidden>{placeholder}</Placeholder>}
-    </Container>
+      </span>
+      {placeholder && (
+        <div className={styles.placeholder} aria-hidden>
+          {placeholder}
+        </div>
+      )}
+    </div>
   );
 };
 

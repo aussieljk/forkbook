@@ -17,7 +17,8 @@ import {
   ScrollArea,
   ToggleButton,
 } from 'storybook/internal/components';
-import { styled } from 'storybook/theming';
+
+import { clsx } from 'clsx';
 
 import {
   CheckIcon,
@@ -43,87 +44,7 @@ import {
 } from '../review-navigation.ts';
 import type { ReviewState } from '../review-state.ts';
 import type { StoryInfo } from '../review-types.ts';
-
-const MarkdownWrapper = styled(DocumentWrapper)(({ theme }) => ({
-  color: theme.color.defaultText,
-  p: {
-    margin: 0,
-  },
-  'p + p': {
-    marginTop: 10,
-  },
-  code: {
-    color: 'inherit',
-    verticalAlign: 'text-bottom',
-    fontSize: '0.85em',
-    margin: 0,
-    padding: '0 4px',
-    background: 'transparent',
-    border: 'none',
-    boxShadow: `inset 0 0 0 1px ${theme.appBorderColor}`,
-    borderRadius: theme.appBorderRadius,
-  },
-}));
-
-// `100dvh` fills the manager's page cell and also works in the addon's own
-// fullscreen stories, where #storybook-root has no height. The card list below
-// the fixed header is the single scroll container.
-const Page = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100dvh',
-  minHeight: 0,
-  overflow: 'hidden',
-  background: theme.background.app,
-  color: theme.color.defaultText,
-  fontFamily: theme.typography.fonts.base,
-  fontSize: theme.typography.size.s2,
-}));
-
-const Empty = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 16,
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100dvh',
-  color: theme.color.defaultText,
-  '& > div': {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-  },
-}));
-
-// Wrapper that gives the overlay ScrollArea a bounded height to scroll within.
-const ListScroll = styled.div({
-  flex: 1,
-  minHeight: 0,
-});
-
-const Main = styled.main({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 12,
-  padding: 12,
-  // Cards must keep their intrinsic height so the list scrolls; without this
-  // the default flex-shrink collapses them to fit the viewport and Card's
-  // overflow:hidden clips the content at the bottom.
-  '& > *': {
-    flexShrink: 0,
-  },
-});
-
-const SummaryCard = styled(Card)({
-  display: 'flex',
-  alignItems: 'flex-start',
-  padding: '9px 12px',
-  gap: 10,
-  svg: {
-    flexShrink: 0,
-    marginTop: 4,
-  },
-});
+import styles from './SummaryScreen.module.css';
 
 const SummaryLandmark: FC<{ children: ReactNode }> = ({ children }) => {
   const asideRef = useRef<HTMLElement>(null);
@@ -137,103 +58,6 @@ const SummaryLandmark: FC<{ children: ReactNode }> = ({ children }) => {
     </aside>
   );
 };
-
-const SummaryContent = styled(MarkdownWrapper)({
-  flex: 1,
-  minWidth: 0,
-  // Keep the "Summary:" heading and the first description paragraph on the same
-  // line, matching the previous inline "**Summary:** …" rendering.
-  '& > p:first-of-type': {
-    display: 'inline',
-  },
-});
-
-// A real heading for the summary label, styled to look identical to the inline
-// bold "Summary:" text it replaces.
-const SummaryHeading = styled.h2(({ theme }) => ({
-  // Double the ampersand to outrank the DocumentWrapper's `.wrapper h2` rule
-  // (specificity 0,1,1), which would otherwise enlarge this and add a bottom
-  // border, so the label stays identical to the inline bold it replaces.
-  '&&': {
-    display: 'inline',
-    margin: 0,
-    padding: 0,
-    fontSize: 'inherit',
-    fontWeight: theme.typography.weight.bold,
-    lineHeight: 'inherit',
-    color: 'inherit',
-    border: 'none',
-  },
-}));
-
-// A plain clickable row, not a semantic control: making the whole header
-// toggle is just a convenience affordance for pointer users. The real
-// accessible control is the chevron <IconButton> inside, which carries the
-// aria-label and aria-expanded state for assistive technologies.
-const CardHead = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 8,
-  padding: '6px 10px 6px 12px',
-  minHeight: 40,
-  cursor: 'pointer',
-});
-
-const CardTitle = styled.h2(({ theme }) => ({
-  minWidth: 0,
-  margin: 0,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  fontSize: 'inherit',
-  fontWeight: theme.typography.weight.bold,
-  lineHeight: '20px',
-  color: theme.color.defaultText,
-}));
-
-const CardControls = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  gap: 6,
-  flexShrink: 0,
-});
-
-const CardCount = styled.span(({ theme }) => ({
-  minWidth: 28,
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s2 - 1,
-  lineHeight: '20px',
-  textAlign: 'center',
-  color: theme.textMutedColor,
-}));
-
-const ToggleChevronIcon = styled(ChevronSmallDownIcon)({
-  transition: 'transform 160ms ease',
-});
-
-const CardRationale = styled(MarkdownWrapper)(({ theme }) => ({
-  color: theme.textMutedColor,
-  margin: '0 12px',
-}));
-
-const Footer = styled.footer(({ theme }) => ({
-  color: theme.textMutedColor,
-  padding: '10px 22px 42px',
-  fontSize: theme.typography.size.s2,
-  textAlign: 'center',
-  textWrap: 'balance',
-}));
-
-const EmptyMessage = styled.p(({ theme }) => ({
-  margin: 0,
-  color: theme.textMutedColor,
-  padding: '10px 10px 30px',
-  fontSize: theme.typography.size.s2,
-  textAlign: 'center',
-  textWrap: 'balance',
-}));
 
 const CollectionLandmark: FC<{ titleId: string; children: ReactNode }> = ({
   titleId,
@@ -255,9 +79,9 @@ const FooterLandmark: FC<{ children: ReactNode }> = ({ children }) => {
     footerRef
   );
   return (
-    <Footer ref={footerRef} {...landmarkProps}>
+    <footer className={styles.footer} ref={footerRef} {...landmarkProps}>
       {children}
-    </Footer>
+    </footer>
   );
 };
 
@@ -349,7 +173,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
 
   if (!state) {
     return (
-      <Empty>
+      <div className={styles.empty}>
         <span>Waiting for the agent to display a review…</span>
         <div>
           <CopyButton
@@ -372,7 +196,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
             Close
           </Button>
         </div>
-      </Empty>
+      </div>
     );
   }
 
@@ -397,7 +221,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
   };
 
   return (
-    <Page>
+    <div className={styles.page}>
       {banner && <AttentionBanner {...banner} />}
       <ReviewHeader
         leading={
@@ -437,21 +261,22 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
         }
       />
 
-      <ListScroll>
+      <div className={styles.listScroll}>
         <ScrollArea vertical>
-          <Main>
+          <main className={styles.main}>
             <SummaryLandmark>
-              <SummaryCard color="agentic">
+              <Card className={styles.summaryCard} color="agentic">
                 <WandIcon />
-                <SummaryContent>
-                  <SummaryHeading>Summary:</SummaryHeading> <Markdown>{state.description}</Markdown>
-                </SummaryContent>
-              </SummaryCard>
+                <DocumentWrapper className={clsx(styles.markdownWrapper, styles.summaryContent)}>
+                  <h2 className={styles.summaryHeading}>Summary:</h2>{' '}
+                  <Markdown>{state.description}</Markdown>
+                </DocumentWrapper>
+              </Card>
             </SummaryLandmark>
             {visibleCollections.length === 0 ? (
-              <EmptyMessage>
+              <p className={styles.emptyMessage}>
                 {showNewOnly ? 'No new stories found.' : 'No collections found.'}
-              </EmptyMessage>
+              </p>
             ) : (
               visibleCollections.map(({ collection, index, storyIds }) => {
                 const isExpanded = expandedCollections.has(index);
@@ -462,14 +287,17 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
                       <Collapsible
                         collapsed={!isExpanded}
                         summary={
-                          <CardHead onClick={() => toggleCollection(index)}>
-                            <CardTitle id={titleId}>{collection.title}</CardTitle>
-                            <CardControls>
-                              <CardCount
+                          <div className={styles.cardHead} onClick={() => toggleCollection(index)}>
+                            <h2 className={styles.cardTitle} id={titleId}>
+                              {collection.title}
+                            </h2>
+                            <div className={styles.cardControls}>
+                              <span
+                                className={styles.cardCount}
                                 aria-label={pluralize(storyIds.length, 'story', 'stories')}
                               >
                                 {storyIds.length}
-                              </CardCount>
+                              </span>
                               <IconButton
                                 variant="ghost"
                                 size="small"
@@ -485,18 +313,21 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
                                   toggleCollection(index);
                                 }}
                               >
-                                <ToggleChevronIcon
+                                <ChevronSmallDownIcon
+                                  className={styles.toggleChevronIcon}
                                   style={{ transform: `rotate(${isExpanded ? -180 : 0}deg)` }}
                                 />
                               </IconButton>
-                            </CardControls>
-                          </CardHead>
+                            </div>
+                          </div>
                         }
                       >
                         {collection.rationale ? (
-                          <CardRationale>
+                          <DocumentWrapper
+                            className={clsx(styles.markdownWrapper, styles.cardRationale)}
+                          >
                             <Markdown>{collection.rationale}</Markdown>
-                          </CardRationale>
+                          </DocumentWrapper>
                         ) : null}
                         <CollectionGrid
                           storyIds={storyIds}
@@ -515,14 +346,14 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
                 );
               })
             )}
-          </Main>
+          </main>
           <FooterLandmark>
             This review shows the {pluralize(storyCount, 'story', 'stories')} most relevant for you
             to spot-check right now. Because this is AI-curated, results may be inaccurate or
             incomplete.
           </FooterLandmark>
         </ScrollArea>
-      </ListScroll>
-    </Page>
+      </div>
+    </div>
   );
 };

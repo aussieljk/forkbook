@@ -16,23 +16,11 @@ import { CircleIcon } from '@storybook/icons';
 
 import memoizerific from 'memoizerific';
 import { transparentize } from 'polished';
-import { type Theme, styled } from 'storybook/theming';
+import type { StorybookTheme as Theme } from 'storybook/theming';
 
 import { UseSymbol } from '../components/sidebar/IconSymbols.tsx';
 import { getDescendantIds } from './tree.ts';
-
-const SmallIcons = styled(CircleIcon)({
-  // specificity hack
-  '&&&': {
-    width: 6,
-    height: 6,
-  },
-});
-
-const LoadingIcons = styled(SmallIcons)(({ theme: { animation } }) => ({
-  // specificity hack
-  animation: `${animation.glow} 1.5s ease-in-out infinite`,
-}));
+import styles from './status.module.css';
 
 export interface StatusMapping {
   icon: ReactElement | null;
@@ -68,7 +56,7 @@ export const getStatus = memoizerific(10)((theme: Theme, status: StatusValue): S
       textColor: null,
     },
     'status-value:pending': {
-      icon: <LoadingIcons key="icon" />,
+      icon: <CircleIcon key="icon" className={styles.loadingIcon} />,
       iconColor: defaultIconColor,
       textColor: 'currentColor',
     },

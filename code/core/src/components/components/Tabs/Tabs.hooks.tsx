@@ -3,7 +3,6 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { deprecate } from 'storybook/internal/client-logger';
 import { sanitize } from 'storybook/internal/csf';
 
-import { styled } from 'storybook/theming';
 import useResizeObserver from 'use-resize-observer';
 
 import { PopoverProvider } from '../Popover/PopoverProvider.tsx';
@@ -11,33 +10,7 @@ import { TooltipLinkList } from '../tooltip/TooltipLinkList.tsx';
 import type { Link } from '../tooltip/TooltipLinkList.tsx';
 import { TabButton } from './Button.tsx';
 import type { ChildrenListComplete } from './Tabs.helpers.tsx';
-
-const CollapseIcon = styled.span<{ isActive: boolean }>(({ theme, isActive }) => ({
-  display: 'inline-block',
-  width: 0,
-  height: 0,
-  marginLeft: 8,
-  color: isActive ? theme.color.secondary : theme.color.mediumdark,
-  borderRight: '3px solid transparent',
-  borderLeft: `3px solid transparent`,
-  borderTop: '3px solid',
-  transition: 'transform .1s ease-out',
-}));
-
-const AddonButton = styled(TabButton)<{ preActive: boolean }>(({ active, theme, preActive }) => {
-  return `
-    color: ${preActive || active ? theme.barSelectedColor : theme.barTextColor};
-    .addon-collapsible-icon {
-      color: ${preActive || active ? theme.barSelectedColor : theme.barTextColor};
-    }
-    &:hover {
-      color: ${theme.barHoverColor};
-      .addon-collapsible-icon {
-        color: ${theme.barHoverColor};
-      }
-    }
-  `;
-});
+import styles from './Tabs.hooks.module.css';
 
 export function useList(list: ChildrenListComplete) {
   deprecate('The `useList` tabs hook is deprecated. Use `TabsView` instead.');
@@ -91,24 +64,24 @@ export function useList(list: ChildrenListComplete) {
               />
             }
           >
-            <AddonButton
+            <TabButton
               id="addons-menu-button"
               // @ts-expect-error (non strict)
               ref={addonsRef}
               active={isAddonsActive}
-              preActive={isTooltipVisible}
+              data-pre-active={isTooltipVisible || undefined}
               style={{ visibility: invisibleList.length ? 'visible' : 'hidden' }}
               aria-hidden={!invisibleList.length}
-              className="tabbutton"
+              className={`tabbutton ${styles.addonButton}`}
               type="button"
               role="tab"
             >
               {menuName}
-              <CollapseIcon
-                className="addon-collapsible-icon"
-                isActive={isAddonsActive || isTooltipVisible}
+              <span
+                className={`addon-collapsible-icon ${styles.collapseIcon}`}
+                data-active={isAddonsActive || isTooltipVisible || undefined}
               />
-            </AddonButton>
+            </TabButton>
           </PopoverProvider>
           {invisibleList.map(({ title, id, color }, index) => {
             const indexId = `index-${index}`;

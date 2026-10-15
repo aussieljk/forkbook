@@ -1,0 +1,54 @@
+.wrapper {
+  position: relative;
+
+  &:not([data-main]) {
+    margin-top: 0;
+  }
+}
+
+.refHead {
+  font-weight: var(--sb-weight-bold);
+  font-size: var(--sb-size-s2);
+
+  /* Similar to ListItem.tsx */
+  text-decoration: none;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  border-top: 1px solid var(--sb-app-border-color);
+
+  color: var(--sb-color-default-text);
+}
+
+.refTitle {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  overflow: hidden;
+  margin-left: 2px;
+}
+
+.collapseButton {
+  all: unset;
+  display: flex;
+  padding: 0px 8px;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:focus {
+    border-color: var(--sb-color-secondary);
+
+    & span:first-of-type {
+      border-left-color: var(--sb-color-secondary);
+    }
+  }
+}

@@ -15,7 +15,6 @@ import { EyeIcon, InfoIcon, PlayHollowIcon, StopAltIcon } from '@storybook/icons
 import { store } from '#manager-store';
 import type { API } from 'storybook/manager-api';
 import { addons } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import {
   A11Y_ADDON_ID,
@@ -27,53 +26,7 @@ import type { StoreState } from '../types.ts';
 import type { StatusValueToStoryIds } from '../use-test-provider-state.ts';
 import { Description } from './Description.tsx';
 import { TestStatusIcon } from './TestStatusIcon.tsx';
-
-const Container = styled.div<{ inContextMenu?: boolean }>(({ inContextMenu }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  paddingBottom: inContextMenu ? 0 : 1,
-}));
-
-const Heading = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '8px 0',
-  gap: 12,
-});
-
-const Info = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  marginLeft: 8,
-  minWidth: 0,
-});
-
-const Title = styled.div<{ crashed?: boolean }>(({ crashed, theme }) => ({
-  fontSize: theme.typography.size.s1,
-  fontWeight: crashed ? 'bold' : 'normal',
-  color: crashed ? theme.color.negativeText : theme.color.defaultText,
-}));
-
-const Actions = styled.div({
-  display: 'flex',
-  gap: 4,
-});
-
-const StyledActionList = styled(ActionList)({
-  padding: 0,
-});
-
-const Muted = styled.span(({ theme }) => ({
-  color: theme.textMutedColor,
-}));
-
-const Progress = styled(ProgressSpinner)({
-  margin: 4,
-});
-
-const StopIcon = styled(StopAltIcon)({
-  width: 10,
-});
+import styles from './TestProviderRender.module.css';
 
 const openPanel = ({ api, panelId, entryId }: { api: API; panelId: string; entryId?: string }) => {
   const story = entryId ? api.findAllLeafStoryIds(entryId)[0] : undefined;
@@ -93,7 +46,7 @@ type TestProviderRenderProps = {
   setStoreState: (typeof store)['setState'];
   isSettingsUpdated: boolean;
   entry?: API_HashEntry;
-} & ComponentProps<typeof Container>;
+} & ComponentProps<'div'>;
 
 export const TestProviderRender: FC<TestProviderRenderProps> = ({
   api,
@@ -209,18 +162,22 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
   ]);
 
   return (
-    <Container {...props} inContextMenu={!!entry}>
-      <Heading>
-        <Info>
+    <div className={styles.container} data-in-context-menu={!!entry || undefined} {...props}>
+      <div className={styles.heading}>
+        <div className={styles.info}>
           {entry ? (
-            <Title id="testing-module-title">Run component tests</Title>
+            <div className={styles.title} id="testing-module-title">
+              Run component tests
+            </div>
           ) : (
-            <Title
+            <div
+              className={styles.title}
               id="testing-module-title"
-              crashed={
+              data-crashed={
                 testProviderState === 'test-provider-state:crashed' ||
                 fatalError !== undefined ||
-                currentRun.unhandledErrors.length > 0
+                currentRun.unhandledErrors.length > 0 ||
+                undefined
               }
             >
               {currentRun.unhandledErrors.length === 1
@@ -230,7 +187,7 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
                   : fatalError
                     ? 'Component tests didn’t complete'
                     : 'Run component tests'}
-            </Title>
+            </div>
           )}
           <Description
             id="testing-module-description"
@@ -239,9 +196,9 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
             entryId={entry?.id}
             isSettingsUpdated={isSettingsUpdated}
           />
-        </Info>
+        </div>
 
-        <Actions>
+        <div className={styles.actions}>
           {!entry && (
             <ToggleButton
               ariaLabel={isRunning ? 'Watch mode (cannot toggle while running)' : 'Watch mode'}
@@ -284,15 +241,16 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
               }
               disabled={cancelling || isStarting}
             >
-              <Progress
+              <ProgressSpinner
+                className={styles.progress}
                 percentage={
                   finishedTestCount && storeState.currentRun.totalTestCount
                     ? (finishedTestCount / storeState.currentRun.totalTestCount) * 100
                     : undefined
                 }
               >
-                <StopIcon />
-              </Progress>
+                <StopAltIcon className={styles.stopIcon} />
+              </ProgressSpinner>
             </Button>
           ) : (
             <Button
@@ -317,10 +275,10 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
               <PlayHollowIcon />
             </Button>
           )}
-        </Actions>
-      </Heading>
+        </div>
+      </div>
 
-      <StyledActionList>
+      <ActionList className={styles.actionList}>
         <ActionList.Item>
           {entry ? (
             <ActionList.Text>Interactions</ActionList.Text>
@@ -384,7 +342,11 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
                 />
               </ActionList.Icon>
               <ActionList.Text>
-                {watching ? <Muted>Coverage (unavailable)</Muted> : 'Coverage'}
+                {watching ? (
+                  <span className={styles.muted}>Coverage (unavailable)</span>
+                ) : (
+                  'Coverage'
+                )}
               </ActionList.Text>
             </ActionList.Action>
             {watching ||
@@ -484,7 +446,7 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
             </ActionList.Button>
           </ActionList.Item>
         )}
-      </StyledActionList>
-    </Container>
+      </ActionList>
+    </div>
   );
 };

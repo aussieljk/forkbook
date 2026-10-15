@@ -1,161 +1,77 @@
-import type { ComponentProps } from 'react';
-import React, { useContext } from 'react';
+import type { CSSProperties, ComponentProps } from 'react';
+import React, { forwardRef, useContext } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
 import { CrossIcon } from '@storybook/icons';
 
 import type { TransitionStatus } from 'react-transition-state';
-import { keyframes, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { Button } from '../Button/Button.tsx';
 // Import the ModalContext from the main Modal component
 import { ModalContext } from './Modal.tsx';
+import styles from './Modal.module.css';
 
-const fadeIn = keyframes({
-  from: { opacity: 0 },
-  to: { opacity: 1 },
-});
+/** A div with a class, which accepts a className and the other div props. */
+const divWithClass = (baseClassName: string, displayName: string) => {
+  const Component = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
+    ({ className, ...props }, ref) => (
+      <div ref={ref} className={clsx(baseClassName, className)} {...props} />
+    )
+  );
+  Component.displayName = displayName;
+  return Component;
+};
 
-const fadeOut = keyframes({
-  from: { opacity: 1 },
-  to: { opacity: 0 },
-});
-
-const expand = keyframes({
-  from: { maxHeight: 0 },
-  to: {},
-});
-
-const zoomIn = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translate(-50%, -50%) scale(0.9)',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translate(-50%, -50%) scale(1)',
-  },
-});
-
-const zoomOut = keyframes({
-  from: {
-    opacity: 1,
-    transform: 'translate(-50%, -50%) scale(1)',
-  },
-  to: {
-    opacity: 0,
-    transform: 'translate(-50%, -50%) scale(0.9)',
-  },
-});
-
-const slideFromBottom = keyframes({
-  from: {
-    opacity: 0,
-    maxHeight: '0px',
-  },
-  to: {
-    opacity: 1,
-    maxHeight: '80dvh',
-  },
-});
-
-const slideToBottom = keyframes({
-  from: {
-    opacity: 1,
-    maxHeight: '80dvh',
-  },
-  to: {
-    opacity: 0,
-    maxHeight: '0px',
-  },
-});
-
-export const Overlay = styled.div<{
+interface TransitionProps {
   $status?: TransitionStatus;
   $transitionDuration?: number;
-}>(({ $status, $transitionDuration }) => ({
-  backdropFilter: 'blur(24px)',
-  background: 'rgba(0, 0, 0, 0.4)',
-  position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: 100000,
-  '@media (prefers-reduced-motion: no-preference)': {
-    animation:
-      $status === 'exiting' || $status === 'preExit'
-        ? `${fadeOut} ${$transitionDuration}ms`
-        : `${fadeIn} ${$transitionDuration}ms`,
-    animationFillMode: 'forwards',
-  },
-}));
+}
 
-export const Container = styled.div<{
-  $variant: 'dialog' | 'bottom-drawer';
-  $status?: TransitionStatus;
-  $transitionDuration?: number;
-  width?: number | string;
-  height?: number | string;
-}>(
-  ({ theme }) => ({
-    backgroundColor: theme.background.bar,
-    borderRadius: 6,
-    boxShadow: '0px 4px 67px 0px #00000040',
-    position: 'absolute',
-    overflow: 'auto',
-    zIndex: 100000,
+const transitionAttributes = ({ $status, $transitionDuration }: TransitionProps) => ({
+  'data-exiting': $status === 'exiting' || $status === 'preExit' || undefined,
+  style: { '--sb-modal-duration': `${$transitionDuration}ms` } as CSSProperties,
+});
 
-    '&:focus-visible': {
-      outline: 'none',
-    },
-  }),
-  ({ theme, width, height, $variant, $status, $transitionDuration }) =>
-    $variant === 'dialog'
-      ? {
-          top: '50%',
-          left: '50%',
-          width: width ?? 740,
-          height: height ?? 'auto',
-          maxWidth: 'calc(100% - 40px)',
-          maxHeight: '85vh',
-          '@media (prefers-reduced-motion: no-preference)': {
-            willChange: 'transform, opacity',
-            animationTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
-            animation:
-              $status === 'exiting' || $status === 'preExit'
-                ? `${zoomOut} ${$transitionDuration}ms`
-                : `${zoomIn} ${$transitionDuration}ms`,
-            animationFillMode: 'forwards !important',
-          },
-          '@media (prefers-reduced-motion: reduce)': {
-            transform: 'translate(-50%, -50%) scale(1)',
-          },
-        }
-      : {
-          position: 'fixed',
-          bottom: '0',
-          left: '0',
-          right: '0',
-          borderRadius: '10px 10px 0 0',
-          overflow: 'hidden',
-          width: width ?? '100%',
-          height: height ?? '80%',
-          maxWidth: '100%',
-          background: theme.background.content,
-          '@supports (interpolate-size: allow-keywords)': {
-            interpolateSize: 'allow-keywords',
-          },
-          '@media (prefers-reduced-motion: no-preference)': {
-            animationTimingFunction: 'cubic-bezier(.9,.16,.77,.64)',
-            animation:
-              $status === 'exiting' || $status === 'preExit'
-                ? `${slideToBottom} ${$transitionDuration}ms`
-                : `${slideFromBottom} ${$transitionDuration}ms`,
-            animationFillMode: 'forwards !important',
-          },
-        }
+export const Overlay = forwardRef<HTMLDivElement, ComponentProps<'div'> & TransitionProps>(
+  ({ $status, $transitionDuration, className, style, ...props }, ref) => {
+    const attributes = transitionAttributes({ $status, $transitionDuration });
+    return (
+      <div
+        ref={ref}
+        {...props}
+        data-exiting={attributes['data-exiting']}
+        className={clsx(styles.overlay, className)}
+        style={{ ...attributes.style, ...style }}
+      />
+    );
+  }
 );
+Overlay.displayName = 'Overlay';
+
+export const Container = forwardRef<
+  HTMLDivElement,
+  Omit<ComponentProps<'div'>, 'width' | 'height'> &
+    TransitionProps & {
+      $variant: 'dialog' | 'bottom-drawer';
+      width?: number | string;
+      height?: number | string;
+    }
+>(({ $variant, $status, $transitionDuration, width, height, className, style, ...props }, ref) => {
+  const attributes = transitionAttributes({ $status, $transitionDuration });
+  return (
+    <div
+      ref={ref}
+      {...props}
+      data-variant={$variant}
+      data-exiting={attributes['data-exiting']}
+      className={clsx(styles.container, className)}
+      style={{ ...attributes.style, width, height, ...style }}
+    />
+  );
+});
+Container.displayName = 'Container';
 
 interface CloseProps {
   asChild?: boolean;
@@ -220,24 +136,11 @@ export const CloseButton = ({ ariaLabel, ...props }: React.ComponentProps<typeof
   );
 };
 
-export const Content = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  margin: 16,
-  gap: 16,
-});
+export const Content = divWithClass(styles.content, 'Content');
 
-export const Row = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  gap: 16,
-});
+export const Row = divWithClass(styles.row, 'Row');
 
-export const Col = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 4,
-});
+export const Col = divWithClass(styles.col, 'Col');
 
 export const Header = ({
   hasClose = true,
@@ -250,40 +153,23 @@ export const Header = ({
   </Row>
 );
 
-export const Title = styled.h2(({ theme }) => ({
-  margin: 0,
-  fontSize: theme.typography.size.s3,
-  fontWeight: theme.typography.weight.bold,
-}));
+export const Title = forwardRef<HTMLHeadingElement, ComponentProps<'h2'>>(
+  ({ className, ...props }, ref) => (
+    <h2 ref={ref} className={clsx(styles.title, className)} {...props} />
+  )
+);
+Title.displayName = 'Title';
 
-export const Description = styled.span(({ theme }) => ({
-  position: 'relative',
-  zIndex: 1,
-  margin: 0,
-  fontSize: theme.typography.size.s2,
-}));
+export const Description = forwardRef<HTMLSpanElement, ComponentProps<'span'>>(
+  ({ className, ...props }, ref) => (
+    <span ref={ref} className={clsx(styles.description, className)} {...props} />
+  )
+);
+Description.displayName = 'Description';
 
-export const Actions = styled.div({
-  display: 'flex',
-  flexDirection: 'row-reverse',
-  gap: 8,
-});
+export const Actions = divWithClass(styles.actions, 'Actions');
 
-export const ErrorWrapper = styled.div(({ theme }) => ({
-  maxHeight: 100,
-  overflow: 'auto',
-  '@media (prefers-reduced-motion: no-preference)': {
-    animation: `${expand} 300ms, ${fadeIn} 300ms`,
-  },
-  backgroundColor: theme.background.critical,
-  color: theme.color.lightest,
-  fontSize: theme.typography.size.s2,
-
-  '& > div': {
-    position: 'relative',
-    padding: '8px 16px',
-  },
-}));
+export const ErrorWrapper = divWithClass(styles.errorWrapper, 'ErrorWrapper');
 
 export const Error = ({
   children,

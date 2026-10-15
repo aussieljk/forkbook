@@ -1,0 +1,16 @@
+/* Pulls the CTA closer to the search field than the sidebar's default stack gap. */
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: -8px;
+}
+
+.cta {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.icon {
+  color: var(--sb-fg-color-accent);
+}

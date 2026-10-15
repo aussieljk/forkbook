@@ -1,0 +1,136 @@
+.methodCall {
+  font-family: var(--sb-font-mono);
+  font-size: var(--sb-size-s1);
+  overflow-wrap: break-word;
+  inline-size: calc(100% - 40px);
+}
+
+.row {
+  list-style: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--sb-app-border-color);
+  font-family: var(--sb-font-base);
+  font-size: 13px;
+
+  &[data-status='error'] {
+    background-color: var(--sb-background-warning);
+  }
+
+  &[data-paused]::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    z-index: 1;
+    border-top: 4.5px solid transparent;
+    border-left: 7px solid var(--sb-color-warning);
+    border-bottom: 4.5px solid transparent;
+  }
+
+  &[data-paused]::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    z-index: 1;
+    width: 100%;
+    border-top: 1.5px solid var(--sb-color-warning);
+  }
+}
+
+:where([data-sb-theme='dark']) .row[data-status='error'] {
+  background-color: rgb(from var(--sb-color-negative) r g b / calc(alpha - 0.93));
+}
+
+.rowHeader {
+  display: flex;
+
+  &:not([data-navigation-disabled]):hover {
+    background: var(--sb-background-hoverable);
+  }
+}
+
+.rowLabel {
+  flex: 1;
+  display: grid;
+  background: none;
+  border: 0;
+  grid-template-columns: 15px 1fr;
+  align-items: center;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 15px;
+  text-align: start;
+  cursor: pointer;
+
+  &:disabled,
+  &[data-status='error'] {
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: inset 3px 0 0 0 var(--sb-color-secondary);
+    background: var(--sb-background-hoverable);
+  }
+
+  &[data-status='error']:focus-visible {
+    box-shadow: inset 3px 0 0 0 var(--sb-color-warning);
+    background: transparent;
+  }
+
+  &[data-status='waiting'] > div {
+    opacity: 0.5;
+  }
+}
+
+.rowActions {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+}
+
+.button {
+  color: var(--sb-text-muted-color);
+  margin: 0 3px;
+}
+
+.rowMessage {
+  padding: 8px 10px 8px 36px;
+  font-size: var(--sb-size-s1);
+  color: var(--sb-color-default-text);
+
+  & pre {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.errorName {
+  color: #0271b6;
+}
+
+.errorMessage {
+  color: #444;
+}
+
+.errorExplainer {
+  color: var(--sb-color-negative-text);
+  font-size: var(--sb-size-s2);
+  max-width: 500px;
+  text-wrap: balance;
+}
+
+:where([data-sb-theme='dark']) {
+  & .errorName {
+    color: #5ec1ff;
+  }
+
+  & .errorMessage {
+    color: #eee;
+  }
+
+  & .errorExplainer {
+    color: var(--sb-color-negative);
+  }
+}

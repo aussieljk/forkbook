@@ -4,7 +4,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { action } from 'storybook/actions';
 import { expect, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import * as ArgRow from './ArgRow.stories';
 import { ArgsTable, ArgsTableError } from './ArgsTable';
@@ -124,10 +123,16 @@ export const AllControls = {
   },
 };
 
-const AddonPanelLayout = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2 - 1,
-  background: theme.background.content,
-}));
+const AddonPanelLayout = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      fontSize: 'calc(var(--sb-size-s2) - 1px)',
+      background: 'var(--sb-background-content)',
+    }}
+  >
+    {children}
+  </div>
+);
 
 export const InAddonPanel = {
   args: {

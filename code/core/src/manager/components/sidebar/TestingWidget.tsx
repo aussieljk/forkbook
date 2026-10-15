@@ -19,64 +19,14 @@ import type {
 import { ChevronSmallUpIcon, PlayAllHollowIcon, SweepIcon } from '@storybook/icons';
 
 import { internal_fullTestProviderStore } from '#manager-stores';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { Optional } from '../Optional/Optional.tsx';
 import { useDynamicFavicon } from './useDynamicFavicon.ts';
+import styles from './TestingWidget.module.css';
 
 const DEFAULT_HEIGHT = 500;
-
-const HoverCard = styled(Card)({
-  display: 'flex',
-  flexDirection: 'column-reverse',
-
-  '&:hover #testing-module-collapse-toggle': {
-    opacity: 1,
-  },
-});
-
-const Collapsible = styled.div(({ theme }) => ({
-  overflow: 'hidden',
-  boxShadow: `inset 0 -1px 0 ${theme.appBorderColor}`,
-}));
-
-const Content = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const Bar = styled.div<{ onClick?: (e: SyntheticEvent) => void }>(({ onClick }) => ({
-  display: 'flex',
-  width: '100%',
-  cursor: onClick ? 'pointer' : 'default',
-  userSelect: 'none',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  overflow: 'hidden',
-  padding: 4,
-  gap: 4,
-}));
-
-const Action = styled.div({
-  display: 'flex',
-  flexBasis: '100%',
-  containerType: 'inline-size',
-});
-
-const Filters = styled.div({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  gap: 4,
-});
-
-const CollapseToggle = styled(ActionList.Button)({
-  opacity: 0,
-  transition: 'opacity 250ms',
-  '&:focus, &:hover': {
-    opacity: 1,
-  },
-});
 
 const RunButton = ({
   children,
@@ -103,43 +53,19 @@ const RunButton = ({
   </ActionList.Button>
 );
 
-const StatusButton = styled(ActionList.Toggle)<{
-  pressed: boolean;
-  status: 'negative' | 'warning';
-}>(
-  { minWidth: 28, outlineOffset: -2 },
-  ({ pressed, status, theme }) =>
-    !pressed &&
-    (theme.base === 'light'
-      ? {
-          background: {
-            negative: theme.background.negative,
-            warning: theme.background.warning,
-          }[status],
-          color: {
-            negative: theme.color.negativeText,
-            warning: theme.color.warningText,
-          }[status],
-        }
-      : {
-          background: {
-            negative: `${theme.color.negative}22`,
-            warning: `${theme.color.warning}22`,
-          }[status],
-          color: {
-            negative: theme.color.negative,
-            warning: theme.color.warning,
-          }[status],
-        })
+const StatusFilter = ({
+  status,
+  pressed,
+  className,
+  ...props
+}: { status: 'negative' | 'warning' } & ComponentProps<typeof ActionList.Toggle>) => (
+  <ActionList.Toggle
+    className={clsx(styles.statusFilter, className)}
+    data-status={pressed ? undefined : status}
+    pressed={pressed}
+    {...props}
+  />
 );
-
-const TestProvider = styled.div(({ theme }) => ({
-  padding: 4,
-
-  '&:not(:last-child)': {
-    boxShadow: `inset 0 -1px 0 ${theme.appBorderColor}`,
-  },
-}));
 
 interface TestingModuleProps {
   registeredTestProviders: Addon_Collection<Addon_TestProviderType>;
@@ -255,7 +181,8 @@ export const TestingWidget = ({
   }
 
   return (
-    <HoverCard
+    <Card
+      className={styles.hoverCard}
       id="storybook-testing-module"
       data-updated={isUpdated}
       outlineAnimation={isRunning ? 'spin' : 'none'}
@@ -268,8 +195,12 @@ export const TestingWidget = ({
       <h2 id="storybook-testing-widget-heading" className="sb-sr-only">
         Component tests
       </h2>
-      <Bar {...(hasTestProviders ? { onClick: (e) => toggleCollapsed(e) } : {})}>
-        <Action>
+      <div
+        className={styles.bar}
+        data-clickable={hasTestProviders || undefined}
+        onClick={hasTestProviders ? (e) => toggleCollapsed(e) : undefined}
+      >
+        <div className={styles.action}>
           {hasTestProviders && (
             <Optional
               content={
@@ -280,10 +211,11 @@ export const TestingWidget = ({
               fallback={<RunButton isRunning={isRunning} onRunAll={onRunAll} />}
             />
           )}
-        </Action>
-        <Filters>
+        </div>
+        <div className={styles.filters}>
           {hasTestProviders && (
-            <CollapseToggle
+            <ActionList.Button
+              className={styles.collapseToggle}
               onClick={(e) => toggleCollapsed(e)}
               id="testing-module-collapse-toggle"
               ariaLabel={isCollapsed ? 'Expand testing module' : 'Collapse testing module'}
@@ -294,11 +226,11 @@ export const TestingWidget = ({
                   transition: 'transform 250ms',
                 }}
               />
-            </CollapseToggle>
+            </ActionList.Button>
           )}
 
           {errorCount > 0 && (
-            <StatusButton
+            <StatusFilter
               id="errors-found-filter"
               size="medium"
               variant="ghost"
@@ -317,10 +249,10 @@ export const TestingWidget = ({
               }
             >
               {errorCount < 1000 ? errorCount : '999+'}
-            </StatusButton>
+            </StatusFilter>
           )}
           {warningCount > 0 && (
-            <StatusButton
+            <StatusFilter
               id="warnings-found-filter"
               size="medium"
               variant="ghost"
@@ -339,7 +271,7 @@ export const TestingWidget = ({
               }
             >
               {warningCount < 1000 ? warningCount : '999+'}
-            </StatusButton>
+            </StatusFilter>
           )}
           {hasStatuses && (
             <ActionList.Button
@@ -356,11 +288,12 @@ export const TestingWidget = ({
               <SweepIcon />
             </ActionList.Button>
           )}
-        </Filters>
-      </Bar>
+        </div>
+      </div>
 
       {hasTestProviders && (
-        <Collapsible
+        <div
+          className={styles.collapsible}
           data-testid="collapse"
           {...(isCollapsed && { inert: '' })}
           style={{
@@ -369,7 +302,7 @@ export const TestingWidget = ({
             maxHeight: isCollapsed ? 0 : maxHeight,
           }}
         >
-          <Content ref={contentRef}>
+          <div className={styles.content} ref={contentRef}>
             {Object.values(registeredTestProviders).map((registeredTestProvider) => {
               const { render: Render, id } = registeredTestProvider;
               if (!Render) {
@@ -379,14 +312,14 @@ export const TestingWidget = ({
                 return null;
               }
               return (
-                <TestProvider key={id} data-module-id={id}>
+                <div className={styles.testProvider} key={id} data-module-id={id}>
                   <Render />
-                </TestProvider>
+                </div>
               );
             })}
-          </Content>
-        </Collapsible>
+          </div>
+        </div>
       )}
-    </HoverCard>
+    </Card>
   );
 };

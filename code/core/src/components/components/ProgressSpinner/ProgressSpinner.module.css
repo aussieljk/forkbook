@@ -1,0 +1,49 @@
+/* The sizes come from inline CSS variables, see ProgressSpinner.tsx. */
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: var(--spinner-size);
+  min-height: var(--spinner-size);
+}
+
+.circle {
+  position: absolute;
+  width: var(--spinner-size) !important;
+  height: var(--spinner-size) !important;
+  transform: rotate(-90deg);
+
+  & circle {
+    r: var(--spinner-radius);
+    cx: var(--spinner-center);
+    cy: var(--spinner-center);
+    opacity: 0.15;
+    fill: transparent;
+    stroke: currentColor;
+    stroke-width: var(--spinner-width);
+    stroke-linecap: round;
+    stroke-dasharray: var(--spinner-dasharray);
+  }
+}
+
+.circle[data-variant='progress'] circle {
+  opacity: 0.75;
+}
+
+.circle[data-variant='spinner'] {
+  animation: rotate 1s linear infinite;
+
+  & circle {
+    opacity: 0.25;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

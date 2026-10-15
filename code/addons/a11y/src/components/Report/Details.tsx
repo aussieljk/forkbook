@@ -5,101 +5,11 @@ import { Button, Link, SyntaxHighlighter } from 'storybook/internal/components';
 import { CheckIcon, CopyIcon, LocationIcon } from '@storybook/icons';
 
 import { Tabs } from '@base-ui/react/tabs';
-import { styled } from 'storybook/theming';
 
 import { getFriendlySummaryForAxeResult } from '../../axeRuleMappingHelper.ts';
 import type { EnhancedNodeResult, EnhancedResult, RuleType } from '../../types.ts';
 import { useA11yContext } from '../A11yContext.tsx';
-
-const StyledSyntaxHighlighter = styled(SyntaxHighlighter)(({ theme }) => ({
-  fontSize: theme.typography.size.s1,
-}));
-
-const Info = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const RuleId = styled.div(({ theme }) => ({
-  display: 'block',
-  color: theme.textMutedColor,
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1,
-  marginTop: -8,
-  marginBottom: 12,
-
-  '@container (min-width: 800px)': {
-    display: 'none',
-  },
-}));
-
-const Description = styled.p({
-  margin: 0,
-});
-
-const Wrapper = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '0 15px 20px 15px',
-  gap: 20,
-});
-
-const Columns = styled.div({
-  gap: 15,
-
-  '@container (min-width: 800px)': {
-    display: 'grid',
-    gridTemplateColumns: '50% 50%',
-  },
-});
-
-const Content = styled.div<{ side: 'left' | 'right' }>(({ theme, side }) => ({
-  display: side === 'left' ? 'flex' : 'none',
-  flexDirection: 'column',
-  gap: 15,
-  margin: side === 'left' ? '15px 0' : 0,
-  padding: side === 'left' ? '0 15px' : 0,
-  borderLeft: side === 'left' ? `1px solid ${theme.color.border}` : 'none',
-
-  '&:focus-visible': {
-    outline: 'none',
-    borderRadius: 4,
-    boxShadow: `0 0 0 1px inset ${theme.color.secondary}`,
-  },
-
-  '@container (min-width: 800px)': {
-    display: side === 'left' ? 'none' : 'flex',
-  },
-}));
-
-const Item = styled(Button)(({ theme }) => ({
-  fontFamily: theme.typography.fonts.mono,
-  fontWeight: theme.typography.weight.regular,
-  color: theme.textMutedColor,
-  height: 40,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  display: 'block',
-  width: '100%',
-  textAlign: 'left',
-  padding: '0 12px',
-  '&[data-active]': {
-    color: theme.color.secondary,
-    backgroundColor: theme.background.hoverable,
-  },
-}));
-
-const Messages = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 10,
-});
-
-const Actions = styled.div({
-  display: 'flex',
-  gap: 10,
-});
+import styles from './Details.module.css';
 
 const CopyButton = ({ onClick }: { onClick: () => void }) => {
   const [copied, setCopied] = useState(false);
@@ -127,22 +37,22 @@ interface DetailsProps {
 }
 
 export const Details = ({ id, item, type, selection, handleSelectionChange }: DetailsProps) => (
-  <Wrapper id={id}>
-    <Info>
-      <RuleId>{item.id}</RuleId>
-      <Description>
+  <div id={id} className={styles.wrapper}>
+    <div className={styles.info}>
+      <div className={styles.ruleId}>{item.id}</div>
+      <p className={styles.description}>
         {getFriendlySummaryForAxeResult(item)}{' '}
         <Link href={item.helpUrl} target="_blank" rel="noopener noreferrer" withArrow>
           Learn how to resolve this violation
         </Link>
-      </Description>
-    </Info>
+      </p>
+    </div>
 
     <Tabs.Root
       orientation="vertical"
       value={selection ?? null}
       onValueChange={handleSelectionChange}
-      render={<Columns />}
+      render={<div className={styles.columns} />}
     >
       <Tabs.List activateOnFocus aria-label={type}>
         {item.nodes.map((node, index) => {
@@ -152,12 +62,25 @@ export const Details = ({ id, item, type, selection, handleSelectionChange }: De
               <Tabs.Tab
                 value={key}
                 render={
-                  <Item ariaLabel={false} variant="ghost" size="medium" id={key}>
+                  <Button
+                    className={styles.item}
+                    ariaLabel={false}
+                    variant="ghost"
+                    size="medium"
+                    id={key}
+                  >
                     {index + 1}. {node.html}
-                  </Item>
+                  </Button>
                 }
               />
-              <Tabs.Panel value={key} render={<Content side="left">{getContent(node)}</Content>} />
+              <Tabs.Panel
+                value={key}
+                render={
+                  <div className={styles.content} data-side="left">
+                    {getContent(node)}
+                  </div>
+                }
+              />
             </Fragment>
           );
         })}
@@ -169,12 +92,16 @@ export const Details = ({ id, item, type, selection, handleSelectionChange }: De
           <Tabs.Panel
             key={key}
             value={key}
-            render={<Content side="right">{getContent(node)}</Content>}
+            render={
+              <div className={styles.content} data-side="right">
+                {getContent(node)}
+              </div>
+            }
           />
         );
       })}
     </Tabs.Root>
-  </Wrapper>
+  </div>
 );
 
 function getContent(node: EnhancedNodeResult) {
@@ -183,31 +110,33 @@ function getContent(node: EnhancedNodeResult) {
   const rules = [...any, ...all, ...none];
   return (
     <>
-      <Messages>
+      <div className={styles.messages}>
         {rules.map((rule) => (
           <div key={rule.id}>
             {`${rule.message}${/(\.|: [^.]+\.*)$/.test(rule.message) ? '' : '.'}`}
           </div>
         ))}
-      </Messages>
+      </div>
 
-      <Actions>
+      <div className={styles.actions}>
         <Button ariaLabel={false} onClick={() => handleJumpToElement(node.target.toString())}>
           <LocationIcon /> Jump to element
         </Button>
         <CopyButton onClick={() => handleCopyLink(node.linkPath)} />
-      </Actions>
+      </div>
 
       {/* Technically this is HTML but we use JSX to avoid using an HTML comment */}
-      <StyledSyntaxHighlighter
+      <SyntaxHighlighter
+        className={styles.syntaxHighlighter}
         language="jsx"
         wrapLongLines
-      >{`/* element */\n${html}`}</StyledSyntaxHighlighter>
+      >{`/* element */\n${html}`}</SyntaxHighlighter>
 
-      <StyledSyntaxHighlighter
+      <SyntaxHighlighter
+        className={styles.syntaxHighlighter}
         language="css"
         wrapLongLines
-      >{`/* selector */\n${target}`}</StyledSyntaxHighlighter>
+      >{`/* selector */\n${target}`}</SyntaxHighlighter>
     </>
   );
 }

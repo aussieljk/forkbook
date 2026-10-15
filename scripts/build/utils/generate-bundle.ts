@@ -23,6 +23,7 @@ import {
   type EsbuildContextOptions,
   getExternal,
 } from './entry-utils.ts';
+import { esbuildCssPlugin, rolldownCssPlugin } from './css-modules.ts';
 import { tiePreviewRuntimeSetup } from './preview-runtime-entry.ts';
 
 // repo root/bench/esbuild-metafiles/core
@@ -132,6 +133,7 @@ export async function generateBundle({
     },
     plugins: [
       rawPlugin(),
+      esbuildCssPlugin(),
       {
         name: 'postbuild',
         setup(build) {
@@ -213,7 +215,7 @@ export async function generateBundle({
       cwd: DIR_CWD,
       input: { [name]: entryPoint },
       platform: 'browser',
-      plugins: useGlobals ? [rolldownGlobalExternalsPlugin()] : [],
+      plugins: [rolldownCssPlugin(), ...(useGlobals ? [rolldownGlobalExternalsPlugin()] : [])],
       resolve: {
         alias,
         conditionNames: ['browser', 'module', 'default'],

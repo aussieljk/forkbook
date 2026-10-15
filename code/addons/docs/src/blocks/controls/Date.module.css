@@ -1,0 +1,37 @@
+.input {
+  &[readonly] {
+    background: var(--sb-color-lighter);
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    height: 12px;
+  }
+}
+
+:where([data-sb-theme='dark']) .input {
+  &[readonly] {
+    background: transparent;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+.fieldset {
+  flex: 1;
+  display: flex;
+  border: 0;
+  margin-inline: 0;
+  padding: 0;
+  gap: 10px;
+
+  & div:first-of-type {
+    flex: 4;
+  }
+
+  & div:last-of-type {
+    flex: 3;
+  }
+}

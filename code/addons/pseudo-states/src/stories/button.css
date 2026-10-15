@@ -24,3 +24,9 @@
 .button:active {
   background-color: #077fc9;
 }
+
+.button.hover-media-query:hover {
+  @media (hover: hover) {
+    background-color: limegreen !important;
+  }
+}

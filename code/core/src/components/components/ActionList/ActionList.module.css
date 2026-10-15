@@ -1,0 +1,212 @@
+/*
+ * State selectors are in :where() so each rule has the specificity of one class. Components that
+ * add a class to these parts can then override these styles.
+ */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  cursor: default;
+
+  & + * {
+    border-top: 1px solid var(--sb-app-border-color);
+  }
+}
+
+.list:where([data-clickable]) {
+  cursor: pointer;
+}
+
+.item {
+  --listbox-item-active-color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+  --listbox-item-muted-color: var(--sb-color-mediumdark);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  overflow: hidden;
+  min-height: 32px;
+  gap: 4px;
+  font-size: var(--sb-size-s1);
+  font-weight: var(--sb-weight-regular);
+  color: var(--sb-color-default-text);
+  opacity: 1;
+  block-size: auto;
+  content-visibility: visible;
+
+  &:not(:hover, :has(:focus-visible)) :not(input) + input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    interpolate-size: allow-keywords;
+    transition-behavior: allow-discrete;
+    transition-duration: var(--transition-duration, 0.2s);
+    transition-property: opacity, block-size, content-visibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+:where([data-sb-theme='dark']) .item {
+  --listbox-item-active-color: var(--sb-color-secondary);
+}
+
+.item:where([data-active]) {
+  font-weight: var(--sb-weight-bold);
+  color: var(--listbox-item-active-color);
+  --listbox-item-muted-color: var(--listbox-item-active-color);
+}
+
+.item:where([aria-disabled='true']) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.item:where([aria-selected='true']) {
+  color: var(--listbox-item-active-color);
+  font-weight: var(--sb-weight-bold);
+  --listbox-item-muted-color: var(--listbox-item-active-color);
+}
+
+.item:where([role='option']) {
+  cursor: pointer;
+  border-radius: var(--sb-input-border-radius);
+  outline-offset: -2px;
+  padding: 0 9px;
+  gap: 8px;
+
+  &:hover {
+    background: rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.86));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sb-color-secondary);
+  }
+}
+
+.item:where(
+  [data-transition-status='preEnter'],
+  [data-transition-status='exiting'],
+  [data-transition-status='exited']
+) {
+  opacity: 0;
+  block-size: 0;
+  content-visibility: hidden;
+}
+
+/* Shows and hides the children with a `data-target-id` attribute on hover. */
+.hoverItem {
+  gap: 0;
+
+  & [data-target-id] {
+    inline-size: auto;
+    margin-left: 4px;
+    opacity: 1;
+
+    @supports (interpolate-size: allow-keywords) {
+      interpolate-size: allow-keywords;
+      transition-property: inline-size, margin-left, opacity, padding-inline;
+      transition-duration: var(--transition-duration, 0.2s);
+    }
+  }
+
+  &:not(:hover, :has(:focus-visible)) [data-target-id] {
+    inline-size: 0;
+    margin-left: 0;
+    opacity: 0;
+    padding-inline: 0;
+  }
+}
+
+.button {
+  gap: 8px;
+
+  &:focus-visible {
+    /* Prevent focus outline from being cut off by overflow: hidden */
+    outline-offset: -2px;
+  }
+}
+
+.button:where([data-size='small']) {
+  gap: 6px;
+}
+
+.action {
+  height: auto;
+  min-height: 32px;
+  flex: 0 1 100%;
+  text-align: start;
+  justify-content: space-between;
+  font-weight: inherit;
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+  }
+
+  & input:enabled:focus-visible {
+    outline: none;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: -2px;
+  }
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 8px 0;
+  line-height: 16px;
+
+  & > * {
+    margin: 0;
+    white-space: normal;
+  }
+
+  & > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & small {
+    font-size: inherit;
+    color: var(--sb-text-muted-color);
+  }
+
+  &:first-child {
+    padding-left: 8px;
+  }
+
+  &:last-child {
+    padding-right: 8px;
+  }
+
+  :is(button, [role='option']) > &:first-child {
+    padding-left: 0;
+  }
+
+  :is(button, [role='option']) > &:last-child {
+    padding-right: 0;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  color: var(--listbox-item-muted-color);
+}

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1px;
+
+  &[data-in-context-menu] {
+    padding-bottom: 0;
+  }
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  gap: 12px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--sb-size-s1);
+  font-weight: normal;
+  color: var(--sb-color-default-text);
+
+  &[data-crashed] {
+    font-weight: bold;
+    color: var(--sb-color-negative-text);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.actionList {
+  padding: 0;
+}
+
+.muted {
+  color: var(--sb-text-muted-color);
+}
+
+.progress {
+  margin: 4px;
+}
+
+.stopIcon {
+  width: 10px;
+}

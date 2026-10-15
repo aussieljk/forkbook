@@ -1,0 +1,39 @@
+.previewContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.frameWrap {
+  overflow: auto;
+  width: 100%;
+  z-index: 3;
+  background: var(--sb-background-app);
+  flex: 1;
+}
+
+.canvasWrap {
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.loaderWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: var(--sb-background-preview);
+  z-index: 1;
+}

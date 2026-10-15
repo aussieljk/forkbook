@@ -5,11 +5,10 @@ import { Button } from 'storybook/internal/components';
 
 import type { Combo } from 'storybook/manager-api';
 import { Consumer } from 'storybook/manager-api';
-import { Global, styled } from 'storybook/theming';
-import type { CSSObject } from 'storybook/theming';
 
 import { Viewport } from './Viewport.tsx';
 import type { FramesRendererProps } from './utils/types.tsx';
+import styles from './FramesRenderer.module.css';
 
 const getActive = (refId: FramesRendererProps['refId'], refs: FramesRendererProps['refs']) => {
   if (refId && refs[refId]) {
@@ -19,37 +18,21 @@ const getActive = (refId: FramesRendererProps['refId'], refs: FramesRendererProp
   return 'storybook-preview-iframe';
 };
 
-const SkipToSidebarLink = styled(Button)(({ theme }) => ({
-  display: 'none',
-  '@media (min-width: 600px)': {
-    position: 'absolute',
-    display: 'block',
-    top: 10,
-    right: 15,
-    padding: '10px 15px',
-    fontSize: theme.typography.size.s1,
-    transform: 'translateY(-100px)',
-    '&:focus': {
-      transform: 'translateY(0)',
-      zIndex: 1,
-    },
-  },
-}));
-
 const whenSidebarIsVisible = ({ api, state }: Combo) => ({
   isFullscreen: api.getIsFullscreen(),
   isNavShown: api.getNavAvailability() === 'shown',
   selectedStoryId: state.storyId,
 });
 
-const styles: CSSObject = {
-  '#root [data-is-storybook="false"]': {
-    display: 'none',
-  },
-  '#root [data-is-storybook="true"]': {
-    display: 'block',
-  },
-};
+// Shows only the active preview iframe.
+const framesCss = `
+#root [data-is-storybook="false"] {
+  display: none;
+}
+#root [data-is-storybook="true"] {
+  display: block;
+}
+`;
 
 export const FramesRenderer: FC<FramesRendererProps> = ({
   api,
@@ -93,18 +76,18 @@ export const FramesRenderer: FC<FramesRendererProps> = ({
 
   return (
     <Fragment>
-      <Global styles={styles} />
+      <style>{framesCss}</style>
       <Consumer filter={whenSidebarIsVisible}>
         {({ isFullscreen, isNavShown, selectedStoryId }) => {
           if (isFullscreen || !isNavShown || !selectedStoryId) {
             return null;
           }
           return (
-            <SkipToSidebarLink ariaLabel={false} asChild>
+            <Button className={styles.skipToSidebarLink} ariaLabel={false} asChild>
               <a href={`#${selectedStoryId}`} tabIndex={0}>
                 Skip to sidebar
               </a>
-            </SkipToSidebarLink>
+            </Button>
           );
         }}
       </Consumer>

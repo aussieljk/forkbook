@@ -1,12 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
-
+import { withClassName } from '../lib/withClassName.tsx';
 import { headerCommon, withReset } from '../lib/common.tsx';
+import styles from './H2.module.css';
 
-export const H2 = styled.h2(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  ...(headerCommon({ theme }) as CSSObject),
-  fontSize: `${theme.typography.size.m2}px`,
-  paddingBottom: 4,
-  borderBottom: `1px solid ${theme.appBorderColor}`,
-}));
+export const H2 = withClassName('h2', withReset, headerCommon, styles.h2);

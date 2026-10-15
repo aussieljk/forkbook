@@ -3,54 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 import { logger } from 'storybook/internal/client-logger';
 
-import { styled } from 'storybook/theming';
-
 import { getControlId } from '../helpers';
 import type { ControlProps, NormalizedOptionsConfig, OptionsMultiSelection } from '../types';
 import { selectedKeys, selectedValues } from './helpers';
-
-const Wrapper = styled.fieldset<{ $isInline: boolean }>(
-  {
-    border: 'none',
-    marginInline: 0,
-    padding: 0,
-    display: 'flex',
-    alignItems: 'flex-start',
-  },
-  ({ $isInline: isInline }) =>
-    isInline
-      ? {
-          flexWrap: 'wrap',
-          gap: 15,
-          label: {
-            display: 'inline-flex',
-          },
-        }
-      : {
-          flexDirection: 'column',
-          gap: 8,
-          label: {
-            display: 'flex',
-          },
-        }
-);
-
-const Text = styled.span<{ $readOnly: boolean }>(({ $readOnly }) => ({
-  opacity: $readOnly ? 0.5 : 1,
-}));
-
-const Label = styled.label<{ $readOnly: boolean }>(({ $readOnly }) => ({
-  lineHeight: '20px',
-  alignItems: 'center',
-  cursor: $readOnly ? 'not-allowed' : 'pointer',
-
-  input: {
-    cursor: $readOnly ? 'not-allowed' : 'pointer',
-
-    margin: 0,
-    marginRight: 6,
-  },
-}));
+import styles from './Options.module.css';
 
 type CheckboxConfig = NormalizedOptionsConfig & { isInline: boolean };
 type CheckboxProps = ControlProps<OptionsMultiSelection> & CheckboxConfig;
@@ -94,7 +50,7 @@ export const CheckboxControl: FC<CheckboxProps> = ({
   const controlId = getControlId(name, storyId, controlsId);
 
   return (
-    <Wrapper $isInline={isInline}>
+    <fieldset className={styles.wrapper} data-inline={isInline || undefined}>
       <legend className="sb-sr-only">
         {name}
         {required ? ' (required)' : ''}
@@ -102,7 +58,12 @@ export const CheckboxControl: FC<CheckboxProps> = ({
       {Object.keys(options).map((key, index) => {
         const id = `${controlId}-${index}`;
         return (
-          <Label key={id} htmlFor={id} $readOnly={readonly}>
+          <label
+            key={id}
+            className={styles.label}
+            htmlFor={id}
+            data-readonly={readonly || undefined}
+          >
             <input
               type="checkbox"
               disabled={readonly}
@@ -112,10 +73,10 @@ export const CheckboxControl: FC<CheckboxProps> = ({
               onChange={handleChange}
               checked={selected?.includes(key)}
             />
-            <Text $readOnly={readonly}>{key}</Text>
-          </Label>
+            <span className={styles.text}>{key}</span>
+          </label>
         );
       })}
-    </Wrapper>
+    </fieldset>
   );
 };

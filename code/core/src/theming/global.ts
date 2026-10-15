@@ -1,170 +1,142 @@
-import memoize from 'memoizerific';
+import { typography } from './base.ts';
 
-import type { Background, Color, Typography } from './types.ts';
-
-type Value = string | number;
-interface Return {
-  [key: string]: {
-    [key: string]: Value;
-  };
+/** A small CSS reset for Storybook pages. */
+export const resetCss = /* css */ `
+body {
+  font-family: ${typography.fonts.base};
+  font-size: ${typography.size.s3}px;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-overflow-scrolling: touch;
 }
 
-export const srOnlyStyles = {
-  position: 'absolute' as const,
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  whiteSpace: 'nowrap' as const,
-  clip: 'rect(0, 0, 0, 0)',
-  clipPath: 'inset(50%)',
-  border: 0,
-};
+* {
+  box-sizing: border-box;
+}
 
-export const srOnlyUnsetStyles = {
-  position: 'unset' as const,
-  width: 'unset' as const,
-  height: 'unset' as const,
-  padding: 'unset' as const,
-  margin: 'unset' as const,
-  overflow: 'unset' as const,
-  whiteSpace: 'unset' as const,
-  clip: 'unset' as const,
-  clipPath: 'unset' as const,
-  border: 'unset' as const,
-};
+h1, h2, h3, h4, h5, h6 {
+  font-weight: ${typography.weight.regular};
+  margin: 0;
+  padding: 0;
+}
 
-export const createReset = memoize(1)(({ typography }: { typography: Typography }): Return => ({
-  body: {
-    fontFamily: typography.fonts.base,
-    fontSize: typography.size.s3,
-    margin: 0,
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
 
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-    WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-    WebkitOverflowScrolling: 'touch',
-  },
+sub {
+  font-size: 0.8em;
+  bottom: -0.2em;
+}
 
-  '*': {
-    boxSizing: 'border-box',
-  },
+sup {
+  font-size: 0.8em;
+  top: -0.2em;
+}
 
-  'h1, h2, h3, h4, h5, h6': {
-    fontWeight: typography.weight.regular,
-    margin: 0,
-    padding: 0,
-  },
+b, strong {
+  font-weight: ${typography.weight.bold};
+}
 
-  'button, input, textarea, select': {
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    boxSizing: 'border-box',
-  },
+hr {
+  border: none;
+  border-top: 1px solid silver;
+  clear: both;
+  margin-bottom: 1.25rem;
+}
 
-  sub: {
-    fontSize: '0.8em',
-    bottom: '-0.2em',
-  },
+code {
+  font-family: ${typography.fonts.mono};
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  padding-left: 2px;
+  padding-right: 2px;
+  vertical-align: baseline;
+  color: inherit;
+}
 
-  sup: {
-    fontSize: '0.8em',
-    top: '-0.2em',
-  },
-  'b, strong': {
-    fontWeight: typography.weight.bold,
-  },
+pre {
+  font-family: ${typography.fonts.mono};
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 18px;
+  padding: 11px 1rem;
+  white-space: pre-wrap;
+  color: inherit;
+  border-radius: 3px;
+  margin: 1rem 0;
+}
+`;
 
-  hr: {
-    border: 'none',
-    borderTop: '1px solid silver',
-    clear: 'both',
-    marginBottom: '1.25rem',
-  },
+/**
+ * The reset plus the page styles of the Storybook manager. It reads the theme from CSS variables, so
+ * the variables must be set on `:root` (see `themeToCssVars`).
+ */
+export const globalCss = /* css */ `
+${resetCss}
 
-  code: {
-    fontFamily: typography.fonts.mono,
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-    display: 'inline-block',
-    paddingLeft: 2,
-    paddingRight: 2,
-    verticalAlign: 'baseline',
+body {
+  font-family: var(--sb-font-base);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  color: var(--sb-color-default-text);
+  background: var(--sb-background-app);
+}
 
-    color: 'inherit',
-  },
+code, pre {
+  font-family: var(--sb-font-mono);
+}
 
-  pre: {
-    fontFamily: typography.fonts.mono,
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-    lineHeight: '18px',
-    padding: '11px 1rem',
-    whiteSpace: 'pre-wrap',
+hr {
+  border-top: 1px solid var(--sb-color-border);
+}
 
-    color: 'inherit',
-    borderRadius: 3,
-    margin: '1rem 0',
-  },
-}));
+.sb-sr-only, .sb-hidden-until-focus:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
+}
 
-export const createGlobal = memoize(1)(({
-  color,
-  background,
-  typography,
-}: {
-  color: Color;
-  background: Background;
-  typography: Typography;
-}): Return => {
-  const resetStyles = createReset({ typography });
-  return {
-    ...resetStyles,
-    body: {
-      ...resetStyles.body,
-      position: 'fixed',
-      width: '100vw',
-      height: '100vh',
-      overflow: 'hidden',
-      color: color.defaultText,
-      background: background.app,
-    },
+.sb-hidden-until-focus {
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
 
-    hr: {
-      ...resetStyles.hr,
-      borderTop: `1px solid ${color.border}`,
-    },
+.sb-hidden-until-focus:focus {
+  opacity: 1;
+}
 
-    '.sb-sr-only, .sb-hidden-until-focus:not(:focus)': srOnlyStyles,
+[data-sb-landmark] {
+  position: relative;
+}
 
-    '.sb-hidden-until-focus': {
-      opacity: 0,
-      transition: 'opacity 150ms ease-out',
-    },
+[data-sb-landmark]:focus-visible {
+  outline: none;
+}
 
-    '.sb-hidden-until-focus:focus': {
-      opacity: 1,
-    },
+[data-sb-landmark]:focus-visible::after {
+  outline: 2px solid var(--sb-color-primary);
+  outline-offset: -2px;
+}
 
-    '[data-sb-landmark]': {
-      position: 'relative',
-    },
-
-    '[data-sb-landmark]:focus-visible': {
-      outline: 'none',
-    },
-
-    '[data-sb-landmark]:focus-visible::after': {
-      outline: `2px solid ${color.primary}`,
-      outlineOffset: '-2px',
-    },
-
-    '[data-sb-landmark]::after': {
-      content: "''",
-      position: 'absolute',
-      inset: 0,
-      pointerEvents: 'none',
-    },
-  };
-});
+[data-sb-landmark]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+`;

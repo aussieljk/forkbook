@@ -1,6 +1,7 @@
 # Storybook Theming
 
-Storybook Theming is a wrapper library for emotion.
-It ensures a single version of emotion is used everywhere.
+Storybook Theming holds the Storybook themes: light (normal) and dark, plus `create` to make your own.
 
-It also includes some ready to use themes: light (normal) and dark.
+`ThemeProvider` gives the theme to `useTheme` and writes it as CSS variables (`--sb-*`, see
+`themeToCssVars`) on a wrapper element. Storybook's own components are styled with CSS modules that
+read these variables.

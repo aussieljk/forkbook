@@ -1,0 +1,109 @@
+.label {
+  line-height: 18px;
+  align-items: center;
+  margin-bottom: 8px;
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  background: var(--sb-boolean-background);
+  border-radius: 3em;
+  padding: 1px;
+
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+
+    & input {
+      cursor: not-allowed;
+    }
+  }
+
+  @media (forced-colors: active) {
+    background: ButtonFace;
+    outline: 1px solid ButtonText;
+  }
+
+  &:focus-within {
+    outline: 1px solid var(--sb-color-secondary);
+    outline-offset: 1px;
+
+    @media (forced-colors: active) {
+      outline: 1px solid Highlight;
+      outline-offset: 1px;
+    }
+  }
+
+  & input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    border: 0;
+    appearance: none;
+    left: 0;
+    top: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 3em;
+  }
+
+  & span {
+    text-align: center;
+    font-size: var(--sb-size-s1);
+    font-weight: var(--sb-weight-bold);
+    line-height: 1;
+    cursor: pointer;
+    display: inline-block;
+    padding: 7px 15px;
+    transition: all 100ms ease-out;
+    user-select: none;
+    border-radius: 3em;
+    color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.5));
+    background: transparent;
+
+    &:active {
+      box-shadow: rgb(from var(--sb-app-border-color) r g b / calc(alpha + 0.05)) 0 0 0 2px inset;
+      color: rgb(from var(--sb-app-border-color) r g b / calc(alpha + 1));
+    }
+
+    &:first-of-type {
+      padding-right: 8px;
+    }
+
+    &:last-of-type {
+      padding-left: 8px;
+    }
+
+    @media (forced-colors: active) {
+      color: ButtonText;
+      box-shadow: none;
+    }
+  }
+
+  & input:checked ~ span:last-of-type,
+  & input:not(:checked) ~ span:first-of-type {
+    background: var(--sb-boolean-selected-background);
+    box-shadow: rgb(from var(--sb-app-border-color) r g b / calc(alpha + 0.1)) 0 0 2px;
+    color: var(--sb-color-default-text);
+    padding: 7px 15px;
+
+    @media (forced-colors: active) {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+      box-shadow: none;
+      outline: 1px solid ButtonText;
+    }
+  }
+}
+
+:where([data-sb-theme='dark']) .label {
+  & input:checked ~ span:last-of-type,
+  & input:not(:checked) ~ span:first-of-type {
+    box-shadow: var(--sb-app-border-color) 0 0 0 1px;
+  }
+}

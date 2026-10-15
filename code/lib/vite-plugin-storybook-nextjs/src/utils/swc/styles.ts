@@ -9,7 +9,7 @@
 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import type { EmotionConfig, StyledComponentsConfig } from 'next/dist/server/config-shared.js';
+import type { StyledComponentsConfig } from 'next/dist/server/config-shared.js';
 
 export function getStyledComponentsOptions(
   styledComponentsConfig: undefined | boolean | StyledComponentsConfig,
@@ -29,35 +29,5 @@ export function getStyledComponentsOptions(
 
   return {
     displayName: Boolean(development),
-  };
-}
-
-export function getEmotionOptions(
-  emotionConfig: undefined | boolean | EmotionConfig,
-  development: boolean
-) {
-  if (!emotionConfig) {
-    return null;
-  }
-  let autoLabel = !!development;
-  switch (typeof emotionConfig === 'object' && emotionConfig.autoLabel) {
-    case 'never':
-      autoLabel = false;
-      break;
-    case 'always':
-      autoLabel = true;
-      break;
-    default:
-      break;
-  }
-  return {
-    enabled: true,
-    autoLabel,
-    sourcemap: development,
-    ...(typeof emotionConfig === 'object' && {
-      importMap: emotionConfig.importMap,
-      labelFormat: emotionConfig.labelFormat,
-      sourcemap: development && emotionConfig.sourceMap,
-    }),
   };
 }

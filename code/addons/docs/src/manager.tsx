@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { AddonPanel, type SyntaxHighlighterFormatTypes } from 'storybook/internal/components';
 
 import { addons, types, useChannel, useParameter } from 'storybook/manager-api';
-import { ignoreSsrWarning, styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import {
   ADDON_ID,
@@ -17,6 +17,7 @@ import type { StoryId } from 'storybook/internal/types';
 import type { SourceParameters } from './blocks/blocks';
 import { SnippetWarning } from './blocks/components/SnippetWarning';
 import { Source } from './blocks/components/Source';
+import styles from './manager.module.css';
 
 /** Payload emitted on the `SNIPPET_RENDERED` channel event (see `emitTransformCode`). */
 type SnippetRenderedEvent = {
@@ -92,10 +93,10 @@ const CodePanel = ({
 
   return (
     <AddonPanel active={!!active}>
-      <SourceStyles>
+      <div className={styles.source}>
         <Source {...parameter.source} code={code} format={codeSnippet.format} dark={isDark} />
-        <PositionedSnippetWarning warning={warning} />
-      </SourceStyles>
+        <SnippetWarning className={styles.snippetWarning} warning={warning} />
+      </div>
     </AddonPanel>
   );
 };
@@ -124,20 +125,4 @@ addons.register(ADDON_ID, (api) => {
       );
     },
   });
-});
-
-const SourceStyles = styled.div({
-  height: '100%',
-  position: 'relative',
-  [`> :first-child${ignoreSsrWarning}`]: {
-    margin: 0,
-    height: '100%',
-    boxShadow: 'none',
-  },
-});
-
-const PositionedSnippetWarning = styled(SnippetWarning)({
-  position: 'absolute',
-  top: 8,
-  right: 10,
 });

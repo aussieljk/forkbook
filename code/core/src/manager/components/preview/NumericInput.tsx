@@ -12,59 +12,9 @@ import React, {
 
 import { Form } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const Wrapper = styled.div<{ after?: ReactNode; before?: ReactNode }>(
-  ({ after, before, theme }) => ({
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-    height: 32,
-    paddingInline: 9,
-    fontSize: theme.typography.size.s1,
-    color: theme.textMutedColor,
-    background: theme.input.background,
-    boxShadow: `${theme.input.border} 0 0 0 1px inset`,
-    borderRadius: theme.input.borderRadius,
-    svg: {
-      display: 'block',
-    },
-    input: {
-      width: '100%',
-      height: '100%',
-      minHeight: '100%',
-      flex: '1 1 auto',
-      paddingInline: 0,
-      fontSize: 'inherit',
-      background: 'transparent',
-      border: 'none',
-      boxShadow: 'none',
-      color: theme.input.color,
-      '&:focus, &:focus-visible': {
-        boxShadow: 'none',
-        outline: 'none',
-      },
-    },
-    'input:disabled': {
-      background: 'transparent',
-    },
-    'input + div': {
-      paddingInline: 0,
-      fontSize: 'inherit',
-    },
-    '&:has(input:focus-visible)': {
-      outline: `2px solid ${theme.color.secondary}`,
-      outlineOffset: -2,
-    },
-    '&:has(input:disabled)': {
-      background: theme.base === 'light' ? theme.color.lighter : theme.input.background,
-      cursor: 'not-allowed',
-    },
-    ...(after && { paddingRight: 2 }),
-    ...(before && { paddingLeft: 2 }),
-  })
-);
+import styles from './NumericInput.module.css';
 
 interface NumericInputProps extends Omit<ComponentProps<typeof Form.Input>, 'value'> {
   label?: string;
@@ -179,7 +129,12 @@ export const NumericInput = forwardRef<HTMLInputElement, NumericInputProps>(func
   }, [inputValue, parseValue, setInputSelection, step, updateValue]);
 
   return (
-    <Wrapper after={after} before={before} className={className} style={style}>
+    <div
+      className={clsx(styles.wrapper, className)}
+      data-after={after ? true : undefined}
+      data-before={before ? true : undefined}
+      style={style}
+    >
       {before && <div>{before}</div>}
       {label && (
         <label htmlFor={id} className="sb-sr-only">
@@ -197,6 +152,6 @@ export const NumericInput = forwardRef<HTMLInputElement, NumericInputProps>(func
         onBlur={updateInputValue}
       />
       {after && <div>{after}</div>}
-    </Wrapper>
+    </div>
   );
 });

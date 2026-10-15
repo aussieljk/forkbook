@@ -1,0 +1,66 @@
+.wrapper {
+  display: block;
+
+  &[data-bordered] {
+    background-clip: padding-box;
+    border: 1px solid var(--sb-app-border-color);
+    border-radius: var(--sb-app-border-radius);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  &[data-absolute] {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.tabBar {
+  overflow: hidden;
+  white-space: nowrap;
+  flex-grow: 1;
+
+  &:first-of-type {
+    margin-left: -3px;
+  }
+}
+
+.content {
+  --inset: 0px;
+
+  display: block;
+  position: relative;
+  container: tab-content / inline-size;
+  font-size: calc(var(--sb-size-s2) - 1px);
+  background: var(--sb-background-content);
+
+  &[data-bordered] {
+    --inset: 1px;
+
+    border-radius: 0 0 calc(var(--sb-app-border-radius) - 1px)
+      calc(var(--sb-app-border-radius) - 1px);
+  }
+
+  &[data-absolute] {
+    height: calc(100% - 40px - 2 * var(--inset));
+    position: absolute;
+    left: var(--inset);
+    right: var(--inset);
+    bottom: var(--inset);
+    top: calc(40px + var(--inset));
+    overflow: auto;
+
+    & > *:first-child {
+      position: absolute;
+      left: var(--inset);
+      right: var(--inset);
+      bottom: var(--inset);
+      top: var(--inset);
+      height: calc(100% - 2 * var(--inset));
+      overflow: auto;
+    }
+  }
+}

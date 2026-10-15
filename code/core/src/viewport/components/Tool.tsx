@@ -4,20 +4,9 @@ import { Select } from 'storybook/internal/components';
 
 import { GrowIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-
 import { useViewport } from '../useViewport.ts';
 import { iconsMap } from '../viewportIcons.tsx';
-
-const Dimensions = styled.div(({ theme }) => ({
-  display: 'flex',
-  gap: 2,
-  marginLeft: 20,
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1 - 1,
-  fontWeight: theme.typography.weight.regular,
-  color: theme.textMutedColor,
-}));
+import styles from './Tool.module.css';
 
 export const ViewportTool = () => {
   const {
@@ -37,11 +26,11 @@ export const ViewportTool = () => {
       title: value.name,
       icon: iconsMap[value.type!],
       right: (
-        <Dimensions>
+        <div className={styles.dimensions}>
           <span>{value.styles.width.replace('px', '')}</span>
           <span>&times;</span>
           <span>{value.styles.height.replace('px', '')}</span>
-        </Dimensions>
+        </div>
       ),
     }));
 

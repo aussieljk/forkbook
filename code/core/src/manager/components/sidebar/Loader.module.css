@@ -1,0 +1,31 @@
+.loadingItem {
+  cursor: progress;
+  font-size: 13px;
+  height: 16px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  align-items: center;
+  overflow: hidden;
+  margin-left: calc(var(--sb-depth) * 15px);
+  max-width: calc(85px - var(--sb-depth) * 5px);
+  animation: glow 1.5s ease-in-out infinite;
+  color: transparent;
+  background: var(--sb-app-border-color);
+}
+
+.contained {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

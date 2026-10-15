@@ -9,7 +9,6 @@ import { startCase } from 'es-toolkit/string';
 import { action } from 'storybook/actions';
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { isChromatic } from '../../../../../.storybook/isChromatic.ts';
 import {
@@ -20,14 +19,20 @@ import {
 import { Layout } from './Layout.tsx';
 import { LayoutProvider } from './LayoutProvider.tsx';
 
-const PlaceholderBlock = styled.div({
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  overflow: 'hidden',
-});
+const PlaceholderBlock: FC<PropsWithChildren> = ({ children }) => (
+  <div
+    style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+    }}
+  >
+    {children}
+  </div>
+);
 
 const PlaceholderClock: FC<{ id: string } & PropsWithChildren> = ({ children, id }) => {
   const [count, setCount] = React.useState(0);

@@ -1,19 +1,24 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { OverlayTriggerDecorator, Trigger } from '../shared/overlayHelpers.tsx';
 import { PopoverProvider } from './PopoverProvider.tsx';
 
-const StyledSamplePopover = styled.div({
-  padding: 10,
-  maxWidth: 200,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 10,
-});
+const StyledSamplePopover = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      padding: 10,
+      maxWidth: 200,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 10,
+    }}
+  />
+);
 
 const SamplePopover = () => (
   <StyledSamplePopover>

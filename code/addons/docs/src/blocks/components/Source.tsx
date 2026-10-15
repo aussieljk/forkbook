@@ -4,33 +4,17 @@ import React from 'react';
 import type { SupportedLanguage, SyntaxHighlighterProps } from 'storybook/internal/components';
 import { SyntaxHighlighter } from 'storybook/internal/components';
 
-import {
-  ThemeProvider,
-  convert,
-  ignoreSsrWarning,
-  styled,
-  themes,
-  useTheme,
-} from 'storybook/theming';
+import { clsx } from 'clsx';
+import { ThemeProvider, convert, themes, useTheme } from 'storybook/theming';
 
 import { EmptyBlock } from './EmptyBlock';
 import { SnippetWarning } from './SnippetWarning';
+import styles from './Source.module.css';
 
-const StyledSyntaxHighlighter: React.FunctionComponent<SyntaxHighlighterProps> = styled(
-  SyntaxHighlighter
-)(({ theme }) => ({
-  // DocBlocks-specific styling and overrides
-  fontSize: `${theme.typography.size.s2 - 1}px`,
-  lineHeight: '19px',
-  margin: '25px 0 40px',
-  borderRadius: theme.appBorderRadius,
-  boxShadow:
-    theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
-  'pre.prismjs': {
-    padding: 20,
-    background: 'inherit',
-  },
-}));
+const StyledSyntaxHighlighter: FunctionComponent<SyntaxHighlighterProps> = ({
+  className,
+  ...props
+}) => <SyntaxHighlighter className={clsx(styles.syntaxHighlighter, className)} {...props} />;
 
 export enum SourceError {
   NO_STORY = 'There\u2019s no story here.',
@@ -55,52 +39,17 @@ export interface SourceProps extends SourceCodeProps {
   error?: SourceError;
   /** Why the snippet is an incomplete example, when it is one; see `StoryDoc.warning`. */
   warning?: string;
+  /** Replaces the `docblock-source` class names of the code block. */
+  className?: string;
 }
 
-/**
- * Top-right rather than bottom-right: the copy action bar already owns the bottom-right corner of a
- * copyable block.
- */
-const PositionedSnippetWarning = styled(SnippetWarning)({
-  position: 'absolute',
-  top: 4,
-  right: 4,
-  zIndex: 1,
-});
-
-const SourceWrapper = styled.div({
-  position: 'relative',
-});
-
-const SourceSkeletonWrapper = styled.div(({ theme }) => ({
-  background: theme.background.content,
-  borderRadius: theme.appBorderRadius,
-  border: `1px solid ${theme.appBorderColor}`,
-  boxShadow:
-    theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
-  margin: '25px 0 40px',
-  padding: '20px 20px 20px 22px',
-}));
-
-const SourceSkeletonPlaceholder = styled.div(({ theme }) => ({
-  animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-  background: theme.appBorderColor,
-  height: 17,
-  marginTop: 1,
-  width: '60%',
-
-  [`&:first-child${ignoreSsrWarning}`]: {
-    margin: 0,
-  },
-}));
-
 const SourceSkeleton = () => (
-  <SourceSkeletonWrapper>
-    <SourceSkeletonPlaceholder />
-    <SourceSkeletonPlaceholder style={{ width: '80%' }} />
-    <SourceSkeletonPlaceholder style={{ width: '30%' }} />
-    <SourceSkeletonPlaceholder style={{ width: '80%' }} />
-  </SourceSkeletonWrapper>
+  <div className={styles.skeletonWrapper}>
+    <div className={styles.skeletonPlaceholder} />
+    <div className={styles.skeletonPlaceholder} style={{ width: '80%' }} />
+    <div className={styles.skeletonPlaceholder} style={{ width: '30%' }} />
+    <div className={styles.skeletonPlaceholder} style={{ width: '80%' }} />
+  </div>
 );
 
 /** Syntax-highlighted source code for a component (or anything!) */
@@ -137,10 +86,10 @@ const Source: FunctionComponent<SourceProps> = ({
   );
 
   const syntaxHighlighter = warning ? (
-    <SourceWrapper>
+    <div className={styles.sourceWrapper}>
       {highlighter}
-      <PositionedSnippetWarning warning={warning} />
-    </SourceWrapper>
+      <SnippetWarning className={styles.snippetWarning} warning={warning} />
+    </div>
   ) : (
     highlighter
   );

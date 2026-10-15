@@ -1,16 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { styled } from 'storybook/theming';
-
-const Svg = styled.svg`
-  position: absolute;
-  width: 0;
-  height: 0;
-  display: inline-block;
-  shape-rendering: inherit;
-  vertical-align: middle;
-`;
+import styles from './IconSymbols.module.css';
 
 // We are importing the icons from @storybook/icons as we need to add symbols inside of them.
 // This will allow to set icons once and use them everywhere.
@@ -31,7 +22,7 @@ const REVIEWING_ID = 'icon--reviewing';
 
 export const IconSymbols: FC = () => {
   return (
-    <Svg data-chromatic="ignore">
+    <svg className={styles.svg} data-chromatic="ignore">
       <symbol id={GROUP_ID}>
         {/* https://github.com/storybookjs/icons/blob/main/src/icons/FolderIcon.tsx */}
         <path
@@ -124,7 +115,7 @@ export const IconSymbols: FC = () => {
           fill="currentColor"
         />
       </symbol>
-    </Svg>
+    </svg>
   );
 };
 

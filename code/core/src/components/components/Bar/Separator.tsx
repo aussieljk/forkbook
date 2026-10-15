@@ -1,28 +1,16 @@
+import type { ComponentProps } from 'react';
 import React, { Fragment } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-export interface SeparatorProps {
+import styles from './Separator.module.css';
+
+export interface SeparatorProps extends ComponentProps<'span'> {
   force?: boolean;
 }
 
-export const Separator = styled.span<SeparatorProps>(
-  ({ theme }) => ({
-    display: 'inline-block',
-    width: 1,
-    height: 20,
-    background: theme.appBorderColor,
-    marginLeft: 2,
-    marginRight: 2,
-  }),
-  ({ force }) =>
-    force
-      ? {}
-      : {
-          '& + &': {
-            display: 'none',
-          },
-        }
+export const Separator = ({ force, className, ...props }: SeparatorProps) => (
+  <span className={clsx(styles.separator, className)} data-force={force || undefined} {...props} />
 );
 Separator.displayName = 'Separator';
 

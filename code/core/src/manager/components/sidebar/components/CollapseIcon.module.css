@@ -1,0 +1,13 @@
+.collapseIcon {
+  width: 8px;
+  height: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s ease-out;
+  color: var(--sb-text-muted-color);
+
+  &[data-expanded] {
+    transform: rotateZ(90deg);
+  }
+}

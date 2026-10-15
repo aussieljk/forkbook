@@ -1,88 +1,19 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import React from 'react';
 
-import { codeCommon } from 'storybook/internal/components';
-
+import { clsx } from 'clsx';
 import Markdown from 'markdown-to-jsx';
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
 
 import type { JsDocTags } from './types';
+import styles from './ArgJsDoc.module.css';
 
 interface ArgJsDocArgs {
   tags: JsDocTags;
 }
 
-export const Table = styled.table(({ theme }) => ({
-  '&&': {
-    // Escape default table styles
-    borderCollapse: 'collapse',
-    borderSpacing: 0,
-    border: 'none',
-
-    tr: {
-      border: 'none !important',
-      background: 'none',
-    },
-
-    'td, th': {
-      padding: 0,
-      border: 'none',
-      width: 'auto!important',
-    },
-    // End escape
-
-    marginTop: 0,
-    marginBottom: 0,
-
-    p: {
-      margin: '0 0 10px',
-      '&:last-child': {
-        marginBottom: 0,
-      },
-    },
-    a: {
-      color: theme.color.secondary,
-    },
-
-    'th:first-of-type, td:first-of-type': {
-      paddingLeft: 0,
-    },
-
-    'th:last-of-type, td:last-of-type': {
-      paddingRight: 0,
-    },
-
-    td: {
-      paddingTop: 0,
-      paddingBottom: 4,
-
-      '&:not(:first-of-type)': {
-        paddingLeft: 10,
-        paddingRight: 0,
-      },
-    },
-
-    tbody: {
-      boxShadow: 'none',
-      border: 'none',
-    },
-
-    code: codeCommon({ theme }) as CSSObject,
-
-    div: {
-      span: {
-        fontWeight: 'bold',
-      },
-    },
-
-    '& code': {
-      margin: 0,
-      display: 'inline-block',
-      fontSize: theme.typography.size.s1,
-    },
-  },
-}));
+export const Table = ({ className, ...props }: ComponentProps<'table'>) => (
+  <table className={clsx(styles.table, className)} {...props} />
+);
 
 export const ArgJsDoc: FC<ArgJsDocArgs> = ({ tags }) => {
   const params = (tags.params || []).filter((x) => x.description);

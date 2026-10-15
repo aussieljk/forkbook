@@ -4,26 +4,15 @@ import React from 'react';
 import { Select } from 'storybook/internal/components';
 
 import { useGlobals, useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
-
 import { Icons } from '../../components/components/icon/icon.tsx';
 import type { ToolbarMenuProps } from '../types.ts';
 import { getSelectedItem } from '../utils/get-selected.ts';
 import { registerShortcuts } from '../utils/register-shortcuts.ts';
+import styles from './ToolbarMenuSelect.module.css';
 
 // We can't remove the Icons component just yet because there's no way for now to import icons
 // in the preview directly. Before having a better solution, we are going to keep the Icons component
 // for now and remove the deprecated warning.
-
-const ToolbarMenuItemContainer = styled('div')({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8,
-});
-const ToolbarMenuItemMiddle = styled('div')({
-  flex: 1,
-});
 
 export const ToolbarMenuSelect: FC<ToolbarMenuProps> = ({
   id,
@@ -76,11 +65,11 @@ export const ToolbarMenuSelect: FC<ToolbarMenuProps> = ({
               title: itemTitle,
               value: item.value,
               children: (
-                <ToolbarMenuItemContainer>
+                <div className={styles.item}>
                   {iconComponent}
-                  <ToolbarMenuItemMiddle>{item.title ?? item.value}</ToolbarMenuItemMiddle>
+                  <div className={styles.itemMiddle}>{item.title ?? item.value}</div>
                   {item.right}
-                </ToolbarMenuItemContainer>
+                </div>
               ),
             };
           } else {

@@ -1,22 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ReactNode } from 'react';
 
-import { keyframes, styled } from 'storybook/theming';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Optional } from './Optional.tsx';
 
-const resize = keyframes`
-  to {
-    width: 150px;
-  }
-`;
-
-const Resizing = styled.div({
-  display: 'inline-flex',
-  justifyContent: 'space-between',
-  width: '250px',
-  animation: `${resize} 3s ease-in-out infinite alternate`,
-  border: '1px solid silver',
-});
+const Resizing = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      display: 'inline-flex',
+      justifyContent: 'space-between',
+      width: '250px',
+      animation: 'optional-story-resize 3s ease-in-out infinite alternate',
+      border: '1px solid silver',
+    }}
+  >
+    <style>{'@keyframes optional-story-resize { to { width: 150px; } }'}</style>
+    {children}
+  </div>
+);
 
 const meta = {
   title: 'Optional',

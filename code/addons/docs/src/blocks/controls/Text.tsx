@@ -3,22 +3,11 @@ import React, { useCallback, useState } from 'react';
 
 import { Button, Form } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
-
 import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, TextConfig, TextValue } from './types';
+import styles from './Text.module.css';
 
 export type TextProps = ControlProps<TextValue | undefined> & TextConfig;
-
-const Wrapper = styled.label({
-  display: 'flex',
-});
-
-const MaxLength = styled.div<{ isMaxed: boolean }>(({ isMaxed }) => ({
-  marginLeft: '0.75rem',
-  paddingTop: '0.35rem',
-  color: isMaxed ? 'red' : undefined,
-}));
 
 export const TextControl: FC<TextProps> = ({
   name,
@@ -63,7 +52,7 @@ export const TextControl: FC<TextProps> = ({
   const isValid = typeof value === 'string';
 
   return (
-    <Wrapper>
+    <label className={styles.wrapper}>
       <Form.Textarea
         id={getControlId(name, storyId, controlsId)}
         maxLength={maxLength}
@@ -77,10 +66,10 @@ export const TextControl: FC<TextProps> = ({
         {...{ name, value: isValid ? value : '', onFocus, onBlur }}
       />
       {maxLength && (
-        <MaxLength isMaxed={value?.length === maxLength}>
+        <div className={styles.maxLength} data-maxed={value?.length === maxLength || undefined}>
           {value?.length ?? 0} / {maxLength}
-        </MaxLength>
+        </div>
       )}
-    </Wrapper>
+    </label>
   );
 };

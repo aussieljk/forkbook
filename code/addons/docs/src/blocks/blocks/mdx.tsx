@@ -7,11 +7,10 @@ import { NAVIGATE_URL } from 'storybook/internal/core-events';
 
 import { LinkIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-
 import { Source } from '../components';
 import type { DocsContextProps } from './DocsContext';
 import { DocsContext } from './DocsContext';
+import styles from './mdx.module.css';
 
 const { document } = globalThis;
 
@@ -140,51 +139,6 @@ export const AnchorMdx: FC<PropsWithChildren<AnchorMdxProps>> = (props) => {
 
 const SUPPORTED_MDX_HEADERS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
 
-const OcticonHeaders = SUPPORTED_MDX_HEADERS.reduce(
-  (acc, headerType) => ({
-    ...acc,
-    [headerType]: styled(headerType)({}),
-  }),
-  {}
-);
-
-const OcticonAlignmentWrapper = styled.span({
-  display: 'block',
-  position: 'relative',
-  '& svg': {
-    visibility: 'hidden',
-  },
-  '&:hover svg, &:focus-within svg': {
-    visibility: 'visible',
-  },
-});
-
-const OcticonAnchorWrapper = styled.span({
-  // Position the anchor in the heading's left gutter instead of floating it, so the
-  // Button's dimensions never shift the heading text. The parent header is relatively
-  // positioned to anchor this.
-  position: 'absolute',
-  top: '50%',
-  right: '100%',
-  lineHeight: 'inherit',
-  paddingRight: '8px',
-  // Increase specificity to avoid being overridden by DocsPage based on
-  // CSS block load order.
-  '&&': {
-    marginTop: -14, // Half the Button's height to center it vertically
-  },
-  // Allow the theme's text color to override the default link color.
-  color: 'inherit',
-  '& a': {
-    color: 'inherit',
-    textDecoration: 'none',
-  },
-});
-
-const HeaderTitle = styled.span({
-  // marginInlineStart: -40,
-});
-
 interface HeaderWithOcticonAnchorProps {
   as: string;
   id: string;
@@ -198,14 +152,13 @@ const HeaderWithOcticonAnchor: FC<PropsWithChildren<HeaderWithOcticonAnchorProps
 }) => {
   const context = useContext(DocsContext);
 
-  // @ts-expect-error (Converted from ts-ignore)
-  const OcticonHeader = OcticonHeaders[as];
+  const OcticonHeader = as as React.ElementType;
   const hash = `#${id}`;
 
   return (
     <OcticonHeader id={id} {...rest}>
-      <OcticonAlignmentWrapper className="sb-unstyled">
-        <OcticonAnchorWrapper>
+      <span className={`${styles.alignmentWrapper} sb-unstyled`}>
+        <span className={styles.anchorWrapper}>
           <Button
             asChild
             variant="ghost"
@@ -227,9 +180,9 @@ const HeaderWithOcticonAnchor: FC<PropsWithChildren<HeaderWithOcticonAnchorProps
               <LinkIcon />
             </a>
           </Button>
-        </OcticonAnchorWrapper>
+        </span>
         {children}
-      </OcticonAlignmentWrapper>
+      </span>
     </OcticonHeader>
   );
 };

@@ -5,67 +5,18 @@ import { Button, Link, StorybookLogo } from 'storybook/internal/components';
 
 import { DocumentIcon, GithubIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-
 import { UpgradeBlock } from '../components/upgrade/UpgradeBlock.tsx';
-
-const Container = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'column',
-  marginTop: 40,
-});
-
-const Header = styled.header({
-  marginBottom: 32,
-  alignItems: 'center',
-  display: 'flex',
-
-  '> svg': {
-    height: 48,
-    width: 'auto',
-    marginRight: 8,
-  },
-});
-
-const Footer = styled.div(({ theme }) => ({
-  marginBottom: 24,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  color: theme.base === 'light' ? theme.color.dark : theme.color.lightest,
-  fontWeight: theme.typography.weight.regular,
-  fontSize: theme.typography.size.s2,
-}));
-
-const Actions = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 24,
-  marginTop: 24,
-  gap: 16,
-});
-
-const StyledLink = styled(Link as any)(({ theme }) => ({
-  '&&': {
-    fontWeight: theme.typography.weight.bold,
-    color: theme.base === 'light' ? theme.color.dark : theme.color.light,
-  },
-  '&:hover': {
-    color: theme.base === 'light' ? theme.color.darkest : theme.color.lightest,
-  },
-}));
+import styles from './About.module.css';
 
 const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWhatsNew }) => {
   return (
-    <Container>
-      <Header>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <StorybookLogo alt="Storybook" />
-      </Header>
+      </header>
       <UpgradeBlock onNavigateToWhatsNew={onNavigateToWhatsNew} />
-      <Footer>
-        <Actions>
+      <div className={styles.footer}>
+        <div className={styles.actions}>
           <Button ariaLabel={false} asChild>
             <a href="https://github.com/storybookjs/storybook">
               <GithubIcon />
@@ -78,16 +29,22 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
               Documentation
             </a>
           </Button>
-        </Actions>
+        </div>
         <div>
           Open source software maintained by{' '}
-          <StyledLink href="https://www.chromatic.com/">Chromatic</StyledLink> and the{' '}
-          <StyledLink href="https://github.com/storybookjs/storybook/graphs/contributors">
+          <Link className={styles.link} href="https://www.chromatic.com/">
+            Chromatic
+          </Link>{' '}
+          and the{' '}
+          <Link
+            className={styles.link}
+            href="https://github.com/storybookjs/storybook/graphs/contributors"
+          >
             Storybook Community
-          </StyledLink>
+          </Link>
         </div>
-      </Footer>
-    </Container>
+      </div>
+    </div>
   );
 };
 

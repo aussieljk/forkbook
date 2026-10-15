@@ -1,0 +1,107 @@
+.name {
+  font-weight: bold;
+}
+
+.required {
+  color: var(--sb-color-negative);
+  font-family: var(--sb-font-mono);
+  cursor: help;
+}
+
+.description {
+  /* The class is doubled for a higher specificity than the docs page styles of raw elements. */
+  &.description {
+    & p {
+      margin: 0 0 10px 0;
+    }
+
+    & a {
+      color: var(--sb-color-secondary);
+    }
+  }
+
+  /* The same as codeCommon, with a smaller mono font */
+  & code {
+    line-height: 1;
+    margin: 0;
+    padding: 3px 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: var(--sb-font-mono);
+    border: 1px solid hsl(0 0 0 / 0.05);
+    color: var(--sb-color-default-text);
+    background-color: hsl(0 0 0 / 0.01);
+    display: inline-block;
+  }
+
+  & pre > code {
+    white-space: pre-wrap;
+  }
+}
+
+:where([data-sb-theme='dark']) .description code {
+  border: 1px solid hsl(0 0 100 / 0.05);
+  background-color: hsl(0 0 100 / 0.02);
+}
+
+.type,
+.typeWithJsDoc {
+  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.1));
+  margin-top: 0;
+}
+
+:where([data-sb-theme='dark']) :is(.type, .typeWithJsDoc) {
+  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.2));
+}
+
+.type[data-has-description] {
+  margin-top: 4px;
+}
+
+.typeWithJsDoc {
+  margin-bottom: 12px;
+
+  &[data-has-description] {
+    margin-top: 12px;
+  }
+}
+
+.nameCell {
+  padding-left: 20px !important;
+
+  &[data-expandable] {
+    padding-left: 40px !important;
+  }
+}
+
+/*
+ * When a row has no usable control, the "Setup controls" link is hidden and a placeholder dash is
+ * shown. Hovering or focusing within the row swaps them, so keyboard users reach the link too.
+ */
+.row :global(span.sbdocs-argcontrol-setup),
+.row:is(:hover, :focus-within) :global(span.sbdocs-argcontrol-placeholder) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.row:is(:hover, :focus-within) :global(span.sbdocs-argcontrol-setup) {
+  position: unset;
+  width: unset;
+  height: unset;
+  padding: unset;
+  margin: unset;
+  overflow: unset;
+  white-space: unset;
+  clip: unset;
+  clip-path: unset;
+  border: unset;
+}

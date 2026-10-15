@@ -1,0 +1,175 @@
+/* The class is doubled for a higher specificity than the docs page styles of raw elements. */
+.tableWrapper.tableWrapper {
+  /* Resets for cascading/system styles */
+  border-spacing: 0;
+  color: var(--sb-color-default-text);
+
+  & td,
+  & th {
+    padding: 0;
+    border: none;
+    vertical-align: top;
+    text-overflow: ellipsis;
+  }
+  /* End Resets */
+
+  font-size: calc(var(--sb-size-s2) - 1px);
+  line-height: 19px;
+  text-align: left;
+  width: 100%;
+
+  /* Margin collapse */
+  margin-top: 25px;
+  margin-bottom: 40px;
+
+  /* Makes border alignment consistent w/other DocBlocks */
+  margin-inline: 1px;
+  padding-inline: 0;
+
+  & thead th:first-of-type,
+  & td:first-of-type {
+    /* intentionally specify thead here */
+    width: 25%;
+  }
+
+  & th:first-of-type,
+  & td:first-of-type {
+    padding-left: 20px;
+  }
+
+  & th:last-of-type,
+  & td:last-of-type {
+    padding-right: 20px;
+  }
+
+  &:not([data-compact]) {
+    & th:nth-of-type(2),
+    & td:nth-of-type(2) {
+      /* Description column */
+      width: 35%;
+    }
+
+    & td:nth-of-type(3) {
+      /* Defaults column */
+      width: 15%;
+    }
+
+    & th:last-of-type,
+    & td:last-of-type {
+      /* Controls column */
+      width: 25%;
+    }
+  }
+
+  & th {
+    color: var(--sb-text-muted-color);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  & td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    &:not(:first-of-type) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    &:last-of-type {
+      padding-right: 20px;
+    }
+  }
+
+  & tbody > tr > * {
+    /* For filter to work properly, the table cells all need to be opaque. */
+    background: var(--sb-background-content);
+    border-top: 1px solid var(--sb-app-border-color);
+  }
+
+  /*
+   * Safari doesn't love shadows on tbody so we need to use a shadow filter. In order to do this,
+   * the table cells all need to be solid so they have a background color applied.
+   * I wasn't sure what kinds of content go in these tables so I was extra specific with selectors
+   * to avoid unexpected surprises.
+   */
+  &:not([data-in-addon-panel]) tbody {
+    filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.1));
+
+    /* This works and I don't know why. :) */
+    & > tr:first-of-type > * {
+      border-block-start: 1px solid var(--sb-app-border-color);
+    }
+
+    & > tr:last-of-type > * {
+      border-block-end: 1px solid var(--sb-app-border-color);
+    }
+
+    & > tr > *:first-of-type {
+      border-inline-start: 1px solid var(--sb-app-border-color);
+    }
+
+    & > tr > *:last-of-type {
+      border-inline-end: 1px solid var(--sb-app-border-color);
+    }
+
+    /* Thank you, Safari, for making me write code like this. */
+    & > tr:first-of-type > td:first-of-type {
+      border-top-left-radius: var(--sb-app-border-radius);
+    }
+
+    & > tr:first-of-type > td:last-of-type {
+      border-top-right-radius: var(--sb-app-border-radius);
+    }
+
+    & > tr:last-of-type > td:first-of-type {
+      border-bottom-left-radius: var(--sb-app-border-radius);
+    }
+
+    & > tr:last-of-type > td:last-of-type {
+      border-bottom-right-radius: var(--sb-app-border-radius);
+    }
+  }
+
+  &[data-in-tab-panel] {
+    margin-inline: 0;
+    padding-inline: 3px;
+  }
+
+  &[data-in-addon-panel] {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-inline: 0;
+  }
+}
+
+:where([data-sb-theme='dark']) .tableWrapper.tableWrapper:not([data-in-addon-panel]) tbody {
+  filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+.tablePositionWrapper {
+  position: relative;
+}
+
+.buttonPositionWrapper {
+  position: absolute;
+  right: 22px;
+  top: 10px;
+}
+
+.resetButton {
+  margin: -4px -12px -4px 0;
+}
+
+/* High contrast mode: ensure borders are visible with system colors */
+@media (forced-colors: active) {
+  .tableWrapper.tableWrapper tbody {
+    filter: none !important;
+
+    & > tr > * {
+      border-color: CanvasText !important;
+    }
+  }
+}

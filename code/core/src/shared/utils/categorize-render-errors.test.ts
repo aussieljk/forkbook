@@ -325,7 +325,7 @@ describe('categorize-render-errors', () => {
       it('should extract dependencies from stack traces with /deps/ pattern', () => {
         const stack = `
           at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/styled-components.js:1168:14
-          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/@emotion/react.js:500:10
+          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/@stylexjs/stylex.js:500:10
           at Component.tsx:13:25
         `;
 
@@ -334,7 +334,7 @@ describe('categorize-render-errors', () => {
           stack
         );
 
-        expect(result.matchedDependencies).toEqual(['styled-components', '@emotion/react']);
+        expect(result.matchedDependencies).toEqual(['styled-components', '@stylexjs/stylex']);
       });
     });
   });

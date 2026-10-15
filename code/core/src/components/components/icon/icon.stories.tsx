@@ -1,59 +1,23 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { css, styled } from 'storybook/theming';
-
 import type { IconType } from './icon.tsx';
 import { Icons, icons } from './icon.tsx';
+import styles from './icon.stories.module.css';
 
-const Meta = styled.div`
-  color: #666;
-  font-size: 12px;
-`;
+const Header = ({ children }: { children: React.ReactNode }) => (
+  <h2 className={styles.header}>{children}</h2>
+);
 
-const Item = styled.li<{ minimal?: boolean }>`
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  flex: 0 1 16%;
-  min-width: 120px;
-  margin: 16px;
+const List = ({ children }: { children: React.ReactNode }) => (
+  <ul className={styles.list}>{children}</ul>
+);
 
-  svg {
-    margin-right: 6px;
-    width: 14px;
-    height: 14px;
-  }
-
-  ${(props) =>
-    props.minimal &&
-    css`
-      flex: none;
-      min-width: auto;
-      padding: 0;
-      margin: 16px;
-
-      svg {
-        display: block;
-        margin-right: 0;
-        width: 14px;
-        height: 14px;
-      }
-    `};
-`;
-
-const List = styled.ul`
-  display: flex;
-  flex-flow: row wrap;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const Header = styled.h2`
-  font-size: 16px;
-  margin: 16px;
-`;
+const Item = ({ minimal, children }: { minimal?: boolean; children: React.ReactNode }) => (
+  <li className={styles.item} data-minimal={minimal || undefined}>
+    {children}
+  </li>
+);
 
 export default {
   title: 'Icons (deprecated)',
@@ -74,7 +38,7 @@ export const Labels = (args: ComponentProps<typeof Icons>) => (
         <Item key={key}>
           {/* @ts-expect-error (not strict) */}
           <Icons icon={key as IconType} aria-hidden {...args} />
-          <Meta>{key}</Meta>
+          <div className={styles.meta}>{key}</div>
         </Item>
       ))}
     </List>

@@ -1,0 +1,34 @@
+.absoluteBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition: transform 0.2s linear;
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.iconPlaceholder {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  margin: 0 7px;
+  background-color: var(--sb-app-border-color);
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

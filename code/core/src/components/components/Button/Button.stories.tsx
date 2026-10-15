@@ -1,9 +1,9 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { FaceHappyIcon } from '@storybook/icons';
 
 import { expect, fn } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { Button } from './Button.tsx';
@@ -15,9 +15,13 @@ const meta = preview.meta({
   args: { onClick: fn() },
 });
 
-const Stack = styled.div({ display: 'flex', flexDirection: 'column', gap: '1rem' });
+const Stack = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
+);
 
-const Row = styled.div({ display: 'flex', alignItems: 'center', gap: '1rem' });
+const Row = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} />
+);
 
 export const Base = meta.story({
   args: { ariaLabel: false, children: 'Button' },

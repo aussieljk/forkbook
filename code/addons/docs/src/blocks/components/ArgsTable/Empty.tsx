@@ -5,30 +5,11 @@ import { EmptyTabContent, Link } from 'storybook/internal/components';
 
 import { DocumentIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
+import styles from './Empty.module.css';
 
 interface EmptyProps {
   inAddonPanel?: boolean;
 }
-
-const Wrapper = styled.div<{ inAddonPanel?: boolean }>(({ inAddonPanel, theme }) => ({
-  height: inAddonPanel ? '100%' : 'auto',
-  display: 'flex',
-  border: inAddonPanel ? 'none' : `1px solid ${theme.appBorderColor}`,
-  borderRadius: inAddonPanel ? 0 : theme.appBorderRadius,
-  padding: inAddonPanel ? 0 : 40,
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  gap: 15,
-  background: theme.background.content,
-}));
-
-const Links = styled.div(({ theme }) => ({
-  display: 'flex',
-  fontSize: theme.typography.size.s2 - 1,
-  gap: 25,
-}));
 
 export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +30,7 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
   }
 
   return (
-    <Wrapper inAddonPanel={inAddonPanel}>
+    <div className={styles.wrapper} data-in-addon-panel={inAddonPanel || undefined}>
       <EmptyTabContent
         title="This story has no controls"
         description={
@@ -60,7 +41,7 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
           </>
         }
         footer={
-          <Links>
+          <div className={styles.links}>
             <Link
               href="https://storybook.js.org/docs/essentials/controls?ref=ui"
               target="_blank"
@@ -68,9 +49,9 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
             >
               <DocumentIcon /> Read docs
             </Link>
-          </Links>
+          </div>
         }
       />
-    </Wrapper>
+    </div>
   );
 };

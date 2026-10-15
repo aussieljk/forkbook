@@ -1,0 +1,4 @@
+.textarea {
+  overflow: visible;
+  max-height: var(--sb-textarea-max-height);
+}

@@ -14,29 +14,18 @@ import { CopyIcon, EditorIcon, EllipsisIcon } from '@storybook/icons';
 
 import { useStorybookApi } from 'storybook/manager-api';
 import type { API } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import { useCopyButton } from '../../../shared/useCopyButton.ts';
 import { Shortcut } from '../Shortcut.tsx';
 import { StatusButton } from './StatusButton.tsx';
 import type { ExcludesNull } from './Tree.tsx';
+import styles from './ContextMenu.module.css';
 
 const empty = {
   onMouseEnter: () => {},
   node: null,
 };
-
-const FloatingStatusButton = styled(StatusButton)({
-  background: 'var(--tree-node-background-hover)',
-  boxShadow: '0 0 5px 5px var(--tree-node-background-hover)',
-  position: 'absolute',
-  right: 0,
-  zIndex: 1,
-  '&:focus-visible': {
-    outlineOffset: -2,
-  },
-});
 
 export const useContextMenu = (
   context: API_HashEntry,
@@ -147,7 +136,8 @@ export const useContextMenu = (
           hasChrome={true}
           padding={0}
         >
-          <FloatingStatusButton
+          <StatusButton
+            className={styles.floatingStatusButton}
             data-displayed={isOpen ? 'on' : 'off'}
             data-testid="context-menu"
             ariaLabel="Open context menu"
@@ -156,7 +146,7 @@ export const useContextMenu = (
             onClick={handlers.onOpen}
           >
             {menuIcon}
-          </FloatingStatusButton>
+          </StatusButton>
         </PopoverProvider>
       ) : null,
     };

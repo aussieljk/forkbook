@@ -1,20 +1,9 @@
 import type { ReactElement } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { styled } from 'storybook/theming';
+import styles from './Optional.module.css';
 
-const Wrapper = styled.div({
-  display: 'inline-grid',
-  gridTemplateColumns: 'max-content',
-  overflow: 'hidden',
-});
-
-const Content = styled.div<{ isHidden: boolean | null }>(({ isHidden }) => ({
-  display: 'inline-block',
-  gridArea: '1/1',
-  opacity: isHidden === null ? 0 : 1,
-  visibility: isHidden ? 'hidden' : 'visible',
-}));
+const hiddenState = (hidden: boolean | null) => (hidden === null ? 'unknown' : String(hidden));
 
 export const Optional = ({
   content,
@@ -43,12 +32,16 @@ export const Optional = ({
   }, []);
 
   return (
-    <Wrapper ref={wrapperRef}>
-      <Content isHidden={hidden} ref={contentRef}>
+    <div className={styles.wrapper} ref={wrapperRef}>
+      <div className={styles.content} data-hidden={hiddenState(hidden)} ref={contentRef}>
         {content}
-      </Content>
+      </div>
 
-      {fallback && <Content isHidden={!hidden}>{fallback}</Content>}
-    </Wrapper>
+      {fallback && (
+        <div className={styles.content} data-hidden={hiddenState(!hidden)}>
+          {fallback}
+        </div>
+      )}
+    </div>
   );
 };

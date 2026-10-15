@@ -1,0 +1,87 @@
+.root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.viewport {
+  width: 100%;
+  height: 100%;
+
+  &[data-focusable]:focus {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: -2px;
+  }
+}
+
+.scrollbar {
+  display: flex;
+  /* ensures no selection */
+  user-select: none;
+  /* disable browser handling of all panning and zooming gestures on touch devices */
+  touch-action: none;
+  background: transparent;
+  transition: all 0.2s ease-out;
+  border-radius: var(--scrollbar-size);
+  z-index: 1;
+  /* Like the previous Radix scroll area, only show the scrollbar on hover or while scrolling. */
+  opacity: 0;
+  pointer-events: none;
+
+  &[data-hovering],
+  &[data-scrolling] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &[data-orientation='vertical'] {
+    width: var(--scrollbar-size);
+    padding-right: var(--scrollbar-offset);
+    margin-top: var(--scrollbar-offset);
+    margin-bottom: var(--scrollbar-offset);
+  }
+
+  &[data-orientation='horizontal'] {
+    flex-direction: column;
+    height: var(--scrollbar-size);
+    padding-bottom: var(--scrollbar-offset);
+    margin-left: var(--scrollbar-offset);
+    margin-right: var(--scrollbar-offset);
+  }
+}
+
+/* With both scrollbars, they meet in the corner. */
+.root[data-both] > .scrollbar {
+  &[data-orientation='vertical'] {
+    margin-bottom: 0;
+  }
+
+  &[data-orientation='horizontal'] {
+    margin-right: 0;
+  }
+}
+
+.thumb {
+  flex: 1;
+  background: var(--sb-text-muted-color);
+  opacity: 0.5;
+  border-radius: var(--scrollbar-size);
+  position: relative;
+  transition: opacity 0.2s ease-out;
+  z-index: 1;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  /* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+  }
+}

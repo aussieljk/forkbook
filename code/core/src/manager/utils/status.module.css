@@ -1,0 +1,19 @@
+/* Specificity hack, so the size wins over the icon styles of the callers */
+.loadingIcon.loadingIcon.loadingIcon {
+  width: 6px;
+  height: 6px;
+}
+
+.loadingIcon {
+  animation: glow 1.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

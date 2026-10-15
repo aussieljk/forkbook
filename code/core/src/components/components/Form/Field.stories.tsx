@@ -1,14 +1,11 @@
 import React from 'react';
 
 import { fn } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { Field as FieldComponent } from './Field.tsx';
 import { Input as InputComponent } from './Input.tsx';
 import { Select as SelectComponent } from './Select.tsx';
 import { Textarea as TextareaComponent } from './Textarea.tsx';
-
-const Flexed = styled(FieldComponent)({ display: 'flex' });
 
 export default {
   title: 'Form/Field',
@@ -20,28 +17,28 @@ export default {
 
 export const Input = {
   render: (args: any) => (
-    <Flexed {...args}>
+    <FieldComponent {...args}>
       <InputComponent value="Text" onChange={fn().mockName('onChange')} />
-    </Flexed>
+    </FieldComponent>
   ),
 };
 
 export const Select = {
   render: (args: any) => (
-    <Flexed {...args}>
+    <FieldComponent {...args}>
       <SelectComponent value="val2" onChange={fn().mockName('onChange')}>
         <option value="val1">Value 1</option>
         <option value="val2">Value 2</option>
         <option value="val3">Value 3</option>
       </SelectComponent>
-    </Flexed>
+    </FieldComponent>
   ),
 };
 
 export const Textarea = {
   render: (args: any) => (
-    <Flexed {...args}>
+    <FieldComponent {...args}>
       <TextareaComponent value="Content" onChange={fn().mockName('onChange')} />
-    </Flexed>
+    </FieldComponent>
   ),
 };

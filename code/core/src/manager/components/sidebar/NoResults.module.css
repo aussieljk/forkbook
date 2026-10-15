@@ -1,0 +1,21 @@
+.noResults {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-wrap: balance;
+  gap: 4px;
+  padding: 20px 0;
+  line-height: 18px;
+  font-size: var(--sb-size-s2);
+  color: var(--sb-color-default-text);
+
+  & small {
+    color: var(--sb-text-muted-color);
+    font-size: var(--sb-size-s1);
+  }
+
+  & button {
+    margin-top: 8px;
+    align-self: center;
+  }
+}

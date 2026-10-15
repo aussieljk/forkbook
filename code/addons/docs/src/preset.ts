@@ -69,7 +69,7 @@ async function webpack(webpackConfig: any = {}, options: DocsOptions) {
 
   /**
    * Add aliases for `@storybook/addon-docs` & `@storybook/blocks` These must be singletons to avoid
-   * multiple instances of react & emotion being loaded, both would cause the components to fail to
+   * multiple instances of react being loaded, which would cause the components to fail to
    * render.
    */
   if (Array.isArray(webpackConfig.resolve?.alias)) {

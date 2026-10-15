@@ -1,0 +1,128 @@
+.title {
+  color: var(--sb-color-default-text);
+  font-weight: var(--sb-weight-regular);
+
+  &[data-active] {
+    color: var(--sb-color-secondary);
+    font-weight: var(--sb-weight-bold);
+  }
+
+  &[data-loading] {
+    display: inline-block;
+    flex: none;
+    animation: glow 1.5s ease-in-out infinite;
+    color: transparent;
+    cursor: progress;
+  }
+
+  &[data-disabled] {
+    color: var(--sb-text-muted-color);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.right {
+  display: flex;
+
+  & svg {
+    height: 12px;
+    width: 12px;
+    margin: 3px 0;
+    vertical-align: top;
+  }
+}
+
+.center {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  /* required for overflow */
+  min-width: 0;
+
+  &[data-indented] {
+    margin-left: 24px;
+  }
+}
+
+.centerText {
+  font-size: 11px;
+  line-height: 14px;
+
+  &[data-active] {
+    color: var(--sb-color-secondary);
+  }
+
+  &[data-disabled] {
+    color: var(--sb-text-muted-color);
+  }
+}
+
+.left {
+  display: flex;
+  max-width: 14px;
+
+  &[data-active] {
+    color: var(--sb-color-secondary);
+  }
+}
+
+.item {
+  width: 100%;
+  /* required for overflow */
+  min-width: 0;
+  border: none;
+  border-radius: var(--sb-app-border-radius);
+  background: none;
+  font-size: var(--sb-size-s1);
+  transition: background 150ms ease-out;
+  color: var(--sb-color-dark);
+  text-decoration: none;
+  justify-content: space-between;
+  line-height: 18px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+
+  & > * + * {
+    padding-left: 10px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: 0;
+  }
+
+  &[data-clickable] {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--sb-background-hoverable);
+    }
+
+    &:hover svg {
+      opacity: 1;
+    }
+  }
+
+  &:is(label):has(input:not(:disabled)) {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--sb-background-hoverable);
+    }
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}

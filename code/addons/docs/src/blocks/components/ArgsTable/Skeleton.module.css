@@ -1,0 +1,59 @@
+.tableWrapper {
+  width: 100%;
+  border-spacing: 0;
+  color: var(--sb-color-default-text);
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--sb-app-border-color);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* The same column width ratios as the actual ArgsTable component */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 15px;
+  align-items: flex-start;
+
+  &[data-position='first'] {
+    width: 25%;
+    padding-left: 20px;
+  }
+
+  &[data-position='second'] {
+    width: 35%;
+  }
+
+  &[data-position='third'] {
+    width: 15%;
+  }
+
+  &[data-position='last'] {
+    width: 25%;
+    padding-right: 20px;
+  }
+}
+
+.skeletonText {
+  animation: glow 1.5s ease-in-out infinite;
+  background: var(--sb-app-border-color);
+  width: 100%;
+  height: 16px;
+  border-radius: 3px;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

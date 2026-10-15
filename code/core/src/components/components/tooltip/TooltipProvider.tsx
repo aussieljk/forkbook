@@ -10,6 +10,7 @@ import {
   PortalContainerContext,
   convertToBaseUiPlacement,
 } from '../shared/overlayHelpers.tsx';
+import { PortalTheme } from '../shared/PortalTheme.tsx';
 
 export interface TooltipProviderProps {
   /** Tooltips trigger on hover and focus by default. To trigger on focus only, set this to `true`. */
@@ -85,15 +86,17 @@ const TooltipProvider = ({
     <Tooltip.Root open={visible ?? isOpen} onOpenChange={onOpenChange} triggerId={triggerId}>
       <Tooltip.Trigger id={triggerId} delay={delayShow} closeDelay={delayHide} render={child} />
       <Tooltip.Portal container={portalContainer}>
-        <Tooltip.Positioner
-          {...convertToBaseUiPlacement(placement)}
-          sideOffset={offset}
-          style={{ zIndex: 100000 }}
-        >
-          <Tooltip.Popup role="tooltip" data-testid="tooltip" style={{ outline: 'none' }}>
-            {tooltip}
-          </Tooltip.Popup>
-        </Tooltip.Positioner>
+        <PortalTheme>
+          <Tooltip.Positioner
+            {...convertToBaseUiPlacement(placement)}
+            sideOffset={offset}
+            style={{ zIndex: 100000 }}
+          >
+            <Tooltip.Popup role="tooltip" data-testid="tooltip" style={{ outline: 'none' }}>
+              {tooltip}
+            </Tooltip.Popup>
+          </Tooltip.Positioner>
+        </PortalTheme>
       </Tooltip.Portal>
     </Tooltip.Root>
   );

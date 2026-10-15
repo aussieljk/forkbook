@@ -1,213 +1,153 @@
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps, CSSProperties, FC } from 'react';
 import React from 'react';
 
-import { type FunctionInterpolation, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { UseSymbol } from './IconSymbols.tsx';
 import { CollapseIcon } from './components/CollapseIcon.tsx';
+import styles from './TreeNode.module.css';
 
-export const TypeIcon = styled.svg<{
-  type: 'component' | 'story' | 'test' | 'group' | 'document' | 'heading';
-}>(({ theme, type }) => ({
-  width: 14,
-  height: 14,
-  flex: '0 0 auto',
-  color: (() => {
-    if (type === 'group') {
-      return theme.base === 'dark' ? theme.color.primary : theme.color.ultraviolet;
-    }
+type IconType = 'component' | 'story' | 'test' | 'group' | 'document' | 'heading';
 
-    if (type === 'component') {
-      return theme.color.secondary;
-    }
+export const TypeIcon = ({
+  type,
+  className,
+  ...props
+}: ComponentProps<'svg'> & { type: IconType }) => (
+  <svg className={clsx(styles.typeIcon, className)} data-type={type} {...props} />
+);
 
-    if (type === 'document') {
-      return theme.base === 'dark' ? theme.color.gold : '#ff8300';
-    }
-
-    if (type === 'story') {
-      return theme.color.seafoam;
-    }
-
-    if (type === 'heading') {
-      return theme.color.secondary;
-    }
-
-    if (type === 'test') {
-      return theme.color.green;
-    }
-
-    return 'currentColor';
-  })(),
-}));
-
-const commonNodeStyles: FunctionInterpolation<{ depth?: number; isExpandable?: boolean }> = ({
-  theme,
-  depth = 0,
-  isExpandable = false,
-}) => ({
-  flex: 1,
-  width: '100%',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'start',
-  textAlign: 'left',
-  textDecoration: 'none',
-  border: 'none',
-  color: 'inherit',
-  fontSize: `${theme.typography.size.s2}px`,
-  fontWeight: 'inherit',
-  background: 'transparent',
-  minHeight: 28,
-  borderRadius: 4,
-  gap: 6,
-  paddingLeft: `${(isExpandable ? 8 : 22) + depth * 18}px`,
-  paddingTop: 5,
-  paddingBottom: 4,
-  paddingRight: 6,
-  overflowWrap: 'break-word',
-  wordWrap: 'break-word',
-  wordBreak: 'break-word',
-});
-
-const BranchNode = styled.button<{
+interface BranchNodeProps extends ComponentProps<'button'> {
   depth?: number;
   isExpandable?: boolean;
   isExpanded?: boolean;
   isSelected?: boolean;
-}>(commonNodeStyles);
+}
 
-const LeafNode = styled.a<{ depth?: number }>(commonNodeStyles);
+interface LeafNodeProps extends ComponentProps<'a'> {
+  depth?: number;
+}
 
-export const RootNode = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginTop: 16,
-  marginBottom: 4,
-
-  '&:first-of-type': {
-    marginTop: 0,
-  },
+/** The indentation comes from the depth, through a CSS variable. */
+const nodeProps = (depth = 0, className?: string, style?: CSSProperties) => ({
+  className: clsx(styles.node, className),
+  style: { '--sb-depth': depth, ...style } as CSSProperties,
 });
 
-const Wrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 6,
-  marginTop: 2,
-});
+const BranchNode = ({
+  depth,
+  isExpandable = false,
+  className,
+  style,
+  ...props
+}: Omit<BranchNodeProps, 'isExpanded' | 'isSelected'>) => (
+  <button
+    data-expandable={isExpandable || undefined}
+    tabIndex={-1}
+    {...nodeProps(depth, className, style)}
+    {...props}
+  />
+);
 
-export const GroupNode: FC<
-  ComponentProps<typeof BranchNode> & { isExpanded?: boolean; isExpandable?: boolean }
-> = React.memo(function GroupNode({
+const LeafNode = ({ depth, className, style, ...props }: LeafNodeProps) => (
+  <a tabIndex={-1} rel="canonical" {...nodeProps(depth, className, style)} {...props} />
+);
+
+export const RootNode = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div className={clsx(styles.rootNode, className)} {...props} />
+);
+
+const Icons = ({
+  type,
+  size,
+  isExpandable = false,
+  isExpanded = false,
+}: {
+  type: 'component' | 'story' | 'test' | 'group' | 'document';
+  size: string;
+  isExpandable?: boolean;
+  isExpanded?: boolean;
+}) => (
+  <div className={styles.wrapper}>
+    {isExpandable && <CollapseIcon isExpanded={isExpanded} />}
+    <TypeIcon viewBox="0 0 14 14" width={size} height={size} type={type}>
+      <UseSymbol type={type} />
+    </TypeIcon>
+  </div>
+);
+
+export const GroupNode: FC<BranchNodeProps> = React.memo(function GroupNode({
   children,
   isExpanded = false,
   isExpandable = false,
+  isSelected,
   ...props
 }) {
   return (
-    <BranchNode isExpandable={isExpandable} tabIndex={-1} {...props}>
-      <Wrapper>
-        {isExpandable && <CollapseIcon isExpanded={isExpanded} />}
-        <TypeIcon viewBox="0 0 14 14" width="14" height="14" type="group">
-          <UseSymbol type="group" />
-        </TypeIcon>
-      </Wrapper>
+    <BranchNode isExpandable={isExpandable} {...props}>
+      <Icons type="group" size="14" isExpandable={isExpandable} isExpanded={isExpanded} />
       {children}
     </BranchNode>
   );
 });
 
-export const ComponentNode: FC<ComponentProps<typeof BranchNode>> = React.memo(
-  function ComponentNode({
-    theme,
-    children,
-    isExpanded = false,
-    isExpandable = false,
-    isSelected,
-    ...props
-  }) {
-    return (
-      <BranchNode isExpandable={isExpandable} tabIndex={-1} {...props}>
-        <Wrapper>
-          {isExpandable && <CollapseIcon isExpanded={isExpanded} />}
-          <TypeIcon viewBox="0 0 14 14" width="12" height="12" type="component">
-            <UseSymbol type="component" />
-          </TypeIcon>
-        </Wrapper>
-        {children}
-      </BranchNode>
-    );
-  }
-);
+export const ComponentNode: FC<BranchNodeProps> = React.memo(function ComponentNode({
+  children,
+  isExpanded = false,
+  isExpandable = false,
+  isSelected,
+  ...props
+}) {
+  return (
+    <BranchNode isExpandable={isExpandable} {...props}>
+      <Icons type="component" size="12" isExpandable={isExpandable} isExpanded={isExpanded} />
+      {children}
+    </BranchNode>
+  );
+});
 
-export const DocumentNode: FC<ComponentProps<typeof LeafNode> & { docsMode?: boolean }> =
-  React.memo(function DocumentNode({ theme, children, docsMode, ...props }) {
+export const DocumentNode: FC<LeafNodeProps & { docsMode?: boolean }> = React.memo(
+  function DocumentNode({ children, docsMode, ...props }) {
     return (
-      <LeafNode tabIndex={-1} rel="canonical" {...props}>
-        <Wrapper>
-          <TypeIcon viewBox="0 0 14 14" width="12" height="12" type="document">
-            <UseSymbol type="document" />
-          </TypeIcon>
-        </Wrapper>
+      <LeafNode {...props}>
+        <Icons type="document" size="12" />
         {children}
       </LeafNode>
     );
-  });
-
-export const StoryBranchNode: FC<ComponentProps<typeof BranchNode>> = React.memo(
-  function StoryNode({
-    theme,
-    children,
-    isExpandable = false,
-    isExpanded = false,
-    isSelected,
-    ...props
-  }) {
-    return (
-      <BranchNode isExpandable={isExpandable} tabIndex={-1} {...props}>
-        <Wrapper>
-          {isExpandable && <CollapseIcon isExpanded={isExpanded} />}
-          <TypeIcon viewBox="0 0 14 14" width="12" height="12" type="story">
-            <UseSymbol type="story" />
-          </TypeIcon>
-        </Wrapper>
-        {children}
-      </BranchNode>
-    );
   }
 );
 
-export const StoryLeafNode: FC<ComponentProps<typeof LeafNode>> = React.memo(function StoryNode({
-  theme,
+export const StoryBranchNode: FC<BranchNodeProps> = React.memo(function StoryNode({
+  children,
+  isExpandable = false,
+  isExpanded = false,
+  isSelected,
+  ...props
+}) {
+  return (
+    <BranchNode isExpandable={isExpandable} {...props}>
+      <Icons type="story" size="12" isExpandable={isExpandable} isExpanded={isExpanded} />
+      {children}
+    </BranchNode>
+  );
+});
+
+export const StoryLeafNode: FC<LeafNodeProps> = React.memo(function StoryNode({
   children,
   ...props
 }) {
   return (
-    <LeafNode tabIndex={-1} rel="canonical" {...props}>
-      <Wrapper>
-        <TypeIcon viewBox="0 0 14 14" width="12" height="12" type="story">
-          <UseSymbol type="story" />
-        </TypeIcon>
-      </Wrapper>
+    <LeafNode {...props}>
+      <Icons type="story" size="12" />
       {children}
     </LeafNode>
   );
 });
 
-export const TestNode: FC<ComponentProps<typeof LeafNode>> = React.memo(function TestNode({
-  theme,
-  children,
-  ...props
-}) {
+export const TestNode: FC<LeafNodeProps> = React.memo(function TestNode({ children, ...props }) {
   return (
-    <LeafNode tabIndex={-1} rel="canonical" {...props}>
-      <Wrapper>
-        <TypeIcon viewBox="0 0 14 14" width="12" height="12" type="test">
-          <UseSymbol type="test" />
-        </TypeIcon>
-      </Wrapper>
+    <LeafNode {...props}>
+      <Icons type="test" size="12" />
       {children}
     </LeafNode>
   );

@@ -1,0 +1,187 @@
+.markdownWrapper {
+  color: var(--sb-color-default-text);
+
+  & p {
+    margin: 0;
+  }
+
+  & p + p {
+    margin-top: 10px;
+  }
+
+  & code {
+    color: inherit;
+    vertical-align: text-bottom;
+    font-size: 0.85em;
+    margin: 0;
+    padding: 0 4px;
+    background: transparent;
+    border: none;
+    box-shadow: inset 0 0 0 1px var(--sb-app-border-color);
+    border-radius: var(--sb-app-border-radius);
+  }
+}
+
+/*
+ * `100dvh` fills the manager's page cell and also works in the addon's own fullscreen stories, where
+ * #storybook-root has no height. The card list below the fixed header is the single scroll container.
+ */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--sb-background-app);
+  color: var(--sb-color-default-text);
+  font-family: var(--sb-font-base);
+  font-size: var(--sb-size-s2);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  color: var(--sb-color-default-text);
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Wrapper that gives the overlay ScrollArea a bounded height to scroll within. */
+.listScroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+
+  /*
+   * Cards must keep their intrinsic height so the list scrolls; without this the default flex-shrink
+   * collapses them to fit the viewport and Card's overflow:hidden clips the content at the bottom.
+   */
+  & > * {
+    flex-shrink: 0;
+  }
+}
+
+.summaryCard {
+  display: flex;
+  align-items: flex-start;
+  padding: 9px 12px;
+  gap: 10px;
+
+  & svg {
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+}
+
+.summaryContent {
+  flex: 1;
+  min-width: 0;
+
+  /*
+   * Keep the "Summary:" heading and the first description paragraph on the same line, matching the
+   * previous inline "**Summary:** …" rendering.
+   */
+  & > p:first-of-type {
+    display: inline;
+  }
+
+  /*
+   * A real heading for the summary label, styled to look identical to the inline bold "Summary:" text
+   * it replaces. Nested to outrank the DocumentWrapper's `h2` rule, which would otherwise enlarge this
+   * and add a bottom border.
+   */
+  & .summaryHeading {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    font-weight: var(--sb-weight-bold);
+    line-height: inherit;
+    color: inherit;
+    border: none;
+  }
+}
+
+/*
+ * A plain clickable row, not a semantic control: making the whole header toggle is just a convenience
+ * affordance for pointer users. The real accessible control is the chevron button inside, which
+ * carries the aria-label and aria-expanded state for assistive technologies.
+ */
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px 6px 12px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.cardTitle {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: inherit;
+  font-weight: var(--sb-weight-bold);
+  line-height: 20px;
+  color: var(--sb-color-default-text);
+}
+
+.cardControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.cardCount {
+  min-width: 28px;
+  font-family: var(--sb-font-mono);
+  font-size: calc(var(--sb-size-s2) - 1px);
+  line-height: 20px;
+  text-align: center;
+  color: var(--sb-text-muted-color);
+}
+
+.toggleChevronIcon {
+  transition: transform 160ms ease;
+}
+
+.cardRationale {
+  color: var(--sb-text-muted-color);
+  margin: 0 12px;
+}
+
+.footer {
+  color: var(--sb-text-muted-color);
+  padding: 10px 22px 42px;
+  font-size: var(--sb-size-s2);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.emptyMessage {
+  margin: 0;
+  color: var(--sb-text-muted-color);
+  padding: 10px 10px 30px;
+  font-size: var(--sb-size-s2);
+  text-align: center;
+  text-wrap: balance;
+}

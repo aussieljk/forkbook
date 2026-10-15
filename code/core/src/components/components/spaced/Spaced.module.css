@@ -1,0 +1,34 @@
+/* The amounts come from inline CSS variables, in units of the layout margin. */
+.col {
+  display: inline-block;
+  vertical-align: inherit;
+
+  & > * {
+    margin-left: calc(var(--spaced-col) * var(--sb-layout-margin));
+    vertical-align: inherit;
+  }
+
+  & > *:first-child {
+    margin-left: 0;
+  }
+}
+
+.row {
+  & > * {
+    margin-top: calc(var(--spaced-row) * var(--sb-layout-margin));
+  }
+
+  & > *:first-child {
+    margin-top: 0;
+  }
+}
+
+.outerCol {
+  margin-left: calc(var(--spaced-outer) * var(--sb-layout-margin));
+  margin-right: calc(var(--spaced-outer) * var(--sb-layout-margin));
+}
+
+.outerRow {
+  margin-top: calc(var(--spaced-outer) * var(--sb-layout-margin));
+  margin-bottom: calc(var(--spaced-outer) * var(--sb-layout-margin));
+}

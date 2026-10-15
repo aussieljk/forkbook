@@ -1,0 +1,12 @@
+.separator {
+  display: inline-block;
+  width: 1px;
+  height: 20px;
+  background: var(--sb-app-border-color);
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.separator:not([data-force]) + .separator:not([data-force]) {
+  display: none;
+}

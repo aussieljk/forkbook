@@ -1,0 +1,57 @@
+.wrapper {
+  box-shadow: var(--sb-app-border-color) 0 -1px 0 0 inset;
+  background: var(--sb-background-app);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.controlsGroup {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 6px;
+}
+
+.iconButton {
+  color: var(--sb-text-muted-color);
+}
+
+.rewindButton {
+  composes: iconButton;
+  margin-inline-start: 3px;
+}
+
+.jumpToEndButton {
+  border-radius: 4px;
+  padding: 6px;
+  color: var(--sb-text-muted-color);
+  margin-inline: 3px;
+  line-height: 12px;
+
+  &:not(:disabled):hover,
+  &:not(:disabled):focus-visible {
+    color: var(--sb-color-secondary);
+  }
+}
+
+.openInEditorButton {
+  color: var(--sb-color-secondary);
+  font-weight: var(--sb-weight-bold);
+  justify-content: flex-end;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.location {
+  color: var(--sb-text-muted-color);
+  cursor: default;
+  font-weight: var(--sb-weight-regular);
+  justify-content: flex-end;
+  text-align: right;
+  white-space: nowrap;
+  margin: 0;
+  font-size: 13px;
+}

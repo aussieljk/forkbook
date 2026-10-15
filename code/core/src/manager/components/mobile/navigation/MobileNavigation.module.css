@@ -1,0 +1,48 @@
+.container {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: var(--sb-bar-bg);
+  border-top: 1px solid var(--sb-app-border-color);
+}
+
+.bottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 6px;
+
+  /* Because Popper.js's tooltip is creating extra div layers, we have to
+   * punch through them to configure the button to ellipsize. */
+  & > *:first-child {
+    /* 6px padding * 2 + 28px for the orientation button */
+    max-width: calc(100% - 40px);
+
+    & > button {
+      max-width: 100%;
+    }
+
+    & > button p {
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.bottomBarButton {
+  -webkit-line-clamp: 1;
+  flex-shrink: 1;
+
+  & p {
+    text-overflow: ellipsis;
+  }
+}
+
+.text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

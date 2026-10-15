@@ -5,46 +5,10 @@ import { Button, Modal } from 'storybook/internal/components';
 import { SyncIcon } from '@storybook/icons';
 
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { DOCUMENTATION_FATAL_ERROR_LINK } from '../constants.ts';
 import type { ErrorLike, StoreState } from '../types.ts';
-
-const ModalBar = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '6px 6px 6px 20px',
-});
-
-const ModalActionBar = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-});
-
-const ModalTitle = styled(Modal.Title)(({ theme: { typography } }) => ({
-  fontSize: typography.size.s2,
-  fontWeight: typography.weight.bold,
-}));
-
-const ModalStackTrace = styled.pre(({ theme }) => ({
-  whiteSpace: 'pre-wrap',
-  wordWrap: 'break-word',
-  userSelect: 'text',
-  overflow: 'auto',
-  maxHeight: '60vh',
-  margin: 0,
-  padding: `20px`,
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: '12px',
-  borderTop: `1px solid ${theme.appBorderColor}`,
-  borderRadius: 0,
-}));
-
-const TroubleshootLink = styled.a(({ theme }) => ({
-  color: theme.color.defaultText,
-}));
+import styles from './GlobalErrorModal.module.css';
 
 export const GlobalErrorContext = React.createContext<{
   isModalOpen: boolean;
@@ -149,9 +113,9 @@ export function GlobalErrorModal({ onRerun, storeState }: GlobalErrorModalProps)
 
   return (
     <Modal ariaLabel="Storybook Test Error Details" onOpenChange={setModalOpen} open={isModalOpen}>
-      <ModalBar>
-        <ModalTitle>Storybook Test Error Details</ModalTitle>
-        <ModalActionBar>
+      <div className={styles.bar}>
+        <Modal.Title className={styles.title}>Storybook Test Error Details</Modal.Title>
+        <div className={styles.actionBar}>
           <Button onClick={onRerun} variant="ghost" ariaLabel={false}>
             <SyncIcon />
             Rerun
@@ -162,17 +126,17 @@ export function GlobalErrorModal({ onRerun, storeState }: GlobalErrorModalProps)
             </a>
           </Button>
           <Modal.Close />
-        </ModalActionBar>
-      </ModalBar>
-      <ModalStackTrace>
+        </div>
+      </div>
+      <pre className={styles.stackTrace}>
         {content}
         <br />
         <br />
         Troubleshoot:{' '}
-        <TroubleshootLink target="_blank" href={troubleshootURL}>
+        <a className={styles.troubleshootLink} target="_blank" href={troubleshootURL}>
           {troubleshootURL}
-        </TroubleshootLink>
-      </ModalStackTrace>
+        </a>
+      </pre>
     </Modal>
   );
 }

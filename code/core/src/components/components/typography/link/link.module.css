@@ -1,0 +1,133 @@
+/*
+ * The state selectors are in :where() so each rule has the specificity of one class. Components
+ * that add a class to a Link can then override these styles.
+ */
+.link {
+  display: inline-block;
+  transition: all 150ms ease-out;
+  text-decoration: none;
+  color: var(--sb-color-secondary);
+
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    color: hsl(from var(--sb-color-secondary) h s calc(l - 7));
+
+    & svg path:not([fill]) {
+      fill: hsl(from var(--sb-color-secondary) h s calc(l - 7));
+    }
+  }
+
+  &:active {
+    color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+
+    & svg path:not([fill]) {
+      fill: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: 2px;
+    border-radius: var(--sb-input-border-radius);
+    /* Should ensure focus outline gets drawn above next sibling */
+    z-index: 1;
+  }
+
+  & svg {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    vertical-align: text-top;
+    position: relative;
+    bottom: -0.125em;
+    margin-right: 0.4em;
+
+    & path {
+      fill: var(--sb-color-secondary);
+    }
+  }
+}
+
+.link:where([data-secondary], [data-tertiary]) {
+  --link-color: var(--sb-text-muted-color);
+  color: var(--link-color);
+
+  & svg path:not([fill]) {
+    fill: var(--link-color);
+  }
+
+  &:hover,
+  &:active {
+    color: var(--sb-color-secondary);
+
+    & svg path:not([fill]) {
+      fill: var(--sb-color-secondary);
+    }
+  }
+}
+
+.link:where([data-tertiary]) {
+  --link-color: var(--sb-color-dark);
+}
+
+.link:where([data-nochrome]) {
+  color: inherit;
+
+  &:hover,
+  &:active {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+.link:where([data-inverse]) {
+  color: var(--sb-color-lightest);
+
+  &:not([fill]) {
+    fill: var(--sb-color-lightest);
+  }
+
+  &:hover {
+    color: var(--sb-color-lighter);
+
+    & svg path:not([fill]) {
+      fill: var(--sb-color-lighter);
+    }
+  }
+
+  &:active {
+    color: var(--sb-color-light);
+
+    & svg path:not([fill]) {
+      fill: var(--sb-color-light);
+    }
+  }
+}
+
+.link:where([data-button]) {
+  border: 0;
+  border-radius: var(--sb-input-border-radius);
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.inner:where([data-with-arrow]) > svg:last-of-type {
+  height: 0.7em;
+  width: 0.7em;
+  margin-right: 0;
+  margin-left: 0.25em;
+  bottom: auto;
+  vertical-align: inherit;
+}
+
+.inner:where([data-contains-icon]) svg {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  position: relative;
+  bottom: 0;
+  margin-right: 0;
+}

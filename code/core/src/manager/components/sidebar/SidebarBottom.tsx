@@ -13,11 +13,11 @@ import {
   internal_fullTestProviderStore,
 } from '#manager-stores';
 import { type API, type State, useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import type { TestProviderStateByProviderId } from '../../../shared/test-provider-store/index.ts';
 import { NotificationList } from '../notifications/NotificationList.tsx';
 import { TestingWidget } from './TestingWidget.tsx';
+import styles from './SidebarBottom.module.css';
 
 // This ID is used dynamically add/remove space at the bottom to prevent overlapping the main sidebar content.
 const SIDEBAR_BOTTOM_SPACER_ID = 'sidebar-bottom-spacer';
@@ -48,36 +48,6 @@ const getFilter = (warningsActive = false, errorsActive = false) => {
   }
   return filterNone;
 };
-
-const Spacer = styled.div({
-  pointerEvents: 'none',
-});
-
-const Content = styled.div(({ theme }) => ({
-  position: 'absolute',
-  zIndex: 1,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  padding: 12,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 12,
-  color: theme.color.defaultText,
-  fontSize: theme.typography.size.s1,
-
-  '&:empty': {
-    display: 'none',
-  },
-
-  '--card-box-shadow': `0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px ${theme.background.app}`,
-
-  // Integrators can use these to style their custom additions
-  '--sb-sidebar-bottom-card-background': theme.background.content,
-  '--sb-sidebar-bottom-card-border': `1px solid ${theme.appBorderColor}`,
-  '--sb-sidebar-bottom-card-border-radius': `${theme.appBorderRadius + 1}px`,
-  '--sb-sidebar-bottom-card-box-shadow': `0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px ${theme.background.app}`,
-}));
 
 interface SidebarBottomProps {
   api: API;
@@ -137,8 +107,8 @@ export const SidebarBottomBase = ({
 
   return (
     <Fragment>
-      <Spacer id={SIDEBAR_BOTTOM_SPACER_ID} ref={spacerRef}></Spacer>
-      <Content id={SIDEBAR_BOTTOM_WRAPPER_ID} ref={wrapperRef}>
+      <div className={styles.spacer} id={SIDEBAR_BOTTOM_SPACER_ID} ref={spacerRef}></div>
+      <div className={styles.content} id={SIDEBAR_BOTTOM_WRAPPER_ID} ref={wrapperRef}>
         <NotificationList notifications={notifications} clearNotification={api.clearNotification} />
         {isDevelopment && (
           <TestingWidget
@@ -166,7 +136,7 @@ export const SidebarBottomBase = ({
             }}
           />
         )}
-      </Content>
+      </div>
     </Fragment>
   );
 };

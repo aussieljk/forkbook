@@ -1,129 +1,12 @@
-import type { FunctionComponent } from 'react';
+import type { CSSProperties, FunctionComponent } from 'react';
 import React from 'react';
 
 import { ResetWrapper } from 'storybook/internal/components';
 
-import { transparentize } from 'polished';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
-
-const ItemTitle = styled.div(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-  color: theme.color.defaultText,
-}));
-
-const ItemSubtitle = styled.div(({ theme }) => ({
-  color: transparentize(0.3, theme.color.defaultText),
-}));
-
-const ItemDescription = styled.div({
-  flex: '0 0 30%',
-  lineHeight: '20px',
-  marginTop: 5,
-});
-
-const SwatchLabel = styled.div(({ theme }) => ({
-  flex: 1,
-  textAlign: 'center',
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1,
-  lineHeight: 1,
-  overflow: 'hidden',
-  color: transparentize(0.3, theme.color.defaultText),
-
-  '> div': {
-    display: 'inline-block',
-    overflow: 'hidden',
-    maxWidth: '100%',
-    textOverflow: 'ellipsis',
-  },
-
-  span: {
-    display: 'block',
-    marginTop: 2,
-  },
-}));
-
-const SwatchLabels = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-});
-
-interface SwatchProps {
-  background: string;
-}
-
-const Swatch = styled.div<SwatchProps>(({ background }) => ({
-  position: 'relative',
-  flex: 1,
-
-  '&::before': {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background,
-    content: '""',
-  },
-}));
-
-const SwatchColors = styled.div(({ theme }) => ({
-  ...getBlockBackgroundStyle(theme),
-  display: 'flex',
-  flexDirection: 'row',
-  height: 50,
-  marginBottom: 5,
-  overflow: 'hidden',
-  backgroundColor: 'white',
-  backgroundImage: `repeating-linear-gradient(-45deg, #ccc, #ccc 1px, #fff 1px, #fff 16px)`,
-  backgroundClip: 'padding-box',
-}));
-
-const SwatchSpecimen = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  flex: 1,
-  position: 'relative',
-  marginBottom: 30,
-});
-
-const Swatches = styled.div({
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'row',
-});
-
-const Item = styled.div({
-  display: 'flex',
-  alignItems: 'flex-start',
-});
-
-const ListName = styled.div({
-  flex: '0 0 30%',
-});
-
-const ListSwatches = styled.div({
-  flex: 1,
-});
-
-const ListHeading = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingBottom: 20,
-  fontWeight: theme.typography.weight.bold,
-  color: transparentize(0.3, theme.color.defaultText),
-}));
-
-const List = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2,
-  lineHeight: `20px`,
-
-  display: 'flex',
-  flexDirection: 'column',
-}));
+import { blockBackground } from './BlockBackgroundStyles';
+import styles from './ColorPalette.module.css';
 
 type Colors = string[] | { [key: string]: string };
 
@@ -134,27 +17,38 @@ interface ColorItemProps {
 }
 
 function renderSwatch(color: string, index: number) {
-  return <Swatch key={`${color}-${index}`} title={color} background={color} />;
+  return (
+    <div
+      key={`${color}-${index}`}
+      className={styles.swatch}
+      title={color}
+      style={{ '--swatch-background': color } as CSSProperties}
+    />
+  );
 }
 
 function renderSwatchLabel(color: string, index: number, colorDescription?: string) {
   return (
-    <SwatchLabel key={`${color}-${index}`} title={color}>
+    <div key={`${color}-${index}`} className={styles.swatchLabel} title={color}>
       <div>
         {color}
         {colorDescription && <span>{colorDescription}</span>}
       </div>
-    </SwatchLabel>
+    </div>
   );
 }
 
 function renderSwatchSpecimen(colors: Colors) {
   if (Array.isArray(colors)) {
     return (
-      <SwatchSpecimen>
-        <SwatchColors>{colors.map((color, index) => renderSwatch(color, index))}</SwatchColors>
-        <SwatchLabels>{colors.map((color, index) => renderSwatchLabel(color, index))}</SwatchLabels>
-      </SwatchSpecimen>
+      <div className={styles.swatchSpecimen}>
+        <div className={clsx(blockBackground, styles.swatchColors)}>
+          {colors.map((color, index) => renderSwatch(color, index))}
+        </div>
+        <div className={styles.swatchLabels}>
+          {colors.map((color, index) => renderSwatchLabel(color, index))}
+        </div>
+      </div>
     );
   }
 
@@ -168,10 +62,10 @@ function renderSwatchSpecimen(colors: Colors) {
   }
 
   return (
-    <SwatchSpecimen>
-      <SwatchColors>{swatchElements}</SwatchColors>
-      <SwatchLabels>{labelElements}</SwatchLabels>
-    </SwatchSpecimen>
+    <div className={styles.swatchSpecimen}>
+      <div className={clsx(blockBackground, styles.swatchColors)}>{swatchElements}</div>
+      <div className={styles.swatchLabels}>{labelElements}</div>
+    </div>
   );
 }
 
@@ -181,13 +75,13 @@ function renderSwatchSpecimen(colors: Colors) {
  */
 export const ColorItem: FunctionComponent<ColorItemProps> = ({ title, subtitle, colors }) => {
   return (
-    <Item>
-      <ItemDescription>
-        <ItemTitle>{title}</ItemTitle>
-        <ItemSubtitle>{subtitle}</ItemSubtitle>
-      </ItemDescription>
-      <Swatches>{renderSwatchSpecimen(colors)}</Swatches>
-    </Item>
+    <div className={styles.item}>
+      <div className={styles.itemDescription}>
+        <div className={styles.itemTitle}>{title}</div>
+        <div className={styles.itemSubtitle}>{subtitle}</div>
+      </div>
+      <div className={styles.swatches}>{renderSwatchSpecimen(colors)}</div>
+    </div>
   );
 };
 
@@ -201,12 +95,12 @@ interface ColorPaletteProps {
  */
 export const ColorPalette: FunctionComponent<ColorPaletteProps> = ({ children, ...props }) => (
   <ResetWrapper>
-    <List {...props} className="docblock-colorpalette sb-unstyled">
-      <ListHeading>
-        <ListName>Name</ListName>
-        <ListSwatches>Swatches</ListSwatches>
-      </ListHeading>
+    <div {...props} className={clsx(styles.list, 'docblock-colorpalette sb-unstyled')}>
+      <div className={styles.listHeading}>
+        <div className={styles.listName}>Name</div>
+        <div className={styles.listSwatches}>Swatches</div>
+      </div>
       {children}
-    </List>
+    </div>
   </ResetWrapper>
 );

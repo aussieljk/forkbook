@@ -1,0 +1,62 @@
+.container {
+  background: var(--sb-background-content);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  max-width: 100%;
+  display: flex;
+  z-index: 1;
+}
+
+/* Aligns to the end of a wrapping row flex container */
+.container[data-flex-layout] {
+  position: static;
+  max-width: none;
+  z-index: auto;
+  display: inline-flex;
+  margin-inline-start: auto;
+  align-self: flex-end;
+}
+
+.actionButton {
+  margin: 0;
+  border: 0 none;
+  padding: 4px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--sb-color-default-text);
+  background: var(--sb-background-content);
+  font-size: 12px;
+  line-height: 16px;
+  font-family: var(--sb-font-base);
+  font-weight: var(--sb-weight-bold);
+  border-top: 1px solid var(--sb-app-border-color);
+  border-left: 1px solid var(--sb-app-border-color);
+  margin-left: -1px;
+  border-radius: 4px 0 0 0;
+
+  &:not(:last-child) {
+    border-right: 1px solid var(--sb-app-border-color);
+  }
+
+  & + * {
+    border-left: 1px solid var(--sb-app-border-color);
+    border-radius: 0;
+  }
+
+  &:focus {
+    box-shadow: var(--sb-color-secondary) 0 -3px 0 0 inset;
+    outline: 0 none;
+
+    @media (forced-colors: active) {
+      outline: 2px solid ButtonBorder;
+      outline-offset: 2px;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}

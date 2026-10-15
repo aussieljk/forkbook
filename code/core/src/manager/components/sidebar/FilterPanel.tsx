@@ -6,7 +6,7 @@ import type { StatusValue, StatusesByStoryIdAndTypeId, StoryIndex } from 'storyb
 import { BatchAcceptIcon, DocumentIcon, ShareAltIcon, SweepIcon, UndoIcon } from '@storybook/icons';
 
 import type { API } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import { getStatus } from '../../utils/status.tsx';
 import { createFilterLink, StatusIcon } from './FilterPanelLink.tsx';
@@ -17,15 +17,7 @@ import {
   useStatusFilterEntries,
   useTagFilterEntries,
 } from './useFilterData.tsx';
-
-const Wrapper = styled.div({
-  minWidth: 240,
-  maxWidth: 300,
-  maxHeight: 15.5 * 32 + 8, // 15.5 items at 32px each + 8px padding
-  overflow: 'hidden',
-  overflowY: 'auto',
-  scrollbarWidth: 'thin',
-});
+import styles from './FilterPanel.module.css';
 
 export interface FilterPanelProps {
   api: API;
@@ -95,7 +87,7 @@ export const FilterPanel = ({
       const icon = isRelated ? (
         <span aria-hidden="true" />
       ) : statusIconEl ? (
-        <StatusIcon $iconColor={iconColor}>{statusIconEl}</StatusIcon>
+        <StatusIcon iconColor={iconColor}>{statusIconEl}</StatusIcon>
       ) : null;
 
       return {
@@ -179,7 +171,7 @@ export const FilterPanel = ({
   const hasItems = builtInItems.length > 0 || tagItems.length > 0;
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       {hasItems && (
         <ActionList as="div">
           <ActionList.Item as="div">
@@ -275,6 +267,6 @@ export const FilterPanel = ({
           </ActionList.Item>
         </ActionList>
       )}
-    </Wrapper>
+    </div>
   );
 };

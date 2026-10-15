@@ -1,12 +1,20 @@
-import type { ComponentProps, FC, HTMLAttributes, ReactElement, ReactNode } from 'react';
-import React, { useId, useState } from 'react';
+import type {
+  CSSProperties,
+  ComponentProps,
+  FC,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from 'react';
+import React, { forwardRef, useId, useState } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { Bar } from '../Bar/Bar.tsx';
 import { EmptyTabContent } from './EmptyTabContent.tsx';
 import { TabList } from './TabList.tsx';
 import { TabPanel } from './TabPanel.tsx';
+import styles from './TabsView.module.css';
 
 export interface TabProps {
   id: string;
@@ -61,21 +69,20 @@ export const useTabsState = ({
   };
 };
 
-export const Container = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-});
+/** Turns a number into pixels, like React does for inline styles. */
+export const toLength = (value: string | number) =>
+  typeof value === 'number' ? `${value}px` : value;
 
-export const FlexTabPanel = styled(TabPanel)(() => ({
-  flex: 1,
-  minHeight: 0,
-}));
+export const Container = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={clsx(styles.container, className)} {...props} />
+  )
+);
+Container.displayName = 'Container';
 
-const FlexTabList = styled(TabList)<{ $simulatedGap: string | number }>(({ $simulatedGap }) => ({
-  flex: '1 1 0%',
-  '&:has(.tablist-has-scroll)': { marginInlineEnd: $simulatedGap },
-}));
+export const FlexTabPanel = ({ className, ...props }: ComponentProps<typeof TabPanel>) => (
+  <TabPanel className={clsx(styles.flexTabPanel, className)} {...props} />
+);
 
 export interface TabsViewProps extends HTMLAttributes<HTMLDivElement> {
   /** List of tabs and their associated panel. */
@@ -152,27 +159,26 @@ export const TabsView: FC<TabsViewProps> = ({
         scrollable={false}
         border
         backgroundColor={backgroundColor}
+        // A11y: the tools must be before the tab list in the DOM for correct tab order. The
+        // `bar` class puts them after it, without a wrapper div, leading to better flex behavior
+        // on tools for our callees (e.g. containerType: 'inline-size' in a11y-addon).
+        className={styles.bar}
         innerStyle={{
           display: 'flex',
           justifyContent: 'space-between',
           paddingInlineStart: 0,
           paddingInlineEnd: 10,
-          // A11y: the tools must be before the tab list in the DOM for correct tab order.
-          // This lets us control order without adding a wrapper div, leading to better flex
-          // behavior on tools for our callees (e.g. containerType: 'inline-size' in a11y-addon).
-          '> *:not(:last-child)': {
-            order: 2,
-          },
-          '> *': {
-            flexShrink: 0,
-          },
           ...barInnerStyle,
           gap: 0,
         }}
       >
         {tools}
         {hasContent ? (
-          <FlexTabList state={state} $simulatedGap={barInnerStyle?.gap ?? 6} />
+          <TabList
+            className={styles.flexTabList}
+            style={{ '--sb-tabs-gap': toLength(barInnerStyle?.gap ?? 6) } as CSSProperties}
+            state={state}
+          />
         ) : (
           <div />
         )}

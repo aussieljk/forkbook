@@ -1,0 +1,3 @@
+:global(#storybook-root [data-side='left']) > .doubleThemeRenderingHack {
+  text-align: right;
+}

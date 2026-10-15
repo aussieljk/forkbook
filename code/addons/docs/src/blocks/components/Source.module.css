@@ -1,0 +1,66 @@
+/* DocBlocks-specific styling and overrides */
+.syntaxHighlighter {
+  font-size: calc(var(--sb-size-s2) - 1px);
+  line-height: 19px;
+  margin: 25px 0 40px;
+  border-radius: var(--sb-app-border-radius);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+
+  & pre.prismjs {
+    padding: 20px;
+    background: inherit;
+  }
+}
+
+/*
+ * Top-right rather than bottom-right: the copy action bar already owns the bottom-right corner of a
+ * copyable block.
+ */
+.snippetWarning {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+}
+
+.sourceWrapper {
+  position: relative;
+}
+
+.skeletonWrapper {
+  background: var(--sb-background-content);
+  border-radius: var(--sb-app-border-radius);
+  border: 1px solid var(--sb-app-border-color);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+  margin: 25px 0 40px;
+  padding: 20px 20px 20px 22px;
+}
+
+:where([data-sb-theme='dark']) {
+  & .syntaxHighlighter,
+  & .skeletonWrapper {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px 0;
+  }
+}
+
+.skeletonPlaceholder {
+  animation: glow 1.5s ease-in-out infinite;
+  background: var(--sb-app-border-color);
+  height: 17px;
+  margin-top: 1px;
+  width: 60%;
+
+  &:first-child {
+    margin: 0;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

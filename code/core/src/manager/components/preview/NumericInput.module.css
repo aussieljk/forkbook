@@ -1,0 +1,67 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  padding-inline: 9px;
+  font-size: var(--sb-size-s1);
+  color: var(--sb-text-muted-color);
+  background: var(--sb-input-background);
+  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
+  border-radius: var(--sb-input-border-radius);
+
+  & svg {
+    display: block;
+  }
+
+  & input {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    flex: 1 1 auto;
+    padding-inline: 0;
+    font-size: inherit;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--sb-input-color);
+
+    &:focus,
+    &:focus-visible {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  & input:disabled {
+    background: transparent;
+  }
+
+  & input + div {
+    padding-inline: 0;
+    font-size: inherit;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: -2px;
+  }
+
+  &:has(input:disabled) {
+    background: var(--sb-color-lighter);
+    cursor: not-allowed;
+  }
+
+  &[data-after] {
+    padding-right: 2px;
+  }
+
+  &[data-before] {
+    padding-left: 2px;
+  }
+}
+
+:where([data-sb-theme='dark']) .wrapper:has(input:disabled) {
+  background: var(--sb-input-background);
+}

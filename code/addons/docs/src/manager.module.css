@@ -1,0 +1,16 @@
+.source {
+  height: 100%;
+  position: relative;
+
+  & > :first-child {
+    margin: 0;
+    height: 100%;
+    box-shadow: none;
+  }
+}
+
+.snippetWarning {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+}

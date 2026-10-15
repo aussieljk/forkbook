@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import Events from 'storybook/internal/core-events';
 import type { Addon_PageType } from 'storybook/internal/types';
 
 import { addons } from 'storybook/manager-api';
-import { Global, createGlobal } from 'storybook/theming';
+import { cssVarsToString, globalCss, themeToCssVars, useTheme } from 'storybook/theming';
 
 import { ManagerErrorBoundary } from './components/error-boundary/ManagerErrorBoundary.tsx';
 import { Layout } from './components/layout/Layout.tsx';
@@ -35,6 +35,12 @@ type Props = {
 
 export const App = ({ managerLayoutState, setManagerLayoutState, pages }: Props) => {
   const { setMobileAboutOpen } = useLayout();
+  const theme = useTheme();
+  // The page styles need the theme on `:root`, because they style `body`.
+  const pageCss = useMemo(
+    () => `:root {\n${cssVarsToString(themeToCssVars(theme))}\n}\n${globalCss}`,
+    [theme]
+  );
 
   /**
    * Lets us tell the UI whether or not keyboard shortcuts are enabled, in places where it's not
@@ -88,7 +94,7 @@ export const App = ({ managerLayoutState, setManagerLayoutState, pages }: Props)
 
   return (
     <>
-      <Global styles={createGlobal} />
+      <style>{pageCss}</style>
       <ManagerErrorBoundary>
         {/* The provider wraps the whole layout so the sidebar, toolbar, and content
             overlay share one review context. */}

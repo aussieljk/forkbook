@@ -1,17 +1,8 @@
 import type { ReactElement } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { styled } from 'storybook/theming';
 import type { ResizeHandler } from 'use-resize-observer';
 import useResizeObserver from 'use-resize-observer';
-
-const ZoomElementWrapper = styled.div<{ centered?: boolean; scale: number; elementHeight: number }>(
-  ({ centered = false, scale = 1, elementHeight }) => ({
-    height: elementHeight || 'auto',
-    transformOrigin: centered ? 'center top' : 'left top',
-    transform: `scale(${1 / scale})`,
-  })
-);
 
 type ZoomProps = {
   centered?: boolean;
@@ -44,10 +35,16 @@ export function ZoomElement({ centered, scale, children }: ZoomProps) {
   });
 
   return (
-    <ZoomElementWrapper centered={centered} scale={scale} elementHeight={elementHeight}>
+    <div
+      style={{
+        height: elementHeight || 'auto',
+        transformOrigin: centered ? 'center top' : 'left top',
+        transform: `scale(${1 / scale})`,
+      }}
+    >
       <div ref={componentWrapperRef} className="innerZoomElementWrapper">
         {children}
       </div>
-    </ZoomElementWrapper>
+    </div>
   );
 }

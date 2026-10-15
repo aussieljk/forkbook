@@ -24,5 +24,7 @@
     "strictBindCallApply": true,
     "target": "ES2020"
   },
+  // Inherited by every package, so they all know the CSS module types.
+  "files": ["./css.d.ts"],
   "exclude": ["dist", "**/dist", "node_modules", "**/node_modules"]
 }

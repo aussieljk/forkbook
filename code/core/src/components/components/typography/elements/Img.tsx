@@ -1,5 +1,4 @@
-import { styled } from 'storybook/theming';
+import { withClassName } from '../lib/withClassName.tsx';
+import styles from './Img.module.css';
 
-export const Img = styled.img({
-  maxWidth: '100%',
-});
+export const Img = withClassName('img', styles.img);

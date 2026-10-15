@@ -1,4 +1,3 @@
-import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { Button, P, Separator, Toolbar as SharedToolbar } from 'storybook/internal/components';
@@ -12,19 +11,12 @@ import {
 } from '@storybook/icons';
 
 import { type API } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import { type ControlStates } from '../../instrumenter/types.ts';
 import type { Controls } from './InteractionsPanel.tsx';
 import { type PlayStatus, StatusBadge } from './StatusBadge.tsx';
-
-const ToolbarWrapper = styled.div(({ theme }) => ({
-  boxShadow: `${theme.appBorderColor} 0 -1px 0 0 inset`,
-  background: theme.background.app,
-  position: 'sticky',
-  top: 0,
-  zIndex: 1,
-}));
+import styles from './Toolbar.module.css';
 
 interface ToolbarProps {
   controls: Controls;
@@ -36,71 +28,6 @@ interface ToolbarProps {
   canOpenInEditor?: boolean;
   api: API;
 }
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  borderRadius: 4,
-  padding: 6,
-  color: theme.textMutedColor,
-  '&:not(:disabled)': {
-    '&:hover,&:focus-visible': {
-      color: theme.color.secondary,
-    },
-  },
-}));
-
-const StyledIconButton = styled(Button)(({ theme }) => ({
-  color: theme.textMutedColor,
-}));
-
-const OpenInEditorButton = styled(Button)(({ theme }) => ({
-  color: theme.color.secondary,
-  fontWeight: theme.typography.weight.bold,
-  justifyContent: 'flex-end',
-  textAlign: 'right',
-  whiteSpace: 'nowrap',
-  fontSize: 13,
-  lineHeight: 24,
-}));
-
-const StyledLocation = styled(P)(({ theme }) => ({
-  color: theme.textMutedColor,
-  cursor: 'default',
-  fontWeight: theme.typography.weight.regular,
-  justifyContent: 'flex-end',
-  textAlign: 'right',
-  whiteSpace: 'nowrap',
-  margin: 0,
-  fontSize: 13,
-}));
-
-const ControlsGroup = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  flex: 1,
-  gap: 6,
-});
-
-const RewindButton = styled(StyledIconButton)({
-  marginInlineStart: 3,
-});
-
-const JumpToEndButton = styled(StyledButton)({
-  marginInline: 3,
-  lineHeight: '12px',
-});
-
-interface AnimatedButtonProps {
-  animating?: boolean;
-}
-
-const RerunButton = styled(StyledIconButton)<
-  AnimatedButtonProps & ComponentProps<typeof StyledIconButton>
->(({ theme, animating, disabled }) => ({
-  opacity: disabled ? 0.5 : 1,
-  svg: {
-    animation: animating ? `${theme.animation.rotate360} 200ms ease-out` : undefined,
-  },
-}));
 
 export const Toolbar: React.FC<ToolbarProps> = ({
   controls,
@@ -118,27 +45,29 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const preventFocusLoss = (e: React.PointerEvent) => e.preventDefault();
 
   return (
-    <ToolbarWrapper>
+    <div className={styles.wrapper}>
       <SharedToolbar
         backgroundColor={theme.background.app}
         innerStyle={{ gap: 6, paddingInline: 15 }}
         aria-label="Component test playback controls"
       >
-        <ControlsGroup>
+        <div className={styles.controlsGroup}>
           <StatusBadge status={status} />
 
-          <JumpToEndButton
+          <Button
+            className={styles.jumpToEndButton}
             ariaLabel={false}
             onClick={onScrollToEnd}
             onPointerDown={preventFocusLoss}
             disabled={!onScrollToEnd}
           >
             {buttonText}
-          </JumpToEndButton>
+          </Button>
 
           <Separator />
 
-          <RewindButton
+          <Button
+            className={styles.rewindButton}
             padding="small"
             variant="ghost"
             ariaLabel="Go to start"
@@ -147,9 +76,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             disabled={!controlStates.start}
           >
             <RewindIcon />
-          </RewindButton>
+          </Button>
 
-          <StyledIconButton
+          <Button
+            className={styles.iconButton}
             padding="small"
             variant="ghost"
             ariaLabel="Go back"
@@ -158,9 +88,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             disabled={!controlStates.back}
           >
             <PlayBackIcon />
-          </StyledIconButton>
+          </Button>
 
-          <StyledIconButton
+          <Button
+            className={styles.iconButton}
             padding="small"
             variant="ghost"
             ariaLabel="Go forward"
@@ -169,9 +100,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             disabled={!controlStates.next}
           >
             <PlayNextIcon />
-          </StyledIconButton>
+          </Button>
 
-          <StyledIconButton
+          <Button
+            className={styles.iconButton}
             padding="small"
             variant="ghost"
             ariaLabel="Go to end"
@@ -180,9 +112,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             disabled={!controlStates.end}
           >
             <FastForwardIcon />
-          </StyledIconButton>
+          </Button>
 
-          <RerunButton
+          <Button
+            className={styles.iconButton}
             padding="small"
             variant="ghost"
             ariaLabel="Rerun"
@@ -190,11 +123,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             onPointerDown={preventFocusLoss}
           >
             <SyncIcon />
-          </RerunButton>
-        </ControlsGroup>
+          </Button>
+        </div>
         {(importPath || storyFileName) &&
           (canOpenInEditor ? (
-            <OpenInEditorButton
+            <Button
+              className={styles.openInEditorButton}
               padding="small"
               size="small"
               variant="ghost"
@@ -206,11 +140,11 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               }}
             >
               {storyFileName}
-            </OpenInEditorButton>
+            </Button>
           ) : (
-            <StyledLocation>{storyFileName}</StyledLocation>
+            <P className={styles.location}>{storyFileName}</P>
           ))}
       </SharedToolbar>
-    </ToolbarWrapper>
+    </div>
   );
 };

@@ -1,0 +1,12 @@
+.ol {
+  padding-left: 30px;
+  list-style: decimal;
+
+  & :first-of-type {
+    margin-top: 0;
+  }
+
+  & :last-child {
+    margin-bottom: 0;
+  }
+}

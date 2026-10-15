@@ -4,9 +4,6 @@ import { Button } from 'storybook/internal/components';
 
 import { ChevronDownIcon, ChevronUpIcon } from '@storybook/icons';
 
-import { transparentize } from 'polished';
-import { styled, typography } from 'storybook/theming';
-
 import { type Call, CallStates, type ControlStates } from '../../instrumenter/types.ts';
 import { INTERNAL_RENDER_CALL_ID } from '../constants.ts';
 import { isChaiError, isJestError, useAnsiToHtmlFilter } from '../utils.ts';
@@ -14,123 +11,7 @@ import type { Controls } from './InteractionsPanel.tsx';
 import { MatcherResult } from './MatcherResult.tsx';
 import { MethodCall } from './MethodCall.tsx';
 import { StatusIcon } from './StatusIcon.tsx';
-
-const MethodCallWrapper = styled.div({
-  fontFamily: typography.fonts.mono,
-  fontSize: typography.size.s1,
-  overflowWrap: 'break-word',
-  inlineSize: 'calc( 100% - 40px )',
-});
-
-const RowContainer = styled('li', {
-  shouldForwardProp: (prop) => !['call', 'pausedAt'].includes(prop.toString()),
-})<{ call: Call; pausedAt: Call['id'] | undefined }>(
-  ({ theme, call }) => ({
-    listStyle: 'none',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    borderBottom: `1px solid ${theme.appBorderColor}`,
-    fontFamily: typography.fonts.base,
-    fontSize: 13,
-    ...(call.status === CallStates.ERROR && {
-      backgroundColor:
-        theme.base === 'dark'
-          ? transparentize(0.93, theme.color.negative)
-          : theme.background.warning,
-    }),
-    paddingLeft: (call.ancestors?.length ?? 0) * 20,
-  }),
-  ({ theme, call, pausedAt }) =>
-    pausedAt === call.id && {
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: -5,
-        zIndex: 1,
-        borderTop: '4.5px solid transparent',
-        borderLeft: `7px solid ${theme.color.warning}`,
-        borderBottom: '4.5px solid transparent',
-      },
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: -1,
-        zIndex: 1,
-        width: '100%',
-        borderTop: `1.5px solid ${theme.color.warning}`,
-      },
-    }
-);
-
-const RowHeader = styled.div<{ $isNavigationDisabled: boolean }>(
-  ({ theme, $isNavigationDisabled }) => ({
-    display: 'flex',
-    '&:hover': $isNavigationDisabled ? {} : { background: theme.background.hoverable },
-  })
-);
-
-const RowLabel = styled('button', {
-  shouldForwardProp: (prop) => !['call'].includes(prop.toString()),
-})<React.ButtonHTMLAttributes<HTMLButtonElement> & { call: Call }>(({ theme, disabled, call }) => ({
-  flex: 1,
-  display: 'grid',
-  background: 'none',
-  border: 0,
-  gridTemplateColumns: '15px 1fr',
-  alignItems: 'center',
-  minHeight: 40,
-  margin: 0,
-  padding: '8px 15px',
-  textAlign: 'start',
-  cursor: disabled || call.status === CallStates.ERROR ? 'default' : 'pointer',
-  '&:focus-visible': {
-    outline: 0,
-    boxShadow: `inset 3px 0 0 0 ${
-      call.status === CallStates.ERROR ? theme.color.warning : theme.color.secondary
-    }`,
-    background: call.status === CallStates.ERROR ? 'transparent' : theme.background.hoverable,
-  },
-  '& > div': {
-    opacity: call.status === CallStates.WAITING ? 0.5 : 1,
-  },
-}));
-
-const RowActions = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  padding: 6,
-});
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.textMutedColor,
-  margin: '0 3px',
-}));
-
-const RowMessage = styled('div')(({ theme }) => ({
-  padding: '8px 10px 8px 36px',
-  fontSize: typography.size.s1,
-  color: theme.color.defaultText,
-  pre: {
-    margin: 0,
-    padding: 0,
-  },
-}));
-
-const ErrorName = styled.span(({ theme }) => ({
-  color: theme.base === 'dark' ? '#5EC1FF' : '#0271B6',
-}));
-
-const ErrorMessage = styled.span(({ theme }) => ({
-  color: theme.base === 'dark' ? '#eee' : '#444',
-}));
-
-const ErrorExplainer = styled.p(({ theme }) => ({
-  color: theme.base === 'dark' ? theme.color.negative : theme.color.negativeText,
-  fontSize: theme.typography.size.s2,
-  maxWidth: 500,
-  textWrap: 'balance',
-}));
+import styles from './Interaction.module.css';
 
 /**
  * Human-readable name for an interaction row (visible text and ARIA), matching instrumented data.
@@ -192,15 +73,16 @@ const Exception = ({ exception }: { exception: Call['exception'] }) => {
   }
   if (exception.callId === INTERNAL_RENDER_CALL_ID) {
     return (
-      <RowMessage>
+      <div className={styles.rowMessage}>
         <pre>
-          <ErrorName>{exception.name}:</ErrorName> <ErrorMessage>{exception.message}</ErrorMessage>
+          <span className={styles.errorName}>{exception.name}:</span>{' '}
+          <span className={styles.errorMessage}>{exception.message}</span>
         </pre>
-        <ErrorExplainer>
+        <p className={styles.errorExplainer}>
           The component failed to render properly. Automated component tests will not run until this
           is resolved. Check the full error message in Storybook’s canvas to debug.
-        </ErrorExplainer>
-      </RowMessage>
+        </p>
+      </div>
     );
   }
   if (isJestError(exception)) {
@@ -208,23 +90,23 @@ const Exception = ({ exception }: { exception: Call['exception'] }) => {
   }
   if (isChaiError(exception)) {
     return (
-      <RowMessage>
+      <div className={styles.rowMessage}>
         <MatcherResult
           message={`${exception.message}${exception.diff ? `\n\n${exception.diff}` : ''}`}
           style={{ padding: 0 }}
         />
         <p>See the full stack trace in the browser console.</p>
-      </RowMessage>
+      </div>
     );
   }
 
   const paragraphs = exception.message.split('\n\n');
   const more = paragraphs.length > 1;
   return (
-    <RowMessage>
+    <div className={styles.rowMessage}>
       <pre dangerouslySetInnerHTML={{ __html: filter.toHtml(paragraphs[0]) }}></pre>
       {more && <p>See the full stack trace in the browser console.</p>}
-    </RowMessage>
+    </div>
   );
 };
 
@@ -264,15 +146,24 @@ export const Interaction = ({
   }
 
   return (
-    <RowContainer call={call} pausedAt={pausedAt}>
-      <RowHeader $isNavigationDisabled={isNavigationDisabled}>
-        <RowLabel
+    <li
+      className={styles.row}
+      data-status={call.status}
+      data-paused={pausedAt === call.id || undefined}
+      style={{ paddingLeft: (call.ancestors?.length ?? 0) * 20 }}
+    >
+      <div
+        className={styles.rowHeader}
+        data-navigation-disabled={isNavigationDisabled || undefined}
+      >
+        <button
+          className={styles.rowLabel}
+          data-status={call.status}
           aria-label={getRowAriaLabel({
             isNavigationDisabled,
             stepName,
             statusText: interactionStatus,
           })}
-          call={call}
           onClick={() => controls.goto(call.id)}
           onPointerDown={(e) => e.preventDefault()}
           disabled={isNavigationDisabled}
@@ -280,13 +171,14 @@ export const Interaction = ({
           onMouseLeave={() => controlStates.goto && setIsHovered(false)}
         >
           <StatusIcon status={isHovered ? CallStates.ACTIVE : call.status} />
-          <MethodCallWrapper style={{ marginLeft: 6, marginBottom: 1 }}>
+          <div className={styles.methodCall} style={{ marginLeft: 6, marginBottom: 1 }}>
             <MethodCall call={call} callsById={callsById} />
-          </MethodCallWrapper>
-        </RowLabel>
-        <RowActions>
+          </div>
+        </button>
+        <div className={styles.rowActions}>
           {(childCallIds?.length ?? 0) > 0 && (
-            <StyledButton
+            <Button
+              className={styles.button}
               padding="small"
               variant="ghost"
               onClick={toggleCollapsed}
@@ -294,14 +186,14 @@ export const Interaction = ({
               aria-expanded={!isCollapsed}
             >
               {isCollapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            </StyledButton>
+            </Button>
           )}
-        </RowActions>
-      </RowHeader>
+        </div>
+      </div>
 
       {call.status === CallStates.ERROR && call.exception?.callId === call.id && (
         <Exception exception={call.exception} />
       )}
-    </RowContainer>
+    </li>
   );
 };

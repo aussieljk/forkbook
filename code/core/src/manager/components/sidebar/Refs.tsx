@@ -2,7 +2,6 @@ import type { FC, MutableRefObject } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { getActiveFilterCount } from '../../../shared/utils/story-index-filters.ts';
 import { getStateType } from '../../utils/tree.ts';
@@ -12,6 +11,7 @@ import { DEFAULT_REF_ID } from './Sidebar.tsx';
 import { Tree } from './Tree.tsx';
 import { CollapseIcon } from './components/CollapseIcon.tsx';
 import type { Highlight, RefType } from './types.ts';
+import styles from './Refs.module.css';
 
 export interface RefProps {
   isLoading: boolean;
@@ -21,57 +21,6 @@ export interface RefProps {
   highlightedRef: MutableRefObject<Highlight>;
   setHighlighted: (highlight: Highlight) => void;
 }
-
-const Wrapper = styled.div<{ isMain: boolean }>(({ isMain }) => ({
-  position: 'relative',
-  marginTop: isMain ? undefined : 0,
-}));
-
-const RefHead = styled.div(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-  fontSize: theme.typography.size.s2,
-
-  // Similar to ListItem.tsx
-  textDecoration: 'none',
-  lineHeight: '16px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  background: 'transparent',
-
-  width: '100%',
-  marginTop: 20,
-  paddingTop: 16,
-  paddingBottom: 12,
-  borderTop: `1px solid ${theme.appBorderColor}`,
-
-  color: theme.color.defaultText,
-}));
-
-const RefTitle = styled.div({
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  flex: 1,
-  overflow: 'hidden',
-  marginLeft: 2,
-});
-
-const CollapseButton = styled.button(({ theme }) => ({
-  all: 'unset',
-  display: 'flex',
-  padding: '0px 8px',
-  gap: 6,
-  alignItems: 'center',
-  cursor: 'pointer',
-  overflow: 'hidden',
-
-  '&:focus': {
-    borderColor: theme.color.secondary,
-    'span:first-of-type': {
-      borderLeftColor: theme.color.secondary,
-    },
-  },
-}));
 
 export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
   const storybookState = useStorybookState();
@@ -130,19 +79,26 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
   return (
     <>
       {isMain || (
-        <RefHead
+        <div
+          className={styles.refHead}
           aria-label={`${isExpanded ? 'Hide' : 'Show'} ${title} stories`}
           aria-expanded={isExpanded}
         >
-          <CollapseButton data-action="collapse-ref" onClick={handleClick}>
+          <button
+            className={styles.collapseButton}
+            data-action="collapse-ref"
+            onClick={handleClick}
+          >
             <CollapseIcon isExpanded={isExpanded} />
-            <RefTitle title={title}>{title}</RefTitle>
-          </CollapseButton>
+            <div className={styles.refTitle} title={title}>
+              {title}
+            </div>
+          </button>
           <RefIndicator {...props} state={state} ref={indicatorRef} />
-        </RefHead>
+        </div>
       )}
       {isExpanded && (
-        <Wrapper data-title={title} isMain={isMain}>
+        <div className={styles.wrapper} data-title={title} data-main={isMain || undefined}>
           {/* @ts-expect-error (non strict) */}
           {state === 'auth' && <AuthBlock id={refId} loginUrl={loginUrl} />}
           {/* @ts-expect-error (non strict) */}
@@ -171,7 +127,7 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
               setHighlightedItemId={setHighlightedItemId}
             />
           )}
-        </Wrapper>
+        </div>
       )}
     </>
   );

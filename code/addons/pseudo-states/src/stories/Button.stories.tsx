@@ -1,7 +1,6 @@
 import React, { type ComponentProps } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { styled } from 'storybook/theming';
 
 import { Button } from './Button.tsx';
 import './grid.css';
@@ -31,20 +30,16 @@ export const Hover: Story = {
   },
 };
 
-const StyledButton = styled(Button)`
-  &:hover {
-    @media (hover: hover) {
-      background-color: limegreen !important;
-    }
-  }
-`;
-
 export const HoverMediaQuery: Story = {
   parameters: {
     pseudo: { hover: true },
   },
   render: (args) => {
-    return <StyledButton {...args}>Hover (hover: hover)</StyledButton>;
+    return (
+      <Button {...args} className="hover-media-query">
+        Hover (hover: hover)
+      </Button>
+    );
   },
 };
 

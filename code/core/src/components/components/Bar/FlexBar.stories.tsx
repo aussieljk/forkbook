@@ -1,6 +1,5 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
-
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { FlexBar } from './Bar.tsx';
@@ -9,11 +8,9 @@ const meta = preview.meta({ component: FlexBar, title: 'Bar/FlexBar (deprecated)
 
 export default meta;
 
-const Row = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-});
+const Row = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', alignItems: 'center', gap: 4 }} />
+);
 
 const LongContent = () =>
   Array.from({ length: 12 }).map((_, i) => (

@@ -1,0 +1,48 @@
+.tab {
+  white-space: normal;
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: top;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  scroll-snap-align: start;
+  padding: 0 15px;
+  transition:
+    color 0.2s linear,
+    border-bottom-color 0.2s linear;
+  height: 40px;
+  line-height: 12px;
+  cursor: pointer;
+  background: transparent;
+  border: 0 solid transparent;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--sb-bar-text-color);
+  border-bottom-color: transparent;
+
+  &:empty {
+    display: none;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 0 none;
+    box-shadow: inset 0 0 0 2px var(--sb-bar-selected-color);
+  }
+
+  &:hover {
+    color: var(--sb-bar-hover-color);
+  }
+
+  &[data-active] {
+    color: var(--sb-bar-selected-color);
+    border-bottom-color: var(--sb-bar-selected-color);
+  }
+}

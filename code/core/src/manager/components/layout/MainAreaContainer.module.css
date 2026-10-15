@@ -1,0 +1,35 @@
+/* 600px is BREAKPOINT in manager/constants.ts. */
+
+.pages {
+  display: flex;
+  flex-direction: column;
+  /* On mobile the layout root is a column flexbox; fill it and let pages scroll internally
+     instead of growing past the viewport, which is not scrollable. */
+  flex: 1;
+  min-height: 0;
+  z-index: 1;
+
+  @media (min-width: 600px) {
+    grid-row-start: sidebar-start;
+    grid-row-end: -1;
+    grid-column-start: sidebar-end;
+    grid-column-end: -1;
+  }
+}
+
+.main {
+  flex: 1;
+  position: relative;
+  display: none;
+  overflow: auto;
+
+  /* Grid makes the content container fill the available space. */
+  &[data-shown] {
+    display: grid;
+  }
+
+  @media (min-width: 600px) {
+    flex: auto;
+    grid-area: content;
+  }
+}

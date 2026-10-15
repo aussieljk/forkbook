@@ -1,0 +1,20 @@
+.list {
+  min-width: 180px;
+  overflow: hidden;
+  overflow-y: auto;
+  /* 15.5 items at 32px each + 8px padding */
+  max-height: calc(15.5 * 32px + 8px);
+  border-radius: calc(var(--sb-app-border-radius) + 2px);
+}
+
+:where([data-sb-theme='dark']) .list {
+  background: var(--sb-background-content);
+}
+
+.group {
+  padding: 4px;
+
+  & + & {
+    border-top: 1px solid var(--sb-app-border-color);
+  }
+}

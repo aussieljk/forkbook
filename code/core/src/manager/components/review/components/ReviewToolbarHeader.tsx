@@ -1,7 +1,6 @@
 import React, { type FC, type ReactNode } from 'react';
 
 import { Badge, Button } from 'storybook/internal/components';
-import { styled } from 'storybook/theming';
 
 import { ChevronSmallLeftIcon, ChevronSmallRightIcon, WandIcon } from '@storybook/icons';
 
@@ -14,58 +13,7 @@ import { useReviewContext } from '../review-context.ts';
 import { AttentionBanner } from './AttentionBanner.tsx';
 import { ReviewCollectionPicker } from './ReviewCollectionPicker.tsx';
 import { ReviewHeader } from './ReviewHeader.tsx';
-
-const Root = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  flexShrink: 0,
-  width: '100%',
-  background: theme.background.content,
-  zIndex: 4,
-}));
-
-const HeaderWrap = styled.div({
-  position: 'relative',
-  flexShrink: 0,
-});
-
-const ProgressBar = styled.div(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  zIndex: 1,
-  width: '100%',
-  height: 3,
-  overflow: 'hidden',
-  background: theme.background.app,
-}));
-
-const ProgressFill = styled.div(({ theme }) => ({
-  position: 'absolute',
-  insetBlock: 0,
-  left: 0,
-  background: theme.color.secondary,
-  transition: 'width 200ms ease',
-}));
-
-const SubtitleStrong = styled.span(({ theme }) => ({
-  fontWeight: 700,
-  color: theme.color.defaultText,
-}));
-
-const SubtitleSeparator = styled.span(({ theme }) => ({
-  color: theme.color.defaultText,
-}));
-
-const SubtitleText = styled.span(({ theme }) => ({
-  color: theme.color.defaultText,
-}));
-
-const Counter = styled.span(({ theme }) => ({
-  fontVariantNumeric: 'tabular-nums',
-  fontFamily: theme.typography.fonts.mono,
-  fontWeight: theme.typography.weight.regular,
-}));
+import styles from './ReviewToolbarHeader.module.css';
 
 // Links to a review story when the target exists, or renders a disabled control
 // at the ends of the sequence so prev/next stop at the boundaries (no wrap).
@@ -121,9 +69,9 @@ export const ReviewToolbarHeader: FC = () => {
   const metadataSubtitle =
     currentStoryInfo?.title && currentStoryInfo.name ? (
       <>
-        <SubtitleStrong>{componentName(currentStoryInfo.title)}</SubtitleStrong>
-        <SubtitleSeparator>/</SubtitleSeparator>
-        <SubtitleText>{currentStoryInfo.name}</SubtitleText>
+        <span className={styles.subtitleStrong}>{componentName(currentStoryInfo.title)}</span>
+        <span className={styles.subtitleText}>/</span>
+        <span className={styles.subtitleText}>{currentStoryInfo.name}</span>
       </>
     ) : null;
 
@@ -136,10 +84,11 @@ export const ReviewToolbarHeader: FC = () => {
     ) : undefined;
 
   return (
-    <Root data-testid="review-toolbar-header">
+    <div className={styles.root} data-testid="review-toolbar-header">
       {banner && <AttentionBanner {...banner} />}
-      <HeaderWrap>
-        <ProgressBar
+      <div className={styles.headerWrap}>
+        <div
+          className={styles.progressBar}
           role="progressbar"
           aria-label="Review progress"
           aria-valuenow={activeIndex + 1}
@@ -147,11 +96,12 @@ export const ReviewToolbarHeader: FC = () => {
           aria-valuemax={totalStories}
           data-testid="review-progress"
         >
-          <ProgressFill
+          <div
+            className={styles.progressFill}
             data-testid="review-progress-fill"
             style={{ width: `${progress * 100}%` }}
           />
-        </ProgressBar>
+        </div>
         <ReviewHeader
           variant="toolbar"
           leading={
@@ -171,9 +121,9 @@ export const ReviewToolbarHeader: FC = () => {
                 activeEntry={activeEntry}
                 storyInfo={storyInfo}
               >
-                <Counter>
+                <span className={styles.counter}>
                   {activeIndex + 1}/{totalStories}
-                </Counter>
+                </span>
               </ReviewCollectionPicker>
               <NavButton
                 entry={previousEntry}
@@ -188,7 +138,7 @@ export const ReviewToolbarHeader: FC = () => {
             </>
           }
         />
-      </HeaderWrap>
-    </Root>
+      </div>
+    </div>
   );
 };

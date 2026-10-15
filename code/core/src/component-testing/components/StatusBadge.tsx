@@ -2,7 +2,9 @@ import React from 'react';
 
 import { TooltipNote, WithTooltip } from 'storybook/internal/components';
 
-import { type Color, styled, typography } from 'storybook/theming';
+import type { Color } from 'storybook/theming';
+
+import styles from './StatusBadge.module.css';
 
 export type PlayStatus = 'rendering' | 'playing' | 'completed' | 'errored' | 'aborted';
 
@@ -34,24 +36,6 @@ const StatusNoteMapping: Record<PlayStatus, string> = {
   aborted: 'Interactions aborted due to file changes',
 } as const;
 
-const StyledBadge = styled.div<StatusBadgeProps>(({ theme, status }) => {
-  const backgroundColor = theme.color[StatusColorMapping[status]];
-  return {
-    display: 'inline-block',
-    padding: '4px 6px 4px 8px',
-    borderRadius: '4px',
-    backgroundColor,
-    color: 'white',
-    fontFamily: typography.fonts.base,
-    textTransform: 'uppercase',
-    fontSize: typography.size.s1,
-    letterSpacing: 3,
-    fontWeight: typography.weight.bold,
-    minWidth: 65,
-    textAlign: 'center',
-  };
-});
-
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const badgeText = StatusTextMapping[status];
   const badgeNote = StatusNoteMapping[status];
@@ -62,9 +46,13 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       trigger="hover"
       tooltip={<TooltipNote note={badgeNote} />}
     >
-      <StyledBadge aria-label={`Story status: ${badgeText}`} status={status}>
+      <div
+        className={styles.badge}
+        style={{ backgroundColor: `var(--sb-color-${StatusColorMapping[status]})` }}
+        aria-label={`Story status: ${badgeText}`}
+      >
         {badgeText}
-      </StyledBadge>
+      </div>
     </WithTooltip>
   );
 };

@@ -2,7 +2,6 @@
 import React from 'react';
 
 import { expect, within } from 'storybook/test';
-import { Global, css } from 'storybook/theming';
 
 import { ArgsTable, Source } from '.';
 import { Markdown as MarkdownComponent } from '../blocks/Markdown';
@@ -20,14 +19,7 @@ export default {
   decorators: [
     (storyFn: any) => (
       <>
-        <Global
-          styles={css`
-            ul,
-            ol {
-              list-style: none;
-            }
-          `}
-        />
+        <style>{'ul, ol { list-style: none; }'}</style>
         {storyFn()}
       </>
     ),

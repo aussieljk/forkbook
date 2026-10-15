@@ -1,0 +1,100 @@
+.wrapper {
+  position: relative;
+  max-width: 250px;
+}
+
+.tooltipContent {
+  width: 200px;
+  margin: 5px;
+
+  & :global(.react-colorful__saturation) {
+    border-radius: 4px 4px 0 0;
+  }
+
+  & :global(.react-colorful__hue) {
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 5%);
+  }
+
+  & :global(.react-colorful__last-control) {
+    border-radius: 0 0 4px 4px;
+  }
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(9, 16px);
+  gap: 6px;
+  padding: 3px;
+  margin-top: 5px;
+  width: 200px;
+}
+
+.swatch {
+  --checkers: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="black"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>');
+
+  width: 16px;
+  height: 16px;
+  box-shadow: var(--sb-app-border-color) 0 0 0 1px inset;
+  border: none;
+  border-radius: var(--sb-app-border-radius);
+
+  &,
+  &:hover {
+    background: unset;
+    background-color: unset;
+    background-image:
+      linear-gradient(var(--sb-swatch-color), var(--sb-swatch-color)), var(--checkers);
+  }
+
+  &[data-selected] {
+    box-shadow:
+      var(--sb-app-border-color) 0 0 0 1px inset,
+      rgb(from var(--sb-text-muted-color) r g b / 0.31) 0 0 0 4px;
+  }
+}
+
+:where([data-sb-theme='dark']) .swatch {
+  --checkers: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="white"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>');
+}
+
+.input {
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  box-sizing: border-box;
+  font-family: var(--sb-font-base);
+
+  [aria-readonly='true'] > & {
+    background: var(--sb-color-lighter);
+  }
+}
+
+:where([data-sb-theme='dark']) [aria-readonly='true'] > .input {
+  background: transparent;
+}
+
+.popoverTrigger {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  cursor: pointer;
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+}
+
+.cycleColorSpaceButton {
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  right: 7px;
+  width: 20px;
+  height: 20px;
+  padding: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  color: var(--sb-input-color);
+}
