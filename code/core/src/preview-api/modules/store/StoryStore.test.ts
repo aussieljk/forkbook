@@ -116,7 +116,7 @@ describe('StoryStore', () => {
       .loaders!.length;
 
     it('injects the core annotations exactly once for a plain (CSF1/2/3) preview', () => {
-      // `projectAnnotations` here is what the Vite/Webpack codegen produces for a CSF3 preview:
+      // `projectAnnotations` here is what the Vite codegen produces for a CSF3 preview:
       // a `composeConfigs(rawModules)` WITHOUT the core annotations.
       const store = new StoryStore(storyIndex, importFn, projectAnnotations);
 

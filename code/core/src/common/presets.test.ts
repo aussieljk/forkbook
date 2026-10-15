@@ -9,10 +9,10 @@ import { logger } from 'storybook/internal/node-logger';
 import * as resolveUtils from '../shared/utils/module.ts';
 import { getPresets, loadPreset, resolveAddonName } from './presets.ts';
 
-function wrapPreset(basePresets: any): { babel: Function; webpack: Function } {
+function wrapPreset(basePresets: any): { babel: Function; viteFinal: Function } {
   return {
     babel: async (config: any, args: any) => basePresets.apply('babel', config, args),
-    webpack: async (config: any, args: any) => basePresets.apply('webpack', config, args),
+    viteFinal: async (config: any, args: any) => basePresets.apply('viteFinal', config, args),
   };
 }
 
@@ -45,8 +45,8 @@ const KNOWN_FILES = [
   '@storybook/addon-themes/manager',
   '@storybook/addon-a11y/preview',
   '@storybook/addon-links/manager',
-  '@storybook/preset-react-webpack',
-  '@storybook/preset-server-webpack',
+  '@storybook/preset-alpha',
+  '@storybook/preset-beta',
   'addon-bar/preset.js',
   'addon-bar',
   'addon-baz/register.js',
@@ -68,7 +68,7 @@ describe('presets', () => {
     async function testPresets() {
       // @ts-expect-error (invalid use)
       presets = wrapPreset(await getPresets());
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
@@ -81,7 +81,7 @@ describe('presets', () => {
     const presets = wrapPreset(await getPresets([]));
 
     async function testPresets() {
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
@@ -93,7 +93,7 @@ describe('presets', () => {
     const presets = wrapPreset(await getPresets(['preset-foo']));
 
     async function testPresets() {
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
@@ -107,18 +107,18 @@ describe('presets', () => {
 
   it('loads a framework preset from the project config directory', async () => {
     mockedResolveUtils.safeResolveModule.mockImplementation(({ specifier, parent }) =>
-      specifier === '@storybook/web-components-vite/preset' && parent === '/project/.storybook'
-        ? '/project/node_modules/@storybook/web-components-vite/preset.js'
+      specifier === '@storybook/react-vite/preset' && parent === '/project/.storybook'
+        ? '/project/node_modules/@storybook/react-vite/preset.js'
         : undefined
     );
     mockedResolveUtils.importModule.mockResolvedValue({});
 
-    await loadPreset('@storybook/web-components-vite/preset', 0, {
+    await loadPreset('@storybook/react-vite/preset', 0, {
       configDir: '/project/.storybook',
     } as any);
 
     expect(mockedResolveUtils.importModule).toHaveBeenCalledWith(
-      '/project/node_modules/@storybook/web-components-vite/preset.js'
+      '/project/node_modules/@storybook/react-vite/preset.js'
     );
   });
 
@@ -164,13 +164,13 @@ describe('presets', () => {
   });
 
   it('loads and applies presets when they are declared as a string', async () => {
-    const mockPresetFooExtendWebpack = vi.fn();
+    const mockPresetFooExtendVite = vi.fn();
     const mockPresetBarExtendBabel = vi.fn();
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
         return {
-          webpack: mockPresetFooExtendWebpack,
+          viteFinal: mockPresetFooExtendVite,
         };
       }
       if (path === 'preset-bar') {
@@ -184,24 +184,24 @@ describe('presets', () => {
     const presets = wrapPreset(await getPresets(['preset-foo', 'preset-bar'], {} as any));
 
     async function testPresets() {
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
     await expect(testPresets()).resolves.toBeUndefined();
 
-    expect(mockPresetFooExtendWebpack).toHaveBeenCalled();
+    expect(mockPresetFooExtendVite).toHaveBeenCalled();
     expect(mockPresetBarExtendBabel).toHaveBeenCalled();
   });
 
   it('loads and applies presets when they are declared as an object without props', async () => {
-    const mockPresetFooExtendWebpack = vi.fn();
+    const mockPresetFooExtendVite = vi.fn();
     const mockPresetBarExtendBabel = vi.fn();
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
         return {
-          webpack: mockPresetFooExtendWebpack,
+          viteFinal: mockPresetFooExtendVite,
         };
       }
       if (path === 'preset-bar') {
@@ -217,24 +217,24 @@ describe('presets', () => {
     );
 
     async function testPresets() {
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
     await expect(testPresets()).resolves.toBeUndefined();
 
-    expect(mockPresetFooExtendWebpack).toHaveBeenCalled();
+    expect(mockPresetFooExtendVite).toHaveBeenCalled();
     expect(mockPresetBarExtendBabel).toHaveBeenCalled();
   });
 
   it('loads and applies presets when they are declared as an object with props', async () => {
-    const mockPresetFooExtendWebpack = vi.fn();
+    const mockPresetFooExtendVite = vi.fn();
     const mockPresetBarExtendBabel = vi.fn();
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
         return {
-          webpack: mockPresetFooExtendWebpack,
+          viteFinal: mockPresetFooExtendVite,
         };
       }
       if (path === 'preset-bar') {
@@ -256,13 +256,13 @@ describe('presets', () => {
     );
 
     async function testPresets() {
-      await presets.webpack({});
+      await presets.viteFinal({});
       await presets.babel({});
     }
 
     await expect(testPresets()).resolves.toBeUndefined();
 
-    expect(mockPresetFooExtendWebpack).toHaveBeenCalledWith(expect.anything(), {
+    expect(mockPresetFooExtendVite).toHaveBeenCalledWith(expect.anything(), {
       foo: 1,
       presetsList: expect.anything(),
       presets: expect.anything(),
@@ -275,13 +275,13 @@ describe('presets', () => {
   });
 
   it('loads and applies presets when they are declared as a string and as an object', async () => {
-    const mockPresetFooExtendWebpack = vi.fn();
+    const mockPresetFooExtendVite = vi.fn();
     const mockPresetBarExtendBabel = vi.fn();
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
         return {
-          webpack: mockPresetFooExtendWebpack,
+          viteFinal: mockPresetFooExtendVite,
         };
       }
       if (path === 'preset-bar') {
@@ -308,13 +308,13 @@ describe('presets', () => {
     );
 
     async function testPresets() {
-      await presets.webpack({});
+      await presets.viteFinal({});
       await presets.babel({});
     }
 
     await expect(testPresets()).resolves.toBeUndefined();
 
-    expect(mockPresetFooExtendWebpack).toHaveBeenCalled();
+    expect(mockPresetFooExtendVite).toHaveBeenCalled();
     expect(mockPresetBarExtendBabel).toHaveBeenCalledWith(expect.anything(), {
       bar: 'a',
       presetsList: expect.arrayContaining([
@@ -326,18 +326,18 @@ describe('presets', () => {
   });
 
   it('applies presets in chain', async () => {
-    const mockPresetFooExtendWebpack = vi.fn((...args: any[]) => ({}));
-    const mockPresetBarExtendWebpack = vi.fn((...args: any[]) => ({}));
+    const mockPresetFooExtendVite = vi.fn((...args: any[]) => ({}));
+    const mockPresetBarExtendVite = vi.fn((...args: any[]) => ({}));
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
         return {
-          webpack: mockPresetFooExtendWebpack,
+          viteFinal: mockPresetFooExtendVite,
         };
       }
       if (path === 'preset-bar') {
         return {
-          webpack: mockPresetBarExtendWebpack,
+          viteFinal: mockPresetBarExtendVite,
         };
       }
       throw new Error(`Could not resolve ${path}`);
@@ -364,14 +364,14 @@ describe('presets', () => {
     );
 
     async function testPresets() {
-      await presets.webpack();
+      await presets.viteFinal();
       await presets.babel();
     }
 
     await expect(testPresets()).resolves.toBeUndefined();
 
-    expect(mockPresetFooExtendWebpack).toHaveBeenCalled();
-    expect(mockPresetBarExtendWebpack).toHaveBeenCalledWith(expect.anything(), {
+    expect(mockPresetFooExtendVite).toHaveBeenCalled();
+    expect(mockPresetBarExtendVite).toHaveBeenCalledWith(expect.anything(), {
       bar: 'a',
       presetsList: expect.arrayContaining([
         expect.objectContaining({ name: 'preset-foo' }),
@@ -478,8 +478,8 @@ describe('resolveAddonName', () => {
   });
 
   it('should resolve packages without metadata', () => {
-    expect(resolveAddonName({} as any, '@storybook/preset-react-webpack', {})).toEqual({
-      name: '@storybook/preset-react-webpack',
+    expect(resolveAddonName({} as any, '@storybook/preset-alpha', {})).toEqual({
+      name: '@storybook/preset-alpha',
       type: 'presets',
     });
   });
@@ -544,7 +544,7 @@ describe('loadPreset', () => {
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       switch (path) {
         case '@storybook/react':
-        case '@storybook/preset-server-webpack':
+        case '@storybook/preset-beta':
         case '@storybook/addon-docs/preset':
         case 'addon-foo/register.js':
         case '@storybook/addon-cool':
@@ -568,7 +568,7 @@ describe('loadPreset', () => {
         // @ts-expect-error (invalid use)
         type: 'virtual',
         framework: '@storybook/react',
-        presets: ['@storybook/preset-server-webpack'],
+        presets: ['@storybook/preset-beta'],
         addons: ['@storybook/addon-docs/preset'],
       },
       0,
@@ -577,7 +577,7 @@ describe('loadPreset', () => {
     expect(loaded).toMatchInlineSnapshot(`
       [
         {
-          "name": "@storybook/preset-server-webpack",
+          "name": "@storybook/preset-beta",
           "options": {},
           "preset": {},
         },
@@ -594,7 +594,7 @@ describe('loadPreset', () => {
             "framework": "@storybook/react",
             "name": "",
             "presets": [
-              "@storybook/preset-server-webpack",
+              "@storybook/preset-beta",
             ],
             "type": "virtual",
           },
@@ -613,7 +613,7 @@ describe('loadPreset', () => {
         name: '',
         // @ts-expect-error (invalid use)
         type: 'virtual',
-        presets: ['@storybook/preset-server-webpack'],
+        presets: ['@storybook/preset-beta'],
         addons: [
           '@storybook/addon-docs/preset',
           'addon-foo/register.js',
@@ -627,7 +627,7 @@ describe('loadPreset', () => {
     );
     expect(loaded).toEqual([
       {
-        name: '@storybook/preset-server-webpack',
+        name: '@storybook/preset-beta',
         options: {},
         preset: {},
       },
@@ -669,7 +669,7 @@ describe('loadPreset', () => {
       },
       {
         name: {
-          presets: ['@storybook/preset-server-webpack'],
+          presets: ['@storybook/preset-beta'],
           addons: [
             '@storybook/addon-docs/preset',
             'addon-foo/register.js',
@@ -693,7 +693,7 @@ describe('loadPreset', () => {
         // @ts-expect-error (invalid use)
         type: 'virtual',
         framework: '@storybook/react',
-        presets: ['@storybook/preset-server-webpack'],
+        presets: ['@storybook/preset-beta'],
         addons: ['@storybook/addon-docs/preset', 'uninstalled-addon'],
       },
       0,
@@ -705,7 +705,7 @@ describe('loadPreset', () => {
     expect(loaded).toMatchInlineSnapshot(`
       [
         {
-          "name": "@storybook/preset-server-webpack",
+          "name": "@storybook/preset-beta",
           "options": {},
           "preset": {},
         },
@@ -723,7 +723,7 @@ describe('loadPreset', () => {
             "framework": "@storybook/react",
             "name": "",
             "presets": [
-              "@storybook/preset-server-webpack",
+              "@storybook/preset-beta",
             ],
             "type": "virtual",
           },
@@ -743,7 +743,7 @@ describe('loadPreset', () => {
         // @ts-expect-error (invalid use)
         type: 'virtual',
         framework: '@storybook/react',
-        presets: ['@storybook/preset-server-webpack'],
+        presets: ['@storybook/preset-beta'],
         addons: ['@storybook/addon-docs', 'addon-bar'],
       },
       0,
@@ -760,7 +760,7 @@ describe('loadPreset', () => {
     expect(loaded).toMatchInlineSnapshot(`
       [
         {
-          "name": "@storybook/preset-server-webpack",
+          "name": "@storybook/preset-beta",
           "options": {},
           "preset": {},
         },
@@ -783,7 +783,7 @@ describe('loadPreset', () => {
             "framework": "@storybook/react",
             "name": "",
             "presets": [
-              "@storybook/preset-server-webpack",
+              "@storybook/preset-beta",
             ],
             "type": "virtual",
           },
