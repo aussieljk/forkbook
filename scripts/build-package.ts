@@ -11,6 +11,7 @@
  *
  * When you pass no package names, you will be prompted to select which packages to build.
  */
+import { rmSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { exec } from 'child_process';
@@ -214,6 +215,13 @@ async function run() {
   if (results.includes(false)) {
     throw new Error('Some packages failed to build');
   }
+
+  // The browser tests pre-bundle the built packages into this cache, and Vite does not see when
+  // they are built again. Remove it so the next test run uses the new build.
+  rmSync(join(ROOT_DIRECTORY, 'node_modules', '.cache', 'storybook'), {
+    recursive: true,
+    force: true,
+  });
 }
 
 run().catch((e) => {
