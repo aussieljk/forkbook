@@ -1,5 +1,5 @@
-import { existsSync, watch } from 'node:fs';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { watch } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
 
 import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
 import * as esbuild from 'esbuild';
@@ -19,23 +19,12 @@ import {
 import { resolvePackageDir } from '../../../code/core/src/shared/utils/module.ts';
 import {
   type BuildEntries,
-  type EntryType,
   type EsbuildContextOptions,
   getExternal,
 } from './entry-utils.ts';
 import { esbuildCssPlugin, rolldownCssPlugin } from './css-modules.ts';
 import { tiePreviewRuntimeSetup } from './preview-runtime-entry.ts';
 
-// repo root/bench/esbuild-metafiles/core
-const DIR_METAFILE_BASE = join(
-  import.meta.dirname,
-  '..',
-  '..',
-  '..',
-  'code',
-  'bench',
-  'esbuild-metafiles'
-);
 export const DIR_CODE = join(import.meta.dirname, '..', '..', '..', 'code');
 
 function rolldownGlobalExternalsPlugin(): RolldownPlugin {
@@ -62,32 +51,6 @@ function rolldownGlobalExternalsPlugin(): RolldownPlugin {
   };
 }
 
-/*
- * This plugin writes the metafile to a file in the output directory.
- * It is used to analyze the bundle size of the different entry points.
- * The outputDir must be the package's directory, as that is the projectName in the NX config,
- * and what will become part of the build output cache. If there is a mismatch,
- * the metafiles won't be available whenever NX uses its cached results of the build step.
- */
-function metafileWriterPlugin(entryType: EntryType, outputDir: string): esbuild.Plugin {
-  return {
-    name: 'metafile-writer',
-    setup(build) {
-      build.onEnd(async (result) => {
-        if (result.errors.length || !result.metafile) {
-          return;
-        }
-        const outputFile = join(outputDir, `${entryType}.json`);
-        if (existsSync(outputFile)) {
-          await rm(outputFile, { force: true });
-        }
-        await mkdir(outputDir, { recursive: true });
-        await writeFile(outputFile, JSON.stringify(result.metafile, null, 2));
-      });
-    },
-  };
-}
-
 export async function generateBundle({
   cwd,
   entry,
@@ -100,7 +63,6 @@ export async function generateBundle({
 }) {
   const DIR_CWD = cwd;
   const DIR_REL = relative(DIR_CODE, DIR_CWD);
-  const PACKAGE_DIR_NAME = basename(DIR_CWD);
   const external = (await getExternal(DIR_CWD)).runtimeExternal;
   const { entries, postbuild } = entry;
 
@@ -111,7 +73,6 @@ export async function generateBundle({
     legalComments: 'none',
     ignoreAnnotations: true,
     splitting: true,
-    metafile: true,
     outbase: 'src',
     outdir: 'dist',
     treeShaking: true,
@@ -290,7 +251,6 @@ export async function generateBundle({
         },
         plugins: [
           ...sharedOptions.plugins,
-          metafileWriterPlugin('node', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
         ],
       })
     );
@@ -311,7 +271,6 @@ export async function generateBundle({
         supported: SUPPORTED_FEATURES,
         plugins: [
           ...sharedOptions.plugins,
-          metafileWriterPlugin('browser', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
         ],
       })
     );
@@ -342,7 +301,6 @@ export async function generateBundle({
         entryPoints: esbuildRuntimeEntries.map(({ entryPoint }) => entryPoint),
         plugins: [
           ...runtimeOptions.plugins,
-          metafileWriterPlugin('runtime', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
         ],
       })
     );
@@ -356,7 +314,6 @@ export async function generateBundle({
         plugins: [
           ...runtimeOptions.plugins,
           globalExternals(globalsModuleInfoMap),
-          metafileWriterPlugin('globalizedRuntime', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
         ],
       })
     );
