@@ -1,0 +1,146 @@
+{
+  "name": "@storybook/code",
+  "version": "11.0.0-alpha.6",
+  "private": true,
+  "description": "Storybook root",
+  "homepage": "https://storybook.js.org/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "scripts": {
+    "build": "NODE_ENV=production bun --cwd ../scripts build-package",
+    "knip": "knip --config ../scripts/knip.config.ts",
+    "lint": "oxlint --report-unused-disable-directives-severity=error . --quiet",
+    "storybook:ui": "NODE_OPTIONS=\"--max_old_space_size=4096\" core/dist/bin/dispatcher.js dev --port 6006 --config-dir ./.storybook",
+    "storybook:ui:build": "NODE_OPTIONS=\"--max_old_space_size=5120\" core/dist/bin/dispatcher.js build --config-dir ./.storybook"
+  },
+  "browserslist": [
+    "chrome >= 147",
+    "android >= 147",
+    "and_chr >= 147",
+    "edge >= 150",
+    "firefox >= 152",
+    "safari >= 26.5",
+    "ios_saf >= 26.5",
+    "node >= 20"
+  ],
+  "dependencies": {
+    "@chromatic-com/storybook": "^5.1.2",
+    "@storybook/addon-a11y": "workspace:*",
+    "@storybook/addon-designs": "^11.0.3",
+    "@storybook/addon-docs": "workspace:*",
+    "@storybook/addon-links": "workspace:*",
+    "@storybook/addon-mcp": "workspace:*",
+    "@storybook/addon-themes": "workspace:*",
+    "@storybook/addon-vitest": "workspace:*",
+    "@storybook/builder-vite": "workspace:*",
+    "@storybook/global": "^5.0.0",
+    "@storybook/react": "workspace:*",
+    "@storybook/react-vite": "workspace:*",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "14.6.3",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^22.19.1",
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@types/uuid": "^8.3.4",
+    "@vitejs/plugin-react": "^4.3.2",
+    "@vitest/browser": "^5.0.0",
+    "@vitest/browser-playwright": "^5.0.0",
+    "@vitest/coverage-istanbul": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "chromatic": "^18.0.1",
+    "create-storybook": "workspace:*",
+    "es-toolkit": "^1.43.0",
+    "esbuild": "^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0 || ^0.28.0",
+    "happy-dom": "^17.6.3",
+    "http-server": "^14.1.1",
+    "knip": "^6.38.0",
+    "oxlint": "1.85.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-popper-tooltip": "^4.4.2",
+    "sort-package-json": "^3.5.0",
+    "storybook": "workspace:^",
+    "ts-dedent": "^2.0.0",
+    "typescript": "^6.0.3",
+    "typescript-native": "npm:typescript@^7.0.2",
+    "uuid": "^8.3.2",
+    "vite": "^8.0.0",
+    "vite-plugin-inspect": "^11.0.0",
+    "vitest": "^5.0.0"
+  },
+  "dependenciesMeta": {
+    "ejs": {
+      "built": false
+    },
+    "level": {
+      "built": false
+    },
+    "node-uuid": {
+      "built": false,
+      "unplugged": false
+    },
+    "nodemon": {
+      "built": false
+    },
+    "parcel": {
+      "built": false
+    },
+    "preact": {
+      "built": false
+    },
+    "yorkie": {
+      "built": false
+    }
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "nx": {
+    "includedScripts": []
+  },
+  "pr-log": {
+    "skipLabels": [
+      "cleanup"
+    ],
+    "validLabels": [
+      [
+        "BREAKING CHANGE",
+        "Breaking Changes"
+      ],
+      [
+        "feature request",
+        "Features"
+      ],
+      [
+        "bug",
+        "Bug Fixes"
+      ],
+      [
+        "documentation",
+        "Documentation"
+      ],
+      [
+        "maintenance",
+        "Maintenance"
+      ],
+      [
+        "build",
+        "Build"
+      ],
+      [
+        "dependencies",
+        "Dependency Upgrades"
+      ]
+    ]
+  }
+}

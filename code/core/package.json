@@ -1,0 +1,482 @@
+{
+  "name": "storybook",
+  "version": "11.0.0-alpha.6",
+  "description": "Storybook: Develop, document, and test UI components in isolation",
+  "keywords": [
+    "storybook",
+    "component",
+    "components",
+    "design-systems",
+    "component-testing",
+    "react",
+    "next",
+    "next.js",
+    "react-native",
+    "react-native-web",
+    "vue",
+    "angular",
+    "svelte",
+    "sveltekit",
+    "web-components"
+  ],
+  "homepage": "https://storybook.js.org",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "code/core"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "imports": {
+    "#manager-stores": {
+      "storybook": "./src/manager/manager-stores.mock.ts",
+      "default": "./src/manager/manager-stores.ts"
+    },
+    "#utils": {
+      "storybook": "./template/stories/utils.mock.ts",
+      "default": "./template/stories/utils.ts"
+    }
+  },
+  "exports": {
+    "./actions": {
+      "code": "./src/actions/index.ts",
+      "types": "./dist/actions/index.d.ts",
+      "default": "./dist/actions/index.js"
+    },
+    "./actions/decorator": {
+      "code": "./src/actions/decorator.ts",
+      "types": "./dist/actions/decorator.d.ts",
+      "default": "./dist/actions/decorator.js"
+    },
+    "./backgrounds": {
+      "code": "./src/backgrounds/index.ts",
+      "types": "./dist/backgrounds/index.d.ts",
+      "default": "./dist/backgrounds/index.js"
+    },
+    "./highlight": {
+      "code": "./src/highlight/index.ts",
+      "types": "./dist/highlight/index.d.ts",
+      "default": "./dist/highlight/index.js"
+    },
+    "./internal/babel": {
+      "code": "./src/babel/index.ts",
+      "types": "./dist/babel/index.d.ts",
+      "default": "./dist/babel/index.js"
+    },
+    "./internal/bin/dispatcher": {
+      "code": "./src/bin/dispatcher.ts",
+      "default": "./dist/bin/dispatcher.js"
+    },
+    "./internal/bin/loader": {
+      "code": "./src/bin/loader.ts",
+      "default": "./dist/bin/loader.js"
+    },
+    "./internal/channels": {
+      "code": "./src/channels/index.ts",
+      "types": "./dist/channels/index.d.ts",
+      "default": "./dist/channels/index.js"
+    },
+    "./internal/cli": {
+      "code": "./src/cli/index.ts",
+      "types": "./dist/cli/index.d.ts",
+      "default": "./dist/cli/index.js"
+    },
+    "./internal/client-logger": {
+      "code": "./src/client-logger/index.ts",
+      "types": "./dist/client-logger/index.d.ts",
+      "default": "./dist/client-logger/index.js"
+    },
+    "./internal/common": {
+      "code": "./src/common/index.ts",
+      "types": "./dist/common/index.d.ts",
+      "default": "./dist/common/index.js"
+    },
+    "./internal/component-meta": {
+      "code": "./src/component-meta/index.ts",
+      "types": "./dist/component-meta/index.d.ts",
+      "default": "./dist/component-meta/index.js"
+    },
+    "./internal/components": {
+      "code": "./src/components/index.ts",
+      "types": "./dist/components/index.d.ts",
+      "default": "./dist/components/index.js"
+    },
+    "./internal/core-events": {
+      "code": "./src/core-events/index.ts",
+      "types": "./dist/core-events/index.d.ts",
+      "default": "./dist/core-events/index.js"
+    },
+    "./internal/core-server": {
+      "code": "./src/core-server/index.ts",
+      "types": "./dist/core-server/index.d.ts",
+      "default": "./dist/core-server/index.js"
+    },
+    "./internal/core-server/presets/common-override-preset": {
+      "code": "./src/core-server/presets/common-override-preset.ts",
+      "default": "./dist/core-server/presets/common-override-preset.js"
+    },
+    "./internal/csf": {
+      "code": "./src/csf/index.ts",
+      "types": "./dist/csf/index.d.ts",
+      "default": "./dist/csf/index.js"
+    },
+    "./internal/csf-tools": {
+      "code": "./src/csf-tools/index.ts",
+      "types": "./dist/csf-tools/index.d.ts",
+      "default": "./dist/csf-tools/index.js"
+    },
+    "./internal/csf/csf-utils": {
+      "code": "./src/csf/csf-utils.ts",
+      "types": "./dist/csf/csf-utils.d.ts",
+      "default": "./dist/csf/csf-utils.js"
+    },
+    "./internal/docgen-worker": {
+      "code": "./src/shared/open-service/services/docgen/worker/docgen-worker.ts",
+      "default": "./dist/shared/open-service/services/docgen/worker/docgen-worker.js"
+    },
+    "./internal/docs-tools": {
+      "code": "./src/docs-tools/index.ts",
+      "types": "./dist/docs-tools/index.d.ts",
+      "default": "./dist/docs-tools/index.js"
+    },
+    "./internal/instrumenter": {
+      "code": "./src/instrumenter/index.ts",
+      "types": "./dist/instrumenter/index.d.ts",
+      "default": "./dist/instrumenter/index.js"
+    },
+    "./internal/manager-errors": {
+      "code": "./src/manager-errors.ts",
+      "types": "./dist/manager-errors.d.ts",
+      "default": "./dist/manager-errors.js"
+    },
+    "./internal/manager/globals": {
+      "code": "./src/manager/globals.ts",
+      "types": "./dist/manager/globals.d.ts",
+      "default": "./dist/manager/globals.js"
+    },
+    "./internal/manager/globals-runtime": {
+      "code": "./src/manager/globals-runtime.ts",
+      "default": "./dist/manager/globals-runtime.js"
+    },
+    "./internal/manager/manager-stores": {
+      "code": "./src/manager/manager-stores.ts",
+      "types": "./dist/manager/manager-stores.d.ts",
+      "default": "./dist/manager/manager-stores.js"
+    },
+    "./internal/mocking-utils": {
+      "code": "./src/mocking-utils/index.ts",
+      "types": "./dist/mocking-utils/index.d.ts",
+      "default": "./dist/mocking-utils/index.js"
+    },
+    "./internal/mocking-utils/mocker-runtime": {
+      "code": "./src/mocking-utils/mocker-runtime.js",
+      "default": "./dist/mocking-utils/mocker-runtime.js"
+    },
+    "./internal/node-logger": {
+      "code": "./src/node-logger/index.ts",
+      "types": "./dist/node-logger/index.d.ts",
+      "default": "./dist/node-logger/index.js"
+    },
+    "./internal/oxc-parser": {
+      "code": "./src/oxc-parser/index.ts",
+      "types": "./dist/oxc-parser/index.d.ts",
+      "default": "./dist/oxc-parser/index.js"
+    },
+    "./internal/preview-api": {
+      "code": "./src/preview-api/index.ts",
+      "types": "./dist/preview-api/index.d.ts",
+      "default": "./dist/preview-api/index.js"
+    },
+    "./internal/preview-errors": {
+      "code": "./src/preview-errors.ts",
+      "types": "./dist/preview-errors.d.ts",
+      "default": "./dist/preview-errors.js"
+    },
+    "./internal/preview/globals": {
+      "code": "./src/preview/globals.ts",
+      "types": "./dist/preview/globals.d.ts",
+      "default": "./dist/preview/globals.js"
+    },
+    "./internal/preview/runtime": {
+      "code": "./src/preview/runtime.ts",
+      "default": "./dist/preview/runtime.js"
+    },
+    "./internal/router": {
+      "code": "./src/router/index.ts",
+      "types": "./dist/router/index.d.ts",
+      "default": "./dist/router/index.js"
+    },
+    "./internal/server-errors": {
+      "code": "./src/server-errors.ts",
+      "types": "./dist/server-errors.d.ts",
+      "default": "./dist/server-errors.js"
+    },
+    "./internal/skills": {
+      "code": "./src/cli/skills/content/index.ts",
+      "types": "./dist/cli/skills/content/index.d.ts",
+      "default": "./dist/cli/skills/content/index.js"
+    },
+    "./internal/telemetry": {
+      "code": "./src/telemetry/index.ts",
+      "types": "./dist/telemetry/index.d.ts",
+      "default": "./dist/telemetry/index.js"
+    },
+    "./internal/tools": {
+      "code": "./src/cli/tools/sdk/index.ts",
+      "types": "./dist/cli/tools/sdk/index.d.ts",
+      "default": "./dist/cli/tools/sdk/index.js"
+    },
+    "./internal/tools/child-host": {
+      "code": "./src/cli/tools/sdk/child-host.ts",
+      "types": "./dist/cli/tools/sdk/child-host.d.ts",
+      "default": "./dist/cli/tools/sdk/child-host.js"
+    },
+    "./internal/toolsets-docs": {
+      "code": "./src/shared/open-service/toolsets/docs/public.ts",
+      "types": "./dist/shared/open-service/toolsets/docs/public.d.ts",
+      "default": "./dist/shared/open-service/toolsets/docs/public.js"
+    },
+    "./internal/types": {
+      "code": "./src/types/index.ts",
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./manager-api": {
+      "code": "./src/manager-api/index.ts",
+      "types": "./dist/manager-api/index.d.ts",
+      "default": "./dist/manager-api/index.js"
+    },
+    "./open-service": {
+      "code": "./src/shared/open-service/index.ts",
+      "types": "./dist/shared/open-service/index.d.ts",
+      "default": "./dist/shared/open-service/index.js"
+    },
+    "./package.json": "./package.json",
+    "./preview-api": {
+      "code": "./src/preview-api/index.ts",
+      "types": "./dist/preview-api/index.d.ts",
+      "default": "./dist/preview-api/index.js"
+    },
+    "./test": {
+      "code": "./src/test/index.ts",
+      "types": "./dist/test/index.d.ts",
+      "default": "./dist/test/index.js"
+    },
+    "./theming": {
+      "code": "./src/theming/index.ts",
+      "types": "./dist/theming/index.d.ts",
+      "default": "./dist/theming/index.js"
+    },
+    "./theming/create": {
+      "code": "./src/theming/create.ts",
+      "types": "./dist/theming/create.d.ts",
+      "default": "./dist/theming/create.js"
+    },
+    "./viewport": {
+      "code": "./src/viewport/index.ts",
+      "types": "./dist/viewport/index.d.ts",
+      "default": "./dist/viewport/index.js"
+    }
+  },
+  "bin": "./dist/bin/dispatcher.js",
+  "files": [
+    "bin/**/*",
+    "dist/**/*",
+    "assets/**/*",
+    "README.md",
+    "!src/**/*"
+  ],
+  "dependencies": {
+    "@storybook/global": "^5.0.0",
+    "@storybook/icons": "^2.0.2",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/user-event": "^14.6.3",
+    "@types/chai": "^5.2.2",
+    "@vitest/expect": "3.2.4",
+    "@vitest/spy": "3.2.4",
+    "@webcontainer/env": "^1.1.1",
+    "esbuild": "^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0 || ^0.28.0",
+    "jsonc-parser": "^3.3.1",
+    "open": "^10.2.0",
+    "oxc-parser": "^0.127.0",
+    "oxc-resolver": "11.21.2",
+    "recast": "^0.23.5",
+    "semver": "^7.7.3",
+    "use-sync-external-store": "^1.5.0",
+    "ws": "^8.21.1"
+  },
+  "devDependencies": {
+    "@aw-web-design/x-default-browser": "1.4.126",
+    "@babel/core": "^7.28.5",
+    "@babel/generator": "^7.28.5",
+    "@babel/parser": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@babel/traverse": "^7.28.5",
+    "@babel/types": "^7.28.5",
+    "@clack/prompts": "1.0.0-alpha.7",
+    "@devtools-ds/object-inspector": "^1.1.2",
+    "@discoveryjs/json-ext": "^0.5.3",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/is-prop-valid": "^1.3.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
+    "@happy-dom/global-registrator": "^20.0.11",
+    "@ngard/tiny-isequal": "^1.1.0",
+    "@polka/compression": "^1.0.0-next.28",
+    "@preact/signals-core": "^1.14.2",
+    "@radix-ui/react-scroll-area": "1.2.0-rc.7",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@react-aria/focus": "^3.22.1",
+    "@react-aria/live-announcer": "^3.5.1",
+    "@react-aria/overlays": "^3.32.1",
+    "@react-stately/overlays": "^3.7.1",
+    "@react-stately/tabs": "^3.9.1",
+    "@react-types/shared": "^3.34.0",
+    "@rolldown/pluginutils": "1.0.0-beta.18",
+    "@standard-schema/spec": "^1.1.0",
+    "@testing-library/react": "^14.0.0",
+    "@types/cross-spawn": "^6.0.6",
+    "@types/detect-port": "^1.3.0",
+    "@types/diff": "^5.0.9",
+    "@types/ejs": "^3.1.1",
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^22.19.1",
+    "@types/npmlog": "^7.0.0",
+    "@types/picomatch": "^4.0.3",
+    "@types/prettier": "^3.0.0",
+    "@types/pretty-hrtime": "^1.0.0",
+    "@types/prompts": "^2.0.9",
+    "@types/react-syntax-highlighter": "11.0.5",
+    "@types/semver": "^7.7.1",
+    "@types/ws": "^8",
+    "@valibot/to-json-schema": "^1.3.0",
+    "@vitest/mocker": "3.2.4",
+    "@vitest/utils": "^3.2.4",
+    "acorn": "^8.15.0",
+    "acorn-jsx": "^5.3.2",
+    "ansi-to-html": "^0.7.2",
+    "browser-dtector": "^3.4.0",
+    "bundle-require": "^5.1.0",
+    "camelcase": "^9.0.0",
+    "chai": "^5.1.1",
+    "commander": "^14.0.2",
+    "comment-json": "^4.2.5",
+    "comment-parser": "^1.4.1",
+    "copy-to-clipboard": "^3.3.1",
+    "cross-spawn": "^7.0.6",
+    "deep-object-diff": "^1.1.0",
+    "deepsignal": "^1.6.0",
+    "dequal": "^2.0.2",
+    "detect-indent": "^7.0.1",
+    "detect-port": "^1.6.1",
+    "diff": "^8.0.2",
+    "downshift": "^9.0.4",
+    "ejs": "^3.1.10",
+    "empathic": "^2.0.0",
+    "es-toolkit": "^1.43.0",
+    "esbuild": "^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0 || ^0.28.0",
+    "execa": "^9.6.1",
+    "exsolve": "^1.0.7",
+    "extend-to-be-announced": "^2.0.0",
+    "fetch-retry": "^6.0.0",
+    "flush-promises": "^1.0.2",
+    "fuse.js": "^3.6.1",
+    "get-npm-tarball-url": "^2.1.0",
+    "github-slugger": "^2.0.0",
+    "glob": "^10.5.0",
+    "globby": "^14.1.0",
+    "hast-util-to-estree": "^3.0.0",
+    "host-validation-middleware": "^0.1.2",
+    "jiti": "^2.6.1",
+    "js-yaml": "^4.1.0",
+    "jsdoc-type-pratt-parser": "^4.0.0",
+    "launch-editor": "^2.13.2",
+    "lazy-universal-dotenv": "^4.0.0",
+    "leven": "^4.0.0",
+    "mdast-util-from-markdown": "^2.0.0",
+    "mdast-util-mdx": "^3.0.0",
+    "mdast-util-mdx-jsx": "^3.2.0",
+    "memfs": "4.56.11",
+    "memoizerific": "^1.11.3",
+    "micromark-extension-mdxjs": "^3.0.0",
+    "modern-tar": "^0.5.5",
+    "nanoid": "^4.0.2",
+    "npmlog": "^7.0.0",
+    "p-limit": "^7.2.0",
+    "package-manager-detector": "^1.1.0",
+    "pathe": "^1.1.2",
+    "picocolors": "^1.1.0",
+    "picomatch": "^4.0.5",
+    "picoquery": "^2.5.0",
+    "polished": "^4.2.2",
+    "polka": "^1.0.0-next.28",
+    "prettier": "^3.7.1",
+    "pretty-hrtime": "^1.0.3",
+    "qrcode.react": "^4.2.0",
+    "react": "^18.2.0",
+    "react-aria": "^3.52.1",
+    "react-aria-components": "^1.21.1",
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^1.3.0",
+    "react-inspector": "^6.0.0",
+    "react-router-dom": "6.15.0",
+    "react-stately": "^3.50.0",
+    "react-syntax-highlighter": "^15.4.5",
+    "react-textarea-autosize": "^8.3.0",
+    "react-transition-state": "^2.3.1",
+    "require-from-string": "^2.0.2",
+    "rolldown": "^1.1.4",
+    "sirv": "^2.0.4",
+    "slash": "^5.0.0",
+    "source-map": "^0.7.4",
+    "std-env": "^4.0.0",
+    "store2": "^2.14.2",
+    "strip-ansi": "^7.1.0",
+    "strip-json-comments": "^5.0.1",
+    "telejson": "8.0.0",
+    "tiny-invariant": "^1.3.1",
+    "tinyspy": "^3.0.2",
+    "ts-dedent": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "type-fest": "^5.6.0",
+    "typescript": "^6.0.3",
+    "typescript-5": "npm:typescript@5.9.3",
+    "unique-string": "^3.0.0",
+    "use-resize-observer": "^9.1.0",
+    "valibot": "^1.4.0",
+    "watchpack": "^2.5.0",
+    "wrap-ansi": "^9.0.2",
+    "yaml": "^2.8.2",
+    "zod": "^3.25.76"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.0 || ^19.0.0",
+    "prettier": "^2 || ^3",
+    "vite-plus": "^0.1.15 || ^0.2.0 || ^0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    },
+    "vite-plus": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a8e7fd8a655c69780bc20b9749d2699e45beae1l"
+}

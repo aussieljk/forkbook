@@ -1,0 +1,182 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
+
+import type {
+  CoreCommon_StorybookInfo,
+  PackageJson,
+  StorybookConfigRaw,
+} from 'storybook/internal/types';
+import { SupportedBuilder, SupportedFramework, SupportedRenderer } from 'storybook/internal/types';
+
+import invariant from 'tiny-invariant';
+
+import { RN_STORYBOOK_DIR } from '../../shared/constants/config-folder.ts';
+import { storybookConfigExtensions } from '../../shared/constants/extensions.ts';
+import { JsPackageManager } from '../js-package-manager/JsPackageManager.ts';
+import { frameworkToBuilder } from './framework.ts';
+import { getAddonNames } from './get-addon-names.ts';
+import { extractFrameworkPackageName } from './get-framework-name.ts';
+import { extractRenderer } from './get-renderer-name.ts';
+import { getStorybookConfiguration } from './get-storybook-configuration.ts';
+import { loadMainConfig } from './load-main-config.ts';
+
+export const rendererPackages: Record<string, SupportedRenderer> = {
+  '@storybook/react': SupportedRenderer.REACT,
+  '@storybook/react-native': SupportedRenderer.REACT_NATIVE,
+};
+
+export const frameworkPackages: Record<string, SupportedFramework> = {
+  '@storybook/react-vite': SupportedFramework.REACT_VITE,
+  '@storybook/nextjs-vite': SupportedFramework.NEXTJS_VITE,
+};
+
+export const builderPackages: Record<string, SupportedBuilder> = {
+  '@storybook/builder-vite': SupportedBuilder.VITE,
+};
+
+const findDependency = (
+  { dependencies, devDependencies, peerDependencies }: PackageJson,
+  predicate: (entry: [string, string | undefined]) => boolean
+) =>
+  [
+    Object.entries(dependencies || {}).find(predicate),
+    Object.entries(devDependencies || {}).find(predicate),
+    Object.entries(peerDependencies || {}).find(predicate),
+  ] as const;
+
+const getStorybookVersionSpecifier = (configDir: string) => {
+  const packageJsonPaths = JsPackageManager.listAllPackageJsonPaths(dirname(configDir));
+
+  for (const packageJsonPath of packageJsonPaths) {
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+    // Pull the viewlayer from dependencies in package.json
+    const [dep, devDep, peerDep] = findDependency(packageJson, ([key]) => key === 'storybook');
+    const [pkg, version] = dep || devDep || peerDep || [];
+
+    if (pkg && version) {
+      return version;
+    }
+  }
+
+  return undefined;
+};
+
+export const findConfigFile = (prefix: string, configDir: string) => {
+  const filePrefix = join(configDir, prefix);
+  const extension = storybookConfigExtensions.find((ext) => existsSync(`${filePrefix}${ext}`));
+  return extension ? `${filePrefix}${extension}` : null;
+};
+
+export const getConfigInfo = (configDir?: string) => {
+  let storybookConfigDir = configDir ?? '.storybook';
+
+  if (!existsSync(storybookConfigDir)) {
+    const packageJsonPaths = JsPackageManager.listAllPackageJsonPaths(storybookConfigDir);
+
+    for (const packageJsonPath of packageJsonPaths) {
+      const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+      const storybookScript = packageJson.scripts?.storybook;
+      if (storybookScript && !configDir) {
+        const configParam = getStorybookConfiguration(storybookScript, '-c', '--config-dir');
+
+        if (configParam) {
+          storybookConfigDir = configParam;
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    configDir: storybookConfigDir,
+    mainConfigPath: findConfigFile('main', storybookConfigDir),
+    previewConfigPath: findConfigFile('preview', storybookConfigDir),
+    managerConfigPath: findConfigFile('manager', storybookConfigDir),
+  };
+};
+
+export const getStorybookInfo = async (
+  configDir = '.storybook',
+  cwd?: string,
+  { skipCache }: { skipCache?: boolean } = {}
+): Promise<CoreCommon_StorybookInfo> => {
+  const configInfo = getConfigInfo(configDir);
+  const mainConfig = (await loadMainConfig({
+    configDir: configInfo.configDir,
+    cwd,
+    // When the main config may have been rewritten earlier in the same process (e.g. an
+    // automigration switching frameworks), callers must skip the module cache to read the
+    // current on-disk config instead of a stale, previously-evaluated version.
+    skipCache,
+  })) as StorybookConfigRaw;
+
+  invariant(mainConfig, `Unable to find or evaluate ${configInfo.mainConfigPath}`);
+
+  const frameworkValue = mainConfig.framework;
+  const frameworkField = typeof frameworkValue === 'string' ? frameworkValue : frameworkValue?.name;
+  const addons = getAddonNames(mainConfig);
+  const versionSpecifier = getStorybookVersionSpecifier(configDir);
+
+  if (!frameworkField) {
+    /*
+      React Native on-device Storybook historically omitted `framework` from main.ts.
+      When the config lives in `.rnstorybook`, infer the framework so telemetry
+      `metadata.framework.name` is populated for existing projects (scoped to the
+      RN config dir to avoid mis-attributing web Storybooks in the same monorepo).
+    */
+    if (basename(configInfo.configDir) === RN_STORYBOOK_DIR) {
+      return {
+        ...configInfo,
+        versionSpecifier,
+        addons,
+        mainConfig,
+        frameworkPackage: '@storybook/react-native',
+        rendererPackage: '@storybook/react-native',
+        renderer: SupportedRenderer.REACT_NATIVE,
+        mainConfigPath: configInfo.mainConfigPath ?? undefined,
+        previewConfigPath: configInfo.previewConfigPath ?? undefined,
+        managerConfigPath: configInfo.managerConfigPath ?? undefined,
+      };
+    }
+
+    return {
+      ...configInfo,
+      versionSpecifier,
+      addons,
+      mainConfig,
+      mainConfigPath: configInfo.mainConfigPath ?? undefined,
+      previewConfigPath: configInfo.previewConfigPath ?? undefined,
+      managerConfigPath: configInfo.managerConfigPath ?? undefined,
+    };
+  }
+
+  const frameworkPackage = extractFrameworkPackageName(frameworkField);
+
+  const framework = frameworkPackages[frameworkPackage];
+  const renderer = await extractRenderer(frameworkPackage);
+  const builder = frameworkToBuilder[framework];
+
+  const rendererPackage = Object.entries(rendererPackages).find(
+    ([, value]) => value === renderer
+  )?.[0];
+
+  const builderPackage = Object.entries(builderPackages).find(
+    ([, value]) => value === builder
+  )?.[0];
+
+  return {
+    ...configInfo,
+    addons,
+    mainConfig,
+    framework,
+    versionSpecifier,
+    renderer: renderer ?? undefined,
+    builder: builder ?? undefined,
+    frameworkPackage,
+    rendererPackage,
+    builderPackage,
+    mainConfigPath: configInfo.mainConfigPath ?? undefined,
+    previewConfigPath: configInfo.previewConfigPath ?? undefined,
+    managerConfigPath: configInfo.managerConfigPath ?? undefined,
+  };
+};

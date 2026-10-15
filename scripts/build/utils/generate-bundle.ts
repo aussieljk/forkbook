@@ -1,0 +1,391 @@
+import { existsSync, watch } from 'node:fs';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+
+import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
+import * as esbuild from 'esbuild';
+import { raw as rawPlugin } from 'esbuild-raw-plugin';
+import { basename, dirname, join, relative } from 'pathe';
+import picocolors from 'picocolors';
+import type { Plugin as RolldownPlugin } from 'rolldown';
+import { rolldown } from 'rolldown';
+import { dedent } from 'ts-dedent';
+
+import { globalsModuleInfoMap } from '../../../code/core/src/manager/globals/globals-module-info.ts';
+import {
+  BROWSER_TARGETS,
+  NODE_TARGET,
+  SUPPORTED_FEATURES,
+} from '../../../code/core/src/shared/constants/environments-support.ts';
+import { resolvePackageDir } from '../../../code/core/src/shared/utils/module.ts';
+import {
+  type BuildEntries,
+  type EntryType,
+  type EsbuildContextOptions,
+  getExternal,
+} from './entry-utils.ts';
+import { tiePreviewRuntimeSetup } from './preview-runtime-entry.ts';
+
+// repo root/bench/esbuild-metafiles/core
+const DIR_METAFILE_BASE = join(
+  import.meta.dirname,
+  '..',
+  '..',
+  '..',
+  'code',
+  'bench',
+  'esbuild-metafiles'
+);
+export const DIR_CODE = join(import.meta.dirname, '..', '..', '..', 'code');
+
+function rolldownGlobalExternalsPlugin(): RolldownPlugin {
+  const prefix = '\0storybook-global:';
+
+  return {
+    name: 'storybook-global-externals',
+    resolveId(id) {
+      return id in globalsModuleInfoMap ? `${prefix}${id}` : null;
+    },
+    load(id) {
+      if (!id.startsWith(prefix)) {
+        return null;
+      }
+
+      const moduleName = id.slice(prefix.length) as keyof typeof globalsModuleInfoMap;
+      const { namedExports, varName } = globalsModuleInfoMap[moduleName];
+      const exports = namedExports.map(
+        (name) => `export const ${name} = ${varName}[${JSON.stringify(name)}];`
+      );
+
+      return [...exports, `export default ${varName};`].join('\n');
+    },
+  };
+}
+
+/*
+ * This plugin writes the metafile to a file in the output directory.
+ * It is used to analyze the bundle size of the different entry points.
+ * The outputDir must be the package's directory, as that is the projectName in the NX config,
+ * and what will become part of the build output cache. If there is a mismatch,
+ * the metafiles won't be available whenever NX uses its cached results of the build step.
+ */
+function metafileWriterPlugin(entryType: EntryType, outputDir: string): esbuild.Plugin {
+  return {
+    name: 'metafile-writer',
+    setup(build) {
+      build.onEnd(async (result) => {
+        if (result.errors.length || !result.metafile) {
+          return;
+        }
+        const outputFile = join(outputDir, `${entryType}.json`);
+        if (existsSync(outputFile)) {
+          await rm(outputFile, { force: true });
+        }
+        await mkdir(outputDir, { recursive: true });
+        await writeFile(outputFile, JSON.stringify(result.metafile, null, 2));
+      });
+    },
+  };
+}
+
+export async function generateBundle({
+  cwd,
+  entry,
+  isWatch,
+}: {
+  cwd: string;
+  entry: BuildEntries;
+  name: string;
+  isWatch: boolean;
+}) {
+  const DIR_CWD = cwd;
+  const DIR_REL = relative(DIR_CODE, DIR_CWD);
+  const PACKAGE_DIR_NAME = basename(DIR_CWD);
+  const external = (await getExternal(DIR_CWD)).runtimeExternal;
+  const { entries, postbuild } = entry;
+
+  const sharedOptions = {
+    absWorkingDir: DIR_CWD,
+    format: 'esm',
+    bundle: true,
+    legalComments: 'none',
+    ignoreAnnotations: true,
+    splitting: true,
+    metafile: true,
+    outbase: 'src',
+    outdir: 'dist',
+    treeShaking: true,
+    color: true,
+    external,
+    loader: {
+      // The MCP packages import markdown/html instruction and template files as text
+      '.md': 'text',
+      '.html': 'text',
+    },
+    minifySyntax: true,
+    define: {
+      /*
+       * We need to disable the default behavior of replacing process.env.NODE_ENV with "development"
+       * Because we have code that reads this value to determine if the code is running in a production environment.
+       * @see 6th bullet in "browser" section in https://esbuild.github.io/api/#platform
+       */
+      'process.env.NODE_ENV': 'process.env.NODE_ENV',
+    },
+    plugins: [
+      rawPlugin(),
+      {
+        name: 'postbuild',
+        setup(build) {
+          build.onEnd(async (result) => {
+            if (!postbuild) {
+              return;
+            }
+            if (result.errors.length) {
+              console.log('Errors found, skipping postbuild');
+              return;
+            }
+            console.log('Running postbuild script');
+            await postbuild(DIR_CWD);
+          });
+        },
+      },
+    ],
+  } as const satisfies EsbuildContextOptions;
+
+  const runtimeOptions = {
+    ...sharedOptions,
+    platform: 'browser',
+    target: BROWSER_TARGETS,
+    supported: SUPPORTED_FEATURES,
+    splitting: false,
+    external: [
+      // The following modules are conditionally called inside of @vitest/mocker
+      // The actual function which calls these modules is not imported
+      // and therefore we can externalize them.
+      'msw/browser',
+      'msw/core/http',
+    ], // Prefer `alias` over `external` because we're using aliases to bundle everything into the runtimes
+    alias: {
+      // The following aliases ensures that the runtimes bundles in the actual sources of these modules
+      // instead of attempting to resolve them to the dist files, because the dist files are not available yet.
+      'storybook/preview-api': './src/preview-api',
+      'storybook/manager-api': './src/manager-api',
+      'storybook/theming': './src/theming',
+      'storybook/test': './src/test',
+      'storybook/internal': './src',
+      'storybook/outline': './src/outline',
+      'storybook/backgrounds': './src/backgrounds',
+      'storybook/highlight': './src/highlight',
+      'storybook/measure': './src/measure',
+      'storybook/actions': './src/actions',
+      'storybook/viewport': './src/viewport',
+      'storybook/open-service': './src/shared/open-service',
+      // The following aliases ensures that the manager has a single version of React,
+      // even if transitive dependencies would depend on other versions.
+      react: resolvePackageDir('react'),
+      'react-dom': resolvePackageDir('react-dom'),
+      'react-dom/client': join(resolvePackageDir('react-dom'), 'client'),
+    },
+    define: {
+      // This should set react in prod mode for the manager
+      'process.env.NODE_ENV': '"production"',
+    },
+  } as const satisfies EsbuildContextOptions;
+
+  const buildChunkedRuntimeEntry = async ({
+    entryPoint,
+    outDir,
+    chunkDir,
+    useGlobals,
+  }: {
+    entryPoint: string;
+    outDir: string;
+    chunkDir: string;
+    useGlobals: boolean;
+  }) => {
+    const name = basename(entryPoint).replace(/\.[^.]+$/, '');
+    const alias = Object.fromEntries(
+      Object.entries(runtimeOptions.alias).map(([key, value]) => [
+        key,
+        value.startsWith('.') ? join(DIR_CWD, value) : value,
+      ])
+    );
+    const build = await rolldown({
+      cwd: DIR_CWD,
+      input: { [name]: entryPoint },
+      platform: 'browser',
+      plugins: useGlobals ? [rolldownGlobalExternalsPlugin()] : [],
+      resolve: {
+        alias,
+        conditionNames: ['browser', 'module', 'default'],
+      },
+      transform: {
+        define: runtimeOptions.define,
+        jsx: 'react',
+      },
+      treeshake: true,
+    });
+
+    await build.write({
+      dir: join(DIR_CWD, 'dist'),
+      format: 'es',
+      entryFileNames: `${outDir}/[name].js`,
+      chunkFileNames: `${outDir}/${chunkDir}/${name}-[hash].js`,
+      strictExecutionOrder: true,
+      codeSplitting: {
+        groups: [{ name, maxSize: 500 * 1024 }],
+      },
+    });
+    await build.close();
+
+    if (outDir === 'preview' && name === 'runtime') {
+      const entryFile = join(DIR_CWD, 'dist', outDir, `${name}.js`);
+      await writeFile(entryFile, tiePreviewRuntimeSetup(await readFile(entryFile, 'utf8')));
+    }
+  };
+
+  const contexts: Array<ReturnType<typeof esbuild.context>> = [];
+
+  if (entries.node) {
+    const uid = Math.random().toString(36).substring(2, 15);
+    contexts.push(
+      esbuild.context({
+        ...sharedOptions,
+        entryPoints: entries.node.map(({ entryPoint }) => entryPoint),
+        platform: 'node',
+        target: NODE_TARGET,
+        alias: {
+          // Keep a single bundled acorn copy when CommonJS dependencies such as
+          // acorn-jsx require('acorn') alongside ESM imports.
+          acorn: join(resolvePackageDir('acorn'), 'dist/acorn.mjs'),
+          // Avoid a nested @polka/url@0.5.0 CJS copy that drops polka's named `parse` export.
+          '@polka/url': join(resolvePackageDir('@polka/url'), 'build.mjs'),
+        },
+        chunkNames: '_node-chunks/[name]-[hash]',
+        banner: {
+          /*
+          This banner injects CJS compatibility code into the bundle, for when
+          dependencies need require, __filename, or __dirname.
+
+          We're adding unique names to the imports to avoid collisions
+          when one of our packages bundles in another of our packages,
+          like create-storybook bundling in parts of storybook core.
+          Similarly we're using var definitions as they can be redefined
+          without causing errors.
+          */
+          js: dedent`
+            import CJS_COMPAT_NODE_URL_${uid} from 'node:url';
+            import CJS_COMPAT_NODE_PATH_${uid} from 'node:path';
+            import CJS_COMPAT_NODE_MODULE_${uid} from "node:module";
+
+            var __filename = CJS_COMPAT_NODE_URL_${uid}.fileURLToPath(import.meta.url);
+            var __dirname = CJS_COMPAT_NODE_PATH_${uid}.dirname(__filename);
+            var require = CJS_COMPAT_NODE_MODULE_${uid}.createRequire(import.meta.url);
+
+            // ------------------------------------------------------------
+            // end of CJS compatibility banner, injected by Storybook's esbuild configuration
+            // ------------------------------------------------------------
+            `,
+        },
+        plugins: [
+          ...sharedOptions.plugins,
+          metafileWriterPlugin('node', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
+        ],
+      })
+    );
+  }
+
+  if (entries.browser) {
+    contexts.push(
+      esbuild.context({
+        ...sharedOptions,
+        external: [
+          ...(sharedOptions.external as string[]),
+          ...entries.browser.flatMap((entry) => entry.external ?? []),
+        ].filter(Boolean),
+        entryPoints: entries.browser.map(({ entryPoint }) => entryPoint),
+        platform: 'browser',
+        chunkNames: '_browser-chunks/[name]-[hash]',
+        target: BROWSER_TARGETS,
+        supported: SUPPORTED_FEATURES,
+        plugins: [
+          ...sharedOptions.plugins,
+          metafileWriterPlugin('browser', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
+        ],
+      })
+    );
+  }
+
+  const regularRuntimeEntries = entries.runtime?.filter((entry) => !entry.chunkedRuntime) ?? [];
+  const chunkedRuntimeEntries = entries.runtime?.filter((entry) => entry.chunkedRuntime) ?? [];
+
+  const chunkedRuntimeOutput = (entryPoint: string, useGlobals: boolean) => {
+    const outDir = basename(dirname(entryPoint));
+    return {
+      entryPoint,
+      outDir,
+      chunkDir: outDir === 'manager' ? '_manager-chunks' : '_chunks',
+      useGlobals,
+    };
+  };
+
+  // Rolldown writes these once. Watch mode uses the esbuild bundle, which rebuilds on edit.
+  const esbuildRuntimeEntries = isWatch
+    ? [...regularRuntimeEntries, ...chunkedRuntimeEntries]
+    : regularRuntimeEntries;
+
+  if (esbuildRuntimeEntries.length) {
+    contexts.push(
+      esbuild.context({
+        ...runtimeOptions,
+        entryPoints: esbuildRuntimeEntries.map(({ entryPoint }) => entryPoint),
+        plugins: [
+          ...runtimeOptions.plugins,
+          metafileWriterPlugin('runtime', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
+        ],
+      })
+    );
+  }
+
+  if (isWatch && entries.globalizedRuntime?.length) {
+    contexts.push(
+      esbuild.context({
+        ...runtimeOptions,
+        entryPoints: entries.globalizedRuntime.map(({ entryPoint }) => entryPoint),
+        plugins: [
+          ...runtimeOptions.plugins,
+          globalExternals(globalsModuleInfoMap),
+          metafileWriterPlugin('globalizedRuntime', join(DIR_METAFILE_BASE, PACKAGE_DIR_NAME)),
+        ],
+      })
+    );
+  }
+
+  const compile = await Promise.all(contexts);
+  if (!isWatch) {
+    await Promise.all([
+      ...chunkedRuntimeEntries.map(({ entryPoint }) =>
+        buildChunkedRuntimeEntry(chunkedRuntimeOutput(entryPoint, false))
+      ),
+      ...(entries.globalizedRuntime ?? []).map(({ entryPoint }) =>
+        buildChunkedRuntimeEntry(chunkedRuntimeOutput(entryPoint, true))
+      ),
+    ]);
+  }
+
+  await Promise.all(
+    compile.map(async (context) => {
+      if (isWatch) {
+        await context.watch();
+        // show a log message when a file is compiled
+        watch(join(DIR_CWD, 'dist'), { recursive: true }, (_event, filename) => {
+          if (filename) {
+            console.log(`compiled ${picocolors.cyan(join(DIR_REL, 'dist', filename))}`);
+          }
+        });
+      } else {
+        await context.rebuild();
+        await context.dispose();
+      }
+    })
+  );
+}

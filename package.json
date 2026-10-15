@@ -1,0 +1,60 @@
+{
+  "name": "@storybook/root",
+  "private": true,
+  "type": "module",
+  "workspaces": {
+    "packages": [
+      "code",
+      "code/addons/*",
+      "code/builders/*",
+      "code/core",
+      "code/frameworks/*",
+      "code/lib/*",
+      "code/renderers/*",
+      "scripts"
+    ]
+  },
+  "scripts": {
+    "fmt:check": "oxfmt --check .",
+    "fmt:write": "oxfmt .",
+    "lint": "cd code && bun run lint",
+    "storybook:vitest": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch --project storybook-ui",
+    "task": "bun --cwd=./scripts task",
+    "test": "NODE_OPTIONS=--max_old_space_size=4096 vitest run",
+    "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch",
+    "typecheck": "bun check -b -p code/tsconfig.packages.json"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-class-properties": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@types/kill-port": "^2.0.3",
+    "http-server": "^14.1.1",
+    "jiti": "^2.6.1",
+    "kill-port": "^2.0.1",
+    "oxfmt": "0.70.0",
+    "std-env": "^4.0.0",
+    "vite": "^8.0.0",
+    "vitest": "^5.0.0"
+  },
+  "overrides": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@types/node": "^22.19.1",
+    "@types/react": "^18.0.0",
+    "@typescript-eslint/types": "8.60.0",
+    "caniuse-lite": "1.0.30001810",
+    "esbuild": "^0.28.0",
+    "memfs": "4.56.11",
+    "playwright": "1.58.2",
+    "playwright-core": "1.58.2",
+    "react": "^18.2.0",
+    "rxjs": "^7.8.2",
+    "typescript": "^6.0.3",
+    "valibot": "^1.4.0"
+  },
+  "patchedDependencies": {
+    "@7rulnik/react-element-to-jsx-string@15.0.1": "patches/@7rulnik%2Freact-element-to-jsx-string@15.0.1.patch",
+    "@types/babel__traverse@7.28.0": "patches/@types%2Fbabel__traverse@7.28.0.patch",
+    "@testing-library/user-event@14.6.3": "patches/@testing-library%2Fuser-event@14.6.3.patch"
+  }
+}

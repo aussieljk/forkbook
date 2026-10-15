@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./core" },
+    { "path": "./addons/a11y" },
+    { "path": "./addons/docs" },
+    { "path": "./addons/links" },
+    { "path": "./addons/mcp" },
+    { "path": "./addons/pseudo-states" },
+    { "path": "./addons/themes" },
+    { "path": "./addons/vitest" },
+    { "path": "./builders/builder-vite" },
+    { "path": "./frameworks/nextjs-vite" },
+    { "path": "./frameworks/react-vite" },
+    { "path": "./lib/cli-storybook" },
+    { "path": "./lib/create-storybook" },
+    { "path": "./lib/mcp" },
+    { "path": "./lib/vite-plugin-storybook-nextjs" },
+    { "path": "./renderers/react" },
+    { "path": "../scripts" }
+  ]
+}

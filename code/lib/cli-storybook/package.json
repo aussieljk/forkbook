@@ -1,0 +1,57 @@
+{
+  "name": "@storybook/cli",
+  "version": "11.0.0-alpha.6",
+  "description": "Storybook CLI: Develop, document, and test UI components in isolation",
+  "keywords": [
+    "storybook",
+    "cli",
+    "dev",
+    "build",
+    "init"
+  ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/next/code/lib/cli-storybook",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "code/lib/cli-storybook"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "author": "Storybook Team",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "bin": "./dist/bin/index.js",
+  "files": [
+    "bin/**/*",
+    "dist/**/*",
+    "README.md",
+    "!src/**/*"
+  ],
+  "dependencies": {
+    "@types/semver": "^7.7.1",
+    "commander": "^14.0.2",
+    "create-storybook": "workspace:*",
+    "storybook": "workspace:*",
+    "ts-dedent": "^2.0.0"
+  },
+  "devDependencies": {
+    "empathic": "^2.0.0",
+    "envinfo": "^7.14.0",
+    "leven": "^4.0.0",
+    "picocolors": "^1.1.0",
+    "semver": "^7.7.3",
+    "typescript": "^6.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "a8e7fd8a655c69780bc20b9749d2699e45beae1l"
+}

@@ -1,0 +1,131 @@
+import { SELECT_STORY, STORY_CHANGED } from 'storybook/internal/core-events';
+import { toId } from 'storybook/internal/csf';
+import type {
+  Addon_MakeDecoratorResult,
+  ComponentTitle,
+  StoryId,
+  StoryKind,
+  StoryName,
+} from 'storybook/internal/types';
+
+import { global } from '@storybook/global';
+
+import { addons, makeDecorator } from 'storybook/preview-api';
+
+import { PARAM_KEY } from './constants.ts';
+
+const { document, HTMLElement } = global;
+
+interface ParamsId {
+  storyId: StoryId;
+}
+interface ParamsCombo {
+  kind?: StoryKind;
+  title?: ComponentTitle;
+  story?: StoryName;
+  name?: StoryName;
+}
+
+function parseQuery(queryString: string) {
+  const query: Record<string, string> = {};
+  const pairs = (queryString[0] === '?' ? queryString.substring(1) : queryString)
+    .split('&')
+    .filter(Boolean);
+
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i].split('=');
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+  }
+  return query;
+}
+
+export const navigate = (params: ParamsId | ParamsCombo) =>
+  addons.getChannel().emit(SELECT_STORY, params);
+
+const generateStoryUrl = (title: ComponentTitle | undefined, name: StoryName): string => {
+  const { location } = document;
+  const query = parseQuery(location.search);
+  const existingId = query.id ?? query.path?.match(/^\/story\/(.+)$/)?.[1];
+  const titleToLink = title || existingId?.split('--', 2)[0] || '';
+
+  const id = toId(titleToLink, name);
+  const path = `/story/${id}`;
+
+  // Drop the `iframe.html` from the preview path
+  const sbPath = location.pathname.replace(/iframe\.html$/, '');
+  return `${location.origin + sbPath}?${Object.entries({ path })
+    .map((item) => `${item[0]}=${item[1]}`)
+    .join('&')}`;
+};
+
+export const hrefTo = (title: ComponentTitle | undefined, name: StoryName): Promise<string> => {
+  return new Promise((resolve) => {
+    resolve(generateStoryUrl(title, name));
+  });
+};
+
+export const hrefToSync = (title: ComponentTitle | undefined, name: StoryName): string => {
+  return generateStoryUrl(title, name);
+};
+
+const valueOrCall = (args: string[]) => (value: string | ((...args: string[]) => string)) =>
+  typeof value === 'function' ? value(...args) : value;
+
+export const linkTo =
+  (
+    idOrTitle: string | ((...args: any[]) => string),
+    nameInput?: string | ((...args: any[]) => string)
+  ) =>
+  (...args: any[]) => {
+    const resolver = valueOrCall(args);
+    const title = resolver(idOrTitle);
+    const name = nameInput ? resolver(nameInput) : false;
+
+    if (title?.match(/--/) && !name) {
+      navigate({ storyId: title });
+    } else if (name && title) {
+      navigate({ kind: title, story: name });
+    } else if (title) {
+      navigate({ kind: title });
+    } else if (name) {
+      navigate({ story: name });
+    }
+  };
+
+const linksListener = (e: Event) => {
+  const { target } = e;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+  const element = target as HTMLElement;
+  const { sbKind: kind, sbStory: story } = element.dataset;
+  if (kind || story) {
+    e.preventDefault();
+    navigate({ kind, story });
+  }
+};
+
+let hasListener = false;
+
+const on = () => {
+  if (!hasListener) {
+    hasListener = true;
+    document.addEventListener('click', linksListener);
+  }
+};
+const off = () => {
+  if (hasListener) {
+    hasListener = false;
+    document.removeEventListener('click', linksListener);
+  }
+};
+
+export const withLinks: Addon_MakeDecoratorResult = makeDecorator({
+  name: 'withLinks',
+  parameterName: PARAM_KEY,
+  wrapper: (getStory, context) => {
+    on();
+    addons.getChannel().once(STORY_CHANGED, off);
+    return getStory(context);
+  },
+});
