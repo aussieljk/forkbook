@@ -69,6 +69,9 @@ const worktree = git('worktree', 'list', '--porcelain')
   .out.split('\n\n')
   .find((entry) => entry.includes(`branch refs/heads/${branch}`))
   ?.match(/^worktree (.+)$/m)?.[1];
-if (worktree) git('worktree', 'remove', '--force', worktree);
-git('branch', '-D', branch);
+// Agent worktrees are locked, and a locked worktree needs --force twice.
+if (worktree && !git('worktree', 'remove', '--force', '--force', worktree).ok) {
+  fail(`Could not remove the worktree ${worktree}.`);
+}
+if (!git('branch', '-D', branch).ok) fail(`Could not delete the branch ${branch}.`);
 console.log(`Merged ${branch}, verified, and removed its worktree and branch.`);
