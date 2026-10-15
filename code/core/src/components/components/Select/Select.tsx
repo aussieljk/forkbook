@@ -21,6 +21,7 @@ import { Popover } from '../Popover/Popover.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { SelectOption } from './SelectOption.tsx';
 import type { InternalOption, Option, ResetOption, Value } from './helpers.tsx';
+import { PortalTheme } from '../shared/PortalTheme.tsx';
 import styles from './Select.module.css';
 import {
   Listbox,
@@ -137,34 +138,36 @@ const MinimalistPopover: FC<{
       }}
     >
       <BasePopover.Portal container={portalContainer}>
-        <div className={styles.underlay} />
-        <BasePopover.Positioner
-          anchor={triggerRef}
-          side="bottom"
-          align="start"
-          sideOffset={8}
-          style={{ zIndex: 100000 }}
-        >
-          <BasePopover.Popup
-            role="presentation"
-            initialFocus={false}
-            finalFocus={false}
-            render={
-              <Popover
-                hasChrome
-                padding={0}
-                style={{
-                  maxHeight: 'min(504px, var(--available-height))',
-                  overflow: 'hidden auto',
-                  scrollbarColor: 'var(--sb-bar-text-color) transparent',
-                  scrollbarWidth: 'thin',
-                }}
-              >
-                {children}
-              </Popover>
-            }
-          />
-        </BasePopover.Positioner>
+        <PortalTheme>
+          <div className={styles.underlay} />
+          <BasePopover.Positioner
+            anchor={triggerRef}
+            side="bottom"
+            align="start"
+            sideOffset={8}
+            style={{ zIndex: 100000 }}
+          >
+            <BasePopover.Popup
+              role="presentation"
+              initialFocus={false}
+              finalFocus={false}
+              render={
+                <Popover
+                  hasChrome
+                  padding={0}
+                  style={{
+                    maxHeight: 'min(504px, var(--available-height))',
+                    overflow: 'hidden auto',
+                    scrollbarColor: 'var(--sb-bar-text-color) transparent',
+                    scrollbarWidth: 'thin',
+                  }}
+                >
+                  {children}
+                </Popover>
+              }
+            />
+          </BasePopover.Positioner>
+        </PortalTheme>
       </BasePopover.Portal>
     </BasePopover.Root>
   );

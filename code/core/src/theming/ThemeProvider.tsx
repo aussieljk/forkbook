@@ -1,9 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import React, { createContext, useContext, useMemo } from 'react';
 
-// TODO(emotion): remove this bridge once no component uses Emotion.
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-
 import { convert } from './convert.ts';
 import { themeToCssVars } from './css-vars.ts';
 import type { StorybookTheme } from './types.ts';
@@ -36,7 +33,7 @@ export const ThemeProvider = ({
   return (
     <ThemeContext.Provider value={theme}>
       <div data-sb-theme={theme.base} style={style}>
-        <EmotionThemeProvider theme={theme}>{children}</EmotionThemeProvider>
+        {children}
       </div>
     </ThemeContext.Provider>
   );

@@ -10,6 +10,7 @@ import type { PopperOptions, Config as ReactPopperTooltipConfig } from 'react-po
 import { usePopperTooltip } from 'react-popper-tooltip';
 import type { Color } from 'storybook/theming';
 
+import { PortalTheme } from '../shared/PortalTheme.tsx';
 import styles from './WithTooltip.module.css';
 
 const { document } = global;
@@ -211,7 +212,8 @@ const WithTooltipPure = ({
       >
         {children}
       </Container>
-      {isVisible && ReactDOM.createPortal(tooltipComponent, portalTarget)}
+      {isVisible &&
+        ReactDOM.createPortal(<PortalTheme>{tooltipComponent}</PortalTheme>, portalTarget)}
     </>
   );
 };

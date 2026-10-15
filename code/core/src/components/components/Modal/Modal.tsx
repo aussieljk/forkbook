@@ -10,6 +10,7 @@ import { useMediaQuery } from '../../../manager/hooks/useMedia.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { trapTabKey } from '../shared/trapTabKey.ts';
 import * as Components from './Modal.styled.tsx';
+import { PortalTheme } from '../shared/PortalTheme.tsx';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   container?: HTMLElement;
@@ -178,30 +179,34 @@ function BaseModal({
       disablePointerDismissal={!dismissOnClickOutside}
     >
       <Dialog.Portal container={containerElement}>
-        <Dialog.Backdrop
-          forceRender
-          render={<Components.Overlay $status={status} $transitionDuration={transitionDuration} />}
-        />
-        <Dialog.Popup
-          aria-label={ariaLabel}
-          // Base UI traps focus with focus guards. We also wrap Tab ourselves, so focus does not
-          // stop on the guards.
-          onKeyDown={(event) => trapTabKey(event.nativeEvent, event.currentTarget)}
-          render={
-            <Components.Container
-              data-deprecated={deprecated}
-              $variant={variant}
-              $status={status}
-              $transitionDuration={transitionDuration}
-              className={className}
-              width={width}
-              height={height}
-              {...props}
-            />
-          }
-        >
-          <ModalContext.Provider value={{ close }}>{children}</ModalContext.Provider>
-        </Dialog.Popup>
+        <PortalTheme>
+          <Dialog.Backdrop
+            forceRender
+            render={
+              <Components.Overlay $status={status} $transitionDuration={transitionDuration} />
+            }
+          />
+          <Dialog.Popup
+            aria-label={ariaLabel}
+            // Base UI traps focus with focus guards. We also wrap Tab ourselves, so focus does not
+            // stop on the guards.
+            onKeyDown={(event) => trapTabKey(event.nativeEvent, event.currentTarget)}
+            render={
+              <Components.Container
+                data-deprecated={deprecated}
+                $variant={variant}
+                $status={status}
+                $transitionDuration={transitionDuration}
+                className={className}
+                width={width}
+                height={height}
+                {...props}
+              />
+            }
+          >
+            <ModalContext.Provider value={{ close }}>{children}</ModalContext.Provider>
+          </Dialog.Popup>
+        </PortalTheme>
       </Dialog.Portal>
     </Dialog.Root>
   );

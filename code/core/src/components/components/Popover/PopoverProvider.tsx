@@ -11,6 +11,7 @@ import {
   convertToBaseUiPlacement,
 } from '../shared/overlayHelpers.tsx';
 import { Popover } from './Popover.tsx';
+import { PortalTheme } from '../shared/PortalTheme.tsx';
 
 export interface PopoverProviderProps {
   /**
@@ -101,22 +102,24 @@ export const PopoverProvider = ({
     <BasePopover.Root open={visible ?? isOpen} onOpenChange={onOpenChange} triggerId={triggerId}>
       <BasePopover.Trigger id={triggerId} render={children} />
       <BasePopover.Portal container={portalContainer}>
-        <BasePopover.Positioner
-          {...convertToBaseUiPlacement(placement)}
-          sideOffset={offset}
-          style={{ zIndex: 100000 }}
-        >
-          <BasePopover.Popup aria-label={ariaLabel} style={{ outline: 'none' }}>
-            <Popover
-              hasChrome={hasChrome}
-              hideLabel={closeLabel}
-              onHide={hasCloseButton ? onHide : undefined}
-              padding={padding}
-            >
-              {typeof popover === 'function' ? popover({ onHide }) : popover}
-            </Popover>
-          </BasePopover.Popup>
-        </BasePopover.Positioner>
+        <PortalTheme>
+          <BasePopover.Positioner
+            {...convertToBaseUiPlacement(placement)}
+            sideOffset={offset}
+            style={{ zIndex: 100000 }}
+          >
+            <BasePopover.Popup aria-label={ariaLabel} style={{ outline: 'none' }}>
+              <Popover
+                hasChrome={hasChrome}
+                hideLabel={closeLabel}
+                onHide={hasCloseButton ? onHide : undefined}
+                padding={padding}
+              >
+                {typeof popover === 'function' ? popover({ onHide }) : popover}
+              </Popover>
+            </BasePopover.Popup>
+          </BasePopover.Positioner>
+        </PortalTheme>
       </BasePopover.Portal>
     </BasePopover.Root>
   );
