@@ -2,7 +2,6 @@ import { readFile } from 'node:fs/promises';
 
 import {
   JsPackageManagerFactory,
-  getConfigInfo,
   getInterpretedFile,
   getProjectRoot,
   isWebContainer,
@@ -42,18 +41,16 @@ import { getServerAddresses, getServerChannelUrl, getServerPort } from './utils/
 import { getServer } from './utils/server-init.ts';
 import { stripCommentsAndStrings } from './utils/strip-comments-and-strings.ts';
 import { updateCheck } from './utils/update-check.ts';
-import { warnWhenUsingArgTypesRegex } from './utils/warnWhenUsingArgTypesRegex.ts';
 
 export async function buildDevStandalone(
   options: CLIOptions &
     LoadOptions &
     BuilderOptions & {
       storybookVersion?: string;
-      previewConfigPath?: string;
     }
 ): Promise<{ port: number; address: string; networkAddress: string }> {
   const { packageJson, versionUpdates } = options;
-  let { storybookVersion, previewConfigPath } = options;
+  let { storybookVersion } = options;
   const configDir = resolve(options.configDir);
   if (packageJson) {
     invariant(
@@ -61,7 +58,6 @@ export async function buildDevStandalone(
       `Expected package.json#version to be defined in the "${packageJson.name}" package}`
     );
     storybookVersion = packageJson.version;
-    previewConfigPath = getConfigInfo(configDir).previewConfigPath ?? undefined;
   } else {
     if (!storybookVersion) {
       storybookVersion = versions.storybook;
@@ -131,16 +127,6 @@ export async function buildDevStandalone(
   const packageManager = JsPackageManagerFactory.getPackageManager({
     configDir: options.configDir,
   });
-
-  // TODO: Bring back in 9.x when we officialy launch CSF4
-  // We need to consider more scenarios in this function, such as removing addons from main.ts
-  // try {
-  //   await syncStorybookAddons(config, previewConfigPath!);
-  // } catch (e) {}
-
-  try {
-    await warnWhenUsingArgTypesRegex(previewConfigPath, config);
-  } catch (e) {}
 
   const server = await getServer(options);
 

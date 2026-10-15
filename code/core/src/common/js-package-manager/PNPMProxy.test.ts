@@ -39,7 +39,6 @@ const expectedMinimumReleaseAgeExcludePackages = [
   'storybook',
   '@storybook/*',
   'eslint-plugin-storybook',
-  '@chromatic-com/storybook',
 ];
 
 describe('PNPM Proxy', () => {
@@ -716,12 +715,7 @@ describe('PNPM Proxy', () => {
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({
-          stdout: JSON.stringify([
-            'storybook',
-            '@storybook/*',
-            'eslint-plugin-storybook',
-            '@chromatic-com/storybook',
-          ]),
+          stdout: JSON.stringify(['storybook', '@storybook/*', 'eslint-plugin-storybook']),
         } as any);
 
       await expect(

@@ -178,7 +178,7 @@ describe('BUN Proxy', () => {
         [
           '[install]',
           'minimumReleaseAge = 3600',
-          'minimumReleaseAgeExcludes = ["storybook", "@storybook/*", "eslint-plugin-storybook", "@chromatic-com/storybook"]',
+          'minimumReleaseAgeExcludes = ["storybook", "@storybook/*", "eslint-plugin-storybook"]',
           '',
         ].join('\n')
       );
@@ -224,7 +224,6 @@ describe('BUN Proxy', () => {
             '  "storybook",',
             '  "@storybook/*",',
             '  "eslint-plugin-storybook",',
-            '  "@chromatic-com/storybook",',
             ']',
             '[test]',
             'coverageThreshold = 0.9',

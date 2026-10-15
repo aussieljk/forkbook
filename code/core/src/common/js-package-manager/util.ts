@@ -9,7 +9,6 @@ export const STORYBOOK_PACKAGE_PATTERNS = [
   'storybook',
   '@storybook/*',
   'eslint-plugin-storybook',
-  '@chromatic-com/storybook',
 ] as const;
 
 const escapePatternForRegex = (pattern: string) => pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

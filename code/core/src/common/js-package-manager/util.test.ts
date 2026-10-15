@@ -100,12 +100,7 @@ describe('js package manager util', () => {
 
   it('detects when Storybook minimum-age exclusions are already configured', () => {
     expect(
-      hasStorybookMinimumAgeExclusions([
-        'storybook',
-        '@storybook/*',
-        'eslint-plugin-storybook',
-        '@chromatic-com/storybook',
-      ])
+      hasStorybookMinimumAgeExclusions(['storybook', '@storybook/*', 'eslint-plugin-storybook'])
     ).toBe(true);
     expect(hasStorybookMinimumAgeExclusions(['storybook', '@storybook/react-vite'])).toBe(false);
     expect(hasStorybookMinimumAgeExclusions(['*storybook*'])).toBe(true);
