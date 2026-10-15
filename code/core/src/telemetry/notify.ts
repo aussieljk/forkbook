@@ -3,6 +3,8 @@ import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { dedent } from 'ts-dedent';
 
+import { isOtelEnabled } from './otel.ts';
+
 const TELEMETRY_KEY_NOTIFY_DATE = 'telemetry-notification-date';
 
 let called = false;
@@ -13,14 +15,14 @@ let called = false;
  * changes are ever made.
  */
 export const notify = async () => {
-  // Without a telemetry server, nothing is sent, so there is nothing to tell.
-  if (!called && process.env.FORKBOOK_TELEMETRY_URL) {
+  // Without an OpenTelemetry endpoint, nothing is sent, so there is nothing to tell.
+  if (!called && isOtelEnabled()) {
     called = true;
 
     if (!(await cache.get(TELEMETRY_KEY_NOTIFY_DATE, null))) {
       cache.set(TELEMETRY_KEY_NOTIFY_DATE, Date.now());
       logger.info(
-        'Forkbook sends anonymous usage telemetry to FORKBOOK_TELEMETRY_URL. To stop it, remove that environment variable.'
+        `Forkbook sends anonymous usage telemetry to ${process.env.OTEL_EXPORTER_OTLP_ENDPOINT}. To stop it, remove OTEL_EXPORTER_OTLP_ENDPOINT.`
       );
     }
   }

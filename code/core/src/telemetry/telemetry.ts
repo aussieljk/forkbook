@@ -5,7 +5,6 @@ import { join } from 'node:path';
 
 import { isCI } from '@aussieljk/forkbook/internal/common';
 
-import retry from 'fetch-retry';
 import { nanoid } from 'nanoid';
 
 import { version } from '../../package.json';
@@ -13,15 +12,9 @@ import { resolvePackageDir } from '../shared/utils/module.ts';
 import { getAnonymousProjectId, getProjectSince } from './anonymous-id.ts';
 import { detectAgent } from './detect-agent.ts';
 import { set as saveToCache } from './event-cache.ts';
-import { fetch } from './fetch.ts';
+import { emitOtelEvent } from './otel.ts';
 import { getSessionId } from './session-id.ts';
 import type { Options, TelemetryData } from './types.ts';
-
-const retryingFetch = retry(fetch);
-
-// Forkbook sends no telemetry unless you give it a server. Events are still written to the local
-// event cache, which some features read.
-const URL = process.env.FORKBOOK_TELEMETRY_URL;
 
 let tasks: Promise<any>[] = [];
 
@@ -63,37 +56,13 @@ const globalContext = {
   storybookVersion: getVersionNumber(),
 } as Record<string, any>;
 
-const prepareRequest = async (data: TelemetryData, context: Record<string, any>, options: any) => {
+// Forkbook sends events only to an OpenTelemetry endpoint that you set (see otel.ts). Events are
+// still written to the local event cache, which some features read.
+const prepareRequest = async (data: TelemetryData, context: Record<string, any>) => {
   const { eventType, payload, metadata, ...rest } = data;
   const sessionId = await getSessionId();
   const eventId = nanoid();
-  const body = { ...rest, eventType, eventId, sessionId, metadata, payload, context };
-  if (!URL) {
-    return;
-  }
-  const signal = AbortSignal.timeout(30_000);
-  const maxRetries = 3;
-
-  return retryingFetch(URL, {
-    method: 'post',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' },
-    retryDelay: (attempt: number) =>
-      2 ** attempt *
-      (typeof options?.retryDelay === 'number' && !Number.isNaN(options?.retryDelay)
-        ? options.retryDelay
-        : 1000),
-    retryOn: (attempt, error, response) => {
-      // If explicitly aborted (e.g. by the timeout above), or if we've exhausted our retries, give up.
-      if (signal.aborted || attempt >= maxRetries) {
-        return false;
-      }
-
-      // Retry transient network errors and server-overload responses.
-      return Boolean(error) || response?.status === 503 || response?.status === 504;
-    },
-    signal,
-  });
+  return emitOtelEvent(eventType, { ...rest, eventId, sessionId, metadata, payload, context });
 };
 
 function getVersionNumber() {
@@ -128,7 +97,7 @@ export async function sendTelemetry(
 
   let request: any;
   try {
-    request = prepareRequest(data, context, options);
+    request = prepareRequest(data, context);
     tasks.push(request);
 
     const sessionId = await getSessionId();

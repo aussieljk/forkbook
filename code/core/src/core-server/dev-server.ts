@@ -9,7 +9,7 @@ import polka from 'polka';
 
 import type { ChangeDetectionAdapter } from '../shared/open-service/services/module-graph/engine/adapters/types.ts';
 import { resolveChangeDetectionAdapter } from '../shared/open-service/services/module-graph/server.ts';
-import { isTelemetryModuleEnabled, telemetry } from '../telemetry/index.ts';
+import { isTelemetryModuleEnabled, telemetry, withSpan } from '../telemetry/index.ts';
 import { ChangeDetectionService } from './change-detection/change-detection-service.ts';
 import { getStatusStoreByTypeId } from './stores/status.ts';
 import type { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';
@@ -49,8 +49,9 @@ export async function storybookDevServer(
     workingDir,
   });
 
-  const storyIndexGeneratorPromise =
-    options.presets.apply<StoryIndexGenerator>('storyIndexGenerator');
+  const storyIndexGeneratorPromise = withSpan('forkbook.story-index', {}, () =>
+    options.presets.apply<StoryIndexGenerator>('storyIndexGenerator')
+  );
 
   const changeDetectionService = new ChangeDetectionService({
     storyIndexGeneratorPromise,
@@ -119,41 +120,45 @@ export async function storybookDevServer(
 
   const managerResult = options.previewOnly
     ? undefined
-    : await managerBuilder.start({
-        startTime: process.hrtime(),
-        options,
-        router: app,
-        server,
-        channel: options.channel,
-      });
+    : await withSpan('forkbook.manager-start', {}, () =>
+        managerBuilder.start({
+          startTime: process.hrtime(),
+          options,
+          router: app,
+          server,
+          channel: options.channel,
+        })
+      );
 
   let previewResult: Awaited<ReturnType<(typeof previewBuilder)['start']>> =
     await Promise.resolve();
 
   logger.debug('Starting preview..');
-  previewResult = await previewBuilder
-    .start({
-      startTime: process.hrtime(),
-      options,
-      router: app,
-      server,
-      channel: options.channel,
-    })
-    .catch(async (e: unknown) => {
-      logger.error('Failed to build the preview');
-      process.exitCode = 1;
+  previewResult = await withSpan('forkbook.preview-start', {}, () =>
+    previewBuilder
+      .start({
+        startTime: process.hrtime(),
+        options,
+        router: app,
+        server,
+        channel: options.channel,
+      })
+      .catch(async (e: unknown) => {
+        logger.error('Failed to build the preview');
+        process.exitCode = 1;
 
-      await disposeChangeDetectionRuntime();
-      await managerBuilder?.bail().catch(() => undefined);
-      // For some reason, even when the builder fails e.g. wrong main.js config,
-      // the preview may continue to print to stdout, which can affect output
-      // when we catch this error and process those errors (e.g. telemetry)
-      // gets overwritten by preview progress output. Therefore, we should bail the preview too.
-      await previewBuilder?.bail().catch(() => undefined);
+        await disposeChangeDetectionRuntime();
+        await managerBuilder?.bail().catch(() => undefined);
+        // For some reason, even when the builder fails e.g. wrong main.js config,
+        // the preview may continue to print to stdout, which can affect output
+        // when we catch this error and process those errors (e.g. telemetry)
+        // gets overwritten by preview progress output. Therefore, we should bail the preview too.
+        await previewBuilder?.bail().catch(() => undefined);
 
-      // re-throw the error
-      throw e;
-    });
+        // re-throw the error
+        throw e;
+      })
+  );
 
   let adapter: ChangeDetectionAdapter | undefined;
   try {

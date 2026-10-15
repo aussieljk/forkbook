@@ -735,6 +735,14 @@
     "@mdx-js/mdx": "^3.0.0",
     "@modelcontextprotocol/sdk": "^1.22.0",
     "@ngard/tiny-isequal": "^1.1.0",
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/api-logs": "0.223.0",
+    "@opentelemetry/context-async-hooks": "2.12.0",
+    "@opentelemetry/exporter-logs-otlp-http": "0.223.0",
+    "@opentelemetry/exporter-trace-otlp-http": "0.223.0",
+    "@opentelemetry/resources": "2.12.0",
+    "@opentelemetry/sdk-logs": "0.223.0",
+    "@opentelemetry/sdk-trace-base": "2.12.0",
     "@polka/compression": "^1.0.0-next.28",
     "@preact/signals-core": "^1.14.2",
     "@rolldown/pluginutils": "1.0.0-beta.18",
@@ -797,7 +805,6 @@
     "expect-type": "^0.15.0",
     "exsolve": "^1.0.7",
     "extend-to-be-announced": "^2.0.0",
-    "fetch-retry": "^6.0.0",
     "flush-promises": "^1.0.2",
     "fuse.js": "^3.6.1",
     "get-npm-tarball-url": "^2.1.0",
@@ -882,6 +889,13 @@
     "zod": "^3.25.76"
   },
   "peerDependencies": {
+    "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/context-async-hooks": "^2.12.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.223.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.223.0",
+    "@opentelemetry/resources": "^2.12.0",
+    "@opentelemetry/sdk-logs": "^0.223.0",
+    "@opentelemetry/sdk-trace-base": "^2.12.0",
     "@types/react": "^18.0.0 || ^19.0.0",
     "@types/react-dom": "^18.0.0 || ^19.0.0",
     "@vitest/browser": "^4.0.0 || ^5.0.0",
@@ -894,6 +908,27 @@
     "vitest": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
+    "@opentelemetry/api": {
+      "optional": true
+    },
+    "@opentelemetry/context-async-hooks": {
+      "optional": true
+    },
+    "@opentelemetry/exporter-logs-otlp-http": {
+      "optional": true
+    },
+    "@opentelemetry/exporter-trace-otlp-http": {
+      "optional": true
+    },
+    "@opentelemetry/resources": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-logs": {
+      "optional": true
+    },
+    "@opentelemetry/sdk-trace-base": {
+      "optional": true
+    },
     "@types/react": {
       "optional": true
     },

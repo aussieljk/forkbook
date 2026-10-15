@@ -13,7 +13,7 @@ Forkbook is a small, fast fork of [Storybook](https://github.com/storybookjs/sto
 - It is one package. The renderer, the frameworks, the Vite builder, the addons and the CLI are subpaths of `@aussieljk/forkbook`.
 - It supports only React with Vite and Next.js with Vite.
 - The CLI is `forkbook`, and the config folder is `.forkbook`.
-- It sends no telemetry.
+- It sends no telemetry, unless you set an OpenTelemetry endpoint.
 
 ## Start
 
@@ -52,6 +52,22 @@ export default config;
 | `@aussieljk/forkbook/addon-pseudo-states` | Hover, focus and active states |
 | `@aussieljk/forkbook/addon-mcp` | MCP server for agents |
 | `@aussieljk/forkbook/test` | `fn`, `expect` and `userEvent` |
+
+## Telemetry with OpenTelemetry (for example SigNoz)
+
+Forkbook sends nothing by default. To send data to your own OpenTelemetry backend:
+
+```sh
+bun add -d @opentelemetry/api @opentelemetry/context-async-hooks @opentelemetry/sdk-trace-base \
+  @opentelemetry/sdk-logs @opentelemetry/exporter-trace-otlp-http \
+  @opentelemetry/exporter-logs-otlp-http @opentelemetry/resources
+OTEL_EXPORTER_OTLP_ENDPOINT=https://signoz.example.com bunx forkbook dev
+```
+
+- Traces: one span for each command (`forkbook dev`, `forkbook build`, `forkbook init`), with child spans for the story index, the manager start and the preview start.
+- Logs: one record for each Forkbook event (`forkbook.dev`, `forkbook.build`, `forkbook.save-story`, and more). The data is anonymous and has no file paths.
+- The standard variables apply: `OTEL_SERVICE_NAME` (default `forkbook`), `OTEL_EXPORTER_OTLP_HEADERS` (for example an ingestion key).
+- `core.disableTelemetry: true` in `main.ts` stops the event logs.
 
 ## Develop
 

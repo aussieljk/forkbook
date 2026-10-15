@@ -1,14 +1,9 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 
-// Telemetry sends only when a server is set.
-vi.hoisted(() => {
-  process.env.FORKBOOK_TELEMETRY_URL = 'https://telemetry.example/event-log';
-});
-
-import { fetch } from './fetch.ts';
+import { emitOtelEvent } from './otel.ts';
 import { sendTelemetry } from './telemetry.ts';
 
-vi.mock('./fetch');
+vi.mock('./otel.ts', () => ({ emitOtelEvent: vi.fn() }));
 vi.mock('./event-cache', () => {
   return { set: vi.fn() };
 });
@@ -21,146 +16,49 @@ vi.mock('./session-id', () => {
   };
 });
 
-const fetchMock = vi.mocked(fetch);
-
-beforeEach(() => {
-  fetchMock.mockResolvedValue({ status: 200 } as any);
-});
+const emitMock = vi.mocked(emitOtelEvent);
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
-it('makes a fetch request with name and data', async () => {
+it('sends the event with its data', async () => {
   await sendTelemetry({ eventType: 'dev', payload: { foo: 'bar' } });
 
-  expect(fetchMock).toHaveBeenCalledTimes(1);
-  const body = JSON.parse(fetchMock?.mock?.calls?.[0]?.[1]?.body as any);
-  expect(body).toMatchObject({
-    eventType: 'dev',
-    payload: { foo: 'bar' },
-  });
-});
-
-it('abandons a request that never responds, instead of hanging the process', async () => {
-  const controller = new AbortController();
-  const timeoutSpy = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(controller.signal);
-
-  // fetch that never settles on its own - it only rejects once its signal aborts, which we control via the timeoutSpy above.
-  fetchMock.mockImplementation(
-    (_url, init) =>
-      new Promise((_resolve, reject) => {
-        const signal = (init as RequestInit | undefined)?.signal;
-        if (signal?.aborted) {
-          reject(signal.reason);
-        } else {
-          signal?.addEventListener('abort', () => reject(signal.reason));
-        }
-      })
-  );
-
-  let settled = false;
-  const promise = sendTelemetry({ eventType: 'dev', payload: { foo: 'bar' } }).finally(() => {
-    settled = true;
-  });
-
-  // Let the request reach its in-flight state.
-  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
-  expect(timeoutSpy).toHaveBeenCalledWith(30_000);
-  expect(settled).toBe(false);
-
-  // Abort the request, simulating the timeout expiring. This should cause the promise to reject and the sendTelemetry
-  // call to settle, instead of hanging indefinitely.
-  controller.abort();
-
-  await promise;
-
-  expect(settled).toBe(true);
-
-  // Ensure the aborted request is not retried
-  expect(fetchMock).toHaveBeenCalledTimes(1);
-});
-
-it('retries if fetch fails with a 503', async () => {
-  fetchMock.mockResolvedValueOnce({ status: 503 } as any);
-  await sendTelemetry(
-    {
-      eventType: 'dev',
+  expect(emitMock).toHaveBeenCalledTimes(1);
+  expect(emitMock).toHaveBeenCalledWith(
+    'dev',
+    expect.objectContaining({
+      sessionId: 'session-id',
+      eventId: expect.any(String),
       payload: { foo: 'bar' },
-    },
-    { retryDelay: 0 }
+      context: expect.objectContaining({ nodeVersion: process.versions.node }),
+    })
   );
-
-  expect(fetchMock).toHaveBeenCalledTimes(2);
 });
 
-it('gives up if fetch repeatedly fails', async () => {
-  fetchMock.mockResolvedValue({ status: 503 } as any);
-  await sendTelemetry(
-    {
-      eventType: 'dev',
-      payload: { foo: 'bar' },
-    },
-    { retryDelay: 0 }
-  );
+it('does not throw when sending fails', async () => {
+  emitMock.mockRejectedValueOnce(new Error('network down'));
 
-  expect(fetchMock).toHaveBeenCalledTimes(4);
+  await expect(sendTelemetry({ eventType: 'dev', payload: {} })).resolves.toBeUndefined();
 });
 
 it('await all pending telemetry when passing in immediate = true', async () => {
-  let numberOfResolvedTasks = 0;
-
-  fetchMock.mockImplementation(async () => {
-    // wait 10ms so that the "fetch" is still running while
-    // getSessionId resolves immediately below. tricky!
-    await new Promise((resolve) => {
-      setTimeout(resolve, 10);
-    });
-    numberOfResolvedTasks += 1;
-    return { status: 200 } as any;
+  let resolvedTasks = 0;
+  emitMock.mockImplementation(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    resolvedTasks += 1;
   });
 
-  // when we call sendTelemetry with immediate = true
-  // all pending tasks will be awaited
-  // to test this we add a few telemetry tasks that will be in the 'queue'
-  // we do NOT await these tasks!
-  sendTelemetry({
-    eventType: 'init',
-    payload: { foo: 'bar' },
-  });
-  sendTelemetry({
-    eventType: 'dev',
-    payload: { foo: 'bar' },
-  });
+  sendTelemetry({ eventType: 'init', payload: {} });
+  sendTelemetry({ eventType: 'dev', payload: {} });
 
-  // wait for getSessionId to finish, but not for fetches
-  await new Promise((resolve) => {
-    setTimeout(resolve, 0);
-  });
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  expect(emitMock).toHaveBeenCalledTimes(2);
+  expect(resolvedTasks).toBe(0);
 
-  expect(fetchMock).toHaveBeenCalledTimes(2);
-  expect(numberOfResolvedTasks).toBe(0);
+  await sendTelemetry({ eventType: 'error', payload: {} }, { immediate: true });
 
-  // here we await
-  await sendTelemetry(
-    {
-      eventType: 'error',
-      payload: { foo: 'bar' },
-    },
-    { retryDelay: 0, immediate: true }
-  );
-
-  expect(fetchMock).toHaveBeenCalledTimes(3);
-  expect(numberOfResolvedTasks).toBe(3);
-});
-
-it('sends nothing without a telemetry server', async () => {
-  vi.resetModules();
-  delete process.env.FORKBOOK_TELEMETRY_URL;
-  const { sendTelemetry: send } = await import('./telemetry.ts');
-  fetchMock.mockClear();
-
-  await send({ eventType: 'dev', payload: {} }, { immediate: true });
-
-  expect(fetchMock).not.toHaveBeenCalled();
+  expect(emitMock).toHaveBeenCalledTimes(3);
+  expect(resolvedTasks).toBe(3);
 });

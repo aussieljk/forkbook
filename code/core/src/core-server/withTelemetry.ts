@@ -14,6 +14,7 @@ import {
   onPayloadError,
   setTelemetryEnabled,
   telemetry,
+  withSpan,
 } from '@aussieljk/forkbook/internal/telemetry';
 import type { EventType } from '@aussieljk/forkbook/internal/telemetry';
 import type { CLIOptions, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
@@ -250,8 +251,8 @@ export async function withTelemetry<T>(
   telemetry('boot', { eventType }, { stripMetadata: true });
 
   try {
-    const result = await run();
-    return result;
+    // One trace per command. For `dev`, the span ends when the server is ready.
+    return await withSpan(`forkbook ${eventType}`, { 'forkbook.command': eventType }, run);
   } catch (error: unknown) {
     if (canceled) {
       return undefined;
