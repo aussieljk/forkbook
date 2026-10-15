@@ -1,11 +1,6 @@
 import { resolve } from 'node:path';
 
-import {
-  ProjectType,
-  installSkills,
-  supportsSkills,
-  supportsAiSetup,
-} from 'storybook/internal/cli';
+import { installSkills, supportsSkills, supportsAiSetup } from 'storybook/internal/cli';
 import {
   HandledError,
   PackageManagerName,
@@ -74,7 +69,6 @@ async function checkFeatureSupport(
 export async function doInitiate(options: CommandOptions): Promise<
   | {
       shouldRunDev: true;
-      projectType: ProjectType;
       packageManager: JsPackageManager;
       storybookCommand?: string | null;
     }
@@ -220,7 +214,6 @@ export async function doInitiate(options: CommandOptions): Promise<
       !options.skipInstall &&
       shouldRunDev !== false &&
       dependencyInstallationResult.status === 'success',
-    projectType,
     packageManager,
     storybookCommand,
   };
@@ -266,11 +259,10 @@ export async function initiate(options: CommandOptions): Promise<void> {
 
 /** Run Storybook dev server after installation */
 async function runStorybookDev(result: {
-  projectType: ProjectType;
   packageManager: JsPackageManager;
   storybookCommand?: string | null;
 }): Promise<void> {
-  const { projectType, packageManager, storybookCommand } = result;
+  const { packageManager, storybookCommand } = result;
 
   if (!storybookCommand) {
     return;
@@ -279,34 +271,25 @@ async function runStorybookDev(result: {
   try {
     const parts = storybookCommand.split(' ');
 
-    // Angular CLI throws "Unknown argument: silent"
-    if (packageManager.type === 'npm' && projectType !== ProjectType.ANGULAR) {
+    if (packageManager.type === 'npm') {
       parts.push('--silent');
     }
 
-    // in the case of Angular, we are calling `ng run` which doesn't allow passing flags to the command
-    const supportSbFlags = projectType !== ProjectType.ANGULAR;
-
-    if (supportSbFlags) {
-      // npm needs extra -- to pass flags to the command
-      const doesNeedExtraDash =
-        packageManager.type === PackageManagerName.NPM ||
-        packageManager.type === PackageManagerName.BUN;
-
-      if (doesNeedExtraDash) {
-        parts.push('--');
-      }
-
-      const defaultPort = 6006;
-      const availablePort = await getServerPort(defaultPort);
-      const useAlternativePort = availablePort !== defaultPort;
-
-      if (useAlternativePort) {
-        parts.push(`-p`, `${availablePort}`);
-      }
-
-      parts.push('--quiet');
+    // npm needs extra -- to pass flags to the command
+    if (
+      packageManager.type === PackageManagerName.NPM ||
+      packageManager.type === PackageManagerName.BUN
+    ) {
+      parts.push('--');
     }
+
+    const defaultPort = 6006;
+    const availablePort = await getServerPort(defaultPort);
+    if (availablePort !== defaultPort) {
+      parts.push(`-p`, `${availablePort}`);
+    }
+
+    parts.push('--quiet');
 
     // instead of calling 'dev' automatically, we spawn a subprocess so that it gets
     // executed directly in the user's project directory. This avoid potential issues

@@ -47,43 +47,6 @@ describe('configureMain', () => {
     `);
   });
 
-  it('promotes framework to { name, options } when frameworkOptions are provided', async () => {
-    await configureMain({
-      language: SupportedLanguage.TYPESCRIPT,
-      addons: [],
-      prefixes: [],
-      storybookConfigFolder: '.storybook',
-      framework: '@storybook/angular-vite',
-      frameworkPackage: '@storybook/angular-vite',
-      features: new Set([]),
-      frameworkOptions: { compodoc: false },
-    });
-
-    const { calls } = vi.mocked(fsp.writeFile).mock;
-    const [, mainConfigContent] = calls[calls.length - 1];
-
-    expect(mainConfigContent).toContain('"framework": {');
-    expect(mainConfigContent).toContain('"name": "@storybook/angular-vite"');
-    expect(mainConfigContent).toContain('"compodoc": false');
-  });
-
-  it('leaves framework as a string when no frameworkOptions are provided', async () => {
-    await configureMain({
-      language: SupportedLanguage.TYPESCRIPT,
-      addons: [],
-      prefixes: [],
-      storybookConfigFolder: '.storybook',
-      framework: '@storybook/angular-vite',
-      frameworkPackage: '@storybook/angular-vite',
-      features: new Set([]),
-    });
-
-    const { calls } = vi.mocked(fsp.writeFile).mock;
-    const [, mainConfigContent] = calls[calls.length - 1];
-
-    expect(mainConfigContent).toContain('"framework": "@storybook/angular-vite"');
-  });
-
   it('should generate main.ts with docs feature', async () => {
     await configureMain({
       language: SupportedLanguage.TYPESCRIPT,
@@ -148,13 +111,13 @@ describe('configureMain', () => {
       language: SupportedLanguage.JAVASCRIPT,
       prefixes: [],
       addons: [
-        "%%path.dirname(require.resolve(path.join('@storybook/addon-essentials', 'package.json')))%%",
+        "%%path.dirname(require.resolve(path.join('@storybook/addon-docs', 'package.json')))%%",
         "%%path.dirname(require.resolve(path.join('@storybook/addon-links', 'package.json')))%%",
       ],
       storybookConfigFolder: '.storybook',
       framework:
-        "%%path.dirname(require.resolve(path.join('@storybook/react-webpack5', 'package.json')))%%",
-      frameworkPackage: '@storybook/react-webpack5',
+        "%%path.dirname(require.resolve(path.join('@storybook/react-vite', 'package.json')))%%",
+      frameworkPackage: '@storybook/react-vite',
       features: new Set([Feature.DOCS]),
     });
 
@@ -165,17 +128,17 @@ describe('configureMain', () => {
     expect(mainConfigContent).toMatchInlineSnapshot(`
       "import path from 'node:path';
 
-      /** @type { import('@storybook/react-webpack5').StorybookConfig } */
+      /** @type { import('@storybook/react-vite').StorybookConfig } */
       const config = {
         "stories": [
           "../stories/**/*.mdx",
           "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
         ],
         "addons": [
-          path.dirname(require.resolve(path.join('@storybook/addon-essentials', 'package.json'))),
+          path.dirname(require.resolve(path.join('@storybook/addon-docs', 'package.json'))),
           path.dirname(require.resolve(path.join('@storybook/addon-links', 'package.json')))
         ],
-        "framework": path.dirname(require.resolve(path.join('@storybook/react-webpack5', 'package.json')))
+        "framework": path.dirname(require.resolve(path.join('@storybook/react-vite', 'package.json')))
       };
       export default config;"
     `);

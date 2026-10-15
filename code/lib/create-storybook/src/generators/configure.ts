@@ -52,7 +52,6 @@ export async function configureMain({
   frameworkPackage,
   prefixes = [],
   features,
-  frameworkOptions,
   ...custom
 }: ConfigureMainOptions) {
   const srcPath = resolve(storybookConfigFolder, '../src');
@@ -66,13 +65,6 @@ export async function configureMain({
     addons,
     ...custom,
   };
-
-  // Promote the framework field to `{ name, options }` when framework options
-  // are provided (e.g. Angular's `compodoc`). `custom.framework` stays a string
-  // so the `path.dirname(` import probe below still works.
-  if (frameworkOptions && Object.keys(frameworkOptions).length > 0 && config.framework) {
-    config.framework = { name: config.framework, options: frameworkOptions };
-  }
 
   const isTypescript = language === SupportedLanguage.TYPESCRIPT;
 

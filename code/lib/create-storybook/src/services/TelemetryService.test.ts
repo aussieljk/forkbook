@@ -60,7 +60,7 @@ describe('TelemetryService', () => {
           ai: false,
         },
         versionSpecifier: '8.0.0',
-        cliIntegration: 'sv create',
+        cliIntegration: 'vike',
       };
 
       await telemetryService.trackInit(data);
@@ -151,12 +151,12 @@ describe('TelemetryService', () => {
         throw new Error('Ancestry error');
       });
 
-      await telemetryService.trackInitWithContext(ProjectType.VUE3, selectedFeatures);
+      await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 
       expect(telemetry).toHaveBeenCalledWith(
         'init',
         {
-          projectType: ProjectType.VUE3,
+          projectType: ProjectType.NEXTJS,
           features: {
             dev: true,
             docs: false,
@@ -174,14 +174,16 @@ describe('TelemetryService', () => {
       const telemetryService = new TelemetryService();
       const selectedFeatures = new Set([]);
 
-      vi.mocked(getProcessAncestry).mockReturnValue([{ command: 'sv create my-app' }] as any);
+      vi.mocked(getProcessAncestry).mockReturnValue([
+        { command: 'pnpm create vike@latest' },
+      ] as any);
 
       await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 
       expect(telemetry).toHaveBeenCalledWith(
         'init',
         expect.objectContaining({
-          cliIntegration: 'sv create',
+          cliIntegration: 'vike',
         }),
         { configDir: undefined }
       );

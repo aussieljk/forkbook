@@ -142,7 +142,7 @@ describe('GeneratorExecutionCommand', () => {
       };
 
       await command.execute({
-        projectType: ProjectType.VUE3,
+        projectType: ProjectType.NEXTJS,
         frameworkInfo: mockFrameworkInfo,
         language: SupportedLanguage.TYPESCRIPT,
         options,
@@ -166,7 +166,7 @@ describe('GeneratorExecutionCommand', () => {
           builder: SupportedBuilder.VITE,
           linkable: true,
           yes: true,
-          projectType: ProjectType.VUE3,
+          projectType: ProjectType.NEXTJS,
           features: expect.any(Set),
           dependencyCollector: expect.any(Object),
         }),

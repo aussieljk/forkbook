@@ -13,10 +13,7 @@ import { NxProjectDetectedError } from 'storybook/internal/server-errors';
 import type { SupportedLanguage } from 'storybook/internal/types';
 
 import * as find from 'empathic/find';
-import semver from 'semver';
 import { dedent } from 'ts-dedent';
-
-import type { CommandOptions } from '../generators/types.ts';
 
 type TemplateMatcher = {
   files?: boolean[];
@@ -41,47 +38,8 @@ export class ProjectTypeService {
   getSupportedTemplates(): TemplateConfiguration[] {
     return [
       {
-        preset: ProjectType.NUXT,
-        dependencies: ['nuxt'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        preset: ProjectType.TANSTACK_REACT,
-        dependencies: ['@tanstack/react-start', '@tanstack/react-router'],
-        peerDependencies: ['@tanstack/react-start', '@tanstack/react-router'],
-        matcherFunction: ({ dependencies, peerDependencies }) => {
-          return (dependencies?.some(Boolean) || peerDependencies?.some(Boolean)) ?? false;
-        },
-      },
-      {
-        preset: ProjectType.VUE3,
-        dependencies: {
-          // This Vue template works with Vue 3
-          vue: (versionRange) => versionRange === 'next' || this.eqMajor(versionRange, 3),
-        },
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.some(Boolean) ?? false;
-        },
-      },
-      {
-        preset: ProjectType.EMBER,
-        dependencies: ['ember-cli'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
         preset: ProjectType.NEXTJS,
         dependencies: ['next'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        preset: ProjectType.QWIK,
-        dependencies: ['@builder.io/qwik'],
         matcherFunction: ({ dependencies }) => {
           return dependencies?.every(Boolean) ?? true;
         },
@@ -92,49 +50,6 @@ export class ProjectTypeService {
         peerDependencies: ['react-native', 'react-native-scripts', 'expo'],
         matcherFunction: ({ dependencies, peerDependencies }) => {
           return (dependencies?.some(Boolean) || peerDependencies?.some(Boolean)) ?? false;
-        },
-      },
-      {
-        preset: ProjectType.ANGULAR,
-        dependencies: ['@angular/core'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        preset: ProjectType.WEB_COMPONENTS,
-        dependencies: ['lit-element', 'lit-html', 'lit'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.some(Boolean) ?? false;
-        },
-      },
-      {
-        preset: ProjectType.PREACT,
-        dependencies: ['preact'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        // TODO: This only works because it is before the SVELTE template. could be more explicit
-        preset: ProjectType.SVELTEKIT,
-        dependencies: ['@sveltejs/kit'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        preset: ProjectType.SVELTE,
-        dependencies: ['svelte'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
-        },
-      },
-      {
-        preset: ProjectType.SOLID,
-        dependencies: ['solid-js'],
-        matcherFunction: ({ dependencies }) => {
-          return dependencies?.every(Boolean) ?? true;
         },
       },
       // DO NOT MOVE ANY TEMPLATES BELOW THIS LINE
@@ -168,9 +83,9 @@ export class ProjectTypeService {
     throw new HandledError(`Unknown project type supplied: ${projectTypeProvided}`);
   }
 
-  async autoDetectProjectType(options: CommandOptions): Promise<ProjectType> {
+  async autoDetectProjectType(): Promise<ProjectType> {
     try {
-      const detectedType = await this.detectProjectType(options);
+      const detectedType = await this.detectProjectType();
 
       // prompting handled by command layer
 
@@ -178,7 +93,7 @@ export class ProjectTypeService {
         logger.error(dedent`
           Unable to initialize Storybook in this directory.
 
-          Storybook couldn't detect a supported framework or configuration for your project. Make sure you're inside a framework project (e.g., React, Vue, Svelte, Angular, Next.js) and that its dependencies are installed.
+          Storybook couldn't detect a supported framework or configuration for your project. Make sure you're inside a React, Next.js or React Native project and that its dependencies are installed.
 
           Tips:
           - Run init in an empty directory or create a new framework app first.
@@ -210,21 +125,10 @@ export class ProjectTypeService {
     return detectIncompatiblePackageVersions(this.jsPackageManager);
   }
 
-  private eqMajor(versionRange: string, major: number) {
-    // Uses validRange to avoid a throw from minVersion if an invalid range gets passed
-    if (semver.validRange(versionRange)) {
-      return semver.minVersion(versionRange)?.major === major;
-    }
-    return false;
-  }
-
-  private async detectProjectType(options: CommandOptions): Promise<ProjectType | null> {
+  private async detectProjectType(): Promise<ProjectType | null> {
     try {
       if (this.isNxProject()) {
         return ProjectType.NX;
-      }
-      if (options.html) {
-        return ProjectType.HTML;
       }
       const { packageJson } = this.jsPackageManager.primaryPackageJson;
       return this.detectFrameworkPreset(packageJson);

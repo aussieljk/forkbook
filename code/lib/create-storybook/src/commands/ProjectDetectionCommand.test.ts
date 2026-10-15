@@ -98,13 +98,13 @@ describe('ProjectDetectionCommand', () => {
 
     it('should auto-detect project type when not provided', async () => {
       options.type = undefined;
-      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(ProjectType.VUE3);
+      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(ProjectType.NEXTJS);
 
       const result = await command.execute();
 
-      expect(result.projectType).toBe(ProjectType.VUE3);
-      expect(mockProjectTypeService.autoDetectProjectType).toHaveBeenCalledWith(options);
-      expect(logger.debug).toHaveBeenCalledWith('Project type detected: vue3');
+      expect(result.projectType).toBe(ProjectType.NEXTJS);
+      expect(mockProjectTypeService.autoDetectProjectType).toHaveBeenCalled();
+      expect(logger.debug).toHaveBeenCalledWith('Project type detected: nextjs');
     });
 
     it('should throw error for invalid provided type', async () => {
@@ -124,49 +124,8 @@ describe('ProjectDetectionCommand', () => {
       );
     });
 
-    it('should prompt for React Native variant when detected', async () => {
+    it('should not prompt for a React Native project', async () => {
       options.type = undefined;
-      options.yes = false;
-      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(
-        ProjectType.REACT_NATIVE
-      );
-      vi.mocked(prompt.select).mockResolvedValue(ProjectType.REACT_NATIVE_WEB);
-
-      const result = await command.execute();
-
-      expect(result.projectType).toBe(ProjectType.REACT_NATIVE_WEB);
-      expect(prompt.select).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: "We've detected a React Native project. Install:",
-        }),
-        expect.objectContaining({ onCancel: expect.any(Function) })
-      );
-    });
-
-    it('should track prompt cancellation for the React Native variant prompt and exit cleanly', async () => {
-      options.type = undefined;
-      options.yes = false;
-      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(
-        ProjectType.REACT_NATIVE
-      );
-      vi.mocked(prompt.select).mockResolvedValue(ProjectType.REACT_NATIVE_WEB);
-
-      await command.execute();
-
-      const onCancel = vi.mocked(prompt.select).mock.calls[0]?.[1]?.onCancel;
-      const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never);
-
-      await onCancel?.();
-
-      expect(mockTelemetryService.trackPromptCancel).toHaveBeenCalledWith('react-native-variant');
-      expect(exitSpy).toHaveBeenCalledWith(0);
-
-      exitSpy.mockRestore();
-    });
-
-    it('should not prompt for React Native variant when yes flag is set', async () => {
-      options.type = undefined;
-      options.yes = true;
       vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(
         ProjectType.REACT_NATIVE
       );
@@ -175,18 +134,6 @@ describe('ProjectDetectionCommand', () => {
 
       expect(result.projectType).toBe(ProjectType.REACT_NATIVE);
       expect(prompt.select).not.toHaveBeenCalled();
-    });
-
-    it('should handle all React Native variants', async () => {
-      options.type = undefined;
-      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(
-        ProjectType.REACT_NATIVE
-      );
-      vi.mocked(prompt.select).mockResolvedValue(ProjectType.REACT_NATIVE_AND_RNW);
-
-      const result = await command.execute();
-
-      expect(result.projectType).toBe(ProjectType.REACT_NATIVE_AND_RNW);
     });
 
     it('should check for existing Storybook installation', async () => {
@@ -221,19 +168,6 @@ describe('ProjectDetectionCommand', () => {
 
       expect(exitSpy).toHaveBeenCalledWith(0);
       exitSpy.mockRestore();
-    });
-
-    it('should not check existing installation for Angular projects', async () => {
-      options.type = undefined;
-      options.force = false;
-      vi.mocked(mockProjectTypeService.autoDetectProjectType).mockResolvedValue(
-        ProjectType.ANGULAR
-      );
-      vi.mocked(mockProjectTypeService.isStorybookInstantiated).mockReturnValue(true);
-
-      await command.execute();
-
-      expect(prompt.confirm).not.toHaveBeenCalled();
     });
 
     it('should handle detection errors', async () => {
