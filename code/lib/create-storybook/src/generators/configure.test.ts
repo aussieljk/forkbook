@@ -257,12 +257,10 @@ describe('configurePreview', () => {
     await configurePreview({
       language: SupportedLanguage.TYPESCRIPT,
       storybookConfigFolder: '.storybook',
-      frameworkPackage: '@storybook/angular',
+      frameworkPackage: '@storybook/react-vite',
       frameworkPreviewParts: {
         prefix: dedent`
-        import { setCompodocJson } from "@storybook/addon-docs/angular";
-        import docJson from "../documentation.json";
-        setCompodocJson(docJson);
+        import "../src/global.css";
       `,
       },
       renderer: SupportedRenderer.REACT,
@@ -273,10 +271,8 @@ describe('configurePreview', () => {
 
     expect(previewConfigPath).toEqual('./.storybook/preview.tsx');
     expect(previewConfigContent).toMatchInlineSnapshot(`
-      "import type { Preview } from '@storybook/angular'
-      import { setCompodocJson } from "@storybook/addon-docs/angular";
-      import docJson from "../documentation.json";
-      setCompodocJson(docJson);
+      "import type { Preview } from '@storybook/react-vite'
+      import "../src/global.css";
 
       const preview: Preview = {
         parameters: {

@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 
 import { printCsf, readCsf } from 'storybook/internal/csf-tools';
 
-import { format } from 'prettier';
+import { formatCode } from '../../../common/utils/formatter.ts';
 
 import { getDiff } from './getDiff.ts';
 import { updateArgsInCsfFile } from './update-args-in-csf-file.ts';
@@ -25,9 +25,10 @@ describe('success', () => {
   test('Typescript Constructs', async () => {
     const newArgs = { bordered: true, initial: 'test1' };
 
-    const before = await format(await readFile(FILES.typescriptConstructs, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode(
+      'story.ts',
+      await readFile(FILES.typescriptConstructs, 'utf-8')
+    );
     const CSF = await readCsf(FILES.typescriptConstructs, { makeTitle });
 
     const parsed = CSF.parse();
@@ -38,9 +39,7 @@ describe('success', () => {
       updateArgsInCsfFile(node, newArgs);
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -52,10 +51,10 @@ describe('success', () => {
         export const Cast: Story = {
           args: {
         
-      -     initial: "bar",
+      -     initial: 'bar',
       - 
       +     initial: "test1",
-      +     bordered: true,
+      +     bordered: true
       + 
           },
         };
@@ -63,10 +62,10 @@ describe('success', () => {
         export const As = {
           args: {
         
-      -     initial: "bar",
+      -     initial: 'bar',
       - 
       +     initial: "test1",
-      +     bordered: true,
+      +     bordered: true
       + 
           },
         } as Story;
@@ -74,10 +73,10 @@ describe('success', () => {
         export const Satisfies = {
           args: {
         
-      -     initial: "bar",
+      -     initial: 'bar',
       - 
       +     initial: "test1",
-      +     bordered: true,
+      +     bordered: true
       + 
           },
         } satisfies Story;
@@ -85,10 +84,10 @@ describe('success', () => {
         export const None = {
           args: {
         
-      -     initial: "bar",
+      -     initial: 'bar',
       - 
       +     initial: "test1",
-      +     bordered: true,
+      +     bordered: true
       + 
           },
         };
@@ -110,9 +109,7 @@ describe('success', () => {
   test('CSF Variances', async () => {
     const newArgs = { bordered: true, initial: 'test1' };
 
-    const before = await format(await readFile(FILES.csfVariances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.csfVariances, 'utf-8'));
     const CSF = await readCsf(FILES.csfVariances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -123,9 +120,7 @@ describe('success', () => {
       updateArgsInCsfFile(node, newArgs);
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -134,8 +129,8 @@ describe('success', () => {
     // TODO, the comment is not preserved!!!
     expect(getDiff(before, after)).toMatchInlineSnapshot(`
       "  ...
-          initial: string;
-        }> = (props) => <pre>{JSON.stringify(props)}</pre>;
+          <pre>{JSON.stringify(props)}</pre>
+        );
         
         
       - export const Empty = {} satisfies Story;
@@ -143,8 +138,8 @@ describe('success', () => {
       + export const Empty = {
       +   args: {
       +     bordered: true,
-      +     initial: "test1",
-      +   },
+      +     initial: "test1"
+      +   }
       + } satisfies Story;
       + 
         
@@ -154,8 +149,8 @@ describe('success', () => {
       - 
       +   args: {
       +     bordered: true,
-      +     initial: "test1",
-      +   },
+      +     initial: "test1"
+      +   }
       + 
         } satisfies Story;
         
@@ -164,20 +159,22 @@ describe('success', () => {
             absolute: true,
         
       +     bordered: true,
-      +     initial: "test1",
+      +     initial: "test1"
       + 
           },
         } satisfies Story;
         
         export const RenderNoArgs = {
         
+      -   render: (args) => <MyComponent {...args} />,
+      - 
       +   args: {
       +     bordered: true,
-      +     initial: "test1",
+      +     initial: "test1"
       +   },
       + 
+      +   render: (args) => <MyComponent {...args} />
       + 
-          render: (args) => <MyComponent {...args} />,
         } satisfies Story;
         
         export const RenderArgs = {
@@ -185,7 +182,7 @@ describe('success', () => {
             absolute: true,
         
       +     bordered: true,
-      +     initial: "test1",
+      +     initial: "test1"
       + 
           },
           render: (args) => <MyComponent {...args} />,
@@ -196,7 +193,7 @@ describe('success', () => {
             absolute: true,
             bordered: true,
         
-      -     initial: "test2",
+      -     initial: 'test2',
       - 
       +     initial: "test1",
       + 
@@ -209,7 +206,7 @@ describe('success', () => {
           args: {
             bordered: true,
         
-      -     initial: "test2",
+      -     initial: 'test2',
       - 
       +     initial: "test1",
       + 
@@ -222,23 +219,21 @@ describe('success', () => {
           args: {
             bordered: true,
         
-      -     initial: "test2",
+      -     initial: 'test2',
       - 
       +     initial: "test1",
       + 
             absolute: true,
           },
           play: async ({ canvasElement }) => {
-            console.log("play");
+            console.log('play');
         ..."
     `);
   });
   test('CSF4 Variances', async () => {
     const newArgs = { bordered: true, initial: 'test1' };
 
-    const before = await format(await readFile(FILES.csf4Variances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.csf4Variances, 'utf-8'));
     const CSF = await readCsf(FILES.csf4Variances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -249,9 +244,7 @@ describe('success', () => {
       updateArgsInCsfFile(node, newArgs);
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -297,9 +290,7 @@ describe('success', () => {
   test('Export Variances', async () => {
     const newArgs = { bordered: true, initial: 'test1' };
 
-    const before = await format(await readFile(FILES.exportVariances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.exportVariances, 'utf-8'));
     const CSF = await readCsf(FILES.exportVariances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -313,9 +304,7 @@ describe('success', () => {
       updateArgsInCsfFile(node, newArgs);
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -328,10 +317,10 @@ describe('success', () => {
         export const DirectExport: Story = {
           args: {
         
-      -     initial: "bar",
+      -     initial: 'bar',
       - 
       +     initial: "test1",
-      +     bordered: true,
+      +     bordered: true
       + 
           },
         };
@@ -355,9 +344,7 @@ describe('success', () => {
       myUndefined: undefined,
     };
 
-    const before = await format(await readFile(FILES.dataVariances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.dataVariances, 'utf-8'));
     const CSF = await readCsf(FILES.dataVariances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -371,9 +358,7 @@ describe('success', () => {
       updateArgsInCsfFile(node, newArgs);
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -385,8 +370,8 @@ describe('success', () => {
         export const All = {
           args: {
         
-      -     myArray: ["foo", "bar"],
-      -     myArrayDeep: [["foo"], ["bar"]],
+      -     myArray: ['foo', 'bar'],
+      -     myArrayDeep: [['foo'], ['bar']],
       - 
       +     myArray: ["FOO", "BAR"],
       +     myArrayDeep: [["FOO"], ["BAR"]],
@@ -401,13 +386,13 @@ describe('success', () => {
       + 
             myObject: {
         
-      -       foo: "bar",
+      -       foo: 'bar',
       - 
-      +       FOO: "BAR",
+      +       "FOO": "BAR"
       + 
             },
         
-      -     myString: "foo",
+      -     myString: 'foo',
       - 
       +     myString: "FOO",
       + 
@@ -428,11 +413,11 @@ describe('success', () => {
       +     myNumber: 41,
       + 
       +     myObject: {
-      +       FOO: "BAR",
+      +       "FOO": "BAR"
       +     },
       + 
       +     myString: "FOO",
-      +     myUndefined: undefined,
+      +     myUndefined: undefined
       +   },
       + 
         } satisfies Story;

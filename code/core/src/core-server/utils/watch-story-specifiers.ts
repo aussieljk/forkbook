@@ -1,12 +1,12 @@
-import { type Dirent, lstatSync, readdirSync } from 'node:fs';
-import { basename, join, relative, resolve } from 'node:path';
+import { lstatSync } from 'node:fs';
+import { basename, join, relative, resolve, sep } from 'node:path';
 
 import { commonGlobOptions } from 'storybook/internal/common';
 import type { NormalizedStoriesSpecifier, Path } from 'storybook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
-import Watchpack from 'watchpack';
+import { type Event, subscribe } from '@parcel/watcher';
 
 const isDirectory = (directory: Path) => {
   try {
@@ -16,27 +16,32 @@ const isDirectory = (directory: Path) => {
   }
 };
 
-// Takes an array of absolute paths to directories and synchronously returns
-// absolute paths to all existing files and directories nested within those
-// directories (including the passed parent directories).
-function getNestedFilesAndDirectories(directories: Path[]) {
-  const traversedDirectories = new Set<Path>();
-  const files = new Set<Path>();
-  const traverse = (directory: Path) => {
-    if (traversedDirectories.has(directory)) {
-      return;
-    }
-    readdirSync(directory, { withFileTypes: true }).forEach((ent: Dirent) => {
-      if (ent.isDirectory()) {
-        traverse(join(directory, ent.name));
-      } else if (ent.isFile()) {
-        files.add(join(directory, ent.name));
-      }
-    });
-    traversedDirectories.add(directory);
+/**
+ * Watch directories and everything in them. Returns a function that stops watching. A directory
+ * inside another watched directory is not watched again, so each event comes only once.
+ */
+export function watchDirectories(directories: Path[], onEvents: (events: Event[]) => void) {
+  const existing = [...new Set(directories)].filter(isDirectory);
+  const roots = existing.filter(
+    (directory) => !existing.some((other) => directory.startsWith(other + sep))
+  );
+  const subscriptions = Promise.all(
+    roots.map((directory) =>
+      subscribe(
+        directory,
+        (error, events) => {
+          if (!error) {
+            onEvents(events);
+          }
+        },
+        { ignore: ['**/.git', '**/node_modules'] }
+      )
+    )
+  );
+
+  return async () => {
+    await Promise.all((await subscriptions).map((subscription) => subscription.unsubscribe()));
   };
-  directories.filter(isDirectory).forEach(traverse);
-  return { files: Array.from(files), directories: Array.from(traversedDirectories) };
 }
 
 export function watchStorySpecifiers(
@@ -44,29 +49,13 @@ export function watchStorySpecifiers(
   options: { workingDir: Path },
   onInvalidate: (path: Path, removed: boolean) => void
 ) {
-  // Watch all nested files and directories up front to avoid this issue:
-  // https://github.com/webpack/watchpack/issues/222
-  const { files, directories } = getNestedFilesAndDirectories(
-    specifiers.map((ns) => resolve(options.workingDir, ns.directory))
-  );
-
-  // See https://www.npmjs.com/package/watchpack for full options.
-  // If you want less traffic, consider using aggregation with some interval
-  const wp = new Watchpack({
-    // poll: true, // Slow!!! Enable only in special cases
-    followSymlinks: false,
-    ignored: ['**/.git', '**/node_modules'],
-  });
-  wp.watch({ files, directories });
-
   const toImportPath = (absolutePath: Path) => {
     const relativePath = relative(options.workingDir, absolutePath);
     return slash(relativePath.startsWith('.') ? relativePath : `./${relativePath}`);
   };
 
   async function onChangeOrRemove(absolutePath: Path, removed: boolean) {
-    // Watchpack should return absolute paths, given we passed in absolute paths
-    // to watch. Convert to an import path so we can run against the specifiers.
+    // The watcher gives absolute paths. Convert to an import path so we can run against the specifiers.
     const importPath = toImportPath(absolutePath);
 
     const matchingSpecifier = specifiers.find((ns) => ns.importPathMatcher.exec(importPath));
@@ -75,7 +64,7 @@ export function watchStorySpecifiers(
       return;
     }
 
-    // When a directory is removed, watchpack will fire a removed event for each file also
+    // When a directory is removed, the watcher fires a delete event for each file also
     // (so we don't need to do anything special).
     // However, when a directory is added, it does not fire events for any files *within* the directory,
     // so we need to scan within that directory for new files. It is tricky to use a glob for this,
@@ -116,44 +105,14 @@ export function watchStorySpecifiers(
     }
   }
 
-  // Batch rapid file events to avoid redundant processing.
-  // Watchpack fires multiple events for the same file in rapid succession.
-  // We collect events for 100ms, then process unique paths only.
-  const pendingEvents = new Map<Path, { removed: boolean }>();
-  let batchTimeout: ReturnType<typeof setTimeout> | undefined;
-
-  function queueEvent(absolutePath: Path, removed: boolean) {
-    // Store/overwrite the event for this path (last event type wins)
-    pendingEvents.set(absolutePath, { removed });
-
-    // Reset the timer on each new event to batch them together
-    if (batchTimeout) {
-      clearTimeout(batchTimeout);
-    }
-    batchTimeout = setTimeout(async () => {
-      batchTimeout = undefined;
-      const events = new Map(pendingEvents);
-      pendingEvents.clear();
-
+  return watchDirectories(
+    specifiers.map((ns) => resolve(options.workingDir, ns.directory)),
+    async (events) => {
+      // The last event for a path wins.
+      const removedByPath = new Map(events.map(({ path, type }) => [path, type === 'delete']));
       await Promise.all(
-        Array.from(events.entries()).map(([path, { removed }]) => onChangeOrRemove(path, removed))
+        Array.from(removedByPath, ([path, removed]) => onChangeOrRemove(path, removed))
       );
-    }, 100);
-  }
-
-  wp.on('change', (filePath: Path, mtime: Date, explanation: string) => {
-    // When a file is renamed (including being moved out of the watched dir)
-    // we see first an event with explanation=rename and no mtime for the old name.
-    // then an event with explanation=rename with an mtime for the new name.
-    // In theory we could try and track both events together and move the exports
-    // but that seems dangerous (what if the contents changed?) and frankly not worth it
-    // (at this stage at least)
-    const removed = !mtime;
-    queueEvent(filePath, removed);
-  });
-  wp.on('remove', (filePath: Path) => {
-    queueEvent(filePath, true);
-  });
-
-  return () => wp.close();
+    }
+  );
 }

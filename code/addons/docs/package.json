@@ -16,11 +16,7 @@
     "style guide",
     "component",
     "components",
-    "react",
-    "vue",
-    "angular",
-    "svelte",
-    "web-components"
+    "react"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/next/code/addons/docs",
   "bugs": {
@@ -43,20 +39,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./angular": {
-      "code": "./src/angular/index.ts",
-      "types": "./dist/angular/index.d.ts",
-      "default": "./dist/angular/index.js"
-    },
     "./blocks": {
       "code": "./src/blocks.ts",
       "types": "./dist/blocks.d.ts",
       "default": "./dist/blocks.js"
-    },
-    "./ember": {
-      "code": "./src/ember/index.ts",
-      "types": "./dist/ember/index.d.ts",
-      "default": "./dist/ember/index.js"
     },
     "./manager": {
       "code": "./src/manager.tsx",
@@ -80,11 +66,6 @@
       "code": "./src/preview.ts",
       "types": "./dist/preview.d.ts",
       "default": "./dist/preview.js"
-    },
-    "./web-components": {
-      "code": "./src/web-components/index.ts",
-      "types": "./dist/web-components/index.d.ts",
-      "default": "./dist/web-components/index.js"
     }
   },
   "files": [

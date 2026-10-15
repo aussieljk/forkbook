@@ -1,95 +1,36 @@
-import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { formatFileContent } from './formatter.ts';
+import { formatCode, formatFileContent } from './formatter.ts';
 
-const mockPrettier = vi.hoisted(() => ({
-  resolveConfig: vi.fn(),
-  format: vi.fn(),
-  version: vi.fn(),
-}));
-
-vi.mock('prettier', () => ({
-  resolveConfig: mockPrettier.resolveConfig,
-  format: mockPrettier.format,
-  get version() {
-    return mockPrettier.version();
-  },
-}));
-
-const dummyContent = `
-import type { Meta, StoryObj } from '@storybook/nextjs'
-
-import Component from './foo';
-
-  const meta = {
-    component: Component
-  } satisfies Meta<typeof Component>;
-
-export default meta;
-
-type Story = StoryObj<typeof meta>;
+const content = `import type { Meta } from "@storybook/react-vite"
+  const meta = { component: "a" } satisfies Meta
+export default meta
 `;
 
-describe('formatter', () => {
-  describe('withPrettierConfig', () => {
-    const testPath = resolve(__dirname, '__tests-formatter__', 'withPrettierConfig');
+describe('formatFileContent', () => {
+  it('formats with the nearest oxfmt config', async () => {
+    const filePath = resolve(__dirname, '__tests-formatter__', 'withConfig', 'testFile.ts');
 
-    describe('prettier', async () => {
-      const prettierV3 = await vi.importActual<typeof import('prettier')>('prettier');
-
-      it('formats content with prettier', async () => {
-        mockPrettier.format.mockImplementation(prettierV3.format);
-        mockPrettier.version.mockReturnValue(prettierV3.version);
-        mockPrettier.resolveConfig.mockImplementation(prettierV3.resolveConfig);
-
-        const filePath = resolve(testPath, 'testFile.ts');
-
-        const result = await formatFileContent(filePath, dummyContent);
-
-        expect(result).toMatchSnapshot();
-      });
-    });
+    expect(await formatFileContent(filePath, content)).toMatchInlineSnapshot(`
+      "import type { Meta } from '@storybook/react-vite';
+      const meta = { component: 'a' } satisfies Meta;
+      export default meta;
+      "
+    `);
   });
 
-  describe('withoutPrettierConfigAndWithEditorConfig', () => {
-    const testPath = resolve(__dirname, '__tests-formatter__', 'withoutPrettierConfig');
+  it('returns the content as is without an oxfmt config', async () => {
+    const filePath = join(tmpdir(), 'testFile.ts');
 
-    describe('prettier-v3', async () => {
-      const prettierV3 = await vi.importActual<typeof import('prettier')>('prettier');
-
-      it('formats content with prettier', async () => {
-        mockPrettier.format.mockImplementation(prettierV3.format);
-        mockPrettier.version.mockReturnValue(prettierV3.version);
-        mockPrettier.resolveConfig.mockImplementation(prettierV3.resolveConfig);
-
-        const filePath = resolve(testPath, 'testFile.ts');
-
-        const result = await formatFileContent(filePath, dummyContent);
-
-        expect(result).toMatchSnapshot();
-      });
-    });
+    expect(await formatFileContent(filePath, content)).toBe(content);
   });
+});
 
-  describe('withoutPrettierConfigAndWithEditorConfig', () => {
-    const testPath = resolve(__dirname, '__tests-formatter__', 'withoutEditorConfig');
-
-    describe('prettier-v3', async () => {
-      const prettierV3 = await vi.importActual<typeof import('prettier')>('prettier');
-
-      it('formats content with prettier', async () => {
-        mockPrettier.format.mockImplementation(prettierV3.format);
-        mockPrettier.version.mockReturnValue(prettierV3.version);
-        mockPrettier.resolveConfig.mockResolvedValue(null);
-
-        const filePath = resolve(testPath, 'testFile.ts');
-
-        const result = await formatFileContent(filePath, dummyContent);
-
-        expect(result).toBe(dummyContent);
-      });
-    });
+describe('formatCode', () => {
+  it('returns the content as is when it cannot be parsed', async () => {
+    expect(await formatCode('file.ts', 'const = ;')).toBe('const = ;');
   });
 });

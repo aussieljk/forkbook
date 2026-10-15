@@ -1,14 +1,6 @@
-import { mkColor } from '../utils.ts';
-
 interface ColorsHash {
   [key: string]: string;
 }
-interface ColorsObjectsHash {
-  [key: string]: {
-    color: string;
-  };
-}
-
 export const chromeDark = {
   BASE_FONT_FAMILY: 'Menlo, monospace',
   BASE_FONT_SIZE: '11px',
@@ -103,74 +95,16 @@ export const chromeLight = {
   TABLE_DATA_BACKGROUND_SIZE: '128px 32px',
 };
 
-const convertColors = (colors: ColorsHash): ColorsObjectsHash =>
-  Object.entries(colors).reduce((acc, [k, v]) => ({ ...acc, [k]: mkColor(v) }), {});
-
-export const create = ({ colors, mono }: { colors: ColorsHash; mono: string }) => {
-  const colorsObjs = convertColors(colors);
-  return {
-    token: {
-      fontFamily: mono,
-      WebkitFontSmoothing: 'antialiased',
-
-      '&.tag': colorsObjs.red3,
-
-      '&.comment': { ...colorsObjs.green1, fontStyle: 'italic' },
-      '&.prolog': { ...colorsObjs.green1, fontStyle: 'italic' },
-      '&.doctype': { ...colorsObjs.green1, fontStyle: 'italic' },
-      '&.cdata': { ...colorsObjs.green1, fontStyle: 'italic' },
-
-      '&.string': colorsObjs.red1,
-
-      '&.url': colorsObjs.cyan1,
-      '&.symbol': colorsObjs.cyan1,
-      '&.number': colorsObjs.cyan1,
-      '&.boolean': colorsObjs.cyan1,
-      '&.variable': colorsObjs.cyan1,
-      '&.constant': colorsObjs.cyan1,
-      '&.inserted': colorsObjs.cyan1,
-
-      '&.atrule': colorsObjs.blue1,
-      '&.keyword': colorsObjs.blue1,
-      '&.attr-value': colorsObjs.blue1,
-
-      '&.punctuation': colorsObjs.gray1,
-      '&.operator': colorsObjs.gray1,
-
-      '&.function': colorsObjs.gray1,
-      '&.deleted': colorsObjs.red2,
-
-      '&.important': {
-        fontWeight: 'bold',
-      },
-      '&.bold': {
-        fontWeight: 'bold',
-      },
-
-      '&.italic': {
-        fontStyle: 'italic',
-      },
-
-      '&.class-name': colorsObjs.cyan2,
-
-      '&.selector': colorsObjs.red3,
-
-      '&.attr-name': colorsObjs.red4,
-      '&.property': colorsObjs.red4,
-      '&.regex': colorsObjs.red4,
-      '&.entity': colorsObjs.red4,
-
-      '&.directive.tag .tag': {
-        background: '#ffff00',
-        ...colorsObjs.gray1,
-      },
-    },
-    'language-json .token.boolean': colorsObjs.blue1,
-    'language-json .token.number': colorsObjs.blue1,
-    'language-json .token.property': colorsObjs.cyan2,
-
-    namespace: {
-      opacity: 0.7,
-    },
-  };
-};
+/** Colours for sugar-high, the syntax highlighter, as CSS variables. */
+export const create = ({ colors, mono }: { colors: ColorsHash; mono: string }) => ({
+  fontFamily: mono,
+  '--sh-class': colors.cyan2,
+  '--sh-identifier': colors.gray1,
+  '--sh-sign': colors.gray1,
+  '--sh-property': colors.red4,
+  '--sh-entity': colors.red3,
+  '--sh-jsxliterals': colors.gray1,
+  '--sh-string': colors.red1,
+  '--sh-keyword': colors.blue1,
+  '--sh-comment': colors.green1,
+});

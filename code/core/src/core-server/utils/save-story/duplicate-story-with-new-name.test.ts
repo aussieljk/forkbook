@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 
 import { printCsf, readCsf } from 'storybook/internal/csf-tools';
 
-import { format } from 'prettier';
+import { formatCode } from '../../../common/utils/formatter.ts';
 
 import { duplicateStoryWithNewName } from './duplicate-story-with-new-name.ts';
 import { getDiff } from './getDiff.ts';
@@ -21,9 +21,7 @@ const FILES = {
 
 describe('success', () => {
   test('CSF Variances', async () => {
-    const before = await format(await readFile(FILES.csfVariances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.csfVariances, 'utf-8'));
     const CSF = await readCsf(FILES.csfVariances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -33,9 +31,7 @@ describe('success', () => {
       duplicateStoryWithNewName(parsed, name, name + 'Duplicated');
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -43,7 +39,7 @@ describe('success', () => {
     // check if the code was updated correctly
     expect(getDiff(before, after)).toMatchInlineSnapshot(`
       "  ...
-            canvasElement.style.backgroundColor = "red";
+            canvasElement.style.backgroundColor = 'red';
           },
         } satisfies Story;
         
@@ -52,35 +48,37 @@ describe('success', () => {
       + export const OnlyArgsDuplicated = {} satisfies Story;
       + 
       + export const RenderNoArgsDuplicated = {
-      +   render: (args) => <MyComponent {...args} />,
+      +   render: args => <MyComponent {...args} />
       + } satisfies Story;
       + 
       + export const RenderArgsDuplicated = {
-      +   render: (args) => <MyComponent {...args} />,
+      +   render: args => <MyComponent {...args} />
       + } satisfies Story;
       + 
       + export const RenderExistingArgsDuplicated = {
-      +   render: (args) => <MyComponent {...args} />,
+      +   render: args => <MyComponent {...args} />
       + } satisfies Story;
       + 
       + export const OrderedArgsDuplicated = {
-      +   render: (args) => <MyComponent {...args} />,
+      +   render: args => <MyComponent {...args} />
       + } satisfies Story;
       + 
       + export const HasPlayFunctionDuplicated = {
-      +   play: async ({ canvasElement }) => {
+      +   play: async (
+      +     {
+      +       canvasElement
+      +     }
+      +   ) => {
       +     console.log("play");
       + 
       +     canvasElement.style.backgroundColor = "red";
-      +   },
+      +   }
       + } satisfies Story;
       + "
     `);
   });
   test('CSF4 Variances', async () => {
-    const before = await format(await readFile(FILES.csf4Variances, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode('story.ts', await readFile(FILES.csf4Variances, 'utf-8'));
     const CSF = await readCsf(FILES.csf4Variances, { makeTitle });
 
     const parsed = CSF.parse();
@@ -90,9 +88,7 @@ describe('success', () => {
       duplicateStoryWithNewName(parsed, name, name + 'Duplicated');
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -128,9 +124,10 @@ describe('success', () => {
     }
   });
   test('Typescript Constructs', async () => {
-    const before = await format(await readFile(FILES.typescriptConstructs, 'utf-8'), {
-      parser: 'typescript',
-    });
+    const before = await formatCode(
+      'story.ts',
+      await readFile(FILES.typescriptConstructs, 'utf-8')
+    );
     const CSF = await readCsf(FILES.typescriptConstructs, { makeTitle });
 
     const parsed = CSF.parse();
@@ -140,9 +137,7 @@ describe('success', () => {
       duplicateStoryWithNewName(parsed, name, name + 'Duplicated');
     });
 
-    const after = await format(printCsf(parsed).code, {
-      parser: 'typescript',
-    });
+    const after = await formatCode('story.ts', printCsf(parsed).code);
 
     // check if the code was updated at all
     expect(after).not.toBe(before);
@@ -150,7 +145,7 @@ describe('success', () => {
     // check if the code was updated correctly
     expect(getDiff(before, after)).toMatchInlineSnapshot(`
       "  ...
-            initial: "bar",
+            initial: 'bar',
           },
         };
         

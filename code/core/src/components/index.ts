@@ -33,10 +33,9 @@ export { DocumentWrapper } from './components/typography/DocumentWrapper.tsx';
 export type {
   SyntaxHighlighterFormatTypes,
   SyntaxHighlighterProps,
-  SyntaxHighlighterRendererProps,
   SupportedLanguage,
 } from './components/syntaxhighlighter/syntaxhighlighter-types.ts';
-export { SyntaxHighlighter } from './components/syntaxhighlighter/lazy-syntaxhighlighter.tsx';
+export { SyntaxHighlighter } from './components/syntaxhighlighter/syntaxhighlighter.tsx';
 export { createCopyToClipboardFunction } from './components/syntaxhighlighter/clipboard.ts';
 
 // UI

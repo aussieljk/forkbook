@@ -300,7 +300,6 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '3.3.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.7.0',
@@ -316,7 +315,6 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '4.8.4',
-          prettier: '2.7.1', // below 2.8.0
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
           'eslint-plugin-storybook': '0.6.7',
@@ -332,9 +330,8 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '2.6.2', // only prettier is below 2.8.0
           '@babel/plugin-transform-typescript': '7.23.0',
-          '@typescript-eslint/parser': '6.7.0',
+          '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
           'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] } as any;
@@ -348,7 +345,6 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '3.3.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',
@@ -365,7 +361,6 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '3.3.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.7.0',
@@ -381,7 +376,6 @@ describe('ProjectTypeService', () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '4.8.4',
-          prettier: '2.7.1',
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
           'eslint-plugin-storybook': '0.6.7',
@@ -391,30 +385,29 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
       expect(reasons).toContainEqual(expect.stringContaining('typescript 4.8.4 is below 4.9.0'));
-      expect(reasons).toContainEqual(expect.stringContaining('prettier 2.7.1 is below 2.8.0'));
     });
 
     it('returns only the specific failing package', async () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '2.6.2', // only prettier is below 2.8.0
           '@babel/plugin-transform-typescript': '7.23.0',
-          '@typescript-eslint/parser': '6.7.0',
+          '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
           'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] } as any;
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
-      expect(reasons).toEqual([expect.stringContaining('prettier 2.6.2 is below 2.8.0')]);
+      expect(reasons).toEqual([
+        expect.stringContaining('@typescript-eslint/parser 5.43.0 is below 5.44.0'),
+      ]);
     });
 
     it('treats canary eslint-plugin-storybook versions as compatible', async () => {
       (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          prettier: '3.3.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',

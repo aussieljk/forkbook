@@ -84,7 +84,7 @@ describe('save-story', () => {
       success: true,
       payload: {
         sourceFileContent: expect.stringMatching(
-          /export const NewStory = \{\s+args: \{\s+class: "primary",\s+nested: \{\s+"not-an-identifier": 1,/
+          /export const NewStory = \{\s+args: \{\s+class: ['"]primary['"],\s+nested: \{\s+['"]not-an-identifier['"]: 1,/
         ),
       },
     });

@@ -367,22 +367,6 @@ const parameters = {
     // Redundant but useful for testing lang parameter propagation in docs.
     lang: 'en-US',
     theme: themes.light,
-    source: {
-      transform: async (source: string) => {
-        try {
-          const prettier = await import('prettier/standalone');
-          const prettierPluginBabel = await import('prettier/plugins/babel');
-          const prettierPluginEstree = (await import('prettier/plugins/estree')).default;
-
-          return await prettier.format(source, {
-            parser: 'babel',
-            plugins: [prettierPluginBabel, prettierPluginEstree],
-          });
-        } catch (error) {
-          return source;
-        }
-      },
-    },
     toc: {},
   },
   controls: {

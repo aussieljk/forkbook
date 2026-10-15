@@ -1,0 +1,6 @@
+{
+  // Comments are allowed
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "tabWidth": 4,
+  "singleQuote": true
+}

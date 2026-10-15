@@ -11,20 +11,9 @@ import { getFriendlySummaryForAxeResult } from '../../axeRuleMappingHelper.ts';
 import type { EnhancedNodeResult, EnhancedResult, RuleType } from '../../types.ts';
 import { useA11yContext } from '../A11yContext.tsx';
 
-const StyledSyntaxHighlighter = styled(SyntaxHighlighter)(
-  ({ theme }) => ({
-    fontSize: theme.typography.size.s1,
-  }),
-  ({ language }) =>
-    // We appended ' {}' to the selector in order to get proper syntax highlighting. This rule hides the last 3 spans
-    // (one character each) in the displayed output. Only siblings of .selector (the actual CSS selector characters)
-    // are targeted so that the code comment line isn't affected.
-    language === 'css' && {
-      '.selector ~ span:nth-last-of-type(-n+3)': {
-        display: 'none',
-      },
-    }
-);
+const StyledSyntaxHighlighter = styled(SyntaxHighlighter)(({ theme }) => ({
+  fontSize: theme.typography.size.s1,
+}));
 
 const Info = styled.div({
   display: 'flex',
@@ -215,11 +204,10 @@ function getContent(node: EnhancedNodeResult) {
         wrapLongLines
       >{`/* element */\n${html}`}</StyledSyntaxHighlighter>
 
-      {/* See note about the appended {} in the StyledSyntaxHighlighter component */}
       <StyledSyntaxHighlighter
         language="css"
         wrapLongLines
-      >{`/* selector */\n${target} {}`}</StyledSyntaxHighlighter>
+      >{`/* selector */\n${target}`}</StyledSyntaxHighlighter>
     </>
   );
 }

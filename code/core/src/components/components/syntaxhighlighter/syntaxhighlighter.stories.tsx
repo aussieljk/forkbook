@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ThemeProvider, ensure, themes } from 'storybook/theming';
 
-import { SyntaxHighlighter } from './lazy-syntaxhighlighter.tsx';
+import { SyntaxHighlighter } from './syntaxhighlighter.tsx';
 
 export default {
   component: SyntaxHighlighter,
@@ -110,25 +110,19 @@ export const GraphQL = {
   },
 };
 
-export const CustomSyntax = {
+export const Scss = {
   args: {
     language: 'scss',
-    children: `// Custom language syntax registered
+    children: `// SCSS uses the CSS syntax
 div.parent {
   div.child {
     color: $red;
   }
 }`,
   },
-  loaders: [
-    async () => {
-      const scss = (await import('react-syntax-highlighter/dist/esm/languages/prism/scss')).default;
-      SyntaxHighlighter.registerLanguage('scss', scss);
-    },
-  ],
 };
 
-export const Unsupported = {
+export const CSharp = {
   args: {
     language: 'C#',
     children: `// A Hello World! program in C#.
@@ -150,7 +144,7 @@ export const Unsupported = {
   },
 };
 
-export const UnsupportedDark = {
+export const CSharpDark = {
   args: {
     language: 'C#',
     children: `// A Hello World! program in C#.

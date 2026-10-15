@@ -7,7 +7,7 @@ import { STORY_INDEX_INVALIDATED } from 'storybook/internal/core-events';
 
 import { debounce } from 'es-toolkit/function';
 import type { Polka, Request, Response } from 'polka';
-import Watchpack from 'watchpack';
+import { subscribe } from '@parcel/watcher';
 
 import { csfIndexer } from '../presets/common-preset.ts';
 import type { StoryIndexGeneratorOptions } from './StoryIndexGenerator.ts';
@@ -15,7 +15,9 @@ import { StoryIndexGenerator } from './StoryIndexGenerator.ts';
 import type { ServerChannel } from './get-server-channel.ts';
 import { registerIndexJsonRoute } from './index-json.ts';
 
-vi.mock('watchpack');
+vi.mock('@parcel/watcher', () => ({
+  subscribe: vi.fn(async () => ({ unsubscribe: vi.fn() })),
+}));
 vi.mock('es-toolkit/function', { spy: true });
 vi.mock('storybook/internal/node-logger');
 
@@ -84,7 +86,7 @@ describe('registerIndexJsonRoute', () => {
     end.mockClear();
     write.mockClear();
     vi.mocked(debounce).mockImplementation((cb) => cb as any);
-    Watchpack.mockClear();
+    vi.mocked(subscribe).mockClear();
   });
 
   const request: Request = {
@@ -540,17 +542,8 @@ describe('registerIndexJsonRoute', () => {
 
       expect(write).not.toHaveBeenCalled();
 
-      expect(Watchpack).toHaveBeenCalledTimes(1);
-      const watcher = Watchpack.mock.instances[0];
-      expect(watcher.watch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          directories: expect.any(Array),
-          files: expect.any(Array),
-        })
-      );
-
-      expect(watcher.on).toHaveBeenCalledTimes(2);
-      const onChange = watcher.on.mock.calls[0][1];
+      const onEvents = vi.mocked(subscribe).mock.calls[0][1];
+      const onChange = (path: string) => onEvents(null, [{ type: 'update', path }]);
 
       onChange(`${workingDir}/src/nested/Button.stories.ts`);
       // Wait for the batched events to be processed
@@ -581,17 +574,8 @@ describe('registerIndexJsonRoute', () => {
 
       expect(write).not.toHaveBeenCalled();
 
-      expect(Watchpack).toHaveBeenCalledTimes(1);
-      const watcher = Watchpack.mock.instances[0];
-      expect(watcher.watch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          directories: expect.any(Array),
-          files: expect.any(Array),
-        })
-      );
-
-      expect(watcher.on).toHaveBeenCalledTimes(2);
-      const onChange = watcher.on.mock.calls[0][1];
+      const onEvents = vi.mocked(subscribe).mock.calls[0][1];
+      const onChange = (path: string) => onEvents(null, [{ type: 'update', path }]);
 
       onChange(`${workingDir}/src/nested/Button.stories.ts`);
       // Wait for the batched events to be processed
@@ -623,21 +607,11 @@ describe('registerIndexJsonRoute', () => {
 
       expect(write).not.toHaveBeenCalled();
 
-      expect(Watchpack).toHaveBeenCalledTimes(1);
-      const watcher = Watchpack.mock.instances[0];
-      expect(watcher.watch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          directories: expect.any(Array),
-          files: expect.any(Array),
-        })
-      );
-
-      expect(watcher.on).toHaveBeenCalledTimes(2);
-      const onChange = watcher.on.mock.calls[0][1];
+      const onEvents = vi.mocked(subscribe).mock.calls[0][1];
+      const onChange = (path: string) => onEvents(null, [{ type: 'update', path }]);
 
       // Fire multiple change events in rapid succession
-      // These get batched by watchStorySpecifiers (100ms batching window)
-      // and then debounced by maybeInvalidate (100ms debounce)
+      // These get debounced by maybeInvalidate (100ms debounce)
       onChange(`${workingDir}/src/nested/Button.stories.ts`);
       onChange(`${workingDir}/src/nested/Button.stories.ts`);
       onChange(`${workingDir}/src/nested/Button.stories.ts`);

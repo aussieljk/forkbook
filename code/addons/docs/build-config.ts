@@ -24,18 +24,6 @@ const config: BuildEntries = {
         exportEntries: ['./mdx-react-shim'],
         entryPoint: './src/mdx-react-shim.ts',
       },
-      {
-        exportEntries: ['./ember'],
-        entryPoint: './src/ember/index.ts',
-      },
-      {
-        exportEntries: ['./angular'],
-        entryPoint: './src/angular/index.ts',
-      },
-      {
-        exportEntries: ['./web-components'],
-        entryPoint: './src/web-components/index.ts',
-      },
     ],
     node: [
       {

@@ -4,8 +4,7 @@ import React, { Children } from 'react';
 import type { CSSObject } from 'storybook/theming';
 import { styled } from 'storybook/theming';
 
-import { SyntaxHighlighter } from '../../syntaxhighlighter/lazy-syntaxhighlighter.tsx';
-import type { SupportedLanguage } from '../../syntaxhighlighter/syntaxhighlighter-types.ts';
+import { SyntaxHighlighter } from '../../syntaxhighlighter/syntaxhighlighter.tsx';
 import { codeCommon } from '../lib/common.tsx';
 import { isReactChildString } from '../lib/isReactChildString.tsx';
 
@@ -62,7 +61,7 @@ export const Code = ({
     <StyledSyntaxHighlighter
       bordered
       copyable
-      language={(language?.[1] as SupportedLanguage) ?? 'text'}
+      language={language?.[1] ?? 'text'}
       format={false}
       {...props}
     >

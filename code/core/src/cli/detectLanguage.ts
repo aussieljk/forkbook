@@ -50,13 +50,11 @@ export async function detectIncompatiblePackageVersions(
 
   const [
     typescriptVersion,
-    prettierVersion,
     babelPluginTransformTypescriptVersion,
     typescriptEslintParserVersion,
     eslintPluginStorybookVersion,
   ] = await Promise.all([
     getModulePackageJSONVersion('typescript'),
-    getModulePackageJSONVersion('prettier'),
     getModulePackageJSONVersion('@babel/plugin-transform-typescript'),
     getModulePackageJSONVersion('@typescript-eslint/parser'),
     getModulePackageJSONVersion('eslint-plugin-storybook'),
@@ -73,9 +71,6 @@ export async function detectIncompatiblePackageVersions(
 
   if (typescriptVersion && !satisfies(typescriptVersion, '>=4.9.0')) {
     incompatibleReasons.push(`typescript ${typescriptVersion} is below 4.9.0`);
-  }
-  if (prettierVersion && !semver.gte(prettierVersion, '2.8.0')) {
-    incompatibleReasons.push(`prettier ${prettierVersion} is below 2.8.0`);
   }
   if (
     babelPluginTransformTypescriptVersion &&
