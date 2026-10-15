@@ -14,7 +14,7 @@ Storybook errors reside in this package and are categorized into:
    - available in `storybook/internal/server-errors`
 3. **[Server errors](./server-errors.ts)**
    - Errors which occur in node
-   - e.g. Storybook init command, dev command, builder errors (Webpack, Vite), etc.
+   - e.g. Storybook init command, dev command, builder errors (Vite), etc.
    - available in `storybook/internal/server-errors`
 
 ## How to create errors

@@ -113,7 +113,6 @@ describe('BUN Proxy', () => {
       await bunProxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
         nonInteractive: true,
-        installContext: 'create',
       });
 
       expect(updateSpy).toHaveBeenCalled();
@@ -140,7 +139,6 @@ describe('BUN Proxy', () => {
       await bunProxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
         nonInteractive: false,
-        installContext: 'create',
       });
 
       expect(updateSpy).toHaveBeenCalled();
@@ -162,7 +160,6 @@ describe('BUN Proxy', () => {
         .precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'upgrade',
         })
         .then(
           () => null,
@@ -170,7 +167,7 @@ describe('BUN Proxy', () => {
         );
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
-      expect(error?.message).toContain('npx storybook@10.3.9 upgrade');
+      expect(error?.message).toContain('npx create-storybook@10.3.9');
     });
 
     it('skips the precheck when Storybook packages are already excluded', async () => {
@@ -178,7 +175,7 @@ describe('BUN Proxy', () => {
         [
           '[install]',
           'minimumReleaseAge = 3600',
-          'minimumReleaseAgeExcludes = ["storybook", "@storybook/*", "eslint-plugin-storybook", "@chromatic-com/storybook"]',
+          'minimumReleaseAgeExcludes = ["storybook", "@storybook/*", "eslint-plugin-storybook"]',
           '',
         ].join('\n')
       );
@@ -188,7 +185,6 @@ describe('BUN Proxy', () => {
         bunProxy.precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'upgrade',
         })
       ).resolves.toBeUndefined();
 
@@ -224,7 +220,6 @@ describe('BUN Proxy', () => {
             '  "storybook",',
             '  "@storybook/*",',
             '  "eslint-plugin-storybook",',
-            '  "@chromatic-com/storybook",',
             ']',
             '[test]',
             'coverageThreshold = 0.9',

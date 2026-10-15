@@ -53,7 +53,7 @@ const MainAreaContainer = React.memo<MainAreaContainerProps>(function MainAreaCo
       {showPages ? (
         <PagesContainer>{slotPages}</PagesContainer>
       ) : (
-        <Match path={/(^\/story|docs|onboarding\/|^\/$)/} startsWith={false}>
+        <Match path={/(^\/story|docs|^\/$)/} startsWith={false}>
           {({ match }) => (
             <div className={styles.main} data-shown={!!match || undefined}>
               {slotMain}

@@ -10,7 +10,6 @@ import {
   getMswInitCommand,
   getRemotePackageRunnerArgs,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   getVitestStorybookRunCommand,
   hasStorybookMinimumAgeExclusions,
   parsePackageData,
@@ -100,24 +99,15 @@ describe('js package manager util', () => {
 
   it('detects when Storybook minimum-age exclusions are already configured', () => {
     expect(
-      hasStorybookMinimumAgeExclusions([
-        'storybook',
-        '@storybook/*',
-        'eslint-plugin-storybook',
-        '@chromatic-com/storybook',
-      ])
+      hasStorybookMinimumAgeExclusions(['storybook', '@storybook/*', 'eslint-plugin-storybook'])
     ).toBe(true);
     expect(hasStorybookMinimumAgeExclusions(['storybook', '@storybook/react-vite'])).toBe(false);
     expect(hasStorybookMinimumAgeExclusions(['*storybook*'])).toBe(true);
   });
 
-  it('builds rerun guidance', () => {
-    expect(getStorybookRerunInstruction('create')).toBe('Please rerun Storybook creation with:');
-    expect(getStorybookRerunInstruction('upgrade')).toBe(
-      'Please rerun the Storybook upgrade with:'
-    );
-    expect(getStorybookRerunCommand('create', '10.3.2')).toBe('npx create-storybook@10.3.2');
-    expect(getStorybookRerunCommand('upgrade', '10.3.2')).toBe('npx storybook@10.3.2 upgrade');
+  it('builds the rerun command', () => {
+    expect(getStorybookRerunCommand('10.3.2')).toBe('npx create-storybook@10.3.2');
+    expect(getStorybookRerunCommand(null)).toBe('npx create-storybook@<compatible-version>');
   });
 
   it('builds remote package runner args for the active package manager', () => {

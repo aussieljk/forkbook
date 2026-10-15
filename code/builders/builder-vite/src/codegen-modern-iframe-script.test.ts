@@ -1,15 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { generateModernIframeScriptCodeFromPreviews } from './codegen-modern-iframe-script.ts';
+import { generateModernIframeScriptCode } from './codegen-modern-iframe-script.ts';
 import { generateAddonSetupCode } from './codegen-set-addon-channel.ts';
 import { optimizeViteDeps } from './preset.ts';
 import { previewRuntimePath } from './utils/preview-runtime-path.ts';
 
-describe('generateModernIframeScriptCodeFromPreviews', () => {
+describe('generateModernIframeScriptCode', () => {
   it('handle one annotation', async () => {
-    const result = await generateModernIframeScriptCodeFromPreviews({
-      frameworkName: 'frameworkName',
-    });
+    const result = await generateModernIframeScriptCode();
     expect(withStableRuntimePath(result)).toMatchInlineSnapshot(`
       "import { setup } from '<PREVIEW_RUNTIME_PATH>';
 
@@ -39,9 +37,7 @@ describe('generateModernIframeScriptCodeFromPreviews', () => {
   });
 
   it('handle one annotation CSF4', async () => {
-    const result = await generateModernIframeScriptCodeFromPreviews({
-      frameworkName: 'frameworkName',
-    });
+    const result = await generateModernIframeScriptCode();
     expect(withStableRuntimePath(result)).toMatchInlineSnapshot(`
       "import { setup } from '<PREVIEW_RUNTIME_PATH>';
 
@@ -71,9 +67,7 @@ describe('generateModernIframeScriptCodeFromPreviews', () => {
   });
 
   it('handle multiple annotations', async () => {
-    const result = await generateModernIframeScriptCodeFromPreviews({
-      frameworkName: 'frameworkName',
-    });
+    const result = await generateModernIframeScriptCode();
     expect(withStableRuntimePath(result)).toMatchInlineSnapshot(`
       "import { setup } from '<PREVIEW_RUNTIME_PATH>';
 
@@ -103,9 +97,7 @@ describe('generateModernIframeScriptCodeFromPreviews', () => {
   });
 
   it('handle multiple annotations CSF4', async () => {
-    const result = await generateModernIframeScriptCodeFromPreviews({
-      frameworkName: 'frameworkName',
-    });
+    const result = await generateModernIframeScriptCode();
     expect(withStableRuntimePath(result)).toMatchInlineSnapshot(`
       "import { setup } from '<PREVIEW_RUNTIME_PATH>';
 
@@ -135,9 +127,7 @@ describe('generateModernIframeScriptCodeFromPreviews', () => {
   });
 
   it('imports setup from the builder-context-resolved runtime path (SB-1981 regression guard)', async () => {
-    const result = await generateModernIframeScriptCodeFromPreviews({
-      frameworkName: 'frameworkName',
-    });
+    const result = await generateModernIframeScriptCode();
 
     // A bare `storybook/internal/preview/runtime` specifier resolves from the user's project
     // root, which can hold a different `storybook` copy than the builder in multi-version
@@ -181,7 +171,7 @@ describe('optimizeDeps coverage for virtual module imports', () => {
     // Collect all code generated for virtual modules — Vite's dep scanner never sees
     // the contents of virtual modules, so any package imported there must be
     // pre-bundled explicitly via optimizeViteDeps.
-    const iframeCode = await generateModernIframeScriptCodeFromPreviews({ frameworkName: 'test' });
+    const iframeCode = await generateModernIframeScriptCode();
     const addonCode = await generateAddonSetupCode();
     const allVirtualModuleCode = [iframeCode, addonCode].join('\n');
 

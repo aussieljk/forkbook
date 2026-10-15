@@ -107,7 +107,6 @@ describe('makePayload', () => {
 
     expect(makePayload(userAgent, lastInit as any, sessionId)).toMatchInlineSnapshot(`
       {
-        "isNewUser": true,
         "timeSinceInit": 3000,
         "userAgent": "Mozilla/5.0",
       }
@@ -127,7 +126,6 @@ describe('makePayload', () => {
 
     expect(makePayload(userAgent, lastInit as any, sessionId)).toMatchInlineSnapshot(`
       {
-        "isNewUser": false,
         "timeSinceInit": 3000,
         "userAgent": "Mozilla/5.0",
       }
@@ -141,7 +139,6 @@ describe('makePayload', () => {
 
     expect(makePayload(userAgent, lastInit, sessionId)).toMatchInlineSnapshot(`
       {
-        "isNewUser": false,
         "timeSinceInit": undefined,
         "userAgent": "Mozilla/5.0",
       }
@@ -160,7 +157,6 @@ describe('makePayload', () => {
 
     expect(makePayload(userAgent, lastInit as any, sessionId)).toMatchInlineSnapshot(`
       {
-        "isNewUser": false,
         "timeSinceInit": undefined,
         "userAgent": "Mozilla/5.0",
       }

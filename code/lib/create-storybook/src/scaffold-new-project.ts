@@ -46,41 +46,6 @@ const SUPPORTED_PROJECTS: Record<string, SupportedProject> = {
       pnpm: 'pnpm create next-app . --turbopack --typescript --use-pnpm --eslint --tailwind --no-app --import-alias="@/*" --src-dir --no-react-compiler',
     },
   },
-  'vue-vite-ts': {
-    displayName: {
-      type: 'Vue 3',
-      builder: 'Vite',
-      language: 'TS',
-    },
-    createScript: {
-      npm: 'npm create vite@latest . -- --template vue-ts',
-      yarn: 'yarn create vite . --template vue-ts',
-      pnpm: 'pnpm create vite@latest . --template vue-ts',
-    },
-  },
-  'angular-cli': {
-    displayName: {
-      type: 'Angular',
-      language: 'TS',
-    },
-    createScript: {
-      npm: 'npx -p @angular/cli@latest ng new angular-latest --directory . --routing=true --minimal=true --style=scss --strict --skip-git --skip-install',
-      yarn: 'yarn dlx -p @angular/cli ng new angular-latest --directory . --routing=true --minimal=true --style=scss --strict --skip-git --package-manager=yarn --skip-install && touch yarn.lock && yarn set version berry && yarn config set nodeLinker node-modules',
-      pnpm: 'pnpm --package @angular/cli dlx ng new angular-latest --directory . --routing=true --minimal=true --style=scss --strict --skip-git --package-manager=pnpm --skip-install',
-    },
-  },
-  'lit-vite-ts': {
-    displayName: {
-      type: 'Lit',
-      builder: 'Vite',
-      language: 'TS',
-    },
-    createScript: {
-      npm: 'npm create vite@latest . -- --template lit-ts',
-      yarn: 'yarn create vite . --template lit-ts && touch yarn.lock && yarn set version berry && yarn config set nodeLinker node-modules',
-      pnpm: 'pnpm create vite@latest . --template lit-ts',
-    },
-  },
 };
 
 const packageManagerToCoercedName = (

@@ -40,7 +40,6 @@ const packageManager = {
 
 const initiateWith = (...features: Feature[]) => {
   vi.mocked(executeUserPreferences).mockResolvedValue({
-    newUser: false,
     selectedFeatures: new Set(features),
   });
   return doInitiate({ packageManager: 'npm' } as Parameters<typeof doInitiate>[0]);

@@ -113,10 +113,6 @@ command('dev')
   .option('--quiet', 'Suppress verbose build output')
   .option('--no-version-updates', 'Suppress update check', true)
   .option('--debug-webpack', 'Display final webpack configurations for debugging purposes')
-  .option(
-    '--webpack-stats-json [directory]',
-    'Write Webpack stats JSON to disk (synonym for `--stats-json`)'
-  )
   .option('--stats-json [directory]', 'Write stats JSON to disk')
   .option('--docs', 'Build a documentation-only site using addon-docs')
   .option('--exact-port', 'Exit early if the desired port is not available')
@@ -150,10 +146,6 @@ command('build')
   .option('-c, --config-dir <dir-name>', 'Directory where to load Storybook configurations from')
   .option('--quiet', 'Suppress verbose build output')
   .option('--debug-webpack', 'Display final webpack configurations for debugging purposes')
-  .option(
-    '--webpack-stats-json [directory]',
-    'Write Webpack stats JSON to disk (synonym for `--stats-json`)'
-  )
   .option('--stats-json [directory]', 'Write stats JSON to disk')
   .option('--docs', 'Build a documentation-only site using addon-docs')
   .option('--test', 'Build stories optimized for testing purposes.')

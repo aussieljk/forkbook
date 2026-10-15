@@ -143,17 +143,10 @@ export function verifyWithAllowedFailureStep(
   };
 }
 
-export function cleanupStep(
-  { needsUserOnboarding }: ProjectInfo,
-  ctx: InstructionsContext
-): { title: string; body: string } {
-  const onboardingInstructions = needsUserOnboarding
-    ? 'You must preserve the components, CSS, stories and MDX docs initially created by Storybook, as they are required for user onboarding in the UI.'
-    : "If you managed to write successful stories, delete the examples that `storybook init` generated (a `stories/` folder with `Configure.mdx` next to `Button`, `Header`, and `Page`). Don't delete any other stories.";
-
+export function cleanupStep(): { title: string; body: string } {
   return {
     title: `Clean up`,
-    body: `Before finishing, remove debug code, broad mocks added during diagnosis, unused deps, and eval artifacts. ${onboardingInstructions}`,
+    body: "Before finishing, remove debug code, broad mocks added during diagnosis, unused deps, and eval artifacts. If you managed to write successful stories, delete the examples that `storybook init` generated (a `stories/` folder with `Configure.mdx` next to `Button`, `Header`, and `Page`). Don't delete any other stories.",
   };
 }
 

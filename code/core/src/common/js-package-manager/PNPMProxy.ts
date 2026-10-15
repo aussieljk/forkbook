@@ -10,7 +10,7 @@ import {
 import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
 import type { ResultPromise } from 'execa';
-import { coerce, gte, prerelease } from 'semver';
+import { coerce, gte } from 'semver';
 import { dedent } from 'ts-dedent';
 import { type Document, parseDocument } from 'yaml';
 
@@ -24,8 +24,8 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
+  STORYBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   hasStorybookMinimumAgeExclusions,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
@@ -253,36 +253,6 @@ export class PNPMProxy extends JsPackageManager {
     return typeof version === 'string' || typeof version === 'number' ? String(version) : null;
   }
 
-  override writeCatalogUpgrades(
-    specifiers: string[],
-    declared: Partial<Record<string, string>>
-  ): string[] {
-    const upgrades = specifiers.map((specifier) => {
-      const at = specifier.indexOf('@', 1);
-      const name = specifier.slice(0, at);
-      return {
-        specifier,
-        name,
-        version: specifier.slice(at + 1),
-        catalog: this.#getCatalogName(declared[name]),
-      };
-    });
-    const catalogued = upgrades.filter(({ catalog }) => catalog !== null);
-    const workspace = catalogued.length > 0 ? this.#readWorkspaceYaml() : undefined;
-    if (!workspace) {
-      return specifiers;
-    }
-    for (const { name, version, catalog } of catalogued) {
-      const keyPath = [...this.#catalogKeyPath(workspace.doc, catalog!), name];
-      const current = String(workspace.doc.getIn(keyPath) ?? '');
-      const modifier =
-        /^[~^]/.test(version) || prerelease(version) ? '' : (current.match(/^[~^]/)?.[0] ?? '');
-      workspace.doc.setIn(keyPath, `${modifier}${version}`);
-    }
-    writeFileSync(workspace.path, workspace.doc.toString(), 'utf8');
-    return upgrades.filter(({ catalog }) => catalog === null).map(({ specifier }) => specifier);
-  }
-
   override applyVersionToRelatedPackages(
     packages: string[],
     version: string,
@@ -436,11 +406,9 @@ export class PNPMProxy extends JsPackageManager {
   async precheckStorybookPackageInstall({
     storybookVersion,
     nonInteractive,
-    installContext,
   }: {
     storybookVersion: string;
     nonInteractive: boolean;
-    installContext: 'create' | 'upgrade';
   }): Promise<void> {
     const minimumReleaseAge = await this.getMinimumReleaseAge();
 
@@ -474,7 +442,7 @@ export class PNPMProxy extends JsPackageManager {
         dedent`
           pnpm minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Storybook updated minimumReleaseAgeExclude for this project automatically.
 
-          Added patterns: storybook, @storybook/*, eslint-plugin-storybook, @chromatic-com/storybook
+          Added patterns: storybook, @storybook/*, eslint-plugin-storybook
 
           Read more:
           - https://pnpm.io/settings#minimumreleaseage
@@ -492,7 +460,6 @@ export class PNPMProxy extends JsPackageManager {
       message: this.createMinimumReleaseAgeRerunMessage({
         currentVersion: storybookVersion,
         compatibleVersion,
-        installContext,
       }),
     });
 
@@ -696,19 +663,16 @@ export class PNPMProxy extends JsPackageManager {
   private createMinimumReleaseAgeRerunMessage({
     currentVersion,
     compatibleVersion,
-    installContext,
   }: {
     currentVersion: string;
     compatibleVersion: string | null;
-    installContext: 'create' | 'upgrade';
   }): string {
-    const rerunCommand = getStorybookRerunCommand(installContext, compatibleVersion);
-    const rerunInstruction = getStorybookRerunInstruction(installContext);
+    const rerunCommand = getStorybookRerunCommand(compatibleVersion);
 
     return dedent`
       pnpm minimumReleaseAge blocked storybook@${currentVersion} from being installed.
 
-      ${rerunInstruction}
+      ${STORYBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:

@@ -48,14 +48,14 @@ export default {
     docs: {
       name: 'ResolvedReact',
     },
-    // the version string changes with every release of React/Next.js/Preact, not worth snapshotting
+    // the version string changes with every release of React/Next.js, not worth snapshotting
     chromatic: { disableSnapshot: true },
   },
 };
 
 export const Story = {
   // This test is more or less the same as the E2E test we have for MDX and autodocs entries in addon-docs.spec.ts
-  play: async ({ canvasElement, step, parameters }: any) => {
+  play: async ({ canvasElement, step }: any) => {
     const canvas = await within(canvasElement);
 
     const actualReactVersion = (await canvas.findByTestId('react')).textContent;
@@ -65,11 +65,6 @@ export const Story = {
     step('Expect React packages to all resolve to the same version', async () => {
       // react-dom has a bug in its production build, reporting version 18.2.0-next-9e3b772b8-20220608 even though version 18.2.0 is installed.
       await expect(actualReactDomVersion!.startsWith(actualReactVersion!)).toBeTruthy();
-
-      if (parameters.renderer === 'preact') {
-        // the preact/compat alias doesn't have a version export in react-dom/server
-        return;
-      }
       await expect(actualReactDomServerVersion).toBe(actualReactVersion);
     });
   },

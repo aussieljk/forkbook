@@ -33,19 +33,9 @@ vi.mock('storybook/internal/node-logger', () => ({
 }));
 
 describe('getCliIntegrationFromAncestry', () => {
-  it('returns the CLI integration if nested calls', () => {
-    const ancestry = [{ command: 'node' }, { command: 'npx sv add' }, { command: 'npx sv create' }];
-    expect(getCliIntegrationFromAncestry(ancestry as any)).toBe('sv create');
-  });
-
   it('returns the CLI integration if found', () => {
-    const ancestry = [{ command: 'node' }, { command: 'npx sv add' }];
-    expect(getCliIntegrationFromAncestry(ancestry as any)).toBe('sv add');
-  });
-
-  it('returns the CLI integration if found', () => {
-    const ancestry = [{ command: 'node' }, { command: 'npx sv@latest add' }];
-    expect(getCliIntegrationFromAncestry(ancestry as any)).toBe('sv add');
+    const ancestry = [{ command: 'node' }, { command: 'pnpm create vike@latest' }];
+    expect(getCliIntegrationFromAncestry(ancestry as any)).toBe('vike');
   });
 
   it('returns undefined if no CLI integration found', () => {

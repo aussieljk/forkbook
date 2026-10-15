@@ -66,12 +66,11 @@ describe('renderComponentsManifest component API panel', () => {
             '## Inputs\n\n```\nexport type ColorPickerComponentInputs = {\n  color?: string;\n}\n```',
         }),
       },
-      meta: { docgen: 'angular-component-meta', durationMs: 0 },
     });
 
     expect(html).toContain('API description');
     expect(html).toContain('export type ColorPickerComponentInputs');
-    // Angular and Vue never set the React docgen blobs, so the props wording must not appear.
+    // Without the React docgen blobs, the props wording must not appear.
     expect(html).not.toContain('prop type');
   });
 

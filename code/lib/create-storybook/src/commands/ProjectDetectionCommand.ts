@@ -4,7 +4,6 @@ import { logger, prompt } from 'storybook/internal/node-logger';
 import { telemetry } from 'storybook/internal/telemetry';
 import { SupportedLanguage } from 'storybook/internal/types';
 
-import picocolors from 'picocolors';
 import { dedent } from 'ts-dedent';
 
 import type { CommandOptions } from '../generators/types.ts';
@@ -18,7 +17,6 @@ import { TelemetryService } from '../services/TelemetryService.ts';
  * Responsibilities:
  *
  * - Auto-detect project type or use user-provided type
- * - Handle React Native variant selection
  * - Check for existing Storybook installation
  * - Prompt for force install if needed
  */
@@ -40,16 +38,12 @@ export class ProjectDetectionCommand {
       projectType = await this.projectTypeService.validateProvidedType(projectTypeProvided);
       logger.step(`Installing Storybook for user specified project type: ${projectTypeProvided}`);
     } else {
-      const detected = await this.projectTypeService.autoDetectProjectType(this.options);
-      projectType = detected;
-      if (detected === ProjectType.REACT_NATIVE && !this.options.yes) {
-        projectType = await this.promptReactNativeVariant();
-      }
+      projectType = await this.projectTypeService.autoDetectProjectType();
       logger.debug(`Project type detected: ${projectType}`);
     }
 
     // Check for existing installation
-    await this.checkExistingInstallation(projectType);
+    await this.checkExistingInstallation();
 
     const language = this.options.language || (await this.detectAndReportLanguage());
 
@@ -72,41 +66,11 @@ export class ProjectDetectionCommand {
     return language;
   }
 
-  /** Prompt user to select React Native variant */
-  private async promptReactNativeVariant(): Promise<ProjectType> {
-    const manualType = await prompt.select(
-      {
-        message: "We've detected a React Native project. Install:",
-        options: [
-          {
-            label: `${picocolors.bold('React Native')}: Storybook on your device/simulator`,
-            value: ProjectType.REACT_NATIVE,
-          },
-          {
-            label: `${picocolors.bold('React Native Web')}: Storybook on web for docs, test, and sharing`,
-            value: ProjectType.REACT_NATIVE_WEB,
-          },
-          {
-            label: `${picocolors.bold('Both')}: Add both native and web Storybooks`,
-            value: ProjectType.REACT_NATIVE_AND_RNW,
-          },
-        ],
-      },
-      createPromptCancelOptions(this.telemetryService, 'react-native-variant')
-    );
-    return manualType as ProjectType;
-  }
-
   /** Check if Storybook is already installed and handle force option */
-  private async checkExistingInstallation(projectType: ProjectType): Promise<void> {
+  private async checkExistingInstallation(): Promise<void> {
     const storybookInstantiated = this.projectTypeService.isStorybookInstantiated();
     const options = this.options;
-    if (
-      options.force !== true &&
-      options.yes !== true &&
-      storybookInstantiated &&
-      projectType !== ProjectType.ANGULAR
-    ) {
+    if (options.force !== true && options.yes !== true && storybookInstantiated) {
       const force = await prompt.confirm(
         {
           message: dedent`We found a .storybook config directory in your project.

@@ -109,15 +109,12 @@ export const init: ModuleFn = ({ fullAPI, store, provider }) => {
     setWhatsNewState(whatsNewData);
 
     const urlState = fullAPI.getUrlState();
-    const isOnboardingView =
-      urlState?.path === '/onboarding' || urlState.queryParams?.onboarding === 'true';
     const isReviewView =
       urlState?.path === '/review/' ||
       urlState?.path === '/review' ||
       urlState?.path?.startsWith('/review/');
 
     if (
-      !isOnboardingView &&
       !isReviewView &&
       whatsNewData.status === 'SUCCESS' &&
       !whatsNewData.disableWhatsNewNotifications &&

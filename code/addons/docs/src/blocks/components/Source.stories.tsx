@@ -98,15 +98,8 @@ export const JSXSmallViewport: Story = {
  */
 export const IncompleteSnippet: Story = {
   args: {
-    code: `import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-demo',
-  imports: [LocalComponent],
-  template: \`<sb-local-component [heading]="'Declared here'"></sb-local-component>\`,
-})
-export class DemoComponent {}`,
-    language: 'typescript',
+    code: `export const Demo = () => <LocalComponent heading="Declared here" />;`,
+    language: 'jsx',
     format: false,
     warning:
       'LocalComponent is declared in the story file, so the snippet references it without importing it.',

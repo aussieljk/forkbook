@@ -21,7 +21,7 @@ import { resolvePackageDir } from '../shared/utils/module.ts';
  *   storybook/dist/bin/core.js — `tools` and `skills` are bundled because agent workflows invoke
  *   them repeatedly and must never wait on an npx download
  * - Init is routed to the create-storybook package via the detected package manager
- * - External CLI tools (upgrade, doctor, etc.) are routed to @storybook/cli the same way
+ * - Other CLI commands (add, remove) are routed to @storybook/cli the same way
  */
 if (!isNodeVersionSupported(process.versions.node)) {
   logger.error(

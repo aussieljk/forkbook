@@ -22,8 +22,8 @@ import type { InstallationMetadata, PackageMetadata } from './types.ts';
 import {
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
+  STORYBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   hasStorybookMinimumAgeExclusions,
   parsePackageTimeMap,
   parseReleaseTime,
@@ -140,7 +140,7 @@ export class BUNProxy extends JsPackageManager {
   ): ResultPromise {
     // The following command is unsafe to use with `bun run`
     // because it will always favour a equally script named in the package.json instead of the installed binary.
-    // so running `bun storybook automigrate` will run the
+    // so running `bun storybook add` will run the
     // `storybook` script (dev) instead of the `storybook`. binary.
     // return executeCommand({
     //   command: 'bun',
@@ -254,11 +254,9 @@ export class BUNProxy extends JsPackageManager {
   async precheckStorybookPackageInstall({
     storybookVersion,
     nonInteractive,
-    installContext,
   }: {
     storybookVersion: string;
     nonInteractive: boolean;
-    installContext: 'create' | 'upgrade';
   }): Promise<void> {
     const bunfig = this.readBunfig();
     const minimumReleaseAgeSeconds = this.getMinimumReleaseAgeSeconds(bunfig);
@@ -302,7 +300,7 @@ export class BUNProxy extends JsPackageManager {
         dedent`
           bun minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Storybook updated minimumReleaseAgeExcludes for this project automatically.
 
-          Added patterns: storybook, @storybook/*, eslint-plugin-storybook, @chromatic-com/storybook
+          Added patterns: storybook, @storybook/*, eslint-plugin-storybook
 
           Read more:
           - https://bun.com/docs/pm/cli/install#minimum-release-age
@@ -319,7 +317,6 @@ export class BUNProxy extends JsPackageManager {
       message: this.createMinimumReleaseAgeRerunMessage({
         currentVersion: storybookVersion,
         compatibleVersion,
-        installContext,
       }),
     });
 
@@ -496,19 +493,16 @@ export class BUNProxy extends JsPackageManager {
   private createMinimumReleaseAgeRerunMessage({
     currentVersion,
     compatibleVersion,
-    installContext,
   }: {
     currentVersion: string;
     compatibleVersion: string | null;
-    installContext: 'create' | 'upgrade';
   }) {
-    const rerunCommand = getStorybookRerunCommand(installContext, compatibleVersion);
-    const rerunInstruction = getStorybookRerunInstruction(installContext);
+    const rerunCommand = getStorybookRerunCommand(compatibleVersion);
 
     return dedent`
       bun minimumReleaseAge blocked storybook@${currentVersion} from being installed.
 
-      ${rerunInstruction}
+      ${STORYBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:

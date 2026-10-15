@@ -113,8 +113,7 @@ export const ToolbarMenuSelect: FC<ToolbarMenuProps> = ({
     }
   }, [api, id, shortcuts, globals, options, updateGlobals]);
 
-  // FIXME: for SB 10 we would want description to become an aria-description, and to add an
-  // ariaLabel prop to tools with an automigration switching current description to ariaLabel
+  // FIXME: description should become an aria-description, with a separate ariaLabel prop on tools
   const ariaLabel = description || title || name || id;
 
   return (

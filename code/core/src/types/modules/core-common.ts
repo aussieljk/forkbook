@@ -41,7 +41,7 @@ export type {
 
 /** ⚠️ This file contains internal WIP types they MUST NOT be exported outside this package for now! */
 
-export type BuilderName = 'webpack5' | '@storybook/builder-webpack5' | string;
+export type BuilderName = string;
 export type RendererName = string;
 
 export interface CoreConfig {
@@ -52,7 +52,6 @@ export interface CoreConfig {
         options?: Record<string, any>;
       };
   renderer?: RendererName;
-  disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
   /** Disables the generation of project.json, a file containing Storybook metadata */
   disableProjectJson?: boolean;
@@ -199,8 +198,7 @@ export interface BuilderResult {
  * Builder-supplied module resolution config consumed by Storybook's change-detection
  * dependency graph (and any future module-resolver consumer in core).
  *
- * Shape mirrors a subset of Vite's `resolve.*` options and is intentionally
- * builder-agnostic — webpack/rspack adapters surface the same fields.
+ * Shape mirrors a subset of Vite's `resolve.*` options.
  */
 export interface ModuleResolveConfig {
   /** Project root (where Storybook is started from). */
@@ -256,7 +254,6 @@ export interface CLIOptions extends CLIBaseOptions {
   docs?: boolean;
   test?: boolean;
   debugWebpack?: boolean;
-  webpackStatsJson?: string | boolean;
   statsJson?: string | boolean;
   outputDir?: string;
   previewOnly?: boolean;
@@ -269,7 +266,6 @@ export interface BuilderOptions {
   docsMode?: boolean;
   features?: StorybookConfigRaw['features'];
   versionCheck?: VersionCheck;
-  disableWebpackDefaults?: boolean;
   serverChannelUrl?: string;
   localAddress?: string;
   networkAddress?: string;
@@ -401,8 +397,6 @@ export interface TestBuildFlags {
   disableSourcemaps?: boolean;
   /** Override tree-shaking (dead code elimination) to be disabled. */
   disableTreeShaking?: boolean;
-  /** Minify with ESBuild when using webpack. */
-  esbuildMinify?: boolean;
 }
 
 export interface TestBuildConfig {
@@ -475,13 +469,7 @@ export interface ComponentsManifest {
   v: number;
   components: Record<string, ComponentManifest>;
   meta?: {
-    docgen:
-      | 'react-component-meta'
-      | 'vue-component-meta'
-      | 'angular-component-meta'
-      | 'compodoc'
-      | 'custom-elements-manifest'
-      | 'svelte2tsx';
+    docgen: 'react-component-meta';
     durationMs: number;
   };
 }
@@ -599,20 +587,11 @@ export interface StorybookFeatures {
    */
   developmentModeForBuild?: boolean;
   /**
-   * Only show input controls in Angular.
-   *
-   * @deprecated On `@storybook/angular-vite`, use the `propsTable` framework option instead:
-   *   `'inputs'` for this flag on, `'all'` for it off. Still read by `@storybook/angular`.
-   */
-  angularFilterNonInputControls?: boolean;
-
-  /**
    * Enable component manifest generation for MCP and other tooling integrations.
    *
-   * `@storybook/react`, `@storybook/vue3`, and `@storybook/angular-vite` default this to `true`.
-   * Set it to `false` to opt out.
+   * `@storybook/react` defaults this to `true`. Set it to `false` to opt out.
    *
-   * @default false // `true` for React, Vue 3, and `@storybook/angular-vite`
+   * @default false // `true` for React
    */
   componentsManifest?: boolean;
 
@@ -734,7 +713,7 @@ export interface StorybookConfigRaw {
   experimental_indexers?: Indexer[];
 
   /**
-   * Register parsers that extract import edges from non-JS/TS files (e.g. .vue, .svelte).
+   * Register parsers that extract import edges from non-JS/TS files.
    * Each parser claims one or more file extensions. Last registration wins on collision.
    * Lazy-load heavy SFC compilers inside the parser body — the function is awaited on first
    * use.
@@ -962,9 +941,9 @@ export interface CoreCommon_StorybookInfo {
  * @example
  *
  * ```ts
- * type Framework = CompatibleString<'@storybook/nextjs'>;
- * const framework: Framework = '@storybook/nextjs'; // valid and will be autocompleted const framework: Framework =
- * path.dirname(require.resolve(path.join('@storybook/nextjs', 'package.json'))); // valid
+ * type Framework = CompatibleString<'@storybook/nextjs-vite'>;
+ * const framework: Framework = '@storybook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
+ * path.dirname(require.resolve(path.join('@storybook/nextjs-vite', 'package.json'))); // valid
  * ```
  */
 export type CompatibleString<T extends string> = T | (string & {});

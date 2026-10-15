@@ -1,5 +1,3 @@
-import type { ProjectType } from 'storybook/internal/cli';
-import { globalSettings } from 'storybook/internal/cli';
 import { isCI } from 'storybook/internal/common';
 import { logger, prompt } from 'storybook/internal/node-logger';
 import type {
@@ -9,19 +7,15 @@ import type {
 } from 'storybook/internal/types';
 import { Feature } from 'storybook/internal/types';
 
-import picocolors from 'picocolors';
 import { dedent } from 'ts-dedent';
 
 import type { CommandOptions } from '../generators/types.ts';
 import { createPromptCancelOptions } from '../prompt-cancel.ts';
-import { FeatureCompatibilityService } from '../services/FeatureCompatibilityService.ts';
 import { TelemetryService } from '../services/TelemetryService.ts';
 
 export type InstallType = 'recommended' | 'light';
 
 export interface UserPreferencesResult {
-  /** Whether the user is a new user */
-  newUser: boolean;
   /**
    * The features that the user has selected explicitly or implicitly and which can actually be
    * installed based on the project type or other constraints.
@@ -34,7 +28,6 @@ export interface UserPreferencesOptions {
   framework: SupportedFramework | null;
   builder: SupportedBuilder;
   renderer: SupportedRenderer;
-  projectType: ProjectType;
   isTestFeatureAvailable: boolean;
   isAiAvailable: boolean;
   isAiSetupAvailable: boolean;
@@ -46,7 +39,6 @@ export interface UserPreferencesOptions {
  * Responsibilities:
  *
  * - Display version information
- * - Prompt for new user / onboarding preference
  * - Prompt for install type (recommended vs minimal)
  * - Run feature compatibility checks
  * - Track telemetry events
@@ -63,23 +55,16 @@ export class UserPreferencesCommand {
     const isInteractive = process.stdout.isTTY && !isCI();
     const skipPrompt = !isInteractive || !!this.commandOptions.yes;
 
-    // Get new user preference
-    const newUser = await this.promptNewUser(skipPrompt);
-
     const commandOptionsFeatures = this.handleCommandOptionsFeatureFlag();
 
     if (commandOptionsFeatures) {
-      return {
-        newUser,
-        selectedFeatures: commandOptionsFeatures,
-      };
+      return { selectedFeatures: commandOptionsFeatures };
     }
 
     // Get install type
-    const installType: InstallType =
-      !newUser && !this.commandOptions.features
-        ? await this.promptInstallType(skipPrompt, options.isTestFeatureAvailable)
-        : 'recommended';
+    const installType: InstallType = this.commandOptions.features
+      ? 'recommended'
+      : await this.promptInstallType(skipPrompt, options.isTestFeatureAvailable);
 
     const useAi = options.isAiAvailable
       ? await this.promptAiSetup(skipPrompt, options.isAiSetupAvailable)
@@ -87,14 +72,12 @@ export class UserPreferencesCommand {
 
     const selectedFeatures = this.determineFeatures(
       installType,
-      newUser,
       options.isTestFeatureAvailable,
-      options.projectType,
       useAi,
       options.isAiSetupAvailable
     );
 
-    return { newUser, selectedFeatures };
+    return { selectedFeatures };
   }
 
   private handleCommandOptionsFeatureFlag(): Set<Feature> | null {
@@ -112,50 +95,6 @@ export class UserPreferencesCommand {
     }
 
     return null;
-  }
-
-  /** Prompt user about onboarding */
-  private async promptNewUser(skipPrompt: boolean): Promise<boolean> {
-    const settings = await globalSettings();
-    const { skipOnboarding } = settings.value.init || {};
-    let isNewUser = skipOnboarding !== undefined ? !skipOnboarding : true;
-
-    if (skipPrompt || skipOnboarding) {
-      settings.value.init ||= {};
-      settings.value.init.skipOnboarding = !!skipOnboarding;
-    } else {
-      isNewUser = await prompt.select(
-        {
-          message: 'New to Storybook?',
-          options: [
-            {
-              label: `${picocolors.bold('Yes:')} Help me with onboarding`,
-              value: true,
-            },
-            {
-              label: `${picocolors.bold('No:')} Skip onboarding & don't ask again`,
-              value: false,
-            },
-          ],
-        },
-        createPromptCancelOptions(this.telemetryService, 'new-user-ask-onboarding')
-      );
-
-      settings.value.init ||= {};
-      settings.value.init.skipOnboarding = !isNewUser;
-
-      if (typeof isNewUser !== 'undefined') {
-        await this.telemetryService.trackNewUserCheck(isNewUser);
-      }
-    }
-
-    try {
-      await settings.save();
-    } catch (err) {
-      logger.warn(`Failed to save user settings: ${err}`);
-    }
-
-    return isNewUser;
   }
 
   /** Prompt user for install type */
@@ -196,9 +135,7 @@ export class UserPreferencesCommand {
   /** Determine features based on install type and user status */
   private determineFeatures(
     installType: InstallType,
-    newUser: boolean,
     isTestFeatureAvailable: boolean,
-    projectType: ProjectType,
     useAi: boolean,
     isAiSetupAvailable: boolean
   ): Set<Feature> {
@@ -211,24 +148,14 @@ export class UserPreferencesCommand {
       if (isTestFeatureAvailable) {
         features.add(Feature.TEST);
       }
-      if (newUser && FeatureCompatibilityService.supportsOnboarding(projectType)) {
-        features.add(Feature.ONBOARDING);
-      }
     }
 
     if (useAi) {
       features.add(Feature.AI);
     }
 
-    if (useAi && isAiSetupAvailable) {
-      if (isTestFeatureAvailable) {
-        features.add(Feature.TEST);
-      }
-
-      // We leave onboarding for sandboxes as we test onboarding in CI
-      if (!process.env.IN_STORYBOOK_SANDBOX) {
-        features.delete(Feature.ONBOARDING);
-      }
+    if (useAi && isAiSetupAvailable && isTestFeatureAvailable) {
+      features.add(Feature.TEST);
     }
 
     return features;

@@ -27,12 +27,8 @@ export const storybookConfigExtensions = [
   '.ctsx',
 ] as const;
 
-/**
- * Module file extensions for user-code resolution (e.g. `sb.mock()`). Covers JS/TS plus JSON and
- * common single-file-component types (`.vue`, `.svelte`).
- */
+/** Module file extensions for user-code resolution (e.g. `sb.mock()`). Covers JS/TS plus JSON. */
 export const userModuleExtensions = [
-  '.astro',
   '.js',
   '.mjs',
   '.cjs',
@@ -40,6 +36,4 @@ export const userModuleExtensions = [
   '.tsx',
   '.jsx',
   '.json',
-  '.vue',
-  '.svelte',
 ] as const;

@@ -34,13 +34,6 @@ const isObject = (val: unknown): val is Record<string, any> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
 const isFunction = (val: unknown): val is Function => typeof val === 'function';
 
-export function filterPresetsConfig(presetsConfig: PresetConfig[]): PresetConfig[] {
-  return presetsConfig.filter((preset) => {
-    const presetName = typeof preset === 'string' ? preset : preset.name;
-    return !/@storybook[\\\\/]preset-typescript/.test(presetName);
-  });
-}
-
 function resolvePresetFunction<T = any>(
   input: T[] | Function,
   presetOptions: any,
@@ -376,13 +369,5 @@ export async function loadAllPresets(
   const mainUrl = getInterpretedFile(resolve(options.configDir, 'main')) as string;
   const presetsConfig: PresetConfig[] = [...corePresets, mainUrl, ...overridePresets];
 
-  // Remove `@storybook/preset-typescript` and add a warning if in use.
-  const filteredPresetConfig = filterPresetsConfig(presetsConfig);
-  if (filteredPresetConfig.length < presetsConfig.length) {
-    logger.warn(
-      'Storybook now supports TypeScript natively. You can safely remove `@storybook/preset-typescript`.'
-    );
-  }
-
-  return getPresets(filteredPresetConfig, restOptions);
+  return getPresets(presetsConfig, restOptions);
 }

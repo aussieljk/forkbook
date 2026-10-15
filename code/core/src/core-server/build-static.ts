@@ -197,7 +197,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
       .then(async (previewStats) => {
         logger.trace({ message: 'Preview built', time: process.hrtime(startTime) });
 
-        const statsOption = options.webpackStatsJson || options.statsJson;
+        const statsOption = options.statsJson;
         if (statsOption) {
           const target = statsOption === true ? options.outputDir : statsOption;
           await outputStats(target, previewStats);

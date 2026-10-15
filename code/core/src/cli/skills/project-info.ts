@@ -1,5 +1,5 @@
 import type { JsPackageManager } from 'storybook/internal/common';
-import { cache, getPrettyPackageManagerName } from 'storybook/internal/common';
+import { getPrettyPackageManagerName } from 'storybook/internal/common';
 import type { SupportedRenderer } from 'storybook/internal/types';
 import { SupportedLanguage } from 'storybook/internal/types';
 
@@ -28,7 +28,6 @@ export interface ProjectInfo {
   /** Whether the project's preview file uses the CSF Factory format. */
   hasCsfFactoryPreview: boolean;
   /** Whether the user has requested to be onboarded into Storybook. */
-  needsUserOnboarding: boolean;
   /** The monorepo tool detected at the project root, if any. */
   monorepoType: MonorepoType;
 }
@@ -63,8 +62,6 @@ export async function getProjectInfo(opts: { configDir?: string }): Promise<Proj
     const detectedLanguage = await detectLanguage(data.packageManager, data.workingDir);
     const language = detectedLanguage === SupportedLanguage.TYPESCRIPT ? 'ts' : 'js';
 
-    const needsUserOnboarding = await cache.get<boolean>('onboarding-pending', false);
-
     const projectInfo: ProjectInfo = {
       storybookVersion: data.versionInstalled,
       majorVersion,
@@ -79,7 +76,6 @@ export async function getProjectInfo(opts: { configDir?: string }): Promise<Proj
       packageManagerName: getPrettyPackageManagerName(data.packageManager.type),
       language,
       hasCsfFactoryPreview: data.hasCsfFactoryPreview,
-      needsUserOnboarding,
       monorepoType: getMonorepoType(),
     };
 

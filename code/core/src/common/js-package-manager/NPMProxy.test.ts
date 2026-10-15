@@ -173,7 +173,6 @@ describe('NPM Proxy', () => {
         .precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'upgrade',
         })
         .then(
           () => null,
@@ -182,7 +181,7 @@ describe('NPM Proxy', () => {
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
       expect(error).toBeTruthy();
-      expect(error?.message).toContain('npx storybook@10.3.9 upgrade');
+      expect(error?.message).toContain('npx create-storybook@10.3.9');
       expect(error?.message).toContain('min-release-age');
     });
   });

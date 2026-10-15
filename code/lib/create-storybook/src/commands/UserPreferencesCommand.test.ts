@@ -1,6 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AddonVitestService, ProjectType, globalSettings } from 'storybook/internal/cli';
+import { AddonVitestService } from 'storybook/internal/cli';
 import { PackageManagerName, isCI } from 'storybook/internal/common';
 import { logger, prompt } from 'storybook/internal/node-logger';
 import type { SupportedBuilder, SupportedRenderer } from 'storybook/internal/types';
@@ -19,7 +19,6 @@ vi.mock('../services/TelemetryService', { spy: true });
 
 interface CommandWithPrivates {
   telemetryService: {
-    trackNewUserCheck: ReturnType<typeof vi.fn>;
     trackInstallType: ReturnType<typeof vi.fn>;
     trackAiSetupNudge: ReturnType<typeof vi.fn>;
     trackPromptCancel: ReturnType<typeof vi.fn>;
@@ -34,7 +33,6 @@ describe('UserPreferencesCommand', () => {
     framework: null as null,
     builder: 'vite' as SupportedBuilder,
     renderer: 'react' as SupportedRenderer,
-    projectType: ProjectType.REACT,
     isTestFeatureAvailable: true,
     isAiAvailable: false,
     isAiSetupAvailable: false,
@@ -76,26 +74,14 @@ describe('UserPreferencesCommand', () => {
     // Mock TelemetryService
     vi.mocked(TelemetryService).mockImplementation(function () {
       return {
-        trackNewUserCheck: vi.fn(),
         trackInstallType: vi.fn(),
         trackAiSetupNudge: vi.fn(),
         trackPromptCancel: vi.fn().mockResolvedValue(undefined),
       };
     });
 
-    // Mock globalSettings
-    const mockSettings = {
-      value: { init: {} },
-      save: vi.fn().mockResolvedValue(undefined),
-      filePath: 'test-config.json',
-    };
-    vi.mocked(globalSettings).mockResolvedValue(
-      mockSettings as unknown as Awaited<ReturnType<typeof globalSettings>>
-    );
-
     // Create mock services
     const mockTelemetryService = {
-      trackNewUserCheck: vi.fn(),
       trackInstallType: vi.fn(),
       trackAiSetupNudge: vi.fn(),
       trackPromptCancel: vi.fn().mockResolvedValue(undefined),
@@ -117,9 +103,6 @@ describe('UserPreferencesCommand', () => {
       configurable: true,
     });
 
-    // Reset sandbox env to avoid leaking between tests (or from the actual test environment)
-    delete process.env.IN_STORYBOOK_SANDBOX;
-
     vi.clearAllMocks();
 
     // Re-apply mocks after clearAllMocks (which clears call history but not implementations,
@@ -129,77 +112,28 @@ describe('UserPreferencesCommand', () => {
   });
 
   describe('execute', () => {
-    it('should return recommended config for new users in non-interactive mode', async () => {
+    it('should return recommended config in non-interactive mode', async () => {
       const result = await command.execute({
         ...defaultExecuteOptions,
         isTestFeatureAvailable: true,
       });
 
-      expect(result.newUser).toBe(true);
       expect(result.selectedFeatures).toContain('docs');
       expect(result.selectedFeatures).toContain('test');
-      expect(result.selectedFeatures).toContain('onboarding');
     });
 
-    it('should prompt for new user in interactive mode', async () => {
-      // Mock TTY
+    it('should prompt for install type', async () => {
       Object.defineProperty(process.stdout, 'isTTY', {
         value: true,
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
-
-      const result = await command.execute(defaultExecuteOptions);
-
-      expect(prompt.select).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: 'New to Storybook?',
-        }),
-        expect.objectContaining({ onCancel: expect.any(Function) })
-      );
-      expect(result.newUser).toBe(true);
-      const telemetryService = (command as unknown as CommandWithPrivates).telemetryService;
-      expect(telemetryService.trackNewUserCheck).toHaveBeenCalledWith(true);
-    });
-
-    it('should track prompt cancellation for the new user prompt and exit cleanly', async () => {
-      Object.defineProperty(process.stdout, 'isTTY', {
-        value: true,
-        configurable: true,
-      });
-
-      vi.mocked(prompt.select).mockResolvedValueOnce(true);
-
-      await command.execute(defaultExecuteOptions);
-
-      const onCancel = vi.mocked(prompt.select).mock.calls[0]?.[1]?.onCancel;
-      const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never);
-
-      await onCancel?.();
-
-      const telemetryService = (command as unknown as CommandWithPrivates).telemetryService;
-      expect(telemetryService.trackPromptCancel).toHaveBeenCalledWith('new-user-ask-onboarding');
-      expect(exitSpy).toHaveBeenCalledWith(0);
-
-      exitSpy.mockRestore();
-    });
-
-    it('should prompt for install type when not a new user', async () => {
-      Object.defineProperty(process.stdout, 'isTTY', {
-        value: true,
-        configurable: true,
-      });
-
-      vi.mocked(prompt.select)
-        .mockResolvedValueOnce(false) // not new user
-        .mockResolvedValueOnce('light'); // minimal install
+      vi.mocked(prompt.select).mockResolvedValueOnce('light'); // minimal install
 
       const result = await command.execute(defaultExecuteOptions);
 
       expect(result.selectedFeatures.has(Feature.TEST)).toBe(false);
       expect(result.selectedFeatures.has(Feature.DOCS)).toBe(false);
-      expect(result.selectedFeatures.has(Feature.ONBOARDING)).toBe(false);
     });
 
     it('should remove test feature if isTestFeatureAvailable is false', async () => {
@@ -208,7 +142,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
 
       const result = await command.execute({
         ...defaultExecuteOptions,
@@ -217,7 +151,6 @@ describe('UserPreferencesCommand', () => {
 
       expect(result.selectedFeatures.has(Feature.TEST)).toBe(false);
       expect(result.selectedFeatures.has(Feature.DOCS)).toBe(true);
-      expect(result.selectedFeatures.has(Feature.ONBOARDING)).toBe(true);
     });
   });
 
@@ -251,7 +184,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI setup: yes
 
       const result = await command.execute({
@@ -270,61 +203,13 @@ describe('UserPreferencesCommand', () => {
       expect(result.selectedFeatures.has(Feature.AI)).toBe(true);
     });
 
-    it('should not include ONBOARDING feature when user accepts AI setup', async () => {
-      Object.defineProperty(process.stdout, 'isTTY', {
-        value: true,
-        configurable: true,
-      });
-
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
-      vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI setup: yes
-
-      const result = await command.execute({
-        ...defaultExecuteOptions,
-        isAiAvailable: true,
-        isAiSetupAvailable: true,
-      });
-
-      expect(result.selectedFeatures.has(Feature.AI)).toBe(true);
-      expect(result.selectedFeatures.has(Feature.ONBOARDING)).toBe(false);
-    });
-
-    it('should include ONBOARDING when AI is selected inside a sandbox (IN_STORYBOOK_SANDBOX)', async () => {
-      Object.defineProperty(process.stdout, 'isTTY', {
-        value: true,
-        configurable: true,
-      });
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
-      vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI setup: yes
-
-      const oldInSandbox = process.env.IN_STORYBOOK_SANDBOX;
-      process.env.IN_STORYBOOK_SANDBOX = 'true';
-
-      try {
-        const result = await command.execute({
-          ...defaultExecuteOptions,
-          isAiAvailable: true,
-          isAiSetupAvailable: true,
-        });
-
-        expect(result.selectedFeatures.has(Feature.AI)).toBe(true);
-        expect(result.selectedFeatures.has(Feature.ONBOARDING)).toBe(true);
-      } finally {
-        if (oldInSandbox !== undefined) {
-          process.env.IN_STORYBOOK_SANDBOX = oldInSandbox;
-        } else {
-          delete process.env.IN_STORYBOOK_SANDBOX;
-        }
-      }
-    });
-
     it('should not include AI feature when user declines AI setup', async () => {
       Object.defineProperty(process.stdout, 'isTTY', {
         value: true,
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
       vi.mocked(prompt.confirm).mockResolvedValueOnce(false); // AI setup: no
 
       const result = await command.execute({
@@ -367,7 +252,6 @@ describe('UserPreferencesCommand', () => {
 
       // Inject mocked services
       (yesCommand as unknown as CommandWithPrivates).telemetryService = {
-        trackNewUserCheck: vi.fn(),
         trackInstallType: vi.fn(),
         trackAiSetupNudge: vi.fn(),
         trackPromptCancel: vi.fn().mockResolvedValue(undefined),
@@ -389,7 +273,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
 
       const result = await command.execute({
         ...defaultExecuteOptions,
@@ -400,13 +284,13 @@ describe('UserPreferencesCommand', () => {
       expect(result.selectedFeatures.has(Feature.AI)).toBe(false);
     });
 
-    it('should keep onboarding when AI is accepted where AI setup is not available', async () => {
+    it('should not track the AI setup nudge where AI setup is not available', async () => {
       Object.defineProperty(process.stdout, 'isTTY', {
         value: true,
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI: yes
 
       const result = await command.execute({
@@ -422,7 +306,6 @@ describe('UserPreferencesCommand', () => {
         expect.anything()
       );
       expect(result.selectedFeatures.has(Feature.AI)).toBe(true);
-      expect(result.selectedFeatures.has(Feature.ONBOARDING)).toBe(true);
       const telemetryService = (command as unknown as CommandWithPrivates).telemetryService;
       expect(telemetryService.trackAiSetupNudge).not.toHaveBeenCalled();
     });
@@ -433,9 +316,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select)
-        .mockResolvedValueOnce(false) // not new user
-        .mockResolvedValueOnce('light'); // minimal install
+      vi.mocked(prompt.select).mockResolvedValueOnce('light'); // minimal install
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI: yes
 
       const result = await command.execute({
@@ -454,9 +335,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select)
-        .mockResolvedValueOnce(false) // not new user
-        .mockResolvedValueOnce('light'); // minimal install
+      vi.mocked(prompt.select).mockResolvedValueOnce('light'); // minimal install
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI setup: yes
 
       const result = await command.execute({
@@ -477,9 +356,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select)
-        .mockResolvedValueOnce(false) // not new user
-        .mockResolvedValueOnce('light'); // minimal install
+      vi.mocked(prompt.select).mockResolvedValueOnce('light'); // minimal install
       vi.mocked(prompt.confirm).mockResolvedValueOnce(false); // AI setup: no
 
       const result = await command.execute({
@@ -499,7 +376,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true); // AI setup: yes
 
       await command.execute({
@@ -518,7 +395,7 @@ describe('UserPreferencesCommand', () => {
         configurable: true,
       });
 
-      vi.mocked(prompt.select).mockResolvedValueOnce(true); // new user
+      vi.mocked(prompt.select).mockResolvedValueOnce('recommended'); // install type
       vi.mocked(prompt.confirm).mockResolvedValueOnce(false); // AI setup: no
 
       await command.execute({
@@ -559,7 +436,6 @@ describe('UserPreferencesCommand', () => {
 
       // Should return a valid result
       expect(result.selectedFeatures).toBeDefined();
-      expect(result.newUser).toBeDefined();
     });
   });
 });

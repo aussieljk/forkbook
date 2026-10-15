@@ -29,33 +29,21 @@ export function summarizeIndex(storyIndex: StoryIndex) {
   let storyCount = 0;
   const componentTitles = new Set<string>();
   let exampleStoryCount = 0;
-  let onboardingStoryCount = 0;
-  let onboardingDocsCount = 0;
   let exampleDocsCount = 0;
   let pageStoryCount = 0;
   let playStoryCount = 0;
   let testStoryCount = 0;
   let autodocsCount = 0;
   let mdxCount = 0;
-  let svelteCsfV4Count = 0;
-  let svelteCsfV5Count = 0;
   const testsPerParentStory = new Map<string, number>();
   Object.values(storyIndex.entries).forEach((entry) => {
-    if (isCLIExampleEntry(entry)) {
+    if (isCLIExampleEntry(entry) || isExampleStoryId(entry.id)) {
       if (entry.type === 'story') {
         exampleStoryCount += 1;
       }
 
       if (entry.type === 'docs') {
         exampleDocsCount += 1;
-      }
-    } else if (isExampleStoryId(entry.id)) {
-      if (entry.type === 'story') {
-        onboardingStoryCount += 1;
-      }
-
-      if (entry.type === 'docs') {
-        onboardingDocsCount += 1;
       }
     } else if (entry.type === 'story') {
       storyCount += 1;
@@ -69,11 +57,6 @@ export function summarizeIndex(storyIndex: StoryIndex) {
       if (entry.tags?.includes(Tag.TEST_FN) && entry.parent) {
         testStoryCount += 1;
         testsPerParentStory.set(entry.parent, (testsPerParentStory.get(entry.parent) ?? 0) + 1);
-      }
-      if (entry.tags?.includes('svelte-csf-v4')) {
-        svelteCsfV4Count += 1;
-      } else if (entry.tags?.includes('svelte-csf-v5')) {
-        svelteCsfV5Count += 1;
       }
     } else if (entry.type === 'docs') {
       if (isMdxEntry(entry)) {
@@ -107,10 +90,6 @@ export function summarizeIndex(storyIndex: StoryIndex) {
     mdxCount,
     exampleStoryCount,
     exampleDocsCount,
-    onboardingStoryCount,
-    onboardingDocsCount,
-    svelteCsfV4Count,
-    svelteCsfV5Count,
     version: storyIndex.v,
   };
 }

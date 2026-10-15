@@ -5,8 +5,8 @@ import { basename, dirname, relative, resolve as resolvePath } from 'pathe';
 import type { ChangedStoriesOutput, StoriesGitAccess, StorybookDirsAccess } from './definition.ts';
 import type { ModuleGraphAccess } from './resolve-component-stories.ts';
 
-const SOURCE_EXT_RE = /\.(?:[cm]?[jt]sx?|vue|svelte)$/i;
-const RENDERING_SOURCE_EXT_RE = /\.(?:tsx?|jsx?|vue|svelte)$/i;
+const SOURCE_EXT_RE = /\.[cm]?[jt]sx?$/i;
+const RENDERING_SOURCE_EXT_RE = /\.[jt]sx?$/i;
 const NON_RENDERING_CONFIG_FILE_RE = /^(?:main|manager)\./i;
 const PREVIEW_ASSET_RE = /^preview-(?:head|body)\.html$|\.(?:css|scss|sass|less)$/i;
 const TEST_OR_TYPES_FILE_RE = /\.(?:test|spec)\.[^/]+$|\.d\.[cm]?ts$/i;

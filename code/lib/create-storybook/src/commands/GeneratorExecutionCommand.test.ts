@@ -84,12 +84,10 @@ describe('GeneratorExecutionCommand', () => {
 
   describe('execute', () => {
     it('should execute generator with all features', async () => {
-      const selectedFeatures = new Set([Feature.DOCS, Feature.TEST, Feature.ONBOARDING]);
+      const selectedFeatures = new Set([Feature.DOCS, Feature.TEST]);
       mockAddonService.getAddonsForFeatures.mockReturnValue([
-        '@chromatic-com/storybook',
         '@storybook/addon-vitest',
         '@storybook/addon-docs',
-        '@storybook/addon-onboarding',
       ]);
       const options = {
         skipInstall: false,
@@ -131,7 +129,6 @@ describe('GeneratorExecutionCommand', () => {
     it('should pass correct options to generator', async () => {
       const selectedFeatures = new Set([Feature.DOCS, Feature.TEST, Feature.A11Y]);
       mockAddonService.getAddonsForFeatures.mockReturnValue([
-        '@chromatic-com/storybook',
         '@storybook/addon-vitest',
         '@storybook/addon-a11y',
         '@storybook/addon-docs',
@@ -145,7 +142,7 @@ describe('GeneratorExecutionCommand', () => {
       };
 
       await command.execute({
-        projectType: ProjectType.VUE3,
+        projectType: ProjectType.NEXTJS,
         frameworkInfo: mockFrameworkInfo,
         language: SupportedLanguage.TYPESCRIPT,
         options,
@@ -169,13 +166,12 @@ describe('GeneratorExecutionCommand', () => {
           builder: SupportedBuilder.VITE,
           linkable: true,
           yes: true,
-          projectType: ProjectType.VUE3,
+          projectType: ProjectType.NEXTJS,
           features: expect.any(Set),
           dependencyCollector: expect.any(Object),
         }),
         expect.objectContaining({
           extraAddons: expect.arrayContaining([
-            '@chromatic-com/storybook',
             '@storybook/addon-vitest',
             '@storybook/addon-a11y',
             '@storybook/addon-docs',

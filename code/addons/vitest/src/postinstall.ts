@@ -61,9 +61,8 @@ export default async function postInstall(options: PostinstallOptions) {
 
   const addonVitestService = new AddonVitestService(packageManager);
 
-  // Skip the module cache: an automigration (e.g. angular-to-angular-vite) may have rewritten the
-  // main config earlier in this same process, and the cached version would still report the old
-  // framework/builder — causing the prerequisite check below to fail incorrectly.
+  // Skip the module cache: `storybook add` may have rewritten the main config earlier in this same
+  // process, and the cached version would still report the old config.
   const info = await getStorybookInfo(options.configDir, undefined, { skipCache: true });
   // only install these dependencies if they are not already installed
 

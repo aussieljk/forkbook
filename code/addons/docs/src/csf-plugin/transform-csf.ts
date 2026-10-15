@@ -4,8 +4,6 @@ import type { EnrichCsfOptions } from 'storybook/internal/csf-tools';
 import { enrichCsf, formatCsf, loadCsf } from 'storybook/internal/csf-tools';
 import { logger } from 'storybook/internal/node-logger';
 
-import type { RollupPlugin } from 'unplugin';
-
 import { STORIES_REGEX } from './constants.ts';
 
 export async function transformCsf(code: string, id: string, options: EnrichCsfOptions) {
@@ -32,13 +30,4 @@ export async function transformCsf(code: string, id: string, options: EnrichCsfO
     }
     return code;
   }
-}
-
-export function rollupBasedPlugin(options: EnrichCsfOptions): Partial<RollupPlugin<any>> {
-  return {
-    name: 'plugin-csf',
-    async transform(code, id) {
-      return transformCsf(code, id, options);
-    },
-  };
 }

@@ -17,8 +17,8 @@ export function getWorkingDir(configDir: string): string {
 
 /**
  * Gathers the project metadata CLI commands need from the target Storybook: config, framework,
- * package manager, installed version, and story paths. The canonical collector — `automigrate`,
- * `doctor`, `add`, and `skills setup` all consume it.
+ * package manager, installed version, and story paths. The canonical collector — `add` and
+ * `skills setup` consume it.
  */
 export const getStorybookData = async ({
   configDir: userDefinedConfigDir,
@@ -29,7 +29,7 @@ export const getStorybookData = async ({
   packageManagerName?: PackageManagerName;
   /**
    * Skip the module cache when reading the main config. Pass `true` when a prior step in the same
-   * process (e.g. an automigration) may have rewritten the main config on disk, otherwise this
+   * process (e.g. `storybook add`) may have rewritten the main config on disk, otherwise this
    * would read back the module system's cached evaluation from before that rewrite.
    */
   skipCache?: boolean;

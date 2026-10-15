@@ -5,7 +5,6 @@ import type { JsPackageManager } from 'storybook/internal/common';
 import { logger } from 'storybook/internal/node-logger';
 import { NxProjectDetectedError } from 'storybook/internal/server-errors';
 
-import type { CommandOptions } from '../generators/types.ts';
 import { ProjectTypeService } from './ProjectTypeService.ts';
 
 describe('ProjectTypeService', () => {
@@ -28,10 +27,9 @@ describe('ProjectTypeService', () => {
   describe('autoDetectProjectType', () => {
     it('logs a helpful message when framework cannot be detected', async () => {
       const service = new ProjectTypeService(pm);
-      const options = { html: false } as unknown as CommandOptions;
       vi.spyOn(service, 'detectProjectType').mockResolvedValue(ProjectType.UNDETECTED);
 
-      await expect(service.autoDetectProjectType(options)).rejects.toThrowError(
+      await expect(service.autoDetectProjectType()).rejects.toThrowError(
         'Storybook failed to detect your project type'
       );
       expect(logger.error).toHaveBeenCalledWith(
@@ -43,17 +41,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(true);
-      await expect(service.autoDetectProjectType({} as CommandOptions)).rejects.toBeInstanceOf(
-        NxProjectDetectedError
-      );
-    });
-
-    it('returns HTML when options.html is true', async () => {
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: true } as CommandOptions);
-      expect(result).toBe(ProjectType.HTML);
+      await expect(service.autoDetectProjectType()).rejects.toBeInstanceOf(NxProjectDetectedError);
     });
 
     it('detects framework from package.json (nextjs)', async () => {
@@ -63,52 +51,21 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.NEXTJS);
     });
 
-    it('detects VUE3 when vue major is 3', async () => {
+    it('does not detect a Vue project', async () => {
       (pm as any).primaryPackageJson.packageJson = {
         dependencies: { vue: '^3.2.0' },
       };
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.VUE3);
-    });
 
-    it('detects SVELTEKIT via @sveltejs/kit', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { '@sveltejs/kit': '^2.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.SVELTEKIT);
-    });
-
-    it('detects WEB_COMPONENTS via lit', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { lit: '^3.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.WEB_COMPONENTS);
-    });
-
-    it('detects SOLID via solid-js', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { 'solid-js': '^1.8.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.SOLID);
+      await expect(service.autoDetectProjectType()).rejects.toThrowError(
+        'Storybook failed to detect your project type'
+      );
     });
 
     it('falls back to REACT for a CRA project (react-scripts no longer detected)', async () => {
@@ -118,63 +75,8 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
-    });
-
-    it('detects ANGULAR via @angular/core', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { '@angular/core': '^17.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.ANGULAR);
-    });
-
-    it('detects PREACT via preact', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { preact: '^10.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.PREACT);
-    });
-
-    it('detects EMBER via ember-cli', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { 'ember-cli': '^5.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.EMBER);
-    });
-
-    it('detects QWIK via @builder.io/qwik', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { '@builder.io/qwik': '^1.4.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.QWIK);
-    });
-
-    it('detects SVELTE via svelte', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { svelte: '^4.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.SVELTE);
     });
 
     it('detects REACT_NATIVE via react-native-scripts', async () => {
@@ -184,7 +86,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
@@ -195,7 +97,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
@@ -206,7 +108,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
@@ -217,19 +119,8 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
-    });
-
-    it('detects NUXT via nuxt', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
-        dependencies: { nuxt: '^3.0.0' },
-      };
-      const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
-      expect(result).toBe(ProjectType.NUXT);
     });
 
     it('detects REACT via peerDependencies', async () => {
@@ -239,7 +130,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
     });
 
@@ -250,7 +141,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
     });
 
@@ -262,7 +153,7 @@ describe('ProjectTypeService', () => {
       const service = new ProjectTypeService(pm);
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
-      const result = await service.autoDetectProjectType({ html: false } as CommandOptions);
+      const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
@@ -274,9 +165,9 @@ describe('ProjectTypeService', () => {
       // @ts-expect-error private method spy
       vi.spyOn(service, 'isNxProject').mockReturnValue(false);
 
-      await expect(
-        service.autoDetectProjectType({ html: false } as CommandOptions)
-      ).rejects.toThrowError('Storybook failed to detect your project type');
+      await expect(service.autoDetectProjectType()).rejects.toThrowError(
+        'Storybook failed to detect your project type'
+      );
     });
   });
 

@@ -62,7 +62,7 @@ describe('GeneratorRegistry', () => {
     });
 
     it('should return undefined for unregistered project type', () => {
-      expect(registry.get(ProjectType.VUE3)).toBeUndefined();
+      expect(registry.get(ProjectType.UNSUPPORTED)).toBeUndefined();
     });
   });
 });

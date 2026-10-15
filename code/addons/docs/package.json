@@ -48,10 +48,6 @@
       "code": "./src/manager.tsx",
       "default": "./dist/manager.js"
     },
-    "./mdx-loader": {
-      "code": "./src/mdx-loader.ts",
-      "default": "./dist/mdx-loader.js"
-    },
     "./mdx-react-shim": {
       "code": "./src/mdx-react-shim.ts",
       "types": "./dist/mdx-react-shim.d.ts",
@@ -80,8 +76,7 @@
     "@storybook/icons": "^2.0.2",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "ts-dedent": "^2.0.0",
-    "unplugin": "^2.3.5"
+    "ts-dedent": "^2.0.0"
   },
   "devDependencies": {
     "@mdx-js/mdx": "^3.0.0",

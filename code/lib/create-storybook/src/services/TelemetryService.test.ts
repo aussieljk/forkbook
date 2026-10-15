@@ -26,15 +26,6 @@ describe('TelemetryService', () => {
       telemetryService = new TelemetryService();
     });
 
-    it('should track new user check', async () => {
-      await telemetryService.trackNewUserCheck(true);
-
-      expect(telemetry).toHaveBeenCalledWith('init-step', {
-        step: 'new-user-check',
-        newUser: true,
-      });
-    });
-
     it('should track install type', async () => {
       await telemetryService.trackInstallType('recommended');
 
@@ -66,12 +57,10 @@ describe('TelemetryService', () => {
           dev: true,
           docs: true,
           test: false,
-          onboarding: true,
           ai: false,
         },
-        newUser: true,
         versionSpecifier: '8.0.0',
-        cliIntegration: 'sv create',
+        cliIntegration: 'vike',
       };
 
       await telemetryService.trackInit(data);
@@ -111,11 +100,11 @@ describe('TelemetryService', () => {
     });
 
     it('should track prompt cancellation', async () => {
-      await telemetryService.trackPromptCancel('new-user-check');
+      await telemetryService.trackPromptCancel('install-type');
 
       expect(telemetry).toHaveBeenCalledWith(
         'canceled',
-        { eventType: 'init', prompt: 'new-user-check' },
+        { eventType: 'init', prompt: 'install-type' },
         { stripMetadata: true, immediate: true }
       );
     });
@@ -133,7 +122,6 @@ describe('TelemetryService', () => {
       await telemetryService.trackInitWithContext(
         ProjectType.REACT,
         selectedFeatures,
-        true,
         '.rnstorybook'
       );
 
@@ -146,10 +134,8 @@ describe('TelemetryService', () => {
             dev: true,
             docs: true,
             test: true,
-            onboarding: false,
             ai: false,
           },
-          newUser: true,
           versionSpecifier: '8.0.5',
           cliIntegration: undefined,
         },
@@ -165,20 +151,18 @@ describe('TelemetryService', () => {
         throw new Error('Ancestry error');
       });
 
-      await telemetryService.trackInitWithContext(ProjectType.VUE3, selectedFeatures, false);
+      await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 
       expect(telemetry).toHaveBeenCalledWith(
         'init',
         {
-          projectType: ProjectType.VUE3,
+          projectType: ProjectType.NEXTJS,
           features: {
             dev: true,
             docs: false,
             test: false,
-            onboarding: false,
             ai: false,
           },
-          newUser: false,
           versionSpecifier: undefined,
           cliIntegration: undefined,
         },
@@ -190,14 +174,16 @@ describe('TelemetryService', () => {
       const telemetryService = new TelemetryService();
       const selectedFeatures = new Set([]);
 
-      vi.mocked(getProcessAncestry).mockReturnValue([{ command: 'sv create my-app' }] as any);
+      vi.mocked(getProcessAncestry).mockReturnValue([
+        { command: 'pnpm create vike@latest' },
+      ] as any);
 
-      await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures, false);
+      await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 
       expect(telemetry).toHaveBeenCalledWith(
         'init',
         expect.objectContaining({
-          cliIntegration: 'sv create',
+          cliIntegration: 'vike',
         }),
         { configDir: undefined }
       );
@@ -212,7 +198,7 @@ describe('TelemetryService', () => {
         const telemetryService = new TelemetryService();
         const selectedFeatures = new Set([Feature.AI]);
 
-        await telemetryService.trackInitWithContext(ProjectType.REACT, selectedFeatures, true);
+        await telemetryService.trackInitWithContext(ProjectType.REACT, selectedFeatures);
 
         expect(telemetry).toHaveBeenCalledWith(
           'init',

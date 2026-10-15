@@ -12,14 +12,6 @@ import { VersionService } from './VersionService.ts';
 export class TelemetryService {
   private versionService = new VersionService();
 
-  /** Track a new user check step */
-  async trackNewUserCheck(newUser: boolean): Promise<void> {
-    await telemetry('init-step', {
-      step: 'new-user-check',
-      newUser,
-    });
-  }
-
   /** Track install type selection */
   async trackInstallType(installType: 'recommended' | 'light'): Promise<void> {
     await telemetry('init-step', {
@@ -63,10 +55,8 @@ export class TelemetryService {
         dev: boolean;
         docs: boolean;
         test: boolean;
-        onboarding: boolean;
         ai: boolean;
       };
-      newUser: boolean;
       versionSpecifier?: string;
       cliIntegration?: string;
     },
@@ -88,7 +78,6 @@ export class TelemetryService {
   async trackInitWithContext(
     projectType: ProjectType,
     selectedFeatures: Set<Feature>,
-    newUser: boolean,
     configDir?: string
   ): Promise<void> {
     // Get telemetry info from process ancestry
@@ -108,7 +97,6 @@ export class TelemetryService {
       dev: true, // Always true during init
       docs: selectedFeatures.has(Feature.DOCS),
       test: selectedFeatures.has(Feature.TEST),
-      onboarding: selectedFeatures.has(Feature.ONBOARDING),
       ai: selectedFeatures.has(Feature.AI),
     };
 
@@ -116,7 +104,6 @@ export class TelemetryService {
       {
         projectType,
         features: telemetryFeatures,
-        newUser,
         versionSpecifier,
         cliIntegration,
       },

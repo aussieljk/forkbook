@@ -12,8 +12,6 @@ export type EventType =
   | 'dev'
   | 'build'
   | 'index'
-  | 'upgrade'
-  | 'multi-upgrade'
   | 'init'
   | 'init-step'
   | 'scaffolded-empty'
@@ -32,11 +30,7 @@ export type EventType =
   | 'testing-module-crash-report'
   | 'addon-test'
   | 'test-run'
-  | 'addon-onboarding'
-  | 'onboarding-survey'
   | 'mocking'
-  | 'automigrate'
-  | 'migrate'
   | 'preview-first-load'
   | 'review'
   | 'share'
@@ -93,8 +87,7 @@ export type StorybookMetadata = {
   hasStorybookEslint?: boolean;
   hasStaticDirs?: boolean;
   /**
-   * Whether the project customizes webpack — through `webpackFinal` in the Storybook config, or
-   * (for Next.js projects) through the `webpack` option of `next.config.*`.
+   * Whether a Next.js project customizes webpack through the `webpack` option of `next.config.*`.
    */
   hasCustomWebpack?: boolean;
   /** Whether the Storybook config defines `viteFinal`. */
@@ -172,10 +165,8 @@ export interface InitPayload {
     dev: boolean;
     docs: boolean;
     test: boolean;
-    onboarding: boolean;
     ai: boolean;
   };
-  newUser: boolean;
   versionSpecifier: string | undefined;
   cliIntegration: string | undefined;
 }

@@ -25,34 +25,11 @@ export class VersionService {
     return lt(currentVersion, latestVersion);
   }
 
-  /**
-   * Extract CLI integration from process ancestry Detects if Storybook was invoked via sv create,
-   * sv add, create-rsbuild, or @tanstack/start commands
-   */
+  /** Extract CLI integration from process ancestry. Detects if Storybook was invoked via vike. */
   getCliIntegrationFromAncestry(
     ancestry: ReturnType<typeof getProcessAncestry>
   ): string | undefined {
-    for (const ancestor of ancestry.toReversed()) {
-      // Check for sv create/add
-      const svMatch = ancestor.command?.match(/(?:^|\s)(sv(?:@[^ ]+)? (?:create|add))/i);
-      if (svMatch) {
-        return svMatch[1].toLowerCase().includes('add') ? 'sv add' : 'sv create';
-      }
-      // Check for create-rsbuild or create rsbuild
-      const rsbuildMatch = ancestor.command?.match(/(?:^|\s)create[\s\-]rsbuild/i);
-      if (rsbuildMatch) {
-        return 'create-rsbuild';
-      }
-      // Check for @tanstack/start
-      if (ancestor.command?.includes('@tanstack/start')) {
-        return '@tanstack/start';
-      }
-      // Check for vike
-      if (ancestor.command?.includes('vike')) {
-        return 'vike';
-      }
-    }
-    return undefined;
+    return ancestry.some((ancestor) => ancestor.command?.includes('vike')) ? 'vike' : undefined;
   }
 
   /** Get version info including current, latest, and prerelease status */

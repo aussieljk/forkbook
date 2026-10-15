@@ -92,7 +92,7 @@ export function getStorybookStoryInstructionsDescription({
 - How to handle test failures${a11yAvailable ? ' and accessibility violations' : ''}`
     : '';
 
-  return `Get comprehensive instructions for writing, testing, and fixing Storybook stories (.stories.tsx, .stories.ts, .stories.jsx, .stories.js, .stories.svelte, .stories.vue files).
+  return `Get comprehensive instructions for writing, testing, and fixing Storybook stories (.stories.tsx, .stories.ts, .stories.jsx, .stories.js files).
 
 CRITICAL: You MUST call this tool before:
 - Creating new Storybook stories or story files

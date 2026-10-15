@@ -33,10 +33,6 @@ describe('event-cache', () => {
     body: createTelemetryEvent('init', 'init'),
     timestamp: 1,
   };
-  const upgrade: CacheEntry = {
-    body: createTelemetryEvent('upgrade', 'upgrade'),
-    timestamp: 2,
-  };
   const dev: CacheEntry = {
     body: createTelemetryEvent('dev', 'dev'),
     timestamp: 3,
@@ -124,30 +120,6 @@ describe('event-cache', () => {
         }
       `);
     });
-
-    it('upgrade', async () => {
-      const preceding = await getPrecedingUpgrade({ upgrade });
-      expect(preceding).toMatchInlineSnapshot(`
-        {
-          "timestamp": 2,
-          "eventType": "upgrade",
-          "eventId": "upgrade",
-          "sessionId": "test-session"
-        }
-      `);
-    });
-
-    it('both init and upgrade', async () => {
-      const preceding = await getPrecedingUpgrade({ init, upgrade });
-      expect(preceding).toMatchInlineSnapshot(`
-        {
-          "timestamp": 2,
-          "eventType": "upgrade",
-          "eventId": "upgrade",
-          "sessionId": "test-session"
-        }
-      `);
-    });
   });
 
   describe('intervening dev events', () => {
@@ -161,43 +133,17 @@ describe('event-cache', () => {
       expect(preceding).toBeUndefined();
     });
 
-    it('upgrade', async () => {
-      const preceding = await getPrecedingUpgrade({ upgrade, dev });
-      expect(preceding).toBeUndefined();
-    });
-
-    it('init followed by upgrade', async () => {
-      const preceding = await getPrecedingUpgrade({ init, upgrade, dev });
-      expect(preceding).toBeUndefined();
-    });
-
-    it('both init and upgrade with intervening dev', async () => {
-      const secondUpgrade: CacheEntry = {
-        body: createTelemetryEvent('upgrade', 'secondUpgrade'),
-        timestamp: 4,
-      };
-      const preceding = await getPrecedingUpgrade({ init, dev, upgrade: secondUpgrade });
-      expect(preceding).toMatchInlineSnapshot(`
-        {
-          "timestamp": 4,
-          "eventType": "upgrade",
-          "eventId": "secondUpgrade",
-          "sessionId": "test-session"
-        }
-      `);
-    });
-
-    it('both init and upgrade with non-intervening dev', async () => {
+    it('init after dev', async () => {
       const earlyDev: CacheEntry = {
         body: createTelemetryEvent('dev', 'earlyDev'),
         timestamp: -1,
       };
-      const preceding = await getPrecedingUpgrade({ dev: earlyDev, init, upgrade });
+      const preceding = await getPrecedingUpgrade({ dev: earlyDev, init });
       expect(preceding).toMatchInlineSnapshot(`
         {
-          "timestamp": 2,
-          "eventType": "upgrade",
-          "eventId": "upgrade",
+          "timestamp": 1,
+          "eventType": "init",
+          "eventId": "init",
           "sessionId": "test-session"
         }
       `);
@@ -206,22 +152,22 @@ describe('event-cache', () => {
 
   describe('intervening other events', () => {
     it('build', async () => {
-      const preceding = await getPrecedingUpgrade({ upgrade, build });
+      const preceding = await getPrecedingUpgrade({ init, build });
       expect(preceding).toBeUndefined();
     });
 
     it('error', async () => {
-      const preceding = await getPrecedingUpgrade({ upgrade, error });
+      const preceding = await getPrecedingUpgrade({ init, error });
       expect(preceding).toBeUndefined();
     });
 
     it('version-update', async () => {
-      const preceding = await getPrecedingUpgrade({ upgrade, 'version-update': versionUpdate });
+      const preceding = await getPrecedingUpgrade({ init, 'version-update': versionUpdate });
       expect(preceding).toMatchInlineSnapshot(`
         {
-          "timestamp": 2,
-          "eventType": "upgrade",
-          "eventId": "upgrade",
+          "timestamp": 1,
+          "eventType": "init",
+          "eventId": "init",
           "sessionId": "test-session"
         }
       `);
@@ -244,7 +190,7 @@ describe('event-cache', () => {
       };
       const updatedData = {
         init: { timestamp: 1, body: createTelemetryEvent('init', 'init-1') },
-        upgrade: { timestamp: 2, body: createTelemetryEvent('upgrade', 'upgrade-1') },
+        build: { timestamp: 2, body: createTelemetryEvent('build', 'build-1') },
       };
 
       // Mock cache.get to return initial data first, then updated data
@@ -256,7 +202,7 @@ describe('event-cache', () => {
       cacheSetMock.mockResolvedValue(undefined);
 
       // Start a set operation (this will be queued and processed)
-      const setPromiseResult = set('upgrade', createTelemetryEvent('upgrade', 'upgrade-1'));
+      const setPromiseResult = set('build', createTelemetryEvent('build', 'build-1'));
 
       // Immediately call getLastEvents() - it should wait for set() to complete
       const getPromise = getLastEvents();
@@ -280,11 +226,11 @@ describe('event-cache', () => {
       };
       const afterSecond = {
         init: { timestamp: 1, body: createTelemetryEvent('init', 'init-1') },
-        upgrade: { timestamp: 2, body: createTelemetryEvent('upgrade', 'upgrade-1') },
+        build: { timestamp: 2, body: createTelemetryEvent('build', 'build-1') },
       };
       const afterThird = {
         init: { timestamp: 1, body: createTelemetryEvent('init', 'init-1') },
-        upgrade: { timestamp: 2, body: createTelemetryEvent('upgrade', 'upgrade-1') },
+        build: { timestamp: 2, body: createTelemetryEvent('build', 'build-1') },
         dev: { timestamp: 3, body: createTelemetryEvent('dev', 'dev-1') },
       };
 
@@ -300,7 +246,7 @@ describe('event-cache', () => {
 
       // Queue multiple set operations
       const set1 = set('init', createTelemetryEvent('init', 'init-1'));
-      const set2 = set('upgrade', createTelemetryEvent('upgrade', 'upgrade-1'));
+      const set2 = set('build', createTelemetryEvent('build', 'build-1'));
       const set3 = set('dev', createTelemetryEvent('dev', 'dev-1'));
 
       // Wait for all operations to complete
@@ -329,7 +275,7 @@ describe('event-cache', () => {
       cacheSetMock.mockRejectedValueOnce(new Error('Cache write failed'));
 
       // Queue an operation that will fail
-      const failedOperation = set('upgrade', createTelemetryEvent('upgrade', 'upgrade-1'));
+      const failedOperation = set('build', createTelemetryEvent('build', 'build-1'));
       await expect(failedOperation).rejects.toThrow('Cache write failed');
 
       // Wait a bit to ensure queue processing completes

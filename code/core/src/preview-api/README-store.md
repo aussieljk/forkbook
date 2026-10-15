@@ -45,7 +45,7 @@ Some notable parameters:
 
 Args are "inputs" to stories.
 
-You can think of them equivalently to React props, Angular inputs and outputs, etc.
+You can think of them equivalently to React props.
 
 Changing the args cause the story to be re-rendered with the new set of args.
 

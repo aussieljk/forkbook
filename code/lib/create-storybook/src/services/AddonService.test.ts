@@ -28,20 +28,14 @@ describe('AddonService', () => {
       expect(addons).toEqual([]);
     });
 
-    it('should add chromatic and vitest addons for test feature', () => {
+    it('should add vitest addon for test feature', () => {
       const addons = manager.getAddonsForFeatures(new Set([Feature.TEST]));
-      expect(addons).toContain('@chromatic-com/storybook');
-      expect(addons).toContain('@storybook/addon-vitest');
+      expect(addons).toEqual(['@storybook/addon-vitest']);
     });
 
     it('should add docs addon for docs feature', () => {
       const addons = manager.getAddonsForFeatures(new Set([Feature.DOCS]));
       expect(addons).toContain('@storybook/addon-docs');
-    });
-
-    it('should add onboarding addon for onboarding feature', () => {
-      const addons = manager.getAddonsForFeatures(new Set([Feature.ONBOARDING]));
-      expect(addons).toContain('@storybook/addon-onboarding');
     });
 
     it('should add a11y addon for a11y feature', () => {
@@ -51,12 +45,10 @@ describe('AddonService', () => {
 
     it('should add all addons for all features', () => {
       const addons = manager.getAddonsForFeatures(
-        new Set([Feature.DOCS, Feature.TEST, Feature.ONBOARDING, Feature.A11Y])
+        new Set([Feature.DOCS, Feature.TEST, Feature.A11Y])
       );
       expect(addons).toContain('@storybook/addon-docs');
-      expect(addons).toContain('@chromatic-com/storybook');
       expect(addons).toContain('@storybook/addon-vitest');
-      expect(addons).toContain('@storybook/addon-onboarding');
       expect(addons).toContain('@storybook/addon-a11y');
     });
   });
@@ -79,29 +71,26 @@ describe('AddonService', () => {
 
   describe('configureAddons', () => {
     it('should strip versions from addons in main config', () => {
-      const config = manager.configureAddons(
-        new Set([Feature.DOCS]),
-        ['@storybook/addon-links@8.0.0']
-      );
+      const config = manager.configureAddons(new Set([Feature.DOCS]), [
+        '@storybook/addon-links@8.0.0',
+      ]);
 
       expect(config.addonsForMain).toContain('@storybook/addon-links');
       expect(config.addonsForMain).not.toContain('@storybook/addon-links@8.0.0');
     });
 
     it('should keep versions in addon packages', () => {
-      const config = manager.configureAddons(
-        new Set([Feature.TEST]),
-        ['@storybook/addon-links@8.0.0']
-      );
+      const config = manager.configureAddons(new Set([Feature.TEST]), [
+        '@storybook/addon-links@8.0.0',
+      ]);
 
       expect(config.addonPackages).toContain('@storybook/addon-links@8.0.0');
     });
 
     it('should handle all features together', () => {
-      const config = manager.configureAddons(
-        new Set([Feature.DOCS, Feature.TEST, Feature.ONBOARDING, Feature.A11Y]),
-        ['@storybook/addon-links']
-      );
+      const config = manager.configureAddons(new Set([Feature.DOCS, Feature.TEST, Feature.A11Y]), [
+        '@storybook/addon-links',
+      ]);
 
       expect(config.addonsForMain).toHaveLength(1);
       expect(config.addonPackages).toHaveLength(1);

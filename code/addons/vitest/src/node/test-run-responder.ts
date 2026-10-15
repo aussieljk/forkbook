@@ -183,9 +183,9 @@ export const wireTestRunResponder = async ({
   }
   // The runner boots vitest, which only exists for Vite-built projects — the same condition
   // behind the dev server's server-channel early return. The listener still answers (with an
-  // error) so a request against a Webpack project fails immediately instead of waiting out the
-  // requester's timeout: the tool is offered wherever the addon is enabled, so it must never be
-  // offered-but-silent.
+  // error) so a request against a project without the Vite builder fails immediately instead of
+  // waiting out the requester's timeout: the tool is offered wherever the addon is enabled, so it
+  // must never be offered-but-silent.
   const viteBuilder = !!resolvePreviewBuilderName(await options.presets.apply('core'))?.includes(
     'vite'
   );
@@ -206,8 +206,7 @@ export const wireTestRunResponder = async ({
       sendResponse({
         status: 'error',
         error: {
-          message:
-            'Story tests require a Vite-based Storybook builder; this project uses a Webpack-based builder.',
+          message: 'Story tests require a Vite-based Storybook builder.',
         },
       });
       return;

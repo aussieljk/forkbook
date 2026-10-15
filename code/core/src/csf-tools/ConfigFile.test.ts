@@ -176,7 +176,7 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            export const foo = { builder: 'webpack5' }
+            export const foo = { builder: 'vite' }
             `
           )
         ).toBeUndefined();
@@ -186,7 +186,7 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            export const core = { foo: 'webpack5' }
+            export const core = { foo: 'vite' }
             `
           )
         ).toBeUndefined();
@@ -196,52 +196,52 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            export const core = { builder: 'webpack5' }
+            export const core = { builder: 'vite' }
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('found object', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            export const core = { builder: { name: 'webpack5' } }
+            export const core = { builder: { name: 'vite' } }
             `
           )
-        ).toEqual({ name: 'webpack5' });
+        ).toEqual({ name: 'vite' });
       });
       it('variable ref export', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const coreVar = { builder: 'webpack5' };
+            const coreVar = { builder: 'vite' };
             export const core = coreVar;
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable export', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const coreVar = { builder: 'webpack5' };
+            const coreVar = { builder: 'vite' };
             export const core = coreVar;
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('resolves values through various TS satisfies/as syntaxes', () => {
         const syntaxes = [
-          'const coreVar = { builder: "webpack5" } as const; export const core = coreVar satisfies any;',
-          'const coreVar = { builder: "webpack5" } as const; export const core = coreVar as any;',
-          'const coreVar = { builder: "webpack5" } as const satisfies Record<string, unknown>; export { coreVar as core };',
+          'const coreVar = { builder: "vite" } as const; export const core = coreVar satisfies any;',
+          'const coreVar = { builder: "vite" } as const; export const core = coreVar as any;',
+          'const coreVar = { builder: "vite" } as const satisfies Record<string, unknown>; export { coreVar as core };',
         ];
 
         for (const source of syntaxes) {
-          expect(getField(['core', 'builder'], source)).toEqual('webpack5');
+          expect(getField(['core', 'builder'], source)).toEqual('vite');
         }
       });
     });
@@ -252,7 +252,7 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            module.exports = { foo: { builder: 'webpack5' } }
+            module.exports = { foo: { builder: 'vite' } }
             `
           )
         ).toBeUndefined();
@@ -262,39 +262,39 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            module.exports = { core: { builder: 'webpack5' } }
+            module.exports = { core: { builder: 'vite' } }
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable ref export', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const core = { builder: 'webpack5' };
+            const core = { builder: 'vite' };
             module.exports = { core };
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable rename', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const coreVar = { builder: 'webpack5' };
+            const coreVar = { builder: 'vite' };
             module.exports = { core: coreVar };
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable exports', () => {
         expect(
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
 
               const config: StorybookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
@@ -312,7 +312,7 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            export default { foo: { builder: 'webpack5' } }
+            export default { foo: { builder: 'vite' } }
             `
           )
         ).toBeUndefined();
@@ -322,39 +322,39 @@ describe('ConfigFile', () => {
           getField(
             ['core', 'builder'],
             dedent`
-            export default { core: { builder: 'webpack5' } }
+            export default { core: { builder: 'vite' } }
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable ref export', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const core = { builder: 'webpack5' };
+            const core = { builder: 'vite' };
             export default { core };
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable rename', () => {
         expect(
           getField(
             ['core', 'builder'],
             dedent`
-            const coreVar = { builder: 'webpack5' };
+            const coreVar = { builder: 'vite' };
             export default { core: coreVar };
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('variable exports', () => {
         expect(
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
 
               const config: StorybookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
@@ -407,10 +407,10 @@ describe('ConfigFile', () => {
             ['core', 'builder'],
             dedent`
             import { definePreview } from '@storybook/react-vite';
-            export const foo = definePreview({ core: { builder: 'webpack5' } });
+            export const foo = definePreview({ core: { builder: 'vite' } });
             `
           )
-        ).toEqual('webpack5');
+        ).toEqual('vite');
       });
       it('tags', () => {
         expect(
@@ -453,7 +453,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               export const addons = [];
             `
@@ -462,7 +462,7 @@ describe('ConfigFile', () => {
           export const addons = [];
 
           export const core = {
-            builder: "webpack5"
+            builder: "vite"
           };
         `);
       });
@@ -470,7 +470,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               export const core = { foo: 'bar' };
             `
@@ -478,7 +478,7 @@ describe('ConfigFile', () => {
         ).toMatchInlineSnapshot(`
           export const core = {
             foo: 'bar',
-            builder: 'webpack5'
+            builder: 'vite'
           };
         `);
       });
@@ -486,12 +486,12 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
-              export const core = { builder: 'webpack4' };
+              export const core = { builder: 'old-builder' };
             `
           )
-        ).toMatchInlineSnapshot(`export const core = { builder: 'webpack5' };`);
+        ).toMatchInlineSnapshot(`export const core = { builder: 'vite' };`);
       });
       it('found top-level scalar', () => {
         expect(
@@ -508,14 +508,14 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            { name: 'webpack5' },
+            { name: 'vite' },
             dedent`
-              export const core = { builder: { name: 'webpack4' } };
+              export const core = { builder: { name: 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`
           export const core = { builder: {
-            name: 'webpack5'
+            name: 'vite'
           } };
         `);
       });
@@ -523,14 +523,14 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
-            const coreVar = { builder: 'webpack4' };
+            const coreVar = { builder: 'old-builder' };
             export const core = coreVar;
             `
           )
         ).toMatchInlineSnapshot(`
-          const coreVar = { builder: 'webpack5' };
+          const coreVar = { builder: 'vite' };
           export const core = coreVar;
         `);
       });
@@ -541,7 +541,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               module.exports = { addons: [] };
             `
@@ -551,7 +551,7 @@ describe('ConfigFile', () => {
             addons: [],
 
             core: {
-              builder: "webpack5"
+              builder: "vite"
             }
           };
         `);
@@ -560,7 +560,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               module.exports = { core: { foo: 'bar' }};
             `
@@ -568,7 +568,7 @@ describe('ConfigFile', () => {
         ).toMatchInlineSnapshot(`
           module.exports = { core: {
             foo: 'bar',
-            builder: 'webpack5'
+            builder: 'vite'
           }};
         `);
       });
@@ -576,12 +576,12 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
-              module.exports = { core: { builder: 'webpack4' } };
+              module.exports = { core: { builder: 'old-builder' } };
             `
           )
-        ).toMatchInlineSnapshot(`module.exports = { core: { builder: 'webpack5' } };`);
+        ).toMatchInlineSnapshot(`module.exports = { core: { builder: 'vite' } };`);
       });
     });
 
@@ -590,7 +590,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               export default { addons: [] };
             `
@@ -600,7 +600,7 @@ describe('ConfigFile', () => {
             addons: [],
 
             core: {
-              builder: "webpack5"
+              builder: "vite"
             }
           };
         `);
@@ -609,7 +609,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               export default { core: { foo: 'bar' }};
             `
@@ -617,7 +617,7 @@ describe('ConfigFile', () => {
         ).toMatchInlineSnapshot(`
           export default { core: {
             foo: 'bar',
-            builder: 'webpack5'
+            builder: 'vite'
           }};
         `);
       });
@@ -625,12 +625,12 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
-              export default { core: { builder: 'webpack4' } };
+              export default { core: { builder: 'old-builder' } };
             `
           )
-        ).toMatchInlineSnapshot(`export default { core: { builder: 'webpack5' } };`);
+        ).toMatchInlineSnapshot(`export default { core: { builder: 'vite' } };`);
       });
     });
 
@@ -669,14 +669,14 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
-              const core = { builder: 'webpack4' };
+              const core = { builder: 'old-builder' };
               export { core };
             `
           )
         ).toMatchInlineSnapshot(`
-          const core = { builder: 'webpack5' };
+          const core = { builder: 'vite' };
           export { core };
         `);
       });
@@ -736,7 +736,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               import { definePreview } from '@storybook/react-vite';
               export const foo = definePreview({
@@ -750,7 +750,7 @@ describe('ConfigFile', () => {
             addons: [],
 
             core: {
-              builder: 'webpack5'
+              builder: 'vite'
             }
           });
         `);
@@ -759,7 +759,7 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               import { definePreview } from '@storybook/react-vite';
               export const foo = definePreview({
@@ -772,7 +772,7 @@ describe('ConfigFile', () => {
           export const foo = definePreview({
             core: {
               foo: 'bar',
-              builder: 'webpack5'
+              builder: 'vite'
             },
           });
         `);
@@ -781,18 +781,18 @@ describe('ConfigFile', () => {
         expect(
           setField(
             ['core', 'builder'],
-            'webpack5',
+            'vite',
             dedent`
               import { definePreview } from '@storybook/react-vite';
               export const foo = definePreview({
-                core: { builder: 'webpack4' },
+                core: { builder: 'old-builder' },
               });
             `
           )
         ).toMatchInlineSnapshot(`
           import { definePreview } from '@storybook/react-vite';
           export const foo = definePreview({
-            core: { builder: 'webpack5' },
+            core: { builder: 'vite' },
           });
         `);
       });
@@ -806,12 +806,12 @@ describe('ConfigFile', () => {
           ['addons'],
           'docs',
           dedent`
-              export default { core: { builder: 'webpack5' } };
+              export default { core: { builder: 'vite' } };
             `
         )
       ).toMatchInlineSnapshot(`
         export default {
-          core: { builder: 'webpack5' },
+          core: { builder: 'vite' },
           addons: ['docs']
         };
       `);
@@ -883,7 +883,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              export const core = { builder: 'webpack4' };
+              export const core = { builder: 'old-builder' };
             `
           )
         ).toMatchInlineSnapshot(`export const core = {};`);
@@ -893,7 +893,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              export const core = { builder: { name: 'webpack4' } };
+              export const core = { builder: { name: 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`export const core = {};`);
@@ -903,7 +903,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder', 'name'],
             dedent`
-              export const core = { builder: { name: 'webpack4' } };
+              export const core = { builder: { name: 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`export const core = { builder: {} };`);
@@ -913,7 +913,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              export const core = { 'builder': 'webpack4' };
+              export const core = { 'builder': 'old-builder' };
             `
           )
         ).toMatchInlineSnapshot(`export const core = {};`);
@@ -923,7 +923,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-            const coreVar = { builder: 'webpack4' };
+            const coreVar = { builder: 'old-builder' };
             export const core = coreVar;
             `
           )
@@ -937,7 +937,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core'],
             dedent`
-              export const core = { builder: { name: 'webpack4' } };
+              export const core = { builder: { name: 'old-builder' } };
 
               export const addons = [];
             `
@@ -972,7 +972,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              module.exports = { core: { builder: 'webpack4' } };
+              module.exports = { core: { builder: 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`module.exports = { core: {} };`);
@@ -982,7 +982,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder', 'name'],
             dedent`
-              module.exports = { core: { builder: { name: 'webpack4' } } };
+              module.exports = { core: { builder: { name: 'old-builder' } } };
             `
           )
         ).toMatchInlineSnapshot(`module.exports = { core: { builder: {} } };`);
@@ -992,7 +992,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              module.exports = { 'core': { 'builder': 'webpack4' } };
+              module.exports = { 'core': { 'builder': 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`module.exports = { 'core': {} };`);
@@ -1002,7 +1002,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core'],
             dedent`
-              module.exports = { core: { builder: { name: 'webpack4' } }, addons: [] };
+              module.exports = { core: { builder: { name: 'old-builder' } }, addons: [] };
             `
           )
         ).toMatchInlineSnapshot(`
@@ -1039,7 +1039,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              export default { core: { builder: 'webpack4' } };
+              export default { core: { builder: 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`export default { core: {} };`);
@@ -1049,7 +1049,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder', 'name'],
             dedent`
-              export default { core: { builder: { name: 'webpack4' } } };
+              export default { core: { builder: { name: 'old-builder' } } };
             `
           )
         ).toMatchInlineSnapshot(`export default { core: { builder: {} } };`);
@@ -1059,7 +1059,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core', 'builder'],
             dedent`
-              export default { 'core': { 'builder': 'webpack4' } };
+              export default { 'core': { 'builder': 'old-builder' } };
             `
           )
         ).toMatchInlineSnapshot(`export default { 'core': {} };`);
@@ -1069,7 +1069,7 @@ describe('ConfigFile', () => {
           removeField(
             ['core'],
             dedent`
-              export default { core: { builder: { name: 'webpack4' } }, addons: [] };
+              export default { core: { builder: { name: 'old-builder' } }, addons: [] };
             `
           )
         ).toMatchInlineSnapshot(`
@@ -1203,7 +1203,7 @@ describe('ConfigFile', () => {
     describe('getNameFromPath', () => {
       it(`supports string literal node`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = {
             framework: 'foo',
@@ -1217,7 +1217,7 @@ describe('ConfigFile', () => {
       describe('satisfies', () => {
         it(`supports string literal node`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@storybook/react-webpack5';
+            import type { StorybookConfig } from '@storybook/react-vite';
   
             const config = {
               framework: 'foo',
@@ -1230,7 +1230,7 @@ describe('ConfigFile', () => {
 
         it(`supports string literal node without variables`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@storybook/react-webpack5';
+            import type { StorybookConfig } from '@storybook/react-vite';
   
             export default {
               framework: 'foo',
@@ -1242,7 +1242,7 @@ describe('ConfigFile', () => {
 
         it(`supports object expression node with name property`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@storybook/react-webpack5';
+            import type { StorybookConfig } from '@storybook/react-vite';
   
             const config = {
               framework: { name: 'foo', options: { bar: require('baz') } },
@@ -1258,7 +1258,7 @@ describe('ConfigFile', () => {
 
       it(`supports object expression node with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = {
             framework: { name: 'foo', options: { bar: require('baz') } },
@@ -1273,7 +1273,7 @@ describe('ConfigFile', () => {
 
       it(`supports wrapped names`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = {
             framework: getAbsolutePath('foo'),
@@ -1286,7 +1286,7 @@ describe('ConfigFile', () => {
 
       it(`returns undefined when accessing a field that does not exist`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = { }
           export default config;
@@ -1297,7 +1297,7 @@ describe('ConfigFile', () => {
 
       it(`throws an error when node is of unexpected type`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = {
             framework: makesNoSense(),
@@ -1314,7 +1314,7 @@ describe('ConfigFile', () => {
     describe('getNamesFromPath', () => {
       it(`supports an array with string literal and object expression with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
 
           const config: StorybookConfig = {
             addons: [
@@ -1337,7 +1337,7 @@ describe('ConfigFile', () => {
         describe('default export', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
     
               const config = {
                 addons: [
@@ -1358,7 +1358,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
     
               export default {
                 addons: [
@@ -1380,7 +1380,7 @@ describe('ConfigFile', () => {
         describe('module exports', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
     
               const config = {
                 addons: [
@@ -1401,7 +1401,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@storybook/react-webpack5';
+              import type { StorybookConfig } from '@storybook/react-vite';
     
               module.exports = {
                 addons: [
@@ -1424,7 +1424,7 @@ describe('ConfigFile', () => {
 
     it(`returns undefined when accessing a field that does not exist`, () => {
       const source = dedent`
-        import type { StorybookConfig } from '@storybook/react-webpack5';
+        import type { StorybookConfig } from '@storybook/react-vite';
 
         const config: StorybookConfig = { }
         export default config;
@@ -2113,7 +2113,7 @@ describe('ConfigFile', () => {
   describe('parse', () => {
     it("export { X } with X is import { X } from 'another-file'", () => {
       const source = dedent`
-          import type { StorybookConfig } from '@storybook/react-webpack5';
+          import type { StorybookConfig } from '@storybook/react-vite';
           import { path } from 'path';
 
           export { path };
