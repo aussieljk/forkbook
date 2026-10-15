@@ -26,7 +26,7 @@ While you work, use `verify --changed` or one test file. Run the full `bun run v
 
 ## Rules for agents
 
-- `master` is the only branch. Merge each agent branch with `bun run merge-agent <branch>`. Do not push.
+- `master` is the only branch. Merge each agent branch with `bun run merge-agent <branch>`. Agents in worktrees do not push. The main session pushes master to GitHub after verify passes.
 - A command that can take more than 2 minutes (full test run, full build) must run in the background. Wait for its completion notice. Do not let it reach the 10 minute tool limit.
 - Plan parallel agents by folder. Two agents must not change the same files. A large change gets a set-up step first (for example the theme), then agents in parallel on separate folders (`code/core/src/components`, `code/core/src/manager`, `code/core/src/addon-*`).
 - Each agent works in its own worktree and runs `bun install` first.
