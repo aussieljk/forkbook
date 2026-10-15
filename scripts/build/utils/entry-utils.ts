@@ -45,7 +45,7 @@ export type BuildEntries = {
   /**
    * The map of extra outputs to be added to the package.json's exports
    *
-   * This can be useful to expose non-compiled/non-js files such as Svelte components,
+   * This can be useful to expose non-compiled/non-js files, such as HTML templates.
    */
   extraOutputs?: Record<string, any>;
   /**

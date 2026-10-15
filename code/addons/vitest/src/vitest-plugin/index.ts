@@ -464,9 +464,6 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
         },
 
         define: {
-          ...(frameworkName?.includes('vue3')
-            ? { __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false' }
-            : {}),
           FEATURES: JSON.stringify(features),
         },
       };

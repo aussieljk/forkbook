@@ -941,9 +941,9 @@ export interface CoreCommon_StorybookInfo {
  * @example
  *
  * ```ts
- * type Framework = CompatibleString<'@storybook/nextjs'>;
- * const framework: Framework = '@storybook/nextjs'; // valid and will be autocompleted const framework: Framework =
- * path.dirname(require.resolve(path.join('@storybook/nextjs', 'package.json'))); // valid
+ * type Framework = CompatibleString<'@storybook/nextjs-vite'>;
+ * const framework: Framework = '@storybook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
+ * path.dirname(require.resolve(path.join('@storybook/nextjs-vite', 'package.json'))); // valid
  * ```
  */
 export type CompatibleString<T extends string> = T | (string & {});

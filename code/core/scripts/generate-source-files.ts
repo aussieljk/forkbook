@@ -16,7 +16,7 @@ const CORE_ROOT_DIR = join(CODE_DIR, 'core');
 
 // read code/frameworks subfolders and generate a list of available frameworks
 // save this list into ./code/core/src/types/frameworks.ts and export it as a union type.
-// The name of the type is `SupportedFrameworks`. Add additionally 'qwik' and `solid` to that list.
+// The name of the type is `SupportedFrameworks`.
 export const generateSourceFiles = async () => {
   // generateExportsFile scans core source (including the two files written
   // below) with rolldown; run the writers first so the scan never observes

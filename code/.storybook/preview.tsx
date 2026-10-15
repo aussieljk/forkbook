@@ -47,7 +47,7 @@ import '../core/src/shared/open-service/sync-test/preview.ts';
 
 const { document } = global;
 
-// The internal Storybook's manager stories (sidebar context menu, onboarding guide, …) demonstrate
+// The internal Storybook's manager stories (sidebar context menu, …) demonstrate
 // DEVELOPMENT-only UI, so they must render as if in development even though this Storybook is itself
 // built and served statically (`yarn storybook:ui`, Chromatic, Vitest portable stories). In Vitest the
 // preview builder never injects CONFIG_TYPE (it is undefined); in Chromatic it is injected as PRODUCTION.
