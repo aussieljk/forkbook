@@ -35,7 +35,10 @@
     },
     "./input/iframe.html": "./input/iframe.html",
     "./package.json": "./package.json",
-    "./preset": "./dist/preset.js"
+    "./preset": {
+      "code": "./src/preset.ts",
+      "default": "./dist/preset.js"
+    }
   },
   "files": [
     "dist/**/*",

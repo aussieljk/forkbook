@@ -26,13 +26,31 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./entry-preview": "./dist/entry-preview.js",
-    "./entry-preview-argtypes": "./dist/entry-preview-argtypes.js",
-    "./entry-preview-docs": "./dist/entry-preview-docs.js",
-    "./entry-preview-rsc": "./dist/entry-preview-rsc.js",
-    "./internal/docgen-worker": "./dist/docgen/docgen-worker.js",
+    "./entry-preview": {
+      "code": "./src/entry-preview.tsx",
+      "default": "./dist/entry-preview.js"
+    },
+    "./entry-preview-argtypes": {
+      "code": "./src/entry-preview-argtypes.ts",
+      "default": "./dist/entry-preview-argtypes.js"
+    },
+    "./entry-preview-docs": {
+      "code": "./src/entry-preview-docs.ts",
+      "default": "./dist/entry-preview-docs.js"
+    },
+    "./entry-preview-rsc": {
+      "code": "./src/entry-preview-rsc.tsx",
+      "default": "./dist/entry-preview-rsc.js"
+    },
+    "./internal/docgen-worker": {
+      "code": "./src/docgen/docgen-worker.ts",
+      "default": "./dist/docgen/docgen-worker.js"
+    },
     "./package.json": "./package.json",
-    "./preset": "./dist/preset.js",
+    "./preset": {
+      "code": "./src/preset.ts",
+      "default": "./dist/preset.js"
+    },
     "./preview": {
       "code": "./src/preview.tsx",
       "types": "./dist/preview.d.ts",

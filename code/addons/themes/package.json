@@ -40,9 +40,15 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./manager": "./dist/manager.js",
+    "./manager": {
+      "code": "./src/manager.tsx",
+      "default": "./dist/manager.js"
+    },
     "./package.json": "./package.json",
-    "./postinstall": "./dist/postinstall.js",
+    "./postinstall": {
+      "code": "./src/postinstall.ts",
+      "default": "./dist/postinstall.js"
+    },
     "./preview": {
       "code": "./src/preview.ts",
       "types": "./dist/preview.d.ts",

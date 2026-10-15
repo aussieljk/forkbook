@@ -40,9 +40,15 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./manager": "./dist/manager.js",
+    "./manager": {
+      "code": "./src/manager.tsx",
+      "default": "./dist/manager.js"
+    },
     "./package.json": "./package.json",
-    "./preset": "./dist/preset.js",
+    "./preset": {
+      "code": "./src/preset.ts",
+      "default": "./dist/preset.js"
+    },
     "./preview": {
       "code": "./src/preview.tsx",
       "types": "./dist/preview.d.ts",

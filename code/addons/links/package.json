@@ -32,7 +32,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./manager": "./dist/manager.js",
+    "./manager": {
+      "code": "./src/manager.ts",
+      "default": "./dist/manager.js"
+    },
     "./package.json": "./package.json",
     "./preview": {
       "code": "./src/preview.ts",

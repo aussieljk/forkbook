@@ -25,7 +25,10 @@
   "author": "Storybook Team",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js",
+    ".": {
+      "code": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
     "./package.json": "./package.json"
   },
   "bin": "./dist/bin/index.js",

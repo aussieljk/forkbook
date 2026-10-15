@@ -33,32 +33,110 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./browser/mocks/cache": "./dist/plugins/next-mocks/alias/cache/index.js",
-    "./browser/mocks/draft-mode.compat": "./dist/plugins/next-mocks/compatibility/draft-mode.compat.js",
-    "./browser/mocks/dynamic": "./dist/plugins/next-mocks/alias/dynamic/index.js",
-    "./browser/mocks/headers": "./dist/plugins/next-mocks/alias/headers/index.js",
-    "./browser/mocks/image": "./dist/plugins/next-image/alias/next-image.js",
-    "./browser/mocks/image-context": "./dist/plugins/next-image/alias/image-context.js",
-    "./browser/mocks/image-default-loader": "./dist/plugins/next-image/alias/image-default-loader.js",
-    "./browser/mocks/legacy-image": "./dist/plugins/next-image/alias/next-legacy-image.js",
-    "./browser/mocks/link": "./dist/plugins/next-mocks/alias/link/index.js",
-    "./browser/mocks/navigation": "./dist/plugins/next-mocks/alias/navigation/index.js",
-    "./browser/mocks/router": "./dist/plugins/next-mocks/alias/router/index.js",
-    "./browser/mocks/safe-stable-stringify": "./dist/plugins/next-mocks/alias/safe-stable-stringify/index.js",
-    "./browser/mocks/server-only": "./dist/plugins/next-mocks/alias/rsc/server-only.js",
-    "./node/mocks/cache": "./dist/plugins/next-mocks/alias/cache/index.js",
-    "./node/mocks/draft-mode.compat": "./dist/plugins/next-mocks/compatibility/draft-mode.compat.js",
-    "./node/mocks/dynamic": "./dist/plugins/next-mocks/alias/dynamic/index.js",
-    "./node/mocks/headers": "./dist/plugins/next-mocks/alias/headers/index.js",
-    "./node/mocks/image": "./dist/plugins/next-image/alias/next-image.js",
-    "./node/mocks/image-context": "./dist/plugins/next-image/alias/image-context.js",
-    "./node/mocks/image-default-loader": "./dist/plugins/next-image/alias/image-default-loader.js",
-    "./node/mocks/legacy-image": "./dist/plugins/next-image/alias/next-legacy-image.js",
-    "./node/mocks/link": "./dist/plugins/next-mocks/alias/link/index.js",
-    "./node/mocks/navigation": "./dist/plugins/next-mocks/alias/navigation/index.js",
-    "./node/mocks/router": "./dist/plugins/next-mocks/alias/router/index.js",
-    "./node/mocks/safe-stable-stringify": "./dist/plugins/next-mocks/alias/safe-stable-stringify/index.js",
-    "./node/mocks/server-only": "./dist/plugins/next-mocks/alias/rsc/server-only.js",
+    "./browser/mocks/cache": {
+      "code": "./src/plugins/next-mocks/alias/cache/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/cache/index.js"
+    },
+    "./browser/mocks/draft-mode.compat": {
+      "code": "./src/plugins/next-mocks/compatibility/draft-mode.compat.ts",
+      "default": "./dist/plugins/next-mocks/compatibility/draft-mode.compat.js"
+    },
+    "./browser/mocks/dynamic": {
+      "code": "./src/plugins/next-mocks/alias/dynamic/index.tsx",
+      "default": "./dist/plugins/next-mocks/alias/dynamic/index.js"
+    },
+    "./browser/mocks/headers": {
+      "code": "./src/plugins/next-mocks/alias/headers/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/headers/index.js"
+    },
+    "./browser/mocks/image": {
+      "code": "./src/plugins/next-image/alias/next-image.tsx",
+      "default": "./dist/plugins/next-image/alias/next-image.js"
+    },
+    "./browser/mocks/image-context": {
+      "code": "./src/plugins/next-image/alias/image-context.tsx",
+      "default": "./dist/plugins/next-image/alias/image-context.js"
+    },
+    "./browser/mocks/image-default-loader": {
+      "code": "./src/plugins/next-image/alias/image-default-loader.tsx",
+      "default": "./dist/plugins/next-image/alias/image-default-loader.js"
+    },
+    "./browser/mocks/legacy-image": {
+      "code": "./src/plugins/next-image/alias/next-legacy-image.tsx",
+      "default": "./dist/plugins/next-image/alias/next-legacy-image.js"
+    },
+    "./browser/mocks/link": {
+      "code": "./src/plugins/next-mocks/alias/link/index.tsx",
+      "default": "./dist/plugins/next-mocks/alias/link/index.js"
+    },
+    "./browser/mocks/navigation": {
+      "code": "./src/plugins/next-mocks/alias/navigation/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/navigation/index.js"
+    },
+    "./browser/mocks/router": {
+      "code": "./src/plugins/next-mocks/alias/router/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/router/index.js"
+    },
+    "./browser/mocks/safe-stable-stringify": {
+      "code": "./src/plugins/next-mocks/alias/safe-stable-stringify/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/safe-stable-stringify/index.js"
+    },
+    "./browser/mocks/server-only": {
+      "code": "./src/plugins/next-mocks/alias/rsc/server-only.ts",
+      "default": "./dist/plugins/next-mocks/alias/rsc/server-only.js"
+    },
+    "./node/mocks/cache": {
+      "code": "./src/plugins/next-mocks/alias/cache/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/cache/index.js"
+    },
+    "./node/mocks/draft-mode.compat": {
+      "code": "./src/plugins/next-mocks/compatibility/draft-mode.compat.ts",
+      "default": "./dist/plugins/next-mocks/compatibility/draft-mode.compat.js"
+    },
+    "./node/mocks/dynamic": {
+      "code": "./src/plugins/next-mocks/alias/dynamic/index.tsx",
+      "default": "./dist/plugins/next-mocks/alias/dynamic/index.js"
+    },
+    "./node/mocks/headers": {
+      "code": "./src/plugins/next-mocks/alias/headers/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/headers/index.js"
+    },
+    "./node/mocks/image": {
+      "code": "./src/plugins/next-image/alias/next-image.tsx",
+      "default": "./dist/plugins/next-image/alias/next-image.js"
+    },
+    "./node/mocks/image-context": {
+      "code": "./src/plugins/next-image/alias/image-context.tsx",
+      "default": "./dist/plugins/next-image/alias/image-context.js"
+    },
+    "./node/mocks/image-default-loader": {
+      "code": "./src/plugins/next-image/alias/image-default-loader.tsx",
+      "default": "./dist/plugins/next-image/alias/image-default-loader.js"
+    },
+    "./node/mocks/legacy-image": {
+      "code": "./src/plugins/next-image/alias/next-legacy-image.tsx",
+      "default": "./dist/plugins/next-image/alias/next-legacy-image.js"
+    },
+    "./node/mocks/link": {
+      "code": "./src/plugins/next-mocks/alias/link/index.tsx",
+      "default": "./dist/plugins/next-mocks/alias/link/index.js"
+    },
+    "./node/mocks/navigation": {
+      "code": "./src/plugins/next-mocks/alias/navigation/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/navigation/index.js"
+    },
+    "./node/mocks/router": {
+      "code": "./src/plugins/next-mocks/alias/router/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/router/index.js"
+    },
+    "./node/mocks/safe-stable-stringify": {
+      "code": "./src/plugins/next-mocks/alias/safe-stable-stringify/index.ts",
+      "default": "./dist/plugins/next-mocks/alias/safe-stable-stringify/index.js"
+    },
+    "./node/mocks/server-only": {
+      "code": "./src/plugins/next-mocks/alias/rsc/server-only.ts",
+      "default": "./dist/plugins/next-mocks/alias/rsc/server-only.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [

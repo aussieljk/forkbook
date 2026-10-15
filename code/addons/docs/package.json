@@ -58,15 +58,24 @@
       "types": "./dist/ember/index.d.ts",
       "default": "./dist/ember/index.js"
     },
-    "./manager": "./dist/manager.js",
-    "./mdx-loader": "./dist/mdx-loader.js",
+    "./manager": {
+      "code": "./src/manager.tsx",
+      "default": "./dist/manager.js"
+    },
+    "./mdx-loader": {
+      "code": "./src/mdx-loader.ts",
+      "default": "./dist/mdx-loader.js"
+    },
     "./mdx-react-shim": {
       "code": "./src/mdx-react-shim.ts",
       "types": "./dist/mdx-react-shim.d.ts",
       "default": "./dist/mdx-react-shim.js"
     },
     "./package.json": "./package.json",
-    "./preset": "./dist/preset.js",
+    "./preset": {
+      "code": "./src/preset.ts",
+      "default": "./dist/preset.js"
+    },
     "./preview": {
       "code": "./src/preview.ts",
       "types": "./dist/preview.d.ts",

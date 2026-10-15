@@ -24,9 +24,15 @@
   "author": "Storybook Core Team",
   "type": "module",
   "exports": {
-    "./internal/preview-stories-app-script": "./dist/tools/preview-stories/preview-stories-app-script.js",
+    "./internal/preview-stories-app-script": {
+      "code": "./src/tools/preview-stories/preview-stories-app-script.ts",
+      "default": "./dist/tools/preview-stories/preview-stories-app-script.js"
+    },
     "./package.json": "./package.json",
-    "./preset": "./dist/preset.js"
+    "./preset": {
+      "code": "./src/preset.ts",
+      "default": "./dist/preset.js"
+    }
   },
   "files": [
     "dist/**/*",
