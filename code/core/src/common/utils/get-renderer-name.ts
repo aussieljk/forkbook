@@ -12,8 +12,7 @@ export async function getRendererName(options: Options) {
   const core = await options.presets.apply('core', {}, options);
 
   if (!core || !core.renderer) {
-    // At the moment some frameworks (Angular/Ember) do not define a renderer, but themselves
-    // serve the purpose (in particular exporting the symbols needed by entrypoints)
+    // A framework that does not define a renderer serves the purpose itself
     return getFrameworkName(options);
   }
 
@@ -27,7 +26,6 @@ export async function getRendererName(options: Options) {
  *
  * ```ts
  * extractRenderer('@storybook/react'); // => 'react'
- * extractRenderer('@storybook/angular'); // => 'angular'
  * extractRenderer('@third-party/framework'); // => null
  * ```
  *

@@ -300,7 +300,7 @@ function preparePartialAnnotations<TRenderer extends Renderer>(
 
 // the context is prepared before invoking the render function, instead of here directly
 // to ensure args don't loose there special properties set by the renderer
-// eg. reactive proxies set by frameworks like SolidJS or Vue
+// eg. reactive proxies set by a renderer
 export function prepareContext<
   TRenderer extends Renderer,
   TContext extends Pick<StoryContextForRender<TRenderer>, 'args' | 'argTypes' | 'globals'>,

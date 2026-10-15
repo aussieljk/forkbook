@@ -368,7 +368,6 @@ describe('stories.changed', () => {
         '.agent-eval/mcp/browser-mock.mjs',
         'packages/ui/src/Orphan.tsx',
         'packages/ui/src/theme.config.ts',
-        'packages/ui/src/Card.vue',
         'packages/ui/src/legacy.mjs',
       ]),
     });
@@ -379,7 +378,6 @@ describe('stories.changed', () => {
       changedThemeFile,
       'packages/ui/src/Orphan.tsx',
       'packages/ui/src/theme.config.ts',
-      'packages/ui/src/Card.vue',
     ]);
   });
 

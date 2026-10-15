@@ -11,10 +11,7 @@
     "component",
     "components",
     "component-testing",
-    "react",
-    "vue",
-    "svelte",
-    "web-components"
+    "react"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/next/code/addons/vitest",
   "bugs": {

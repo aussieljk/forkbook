@@ -297,40 +297,6 @@ describe('getUIBuildingInstructionsTool', () => {
     expect(instructions).not.toContain('first, then use `stories-preview`');
   });
 
-  it('should handle Vue framework', async () => {
-    const mockOptions = {
-      presets: {
-        apply: vi.fn().mockResolvedValue('@storybook/vue3-vite'),
-      },
-    };
-
-    const testContext: AddonContext = {
-      origin: 'http://localhost:6006',
-      options: mockOptions as any,
-      disableTelemetry: true,
-    };
-
-    const request = {
-      jsonrpc: '2.0' as const,
-      id: 1,
-      method: 'tools/call',
-      params: {
-        name: GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME,
-        arguments: {},
-      },
-    };
-
-    const response = await server.receive(request, {
-      sessionId: 'test-session',
-      custom: testContext,
-    });
-
-    const instructions = response.result?.content[0].text as string;
-
-    expect(instructions).toContain('@storybook/vue3-vite');
-    expect(instructions).toContain('@storybook/vue3');
-  });
-
   it('should handle framework as object with name property', async () => {
     const mockOptions = {
       presets: {

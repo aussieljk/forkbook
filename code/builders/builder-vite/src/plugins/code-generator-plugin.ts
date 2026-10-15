@@ -76,7 +76,7 @@ export function codeGeneratorPlugin(options: Options) {
           return generateAddonSetupCode();
         }
         case getResolvedVirtualModuleId(SB_VIRTUAL_FILES.VIRTUAL_APP_FILE): {
-          return generateModernIframeScriptCode(options);
+          return generateModernIframeScriptCode();
         }
         case iframeId: {
           return readFileSync(

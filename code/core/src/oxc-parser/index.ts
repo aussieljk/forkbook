@@ -24,7 +24,7 @@ export interface BarrelInfo {
 
 /**
  * Parses a file with oxc-parser, using the worker pool when available and falling back to
- * inline {@link oxcParse} otherwise. Plugin parsers (Vue/Svelte/MDX) that use
+ * inline {@link oxcParse} otherwise. Plugin parsers (e.g. MDX) that use
  * `ctx.parseScriptWithOxc` also route through here, so SFC script blocks get the same
  * off-thread treatment as plain JS/TS files.
  */

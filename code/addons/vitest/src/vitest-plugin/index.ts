@@ -262,11 +262,9 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
   await setTelemetryEnabled(!core?.disableTelemetry);
 
-  const pluginsToIgnore = ['storybook:svelte-docgen-plugin', 'storybook:vue-component-meta-plugin'];
-
-  if (finalOptions.disableAddonDocs) {
-    pluginsToIgnore.push('storybook:package-deduplication', 'storybook:mdx-plugin');
-  }
+  const pluginsToIgnore = finalOptions.disableAddonDocs
+    ? ['storybook:package-deduplication', 'storybook:mdx-plugin']
+    : [];
 
   // filter out plugins that we know are unnecesary for tests, eg. docgen plugins
   const plugins: Plugin[] = [

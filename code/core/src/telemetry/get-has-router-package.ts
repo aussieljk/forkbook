@@ -10,19 +10,11 @@ const routerPackages = new Set([
   'react-easy-router',
   '@remix-run/router',
   'wouter',
-  'wouter-preact',
-  'preact-router',
-  'vue-router',
-  'unplugin-vue-router',
-  '@angular/router',
-  '@solidjs/router',
 
   // metaframeworks that imply routing
   'next',
   'react-scripts',
   'gatsby',
-  'nuxt',
-  '@sveltejs/kit',
 ]);
 
 /**

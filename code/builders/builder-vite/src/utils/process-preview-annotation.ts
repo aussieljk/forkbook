@@ -8,11 +8,6 @@ export function processPreviewAnnotation(path: PreviewAnnotation, projectRoot: s
   // This absolute specifier is automatically made for addons here:
   // https://github.com/storybookjs/storybook/blob/ac6e73b9d8ce31dd9acc80999c8d7c22a111f3cc/code/core/src/common/presets.ts#L161-L171
   if (typeof path === 'object') {
-    // TODO: Remove this once the new version of Nuxt is released that removes this workaround:
-    // https://github.com/nuxt-modules/storybook/blob/a2eec6e898386f76c74826842e8e007b185c3d35/packages/storybook-addon/src/preset.ts#L279-L306
-    if (path.bare != null && path.absolute === '') {
-      return path.bare;
-    }
     return normalize(path.absolute);
   }
 

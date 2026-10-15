@@ -136,8 +136,8 @@ export const resolveBindingMembers = (
  * The value a member chain names, paired with the module whose scope its names resolve against.
  *
  * Unlike {@link resolveObjectMembers} the value is returned as written rather than read into
- * members, so a chain landing on a name, as `internal.config.component` reaching the class an
- * Angular story documents does, can be followed further by the caller. `undefined` when the chain
+ * members, so a chain landing on a name, as `internal.config.component` reaching a component
+ * does, can be followed further by the caller. `undefined` when the chain
  * leaves what this pass can read, and for a bare identifier, which names no member.
  */
 export const resolveReferencedValue = (

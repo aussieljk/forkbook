@@ -469,13 +469,7 @@ export interface ComponentsManifest {
   v: number;
   components: Record<string, ComponentManifest>;
   meta?: {
-    docgen:
-      | 'react-component-meta'
-      | 'vue-component-meta'
-      | 'angular-component-meta'
-      | 'compodoc'
-      | 'custom-elements-manifest'
-      | 'svelte2tsx';
+    docgen: 'react-component-meta';
     durationMs: number;
   };
 }
@@ -593,20 +587,11 @@ export interface StorybookFeatures {
    */
   developmentModeForBuild?: boolean;
   /**
-   * Only show input controls in Angular.
-   *
-   * @deprecated On `@storybook/angular-vite`, use the `propsTable` framework option instead:
-   *   `'inputs'` for this flag on, `'all'` for it off. Still read by `@storybook/angular`.
-   */
-  angularFilterNonInputControls?: boolean;
-
-  /**
    * Enable component manifest generation for MCP and other tooling integrations.
    *
-   * `@storybook/react`, `@storybook/vue3`, and `@storybook/angular-vite` default this to `true`.
-   * Set it to `false` to opt out.
+   * `@storybook/react` defaults this to `true`. Set it to `false` to opt out.
    *
-   * @default false // `true` for React, Vue 3, and `@storybook/angular-vite`
+   * @default false // `true` for React
    */
   componentsManifest?: boolean;
 
@@ -728,7 +713,7 @@ export interface StorybookConfigRaw {
   experimental_indexers?: Indexer[];
 
   /**
-   * Register parsers that extract import edges from non-JS/TS files (e.g. .vue, .svelte).
+   * Register parsers that extract import edges from non-JS/TS files.
    * Each parser claims one or more file extensions. Last registration wins on collision.
    * Lazy-load heavy SFC compilers inside the parser body — the function is awaited on first
    * use.

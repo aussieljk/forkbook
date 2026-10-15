@@ -11,11 +11,7 @@
     "test",
     "component",
     "components",
-    "react",
-    "vue",
-    "angular",
-    "svelte",
-    "web-components"
+    "react"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/next/code/addons/pseudo-states",
   "bugs": {

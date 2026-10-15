@@ -41,17 +41,12 @@ export const metaFrameworks = {
   next: 'Next',
   'react-scripts': 'CRA',
   gatsby: 'Gatsby',
-  '@nuxtjs/storybook': 'nuxt',
   '@nrwl/storybook': 'nx',
-  '@vue/cli-service': 'vue-cli',
-  '@sveltejs/kit': 'sveltekit',
   '@tanstack/react-router': 'tanstack-react',
   '@react-router/dev': 'react-router',
   '@remix-run/dev': 'remix',
   expo: 'expo',
   'vike-react': 'vike-react',
-  'vike-vue': 'vike-vue',
-  'vike-solid': 'vike-solid',
 } as Record<string, string>;
 
 export const sanitizeAddonName = (name: string) => {
@@ -338,7 +333,7 @@ function resolveDefaultConfigDir(packageJson: PackageJson): string {
     TODO: improve the way configDir is extracted, as a "storybook" script might not be present.
     Scenarios:
     1. user changed it to something else e.g. "storybook:dev"
-    2. they are using angular/nx where the storybook config is defined somewhere else
+    2. they are using nx where the storybook config is defined somewhere else
     3. React Native on-device Storybook uses `.rnstorybook` and `storybook:ios`/`storybook:android`
        scripts (no `storybook` script), so the `.storybook` default never finds the config.
   */

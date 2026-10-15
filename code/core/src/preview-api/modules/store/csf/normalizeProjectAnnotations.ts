@@ -44,8 +44,7 @@ export function normalizeProjectAnnotations<TRenderer extends Renderer>({
       // bigger architectural change requiring careful consideration.
       //
       // For now, we're keeping inferControls here as we need time to properly evaluate
-      // these options and their implications. Some features (like Angular's cleanArgsDecorator)
-      // currently rely on this behavior.
+      // these options and their implications.
       //
       // TODO: Make an architectural decision on the handling of core addons
       inferControls,

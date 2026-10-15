@@ -13,11 +13,7 @@
     "ARIA",
     "component",
     "components",
-    "react",
-    "vue",
-    "angular",
-    "svelte",
-    "web-components"
+    "react"
   ],
   "homepage": "https://github.com/storybookjs/storybook/tree/next/code/addons/a11y",
   "bugs": {

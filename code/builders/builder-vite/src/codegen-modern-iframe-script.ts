@@ -1,6 +1,4 @@
-import { getFrameworkName } from 'storybook/internal/common';
 import { STORY_HOT_UPDATED } from 'storybook/internal/core-events';
-import type { Options } from 'storybook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
@@ -8,29 +6,8 @@ import { VIRTUAL_ID as PROJECT_ANNOTATIONS_VIRTUAL_ID } from './plugins/storyboo
 import { previewRuntimePath } from './utils/preview-runtime-path.ts';
 import { SB_VIRTUAL_FILES } from './virtual-file-names.ts';
 
-export async function generateModernIframeScriptCode(options: Options) {
-  const frameworkName = await getFrameworkName(options);
-
-  return generateModernIframeScriptCodeFromPreviews({
-    frameworkName,
-  });
-}
-
-export async function generateModernIframeScriptCodeFromPreviews(options: {
-  frameworkName: string;
-}) {
-  const { frameworkName } = options;
-
-  const generateHMRHandler = (): string => {
-    // Web components are not compatible with HMR, so disable HMR, reload page instead.
-    if (frameworkName === '@storybook/web-components-vite') {
-      return dedent`
-      if (import.meta.hot) {
-        import.meta.hot.decline();
-      }`.trim();
-    }
-
-    return dedent`
+export async function generateModernIframeScriptCode() {
+  const hmrHandler = dedent`
     if (import.meta.hot) {
       import.meta.hot.on('vite:afterUpdate', () => {
         window.__STORYBOOK_PREVIEW__.channel.emit('${STORY_HOT_UPDATED}');
@@ -41,7 +18,6 @@ export async function generateModernIframeScriptCodeFromPreviews(options: {
         window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
       });
     }`.trim();
-  };
 
   /**
    * This code is largely taken from
@@ -66,7 +42,7 @@ export async function generateModernIframeScriptCodeFromPreviews(options: {
   
   window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
   
-  ${generateHMRHandler()};
+  ${hmrHandler};
   
   `.trim();
   return code;
