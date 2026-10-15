@@ -71,7 +71,6 @@ vi.mock('./postinstallAddon', () => {
 vi.mock('storybook/internal/common', () => {
   return {
     getStorybookInfo: MockedStorybookInfo.getStorybookInfo,
-    serverRequire: vi.fn(() => ({})),
     loadMainConfig: vi.fn(() => ({})),
     JsPackageManagerFactory: {
       getPackageManager: vi.fn(() => MockedPackageManager),

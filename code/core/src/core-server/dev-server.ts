@@ -145,7 +145,7 @@ export async function storybookDevServer(
 
       await disposeChangeDetectionRuntime();
       await managerBuilder?.bail().catch(() => undefined);
-      // For some reason, even when Webpack fails e.g. wrong main.js config,
+      // For some reason, even when the builder fails e.g. wrong main.js config,
       // the preview may continue to print to stdout, which can affect output
       // when we catch this error and process those errors (e.g. telemetry)
       // gets overwritten by preview progress output. Therefore, we should bail the preview too.

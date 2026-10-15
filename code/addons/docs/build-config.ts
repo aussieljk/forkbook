@@ -31,15 +31,6 @@ const config: BuildEntries = {
         entryPoint: './src/preset.ts',
         dts: false,
       },
-      {
-        exportEntries: ['./mdx-loader'],
-        entryPoint: './src/mdx-loader.ts',
-        dts: false,
-      },
-      {
-        entryPoint: './src/csf-plugin/webpack-loader.ts',
-        dts: false,
-      },
     ],
   },
 };

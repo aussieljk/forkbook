@@ -171,8 +171,7 @@ export const computeStorybookMetadata = async ({
   }
   metadata.hasCustomBabel = !!mainConfig.babel;
   metadata.hasCustomWebpack =
-    !!mainConfig.webpackFinal ||
-    (!!allDependencies.next && getHasNextCustomWebpack(dirname(packageJsonPath)));
+    !!allDependencies.next && getHasNextCustomWebpack(dirname(packageJsonPath));
   metadata.hasCustomVite = !!mainConfig.viteFinal;
   metadata.hasStaticDirs = !!mainConfig.staticDirs;
 

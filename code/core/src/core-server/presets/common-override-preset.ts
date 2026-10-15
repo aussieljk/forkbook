@@ -7,7 +7,7 @@ export const features: PresetProperty<'features'> = async (input, options) =>
 
 export const framework: PresetProperty<'framework'> = async (config) => {
   // This will get called with the values from the user's main config, but before
-  // framework preset from framework packages e.g. react-webpack5 gets called.
+  // framework preset from framework packages e.g. react-vite gets called.
   // This means we can add default values to the framework config, before it's requested by other packages.
   const name = typeof config === 'string' ? config : config?.name;
   const options = typeof config === 'string' ? {} : config?.options || {};
@@ -34,15 +34,12 @@ export const typescript: PresetProperty<'typescript'> = async (input, options) =
 
 const createTestBuildFeatures = (value: boolean): Required<TestBuildFlags> => ({
   disableBlocks: value,
-  disabledAddons: value
-    ? ['@storybook/addon-docs', '@storybook/addon-essentials/docs', '@storybook/addon-coverage']
-    : [],
+  disabledAddons: value ? ['@storybook/addon-docs', '@storybook/addon-coverage'] : [],
   disableMDXEntries: value,
   disableAutoDocs: value,
   disableDocgen: value,
   disableSourcemaps: value,
   disableTreeShaking: value,
-  esbuildMinify: value,
 });
 
 export const build: PresetProperty<'build'> = async (value, options) => {

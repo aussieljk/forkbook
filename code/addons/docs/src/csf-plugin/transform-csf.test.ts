@@ -7,19 +7,12 @@ import { resolve } from 'node:path';
 import { formatCsf, loadCsf } from 'storybook/internal/csf-tools';
 import type { CsfEnricher } from 'storybook/internal/types';
 
-import MagicString from 'magic-string';
 import { vol } from 'memfs';
 import { dedent } from 'ts-dedent';
 
-import { rollupBasedPlugin, transformCsf } from './rollup-based-plugin.ts';
+import { transformCsf } from './transform-csf.ts';
 
 vi.mock('node:fs/promises', { spy: true });
-
-type TransformHook = (
-  this: { getCombinedSourcemap: () => SourceMapPayload },
-  code: string,
-  id: string
-) => Promise<{ code: string; map: SourceMapPayload } | string | undefined>;
 
 const id = resolve('/src/Repro.stories.js');
 
@@ -59,9 +52,7 @@ const positionOf = (code: string, token: string) => {
   return { line, column: code.split('\n')[line].indexOf(token) };
 };
 
-const transform = rollupBasedPlugin({}).transform as unknown as TransformHook;
-
-describe('rollupBasedPlugin', () => {
+describe('transformCsf sourcemaps', () => {
   beforeEach(async () => {
     const memfs = await vi.importActual<typeof import('memfs')>('memfs');
     vi.mocked(readFile).mockImplementation(
@@ -76,13 +67,16 @@ describe('rollupBasedPlugin', () => {
     const inputPosition = positionOf(input.code, 'play:');
     expect(inputPosition.line).not.toBe(positionOf(originalCode, 'play:').line);
 
-    const result = await transform.call({ getCombinedSourcemap: () => input.map }, input.code, id);
-    if (typeof result !== 'object') {
+    const result = await transformCsf(input.code, id, {});
+    if (typeof result !== 'object' || !result.map) {
       throw new Error('expected a transform result with a sourcemap');
     }
 
     const outputPosition = positionOf(result.code, 'play:');
-    const entry = new SourceMap(result.map).findEntry(outputPosition.line, outputPosition.column);
+    const entry = new SourceMap(result.map as SourceMapPayload).findEntry(
+      outputPosition.line,
+      outputPosition.column
+    );
 
     expect(entry).toMatchObject({
       originalLine: inputPosition.line,
@@ -92,19 +86,16 @@ describe('rollupBasedPlugin', () => {
   });
 
   it('maps the output to the original story file when no earlier transform ran', async () => {
-    const identity = new MagicString(originalCode).generateMap({
-      hires: 'boundary',
-      source: id,
-      includeContent: true,
-    }) as unknown as SourceMapPayload;
-
-    const result = await transform.call({ getCombinedSourcemap: () => identity }, originalCode, id);
-    if (typeof result !== 'object') {
+    const result = await transformCsf(originalCode, id, {});
+    if (typeof result !== 'object' || !result.map) {
       throw new Error('expected a transform result with a sourcemap');
     }
 
     const outputPosition = positionOf(result.code, 'play:');
-    const entry = new SourceMap(result.map).findEntry(outputPosition.line, outputPosition.column);
+    const entry = new SourceMap(result.map as SourceMapPayload).findEntry(
+      outputPosition.line,
+      outputPosition.column
+    );
 
     expect(entry).toMatchObject({ originalLine: positionOf(originalCode, 'play:').line });
     expect(result.map.sourcesContent).toEqual([originalCode]);

@@ -84,8 +84,7 @@ export async function loadStorybook(
     const builderPresetDir = isAbsolute(builderEntry)
       ? dirname(builderEntry)
       : resolvePackageDir(builderEntry);
-    // Not every builder ships this preset: builder-webpack5 declares its presets on its main module
-    // instead, and only the dev server and static build load a builder module to reach them.
+    // Not every builder ships this preset.
     const builderPreset = safeResolveModule({ specifier: join(builderPresetDir, 'preset.js') });
 
     if (builderPreset) {

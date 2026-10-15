@@ -41,7 +41,7 @@ export type {
 
 /** ⚠️ This file contains internal WIP types they MUST NOT be exported outside this package for now! */
 
-export type BuilderName = 'webpack5' | '@storybook/builder-webpack5' | string;
+export type BuilderName = string;
 export type RendererName = string;
 
 export interface CoreConfig {
@@ -52,7 +52,6 @@ export interface CoreConfig {
         options?: Record<string, any>;
       };
   renderer?: RendererName;
-  disableWebpackDefaults?: boolean;
   channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
   /** Disables the generation of project.json, a file containing Storybook metadata */
   disableProjectJson?: boolean;
@@ -199,8 +198,7 @@ export interface BuilderResult {
  * Builder-supplied module resolution config consumed by Storybook's change-detection
  * dependency graph (and any future module-resolver consumer in core).
  *
- * Shape mirrors a subset of Vite's `resolve.*` options and is intentionally
- * builder-agnostic — webpack/rspack adapters surface the same fields.
+ * Shape mirrors a subset of Vite's `resolve.*` options.
  */
 export interface ModuleResolveConfig {
   /** Project root (where Storybook is started from). */
@@ -256,7 +254,6 @@ export interface CLIOptions extends CLIBaseOptions {
   docs?: boolean;
   test?: boolean;
   debugWebpack?: boolean;
-  webpackStatsJson?: string | boolean;
   statsJson?: string | boolean;
   outputDir?: string;
   previewOnly?: boolean;
@@ -269,7 +266,6 @@ export interface BuilderOptions {
   docsMode?: boolean;
   features?: StorybookConfigRaw['features'];
   versionCheck?: VersionCheck;
-  disableWebpackDefaults?: boolean;
   serverChannelUrl?: string;
   localAddress?: string;
   networkAddress?: string;
@@ -401,8 +397,6 @@ export interface TestBuildFlags {
   disableSourcemaps?: boolean;
   /** Override tree-shaking (dead code elimination) to be disabled. */
   disableTreeShaking?: boolean;
-  /** Minify with ESBuild when using webpack. */
-  esbuildMinify?: boolean;
 }
 
 export interface TestBuildConfig {

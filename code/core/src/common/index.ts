@@ -25,7 +25,6 @@ export * from './utils/glob-to-regexp.ts';
 export * from './utils/HandledError.ts';
 export * from './utils/interpolate.ts';
 export * from './utils/interpret-files.ts';
-export * from './utils/interpret-require.ts';
 export * from './utils/load-main-config.ts';
 export * from './utils/load-manager-or-addons-file.ts';
 export * from './utils/load-preview-or-config-file.ts';

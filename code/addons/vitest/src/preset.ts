@@ -1,7 +1,7 @@
 import { mkdir } from 'node:fs/promises';
 
 import type { Channel } from 'storybook/internal/channels';
-import { getFrameworkName, resolvePathInStorybookCache } from 'storybook/internal/common';
+import { resolvePathInStorybookCache } from 'storybook/internal/common';
 import { type StoryIndexGenerator, registerToolset } from 'storybook/internal/core-server';
 import { logger } from 'storybook/internal/node-logger';
 import { cleanPaths, oneWayHash, sanitizeError, telemetry } from 'storybook/internal/telemetry';
@@ -9,15 +9,11 @@ import type { Options, PresetPropertyFn, StoryId } from 'storybook/internal/type
 
 import type { BuilderOptions } from '@storybook/builder-vite';
 
-import picocolors from 'picocolors';
-import { dedent } from 'ts-dedent';
-
 import {
   COVERAGE_DIRECTORY,
   STORE_CHANNEL_EVENT_NAME,
   STORYBOOK_ADDON_TEST_CHANNEL,
 } from './constants.ts';
-import { log } from './logger.ts';
 import { runTestRunner, sendStoryIndexToTestRunner } from './node/boot-test-runner.ts';
 import {
   ensureTestRunnerStore,
@@ -85,18 +81,8 @@ export const services = async (_value: void, options: Options): Promise<void> =>
 export const experimental_serverChannel = async (channel: Channel, options: Options) => {
   const core = await options.presets.apply('core');
 
-  const resolvedPreviewBuilder = resolvePreviewBuilderName(core);
-  const framework = await getFrameworkName(options);
-
   // Only boot the test runner if the builder is vite, else just provide interactions functionality
-  if (!resolvedPreviewBuilder?.includes('vite')) {
-    if (framework.includes('nextjs')) {
-      log(dedent`
-        You're using ${framework}, which is a Webpack-based builder. In order to use Storybook's Vitest addon, with your project, you need to use '@storybook/nextjs-vite', a high performance Vite-based equivalent.
-
-        Refer to the following documentation for more information: ${picocolors.yellow('https://storybook.js.org/docs/get-started/frameworks/nextjs-vite?ref=upgrade#choose-between-vite-and-webpack')}\n
-      `);
-    }
+  if (!resolvePreviewBuilderName(core)?.includes('vite')) {
     return channel;
   }
 

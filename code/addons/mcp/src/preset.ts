@@ -247,7 +247,7 @@ export const experimental_devServer: PresetPropertyFn<
       ? [`The <code>dev</code> toolset is disabled via addon options.`]
       : [
           !moduleGraphSupported &&
-            `<code>stories-find-by-component</code> requires a dev server with a builder that supports the module graph (Vite or Webpack 5).`,
+            `<code>stories-find-by-component</code> requires a dev server with a builder that supports the module graph (Vite).`,
         ].filter(Boolean);
     const devNotice = devNoticeLines.length
       ? `<div class="toolset-notice">${devNoticeLines.join('<br>')}</div>`

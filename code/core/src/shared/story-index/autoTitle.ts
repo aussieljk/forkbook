@@ -1,9 +1,7 @@
-import { once } from 'storybook/internal/client-logger';
 import type { NormalizedStoriesSpecifier } from 'storybook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
-import { dedent } from 'ts-dedent';
 
 // FIXME: types duplicated type from `core-common', to be
 // removed when we remove v6 back-compat.
@@ -54,14 +52,6 @@ export const userOrAutoTitleFromSpecifier = (
   const { directory, importPathMatcher, titlePrefix = '' } = entry || {};
   // On Windows, backslashes are used in paths, which can cause problems here
   // slash makes sure we always handle paths with unix-style forward slash
-
-  if (typeof fileName === 'number') {
-    once.warn(dedent`
-      CSF Auto-title received a numeric fileName. This typically happens when
-      webpack is mis-configured in production mode. To force webpack to produce
-      filenames, set optimization.moduleIds = "named" in your webpack config.
-    `);
-  }
 
   const normalizedFileName = slash(String(fileName));
 

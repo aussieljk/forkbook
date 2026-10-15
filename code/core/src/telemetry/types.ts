@@ -87,8 +87,7 @@ export type StorybookMetadata = {
   hasStorybookEslint?: boolean;
   hasStaticDirs?: boolean;
   /**
-   * Whether the project customizes webpack — through `webpackFinal` in the Storybook config, or
-   * (for Next.js projects) through the `webpack` option of `next.config.*`.
+   * Whether a Next.js project customizes webpack through the `webpack` option of `next.config.*`.
    */
   hasCustomWebpack?: boolean;
   /** Whether the Storybook config defines `viteFinal`. */

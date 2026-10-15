@@ -222,7 +222,7 @@ describe('wireTestRunResponder', () => {
 
     await wireTestRunResponder({
       channel,
-      options: makeOptions({ builder: '@storybook/builder-webpack5' }),
+      options: makeOptions({ builder: 'custom-builder' }),
     });
     emitRequest(channel, 'req-1');
 
@@ -235,7 +235,7 @@ describe('wireTestRunResponder', () => {
         })
       )
     );
-    // The vitest runner machinery must never boot for a Webpack project.
+    // The vitest runner machinery must never boot without the Vite builder.
     expect(internal_UniversalStore.create).not.toHaveBeenCalled();
   });
 
