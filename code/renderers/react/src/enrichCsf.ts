@@ -13,7 +13,7 @@ export const enrichCsf: PresetPropertyFn<'experimental_enrichCsf'> = async (inpu
     return;
   }
   return async (csf: CsfFile, csfSource: CsfFile) => {
-    const promises = Object.keys(csf._stories).map(async (key) => {
+    const statements = Object.keys(csf._stories).map(async (key) => {
       if (!csfSource._meta?.component) {
         return;
       }
@@ -72,38 +72,36 @@ export const enrichCsf: PresetPropertyFn<'experimental_enrichCsf'> = async (inpu
       //   }
       // };
 
-      csf._ast.program.body.push(
-        t.expressionStatement(
-          t.assignmentExpression(
-            '=',
-            originalParameters,
-            t.objectExpression([
-              t.spreadElement(originalParameters),
-              t.objectProperty(
-                t.identifier('docs'),
-                t.objectExpression([
-                  t.spreadElement(docsParameter),
-                  t.objectProperty(
-                    t.identifier('source'),
-                    t.objectExpression([
-                      t.objectProperty(t.identifier('code'), t.stringLiteral(snippet)),
-                      t.spreadElement(
-                        t.optionalMemberExpression(
-                          docsParameter,
-                          t.identifier('source'),
-                          false,
-                          true
-                        )
-                      ),
-                    ])
-                  ),
-                ])
-              ),
-            ])
-          )
+      return t.expressionStatement(
+        t.assignmentExpression(
+          '=',
+          originalParameters,
+          t.objectExpression([
+            t.spreadElement(originalParameters),
+            t.objectProperty(
+              t.identifier('docs'),
+              t.objectExpression([
+                t.spreadElement(docsParameter),
+                t.objectProperty(
+                  t.identifier('source'),
+                  t.objectExpression([
+                    t.objectProperty(t.identifier('code'), t.stringLiteral(snippet)),
+                    t.spreadElement(
+                      t.optionalMemberExpression(docsParameter, t.identifier('source'), false, true)
+                    ),
+                  ])
+                ),
+              ])
+            ),
+          ])
         )
       );
     });
-    await Promise.all(promises);
+    // Format the snippets in parallel, but add them in story order.
+    for (const statement of await Promise.all(statements)) {
+      if (statement) {
+        csf._ast.program.body.push(statement);
+      }
+    }
   };
 };
