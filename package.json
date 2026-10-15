@@ -25,9 +25,6 @@
     "typecheck": "bun check -b -p code/tsconfig.packages.json"
   },
   "devDependencies": {
-    "@babel/plugin-transform-class-properties": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
-    "@babel/preset-react": "^7.28.5",
     "@types/kill-port": "^2.0.3",
     "http-server": "^14.1.1",
     "jiti": "^2.6.1",

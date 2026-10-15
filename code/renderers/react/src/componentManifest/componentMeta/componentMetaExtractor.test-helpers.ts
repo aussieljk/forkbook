@@ -1,122 +1,56 @@
+import { readFileSync, rmSync } from 'node:fs';
 import * as path from 'node:path';
 
-import { extractDeclaredSubcomponents } from 'storybook/internal/common';
-import { loadCsf } from 'storybook/internal/csf-tools';
+import { afterAll } from 'vitest';
 
-import { vol } from 'memfs';
-import ts from 'typescript';
+import { loadCsf } from 'storybook/internal/csf-tools';
 
 import { type StoryRef, getComponents } from '../getComponentImports.ts';
 import { findMatchingComponent } from '../resolveComponents.ts';
-import { ComponentMetaProject } from './ComponentMetaProject.ts';
+import { invalidateCache } from '../utils.ts';
+import { ComponentMetaManager } from './ComponentMetaManager.ts';
 import { createTempProject, writeFiles } from './test-helpers.ts';
 
 /**
- * Shared LanguageService across all tests — avoids re-parsing @types/react per test. First
- * getProgram() is ~300ms, subsequent incremental rebuilds are ~5ms.
+ * One temp project and one tsgo session for all tests of a file. Each test writes its files to a new
+ * folder, so the tests do not see the files of other tests.
  */
-const { projectDir, configPath } = createTempProject({});
-const fsFileSnapshots = new Map<string, [number | undefined, ts.IScriptSnapshot | undefined]>();
-const sharedProject = new ComponentMetaProject(
-  ts,
-  ts.parseJsonSourceFileConfigFileContent(
-    ts.readJsonConfigFile(configPath, ts.sys.readFile),
-    ts.sys,
-    projectDir,
-    {},
-    configPath
-  ),
-  configPath,
-  fsFileSnapshots
-);
+const { projectDir } = createTempProject({});
+const manager = new ComponentMetaManager({ cwd: projectDir });
+let testCount = 0;
 
-/** Reads a project file from the in-memory mirror populated by {@link withProject}. */
-export function readProjectFile(filePath: string): string {
-  return vol.readFileSync(filePath, 'utf-8') as string;
-}
-
-/** Resets the memfs mirror between tests. */
-export function resetProjectVolume(): void {
-  vol.reset();
-}
-
-/** Write files into the shared project, invalidate caches, and run a callback. */
-export async function withProject<T>(
-  files: Record<string, string>,
-  fn: (project: ComponentMetaProject, filePaths: Record<string, string>) => T | Promise<T>
-): Promise<T> {
-  vol.reset();
-  const filePaths = writeFiles(projectDir, files);
-  vol.fromNestedJSON(
-    Object.fromEntries(Object.entries(filePaths).map(([name, filePath]) => [filePath, files[name]]))
-  );
-  // Report every rewritten path as changed: the tracker evicts its snapshots and bumps versions,
-  // which stays correct even when consecutive writes land within one mtime tick.
-  sharedProject.onFilesChanged(
-    Object.values(filePaths).map((filePath) => ({ filePath, type: 'changed' as const }))
-  );
-  return fn(sharedProject, filePaths);
-}
-
-/** Parses a story file and resolves declared subcomponents for extraction tests. */
-export async function loadDeclaredSubcomponentComponents({
-  filePaths,
-  storyFileName,
-  title,
-}: {
-  filePaths: Record<string, string>;
-  storyFileName: string;
-  title: string;
-}) {
-  const storyPath = filePaths[storyFileName];
-  const csf = loadCsf(readProjectFile(storyPath), { makeTitle: () => title }).parse();
-  const declaredSubcomponents = extractDeclaredSubcomponents(csf);
-  const components = await getComponents({
-    csf,
-    storyFilePath: storyPath,
-    docgenEngine: 'react-component-meta',
-    additionalComponentNames: declaredSubcomponents.map(
-      (subcomponent) => subcomponent.componentName
-    ),
-  });
-
-  return { storyPath, csf, declaredSubcomponents, components };
-}
+afterAll(() => {
+  manager.dispose();
+  rmSync(projectDir, { recursive: true, force: true });
+});
 
 /**
- * Full production flow: loadCsf → getComponents → extractPropsFromStories. Title is auto-derived
- * from the story file name for findMatchingComponent.
+ * Full production flow: loadCsf → getComponents → batchExtract. Title is auto-derived from the
+ * story file name for findMatchingComponent.
  */
 export async function extractFromStory(
   files: Record<string, string>,
   storyFileName: string,
   options?: { componentName?: string }
 ): Promise<StoryRef> {
-  return withProject(files, async (project, filePaths) => {
-    const storyPath = filePaths[storyFileName];
-    const title = path.basename(storyFileName).replace(/\.stories\.\w+$/, '');
-    const csf = loadCsf(readProjectFile(storyPath), {
-      makeTitle: () => title,
-    }).parse();
+  invalidateCache();
+  const filePaths = writeFiles(path.join(projectDir, `case-${testCount++}`), files);
+  const storyPath = filePaths[storyFileName];
+  const title = path.basename(storyFileName).replace(/\.stories\.\w+$/, '');
+  const csf = loadCsf(readFileSync(storyPath, 'utf-8'), { makeTitle: () => title }).parse();
 
-    const components = await getComponents({
-      csf,
-      storyFilePath: storyPath,
-      docgenEngine: 'react-component-meta',
-    });
+  const components = await getComponents({ csf, storyFilePath: storyPath });
+  const componentName = options?.componentName ?? csf._meta?.component;
+  const component = findMatchingComponent(components, componentName, title);
 
-    const componentName = options?.componentName ?? csf._meta?.component;
-    const component = findMatchingComponent(components, componentName, title);
-
-    const entry: StoryRef = { storyPath, component };
-    project.extractPropsFromStories([entry]);
-    return entry;
-  });
+  const entry: StoryRef = { storyPath, component };
+  manager.batchExtract([entry]);
+  return entry;
 }
 
 /**
  * Convenience wrapper: generates a story with meta.component and extracts props. Goes through the
- * fallback path (resolveFromMetaComponent, no JSX).
+ * meta component path (no JSX).
  */
 export async function extract(exportName: string, content: string): Promise<StoryRef> {
   const componentName = exportName === 'default' ? 'Component' : exportName;

@@ -1,241 +1,222 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`react component properties ts-function-component 1`] = `
-"import React from 'react';
-import { imported } from '../imported';
-const local = 'local-value';
-
-/**
- * A component that renders its props
- */
-export const PropsWriter = props => /*#__PURE__*/React.createElement(\\"pre\\", null, JSON.stringify(props));
-PropsWriter.defaultProps = {
-  numberOptional: 1,
-  stringOptional: 'stringOptional',
-  booleanOptional: false,
-  arrayOptional: ['array', 'optional'],
-  objectOptional: {
-    object: 'optional'
-  },
-  functionOptional: () => 'foo',
-  dateOptional: new Date('20 Jan 1983'),
-  localReference: local,
-  importedReference: imported,
-  globalReference: Date,
-  stringGlobalName: 'top'
-};
-export const component = PropsWriter;
-PropsWriter.__docgenInfo = {
-  \\"description\\": \\"A component that renders its props\\",
-  \\"methods\\": [],
-  \\"displayName\\": \\"PropsWriter\\",
-  \\"props\\": {
-    \\"numberOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"1\\",
-        \\"computed\\": false
+{
+  "displayName": "component",
+  "exportName": "component",
+  "description": "",
+  "jsDocTags": {},
+  "props": {
+    "numberRequired": {
+      "name": "numberRequired",
+      "required": true,
+      "type": {
+        "name": "number"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"number\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "Description",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"stringOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'stringOptional'\\",
-        \\"computed\\": false
+    "numberOptional": {
+      "name": "numberOptional",
+      "required": false,
+      "type": {
+        "name": "number"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"string\\"
+      "description": "",
+      "defaultValue": {
+        "value": "1"
       },
-      \\"description\\": \\"\\"
+      "parent": "PropsWriterProps"
     },
-    \\"booleanOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"false\\",
-        \\"computed\\": false
+    "stringRequired": {
+      "name": "stringRequired",
+      "required": true,
+      "type": {
+        "name": "string"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"boolean\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"arrayOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"['array', 'optional']\\",
-        \\"computed\\": false
+    "stringOptional": {
+      "name": "stringOptional",
+      "required": false,
+      "type": {
+        "name": "string"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"Array\\",
-        \\"elements\\": [{
-          \\"name\\": \\"string\\"
-        }],
-        \\"raw\\": \\"string[]\\"
+      "description": "",
+      "defaultValue": {
+        "value": "'stringOptional'"
       },
-      \\"description\\": \\"\\"
+      "parent": "PropsWriterProps"
     },
-    \\"objectOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"{ object: 'optional' }\\",
-        \\"computed\\": false
+    "booleanRequired": {
+      "name": "booleanRequired",
+      "required": true,
+      "type": {
+        "name": "boolean"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"Record\\",
-        \\"elements\\": [{
-          \\"name\\": \\"string\\"
-        }, {
-          \\"name\\": \\"string\\"
-        }],
-        \\"raw\\": \\"Record<string, string>\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"functionOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"() => 'foo'\\",
-        \\"computed\\": false
+    "booleanOptional": {
+      "name": "booleanOptional",
+      "required": false,
+      "type": {
+        "name": "boolean"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"signature\\",
-        \\"type\\": \\"function\\",
-        \\"raw\\": \\"() => string\\",
-        \\"signature\\": {
-          \\"arguments\\": [],
-          \\"return\\": {
-            \\"name\\": \\"string\\"
-          }
-        }
+      "description": "",
+      "defaultValue": {
+        "value": "false"
       },
-      \\"description\\": \\"\\"
+      "parent": "PropsWriterProps"
     },
-    \\"dateOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"new Date('20 Jan 1983')\\",
-        \\"computed\\": false
+    "arrayRequired": {
+      "name": "arrayRequired",
+      "required": true,
+      "type": {
+        "name": "string[]"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"Date\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"localReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'local-value'\\",
-        \\"computed\\": false
+    "arrayOptional": {
+      "name": "arrayOptional",
+      "required": false,
+      "type": {
+        "name": "string[]"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"string\\"
+      "description": "",
+      "defaultValue": {
+        "value": "['array', 'optional']"
       },
-      \\"description\\": \\"\\"
+      "parent": "PropsWriterProps"
     },
-    \\"importedReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"imported\\",
-        \\"computed\\": true
+    "objectRequired": {
+      "name": "objectRequired",
+      "required": true,
+      "type": {
+        "name": "Record<string, string>"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"string\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"globalReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"Date\\",
-        \\"computed\\": true
+    "objectOptional": {
+      "name": "objectOptional",
+      "required": false,
+      "type": {
+        "name": "Record<string, string>"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"any\\"
+      "description": "",
+      "defaultValue": {
+        "value": "{ object: 'optional' }"
       },
-      \\"description\\": \\"\\"
+      "parent": "PropsWriterProps"
     },
-    \\"stringGlobalName\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'top'\\",
-        \\"computed\\": false
+    "functionRequired": {
+      "name": "functionRequired",
+      "required": true,
+      "type": {
+        "name": "() => string"
       },
-      \\"required\\": false,
-      \\"tsType\\": {
-        \\"name\\": \\"string\\"
-      },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"numberRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"number\\"
+    "functionOptional": {
+      "name": "functionOptional",
+      "required": false,
+      "type": {
+        "name": "() => string"
       },
-      \\"description\\": \\"Description\\"
+      "description": "",
+      "defaultValue": {
+        "value": "() => 'foo'"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"stringRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"string\\"
+    "dateRequired": {
+      "name": "dateRequired",
+      "required": true,
+      "type": {
+        "name": "Date"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"booleanRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"boolean\\"
+    "dateOptional": {
+      "name": "dateOptional",
+      "required": false,
+      "type": {
+        "name": "Date"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": {
+        "value": "new Date('20 Jan 1983')"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"arrayRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"Array\\",
-        \\"elements\\": [{
-          \\"name\\": \\"string\\"
-        }],
-        \\"raw\\": \\"string[]\\"
+    "localReference": {
+      "name": "localReference",
+      "required": false,
+      "type": {
+        "name": "string"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": {
+        "value": "'local-value'"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"objectRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"Record\\",
-        \\"elements\\": [{
-          \\"name\\": \\"string\\"
-        }, {
-          \\"name\\": \\"string\\"
-        }],
-        \\"raw\\": \\"Record<string, string>\\"
+    "importedReference": {
+      "name": "importedReference",
+      "required": false,
+      "type": {
+        "name": "string"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": {
+        "value": "imported"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"functionRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"signature\\",
-        \\"type\\": \\"function\\",
-        \\"raw\\": \\"() => string\\",
-        \\"signature\\": {
-          \\"arguments\\": [],
-          \\"return\\": {
-            \\"name\\": \\"string\\"
-          }
-        }
+    "globalReference": {
+      "name": "globalReference",
+      "required": false,
+      "type": {
+        "name": "any"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": {
+        "value": "Date"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"dateRequired\\": {
-      \\"required\\": true,
-      \\"tsType\\": {
-        \\"name\\": \\"Date\\"
+    "stringGlobalName": {
+      "name": "stringGlobalName",
+      "required": false,
+      "type": {
+        "name": "string"
       },
-      \\"description\\": \\"\\"
+      "description": "",
+      "defaultValue": {
+        "value": "'top'"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "myClass": {
+      "name": "myClass",
+      "required": true,
+      "type": {
+        "name": "any"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "styles.foo"
+      },
+      "parent": "PropsWriterProps"
     }
   }
-};"
-`;
+}

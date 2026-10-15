@@ -262,12 +262,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
   await setTelemetryEnabled(!core?.disableTelemetry);
 
-  const pluginsToIgnore = [
-    'storybook:react-docgen-plugin',
-    'vite:react-docgen-typescript', // aka @joshwooding/vite-plugin-react-docgen-typescript
-    'storybook:svelte-docgen-plugin',
-    'storybook:vue-component-meta-plugin',
-  ];
+  const pluginsToIgnore = ['storybook:svelte-docgen-plugin', 'storybook:vue-component-meta-plugin'];
 
   if (finalOptions.disableAddonDocs) {
     pluginsToIgnore.push('storybook:package-deduplication', 'storybook:mdx-plugin');

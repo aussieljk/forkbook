@@ -27,7 +27,7 @@ export const stories: PresetProperty<'stories'> = async (entries, options) => {
 
 export const typescript: PresetProperty<'typescript'> = async (input, options) => {
   if (options?.build?.test?.disableDocgen) {
-    return { ...(input ?? {}), reactDocgen: false, check: false };
+    return { ...(input ?? {}), check: false };
   }
   return input;
 };

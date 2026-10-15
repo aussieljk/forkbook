@@ -1,31 +1,38 @@
-import React from 'react';
-const Button = ({
-  children,
-  onClick
-}) => /*#__PURE__*/React.createElement("button", {
-  onClick: onClick,
-  type: "button"
-}, children);
-const WrappedButton = ({
-  spacing,
-  ...buttonProps
-}) => /*#__PURE__*/React.createElement("div", {
-  style: {
-    padding: spacing
-  }
-}, /*#__PURE__*/React.createElement(Button, buttonProps));
-export const component = WrappedButton;
-WrappedButton.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "WrappedButton",
+  "jsDocTags": {},
   "props": {
     "spacing": {
+      "name": "spacing",
       "required": true,
-      "tsType": {
+      "type": {
         "name": "number"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": null,
+      "parent": "WrappedProps"
+    },
+    "onClick": {
+      "name": "onClick",
+      "required": false,
+      "type": {
+        "name": "MouseEventHandler<HTMLButtonElement>"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "DOMAttributes"
+    },
+    "children": {
+      "name": "children",
+      "required": true,
+      "type": {
+        "name": "ReactNode"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "Props"
     }
   }
-};
+}

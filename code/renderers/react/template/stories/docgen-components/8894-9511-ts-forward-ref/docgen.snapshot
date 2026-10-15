@@ -1,35 +1,71 @@
-import React, { forwardRef } from 'react';
-const Button = /*#__PURE__*/forwardRef(function Button({
-  disabled = false,
-  variant = 'small',
-  children
-}, ref) {
-  return /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    disabled: disabled,
-    ref: ref
-  }, children, " ", variant);
-});
-Button.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Button",
+  "jsDocTags": {},
   "props": {
-    "disabled": {
-      "defaultValue": {
-        "value": "false",
-        "computed": false
-      },
-      "required": false
-    },
     "variant": {
-      "defaultValue": {
-        "value": "'small'",
-        "computed": false
+      "name": "variant",
+      "required": false,
+      "type": {
+        "name": "enum",
+        "raw": "\"small\" | \"large\"",
+        "value": [
+          {
+            "value": "\"small\""
+          },
+          {
+            "value": "\"large\""
+          }
+        ]
       },
-      "required": false
+      "description": "Sets the button size.",
+      "defaultValue": {
+        "value": "'small'"
+      },
+      "parent": "ButtonProps"
+    },
+    "disabled": {
+      "name": "disabled",
+      "required": false,
+      "type": {
+        "name": "boolean"
+      },
+      "description": "Disables the button.",
+      "defaultValue": {
+        "value": "false"
+      },
+      "parent": "ButtonProps"
+    },
+    "children": {
+      "name": "children",
+      "required": true,
+      "type": {
+        "name": "ReactNode"
+      },
+      "description": "Content of the button.",
+      "defaultValue": null,
+      "parent": "ButtonProps"
+    },
+    "ref": {
+      "name": "ref",
+      "required": false,
+      "type": {
+        "name": "LegacyRef<HTMLButtonElement> | undefined"
+      },
+      "description": "Allows getting a ref to the component instance.\nOnce the component unmounts, React will set `ref.current` to `null`\n(or call the ref with `null` if you passed a callback ref).\n@see {@link https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom React Docs}",
+      "defaultValue": null,
+      "parent": "RefAttributes"
+    },
+    "key": {
+      "name": "key",
+      "required": false,
+      "type": {
+        "name": "Key | null | undefined"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "Attributes"
     }
   }
-};
-export default Button;
-export const component = Button;
+}

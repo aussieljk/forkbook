@@ -24,10 +24,8 @@ const getImports = async (code: string, packageName?: string, storyFilePath?: st
     csf: loadCsf(code, { makeTitle: (t?: string) => t ?? 'title' }).parse(),
     packageName,
     storyFilePath,
-    docgenEngine: 'react-docgen',
   });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return { components: components.map(({ reactDocgen, ...rest }) => rest), imports };
+  return { components, imports };
 };
 
 test('Get imports from multiple components', async () => {
@@ -53,7 +51,6 @@ test('Get imports from multiple components', async () => {
           "componentName": "Button",
           "importId": "@design-system/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 1,
           "localImportName": "Button",
@@ -69,7 +66,7 @@ test('Get imports from multiple components', async () => {
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import { Button } from '@design-system/button';",
         "import { ButtonGroup } from './button-group';",
       ],
     }
@@ -154,7 +151,6 @@ test('Default import', async () => {
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "default",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Button",
@@ -162,7 +158,7 @@ test('Default import', async () => {
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import Button from '@ds/button';",
       ],
     }
   `
@@ -186,7 +182,6 @@ test('Alias named import and meta.component inclusion', async () => {
           "componentName": "Btn",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 1,
           "localImportName": "Btn",
@@ -202,7 +197,7 @@ test('Alias named import and meta.component inclusion', async () => {
         },
       ],
       "imports": [
-        "import { Button as Btn } from '@design-system/components/override';",
+        "import { Button as Btn } from '@ds/button';",
         "import { Other } from './other';",
       ],
     }
@@ -226,7 +221,6 @@ test('Strip unused specifiers from the same import statement', async () => {
           "componentName": "Btn",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Btn",
@@ -234,7 +228,7 @@ test('Strip unused specifiers from the same import statement', async () => {
         },
       ],
       "imports": [
-        "import { Button as Btn } from '@design-system/components/override';",
+        "import { Button as Btn } from '@ds/button';",
       ],
     }
   `
@@ -288,7 +282,6 @@ test('Keeps multiple named specifiers and drops unused ones from same import', a
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 1,
           "localImportName": "Button",
@@ -304,7 +297,7 @@ test('Keeps multiple named specifiers and drops unused ones from same import', a
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import { Button } from '@ds/button';",
         "import { ButtonGroup } from './button-group';",
       ],
     }
@@ -328,7 +321,6 @@ test('Mixed default + named import: keep only default when only default used', a
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "default",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Button",
@@ -336,7 +328,7 @@ test('Mixed default + named import: keep only default when only default used', a
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import Button from '@ds/button';",
       ],
     }
   `
@@ -359,7 +351,6 @@ test('Mixed default + named import: keep only named when only named (alias) used
           "componentName": "Btn",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Btn",
@@ -367,7 +358,7 @@ test('Mixed default + named import: keep only named when only named (alias) used
         },
       ],
       "imports": [
-        "import { Button as Btn } from '@design-system/components/override';",
+        "import { Button as Btn } from '@ds/button';",
       ],
     }
   `
@@ -391,7 +382,6 @@ test('Per-specifier type import is dropped when mixing with value specifiers', a
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Button",
@@ -399,7 +389,7 @@ test('Per-specifier type import is dropped when mixing with value specifiers', a
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import { Button } from '@ds/button';",
       ],
     }
   `
@@ -462,7 +452,6 @@ test('Default import kept when referenced only via meta.component', async () => 
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "default",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": undefined,
           "localImportName": "Button",
@@ -470,7 +459,7 @@ test('Default import kept when referenced only via meta.component', async () => 
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import Button from '@ds/button';",
       ],
     }
   `
@@ -494,7 +483,6 @@ test('Side-effect-only import is ignored', async () => {
           "componentName": "Button",
           "importId": "@ds/button",
           "importName": "Button",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Button",
@@ -502,7 +490,7 @@ test('Side-effect-only import is ignored', async () => {
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import { Button } from '@ds/button';",
       ],
     }
   `
@@ -529,7 +517,6 @@ test('Converts default relative import to import override when provided', async 
           "componentName": "Button",
           "importId": "./Button",
           "importName": "default",
-          "importOverride": "import { Button } from '@design-system/components/override';",
           "isPackage": false,
           "jsxDepth": 0,
           "localImportName": "Button",
@@ -537,7 +524,7 @@ test('Converts default relative import to import override when provided', async 
         },
       ],
       "imports": [
-        "import { Button } from '@design-system/components/override';",
+        "import { Button } from 'my-package';",
       ],
     }
   `
@@ -589,7 +576,6 @@ test('Non-relative import remains unchanged even if packageName provided', async
           "componentName": "Header",
           "importId": "@ds/header",
           "importName": "Header",
-          "importOverride": undefined,
           "isPackage": true,
           "jsxDepth": 0,
           "localImportName": "Header",

@@ -1,4 +1,4 @@
-import { beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 
 import { Tag } from 'storybook/internal/core-server';
 
@@ -18,6 +18,18 @@ vi.mock(import('./utils.ts'), { spy: true });
 vi.mock('storybook/internal/common', { spy: true });
 vi.mock('empathic/find', { spy: true });
 vi.mock('tsconfig-paths', { spy: true });
+// A new tsgo session for each manifest run, so that it reads the memfs files of the test.
+vi.mock('./componentMetaManagerSingleton.ts', async () => {
+  const { createMemfsComponentMetaManager } = await import('./memfs-test-setup.ts');
+  let manager: ReturnType<typeof createMemfsComponentMetaManager> | undefined;
+  return {
+    getSharedComponentMetaManager: () => {
+      manager?.dispose();
+      manager = createMemfsComponentMetaManager();
+      return manager;
+    },
+  };
+});
 
 /** Call manifests with only the fields tests need (presets/watch are optional-chained at runtime). */
 type ManifestOptions = Parameters<typeof manifests>[1];
@@ -39,6 +51,11 @@ beforeEach(() => {
   setupMemfsMocks();
 });
 
+// Some tests replace `batchExtract`; the next test must use the real one.
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 test('manifests generates correct id, name, description and examples ', async () => {
   const manifestEntries = Object.values(indexJson.entries).filter(
     (entry) => entry.tags?.includes(Tag.MANIFEST) ?? false
@@ -51,7 +68,6 @@ test('manifests generates correct id, name, description and examples ', async ()
       "components": {
         "example-button": {
           "description": "Primary UI component for user interaction",
-          "error": undefined,
           "id": "example-button",
           "import": "import { Button } from '@design-system/components/override';
     import { fn } from 'storybook/test';",
@@ -62,85 +78,100 @@ test('manifests generates correct id, name, description and examples ', async ()
           },
           "name": "Button",
           "path": "./src/stories/Button.stories.ts",
-          "reactComponentMeta": undefined,
-          "reactDocgen": {
-            "actualName": "Button",
-            "definedInFile": "./src/stories/Button.tsx",
-            "description": "Primary UI component for user interaction
-    @import import { Button } from '@design-system/components/override';",
+          "reactComponentMeta": {
+            "description": "Primary UI component for user interaction",
             "displayName": "Button",
             "exportName": "Button",
-            "methods": [],
+            "filePath": "./src/stories/Button.tsx",
+            "jsDocTags": {
+              "import": [
+                "import { Button } from '@design-system/components/override';",
+              ],
+            },
             "props": {
               "backgroundColor": {
+                "defaultValue": null,
                 "description": "",
+                "name": "backgroundColor",
+                "parent": {
+                  "fileName": "src/stories/Button.tsx",
+                  "name": "ButtonProps",
+                },
                 "required": false,
-                "tsType": {
+                "type": {
                   "name": "string",
                 },
               },
               "label": {
+                "defaultValue": null,
                 "description": "",
+                "name": "label",
+                "parent": {
+                  "fileName": "src/stories/Button.tsx",
+                  "name": "ButtonProps",
+                },
                 "required": true,
-                "tsType": {
+                "type": {
                   "name": "string",
                 },
               },
               "onClick": {
+                "defaultValue": null,
                 "description": "",
+                "name": "onClick",
+                "parent": {
+                  "fileName": "src/stories/Button.tsx",
+                  "name": "ButtonProps",
+                },
                 "required": false,
-                "tsType": {
-                  "name": "signature",
-                  "raw": "() => void",
-                  "signature": {
-                    "arguments": [],
-                    "return": {
-                      "name": "void",
-                    },
-                  },
-                  "type": "function",
+                "type": {
+                  "name": "() => void",
                 },
               },
               "primary": {
                 "defaultValue": {
-                  "computed": false,
                   "value": "false",
                 },
                 "description": "Description of primary",
+                "name": "primary",
+                "parent": {
+                  "fileName": "src/stories/Button.tsx",
+                  "name": "ButtonProps",
+                },
                 "required": false,
-                "tsType": {
+                "type": {
                   "name": "boolean",
                 },
               },
               "size": {
                 "defaultValue": {
-                  "computed": false,
                   "value": "'medium'",
                 },
                 "description": "",
+                "name": "size",
+                "parent": {
+                  "fileName": "src/stories/Button.tsx",
+                  "name": "ButtonProps",
+                },
                 "required": false,
-                "tsType": {
-                  "elements": [
+                "type": {
+                  "name": "enum",
+                  "raw": ""small" | "medium" | "large"",
+                  "value": [
                     {
-                      "name": "literal",
-                      "value": "'small'",
+                      "value": ""small"",
                     },
                     {
-                      "name": "literal",
-                      "value": "'medium'",
+                      "value": ""medium"",
                     },
                     {
-                      "name": "literal",
-                      "value": "'large'",
+                      "value": ""large"",
                     },
                   ],
-                  "name": "union",
-                  "raw": "'small' | 'medium' | 'large'",
                 },
               },
             },
           },
-          "reactDocgenTypescript": undefined,
           "stories": [
             {
               "description": undefined,
@@ -175,7 +206,6 @@ test('manifests generates correct id, name, description and examples ', async ()
         },
         "example-header": {
           "description": "Description from meta and very long.",
-          "error": undefined,
           "id": "example-header",
           "import": "import { Header } from 'some-package';
     import { fn } from 'storybook/test';",
@@ -186,69 +216,67 @@ test('manifests generates correct id, name, description and examples ', async ()
           },
           "name": "Header",
           "path": "./src/stories/Header.stories.ts",
-          "reactComponentMeta": undefined,
-          "reactDocgen": {
-            "actualName": "",
-            "definedInFile": "./src/stories/Header.tsx",
+          "reactComponentMeta": {
             "description": "",
+            "displayName": "Header",
             "exportName": "default",
-            "methods": [],
+            "filePath": "./src/stories/Header.tsx",
+            "jsDocTags": {},
             "props": {
               "onCreateAccount": {
+                "defaultValue": null,
                 "description": "",
+                "name": "onCreateAccount",
+                "parent": {
+                  "fileName": "src/stories/Header.tsx",
+                  "name": "HeaderProps",
+                },
                 "required": false,
-                "tsType": {
-                  "name": "signature",
-                  "raw": "() => void",
-                  "signature": {
-                    "arguments": [],
-                    "return": {
-                      "name": "void",
-                    },
-                  },
-                  "type": "function",
+                "type": {
+                  "name": "() => void",
                 },
               },
               "onLogin": {
+                "defaultValue": null,
                 "description": "",
+                "name": "onLogin",
+                "parent": {
+                  "fileName": "src/stories/Header.tsx",
+                  "name": "HeaderProps",
+                },
                 "required": false,
-                "tsType": {
-                  "name": "signature",
-                  "raw": "() => void",
-                  "signature": {
-                    "arguments": [],
-                    "return": {
-                      "name": "void",
-                    },
-                  },
-                  "type": "function",
+                "type": {
+                  "name": "() => void",
                 },
               },
               "onLogout": {
+                "defaultValue": null,
                 "description": "",
+                "name": "onLogout",
+                "parent": {
+                  "fileName": "src/stories/Header.tsx",
+                  "name": "HeaderProps",
+                },
                 "required": false,
-                "tsType": {
-                  "name": "signature",
-                  "raw": "() => void",
-                  "signature": {
-                    "arguments": [],
-                    "return": {
-                      "name": "void",
-                    },
-                  },
-                  "type": "function",
+                "type": {
+                  "name": "() => void",
                 },
               },
               "user": {
+                "defaultValue": null,
                 "description": "",
+                "name": "user",
+                "parent": {
+                  "fileName": "src/stories/Header.tsx",
+                  "name": "HeaderProps",
+                },
                 "required": false,
-                "tsType": {
-                  "name": "User",
+                "type": {
+                  "name": "any",
                 },
               },
             },
           },
-          "reactDocgenTypescript": undefined,
           "stories": [
             {
               "description": undefined,
@@ -366,35 +394,35 @@ test('fall back to index title when no component name', async () => {
   expect(await getManifestForStory(code)).toMatchInlineSnapshot(`
     {
       "description": "Primary UI component for user interaction",
-      "error": undefined,
       "id": "example-button",
       "import": "import { Button } from 'some-package';",
       "jsDocTags": {},
       "name": "Button",
       "path": "./src/stories/Button.stories.ts",
-      "reactComponentMeta": undefined,
-      "reactDocgen": {
-        "actualName": "Button",
-        "definedInFile": "./src/stories/Button.tsx",
+      "reactComponentMeta": {
         "description": "Primary UI component for user interaction",
         "displayName": "Button",
         "exportName": "Button",
-        "methods": [],
+        "filePath": "./src/stories/Button.tsx",
+        "jsDocTags": {},
         "props": {
           "primary": {
             "defaultValue": {
-              "computed": false,
               "value": "false",
             },
             "description": "Description of primary",
+            "name": "primary",
+            "parent": {
+              "fileName": "src/stories/Button.tsx",
+              "name": "ButtonProps",
+            },
             "required": false,
-            "tsType": {
+            "type": {
               "name": "boolean",
             },
           },
         },
       },
-      "reactDocgenTypescript": undefined,
       "stories": [
         {
           "description": undefined,
@@ -416,35 +444,35 @@ test('component exported from other file', async () => {
   expect(await getManifestForStory(code)).toMatchInlineSnapshot(`
     {
       "description": "Primary UI component for user interaction",
-      "error": undefined,
       "id": "example-button",
       "import": "import { Button } from 'some-package';",
       "jsDocTags": {},
       "name": "Button",
       "path": "./src/stories/Button.stories.ts",
-      "reactComponentMeta": undefined,
-      "reactDocgen": {
-        "actualName": "Button",
-        "definedInFile": "./src/stories/Button.tsx",
+      "reactComponentMeta": {
         "description": "Primary UI component for user interaction",
         "displayName": "Button",
         "exportName": "Button",
-        "methods": [],
+        "filePath": "./src/stories/Button.tsx",
+        "jsDocTags": {},
         "props": {
           "primary": {
             "defaultValue": {
-              "computed": false,
               "value": "false",
             },
             "description": "Description of primary",
+            "name": "primary",
+            "parent": {
+              "fileName": "src/stories/Button.tsx",
+              "name": "ButtonProps",
+            },
             "required": false,
-            "tsType": {
+            "type": {
               "name": "boolean",
             },
           },
         },
       },
-      "reactDocgenTypescript": undefined,
       "stories": [
         {
           "error": {
@@ -471,35 +499,35 @@ test('unknown expressions', async () => {
   expect(await getManifestForStory(code)).toMatchInlineSnapshot(`
     {
       "description": "Primary UI component for user interaction",
-      "error": undefined,
       "id": "example-button",
       "import": "import { Button } from 'some-package';",
       "jsDocTags": {},
       "name": "Button",
       "path": "./src/stories/Button.stories.ts",
-      "reactComponentMeta": undefined,
-      "reactDocgen": {
-        "actualName": "Button",
-        "definedInFile": "./src/stories/Button.tsx",
+      "reactComponentMeta": {
         "description": "Primary UI component for user interaction",
         "displayName": "Button",
         "exportName": "Button",
-        "methods": [],
+        "filePath": "./src/stories/Button.tsx",
+        "jsDocTags": {},
         "props": {
           "primary": {
             "defaultValue": {
-              "computed": false,
               "value": "false",
             },
             "description": "Description of primary",
+            "name": "primary",
+            "parent": {
+              "fileName": "src/stories/Button.tsx",
+              "name": "ButtonProps",
+            },
             "required": false,
-            "tsType": {
+            "type": {
               "name": "boolean",
             },
           },
         },
       },
-      "reactDocgenTypescript": undefined,
       "stories": [
         {
           "error": {
@@ -592,7 +620,7 @@ test('includes declared subcomponents that are already used in JSX', async () =>
 
   expect(button?.subcomponents?.ButtonIcon?.name).toBe('ButtonIcon');
   expect(button?.subcomponents?.ButtonIcon?.path).toContain('ButtonIcon.tsx');
-  expect(button?.subcomponents?.ButtonIcon?.reactDocgen?.props?.tone).toBeDefined();
+  expect(button?.subcomponents?.ButtonIcon?.reactComponentMeta?.props?.tone).toBeDefined();
   expect(button?.subcomponents?.ButtonIcon?.description).toBe('Child item docs');
 });
 
@@ -656,7 +684,7 @@ test('includes declared subcomponents even when they are not used in JSX', async
   const result = await runManifests(manifestEntries);
   const button = result?.components?.components?.['example-button'] as any;
 
-  expect(button?.subcomponents?.ButtonIcon?.reactDocgen?.props?.textValue).toBeDefined();
+  expect(button?.subcomponents?.ButtonIcon?.reactComponentMeta?.props?.textValue).toBeDefined();
   expect(button?.subcomponents?.ButtonIcon?.description).toBe('Supplemental child docs');
 });
 
@@ -743,9 +771,6 @@ test('includes aliased member-expression subcomponents', async () => {
     apply: async (extension: string, config?: unknown) => {
       if (extension === 'typescript') {
         return {};
-      }
-      if (extension === 'features') {
-        return { experimentalReactComponentMeta: true };
       }
       return config;
     },
@@ -852,9 +877,6 @@ test('generator uses reactComponentMeta displayName from batch extraction', asyn
       if (extension === 'typescript') {
         return {};
       }
-      if (extension === 'features') {
-        return { experimentalReactComponentMeta: true };
-      }
       return config;
     },
   } as NonNullable<ManifestOptions['presets']>;
@@ -898,9 +920,6 @@ test('generator preserves @import override when reactComponentMeta is enabled', 
     apply: async (extension: string, config?: unknown) => {
       if (extension === 'typescript') {
         return {};
-      }
-      if (extension === 'features') {
-        return { experimentalReactComponentMeta: true };
       }
       return config;
     },
@@ -976,9 +995,6 @@ test('generator falls back to title-based matching when meta.component aliases a
     apply: async (extension: string, config?: unknown) => {
       if (extension === 'typescript') {
         return {};
-      }
-      if (extension === 'features') {
-        return { experimentalReactComponentMeta: true };
       }
       return config;
     },
@@ -1071,42 +1087,48 @@ test('should create component manifest when only attached-mdx docs have manifest
         "components": {
           "example-button": {
             "description": "Primary UI component for user interaction",
-            "error": undefined,
             "id": "example-button",
             "import": "import { Button } from 'some-package';",
             "jsDocTags": {},
             "name": "Button",
             "path": "./src/stories/Button.stories.ts",
-            "reactComponentMeta": undefined,
-            "reactDocgen": {
-              "actualName": "Button",
-              "definedInFile": "./src/stories/Button.tsx",
+            "reactComponentMeta": {
               "description": "Primary UI component for user interaction",
               "displayName": "Button",
               "exportName": "Button",
-              "methods": [],
+              "filePath": "./src/stories/Button.tsx",
+              "jsDocTags": {},
               "props": {
                 "label": {
+                  "defaultValue": null,
                   "description": "",
+                  "name": "label",
+                  "parent": {
+                    "fileName": "src/stories/Button.tsx",
+                    "name": "ButtonProps",
+                  },
                   "required": true,
-                  "tsType": {
+                  "type": {
                     "name": "string",
                   },
                 },
                 "primary": {
                   "defaultValue": {
-                    "computed": false,
                     "value": "false",
                   },
                   "description": "Description of primary",
+                  "name": "primary",
+                  "parent": {
+                    "fileName": "src/stories/Button.tsx",
+                    "name": "ButtonProps",
+                  },
                   "required": false,
-                  "tsType": {
+                  "type": {
                     "name": "boolean",
                   },
                 },
               },
             },
-            "reactDocgenTypescript": undefined,
             "stories": [],
             "summary": undefined,
           },

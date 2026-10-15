@@ -85,7 +85,5 @@ export {
 } from './manifest-formatter/markdown.ts';
 export {
   parseReactComponentMeta,
-  parseReactDocgen,
-  parseReactDocgenTypescript,
   type ParsedDocgen,
-} from './manifest-formatter/parse-react-docgen.ts';
+} from './manifest-formatter/parse-component-meta.ts';

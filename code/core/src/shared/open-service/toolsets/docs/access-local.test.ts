@@ -23,7 +23,7 @@ const manifests: RawManifests = {
   components: {
     v: 0,
     components: { button: { id: 'button', name: 'Button' } },
-    meta: { docgen: 'react-docgen', durationMs: 1 },
+    meta: { docgen: 'react-component-meta', durationMs: 1 },
   },
 };
 

@@ -4,7 +4,7 @@ import { dedent } from 'ts-dedent';
 
 import { extract } from './componentMetaExtractor.test-helpers.ts';
 
-describe('parent and declaration tracking', () => {
+describe('parent tracking', () => {
   it('attaches parent type info to props from named interfaces', async () => {
     const entry = await extract(
       'Button',
@@ -20,13 +20,12 @@ describe('parent and declaration tracking', () => {
       props: {
         label: {
           parent: { name: 'ButtonProps' },
-          declarations: [{ name: 'ButtonProps' }],
         },
       },
     });
   });
 
-  it('attaches declarations with TypeLiteral for inline types', async () => {
+  it('has no parent for props of an inline type', async () => {
     const entry = await extract(
       'Button',
       dedent`
@@ -34,13 +33,7 @@ describe('parent and declaration tracking', () => {
         export const Button = (props: { label: string }) => <button />;
       `
     );
-    expect(entry.component?.reactComponentMeta).toMatchObject({
-      props: {
-        label: {
-          declarations: [{ name: 'TypeLiteral' }],
-        },
-      },
-    });
+    expect(entry.component?.reactComponentMeta?.props.label.parent).toBeUndefined();
   });
 
   it('resolves parent through intersection type literals', async () => {
@@ -55,8 +48,8 @@ describe('parent and declaration tracking', () => {
     );
     expect(entry.component?.reactComponentMeta).toMatchObject({
       props: {
-        loading: { parent: { name: 'BaseProps' }, declarations: [{ name: 'TypeLiteral' }] },
-        variant: { parent: { name: 'ButtonProps' }, declarations: [{ name: 'TypeLiteral' }] },
+        loading: { parent: { name: 'BaseProps' } },
+        variant: { parent: { name: 'ButtonProps' } },
       },
     });
   });
@@ -77,9 +70,9 @@ describe('parent and declaration tracking', () => {
     );
     expect(entry.component?.reactComponentMeta).toMatchObject({
       props: {
-        as: { parent: { name: 'PolymorphicFC' }, declarations: [{ name: 'TypeLiteral' }] },
-        loading: { parent: { name: 'BaseProps' }, declarations: [{ name: 'TypeLiteral' }] },
-        variant: { parent: { name: 'ButtonProps' }, declarations: [{ name: 'TypeLiteral' }] },
+        as: { parent: { name: 'PolymorphicFC' } },
+        loading: { parent: { name: 'BaseProps' } },
+        variant: { parent: { name: 'ButtonProps' } },
       },
     });
   });
@@ -106,9 +99,9 @@ describe('parent and declaration tracking', () => {
     );
     expect(entry.component?.reactComponentMeta).toMatchObject({
       props: {
-        id: { parent: { name: 'BaseProps' }, declarations: [{ name: 'BaseProps' }] },
-        className: { parent: { name: 'StyleProps' }, declarations: [{ name: 'StyleProps' }] },
-        label: { parent: { name: 'ButtonProps' }, declarations: [{ name: 'TypeLiteral' }] },
+        id: { parent: { name: 'BaseProps' } },
+        className: { parent: { name: 'StyleProps' } },
+        label: { parent: { name: 'ButtonProps' } },
       },
     });
   });
@@ -130,8 +123,8 @@ describe('parent and declaration tracking', () => {
     );
     expect(entry.component?.reactComponentMeta).toMatchObject({
       props: {
-        id: { parent: { name: 'BaseProps' }, declarations: [{ name: 'BaseProps' }] },
-        label: { parent: { name: 'ButtonProps' }, declarations: [{ name: 'ButtonProps' }] },
+        id: { parent: { name: 'BaseProps' } },
+        label: { parent: { name: 'ButtonProps' } },
       },
     });
   });
@@ -151,7 +144,6 @@ describe('parent and declaration tracking', () => {
       props: {
         shared: {
           parent: { name: 'A' },
-          declarations: [{ name: 'A' }, { name: 'B' }],
         },
       },
     });
@@ -173,7 +165,6 @@ describe('parent and declaration tracking', () => {
       props: {
         variant: {
           parent: { name: 'ButtonProps', fileName: expect.any(String) },
-          declarations: [{ name: 'ButtonProps', fileName: expect.any(String) }],
         },
       },
     });

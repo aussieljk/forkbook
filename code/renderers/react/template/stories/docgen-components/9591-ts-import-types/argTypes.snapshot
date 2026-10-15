@@ -1,4 +1,23 @@
 {
+  "foo": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "foo",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": false,
+    },
+  },
   "other": {
     "control": {
       "type": "number",

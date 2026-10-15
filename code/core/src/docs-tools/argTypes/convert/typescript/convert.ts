@@ -52,7 +52,7 @@ export const convert = (type: TSType): SBType | void => {
       return { ...base, ...convertSig(type) };
     case 'union': {
       // `undefined` members (typically from optional props) are dropped from the options,
-      // while `null` members (emitted by react-docgen as `{ name: 'null' }`, not as literals)
+      // while `null` members (emitted as `{ name: 'null' }`, not as literals)
       // are kept as a selectable `null` option. At least one literal is required so that
       // e.g. `string | null` is not misclassified as an enum.
       const nonUndefinedElements = type.elements.filter((element) => !isUndefined(element));

@@ -1,4 +1,44 @@
 {
+  "children": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "children",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ReactNode",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ReactNode",
+    },
+  },
+  "onClick": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "onClick",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "MouseEventHandler<HTMLButtonElement>",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": false,
+      "value": "MouseEventHandler<HTMLButtonElement>",
+    },
+  },
   "spacing": {
     "control": {
       "type": "number",

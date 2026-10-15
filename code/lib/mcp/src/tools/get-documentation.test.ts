@@ -242,8 +242,8 @@ describe('getDocumentationTool', () => {
     });
   });
 
-  it('should include props section when reactDocgen is present', async () => {
-    const manifestWithReactDocgen = {
+  it('should include props section when reactComponentMeta is present', async () => {
+    const manifestWithComponentMeta = {
       // v0: this manifest inlines docgen/subcomponents/import, which is the inline format.
       // Labelling it v1 would strip them — a v1 row carries those behind `$ref`s instead.
       v: 0,
@@ -252,27 +252,18 @@ describe('getDocumentationTool', () => {
           id: 'button',
           name: 'Button',
           description: 'A button component',
-          reactDocgen: {
+          reactComponentMeta: {
             props: {
               variant: {
                 description: 'Button style variant',
                 required: false,
-                defaultValue: { value: '"primary"', computed: false },
-                tsType: {
-                  name: 'union',
-                  raw: '"primary" | "secondary"',
-                  elements: [
-                    { name: 'literal', value: '"primary"' },
-                    { name: 'literal', value: '"secondary"' },
-                  ],
-                },
+                defaultValue: { value: '"primary"' },
+                type: { name: 'enum', raw: '"primary" | "secondary"' },
               },
               disabled: {
                 description: 'Disable the button',
                 required: false,
-                tsType: {
-                  name: 'boolean',
-                },
+                type: { name: 'boolean' },
               },
             },
           },
@@ -280,7 +271,7 @@ describe('getDocumentationTool', () => {
       },
     };
 
-    served[''] = { componentManifest: manifestWithReactDocgen };
+    served[''] = { componentManifest: manifestWithComponentMeta };
 
     const request = {
       jsonrpc: '2.0' as const,

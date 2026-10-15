@@ -1,104 +1,47 @@
+import { readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-import { describe, expect, it, vi } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 
-import { normalizeNewlines } from 'storybook/internal/docs-tools';
-import type { Renderer } from 'storybook/internal/types';
+import type { Renderer, StoryContextForEnhancers } from 'storybook/internal/types';
 
-import { transformFileSync, transformSync } from '@babel/core';
-// @ts-expect-error (seems broken/missing)
-import requireFromString from 'require-from-string';
 import { inferControls } from 'storybook/preview-api';
 
-import { extractArgTypes } from './extractArgTypes.ts';
-import { extractProps } from './extractProps.ts';
-import type { StoryContextForEnhancers } from 'storybook/internal/types';
+import { ComponentMetaManager } from './componentManifest/componentMeta/ComponentMetaManager.ts';
+import { extractArgTypesFromComponentMeta } from './docgen/buildDocgen.ts';
 
-// File hierarchy:
-// __testfixtures__ / some-test-case / input.*
-const inputRegExp = /^input\..*$/;
+// Each folder has an `input.tsx` that exports the component as `component`.
+const fixturesDir = resolve(__dirname, '../template/stories/docgen-components');
+const manager = new ComponentMetaManager();
 
-const transformToModule = (inputCode: string) => {
-  const options = {
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          targets: {
-            esmodules: true,
-          },
-        },
-      ],
-    ],
-  };
-  const { code } = transformSync(inputCode, options) || {};
-  return normalizeNewlines(code || '');
-};
+afterAll(() => manager.dispose());
 
-const annotateWithDocgen = (inputPath: string) => {
-  const options = {
-    presets: ['@babel/typescript', '@babel/react'],
-    plugins: ['babel-plugin-react-docgen', '@babel/plugin-transform-class-properties'],
-    babelrc: false,
-  };
-  const { code } = transformFileSync(inputPath, options) || {};
-  return normalizeNewlines(code || '');
-};
+describe('react component properties', () => {
+  const fixtures = readdirSync(fixturesDir, { withFileTypes: true }).filter((entry) =>
+    entry.isDirectory()
+  );
 
-// We need to skip a set of test cases that use ESM code, as the `requireFromString`
-// code below does not support it. These stories will be tested via Chromatic in the
-// sandboxes. Hopefully we can figure out a better testing strategy in the future.
-const skippedTests = [
-  'js-class-component',
-  'js-function-component',
-  'js-re-exported-component',
-  'js-function-component-inline-defaults',
-  'js-function-component-inline-defaults-no-propTypes',
-  'ts-function-component',
-  'ts-function-component-inline-defaults',
-  'js-proptypes',
-];
+  it.each(fixtures.map((fixture) => fixture.name))('%s', async (name) => {
+    const fixtureDir = join(fixturesDir, name);
+    const doc = manager.extractFromFile(join(fixtureDir, 'input.tsx'), 'component');
+    expect(doc).toBeDefined();
 
-const fs = await vi.importActual<typeof import('node:fs')>('node:fs');
+    // File names differ between machines.
+    const props = Object.fromEntries(
+      Object.entries(doc!.props).map(([propName, prop]) => [
+        propName,
+        { ...prop, parent: prop.parent?.name },
+      ])
+    );
+    await expect(
+      JSON.stringify({ ...doc, filePath: undefined, props }, null, 2)
+    ).toMatchFileSnapshot(join(fixtureDir, 'docgen.snapshot'));
 
-describe('react component properties', async () => {
-  // Fixture files are in template/stories
-  const fixturesDir = resolve(__dirname, '../template/stories/docgen-components');
-
-  fs.readdirSync(fixturesDir, { withFileTypes: true }).forEach((testEntry) => {
-    if (testEntry.isDirectory()) {
-      const testDir = join(fixturesDir, testEntry.name);
-      const testFile = fs.readdirSync(testDir).find((fileName) => inputRegExp.test(fileName));
-      if (testFile) {
-        if (skippedTests.includes(testEntry.name)) {
-          it.skip(`${testEntry.name}`, () => {});
-        } else {
-          it(`${testEntry.name}`, async () => {
-            const inputPath = join(testDir, testFile);
-
-            // snapshot the output of babel-plugin-react-docgen
-            const docgenPretty = annotateWithDocgen(inputPath);
-            await expect(docgenPretty).toMatchFileSnapshot(join(testDir, 'docgen.snapshot'));
-
-            // transform into an uglier format that's works with require-from-string
-            const docgenModule = transformToModule(docgenPretty);
-
-            // snapshot the output of component-properties/react
-            const { component } = requireFromString(docgenModule, inputPath);
-            const properties = extractProps(component);
-            await expect(properties).toMatchFileSnapshot(join(testDir, 'properties.snapshot'));
-
-            // snapshot the output of `extractArgTypes`
-            const argTypes = extractArgTypes(component);
-            const parameters = { __isArgsStory: true };
-            const rows = inferControls({
-              argTypes,
-              parameters,
-            } as unknown as StoryContextForEnhancers<Renderer>);
-            await expect(rows).toMatchFileSnapshot(join(testDir, 'argTypes.snapshot'));
-          });
-        }
-      }
-    }
+    const argTypes = extractArgTypesFromComponentMeta(doc);
+    const rows = inferControls({
+      argTypes,
+      parameters: { __isArgsStory: true },
+    } as unknown as StoryContextForEnhancers<Renderer>);
+    await expect(rows).toMatchFileSnapshot(join(fixtureDir, 'argTypes.snapshot'));
   });
 });

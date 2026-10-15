@@ -1,4 +1,3 @@
-import type { ComponentDoc } from 'react-docgen-typescript';
 import type {
   AllManifests,
   ComponentManifest,
@@ -141,9 +140,6 @@ export type {
   SubcomponentManifest,
 } from 'storybook/internal/toolsets-docs';
 
-/** Component documentation from react-docgen-typescript, extended with export name. */
-export type ComponentDocWithExportName = ComponentDoc & { exportName: string };
-
 /**
  * Open-service payload contracts (the "core format") that Storybook's
  * `docgenServer` mode produces. `@storybook/mcp` adapts these into its
@@ -196,7 +192,7 @@ export type CoreStoryDocsPayload = {
 /**
  * Payload returned by the `core/docgen` service for one component. `argTypes` (a
  * UI-normalized view) is intentionally ignored by the adapter; prop types come
- * from `reactComponentMeta`/`react*` fields.
+ * from the `reactComponentMeta` field.
  */
 export type CoreDocgenPayload = {
   id: string;
@@ -207,8 +203,6 @@ export type CoreDocgenPayload = {
   jsDocTags?: Record<string, string[]>;
   import?: string;
   reactComponentMeta?: unknown;
-  reactDocgen?: unknown;
-  reactDocgenTypescript?: unknown;
   subcomponents?: Record<string, unknown>;
   error?: { name: string; message: string };
   [key: string]: unknown;

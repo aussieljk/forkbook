@@ -10,12 +10,7 @@ import {
 } from 'storybook/internal/csf-tools';
 
 import { getCodeSnippet } from './generateCodeSnippet.ts';
-import {
-  type ComponentRef,
-  type DocgenEngine,
-  type TypescriptOptions,
-  getComponents,
-} from './getComponentImports.ts';
+import { type ComponentRef, getComponents } from './getComponentImports.ts';
 import { findExactComponentMatch } from './subcomponents.ts';
 import { cachedReadTextFileSync } from './utils.ts';
 
@@ -105,10 +100,8 @@ export function findMatchingComponent(
 export async function resolveStoryFileComponents(options: {
   storyPath: string;
   title: string;
-  typescriptOptions?: Partial<TypescriptOptions>;
-  docgenEngine: DocgenEngine;
 }): Promise<ResolvedStoryFile> {
-  const { storyPath, title, typescriptOptions, docgenEngine } = options;
+  const { storyPath, title } = options;
 
   const storyFile = cachedReadTextFileSync(storyPath);
   const csf = loadCsf(storyFile, { makeTitle: () => title }).parse();
@@ -121,8 +114,6 @@ export async function resolveStoryFileComponents(options: {
     ),
     csf,
     storyFilePath: storyPath,
-    typescriptOptions,
-    docgenEngine,
   });
 
   const component = findMatchingComponent(allComponents, componentName, title);

@@ -1,48 +1,45 @@
-import React from 'react';
-export const Header = ({
-  size = 'a',
-  children
-}) => /*#__PURE__*/React.createElement("div", {
-  className: size
-}, children);
-export const Paragraph = ({
-  size,
-  children
-}) => /*#__PURE__*/React.createElement("div", {
-  className: size
-}, children);
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- we can't expect error as it isn't an error in 18 (development) but it is in 19 (sandbox)
-// @ts-ignore not present on react 19
-Paragraph.defaultProps = {
-  size: 'md'
-};
-export const component = Header;
-Header.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Header",
+  "jsDocTags": {},
   "props": {
     "size": {
-      "defaultValue": {
-        "value": "'a'",
-        "computed": false
+      "name": "size",
+      "required": false,
+      "type": {
+        "name": "enum",
+        "raw": "\"a\" | \"b\" | \"c\" | \"d\"",
+        "value": [
+          {
+            "value": "\"a\""
+          },
+          {
+            "value": "\"b\""
+          },
+          {
+            "value": "\"c\""
+          },
+          {
+            "value": "\"d\""
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'a'"
+      },
+      "parent": "ElemAProps"
+    },
+    "children": {
+      "name": "children",
+      "required": true,
+      "type": {
+        "name": "ReactNode"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "ElemAProps"
     }
   }
-};
-Paragraph.__docgenInfo = {
-  "description": "",
-  "methods": [],
-  "displayName": "Paragraph",
-  "props": {
-    "size": {
-      "defaultValue": {
-        "value": "'md'",
-        "computed": false
-      },
-      "required": false
-    }
-  }
-};
+}

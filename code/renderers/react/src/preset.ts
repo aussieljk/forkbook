@@ -3,24 +3,11 @@ import { fileURLToPath } from 'node:url';
 
 import { getProjectRoot } from 'storybook/internal/common';
 import type { ArgTypes } from 'storybook/internal/csf';
-import type { Options, PresetProperty } from 'storybook/internal/types';
+import type { PresetProperty } from 'storybook/internal/types';
 
 import { resolvePackageDir } from '../../../core/src/shared/utils/module.ts';
-import { extractArgTypesFromDocgen } from './componentManifest/reactDocgen/extractReactDocgenInfo.ts';
-import { extractArgTypesFromDocgenTypescript } from './componentManifest/reactDocgen/extractReactTypescriptDocgenInfo.ts';
-import type {
-  GetArgTypesDataOptions,
-  ReactDocgenConfig,
-} from './componentManifest/reactDocgen/utils.ts';
-
-type TypescriptOptionsWithDocgen = {
-  reactDocgen?: ReactDocgenConfig;
-  reactDocgenTypescriptOptions?: Record<string, unknown>;
-};
-
-interface InternalGetArgTypesDataOptions extends GetArgTypesDataOptions {
-  presets?: Options['presets'];
-}
+import { getSharedComponentMetaManager } from './componentManifest/componentMetaManagerSingleton.ts';
+import { extractArgTypesFromComponentMeta } from './docgen/buildDocgen.ts';
 
 export { manifests as experimental_manifests } from './componentManifest/generator.ts';
 
@@ -28,17 +15,9 @@ export { enrichCsf as experimental_enrichCsf } from './enrichCsf.ts';
 
 export { experimental_docgenProvider } from './docgen/preset.ts';
 
-// Turns `features.docgenServer` on by default; read through `presets.apply('isDocgenProviderEnabled')`
-// so the default never has to call the provider, which itself reads `features`. Server docgen runs on
-// the optional `typescript` peer, so a project without it keeps builder docgen.
-export const isDocgenProviderEnabled = () => {
-  try {
-    import.meta.resolve('typescript');
-    return true;
-  } catch {
-    return false;
-  }
-};
+// Turns `features.docgenServer` on; read through `presets.apply('isDocgenProviderEnabled')` so the
+// default never has to call the provider, which itself reads `features`.
+export const isDocgenProviderEnabled = () => true;
 
 export { experimental_storyDocsProvider } from './docgen/story-docs-preset.ts';
 
@@ -93,56 +72,20 @@ export const resolvedReact = async (existing: any) => {
   }
 };
 
+/** ArgTypes of a component export, for the component tests of `@storybook/addon-vitest`. */
 export async function internal_getArgTypesData(
   _input: unknown,
-  options: InternalGetArgTypesDataOptions
+  options: { componentFilePath?: string; componentExportName?: string }
 ): Promise<ArgTypes | null> {
-  const { componentFilePath, componentExportName, presets } = (options ??
-    {}) as InternalGetArgTypesDataOptions;
-
+  const { componentFilePath, componentExportName } = options ?? {};
   if (!componentFilePath) {
     return null;
   }
-
-  // Get typescript options from presets to determine which docgen to use
-  let typescriptOptions: TypescriptOptionsWithDocgen = {};
-  if (presets) {
-    try {
-      const appliedOptions = await presets.apply('typescript', {});
-      typescriptOptions = appliedOptions as TypescriptOptionsWithDocgen;
-    } catch {
-      // If typescript preset is not available, use defaults
-    }
-  }
-
-  const { reactDocgen = 'react-docgen', reactDocgenTypescriptOptions } = typescriptOptions;
-
-  // If docgen is disabled, return null
-  if (reactDocgen === false) {
-    return null;
-  }
-
-  const resolvedFilePath = path.isAbsolute(componentFilePath)
+  const filePath = path.isAbsolute(componentFilePath)
     ? componentFilePath
     : join(getProjectRoot(), componentFilePath);
-
-  // Choose the appropriate extractor based on the reactDocgen option
-  let argTypesData;
-  if (reactDocgen === 'react-docgen-typescript') {
-    argTypesData = await extractArgTypesFromDocgenTypescript({
-      componentFilePath: resolvedFilePath,
-      componentExportName,
-      reactDocgenTypescriptOptions,
-    });
-  } else {
-    // Default to 'react-docgen'
-    argTypesData = extractArgTypesFromDocgen({
-      componentFilePath: resolvedFilePath,
-      componentExportName,
-    });
-  }
-
-  return argTypesData;
+  const doc = getSharedComponentMetaManager()?.extractFromFile(filePath, componentExportName);
+  return extractArgTypesFromComponentMeta(doc) ?? null;
 }
 
 export const optimizeViteDeps: string[] = [

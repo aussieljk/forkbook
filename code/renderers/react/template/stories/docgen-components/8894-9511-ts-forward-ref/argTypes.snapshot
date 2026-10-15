@@ -1,9 +1,29 @@
 {
-  "disabled": {
+  "children": {
     "control": {
       "type": "object",
     },
-    "description": undefined,
+    "description": "Content of the button.",
+    "name": "children",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ReactNode",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ReactNode",
+    },
+  },
+  "disabled": {
+    "control": {
+      "type": "boolean",
+    },
+    "description": "Disables the button.",
     "name": "disabled",
     "table": {
       "defaultValue": {
@@ -13,19 +33,24 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "unknown",
+        "summary": "boolean",
       },
     },
     "type": {
+      "name": "boolean",
       "required": false,
     },
   },
   "variant": {
     "control": {
-      "type": "object",
+      "type": "radio",
     },
-    "description": undefined,
+    "description": "Sets the button size.",
     "name": "variant",
+    "options": [
+      "small",
+      "large",
+    ],
     "table": {
       "defaultValue": {
         "detail": undefined,
@@ -34,11 +59,17 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "unknown",
+        "summary": ""small" | "large"",
       },
     },
     "type": {
+      "name": "enum",
+      "raw": ""small" | "large"",
       "required": false,
+      "value": [
+        "small",
+        "large",
+      ],
     },
   },
 }

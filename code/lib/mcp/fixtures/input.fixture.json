@@ -6,86 +6,103 @@
     "description": "A flexible text input component that supports various input types, validation states, and accessibility features.\n\nThe Input component is a foundational form element that wraps the native HTML input with consistent styling and behavior. It includes support for labels, error messages, helper text, and different visual states.\n\n## Accessibility\n\nThe Input component automatically manages ARIA attributes for labels, descriptions, and error messages to ensure screen reader compatibility.",
     "summary": "A flexible text input component with validation support",
     "import": "import { Input } from '@storybook/design-system';",
-    "reactDocgen": {
+    "reactComponentMeta": {
       "props": {
         "type": {
+          "name": "type",
           "description": "The type of input field",
           "required": false,
-          "tsType": {
-            "name": "union",
-            "raw": "\"text\" | \"email\" | \"password\" | \"number\" | \"tel\" | \"url\"",
-            "elements": [
-              { "name": "literal", "value": "\"text\"" },
-              { "name": "literal", "value": "\"email\"" },
-              { "name": "literal", "value": "\"password\"" },
-              { "name": "literal", "value": "\"number\"" },
-              { "name": "literal", "value": "\"tel\"" },
-              { "name": "literal", "value": "\"url\"" }
-            ]
+          "type": {
+            "name": "\"text\" | \"email\" | \"password\" | \"number\" | \"tel\" | \"url\""
           },
-          "defaultValue": { "value": "\"text\"", "computed": false }
+          "defaultValue": {
+            "value": "\"text\""
+          }
         },
         "label": {
+          "name": "label",
           "description": "The label text for the input",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "placeholder": {
+          "name": "placeholder",
           "description": "Placeholder text shown when the input is empty",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "value": {
+          "name": "value",
           "description": "The controlled value of the input",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "defaultValue": {
+          "name": "defaultValue",
           "description": "The initial value for an uncontrolled input",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "disabled": {
+          "name": "disabled",
           "description": "Whether the input is disabled",
           "required": false,
-          "tsType": { "name": "boolean" },
-          "defaultValue": { "value": "false", "computed": false }
+          "type": {
+            "name": "boolean"
+          },
+          "defaultValue": {
+            "value": "false"
+          }
         },
         "required": {
+          "name": "required",
           "description": "Whether the input is required",
           "required": false,
-          "tsType": { "name": "boolean" },
-          "defaultValue": { "value": "false", "computed": false }
+          "type": {
+            "name": "boolean"
+          },
+          "defaultValue": {
+            "value": "false"
+          }
         },
         "error": {
+          "name": "error",
           "description": "Error message to display below the input",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "helperText": {
+          "name": "helperText",
           "description": "Helper text to display below the input",
           "required": false,
-          "tsType": { "name": "string" }
+          "type": {
+            "name": "string"
+          },
+          "defaultValue": null
         },
         "onChange": {
+          "name": "onChange",
           "description": "Callback function when the input value changes",
           "required": false,
-          "tsType": {
-            "name": "signature",
-            "type": "function",
-            "signature": {
-              "arguments": [
-                {
-                  "name": "event",
-                  "type": {
-                    "name": "ChangeEvent",
-                    "elements": [{ "name": "HTMLInputElement" }]
-                  }
-                }
-              ],
-              "return": { "name": "void" }
-            }
-          }
+          "type": {
+            "name": "(event: ChangeEvent<HTMLInputElement>) => void"
+          },
+          "defaultValue": null
         }
       }
     },

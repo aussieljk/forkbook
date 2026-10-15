@@ -1,151 +1,262 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`react component properties ts-function-component-inline-defaults 1`] = `
-"import React from 'react';
-import { imported } from '../imported';
-const local = 'local-value';
-var GlobalNames;
-
-(function (GlobalNames) {
-  GlobalNames[\\"top\\"] = \\"top\\";
-  GlobalNames[\\"left\\"] = \\"left\\";
-})(GlobalNames || (GlobalNames = {}));
-
-/**
- * A component that renders its props
- */
-export const PropsWriter = ({
-  numberOptional = 1,
-  stringOptional = 'stringOptional',
-  booleanOptional = false,
-  arrayOptional = ['array', 'optional'],
-  objectOptional = {
-    object: 'optional'
-  },
-  functionOptional = () => 'foo',
-  dateOptional = new Date('20 Jan 1983'),
-  localReference = local,
-  importedReference = imported,
-  globalReference = Date,
-  stringGlobalName = 'top',
-  unionGlobalName = 'top',
-  // If we use this default value, controls will try and render it in a JSON object editor
-  // which leads to a circular value error.
-  // unionGlobalNameMixed = 'top',
-  enumGlobalName = 'top'
-}) => /*#__PURE__*/React.createElement(\\"pre\\", null, JSON.stringify({
-  numberOptional,
-  stringOptional,
-  booleanOptional,
-  arrayOptional,
-  objectOptional,
-  functionOptional,
-  dateOptional,
-  localReference,
-  importedReference,
-  globalReference,
-  stringGlobalName,
-  unionGlobalName,
-  // unionGlobalNameMixed,
-  enumGlobalName
-}));
-export const component = PropsWriter;
-PropsWriter.__docgenInfo = {
-  \\"description\\": \\"A component that renders its props\\",
-  \\"methods\\": [],
-  \\"displayName\\": \\"PropsWriter\\",
-  \\"props\\": {
-    \\"numberOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"1\\",
-        \\"computed\\": false
+{
+  "displayName": "component",
+  "exportName": "component",
+  "description": "",
+  "jsDocTags": {},
+  "props": {
+    "numberRequired": {
+      "name": "numberRequired",
+      "required": true,
+      "type": {
+        "name": "number"
       },
-      \\"required\\": false
+      "description": "Description",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"stringOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'stringOptional'\\",
-        \\"computed\\": false
+    "numberOptional": {
+      "name": "numberOptional",
+      "required": false,
+      "type": {
+        "name": "number"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "1"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"booleanOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"false\\",
-        \\"computed\\": false
+    "stringRequired": {
+      "name": "stringRequired",
+      "required": true,
+      "type": {
+        "name": "string"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"arrayOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"['array', 'optional']\\",
-        \\"computed\\": false
+    "stringOptional": {
+      "name": "stringOptional",
+      "required": false,
+      "type": {
+        "name": "string"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "'stringOptional'"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"objectOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"{ object: 'optional' }\\",
-        \\"computed\\": false
+    "booleanRequired": {
+      "name": "booleanRequired",
+      "required": true,
+      "type": {
+        "name": "boolean"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"functionOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"() => 'foo'\\",
-        \\"computed\\": false
+    "booleanOptional": {
+      "name": "booleanOptional",
+      "required": false,
+      "type": {
+        "name": "boolean"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "false"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"dateOptional\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"new Date('20 Jan 1983')\\",
-        \\"computed\\": false
+    "arrayRequired": {
+      "name": "arrayRequired",
+      "required": true,
+      "type": {
+        "name": "string[]"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"localReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'local-value'\\",
-        \\"computed\\": false
+    "arrayOptional": {
+      "name": "arrayOptional",
+      "required": false,
+      "type": {
+        "name": "string[]"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "['array', 'optional']"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"importedReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"imported\\",
-        \\"computed\\": true
+    "objectRequired": {
+      "name": "objectRequired",
+      "required": true,
+      "type": {
+        "name": "Record<string, string>"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"globalReference\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"Date\\",
-        \\"computed\\": true
+    "objectOptional": {
+      "name": "objectOptional",
+      "required": false,
+      "type": {
+        "name": "Record<string, string>"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ object: 'optional' }"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"stringGlobalName\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'top'\\",
-        \\"computed\\": false
+    "functionRequired": {
+      "name": "functionRequired",
+      "required": true,
+      "type": {
+        "name": "() => string"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
     },
-    \\"unionGlobalName\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'top'\\",
-        \\"computed\\": false
+    "functionOptional": {
+      "name": "functionOptional",
+      "required": false,
+      "type": {
+        "name": "() => string"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": {
+        "value": "() => 'foo'"
+      },
+      "parent": "PropsWriterProps"
     },
-    \\"enumGlobalName\\": {
-      \\"defaultValue\\": {
-        \\"value\\": \\"'top'\\",
-        \\"computed\\": false
+    "dateRequired": {
+      "name": "dateRequired",
+      "required": true,
+      "type": {
+        "name": "Date"
       },
-      \\"required\\": false
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
+    },
+    "dateOptional": {
+      "name": "dateOptional",
+      "required": false,
+      "type": {
+        "name": "Date"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "new Date('20 Jan 1983')"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "localReference": {
+      "name": "localReference",
+      "required": false,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "'local-value'"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "importedReference": {
+      "name": "importedReference",
+      "required": false,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "imported"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "globalReference": {
+      "name": "globalReference",
+      "required": false,
+      "type": {
+        "name": "any"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "Date"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "stringGlobalName": {
+      "name": "stringGlobalName",
+      "required": false,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "'top'"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "unionGlobalName": {
+      "name": "unionGlobalName",
+      "required": false,
+      "type": {
+        "name": "enum",
+        "raw": "\"top\" | \"left\"",
+        "value": [
+          {
+            "value": "\"top\""
+          },
+          {
+            "value": "\"left\""
+          }
+        ]
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "'top'"
+      },
+      "parent": "PropsWriterProps"
+    },
+    "unionGlobalNameMixed": {
+      "name": "unionGlobalNameMixed",
+      "required": false,
+      "type": {
+        "name": "number | \"top\" | undefined"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "PropsWriterProps"
+    },
+    "enumGlobalName": {
+      "name": "enumGlobalName",
+      "required": false,
+      "type": {
+        "name": "enum",
+        "raw": "GlobalNames.top | GlobalNames.left",
+        "value": [
+          {
+            "value": "\"top\""
+          },
+          {
+            "value": "\"left\""
+          }
+        ]
+      },
+      "description": "",
+      "defaultValue": {
+        "value": "'top'"
+      },
+      "parent": "PropsWriterProps"
     }
   }
-};"
-`;
+}

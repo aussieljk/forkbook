@@ -10,21 +10,13 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "{ width: number; height: number }",
+        "summary": "{ width: number; height: number; }",
       },
     },
     "type": {
-      "name": "object",
-      "raw": "{ width: number; height: number }",
+      "name": "other",
       "required": true,
-      "value": {
-        "height": {
-          "name": "number",
-        },
-        "width": {
-          "name": "number",
-        },
-      },
+      "value": "{ width: number; height: number; }",
     },
   },
 }

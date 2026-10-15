@@ -67,20 +67,15 @@
   ],
   "dependencies": {
     "@storybook/global": "^5.0.0",
-    "react-docgen": "^8.0.2",
-    "react-docgen-typescript": "^2.2.2"
+    "typescript-native": "npm:typescript@^7.0.2"
   },
   "devDependencies": {
-    "@types/babel-plugin-react-docgen": "^4.2.3",
     "@types/escodegen": "^0.0.6",
     "@types/estree": "^1.0.6",
     "@types/node": "^22.19.1",
-    "@volar/language-core": "~2.4.28",
-    "@volar/typescript": "~2.4.28",
     "acorn": "^8.15.0",
     "acorn-jsx": "^5.3.1",
     "acorn-walk": "^7.2.0",
-    "babel-plugin-react-docgen": "^4.2.1",
     "comment-parser": "^1.4.1",
     "empathic": "^2.0.0",
     "es-toolkit": "^1.43.0",
@@ -90,7 +85,6 @@
     "memfs": "4.56.11",
     "prop-types": "^15.7.2",
     "react-element-to-jsx-string": "npm:@7rulnik/react-element-to-jsx-string@15.0.1",
-    "require-from-string": "^2.0.2",
     "ts-dedent": "^2.0.0",
     "type-fest": "^5.6.0"
   },
@@ -99,17 +93,13 @@
     "@types/react-dom": "^18.0.0 || ^19.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "storybook": "workspace:^",
-    "typescript": "^5.9.0 || ^6.0.0"
+    "storybook": "workspace:^"
   },
   "peerDependenciesMeta": {
     "@types/react": {
       "optional": true
     },
     "@types/react-dom": {
-      "optional": true
-    },
-    "typescript": {
       "optional": true
     }
   },

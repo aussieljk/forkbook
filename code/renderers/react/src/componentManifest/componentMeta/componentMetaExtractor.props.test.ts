@@ -258,6 +258,8 @@ describe('prop extraction', () => {
       });
     });
 
+    // Tsgo sorts the members of a template literal union, and the source has no list of the members
+    // to give the order back.
     it('extracts template literal type as enum', async () => {
       const entry = await extract(
         'Token',
@@ -274,7 +276,7 @@ describe('prop extraction', () => {
           token: {
             type: {
               name: 'enum',
-              value: [{ value: '"color-red"' }, { value: '"color-blue"' }],
+              value: [{ value: '"color-blue"' }, { value: '"color-red"' }],
             },
           },
         },

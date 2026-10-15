@@ -1,20 +1,30 @@
-import React from 'react';
-export const Text = ({
-  padding = '0',
-  margin
-}) => /*#__PURE__*/React.createElement(React.Fragment, null, "Text");
-export const component = Text;
-Text.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Text",
+  "jsDocTags": {},
   "props": {
     "padding": {
-      "defaultValue": {
-        "value": "'0'",
-        "computed": false
+      "name": "padding",
+      "required": true,
+      "type": {
+        "name": "string"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'0'"
+      },
+      "parent": "Props"
+    },
+    "margin": {
+      "name": "margin",
+      "required": true,
+      "type": {
+        "name": "number"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "Props"
     }
   }
-};
+}

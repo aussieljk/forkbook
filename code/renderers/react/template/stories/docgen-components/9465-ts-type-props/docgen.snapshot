@@ -1,26 +1,20 @@
-import React from 'react';
-const Component = ({
-  disabled = false,
-  children
-}) => /*#__PURE__*/React.createElement("button", {
-  disabled: disabled
-}, children);
-export const component = Component;
-Component.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Component",
+  "jsDocTags": {},
   "props": {
     "disabled": {
-      "defaultValue": {
-        "value": "false",
-        "computed": false
-      },
+      "name": "disabled",
       "required": false,
-      "tsType": {
+      "type": {
         "name": "boolean"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": {
+        "value": "false"
+      },
+      "parent": "ButtonHTMLAttributes"
     }
   }
-};
+}

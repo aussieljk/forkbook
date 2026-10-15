@@ -1,1 +1,21 @@
-{}
+{
+  "text": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "text",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": true,
+    },
+  },
+}

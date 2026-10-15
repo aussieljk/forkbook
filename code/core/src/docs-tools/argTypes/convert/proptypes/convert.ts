@@ -47,9 +47,7 @@ export const convert = (type: PTType): SBType | any => {
     case 'elementType':
     default: {
       if (name?.indexOf('|') > 0) {
-        // react-docgen-typescript-plugin doesn't always produce enum-like unions
-        // (like if a user has turned off shouldExtractValuesFromUnion) so here we
-        // try to recover and construct one.
+        // A union of literals that is not an enum: try to construct one.
         try {
           const literalValues = name.split('|').map((v: string) => JSON.parse(v));
           return { ...base, name: 'enum', value: literalValues };

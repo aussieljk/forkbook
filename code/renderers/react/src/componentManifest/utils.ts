@@ -2,12 +2,16 @@
 import { readFileSync, statSync } from 'node:fs';
 
 import {
+  findTsconfigPathForPath,
   findTsconfigPath as findTsconfigPathCommon,
+  getTsconfigPathsBaseDir,
   resolveImport,
+  supportedExtensions,
 } from 'storybook/internal/common';
 import { logger } from 'storybook/internal/node-logger';
 
 import * as find from 'empathic/find';
+import * as TsconfigPaths from 'tsconfig-paths';
 
 export const groupBy = <K extends PropertyKey, T>(
   items: T[],
@@ -212,3 +216,27 @@ export const findTsconfigPath = cached(
     name: 'findTsconfigPath',
   }
 );
+
+const getTsconfigPaths = cached(
+  (path: string) => {
+    const tsconfigPath = findTsconfigPathForPath(path);
+    return tsconfigPath
+      ? TsconfigPaths.loadConfig(tsconfigPath)
+      : { resultType: 'failed' as const, message: "Couldn't find tsconfig.json" };
+  },
+  { name: 'getTsconfigPaths' }
+);
+
+/** Maps an import id through the `paths` of the nearest tsconfig, for example `@/Button`. */
+export function matchPath(id: string, importerPath: string = process.cwd()) {
+  const tsconfig = getTsconfigPaths(importerPath);
+  if (tsconfig.resultType !== 'success') {
+    return id;
+  }
+  const match = TsconfigPaths.createMatchPath(
+    getTsconfigPathsBaseDir(tsconfig.configFileAbsolutePath),
+    tsconfig.paths,
+    ['browser', 'module', 'main']
+  );
+  return match(id, undefined, undefined, supportedExtensions) ?? id;
+}

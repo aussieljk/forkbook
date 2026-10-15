@@ -1,18 +1,18 @@
-import React from 'react';
-export const FooComponent = foo => /*#__PURE__*/React.createElement(React.Fragment, null, JSON.stringify(foo));
-export const component = FooComponent;
-FooComponent.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "FooComponent",
+  "jsDocTags": {},
   "props": {
     "bar": {
+      "name": "bar",
       "required": true,
-      "tsType": {
-        "name": "Foo['bar']",
-        "raw": "Foo['bar']"
+      "type": {
+        "name": "number"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": null,
+      "parent": "FooProps"
     }
   }
-};
+}

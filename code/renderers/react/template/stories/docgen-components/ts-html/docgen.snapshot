@@ -1,8 +1,18 @@
-import React from 'react';
-export const TypeScriptHtmlComponent = () => /*#__PURE__*/React.createElement("div", null, "My HTML component");
-export const component = TypeScriptHtmlComponent;
-TypeScriptHtmlComponent.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "TypeScriptHtmlComponent"
-};
+  "jsDocTags": {},
+  "props": {
+    "text": {
+      "name": "text",
+      "required": true,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptHtmlComponentProps"
+    }
+  }
+}

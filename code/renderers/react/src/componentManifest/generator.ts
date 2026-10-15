@@ -7,13 +7,9 @@ import { type PresetPropertyFn, type StorybookConfigRaw } from 'storybook/intern
 
 import path from 'pathe';
 
-import {
-  type DocgenEngine,
-  buildReactComponentDocgenFromResolved,
-} from './buildReactComponentDocgen.ts';
+import { buildReactComponentDocgenFromResolved } from './buildReactComponentDocgen.ts';
 import { getSharedComponentMetaManager } from './componentMetaManagerSingleton.ts';
-import { type ComponentRef, type TypescriptOptions } from './getComponentImports.ts';
-import { invalidateParser } from './reactDocgenTypescript.ts';
+import { type ComponentRef } from './getComponentImports.ts';
 import { resolveStoryFileComponents } from './resolveComponents.ts';
 import { invalidateCache } from './utils.ts';
 
@@ -22,9 +18,7 @@ export const manifests: PresetPropertyFn<
   StorybookConfigRaw,
   { manifestEntries: IndexEntry[]; watch: boolean }
 > = async (existingManifests = {}, options) => {
-  const { manifestEntries, presets, watch } = options;
-  const typescriptOptions =
-    (await presets?.apply<Partial<TypescriptOptions>>('typescript', {})) ?? {};
+  const { manifestEntries, presets } = options;
   const features = await presets?.apply('features', {});
 
   if (features?.docgenServer) {
@@ -44,16 +38,10 @@ export const manifests: PresetPropertyFn<
     };
   }
 
-  const docgenEngine: DocgenEngine = features?.experimentalReactComponentMeta
-    ? 'react-component-meta'
-    : typescriptOptions.reactDocgen || 'react-docgen';
-
   invalidateCache();
-  invalidateParser();
 
   const startTime = performance.now();
-  const manager =
-    docgenEngine === 'react-component-meta' ? await getSharedComponentMetaManager() : undefined;
+  const manager = getSharedComponentMetaManager();
 
   const entriesByUniqueComponent = [
     ...selectComponentEntriesByComponentId(manifestEntries).values(),
@@ -70,15 +58,13 @@ export const manifests: PresetPropertyFn<
       const resolved = await resolveStoryFileComponents({
         storyPath,
         title: entry.title,
-        typescriptOptions,
-        docgenEngine,
       });
       return { entry, storyFilePath, ...resolved };
     })
   );
 
-  // Step 2: Batch extract rcm props (one TS program build per tsconfig project)
-  if (docgenEngine === 'react-component-meta' && manager) {
+  // Step 2: Extract the props of all components in one tsgo snapshot
+  if (manager) {
     manager.batchExtract(
       resolvedEntries.flatMap(({ storyPath, component, subcomponents }) => [
         ...(component ? [{ storyPath, component }] : []),
@@ -120,17 +106,10 @@ export const manifests: PresetPropertyFn<
           component,
           allComponents,
           subcomponents,
-          docgenEngine,
           filterStoryIds: manifestEntryIds,
         })
     )
     .filter((component) => component !== undefined);
-
-  // Start watching AFTER extraction — projects and TS programs are now populated,
-  // so watchProgramSourceDirs() can discover all source file directories.
-  if (manager && watch) {
-    manager.startWatching();
-  }
 
   const durationMs = Math.round(performance.now() - startTime);
 
@@ -140,7 +119,7 @@ export const manifests: PresetPropertyFn<
       v: 0,
       components: Object.fromEntries(components.map((component) => [component.id, component])),
       meta: {
-        docgen: docgenEngine,
+        docgen: 'react-component-meta',
         durationMs,
       },
     },

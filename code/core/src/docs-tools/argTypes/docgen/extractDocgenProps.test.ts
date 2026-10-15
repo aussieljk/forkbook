@@ -74,58 +74,6 @@ TypeSystems.forEach((x) => {
     });
 
     if (x === TypeSystems[0]) {
-      // NOTE: `react-docgen-typescript currently doesn't serialize string as expected
-      it('should map defaults docgen info properly, RDT broken strings', () => {
-        const component = createComponent({
-          ...createStringType(x),
-          description: 'Hey! Hey!',
-          defaultValue: {
-            value: 'Default',
-          },
-        });
-
-        const { propDef } = extractComponentProps(component, DOCGEN_SECTION)[0];
-
-        expect(propDef.name).toBe(PROP_NAME);
-        expect(propDef.type?.summary).toBe('string');
-        expect(propDef.description).toBe('Hey! Hey!');
-        expect(propDef.required).toBe(false);
-        expect(propDef.defaultValue?.summary).toBe('"Default"');
-      });
-
-      it('should not quote string defaults twice when the value is already quoted', () => {
-        const component = createComponent({
-          ...createStringType(x),
-          defaultValue: {
-            value: "'Default'",
-          },
-        });
-
-        const { propDef } = extractComponentProps(component, DOCGEN_SECTION)[0];
-
-        expect(propDef.defaultValue?.summary).toBe("'Default'");
-      });
-
-      it('should map defaults docgen info properly, RDT broken enums', () => {
-        const component = createComponent({
-          [x.typeProperty]: createType('enum', {
-            value: [{ value: '"Default"' }, { value: '"Other"' }],
-          }),
-          description: 'Hey! Hey!',
-          defaultValue: {
-            value: 'Default',
-          },
-        });
-
-        const { propDef } = extractComponentProps(component, DOCGEN_SECTION)[0];
-
-        expect(propDef.name).toBe(PROP_NAME);
-        expect(propDef.type?.summary).toBe('enum');
-        expect(propDef.description).toBe('Hey! Hey!');
-        expect(propDef.required).toBe(false);
-        expect(propDef.defaultValue?.summary).toBe('"Default"');
-      });
-
       it('should map defaults docgen info properly, vue', () => {
         const component = createComponent({
           ...createStringType(x),

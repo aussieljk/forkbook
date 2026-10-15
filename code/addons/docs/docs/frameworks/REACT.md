@@ -15,7 +15,7 @@ To learn more about Storybook Docs, read the [general documentation](../README.m
 - [Props tables](#props-tables)
 - [MDX](#mdx)
 - [Inline stories](#inline-stories)
-- [TypeScript props with `react-docgen-typescript`](#typescript-props-with-react-docgen-typescript)
+- [TypeScript props](#typescript-props)
 - [More resources](#more-resources)
 
 ## Installation
@@ -97,37 +97,9 @@ To do so for all stories, update `.storybook/preview.js`:
 export const parameters = { docs: { story: { inline: false } } };
 ```
 
-## TypeScript props with `react-docgen-typescript`
+## TypeScript props
 
-If you're using TypeScript, there are two different options for generating props: `react-docgen` (default) or `react-docgen-typescript`.
-
-You can add the following lines to your `.storybook/main.js` to switch between the two (or disable docgen):
-
-```js
-export default {
-  typescript: {
-    // also valid 'react-docgen' | false
-    reactDocgen: 'react-docgen-typescript',
-  },
-};
-```
-
-Neither option is perfect, so here's everything you should know if you're thinking about using `react-docgen` for TypeScript.
-
-|                 | `react-docgen-typescript`                                                                                                 | `react-docgen`                                                                                        |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Features**    | **Great**. The analysis produces great results which gives the best props table experience.                               | **OK**. React-docgen produces basic results that are fine for most use cases.                         |
-| **Performance** | **Slow**. It's doing a lot more work to produce those results, and may also have an inefficient implementation.           | **Blazing fast**. Adding it to your project increases build time negligibly.                          |
-| **Bugs**        | **Some**. There are corner cases that are not handled properly, and are annoying for developers.                          | **Some**. There are corner cases that are not handled properly, and are annoying for developers.      |
-| **SB docs**     | **Good**. Our prop tables have supported `react-docgen-typescript` results from the beginning, so it's relatively stable. | **OK**. There are some obvious improvements to fully support `react-docgen`, and they're coming soon. |
-
-**Performance** is a common question, so here are build times from a random project to quantify. Your mileage may vary:
-
-| Docgen                  | Build time |
-| ----------------------- | ---------- |
-| react-docgen-typescript | 33s        |
-| react-docgen            | 29s        |
-| none                    | 28s        |
+Storybook reads the props of your components with the TypeScript 7 native compiler (`tsgo`). It reads the prop types, default values and JSDoc comments. You do not need to configure it.
 
 ## More resources
 

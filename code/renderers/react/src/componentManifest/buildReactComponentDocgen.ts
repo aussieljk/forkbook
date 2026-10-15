@@ -16,8 +16,6 @@ import path from 'pathe';
 
 import type { ComponentDoc, PropItem } from './componentMeta/componentMetaExtractor.ts';
 import type { ComponentRef } from './getComponentImports.ts';
-import { type DocObj } from './reactDocgen.ts';
-import { type ComponentDocWithExportName } from './reactDocgenTypescript.ts';
 import {
   type ParsedCsf,
   type ResolvedSubcomponent,
@@ -25,28 +23,22 @@ import {
 } from './resolveComponents.ts';
 import { cachedFindUp, cachedReadTextFileSync } from './utils.ts';
 
-export type DocgenEngine = 'react-docgen' | 'react-docgen-typescript' | 'react-component-meta';
-
 // One instance per process, so the module-resolution cache is shared; each build opens its own.
 const openStoryReferences = createStoryReferenceResolver();
 
-/** React subcomponent manifest with engine-specific docgen fields attached. */
+/** React subcomponent manifest with the docgen attached. */
 export interface ReactSubcomponentManifest extends ComponentSubcomponentManifest {
-  reactDocgen?: DocObj;
-  reactDocgenTypescript?: ComponentDocWithExportName;
   reactComponentMeta?: ComponentDoc;
   [key: string]: unknown;
 }
 
 /**
- * React component manifest with engine-specific docgen fields attached.
+ * React component manifest with the docgen attached.
  *
  * This is the output shape for both the experimental components manifest and the docgen open
  * service provider — there is no separate mapping step between "resolved docgen" and "manifest".
  */
 export interface ReactComponentManifest extends ComponentManifest {
-  reactDocgen?: DocObj;
-  reactDocgenTypescript?: ComponentDocWithExportName;
   reactComponentMeta?: ComponentDoc;
   subcomponents?: Record<string, ReactSubcomponentManifest>;
   [key: string]: unknown;
@@ -96,10 +88,6 @@ function relativizeComponentMetaPaths(doc: ComponentDoc): ComponentDoc {
     parent: prop.parent
       ? { ...prop.parent, fileName: relativize(prop.parent.fileName) }
       : prop.parent,
-    declarations: prop.declarations?.map((declaration) => ({
-      ...declaration,
-      fileName: relativize(declaration.fileName),
-    })),
   });
 
   return {
@@ -110,51 +98,25 @@ function relativizeComponentMetaPaths(doc: ComponentDoc): ComponentDoc {
   };
 }
 
-function getComponentDocgenData(component: ComponentRef | undefined, docgenEngine: DocgenEngine) {
-  let reactDocgen;
-  let reactDocgenTypescript;
-  let reactComponentMeta;
-  let docgenDescription;
-  let docgenJsDocTags;
-  let docgenError;
-
-  if (docgenEngine === 'react-docgen') {
-    const result = component?.reactDocgen;
-    reactDocgen = result?.type === 'success' ? result.data : undefined;
-    docgenDescription = reactDocgen?.description;
-    docgenError = result?.type === 'error' ? result.error : undefined;
-  } else if (docgenEngine === 'react-docgen-typescript') {
-    reactDocgenTypescript = component?.reactDocgenTypescript;
-    docgenDescription = reactDocgenTypescript?.description;
-    docgenError = component?.reactDocgenTypescriptError;
-  } else {
-    reactComponentMeta = component?.reactComponentMeta
-      ? relativizeComponentMetaPaths(component.reactComponentMeta)
-      : undefined;
-    docgenDescription = reactComponentMeta?.description;
-    docgenJsDocTags = component?.componentJsDocTags;
-  }
-
+function getComponentDocgenData(component: ComponentRef | undefined) {
+  const reactComponentMeta = component?.reactComponentMeta
+    ? relativizeComponentMetaPaths(component.reactComponentMeta)
+    : undefined;
   return {
-    docgenDescription,
-    docgenError,
-    docgenJsDocTags,
     reactComponentMeta,
-    reactDocgen,
-    reactDocgenTypescript,
+    docgenDescription: reactComponentMeta?.description,
+    docgenJsDocTags: component?.componentJsDocTags,
   };
 }
 
 function createSubcomponentDocgen({
   component,
   declaredName,
-  docgenEngine,
   packageName,
   storyFilePath,
 }: {
   component: ComponentRef | undefined;
   declaredName: string;
-  docgenEngine: DocgenEngine;
   packageName: string | undefined;
   storyFilePath: string;
 }): ReactSubcomponentManifest {
@@ -162,14 +124,8 @@ function createSubcomponentDocgen({
     buildImportStatements({ refs: component ? [component] : [], packageName })
       .join('\n')
       .trim() || getFallbackImport(packageName, component?.componentName);
-  const {
-    reactDocgen,
-    reactDocgenTypescript,
-    reactComponentMeta,
-    docgenDescription,
-    docgenJsDocTags,
-    docgenError,
-  } = getComponentDocgenData(component, docgenEngine);
+  const { reactComponentMeta, docgenDescription, docgenJsDocTags } =
+    getComponentDocgenData(component);
   const { description, summary, jsDocTags } = extractComponentDescription(
     undefined,
     docgenDescription,
@@ -183,17 +139,13 @@ function createSubcomponentDocgen({
     summary,
     import: imports || undefined,
     jsDocTags,
-    reactDocgen,
-    reactDocgenTypescript,
     reactComponentMeta,
-    error:
-      docgenError ??
-      (!component
-        ? {
-            name: 'No component import found',
-            message: `No component file found for the "${declaredName}" subcomponent.`,
-          }
-        : undefined),
+    error: !component
+      ? {
+          name: 'No component import found',
+          message: `No component file found for the "${declaredName}" subcomponent.`,
+        }
+      : undefined,
   };
 }
 
@@ -264,8 +216,6 @@ export type ComponentDocgenFromResolved = Omit<
   ComponentManifest,
   'stories' | 'import' | 'subcomponents'
 > & {
-  reactDocgen?: DocObj;
-  reactDocgenTypescript?: ComponentDocWithExportName;
   reactComponentMeta?: ComponentDoc;
   subcomponents?: Record<string, ReactSubcomponentManifest>;
   [key: string]: unknown;
@@ -284,7 +234,6 @@ export function buildComponentDocgenFromResolved({
   componentName,
   component,
   subcomponents,
-  docgenEngine,
 }: {
   entry: IndexEntry;
   storyPath: string;
@@ -294,7 +243,6 @@ export function buildComponentDocgenFromResolved({
   componentName: string | undefined;
   component: ComponentRef | undefined;
   subcomponents: ResolvedSubcomponent[];
-  docgenEngine: DocgenEngine;
 }): ComponentDocgenFromResolved {
   const id = getComponentIdFromEntry(entry);
   const title = entry.title.split('/').at(-1)!.replace(/\s+/g, '');
@@ -307,16 +255,10 @@ export function buildComponentDocgenFromResolved({
     jsDocTags: {},
   } satisfies Partial<ComponentDocgenFromResolved>;
 
-  const {
-    reactDocgen,
-    reactDocgenTypescript,
-    reactComponentMeta,
-    docgenDescription,
-    docgenJsDocTags,
-    docgenError,
-  } = getComponentDocgenData(component, docgenEngine);
+  const { reactComponentMeta, docgenDescription, docgenJsDocTags } =
+    getComponentDocgenData(component);
 
-  if (!reactDocgen && !reactDocgenTypescript && !reactComponentMeta) {
+  if (!reactComponentMeta) {
     const error = !csf._meta?.component
       ? {
           name: 'No component found',
@@ -331,7 +273,7 @@ export function buildComponentDocgenFromResolved({
     return {
       ...base,
       jsDocTags: base.jsDocTags ?? {},
-      error: docgenError ?? {
+      error: {
         name: error.name,
         message:
           (csf._metaStatementPath?.buildCodeFrameError(error.message).message ?? error.message) +
@@ -352,7 +294,6 @@ export function buildComponentDocgenFromResolved({
       createSubcomponentDocgen({
         component: subcomponent.component,
         declaredName: subcomponent.name,
-        docgenEngine,
         packageName,
         storyFilePath,
       }),
@@ -363,18 +304,15 @@ export function buildComponentDocgenFromResolved({
     ...base,
     description,
     summary,
-    reactDocgen,
-    reactDocgenTypescript,
     reactComponentMeta,
     jsDocTags,
     ...(Object.keys(subcomponentEntries).length > 0 ? { subcomponents: subcomponentEntries } : {}),
-    error: docgenError,
   };
 }
 
 /**
- * Builds resolved React component docgen from a parsed CSF file and index entry. Shared by the
- * docgen provider (RCM) and the experimental manifest generator (all docgen engines).
+ * Builds resolved React component docgen from a parsed CSF file and index entry. Used by the
+ * experimental manifest generator.
  */
 export function buildReactComponentDocgenFromResolved({
   entry,
@@ -386,7 +324,6 @@ export function buildReactComponentDocgenFromResolved({
   component,
   allComponents,
   subcomponents,
-  docgenEngine,
   filterStoryIds,
 }: {
   entry: IndexEntry;
@@ -398,7 +335,6 @@ export function buildReactComponentDocgenFromResolved({
   component: ComponentRef | undefined;
   allComponents: ComponentRef[];
   subcomponents: ResolvedSubcomponent[];
-  docgenEngine: DocgenEngine;
   /** When set, only stories whose ids are in the set are included (manifest tag filtering). */
   filterStoryIds?: ReadonlySet<string>;
 }): ReactComponentManifest {
@@ -421,7 +357,6 @@ export function buildReactComponentDocgenFromResolved({
     componentName,
     component,
     subcomponents,
-    docgenEngine,
   });
 
   return {

@@ -197,15 +197,6 @@ export const previewBody = async (base: any, { configDir, presets }: Options) =>
 
 export const typescript = () => ({
   check: false,
-  // 'react-docgen' faster than `react-docgen-typescript` but produces lower quality results
-  reactDocgen: 'react-docgen',
-  reactDocgenTypescriptOptions: {
-    shouldExtractLiteralValuesFromEnum: true,
-    shouldRemoveUndefinedFromOptional: true,
-    propFilter: (prop: any) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
-    // NOTE: this default cannot be changed
-    savePropValueAsString: true,
-  },
 });
 
 /** This API is used by third-parties to access certain APIs in a Node environment */

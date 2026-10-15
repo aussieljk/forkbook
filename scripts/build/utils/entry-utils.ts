@@ -109,7 +109,7 @@ export const getExternal = async (cwd: string) => {
     ...runtimeExternalInclude,
     'ast-types',
     // typescript ships CommonJS dts that rolldown-plugin-dts cannot bundle. It is only
-    // reachable through devDep type imports (e.g. react-docgen-typescript); keeping it
+    // reachable through devDep type imports. Keeping it
     // external lets treeshaking drop the import when the kept types don't use it.
     'typescript',
     ...builtinModules.flatMap((m: string) => [m, `node:${m}`]),

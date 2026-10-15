@@ -1,10 +1,36 @@
 {
-  "size": {
+  "children": {
     "control": {
       "type": "object",
     },
-    "description": undefined,
+    "description": "",
+    "name": "children",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ReactNode",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ReactNode",
+    },
+  },
+  "size": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
     "name": "size",
+    "options": [
+      "a",
+      "b",
+      "c",
+      "d",
+    ],
     "table": {
       "defaultValue": {
         "detail": undefined,
@@ -13,11 +39,19 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "unknown",
+        "summary": ""a" | "b" | "c" | "d"",
       },
     },
     "type": {
+      "name": "enum",
+      "raw": ""a" | "b" | "c" | "d"",
       "required": false,
+      "value": [
+        "a",
+        "b",
+        "c",
+        "d",
+      ],
     },
   },
 }

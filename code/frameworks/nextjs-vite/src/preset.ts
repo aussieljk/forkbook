@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 import type { PresetProperty } from 'storybook/internal/types';
 
 import type { StorybookConfigVite } from '@storybook/builder-vite';
-import { viteFinal as reactViteFinal } from '@storybook/react-vite/preset';
 
 import semver from 'semver';
 import vitePluginStorybookNextjs from 'vite-plugin-storybook-nextjs';
@@ -46,8 +45,6 @@ export const optimizeViteDeps = [
 ];
 
 export const viteFinal: StorybookConfigVite['viteFinal'] = async (config, options) => {
-  const reactConfig = await reactViteFinal(config, options);
-
   const inlineOptions = config.css?.postcss;
   const searchPath = typeof inlineOptions === 'string' ? inlineOptions : config.root;
 
@@ -66,16 +63,16 @@ export const viteFinal: StorybookConfigVite['viteFinal'] = async (config, option
   };
 
   return {
-    ...reactConfig,
+    ...config,
     resolve: {
-      ...(reactConfig?.resolve ?? {}),
+      ...config.resolve,
       alias: {
-        ...(reactConfig?.resolve?.alias ?? {}),
+        ...config.resolve?.alias,
         'styled-jsx': dirname(fileURLToPath(import.meta.resolve('styled-jsx/package.json'))),
         'styled-jsx/style': fileURLToPath(import.meta.resolve('styled-jsx/style')),
         'styled-jsx/style.js': fileURLToPath(import.meta.resolve('styled-jsx/style')),
       },
     },
-    plugins: [...(reactConfig?.plugins ?? []), vitePluginStorybookNextjs(vitePluginOptions)],
+    plugins: [...(config.plugins ?? []), vitePluginStorybookNextjs(vitePluginOptions)],
   };
 };

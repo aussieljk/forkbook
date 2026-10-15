@@ -1,35 +1,81 @@
 /**
- * Prop extractor — resolves React component props via TypeScript's type checker.
+ * React component docgen on the TypeScript 7 native API (tsgo, the `typescript-native` package).
  *
- * Two extraction paths:
+ * The extractor finds the props type of one component and makes a {@link ComponentDoc} from it. It
+ * tries three ways to find the props type, in this order:
  *
- * **Path 1 (primary)**: `resolvePropsFromStoryFile()` — finds JSX elements in an existing story
- * file that match the target component, then calls `checker.getResolvedSignature()` to extract the
- * full props type. Works for ~95% of components (any story with JSX usage).
- *
- * **Path 2 (fallback)**: `resolvePropsFromComponentType()` — for args-only stories with no JSX,
- * inspects the component's type directly via `getCallSignatures()[0].parameters[0]` (similar to
- * Vue's component-meta approach). Does NOT work for polymorphic/generic components (TS #61133).
- *
- * The story path returns the selected component target together with its props type, and the
- * fallback path still resolves the props type directly. `serializeComponentDoc()` uses the selected
- * symbol and component ref from that target so member components keep their own metadata.
- *
- * TypeScript resolves props the same way as autocompletion — by calling
- * `checker.getResolvedSignature()` on the JSX element. For polymorphic components with generic call
- * signatures (e.g. Mantine's polymorphicFactory), TypeScript instantiates the generic with its
- * default type parameter, giving the correct concrete props. This avoids the `ComponentProps<T>` /
- * `infer P` limitation (TS #61133).
+ * 1. A JSX element of the component in the story file. The checker resolves the call signature of the
+ *    element, so generic and polymorphic components get the props that the story uses.
+ * 2. The `component` property of the story file's default export (stories with args only).
+ * 3. The export of the component module (declared subcomponents, and component files without a story).
  */
-import type ts from 'typescript';
+import {
+  type ArrowFunction,
+  type Expression,
+  type FunctionDeclaration,
+  type FunctionExpression,
+  type Identifier,
+  type Node,
+  type ObjectBindingPattern,
+  type ObjectLiteralExpression,
+  type SourceFile,
+  SyntaxKind,
+  isArrowFunction,
+  isAsExpression,
+  isAwaitExpression,
+  isBinaryExpression,
+  isBindingElement,
+  isBlock,
+  isCallExpression,
+  isClassDeclaration,
+  isConditionalExpression,
+  isEnumDeclaration,
+  isEnumMember,
+  isExportAssignment,
+  isExpressionStatement,
+  isFunctionDeclaration,
+  isFunctionExpression,
+  isIdentifier,
+  isImportDeclaration,
+  isInterfaceDeclaration,
+  isJsxOpeningElement,
+  isJsxSelfClosingElement,
+  isLiteralTypeNode,
+  isNamedImports,
+  isNamespaceImport,
+  isNewExpression,
+  isNonNullExpression,
+  isNumericLiteral,
+  isObjectBindingPattern,
+  isObjectLiteralExpression,
+  isParenthesizedExpression,
+  isPropertyAccessExpression,
+  isPropertyAssignment,
+  isPropertyDeclaration,
+  isSatisfiesExpression,
+  isShorthandPropertyAssignment,
+  isStringLiteral,
+  isTypeAliasDeclaration,
+  isTypeReferenceNode,
+  isUnionTypeNode,
+  isVariableDeclaration,
+  isVariableStatement,
+} from 'typescript-native/unstable/ast';
+import {
+  type Checker,
+  type JSDocTagInfo,
+  type NodeHandle,
+  type Project,
+  SignatureKind,
+  SymbolFlags,
+  type Symbol as TsSymbol,
+  type Type,
+  type LiteralType,
+  TypeFlags,
+  isUnionType,
+} from 'typescript-native/unstable/sync';
 
-import { extractComponentJsDocInfo } from 'storybook/internal/component-meta';
-
-import type { ComponentRef, ResolvedComponentTarget } from '../types.ts';
-
-// ---------------------------------------------------------------------------
-// Output types — compatible with react-docgen-typescript's ComponentDoc shape
-// ---------------------------------------------------------------------------
+import type { ComponentRef } from '../types.ts';
 
 export interface PropItemType {
   name: string;
@@ -49,7 +95,6 @@ export interface PropItem {
   description: string;
   defaultValue: { value: string } | null;
   parent?: ParentType;
-  declarations?: ParentType[];
 }
 
 export interface ComponentDoc {
@@ -61,1284 +106,462 @@ export interface ComponentDoc {
   props: Record<string, PropItem>;
 }
 
-// ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
 /**
- * Props from a single `.d.ts` or `node_modules` declaration file exceeding this count are
- * bulk-excluded from the manifest. This filters out HTML attribute interfaces (100+ props) and
- * generated CSS-in-JS types (e.g. Panda CSS styled-system) while keeping user-defined props.
- *
- * The threshold is per source file — a user's own interface with 31 props in a `.tsx` file is NOT
- * affected (only `.d.ts` and `node_modules` paths are checked).
+ * Props from one `.d.ts` or `node_modules` file (or one interface there) above this count are not
+ * documented. This removes the HTML attribute interfaces (more than 100 props) and generated CSS
+ * prop types, and keeps the props that the user wrote.
  */
 const LARGE_SOURCE_THRESHOLD = 30;
 
-/** Max recursion depth for unwrapping React.memo/forwardRef/Object.assign chains. */
-const MAX_UNWRAP_DEPTH = 5;
-const MAX_SERIALIZATION_DEPTH = 5;
-type WrappedExpression =
-  | ts.ParenthesizedExpression
-  | ts.AsExpression
-  | ts.NonNullExpression
-  | ts.SatisfiesExpression;
+/** Max depth when the extractor follows wrappers (memo, forwardRef, Object.assign) and aliases. */
+const MAX_DEPTH = 5;
 
-function isLiteralType(type: ts.Type): type is ts.LiteralType {
-  return type.isStringLiteral() || type.isNumberLiteral();
+interface Context {
+  project: Project;
+  checker: Checker;
 }
 
-function isUnionType(type: ts.Type): type is ts.UnionType {
-  return type.isUnion();
+/** The props type of a component and the symbol that declares the component. */
+interface ResolvedComponent {
+  /** `undefined` when the component takes no props. */
+  propsType: Type | undefined;
+  symbol: TsSymbol;
 }
 
-function isWrappedExpression(
-  typescript: typeof ts,
-  expression: ts.Expression
-): expression is WrappedExpression {
+// ---------------------------------------------------------------------------
+// Entry points
+// ---------------------------------------------------------------------------
+
+/** Makes the docgen of a component that a story file imports. */
+export function extractComponentDocFromStory(
+  project: Project,
+  storyPath: string,
+  ref: ComponentRef
+): ComponentDoc | undefined {
+  const storyFile = project.program.getSourceFile(storyPath);
+  if (!storyFile || !ref.importName) {
+    return undefined;
+  }
+  const ctx: Context = { project, checker: project.checker };
+  const imported = findImport(ctx, storyFile, ref);
+
+  const resolved =
+    (imported && resolveFromStoryJsx(ctx, storyFile, ref, imported.local)) ??
+    resolveFromMetaComponent(ctx, storyFile, ref, imported?.local) ??
+    (imported && resolveFromModuleExport(ctx, imported.module, ref));
+
+  return resolved && serializeComponentDoc(ctx, resolved, ref.importName, ref, imported?.module);
+}
+
+/** Makes the docgen of a component that a module exports, when no story file is available. */
+export function extractComponentDocFromFile(
+  project: Project,
+  filePath: string,
+  exportName = 'default'
+): ComponentDoc | undefined {
+  const sourceFile = project.program.getSourceFile(filePath);
+  const ctx: Context = { project, checker: project.checker };
+  const module = sourceFile && ctx.checker.getSymbolAtLocation(sourceFile);
+  if (!module) {
+    return undefined;
+  }
+  const ref: ComponentRef = { componentName: exportName, importName: exportName, isPackage: false };
+  const resolved = resolveFromModuleExport(ctx, module, ref);
   return (
-    typescript.isParenthesizedExpression(expression) ||
-    typescript.isAsExpression(expression) ||
-    typescript.isNonNullExpression(expression) ||
-    (typescript.isSatisfiesExpression?.(expression) ?? false)
+    resolved && serializeComponentDoc(ctx, resolved, exportName, { ...ref, path: filePath }, module)
   );
 }
 
-function resolveAliasedSymbol(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  symbol: ts.Symbol
-): ts.Symbol {
-  return symbol.flags & typescript.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-}
+// ---------------------------------------------------------------------------
+// Symbol and node helpers
+// ---------------------------------------------------------------------------
 
-function getSymbolContextNode(symbol: ts.Symbol): ts.Node | undefined {
-  return symbol.valueDeclaration ?? symbol.getDeclarations()?.[0];
-}
-
-function resolveComponentSymbolFromNode(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  node: ts.Node | undefined
-): ts.Symbol | undefined {
-  if (!node) {
-    return undefined;
+function resolveAlias(ctx: Context, symbol: TsSymbol): TsSymbol {
+  if (!(symbol.flags & SymbolFlags.Alias)) {
+    return symbol;
   }
+  const target = ctx.checker.getAliasedSymbol(symbol);
+  return ctx.checker.isUnknownSymbol(target) ? symbol : target;
+}
 
-  const symbol = checker.getSymbolAtLocation(node);
-  return symbol ? resolveComponentSymbol(typescript, checker, symbol, node) : undefined;
+function resolveHandle(ctx: Context, handle: NodeHandle | undefined): Node | undefined {
+  return handle?.resolve(ctx.project);
+}
+
+function getDeclaration(ctx: Context, symbol: TsSymbol): Node | undefined {
+  return resolveHandle(ctx, symbol.valueDeclaration ?? symbol.declarations[0]);
+}
+
+function getDeclarations(ctx: Context, symbol: TsSymbol): Node[] {
+  return symbol.declarations.flatMap((handle) => resolveHandle(ctx, handle) ?? []);
+}
+
+function sameSymbol(a: TsSymbol | undefined, b: TsSymbol | undefined) {
+  return !!a && !!b && a.id === b.id;
+}
+
+function getExport(ctx: Context, module: TsSymbol, name: string) {
+  return ctx.checker.getExportsOfModule(module).find((symbol) => symbol.name === name);
+}
+
+function getProperty(ctx: Context, type: Type, name: string) {
+  return ctx.checker.getPropertyOfType(type, name);
+}
+
+/** Removes parentheses, `as`, `satisfies` and `!` around an expression. */
+function skipWrappers(node: Expression): Expression {
+  let current = node;
+  while (
+    isParenthesizedExpression(current) ||
+    isAsExpression(current) ||
+    isSatisfiesExpression(current) ||
+    isNonNullExpression(current)
+  ) {
+    current = current.expression;
+  }
+  return current;
 }
 
 /**
- * Normalizes the symbol we get from JSX/member resolution to the declaration symbol that owns the
- * component metadata.
- *
- * For top-level components, TypeScript usually gives us the declaration symbol directly. For member
- * selections it often gives an intermediate symbol instead, for example:
- *
- * - A shorthand/property symbol from `export const Accordion = { Root }`
- * - An attached-member symbol from `ButtonRoot.Aligner = Aligner`
- * - A property signature from `Aligner: typeof Aligner`
- * - An anonymous function symbol (`__function`) for `const Aligner = () => ...`
- *
- * Those symbols do not reliably carry the selected member's JSDoc/defaults, so we follow them back
- * to the actual component declaration before serialization.
+ * Follows a symbol to the declaration that holds the component's JSDoc and defaults. Member symbols
+ * (`{ Root }`, `Button.Aligner = Aligner`, `Aligner: typeof Aligner`) and anonymous function symbols
+ * point to the component only indirectly.
  */
-function resolveComponentSymbol(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  symbol: ts.Symbol,
-  contextNode: ts.Node,
-  depth = 0
-): ts.Symbol {
-  let resolved = resolveAliasedSymbol(typescript, checker, symbol);
-  if (depth > MAX_UNWRAP_DEPTH) {
+function resolveComponentSymbol(ctx: Context, symbol: TsSymbol, depth = 0): TsSymbol {
+  let resolved = resolveAlias(ctx, symbol);
+  if (depth > MAX_DEPTH) {
     return resolved;
   }
 
-  const declarationForPromotion = getSymbolContextNode(resolved);
+  let declaration = getDeclaration(ctx, resolved);
+
+  // `const Button = () => ...`: the arrow function symbol is anonymous, use the variable.
   if (
-    declarationForPromotion &&
-    (typescript.isArrowFunction(declarationForPromotion) ||
-      typescript.isFunctionExpression(declarationForPromotion)) &&
-    declarationForPromotion.parent &&
-    typescript.isVariableDeclaration(declarationForPromotion.parent) &&
-    typescript.isIdentifier(declarationForPromotion.parent.name)
+    declaration &&
+    (isArrowFunction(declaration) || isFunctionExpression(declaration)) &&
+    isVariableDeclaration(declaration.parent) &&
+    isIdentifier(declaration.parent.name)
   ) {
-    const variableSymbol = checker.getSymbolAtLocation(declarationForPromotion.parent.name);
-    if (variableSymbol) {
-      resolved = resolveAliasedSymbol(typescript, checker, variableSymbol);
+    const variable = ctx.checker.getSymbolAtLocation(declaration.parent.name);
+    if (variable) {
+      resolved = resolveAlias(ctx, variable);
+      declaration = getDeclaration(ctx, resolved);
     }
   }
 
-  const declaration = getSymbolContextNode(resolved);
-  if (declaration) {
-    if (typescript.isShorthandPropertyAssignment(declaration)) {
-      const valueSymbol = checker.getShorthandAssignmentValueSymbol(declaration);
-      if (valueSymbol) {
-        return resolveComponentSymbol(
-          typescript,
-          checker,
-          valueSymbol,
-          declaration.name,
-          depth + 1
-        );
-      }
-    }
-
-    if (typescript.isPropertyAssignment(declaration)) {
-      const next = resolveComponentSymbolFromNode(typescript, checker, declaration.initializer);
-      if (next) {
-        return next;
-      }
-    }
-
-    if (
-      typescript.isBinaryExpression(declaration) &&
-      declaration.operatorToken.kind === typescript.SyntaxKind.EqualsToken
-    ) {
-      const next = resolveComponentSymbolFromNode(typescript, checker, declaration.right);
-      if (next) {
-        return next;
-      }
-    }
+  if (!declaration) {
+    return resolved;
   }
 
-  const shouldUseTypeSymbolFallback =
-    Boolean(resolved.flags & typescript.SymbolFlags.Property) ||
-    (declaration !== undefined &&
-      (typescript.isPropertyAssignment(declaration) ||
-        typescript.isShorthandPropertyAssignment(declaration) ||
-        typescript.isPropertySignature(declaration) ||
-        typescript.isPropertyDeclaration(declaration) ||
-        (typescript.isBinaryExpression(declaration) &&
-          declaration.operatorToken.kind === typescript.SyntaxKind.EqualsToken)));
-
-  const typeSymbol =
-    shouldUseTypeSymbolFallback &&
-    checker.getTypeOfSymbolAtLocation(resolved, contextNode).getSymbol?.();
-  if (typeSymbol) {
-    const resolvedTypeSymbol = resolveAliasedSymbol(typescript, checker, typeSymbol);
-    const typeDeclaration = getSymbolContextNode(resolvedTypeSymbol);
-    if (resolvedTypeSymbol !== resolved && typeDeclaration) {
-      return resolveComponentSymbol(
-        typescript,
-        checker,
-        resolvedTypeSymbol,
-        typeDeclaration,
-        depth + 1
-      );
-    }
+  let next: TsSymbol | undefined;
+  if (isShorthandPropertyAssignment(declaration)) {
+    next = ctx.checker.getShorthandAssignmentValueSymbol(declaration);
+  } else if (isPropertyAssignment(declaration)) {
+    next = ctx.checker.getSymbolAtLocation(skipWrappers(declaration.initializer));
+  } else if (
+    isBinaryExpression(declaration) &&
+    declaration.operatorToken.kind === SyntaxKind.EqualsToken
+  ) {
+    next = ctx.checker.getSymbolAtLocation(skipWrappers(declaration.right));
+  } else if (
+    declaration.kind === SyntaxKind.PropertySignature ||
+    isPropertyDeclaration(declaration)
+  ) {
+    // `Aligner: typeof Aligner` - use the symbol of the property type.
+    next = ctx.checker.getTypeOfSymbol(resolved)?.getSymbol();
   }
 
+  if (next && !sameSymbol(resolveAlias(ctx, next), resolved)) {
+    return resolveComponentSymbol(ctx, next, depth + 1);
+  }
   return resolved;
 }
 
 // ---------------------------------------------------------------------------
-// Story-based prop extraction (probe-free)
+// Find the props type
 // ---------------------------------------------------------------------------
 
-/** Finds the story-local import binding for a {@link ComponentRef}. */
-export function findImportSymbolInStoryFile(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  storySourceFile: ts.SourceFile,
-  componentRef: ComponentRef
-): ts.Symbol | undefined {
-  const importSpecifier = componentRef.importId;
-  const importName = componentRef.importName;
-  const memberAccess = componentRef.member;
-  if (!importSpecifier) {
-    return undefined;
-  }
-
-  // Step 1: Find the import binding symbol in the story file.
-  // This is the local symbol that the story uses in JSX (e.g., `Button` from `import { Button } from './Button'`).
-
-  for (const stmt of storySourceFile.statements) {
-    if (!typescript.isImportDeclaration(stmt)) {
-      continue;
-    }
-    const moduleSpec = stmt.moduleSpecifier;
-    if (!typescript.isStringLiteral(moduleSpec)) {
-      continue;
-    }
-    if (moduleSpec.text !== importSpecifier) {
-      continue;
-    }
-
-    const clause = stmt.importClause;
-    if (!clause) {
-      continue;
-    }
-
-    let importSymbol: ts.Symbol | undefined;
-
-    if (importName === 'default') {
-      // Default import: import Button from '...'
-      if (clause.name) {
-        importSymbol = checker.getSymbolAtLocation(clause.name);
-      }
-      // Also check named imports for `{ default as Button }` pattern
-      if (
-        !importSymbol &&
-        clause.namedBindings &&
-        typescript.isNamedImports(clause.namedBindings)
-      ) {
-        for (const spec of clause.namedBindings.elements) {
-          const originalName = (spec.propertyName ?? spec.name).text;
-          if (originalName === 'default') {
-            importSymbol = checker.getSymbolAtLocation(spec.name);
-            break;
-          }
-        }
-      }
-    } else if (clause.namedBindings && typescript.isNamedImports(clause.namedBindings)) {
-      // Named import: import { Button } from '...' or import { Button as Btn } from '...'
-      for (const spec of clause.namedBindings.elements) {
-        const originalName = (spec.propertyName ?? spec.name).text;
-        if (originalName === importName) {
-          importSymbol = checker.getSymbolAtLocation(spec.name);
-          break;
-        }
-      }
-    }
-    // Namespace import: import * as Ns from '...'
-    // Only applies when memberAccess is set (compound components accessed as <Ns.Member />).
-    // Without this guard, a namespace import from the same module could shadow a named
-    // import we're actually looking for (e.g. `import * as X from './m'; import { Y } from './m'`).
+/** Finds the import of the component in the story file: the local binding and the module symbol. */
+function findImport(
+  ctx: Context,
+  storyFile: SourceFile,
+  ref: ComponentRef
+): { local: TsSymbol; module: TsSymbol } | undefined {
+  for (const statement of storyFile.statements) {
     if (
-      !importSymbol &&
-      memberAccess &&
-      clause.namedBindings &&
-      typescript.isNamespaceImport(clause.namedBindings)
+      !isImportDeclaration(statement) ||
+      !isStringLiteral(statement.moduleSpecifier) ||
+      statement.moduleSpecifier.text !== ref.importId ||
+      !statement.importClause
     ) {
-      importSymbol = checker.getSymbolAtLocation(clause.namedBindings.name);
+      continue;
+    }
+    const module = ctx.checker.getSymbolAtLocation(statement.moduleSpecifier);
+    const { name, namedBindings } = statement.importClause;
+
+    let localName: Identifier | undefined;
+    if (ref.importName === 'default' && name) {
+      localName = name;
+    }
+    if (!localName && namedBindings && isNamedImports(namedBindings)) {
+      const specifier = namedBindings.elements.find(
+        (element) => (element.propertyName ?? element.name).text === ref.importName
+      );
+      localName = specifier?.name;
+    }
+    // `import * as UI` only matters for `<UI.Button />`, so a namespace import of the same module
+    // does not hide a named import that the story uses.
+    if (!localName && ref.member && namedBindings && isNamespaceImport(namedBindings)) {
+      localName = namedBindings.name;
     }
 
-    if (importSymbol) {
-      return importSymbol;
+    const local = localName && ctx.checker.getSymbolAtLocation(localName);
+    if (local && module) {
+      return { local, module };
     }
   }
-
   return undefined;
 }
 
-/** Returns whether `componentRef` is the story meta's `component`, not a declared subcomponent. */
-export function metaComponentMatchesRef(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  storySourceFile: ts.SourceFile,
-  componentRef: ComponentRef,
-  metaComponentInitializer: ts.Expression
-): boolean {
-  const refSymbol = findImportSymbolInStoryFile(typescript, checker, storySourceFile, componentRef);
-  const metaSymbol = resolveComponentSymbolFromNode(typescript, checker, metaComponentInitializer);
+/** Path 1: the resolved call signature of the first JSX element of the component. */
+function resolveFromStoryJsx(
+  ctx: Context,
+  storyFile: SourceFile,
+  ref: ComponentRef,
+  local: TsSymbol
+): ResolvedComponent | undefined {
+  let result: ResolvedComponent | undefined;
 
-  // Plain symbol equality only when the ref is not a member expression — otherwise
-  // `Button.Aligner` would match `meta.component: Button` because both resolve to the Button import.
-  if (refSymbol && metaSymbol && !componentRef.member) {
-    return (
-      resolveAliasedSymbol(typescript, checker, refSymbol) ===
-      resolveAliasedSymbol(typescript, checker, metaSymbol)
-    );
-  }
-
-  if (typescript.isIdentifier(metaComponentInitializer)) {
-    return componentRef.componentName === metaComponentInitializer.text;
-  }
-
-  if (
-    typescript.isPropertyAccessExpression(metaComponentInitializer) &&
-    typescript.isIdentifier(metaComponentInitializer.expression)
-  ) {
-    const metaName = `${metaComponentInitializer.expression.text}.${metaComponentInitializer.name.text}`;
-    return componentRef.componentName === metaName;
-  }
-
-  return false;
-}
-
-/**
- * Resolves the selected component symbol and props type by finding JSX usage of the target
- * component in a story file.
- *
- * Story files already contain JSX like `<Button />` that TypeScript has resolved. This function
- * walks the story AST to find a JSX element matching the target component and extracts the props
- * type via `getResolvedSignature()` — the same mechanism as autocomplete and the former probe
- * approach.
- *
- * @param importSpecifier - The import specifier as written in the story file (e.g., './Button',
- *   '@mantine/core')
- * @param importName - The export name of the component (e.g., 'Button', 'default')
- * @param memberAccess - For compound components (e.g., 'Root' in `<Accordion.Root />`)
- */
-export function resolvePropsFromStoryFile(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  storySourceFile: ts.SourceFile,
-  componentRef: ComponentRef
-): ResolvedComponentTarget | undefined {
-  const memberAccess = componentRef.member;
-  const importSymbol = findImportSymbolInStoryFile(
-    typescript,
-    checker,
-    storySourceFile,
-    componentRef
-  );
-
-  if (!importSymbol) {
-    return undefined;
-  }
-
-  // Step 2: Walk story file to find JSX elements using this import
-  let result: ResolvedComponentTarget | undefined;
-
-  function extractPropsFromJsx(
-    node: ts.JsxSelfClosingElement | ts.JsxOpeningElement
-  ): ts.Type | undefined {
-    const sig = checker.getResolvedSignature(node);
-    if (!sig) {
-      return undefined;
-    }
-    const params = sig.getParameters();
-    if (params.length === 0) {
-      // Component with no props
-      return checker.getTypeFromTypeNode(typescript.factory.createTypeLiteralNode([]));
-    }
-    return checker.getTypeOfSymbolAtLocation(params[0], node);
-  }
-
-  function visit(node: ts.Node) {
+  const visit = (node: Node): void => {
     if (result) {
       return;
     }
+    if (isJsxSelfClosingElement(node) || isJsxOpeningElement(node)) {
+      const { tagName } = node;
+      const isMatch = ref.member
+        ? isPropertyAccessExpression(tagName) &&
+          tagName.name.text === ref.member &&
+          sameSymbol(ctx.checker.getSymbolAtLocation(tagName.expression), local)
+        : isIdentifier(tagName) && sameSymbol(ctx.checker.getSymbolAtLocation(tagName), local);
 
-    if (typescript.isJsxSelfClosingElement(node) || typescript.isJsxOpeningElement(node)) {
-      const tagName = node.tagName;
-
-      if (memberAccess) {
-        // Handle <Accordion.Root /> pattern
-        if (typescript.isPropertyAccessExpression(tagName) && tagName.name.text === memberAccess) {
-          const leftSym = checker.getSymbolAtLocation(tagName.expression);
-          if (leftSym && importSymbol && leftSym === importSymbol) {
-            const propsType = extractPropsFromJsx(node);
-            if (propsType) {
-              const memberSymbol =
-                checker.getSymbolAtLocation(tagName.name) ??
-                checker.getTypeAtLocation(tagName.expression).getProperty(tagName.name.text) ??
-                resolveComponentSymbolFromNode(typescript, checker, tagName);
-              result = {
-                componentRef,
-                propsType,
-                symbol: memberSymbol
-                  ? resolveComponentSymbol(typescript, checker, memberSymbol, tagName.name)
-                  : resolveAliasedSymbol(typescript, checker, importSymbol),
-              };
-              return;
-            }
-          }
-        }
-      } else {
-        // Handle <Button /> pattern
-        if (typescript.isIdentifier(tagName)) {
-          const sym = checker.getSymbolAtLocation(tagName);
-          if (sym && importSymbol && sym === importSymbol) {
-            const propsType = extractPropsFromJsx(node);
-            if (propsType) {
-              result = {
-                componentRef,
-                propsType,
-                symbol: resolveAliasedSymbol(typescript, checker, sym),
-              };
-              return;
-            }
-          }
-        }
+      const signature = isMatch ? ctx.checker.getResolvedSignature(node) : undefined;
+      if (signature) {
+        const [propsParameter] = signature.getParameters();
+        const member =
+          ref.member && isPropertyAccessExpression(tagName)
+            ? ctx.checker.getSymbolAtLocation(tagName.name)
+            : undefined;
+        result = {
+          propsType: propsParameter
+            ? ctx.checker.getTypeOfSymbolAtLocation(propsParameter, node)
+            : undefined,
+          symbol: resolveComponentSymbol(ctx, member ?? local),
+        };
+        return;
       }
     }
+    node.forEachChild(visit);
+  };
 
-    typescript.forEachChild(node, visit);
-  }
-
-  visit(storySourceFile);
+  visit(storyFile);
   return result;
 }
 
+/** Path 2: the `component` property of the story file's default export. */
+function resolveFromMetaComponent(
+  ctx: Context,
+  storyFile: SourceFile,
+  ref: ComponentRef,
+  local: TsSymbol | undefined
+): ResolvedComponent | undefined {
+  const module = ctx.checker.getSymbolAtLocation(storyFile);
+  const meta = module && getExport(ctx, module, 'default');
+  const metaType = meta && ctx.checker.getTypeOfSymbol(meta);
+  const componentProperty = metaType && getProperty(ctx, metaType, 'component');
+  const declaration = componentProperty && getDeclaration(ctx, componentProperty);
+  if (!componentProperty || !declaration || !isPropertyAssignment(declaration)) {
+    return undefined;
+  }
+
+  // Only the meta component itself, not a declared subcomponent of the same module.
+  const initializer = skipWrappers(declaration.initializer);
+  const metaName = isIdentifier(initializer)
+    ? initializer.text
+    : isPropertyAccessExpression(initializer) && isIdentifier(initializer.expression)
+      ? `${initializer.expression.text}.${initializer.name.text}`
+      : undefined;
+  const initializerSymbol = ctx.checker.getSymbolAtLocation(initializer);
+  const isMatch =
+    !ref.member && local && initializerSymbol
+      ? sameSymbol(resolveAlias(ctx, local), resolveAlias(ctx, initializerSymbol))
+      : metaName === ref.componentName;
+  if (!isMatch || !initializerSymbol) {
+    return undefined;
+  }
+
+  let componentType = ctx.checker.getTypeOfSymbol(componentProperty);
+  let symbol = initializerSymbol;
+  if (ref.member && !isPropertyAccessExpression(initializer)) {
+    const member = componentType && getProperty(ctx, componentType, ref.member);
+    if (!member) {
+      return undefined;
+    }
+    componentType = ctx.checker.getTypeOfSymbol(member);
+    symbol = member;
+  }
+
+  return resolveFromComponentType(ctx, componentType, resolveComponentSymbol(ctx, symbol));
+}
+
+/** Path 3: the export of the component module. */
+function resolveFromModuleExport(
+  ctx: Context,
+  module: TsSymbol,
+  ref: ComponentRef
+): ResolvedComponent | undefined {
+  const exportName = ref.importName ?? ref.componentName.split('.').at(-1);
+  let symbol = exportName ? getExport(ctx, module, exportName) : undefined;
+  let componentType = symbol && ctx.checker.getTypeOfSymbol(symbol);
+
+  // With `import * as UI`, the import name is already the member, for example `Button`.
+  if (ref.member && !ref.namespace) {
+    symbol = componentType && getProperty(ctx, componentType, ref.member);
+    componentType = symbol && ctx.checker.getTypeOfSymbol(symbol);
+  }
+
+  return (
+    symbol && resolveFromComponentType(ctx, componentType, resolveComponentSymbol(ctx, symbol))
+  );
+}
+
 /**
- * Resolves props type directly from a component's type (Vue component-meta approach).
- *
- * For functional components: `getCallSignatures()[0].parameters[0]` For class components: construct
- * signature → return type → `props` property
- *
- * This is the fallback for args-only stories that have no JSX in the story file. Does NOT work for
- * polymorphic/generic components (TS #61133), which is acceptable since args-only stories for
- * polymorphic components don't exist in practice.
+ * Gets the props from the type of a component: the first parameter of a function component, or the
+ * `props` property of a class component instance. This does not work for generic components,
+ * because nothing gives a value to the type parameters.
  */
-export function resolvePropsFromComponentType(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  componentType: ts.Type
-): ts.Type | undefined {
-  // Try call signatures first (functional components — the common case)
-  const callSigs = componentType.getCallSignatures();
-  if (callSigs.length > 0) {
-    const sig = callSigs[0];
-    if (sig.parameters.length === 0) {
-      // No-props component (e.g., () => <div />)
-      // Return void as a sentinel — serializeComponentDocs will serialize as empty props {}
-      return checker.getVoidType();
+function resolveFromComponentType(
+  ctx: Context,
+  componentType: Type | undefined,
+  symbol: TsSymbol
+): ResolvedComponent | undefined {
+  if (!componentType) {
+    return undefined;
+  }
+  const isAny = (type: Type | undefined) => !type || !!(type.flags & TypeFlags.Any);
+
+  const [callSignature] = ctx.checker.getSignaturesOfType(componentType, SignatureKind.Call);
+  if (callSignature) {
+    const [propsParameter] = callSignature.getParameters();
+    if (!propsParameter) {
+      return { propsType: undefined, symbol };
     }
-    const propsType = checker.getTypeOfSymbol(sig.parameters[0]);
-    if (!(propsType.flags & typescript.TypeFlags.Any)) {
-      return propsType;
+    const propsType = ctx.checker.getTypeOfSymbol(propsParameter);
+    if (!isAny(propsType)) {
+      return { propsType, symbol };
     }
   }
 
-  // Try construct signatures (class components)
-  // For `class Button extends React.Component<Props>`, the constructor type has
-  // construct signatures whose return type (the instance) has a `props` property.
-  const ctorSigs = componentType.getConstructSignatures();
-  for (const sig of ctorSigs) {
-    const ret = sig.getReturnType();
-    const propsSym = ret.getProperty('props');
-    if (propsSym) {
-      const propsType = checker.getTypeOfSymbol(propsSym);
-      if (!(propsType.flags & typescript.TypeFlags.Any)) {
-        return propsType;
-      }
+  for (const signature of ctx.checker.getSignaturesOfType(componentType, SignatureKind.Construct)) {
+    const instanceType = ctx.checker.getReturnTypeOfSignature(signature);
+    const props = instanceType && getProperty(ctx, instanceType, 'props');
+    const propsType = props && ctx.checker.getTypeOfSymbol(props);
+    if (!isAny(propsType)) {
+      return { propsType, symbol };
     }
   }
-
   return undefined;
 }
 
+// ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+interface PropSymbol {
+  symbol: TsSymbol;
+  /** Set when a union member makes the prop optional. */
+  forceOptional: boolean;
+  /** For union props: the type of the prop over all union members. */
+  type?: Type;
+}
+
 /**
- * Path 3 fallback: resolve props from the component module export directly.
- *
- * Used for declared subcomponents that only appear in `meta.subcomponents` and have no JSX in the
- * story file. Without this, Path 2 would incorrectly reuse `meta.component`'s props for every
- * batch entry.
+ * Gets all props of the props type. For a union of props types (for example `ControlledProps |
+ * UncontrolledProps`) the extractor takes the props of all members, because the checker gives only
+ * the props that all members have. A prop that is optional, `never` or missing in one member is
+ * optional.
  */
-export function resolvePropsFromComponentExport(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  componentSourceFile: ts.SourceFile,
-  componentRef: ComponentRef
-): ResolvedComponentTarget | undefined {
-  const moduleSymbol = checker.getSymbolAtLocation(componentSourceFile);
-  if (!moduleSymbol) {
-    return undefined;
+function getPropSymbols(ctx: Context, propsType: Type, location: Node): PropSymbol[] {
+  const members = isUnionType(propsType) ? propsType.getTypes() : [];
+  if (members.length === 0) {
+    const apparent = ctx.checker.getApparentType(propsType) ?? propsType;
+    return ctx.checker
+      .getPropertiesOfType(apparent)
+      .map((symbol) => ({ symbol, forceOptional: false }));
   }
 
-  const exports = checker.getExportsOfModule(checker.getMergedSymbol(moduleSymbol));
-  const exportName = componentRef.importName ?? componentRef.componentName.split('.').at(-1);
-  if (!exportName) {
-    return undefined;
-  }
+  const isDegraded = (symbol: TsSymbol) =>
+    !!(
+      ctx.checker.getTypeOfSymbolAtLocation(symbol, location).flags &
+      (TypeFlags.Never | TypeFlags.Undefined)
+    );
 
-  let exportSymbol: ts.Symbol | undefined;
-  let componentType: ts.Type | undefined;
-
-  if (componentRef.namespace && componentRef.member) {
-    // `import * as UI` — importName is the module export, not the local namespace alias.
-    const namespaceExportName = componentRef.importName ?? componentRef.member;
-    exportSymbol =
-      namespaceExportName === 'default'
-        ? exports.find((symbol) => symbol.getName() === 'default')
-        : exports.find((symbol) => symbol.getName() === namespaceExportName);
-
-    if (!exportSymbol) {
-      return undefined;
-    }
-
-    componentType = checker.getTypeOfSymbol(exportSymbol);
-  } else {
-    exportSymbol =
-      exportName === 'default'
-        ? exports.find((symbol) => symbol.getName() === 'default')
-        : exports.find((symbol) => symbol.getName() === exportName);
-
-    if (!exportSymbol) {
-      return undefined;
-    }
-
-    componentType = checker.getTypeOfSymbol(exportSymbol);
-
-    if (componentRef.member) {
-      const memberSymbol = componentType.getProperty(componentRef.member);
-      if (!memberSymbol) {
-        return undefined;
+  const props = new Map<string, PropSymbol & { count: number; degraded: boolean }>();
+  for (const member of members) {
+    for (const symbol of ctx.checker.getPropertiesOfType(member)) {
+      const degraded = isDegraded(symbol);
+      const optional = !!(symbol.flags & SymbolFlags.Optional) || degraded;
+      const existing = props.get(symbol.name);
+      if (!existing) {
+        props.set(symbol.name, { symbol, forceOptional: optional, count: 1, degraded });
+        continue;
       }
-      exportSymbol = memberSymbol;
-      componentType = checker.getTypeOfSymbol(memberSymbol);
+      existing.count++;
+      existing.forceOptional ||= optional;
+      if (existing.degraded && !degraded) {
+        Object.assign(existing, { symbol, degraded });
+      }
     }
   }
 
-  const propsType = resolvePropsFromComponentType(typescript, checker, componentType);
-  const contextNode = exportSymbol ? getSymbolContextNode(exportSymbol) : undefined;
-  if (!propsType || !exportSymbol || !contextNode) {
-    return undefined;
-  }
-
-  return {
-    componentRef,
-    propsType,
-    symbol: resolveComponentSymbol(typescript, checker, exportSymbol, contextNode),
-  };
+  return [...props.values()].map(({ symbol, forceOptional, count }) => {
+    const unionProperty = getProperty(ctx, propsType, symbol.name);
+    return {
+      symbol,
+      forceOptional: forceOptional || count < members.length,
+      type: unionProperty && ctx.checker.getTypeOfSymbolAtLocation(unionProperty, location),
+    };
+  });
 }
 
-// ---------------------------------------------------------------------------
-// Parent / source info per property
-// ---------------------------------------------------------------------------
-
-/**
- * Returns the source file for a property symbol, used by getBulkSourceExclusions to decide whether
- * a prop comes from a "bulk" source (node_modules/.d.ts).
- *
- * When a prop has multiple declarations (e.g. user re-declares `aria-label` in their own interface
- * AND it exists in React's HTMLAttributes), we check ALL declarations. If ANY declaration is in
- * user code (not node_modules, not .d.ts), we return that user-code path so the prop is NOT
- * bulk-excluded.
- */
-function getPropSourceFile(prop: ts.Symbol): string | undefined {
-  const declarations = prop.getDeclarations();
-  if (!declarations?.length) {
-    return undefined;
-  }
-
-  // If any declaration lives in user code (not node_modules, not .d.ts),
-  // return that source — the prop should not be bulk-excluded.
-  for (const decl of declarations) {
-    const fileName = decl.getSourceFile().fileName;
-    if (!fileName.includes('node_modules') && !fileName.endsWith('.d.ts')) {
-      return fileName;
-    }
-  }
-
-  // All declarations are in node_modules or .d.ts — return the first one.
-  return declarations[0].getSourceFile().fileName;
-}
-
-function getParentType(typescript: typeof ts, prop: ts.Symbol): ParentType | undefined {
-  const declarations = prop.getDeclarations();
-  if (!declarations?.length) {
-    return undefined;
-  }
-
-  // Walk up the AST from the property's parent to find the enclosing named type.
-  // Props declared in type literals inside intersections (e.g. `type T = { prop: X } & Base`)
-  // have the chain: PropertySignature → TypeLiteralNode → IntersectionTypeNode → TypeAliasDeclaration
-  let node: ts.Node | undefined = declarations[0].parent;
+function getParent(ctx: Context, prop: TsSymbol): ParentType | undefined {
+  let node: Node | undefined = resolveHandle(ctx, prop.declarations[0])?.parent;
   while (node) {
-    if (typescript.isInterfaceDeclaration(node) || typescript.isTypeAliasDeclaration(node)) {
-      return {
-        name: node.name.getText(),
-        fileName: node.getSourceFile().fileName,
-      };
+    if (isInterfaceDeclaration(node) || isTypeAliasDeclaration(node)) {
+      return { name: node.name.text, fileName: node.getSourceFile().fileName };
     }
     node = node.parent;
   }
-
   return undefined;
 }
 
-function getAllDeclarationParents(
-  typescript: typeof ts,
-  prop: ts.Symbol
-): ParentType[] | undefined {
-  const declarations = prop.getDeclarations();
-  if (!declarations?.length) {
-    return undefined;
-  }
-
-  const parents: ParentType[] = [];
-
-  for (const declaration of declarations) {
-    const { parent } = declaration;
-    if (!parent) {
-      continue;
-    }
-
-    if (typescript.isInterfaceDeclaration(parent) || typescript.isTypeAliasDeclaration(parent)) {
-      parents.push({
-        name: parent.name.getText(),
-        fileName: parent.getSourceFile().fileName,
-      });
-    } else if (typescript.isTypeLiteralNode(parent)) {
-      parents.push({
-        name: 'TypeLiteral',
-        fileName: parent.getSourceFile().fileName,
-      });
-    }
-  }
-
-  return parents.length > 0 ? parents : undefined;
-}
-
-// ---------------------------------------------------------------------------
-// Type serialization
-// ---------------------------------------------------------------------------
-
-function serializeType(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  type: ts.Type,
-  isRequired: boolean,
-  depth = 0
-): PropItemType {
-  if (depth > MAX_SERIALIZATION_DEPTH) {
-    return { name: checker.typeToString(type) };
-  }
-
-  if (type.isUnion()) {
-    // Filter undefined from union members before any further processing.
-    // This replaces the fragile `typeString.replace(' | undefined', '')` pattern
-    // which broke for `undefined | string` or multiple `undefined` members.
-    const nonUndefinedTypes = type.types.filter(
-      (t) => !(t.getFlags() & typescript.TypeFlags.Undefined)
-    );
-
-    // `boolean` is modeled as the union `true | false`. For optional props the implicit
-    // `| undefined` keeps this a union, so `typeToString` would yield `boolean | undefined`
-    // (mapped to `other` downstream). Collapse the boolean-literal pair back to `boolean`.
-    const booleanLiterals = nonUndefinedTypes.filter(
-      (t) => t.getFlags() & typescript.TypeFlags.BooleanLiteral
-    );
-    if (booleanLiterals.length === 2 && booleanLiterals.length === nonUndefinedTypes.length) {
-      return { name: 'boolean' };
-    }
-
-    const literalMembers = nonUndefinedTypes.filter(isLiteralType);
-
-    if (literalMembers.length > 0 && literalMembers.length === nonUndefinedTypes.length) {
-      const rawParts = literalMembers.map((m) => checker.typeToString(m));
-      return {
-        name: 'enum',
-        raw: rawParts.join(' | '),
-        value: literalMembers.map((m) => ({
-          value: JSON.stringify(m.value),
-        })),
-      };
-    }
-
-    // For optional props with a single non-undefined type, serialize that type directly.
-    // This strips the implicit `| undefined` added by strictNullChecks without any string
-    // manipulation, so nested `| undefined` in generics (e.g. `Record<string, number |
-    // undefined>`) is preserved correctly.
-    //
-    // For multi-member unions we don't strip — reconstructing TypeScript's typeToString
-    // behavior (boolean collapsing, parenthesization, ordering) is fragile and error-prone.
-    // The `required: false` field already captures optionality; keeping `| undefined` in
-    // the type name for these rare cases is the safest choice.
-    if (
-      !isRequired &&
-      nonUndefinedTypes.length === 1 &&
-      nonUndefinedTypes.length < type.types.length
-    ) {
-      return { name: checker.typeToString(nonUndefinedTypes[0]) };
-    }
-  }
-
-  const constraint = type.getConstraint?.();
-  if (constraint && constraint !== type) {
-    return serializeType(typescript, checker, constraint, isRequired, depth + 1);
-  }
-
-  return { name: checker.typeToString(type) };
-}
-
-// ---------------------------------------------------------------------------
-// Default value extraction
-// ---------------------------------------------------------------------------
+const isLibraryPath = (path: string) => path.includes('node_modules') || path.endsWith('.d.ts');
 
 /**
- * Unwraps wrapper calls (React.forwardRef, React.memo, etc.) to find the underlying function
- * expression or declaration.
+ * Finds the props that come from a large `node_modules` or `.d.ts` source (see
+ * {@link LARGE_SOURCE_THRESHOLD}). A prop that the user also declares in their own code stays.
  */
-function unwrapToFunction(
-  typescript: typeof ts,
-  node: ts.Node,
-  depth = 0,
-  checker?: ts.TypeChecker
-): ts.FunctionLikeDeclaration | undefined {
-  if (depth > MAX_UNWRAP_DEPTH) {
-    return undefined;
-  }
-
-  if (
-    typescript.isArrowFunction(node) ||
-    typescript.isFunctionExpression(node) ||
-    typescript.isFunctionDeclaration(node)
-  ) {
-    return node;
-  }
-
-  // Unwrap CallExpression: React.forwardRef(fn), React.memo(fn), etc.
-  if (typescript.isCallExpression(node)) {
-    for (const arg of node.arguments) {
-      const fn = unwrapToFunction(typescript, arg, depth + 1, checker);
-      if (fn) {
-        return fn;
-      }
-    }
-  }
-
-  // Unwrap parenthesized expressions: (fn)
-  if (typescript.isParenthesizedExpression(node)) {
-    return unwrapToFunction(typescript, node.expression, depth + 1, checker);
-  }
-
-  // Unwrap as-expression: fn as SomeType
-  if (typescript.isAsExpression(node)) {
-    return unwrapToFunction(typescript, node.expression, depth + 1, checker);
-  }
-
-  // Follow identifier references when a checker is available.
-  // Handles: Object.assign(StackImpl, ...) where StackImpl = forwardRef(...)
-  if (typescript.isIdentifier(node) && checker) {
-    const symbol = checker.getSymbolAtLocation(node);
-    if (symbol) {
-      const resolved =
-        symbol.flags & typescript.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-      const decl = resolved.valueDeclaration;
-      if (decl && typescript.isVariableDeclaration(decl) && decl.initializer) {
-        return unwrapToFunction(typescript, decl.initializer, depth + 1, checker);
-      }
-      if (decl && typescript.isFunctionDeclaration(decl)) {
-        return decl;
-      }
-    }
-  }
-
-  return undefined;
-}
-
-/**
- * Resolves an expression to its literal string representation.
- *
- * For identifiers like `DEFAULT_SIZE` pointing to `const DEFAULT_SIZE = 'md'`, follows the
- * reference chain and returns `'md'` (the literal value). Handles variable declarations, imports,
- * enum members, and property accesses. Falls back to `.getText()` for unresolvable expressions.
- */
-function resolveLiteralValue(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  node: ts.Expression,
-  depth = 0
-): string {
-  if (depth > MAX_UNWRAP_DEPTH) {
-    return node.getText();
-  }
-
-  // Direct literals — return source text as-is
-  if (
-    typescript.isStringLiteral(node) ||
-    typescript.isNumericLiteral(node) ||
-    typescript.isNoSubstitutionTemplateLiteral(node) ||
-    node.kind === typescript.SyntaxKind.TrueKeyword ||
-    node.kind === typescript.SyntaxKind.FalseKeyword ||
-    node.kind === typescript.SyntaxKind.NullKeyword
-  ) {
-    return node.getText();
-  }
-
-  // Identifier — follow to declaration
-  if (typescript.isIdentifier(node)) {
-    if (node.text === 'undefined') {
-      return 'undefined';
-    }
-
-    const symbol = checker.getSymbolAtLocation(node);
-    if (!symbol) {
-      return node.getText();
-    }
-
-    const resolved =
-      symbol.flags & typescript.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-
-    const decl = resolved.valueDeclaration;
-    if (decl && typescript.isVariableDeclaration(decl) && decl.initializer) {
-      return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-    }
-    if (decl && typescript.isEnumMember(decl) && decl.initializer) {
-      return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-    }
-
-    // BindingElement — sibling destructured parameter: inputLabel = placeholderText
-    // where placeholderText = 'Filter items' is in the same destructuring pattern
-    if (decl && typescript.isBindingElement(decl) && decl.initializer) {
-      return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-    }
-
-    return node.getText();
-  }
-
-  // PropertyAccessExpression — Enum.Value, obj.key
-  if (typescript.isPropertyAccessExpression(node)) {
-    const symbol = checker.getSymbolAtLocation(node);
-    if (symbol) {
-      const decl = symbol.valueDeclaration;
-      if (decl && typescript.isEnumMember(decl) && decl.initializer) {
-        return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-      }
-      if (decl && typescript.isPropertyAssignment(decl) && decl.initializer) {
-        return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-      }
-      if (decl && typescript.isVariableDeclaration(decl) && decl.initializer) {
-        return resolveLiteralValue(typescript, checker, decl.initializer, depth + 1);
-      }
-    }
-    return node.getText();
-  }
-
-  // Fallback — preserve source text for expressions we don't resolve explicitly.
-  return node.getText();
-}
-
-/**
- * Collects default values from an ObjectBindingPattern into the given map.
- *
- * For `{ size = 'md', icon: Icon = DefaultIcon }`, adds: 'size' → "'md'", 'icon' → 'DefaultIcon'
- *
- * When a checker is provided, identifiers like `DEFAULT_SIZE` are resolved to their literal values
- * (e.g. `'md'`).
- */
-function collectBindingDefaults(
-  typescript: typeof ts,
-  pattern: ts.ObjectBindingPattern,
-  defaults: Map<string, string>,
-  checker?: ts.TypeChecker
-): void {
-  for (const element of pattern.elements) {
-    if (element.initializer) {
-      // Use the property name if renamed (e.g. { icon: Icon = DefaultIcon }),
-      // otherwise use the binding name
-      const propName = element.propertyName
-        ? element.propertyName.getText()
-        : element.name.getText();
-      defaults.set(
-        propName,
-        checker
-          ? resolveLiteralValue(typescript, checker, element.initializer)
-          : element.initializer.getText()
-      );
-    }
-  }
-}
-
-function unwrapExpression(typescript: typeof ts, expression: ts.Expression): ts.Expression {
-  let current = expression;
-
-  while (isWrappedExpression(typescript, current)) {
-    current = current.expression;
-  }
-
-  return current;
-}
-
-function isPropsIdentifier(
-  typescript: typeof ts,
-  node: ts.Expression,
-  paramName: ts.Identifier,
-  checker?: ts.TypeChecker
-): boolean {
-  if (!typescript.isIdentifier(node)) {
-    return false;
-  }
-
-  if (!checker) {
-    return node.text === paramName.text;
-  }
-
-  const symbol = checker.getSymbolAtLocation(node);
-  const paramSymbol = checker.getSymbolAtLocation(paramName);
-
-  return symbol !== undefined && symbol === paramSymbol;
-}
-
-function isPropsDerivedInitializer(
-  typescript: typeof ts,
-  initializer: ts.Expression,
-  paramName: ts.Identifier,
-  checker?: ts.TypeChecker
-): boolean {
-  const expr = unwrapExpression(typescript, initializer);
-
-  if (isPropsIdentifier(typescript, expr, paramName, checker)) {
-    return true;
-  }
-
-  if (typescript.isAwaitExpression(expr)) {
-    return isPropsDerivedInitializer(typescript, expr.expression, paramName, checker);
-  }
-
-  if (
-    typescript.isBinaryExpression(expr) &&
-    [
-      typescript.SyntaxKind.BarBarToken,
-      typescript.SyntaxKind.QuestionQuestionToken,
-      typescript.SyntaxKind.AmpersandAmpersandToken,
-    ].includes(expr.operatorToken.kind)
-  ) {
-    return (
-      isPropsDerivedInitializer(typescript, expr.left, paramName, checker) ||
-      isPropsDerivedInitializer(typescript, expr.right, paramName, checker)
-    );
-  }
-
-  if (typescript.isConditionalExpression(expr)) {
-    return (
-      isPropsDerivedInitializer(typescript, expr.whenTrue, paramName, checker) ||
-      isPropsDerivedInitializer(typescript, expr.whenFalse, paramName, checker)
-    );
-  }
-
-  if (typescript.isCallExpression(expr) || typescript.isNewExpression(expr)) {
-    return (
-      expr.arguments?.some((arg) =>
-        isPropsDerivedInitializer(typescript, arg, paramName, checker)
-      ) ?? false
-    );
-  }
-
-  return false;
-}
-
-/**
- * Extracts destructuring default values from the component function.
- *
- * Handles two patterns:
- *
- * 1. **Parameter destructuring**: `({ size = 'md' }: Props) => ...`
- * 2. **Body destructuring**: `(props) => { const { size = 'md' } = props; ... }` Also handles `const {
- *    size = 'md' } = resolveProps(props, ...)` and similar.
- *
- * Returns Map { 'size' => "'md'" }. For class components or non-destructured params, returns an
- * empty map.
- */
-function extractDestructuringDefaults(
-  typescript: typeof ts,
-  resolved: ts.Symbol,
-  checker?: ts.TypeChecker
-): Map<string, string> {
-  const defaults = new Map<string, string>();
-  const decl = resolved.valueDeclaration;
-  if (!decl) {
-    return defaults;
-  }
-
-  // Find the function: may be directly a function, or wrapped in forwardRef/memo/etc.
-  let fn: ts.FunctionLikeDeclaration | undefined;
-
-  if (typescript.isFunctionDeclaration(decl)) {
-    fn = decl;
-    // For overloaded functions, valueDeclaration points to the first overload (no body).
-    // Find the implementation signature (the one with a body) to get destructuring defaults.
-    if (!fn.body) {
-      const allDecls = resolved.getDeclarations?.() ?? [];
-      for (const d of allDecls) {
-        if (typescript.isFunctionDeclaration(d) && d.body) {
-          fn = d;
-          break;
-        }
-      }
-    }
-  } else if (typescript.isVariableDeclaration(decl) && decl.initializer) {
-    fn = unwrapToFunction(typescript, decl.initializer, 0, checker);
-  } else if (typescript.isExportAssignment(decl) && decl.expression) {
-    // export default Object.assign(Component, { Sub }), export default forwardRef(...)
-    fn = unwrapToFunction(typescript, decl.expression, 0, checker);
-  }
-
-  if (!fn) {
-    return defaults;
-  }
-
-  // Get the first parameter (props)
-  const firstParam = fn.parameters[0];
-  if (!firstParam) {
-    return defaults;
-  }
-
-  // Case 1: Parameter-level destructuring — ({ size = 'md' }: Props) => ...
-  if (typescript.isObjectBindingPattern(firstParam.name)) {
-    collectBindingDefaults(typescript, firstParam.name, defaults, checker);
-    return defaults;
-  }
-
-  const propsParamName = typescript.isIdentifier(firstParam.name) ? firstParam.name : undefined;
-
-  // Case 2: Body-level destructuring — (props) => { const { size = 'md' } = props; }
-  // Also handles: const { size = 'md' } = resolveProps(props, ...)
-  if (fn.body && propsParamName) {
-    const body = typescript.isBlock(fn.body) ? fn.body : undefined;
-    if (body) {
-      for (const stmt of body.statements) {
-        if (!typescript.isVariableStatement(stmt)) {
-          continue;
-        }
-        for (const varDecl of stmt.declarationList.declarations) {
-          if (
-            typescript.isObjectBindingPattern(varDecl.name) &&
-            varDecl.initializer &&
-            isPropsDerivedInitializer(typescript, varDecl.initializer, propsParamName, checker)
-          ) {
-            collectBindingDefaults(typescript, varDecl.name, defaults, checker);
-          }
-        }
-      }
-    }
-  }
-
-  return defaults;
-}
-
-/**
- * Collects default values from an object literal expression.
- *
- * Used for `defaultProps = { size: 'md', disabled: false }` patterns. Handles PropertyAssignment
- * and ShorthandPropertyAssignment.
- */
-function collectObjectLiteralDefaults(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  obj: ts.ObjectLiteralExpression,
-  defaults: Map<string, string>
-): void {
-  for (const prop of obj.properties) {
-    if (typescript.isPropertyAssignment(prop) && prop.name) {
-      const name = prop.name.getText();
-      defaults.set(name, resolveLiteralValue(typescript, checker, prop.initializer));
-    } else if (typescript.isShorthandPropertyAssignment(prop)) {
-      const name = prop.name.getText();
-      const symbol = checker.getShorthandAssignmentValueSymbol(prop);
-      if (
-        symbol?.valueDeclaration &&
-        typescript.isVariableDeclaration(symbol.valueDeclaration) &&
-        symbol.valueDeclaration.initializer
-      ) {
-        defaults.set(
-          name,
-          resolveLiteralValue(typescript, checker, symbol.valueDeclaration.initializer)
-        );
-      } else {
-        defaults.set(name, name);
-      }
-    }
-  }
-}
-
-function followVariableReferences(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  symbol: ts.Symbol
-): ts.Symbol {
-  let current = symbol;
-  for (let depth = 0; depth <= MAX_UNWRAP_DEPTH; depth++) {
-    const decl = current.valueDeclaration;
-    if (
-      !decl ||
-      !typescript.isVariableDeclaration(decl) ||
-      !decl.initializer ||
-      !typescript.isIdentifier(decl.initializer)
-    ) {
-      return current;
-    }
-    const next = checker.getSymbolAtLocation(decl.initializer);
-    if (!next) {
-      return current;
-    }
-    current = resolveAliasedSymbol(typescript, checker, next);
-  }
-  return current;
-}
-
-/**
- * Extracts default values from `Component.defaultProps = {...}` and `static defaultProps = {...}`
- * patterns.
- *
- * This is a legacy React pattern (deprecated in React 19) but still used in many codebases. Lower
- * priority than destructuring defaults.
- */
-function extractStaticDefaultProps(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  resolved: ts.Symbol
-): Map<string, string> {
-  const defaults = new Map<string, string>();
-
-  const decl = resolved.valueDeclaration ?? resolved.getDeclarations()?.[0];
-  if (!decl) {
-    return defaults;
-  }
-  const componentSourceFile = decl.getSourceFile();
-
-  for (const stmt of componentSourceFile.statements) {
-    // Pattern 1: Class with static defaultProps = { size: 'md' }
-    if (typescript.isClassDeclaration(stmt) && stmt.name) {
-      const classSymbol = checker.getSymbolAtLocation(stmt.name);
-      if (classSymbol !== resolved) {
-        continue;
-      }
-
-      for (const member of stmt.members) {
-        if (!typescript.isPropertyDeclaration(member)) {
-          continue;
-        }
-        if (!member.name || member.name.getText() !== 'defaultProps') {
-          continue;
-        }
-        if (!member.initializer) {
-          continue;
-        }
-
-        let initializer: ts.Expression = member.initializer;
-        // Follow identifier reference: static defaultProps = myDefaults
-        if (typescript.isIdentifier(initializer)) {
-          const sym = checker.getSymbolAtLocation(initializer);
-          const symDecl = sym?.valueDeclaration;
-          if (symDecl && typescript.isVariableDeclaration(symDecl) && symDecl.initializer) {
-            initializer = symDecl.initializer;
-          }
-        }
-
-        if (typescript.isObjectLiteralExpression(initializer)) {
-          collectObjectLiteralDefaults(typescript, checker, initializer, defaults);
-        }
-      }
-    }
-
-    // Pattern 2: Component.defaultProps = { size: 'md' }
-    if (
-      typescript.isExpressionStatement(stmt) &&
-      typescript.isBinaryExpression(stmt.expression) &&
-      stmt.expression.operatorToken.kind === typescript.SyntaxKind.EqualsToken
-    ) {
-      const left = stmt.expression.left;
-      if (!typescript.isPropertyAccessExpression(left)) {
-        continue;
-      }
-      if (left.name.text !== 'defaultProps') {
-        continue;
-      }
-
-      // Check if the expression target is our component
-      const targetSymbol = checker.getSymbolAtLocation(left.expression);
-      if (!targetSymbol) {
-        continue;
-      }
-
-      const targetResolved =
-        targetSymbol.flags & typescript.SymbolFlags.Alias
-          ? checker.getAliasedSymbol(targetSymbol)
-          : targetSymbol;
-
-      if (targetResolved !== resolved) {
-        continue;
-      }
-
-      let right: ts.Expression = stmt.expression.right;
-      // Follow identifier reference: Button.defaultProps = myDefaults
-      if (typescript.isIdentifier(right)) {
-        const sym = checker.getSymbolAtLocation(right);
-        const symDecl = sym?.valueDeclaration;
-        if (symDecl && typescript.isVariableDeclaration(symDecl) && symDecl.initializer) {
-          right = symDecl.initializer;
-        }
-      }
-
-      if (typescript.isObjectLiteralExpression(right)) {
-        collectObjectLiteralDefaults(typescript, checker, right, defaults);
-      }
-    }
-  }
-
-  return defaults;
-}
-
-/** Extracts a default value from JSDoc @default / @defaultValue tags on a prop's declaration. */
-function getJSDocDefault(
-  typescript: typeof ts,
-  prop: ts.Symbol,
-  checker: ts.TypeChecker
-): string | undefined {
-  const tags = prop.getJsDocTags(checker);
-  for (const tag of tags) {
-    if (tag.name === 'default' || tag.name === 'defaultValue') {
-      return typescript.displayPartsToString(tag.text) || undefined;
-    }
-  }
-  return undefined;
-}
-
-// ---------------------------------------------------------------------------
-// Single prop extraction
-// ---------------------------------------------------------------------------
-
-function extractPropItem(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  prop: ts.Symbol,
-  contextNode: ts.Node,
-  defaultsMap?: Map<string, string>,
-  typeOverride?: ts.Type
-): PropItem {
-  const isOptional = !!(prop.flags & typescript.SymbolFlags.Optional);
-  const isRequired = !isOptional;
-
-  // Union props keep one member's metadata but need the merged type.
-  const propType = typeOverride ?? checker.getTypeOfSymbolAtLocation(prop, contextNode);
-  const type = serializeType(typescript, checker, propType, isRequired);
-
-  const description = typescript.displayPartsToString(prop.getDocumentationComment(checker));
-
-  const parent = getParentType(typescript, prop);
-  const declarations = getAllDeclarationParents(typescript, prop);
-
-  // Default value: prefer destructuring default, then JSDoc @default
-  const propName = prop.getName();
-  const destructuringDefault = defaultsMap?.get(propName);
-  const jsDocDefault = getJSDocDefault(typescript, prop, checker);
-  const defaultStr = destructuringDefault ?? jsDocDefault;
-
-  return {
-    name: propName,
-    required: isRequired,
-    type,
-    description,
-    defaultValue: defaultStr !== undefined ? { value: defaultStr } : null,
-    parent,
-    declarations,
-  };
-}
-
-// ---------------------------------------------------------------------------
-// >30 bulk source filter
-// ---------------------------------------------------------------------------
-
-/**
- * Identifies properties from declaration files or node_modules interfaces with more than
- * LARGE_SOURCE_THRESHOLD properties (e.g. HTMLAttributes, Panda CSS styled-system types). These are
- * filtered to keep the manifest focused on user-defined props.
- *
- * Checks both `node_modules` paths AND `.d.ts` files. The `.d.ts` check catches generated type
- * systems like Panda CSS's `styled-system/` that live outside node_modules but still inject
- * hundreds of CSS properties. Project-local `.d.ts` with fewer than 30 props per file are
- * unaffected.
- */
-function getBulkSourceExclusions(typescript: typeof ts, properties: ts.Symbol[]): Set<string> {
-  const bulkCandidates = properties.flatMap((prop) => {
-    const source = getPropSourceFile(prop);
-    if (!source || !(source.includes('node_modules') || source.endsWith('.d.ts'))) {
+function getBulkProps(ctx: Context, props: TsSymbol[]): Set<string> {
+  const candidates = props.flatMap((prop) => {
+    const paths = prop.declarations.map((declaration) => declaration.path as string);
+    if (paths.length === 0 || !paths.every(isLibraryPath)) {
       return [];
     }
-    // A module augmentation (e.g. Next.js adding `tw` to React's HTMLAttributes) declares a single
-    // prop in its own file, so the interface it extends is counted alongside the file.
-    return [{ prop, source, parent: getParentType(typescript, prop)?.name }];
+    // A module augmentation (for example Next.js adds `tw` to React's HTMLAttributes) declares one
+    // prop in its own file, so the extractor also counts the interface that the prop extends.
+    return [{ name: prop.name, source: paths[0], parent: getParent(ctx, prop)?.name }];
   });
 
-  const countBy = (keys: (string | undefined)[]) => {
+  const count = (keys: (string | undefined)[]) => {
     const counts = new Map<string, number>();
     for (const key of keys) {
       if (key) {
@@ -1347,541 +570,460 @@ function getBulkSourceExclusions(typescript: typeof ts, properties: ts.Symbol[])
     }
     return counts;
   };
-  const sourceCount = countBy(bulkCandidates.map(({ source }) => source));
-  const parentCount = countBy(bulkCandidates.map(({ parent }) => parent));
+  const bySource = count(candidates.map(({ source }) => source));
+  const byParent = count(candidates.map(({ parent }) => parent));
   const isBulk = (counts: Map<string, number>, key: string | undefined) =>
     !!key && (counts.get(key) ?? 0) > LARGE_SOURCE_THRESHOLD;
 
   return new Set(
-    bulkCandidates
-      .filter(({ source, parent }) => isBulk(sourceCount, source) || isBulk(parentCount, parent))
-      .map(({ prop }) => prop.getName())
+    candidates
+      .filter(({ source, parent }) => isBulk(bySource, source) || isBulk(byParent, parent))
+      .map(({ name }) => name)
   );
 }
 
-// ---------------------------------------------------------------------------
-// Display name computation
-// ---------------------------------------------------------------------------
-
-function computeDisplayName({
-  exportSymbol,
-  resolvedSymbol,
-}: {
-  exportSymbol?: ts.Symbol;
-  resolvedSymbol: ts.Symbol;
-}): string | undefined {
-  const resolvedName = resolvedSymbol.getName();
-
-  if (!exportSymbol) {
-    if (resolvedName && resolvedName !== 'default' && resolvedName !== '__function') {
-      return resolvedName;
+/**
+ * The order of the members of a literal union in the source code. The tsgo checker sorts union
+ * members, so `'small' | 'large'` comes back as `"large" | "small"`. The extractor uses the type
+ * node of the prop declaration (and type aliases that it refers to) to get the order back.
+ */
+function getSourceLiteralOrder(ctx: Context, prop: TsSymbol): string[] {
+  const texts: string[] = [];
+  const visit = (node: Node | undefined, depth: number): void => {
+    if (!node || depth > MAX_DEPTH) {
+      return;
     }
-    return undefined;
+    if (isUnionTypeNode(node)) {
+      node.types.forEach((type) => visit(type, depth + 1));
+    } else if (isLiteralTypeNode(node)) {
+      texts.push(node.literal.getText());
+    } else if (isTypeReferenceNode(node)) {
+      const symbol = ctx.checker.getSymbolAtLocation(node.typeName);
+      const alias = symbol && getDeclaration(ctx, resolveAlias(ctx, symbol));
+      if (alias && isTypeAliasDeclaration(alias)) {
+        visit(alias.type, depth + 1);
+      }
+      if (alias && isEnumDeclaration(alias)) {
+        alias.members.forEach((member) => visit(member.initializer, depth + 1));
+      }
+    } else if (isStringLiteral(node) || isNumericLiteral(node)) {
+      texts.push(node.getText());
+    }
+  };
+  const declaration = getDeclaration(ctx, prop);
+  if (declaration && 'type' in declaration) {
+    visit(declaration.type as Node | undefined, 0);
+  }
+  // Single and double quotes give the same literal.
+  return texts.map((text) => text.replace(/^'(.*)'$/s, (_, value) => JSON.stringify(value)));
+}
+
+function serializeType(
+  ctx: Context,
+  type: Type,
+  required: boolean,
+  sourceOrder: () => string[],
+  depth = 0
+): PropItemType {
+  const { checker } = ctx;
+  if (depth > MAX_DEPTH) {
+    return { name: checker.typeToString(type) };
   }
 
-  const exportName = exportSymbol.getName();
+  if (isUnionType(type)) {
+    const all = type.getTypes();
+    const members = all.filter((member) => !(member.flags & TypeFlags.Undefined));
 
-  if (exportName === 'default') {
-    if (resolvedName && resolvedName !== 'default' && resolvedName !== '__function') {
-      return resolvedName;
+    // `boolean` is the union `true | false`. Optional props add `| undefined`.
+    if (
+      members.length === 2 &&
+      members.every((member) => member.flags & TypeFlags.BooleanLiteral)
+    ) {
+      return { name: 'boolean' };
     }
-    return undefined;
+
+    const literals = members.filter(
+      (member): member is LiteralType =>
+        !!(member.flags & (TypeFlags.StringLiteral | TypeFlags.NumberLiteral))
+    );
+    if (literals.length > 0 && literals.length === members.length) {
+      const order = sourceOrder();
+      const position = (member: LiteralType) => {
+        const index = order.indexOf(JSON.stringify(member.value));
+        return index === -1 ? order.length : index;
+      };
+      const sorted = [...literals].sort((a, b) => position(a) - position(b));
+      return {
+        name: 'enum',
+        raw: sorted.map((member) => checker.typeToString(member)).join(' | '),
+        value: sorted.map((member) => ({ value: JSON.stringify(member.value) })),
+      };
+    }
+
+    // An optional prop with one other type: show that type without `| undefined`.
+    if (!required && members.length === 1 && members.length < all.length) {
+      return { name: checker.typeToString(members[0]) };
+    }
   }
 
-  return exportName;
+  if (type.flags & TypeFlags.TypeParameter) {
+    const constraint = checker.getBaseConstraintOfType(type);
+    if (constraint && constraint.id !== type.id) {
+      return serializeType(ctx, constraint, required, sourceOrder, depth + 1);
+    }
+  }
+
+  return { name: checker.typeToString(type) };
 }
 
 // ---------------------------------------------------------------------------
-// Props type → ComponentDoc serialization
+// Default values
 // ---------------------------------------------------------------------------
 
+type FunctionLike = ArrowFunction | FunctionExpression | FunctionDeclaration;
+
+function isFunctionLike(node: Node): node is FunctionLike {
+  return isArrowFunction(node) || isFunctionExpression(node) || isFunctionDeclaration(node);
+}
+
+/** Finds the function of a component through `forwardRef`, `memo`, `Object.assign` and variables. */
+function findFunction(ctx: Context, node: Node | undefined, depth = 0): FunctionLike | undefined {
+  if (!node || depth > MAX_DEPTH) {
+    return undefined;
+  }
+  if (isFunctionLike(node)) {
+    return node;
+  }
+  if (isParenthesizedExpression(node) || isAsExpression(node) || isSatisfiesExpression(node)) {
+    return findFunction(ctx, node.expression, depth + 1);
+  }
+  if (isCallExpression(node)) {
+    for (const argument of node.arguments) {
+      const fn = findFunction(ctx, argument, depth + 1);
+      if (fn) {
+        return fn;
+      }
+    }
+    return undefined;
+  }
+  if (isIdentifier(node)) {
+    const symbol = ctx.checker.getSymbolAtLocation(node);
+    const declaration = symbol && getDeclaration(ctx, resolveAlias(ctx, symbol));
+    if (declaration && isVariableDeclaration(declaration)) {
+      return findFunction(ctx, declaration.initializer, depth + 1);
+    }
+    if (declaration && isFunctionDeclaration(declaration)) {
+      return declaration;
+    }
+  }
+  return undefined;
+}
+
+/** Gets the source text of a default value. Constants and enum members give their literal value. */
+function resolveLiteral(ctx: Context, node: Expression, depth = 0): string {
+  if (depth > MAX_DEPTH || !(isIdentifier(node) || isPropertyAccessExpression(node))) {
+    return node.getText();
+  }
+  if (isIdentifier(node) && node.text === 'undefined') {
+    return 'undefined';
+  }
+  return resolveSymbolLiteral(ctx, ctx.checker.getSymbolAtLocation(node), node.getText(), depth);
+}
+
+function resolveSymbolLiteral(
+  ctx: Context,
+  symbol: TsSymbol | undefined,
+  text: string,
+  depth = 0
+): string {
+  const declaration = symbol && getDeclaration(ctx, resolveAlias(ctx, symbol));
+  const initializer =
+    declaration &&
+    (isVariableDeclaration(declaration) ||
+      isEnumMember(declaration) ||
+      isBindingElement(declaration) ||
+      isPropertyAssignment(declaration))
+      ? declaration.initializer
+      : undefined;
+  return initializer ? resolveLiteral(ctx, initializer, depth + 1) : text;
+}
+
+function collectBindingDefaults(
+  ctx: Context,
+  pattern: ObjectBindingPattern,
+  defaults: Map<string, string>
+) {
+  for (const element of pattern.elements) {
+    if (element.initializer && element.name) {
+      const name = (element.propertyName ?? element.name).getText();
+      defaults.set(name, resolveLiteral(ctx, element.initializer));
+    }
+  }
+}
+
+/** Whether an expression reads the props parameter, for example `props` or `useProps(props)`. */
+function readsProps(ctx: Context, node: Expression, props: TsSymbol): boolean {
+  const expression = skipWrappers(node);
+  if (isIdentifier(expression)) {
+    return sameSymbol(ctx.checker.getSymbolAtLocation(expression), props);
+  }
+  if (isAwaitExpression(expression)) {
+    return readsProps(ctx, expression.expression, props);
+  }
+  if (isBinaryExpression(expression)) {
+    return readsProps(ctx, expression.left, props) || readsProps(ctx, expression.right, props);
+  }
+  if (isConditionalExpression(expression)) {
+    return (
+      readsProps(ctx, expression.whenTrue, props) || readsProps(ctx, expression.whenFalse, props)
+    );
+  }
+  if (isCallExpression(expression) || isNewExpression(expression)) {
+    return expression.arguments?.some((argument) => readsProps(ctx, argument, props)) ?? false;
+  }
+  return false;
+}
+
 /**
- * Serializes one resolved component target into ComponentDoc format.
- *
- * Used by `ComponentMetaProject` to convert the output of JSX/meta resolution into the final
- * serialized format for a single story/component pair.
+ * Gets defaults from destructuring: `({ size = 'md' }) => ...` and `(props) => { const { size =
+ * 'md' } = props }`.
  */
-export function serializeComponentDoc(
-  typescript: typeof ts,
-  checker: ts.TypeChecker,
-  {
-    sourceFile,
-    resolvedComponent,
-    defaultsSourcePath,
-  }: {
-    sourceFile: ts.SourceFile;
-    resolvedComponent: ResolvedComponentTarget;
-    defaultsSourcePath?: string;
-  }
-): ComponentDoc | undefined {
-  const { componentRef, propsType, symbol } = resolvedComponent;
-  const exportName = componentRef.importName;
-  if (!exportName) {
-    return undefined;
-  }
-  const displayNameOverride = componentRef.componentName;
-  const isMemberSelection = Boolean(componentRef.member);
-  const filePath = componentRef.path ?? sourceFile.fileName;
-  const resolved = resolveAliasedSymbol(typescript, checker, symbol);
+function getDestructuringDefaults(ctx: Context, component: TsSymbol): Map<string, string> {
+  const defaults = new Map<string, string>();
+  const declarations = getDeclarations(ctx, component);
+  const declaration = getDeclaration(ctx, component);
 
-  const contextNode = resolved.valueDeclaration ?? resolved.getDeclarations()?.[0];
-  if (!contextNode) {
-    return undefined;
+  let fn: FunctionLike | undefined;
+  if (declaration && isFunctionDeclaration(declaration)) {
+    // For overloads, the implementation is the declaration with a body.
+    fn = declarations.find(
+      (node): node is FunctionDeclaration => isFunctionDeclaration(node) && !!node.body
+    );
+  } else if (declaration && isVariableDeclaration(declaration)) {
+    fn = findFunction(ctx, declaration.initializer);
+  } else if (declaration && isExportAssignment(declaration)) {
+    fn = findFunction(ctx, declaration.expression);
   }
 
-  const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
-  const exportSymbol = moduleSymbol
-    ? checker
-        .getExportsOfModule(moduleSymbol)
-        .find((candidate) => candidate.getName() === exportName)
+  const [propsParameter] = fn?.parameters ?? [];
+  if (!fn || !propsParameter) {
+    return defaults;
+  }
+  if (isObjectBindingPattern(propsParameter.name)) {
+    collectBindingDefaults(ctx, propsParameter.name, defaults);
+    return defaults;
+  }
+
+  const props = isIdentifier(propsParameter.name)
+    ? ctx.checker.getSymbolAtLocation(propsParameter.name)
     : undefined;
+  if (!props || !fn.body || !isBlock(fn.body)) {
+    return defaults;
+  }
+  for (const statement of fn.body.statements) {
+    if (!isVariableStatement(statement)) {
+      continue;
+    }
+    for (const variable of statement.declarationList.declarations) {
+      if (
+        isObjectBindingPattern(variable.name) &&
+        variable.initializer &&
+        readsProps(ctx, variable.initializer, props)
+      ) {
+        collectBindingDefaults(ctx, variable.name, defaults);
+      }
+    }
+  }
+  return defaults;
+}
 
-  // getApparentProperties() on a union type only returns common members.
-  // For discriminated unions (e.g. Reshaped Slider: ControlledProps | UncontrolledProps),
-  // variant-specific props like `value`, `defaultValue` would be lost.
-  // Collect all properties across all union members, deduplicating by name.
-  // When deduplicating, prefer symbols with real types (e.g. `value: number` over
-  // `value?: never` which resolves to `undefined`). Props that are degraded or
-  // optional in any variant are force-optional since the caller doesn't always need them.
-  let allProperties: ts.Symbol[];
-  let unionForceOptional: Set<string> | undefined;
-  if (isUnionType(propsType)) {
-    const seen = new Map<string, ts.Symbol>();
-    const forceOptional = new Set<string>();
-    const unionMembers = propsType.types;
+function collectObjectDefaults(
+  ctx: Context,
+  object: ObjectLiteralExpression,
+  defaults: Map<string, string>
+) {
+  for (const property of object.properties) {
+    if (isPropertyAssignment(property)) {
+      defaults.set(property.name.getText(), resolveLiteral(ctx, property.initializer));
+    } else if (isShorthandPropertyAssignment(property)) {
+      const name = property.name.getText();
+      const symbol = ctx.checker.getShorthandAssignmentValueSymbol(property);
+      defaults.set(name, resolveSymbolLiteral(ctx, symbol, name));
+    }
+  }
+}
 
-    const allMemberPropSets: Set<string>[] = [];
-    for (const member of unionMembers) {
-      const memberPropNames = new Set<string>();
-      for (const prop of member.getApparentProperties()) {
-        const name = prop.getName();
-        memberPropNames.add(name);
+/** Follows `defaultProps = myDefaults` to the object literal. */
+function toObjectLiteral(ctx: Context, node: Expression | undefined) {
+  if (node && isIdentifier(node)) {
+    const symbol = ctx.checker.getSymbolAtLocation(node);
+    const declaration = symbol && getDeclaration(ctx, symbol);
+    node = declaration && isVariableDeclaration(declaration) ? declaration.initializer : undefined;
+  }
+  return node && isObjectLiteralExpression(node) ? node : undefined;
+}
 
-        const propType = checker.getTypeOfSymbolAtLocation(prop, contextNode);
-        const isOptional = !!(prop.flags & typescript.SymbolFlags.Optional);
-        // `value?: never` resolves to type `undefined` (Never + Optional → Undefined).
-        // Detect these "degraded" props so we can prefer the real variant.
-        const isDegraded =
-          !!(propType.getFlags() & typescript.TypeFlags.Never) ||
-          !!(propType.getFlags() & typescript.TypeFlags.Undefined);
+/** Gets defaults from `static defaultProps = {...}` and `Component.defaultProps = {...}`. */
+function getDefaultPropsDefaults(ctx: Context, component: TsSymbol): Map<string, string> {
+  const defaults = new Map<string, string>();
+  const sourceFile = getDeclaration(ctx, component)?.getSourceFile();
+  if (!sourceFile) {
+    return defaults;
+  }
+  const isComponent = (node: Node) => {
+    const symbol = ctx.checker.getSymbolAtLocation(node);
+    return !!symbol && sameSymbol(resolveAlias(ctx, symbol), component);
+  };
 
-        // Props with degraded type or optional in any variant → force optional
-        if (isOptional || isDegraded) {
-          forceOptional.add(name);
-        }
-
-        const existing = seen.get(name);
-        if (!existing) {
-          seen.set(name, prop);
-        } else if (!isDegraded) {
-          // Replace if existing is degraded but this one isn't
-          const existingType = checker.getTypeOfSymbolAtLocation(existing, contextNode);
-          const existingIsDegraded =
-            !!(existingType.getFlags() & typescript.TypeFlags.Never) ||
-            !!(existingType.getFlags() & typescript.TypeFlags.Undefined);
-          if (existingIsDegraded) {
-            seen.set(name, prop);
+  for (const statement of sourceFile.statements) {
+    if (isClassDeclaration(statement) && statement.name && isComponent(statement.name)) {
+      for (const member of statement.members) {
+        if (isPropertyDeclaration(member) && member.name.getText() === 'defaultProps') {
+          const object = toObjectLiteral(ctx, member.initializer);
+          if (object) {
+            collectObjectDefaults(ctx, object, defaults);
           }
         }
       }
-      allMemberPropSets.push(memberPropNames);
     }
-
-    // Props not present in ALL union members → force optional.
-    // A prop that exists in variant B but not variant A must be optional
-    // since the caller may pass variant A which doesn't have it.
-    for (const name of seen.keys()) {
-      if (!allMemberPropSets.every((s) => s.has(name))) {
-        forceOptional.add(name);
+    if (
+      isExpressionStatement(statement) &&
+      isBinaryExpression(statement.expression) &&
+      statement.expression.operatorToken.kind === SyntaxKind.EqualsToken &&
+      isPropertyAccessExpression(statement.expression.left) &&
+      statement.expression.left.name.text === 'defaultProps' &&
+      isComponent(statement.expression.left.expression)
+    ) {
+      const object = toObjectLiteral(ctx, statement.expression.right);
+      if (object) {
+        collectObjectDefaults(ctx, object, defaults);
       }
     }
-
-    allProperties = Array.from(seen.values());
-    unionForceOptional = forceOptional;
-  } else {
-    allProperties = propsType.getApparentProperties();
   }
-  const excluded = getBulkSourceExclusions(typescript, allProperties);
+  return defaults;
+}
 
-  // Defaults live on the implementation, not on `export const Button = Inner` re-bindings.
-  const implementation = followVariableReferences(typescript, checker, resolved);
+/** Follows `export const Button = ButtonImpl` to `ButtonImpl`, which has the function body. */
+function findImplementation(ctx: Context, symbol: TsSymbol): TsSymbol {
+  let current = symbol;
+  for (let depth = 0; depth <= MAX_DEPTH; depth++) {
+    const declaration = getDeclaration(ctx, current);
+    if (
+      !declaration ||
+      !isVariableDeclaration(declaration) ||
+      !declaration.initializer ||
+      !isIdentifier(declaration.initializer)
+    ) {
+      break;
+    }
+    const next = ctx.checker.getSymbolAtLocation(declaration.initializer);
+    if (!next) {
+      break;
+    }
+    current = resolveAlias(ctx, next);
+  }
+  return current;
+}
 
-  // Collect defaults: destructuring > defaultProps > JSDoc (in extractPropItem)
-  const defaultsMap = extractDestructuringDefaults(typescript, implementation, checker);
+// ---------------------------------------------------------------------------
+// Component doc
+// ---------------------------------------------------------------------------
 
-  // Fallback: when the symbol resolves to a .d.ts file (e.g. package imports in
-  // monorepos), .d.ts declarations have no function bodies so extractDestructuringDefaults
-  // returns empty. Use the original source file for AST-only defaults extraction.
-  if (defaultsMap.size === 0 && defaultsSourcePath) {
-    const fallbackDefaults = extractDefaultsFromSourceFile(typescript, defaultsSourcePath, {
-      exportName,
-      localName: resolved.getName(),
-      preferLocalName: isMemberSelection,
-    });
-    for (const [key, value] of fallbackDefaults) {
-      defaultsMap.set(key, value);
+function getJsDocTags(ctx: Context, symbol: TsSymbol): Record<string, string[]> {
+  const tags: Record<string, string[]> = {};
+  for (const tag of ctx.checker.getJsDocTagsOfSymbol(symbol)) {
+    (tags[tag.name] ??= []).push((tag.text ?? '').trim());
+  }
+  return tags;
+}
+
+/**
+ * The JSDoc comment of a prop with its tags, for example `The label.\n@deprecated Use children`.
+ * The argTypes conversion reads `@deprecated`, `@param` and `@returns` from this text.
+ */
+function getPropDescription(ctx: Context, prop: TsSymbol, tags: readonly JSDocTagInfo[]) {
+  const comment = ctx.checker.getDocumentationCommentOfSymbol(prop);
+  const tagLines = tags.map(({ name, text }) => (text ? `@${name} ${text}` : `@${name}`));
+  return [comment, ...tagLines].filter(Boolean).join('\n');
+}
+
+function serializeComponentDoc(
+  ctx: Context,
+  { propsType, symbol }: ResolvedComponent,
+  exportName: string,
+  ref: ComponentRef,
+  /** The module that the story imports the component from. */
+  importedModule: TsSymbol | undefined
+): ComponentDoc | undefined {
+  const component = resolveAlias(ctx, symbol);
+  const location = getDeclaration(ctx, component);
+  if (!location) {
+    return undefined;
+  }
+
+  const implementation = findImplementation(ctx, component);
+  const defaults = getDestructuringDefaults(ctx, implementation);
+  for (const [name, value] of getDefaultPropsDefaults(ctx, implementation)) {
+    if (!defaults.has(name)) {
+      defaults.set(name, value);
     }
   }
 
-  // Also check for defaultProps pattern (legacy, deprecated in React 19)
-  const staticDefaults = extractStaticDefaultProps(typescript, checker, implementation);
-  for (const [key, value] of staticDefaults) {
-    if (!defaultsMap.has(key)) {
-      defaultsMap.set(key, value);
-    }
-  }
+  const propSymbols = propsType ? getPropSymbols(ctx, propsType, location) : [];
+  const bulkProps = getBulkProps(
+    ctx,
+    propSymbols.map(({ symbol: prop }) => prop)
+  );
 
   const props: Record<string, PropItem> = {};
-  for (const prop of allProperties) {
-    if (
-      excluded.has(prop.getName()) ||
-      prop.getJsDocTags(checker).some((tag) => tag.name === 'ignore')
-    ) {
+  for (const { symbol: prop, forceOptional, type } of propSymbols) {
+    if (bulkProps.has(prop.name)) {
       continue;
     }
-    const unionProp = isUnionType(propsType)
-      ? checker.getPropertyOfType(propsType, prop.getName())
-      : undefined;
-    const unionPropType = unionProp
-      ? checker.getTypeOfSymbolAtLocation(unionProp, contextNode)
-      : undefined;
-    const item = extractPropItem(
-      typescript,
-      checker,
-      prop,
-      contextNode,
-      defaultsMap,
-      unionPropType
-    );
-    if (unionForceOptional?.has(prop.getName())) {
-      item.required = false;
+    const tags = ctx.checker.getJsDocTagsOfSymbol(prop);
+    if (tags.some((tag) => tag.name === 'ignore')) {
+      continue;
     }
-    props[prop.getName()] = item;
+    const required = !(prop.flags & SymbolFlags.Optional) && !forceOptional;
+    const propType = type ?? ctx.checker.getTypeOfSymbolAtLocation(prop, location);
+    const jsDocDefault = tags.find((tag) => tag.name === 'default' || tag.name === 'defaultValue');
+    const defaultValue = defaults.get(prop.name) ?? (jsDocDefault?.text?.trim() || undefined);
+
+    props[prop.name] = {
+      name: prop.name,
+      required,
+      type: serializeType(ctx, propType, required, () => getSourceLiteralOrder(ctx, prop)),
+      description: getPropDescription(ctx, prop, tags),
+      defaultValue: defaultValue !== undefined ? { value: defaultValue } : null,
+      parent: getParent(ctx, prop),
+    };
   }
 
-  const displayName =
-    (isMemberSelection ? displayNameOverride : undefined) ??
-    computeDisplayName({
-      exportSymbol,
-      resolvedSymbol: resolved,
-    }) ??
-    displayNameOverride;
+  // The `@import` tag can be on the export (`export { Button }`) instead of on the component.
+  const jsDocTags = getJsDocTags(ctx, component);
+  const sourceFile = location.getSourceFile();
+  const module = importedModule ?? ctx.checker.getSymbolAtLocation(sourceFile);
+  const exportSymbol = module && getExport(ctx, module, exportName);
+  if (!jsDocTags.import && exportSymbol && !sameSymbol(exportSymbol, component)) {
+    const exportTags = getJsDocTags(ctx, resolveAlias(ctx, exportSymbol));
+    if (exportTags.import) {
+      jsDocTags.import = exportTags.import;
+    }
+  }
 
-  const resolvedJsDocInfo = extractComponentJsDocInfo(typescript, checker, resolved);
-  const description = resolvedJsDocInfo.description;
-  const selectedJsDocTags = resolvedJsDocInfo.jsDocTags;
-  const exportResolved =
-    exportSymbol && exportSymbol !== resolved
-      ? resolveAliasedSymbol(typescript, checker, exportSymbol)
-      : undefined;
-  const exportJsDocTags = exportResolved
-    ? extractComponentJsDocInfo(typescript, checker, exportResolved).jsDocTags
-    : undefined;
-  const jsDocTags =
-    selectedJsDocTags?.import || !exportJsDocTags?.import
-      ? selectedJsDocTags
-      : {
-          ...(selectedJsDocTags ?? {}),
-          import: exportJsDocTags.import,
-        };
+  const ownName =
+    component.name !== 'default' && !component.name.startsWith('__') ? component.name : undefined;
+  const displayName =
+    (ref.member ? ref.componentName : undefined) ??
+    (exportSymbol && exportName !== 'default' ? exportName : ownName) ??
+    ref.componentName;
 
   return {
     displayName,
     exportName,
-    filePath,
-    description,
+    filePath: ref.path ?? sourceFile.fileName,
+    description: ctx.checker.getDocumentationCommentOfSymbol(component),
     jsDocTags,
     props,
   };
-}
-
-// ---------------------------------------------------------------------------
-// AST-only defaults extraction from source files
-// ---------------------------------------------------------------------------
-
-/**
- * Extracts destructuring defaults from a source file using pure AST walking.
- *
- * Used as a fallback when the primary file is a `.d.ts` (e.g. package imports in monorepos) where
- * function bodies are stripped. Reads the original source file, finds the exported function
- * matching `exportName`, and collects defaults from its parameter destructuring.
- *
- * Works without a TypeChecker — only string literal, numeric, boolean, null, and undefined defaults
- * are extracted. Identifier references (e.g. `noop`, `DEFAULT_SIZE`) are included as-is.
- */
-function extractDefaultsFromSourceFile(
-  typescript: typeof ts,
-  filePath: string,
-  {
-    exportName,
-    localName,
-    preferLocalName = false,
-  }: {
-    exportName: string;
-    localName?: string;
-    preferLocalName?: boolean;
-  }
-): Map<string, string> {
-  const defaults = new Map<string, string>();
-
-  const content = typescript.sys.readFile(filePath);
-  if (!content) {
-    return defaults;
-  }
-
-  const sf = typescript.createSourceFile(
-    filePath,
-    content,
-    typescript.ScriptTarget.Latest,
-    /* setParentNodes */ true
-  );
-
-  // Build a map of top-level variable names → initializer nodes.
-  // This lets us follow references like: export const Stack = Object.assign(StackImpl, ...)
-  // where StackImpl is defined as: const StackImpl = forwardRef(...)
-  const varMap = new Map<string, ts.Expression | ts.FunctionDeclaration>();
-  for (const stmt of sf.statements) {
-    if (typescript.isVariableStatement(stmt)) {
-      for (const decl of stmt.declarationList.declarations) {
-        if (typescript.isIdentifier(decl.name) && decl.initializer) {
-          varMap.set(decl.name.text, decl.initializer);
-        }
-      }
-    }
-    if (typescript.isFunctionDeclaration(stmt) && stmt.name) {
-      varMap.set(stmt.name.text, stmt);
-    }
-  }
-
-  // Find the target: the function associated with the exported symbol.
-  // For "default" export, look at export default ... or export { X as default }.
-  // For named exports, look at export const X = ... or export { X }.
-  const fn = preferLocalName
-    ? (findLocalFunction(typescript, sf, localName, varMap) ??
-      findExportedFunction(typescript, sf, exportName, varMap))
-    : (findExportedFunction(typescript, sf, exportName, varMap) ??
-      findLocalFunction(typescript, sf, localName, varMap));
-  if (!fn) {
-    return defaults;
-  }
-
-  // Extract destructuring defaults from the first parameter
-  const firstParam = fn.parameters[0];
-  if (!firstParam) {
-    return defaults;
-  }
-
-  if (typescript.isObjectBindingPattern(firstParam.name)) {
-    collectBindingDefaults(typescript, firstParam.name, defaults);
-  } else if (fn.body) {
-    const propsParamName = typescript.isIdentifier(firstParam.name) ? firstParam.name : undefined;
-
-    // Body destructuring: (props) => { const { x = 1 } = props; }
-    const body = typescript.isBlock(fn.body) ? fn.body : undefined;
-    if (body && propsParamName) {
-      for (const stmt of body.statements) {
-        if (!typescript.isVariableStatement(stmt)) {
-          continue;
-        }
-        for (const varDecl of stmt.declarationList.declarations) {
-          if (
-            typescript.isObjectBindingPattern(varDecl.name) &&
-            varDecl.initializer &&
-            isPropsDerivedInitializer(typescript, varDecl.initializer, propsParamName)
-          ) {
-            collectBindingDefaults(typescript, varDecl.name, defaults);
-          }
-        }
-      }
-    }
-  }
-
-  return defaults;
-}
-
-function findLocalFunction(
-  typescript: typeof ts,
-  sf: ts.SourceFile,
-  localName: string | undefined,
-  varMap: Map<string, ts.Expression | ts.FunctionDeclaration>
-): ts.FunctionLikeDeclaration | undefined {
-  if (!localName) {
-    return undefined;
-  }
-
-  const targetExpr = varMap.get(localName);
-  if (!targetExpr) {
-    return undefined;
-  }
-
-  return unwrapToFunctionAST(typescript, targetExpr, varMap, 0);
-}
-
-/**
- * Finds the function-like declaration for a given export name in the source file. Pure AST —
- * follows Object.assign, forwardRef, memo, as-casts, and identifier refs.
- */
-function findExportedFunction(
-  typescript: typeof ts,
-  sf: ts.SourceFile,
-  exportName: string,
-  varMap: Map<string, ts.Expression | ts.FunctionDeclaration>
-): ts.FunctionLikeDeclaration | undefined {
-  let targetExpr: ts.Node | undefined;
-
-  for (const stmt of sf.statements) {
-    // export default X
-    if (exportName === 'default' && typescript.isExportAssignment(stmt) && !stmt.isExportEquals) {
-      targetExpr = stmt.expression;
-      break;
-    }
-
-    // export const X = ... or export function X
-    if (typescript.isVariableStatement(stmt) && hasExportModifier(typescript, stmt)) {
-      for (const decl of stmt.declarationList.declarations) {
-        if (
-          typescript.isIdentifier(decl.name) &&
-          decl.name.text === exportName &&
-          decl.initializer
-        ) {
-          targetExpr = decl.initializer;
-          break;
-        }
-      }
-      if (targetExpr) {
-        break;
-      }
-    }
-
-    if (
-      typescript.isFunctionDeclaration(stmt) &&
-      hasExportModifier(typescript, stmt) &&
-      stmt.name?.text === exportName
-    ) {
-      // Find implementation (not overload) for overloaded functions
-      return findFunctionImpl(typescript, sf, stmt.name.text) ?? stmt;
-    }
-
-    // export { StackImpl as Stack } or export { X }
-    if (
-      typescript.isExportDeclaration(stmt) &&
-      stmt.exportClause &&
-      typescript.isNamedExports(stmt.exportClause)
-    ) {
-      for (const spec of stmt.exportClause.elements) {
-        const exported = spec.name.text;
-        const local = spec.propertyName ? spec.propertyName.text : spec.name.text;
-        if (exported === exportName) {
-          targetExpr = varMap.get(local);
-          break;
-        }
-      }
-      if (targetExpr) {
-        break;
-      }
-    }
-  }
-
-  if (!targetExpr) {
-    // Not explicitly exported — might be via barrel: import { X } from './...'
-    // Try to find a top-level variable matching the export name
-    targetExpr = varMap.get(exportName);
-  }
-
-  if (!targetExpr) {
-    return undefined;
-  }
-
-  return unwrapToFunctionAST(typescript, targetExpr, varMap, 0);
-}
-
-/**
- * Pure AST version of unwrapToFunction. Follows forwardRef, memo, Object.assign, as-casts,
- * parenthesized expressions, and identifier references via varMap.
- */
-function unwrapToFunctionAST(
-  typescript: typeof ts,
-  node: ts.Node,
-  varMap: Map<string, ts.Expression | ts.FunctionDeclaration>,
-  depth: number
-): ts.FunctionLikeDeclaration | undefined {
-  if (depth > MAX_UNWRAP_DEPTH) {
-    return undefined;
-  }
-
-  // Already a function
-  if (typescript.isFunctionExpression(node) || typescript.isArrowFunction(node)) {
-    return node;
-  }
-  if (typescript.isFunctionDeclaration(node)) {
-    return node;
-  }
-
-  // Parenthesized: (expr)
-  if (typescript.isParenthesizedExpression(node)) {
-    return unwrapToFunctionAST(typescript, node.expression, varMap, depth + 1);
-  }
-
-  // As-expression: expr as Type
-  if (typescript.isAsExpression(node)) {
-    return unwrapToFunctionAST(typescript, node.expression, varMap, depth + 1);
-  }
-
-  // Type assertion: <Type>expr
-  if (typescript.isTypeAssertionExpression && typescript.isTypeAssertionExpression(node)) {
-    return unwrapToFunctionAST(typescript, node.expression, varMap, depth + 1);
-  }
-
-  // Call expression: forwardRef(...), memo(...), Object.assign(X, ...)
-  if (typescript.isCallExpression(node)) {
-    const callee = node.expression;
-    // Object.assign(Component, { Sub }) — first arg is the component
-    if (
-      typescript.isPropertyAccessExpression(callee) &&
-      typescript.isIdentifier(callee.expression) &&
-      callee.expression.text === 'Object' &&
-      callee.name.text === 'assign' &&
-      node.arguments.length >= 1
-    ) {
-      return unwrapToFunctionAST(typescript, node.arguments[0], varMap, depth + 1);
-    }
-
-    // forwardRef(...), memo(...) — first arg is the function
-    if (node.arguments.length >= 1) {
-      return unwrapToFunctionAST(typescript, node.arguments[0], varMap, depth + 1);
-    }
-  }
-
-  // Identifier: follow to its declaration via varMap
-  if (typescript.isIdentifier(node)) {
-    const init = varMap.get(node.text);
-    if (init) {
-      return unwrapToFunctionAST(typescript, init, varMap, depth + 1);
-    }
-  }
-
-  return undefined;
-}
-
-/** Finds the implementation body for an overloaded function declaration. */
-function findFunctionImpl(
-  typescript: typeof ts,
-  sf: ts.SourceFile,
-  name: string
-): ts.FunctionDeclaration | undefined {
-  for (const stmt of sf.statements) {
-    if (typescript.isFunctionDeclaration(stmt) && stmt.name?.text === name && stmt.body) {
-      return stmt;
-    }
-  }
-  return undefined;
-}
-
-/** Check if a statement has the `export` modifier. */
-function hasExportModifier(typescript: typeof ts, node: ts.Statement): boolean {
-  return (
-    typescript.canHaveModifiers(node) &&
-    typescript.getModifiers(node)?.some((m) => m.kind === typescript.SyntaxKind.ExportKeyword) ===
-      true
-  );
 }

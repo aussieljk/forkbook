@@ -74,7 +74,7 @@ export const extractComponentProps: ExtractProps = (component, section) => {
     return [];
   }
 
-  // vue-docgen-api has diverged from react-docgen and returns an array
+  // Some docgen tools return an array of props
   return Array.isArray(docgenSection)
     ? extractComponentSectionArray(docgenSection)
     : extractComponentSectionObject(docgenSection);

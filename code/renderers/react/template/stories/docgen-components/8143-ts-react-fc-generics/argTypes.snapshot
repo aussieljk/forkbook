@@ -1,9 +1,28 @@
 {
+  "margin": {
+    "control": {
+      "type": "number",
+    },
+    "description": "",
+    "name": "margin",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "number",
+      },
+    },
+    "type": {
+      "name": "number",
+      "required": true,
+    },
+  },
   "padding": {
     "control": {
-      "type": "object",
+      "type": "text",
     },
-    "description": undefined,
+    "description": "",
     "name": "padding",
     "table": {
       "defaultValue": {
@@ -13,11 +32,12 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "unknown",
+        "summary": "string",
       },
     },
     "type": {
-      "required": false,
+      "name": "string",
+      "required": true,
     },
   },
 }

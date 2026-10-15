@@ -8,25 +8,27 @@
       "description": "A component that loaded successfully but has some stories that failed to generate.",
       "summary": "Success component with both working and failing stories",
       "import": "import { SuccessWithMixedStories } from '@storybook/design-system';",
-      "reactDocgen": {
+      "reactComponentMeta": {
         "props": {
           "text": {
+            "name": "text",
             "description": "The text to display",
             "required": true,
-            "tsType": { "name": "string" }
+            "type": {
+              "name": "string"
+            },
+            "defaultValue": null
           },
           "variant": {
+            "name": "variant",
             "description": "The visual variant",
             "required": false,
-            "tsType": {
-              "name": "union",
-              "raw": "\"primary\" | \"secondary\"",
-              "elements": [
-                { "name": "literal", "value": "\"primary\"" },
-                { "name": "literal", "value": "\"secondary\"" }
-              ]
+            "type": {
+              "name": "\"primary\" | \"secondary\""
             },
-            "defaultValue": { "value": "\"primary\"", "computed": false }
+            "defaultValue": {
+              "value": "\"primary\""
+            }
           }
         }
       },
@@ -55,7 +57,7 @@
       "name": "ErrorWithSuccessStories",
       "error": {
         "name": "TypeError",
-        "message": "Failed to parse component: Cannot read property 'name' of undefined in react-docgen parser"
+        "message": "Failed to parse component: Cannot read property 'name' of undefined in docgen parser"
       },
       "stories": [
         {
@@ -119,17 +121,25 @@
       "description": "A component where everything worked except one story.",
       "summary": "Mostly working component with one failing story",
       "import": "import { PartialSuccess } from '@storybook/design-system';",
-      "reactDocgen": {
+      "reactComponentMeta": {
         "props": {
           "title": {
+            "name": "title",
             "description": "The title text",
             "required": true,
-            "tsType": { "name": "string" }
+            "type": {
+              "name": "string"
+            },
+            "defaultValue": null
           },
           "subtitle": {
+            "name": "subtitle",
             "description": "Optional subtitle",
             "required": false,
-            "tsType": { "name": "string" }
+            "type": {
+              "name": "string"
+            },
+            "defaultValue": null
           }
         }
       },

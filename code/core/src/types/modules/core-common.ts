@@ -476,8 +476,6 @@ export interface ComponentsManifest {
   components: Record<string, ComponentManifest>;
   meta?: {
     docgen:
-      | 'react-docgen'
-      | 'react-docgen-typescript'
       | 'react-component-meta'
       | 'vue-component-meta'
       | 'angular-component-meta'
@@ -617,15 +615,6 @@ export interface StorybookFeatures {
    * @default false // `true` for React, Vue 3, and `@storybook/angular-vite`
    */
   componentsManifest?: boolean;
-
-  /**
-   * Use TypeScript LanguageService (react-component-meta) for extracting React component props
-   * instead of react-docgen / react-docgen-typescript.
-   *
-   * @default false
-   * @experimental
-   */
-  experimentalReactComponentMeta?: boolean;
 
   /**
    * Enables the new code example generation for React components. You can see those examples when

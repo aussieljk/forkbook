@@ -19,7 +19,11 @@ const guide = {
 };
 
 const inlineManifests: RawManifests = {
-  components: { v: 0, components: { button }, meta: { docgen: 'react-docgen', durationMs: 1 } },
+  components: {
+    v: 0,
+    components: { button },
+    meta: { docgen: 'react-component-meta', durationMs: 1 },
+  },
   docs: { v: 0, docs: { 'guide--docs': guide } },
 };
 

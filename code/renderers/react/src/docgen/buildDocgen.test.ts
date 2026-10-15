@@ -4,7 +4,6 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import type { IndexEntry } from 'storybook/internal/types';
 import { dedent } from 'ts-dedent';
-import ts from 'typescript';
 
 import { ComponentMetaManager } from '../componentManifest/componentMeta/ComponentMetaManager.ts';
 import type { ComponentDoc } from '../componentManifest/componentMeta/componentMetaExtractor.ts';
@@ -64,7 +63,7 @@ describe('buildDocgenPayload', () => {
         `,
       });
 
-      componentMetaManager = new ComponentMetaManager(ts);
+      componentMetaManager = new ComponentMetaManager();
       const importPath = files['Button.stories.tsx'];
 
       const payload = await buildDocgenPayload(
@@ -111,7 +110,7 @@ describe('buildDocgenPayload', () => {
       `,
     });
 
-    componentMetaManager = new ComponentMetaManager(ts);
+    componentMetaManager = new ComponentMetaManager();
 
     const payload = await buildDocgenPayload(
       { entry: makeStoryIndexEntry(files['Button.stories.tsx'], 'Forms/Button') },
@@ -147,7 +146,7 @@ describe('buildDocgenPayload', () => {
         `,
       });
 
-      componentMetaManager = new ComponentMetaManager(ts);
+      componentMetaManager = new ComponentMetaManager();
 
       const payload = await buildDocgenPayload(
         { entry: makeStoryIndexEntry(files['Button.stories.tsx'], 'Forms/Button') },
@@ -182,7 +181,7 @@ describe('buildDocgenPayload', () => {
         `,
       });
 
-      componentMetaManager = new ComponentMetaManager(ts);
+      componentMetaManager = new ComponentMetaManager();
 
       const payload = await buildDocgenPayload(
         { entry: makeStoryIndexEntry(files['Button.stories.tsx'], 'Forms/Button') },
@@ -198,7 +197,7 @@ describe('buildDocgenPayload', () => {
 
   it('returns undefined when the story file is missing', { timeout: 15_000 }, async () => {
     tempDir = createTempDir('docgen-build');
-    componentMetaManager = new ComponentMetaManager(ts);
+    componentMetaManager = new ComponentMetaManager();
 
     const payload = await buildDocgenPayload(
       {
@@ -239,7 +238,7 @@ describe('buildDocgenPayload', () => {
         `,
     });
 
-    componentMetaManager = new ComponentMetaManager(ts);
+    componentMetaManager = new ComponentMetaManager();
 
     const payload = await buildDocgenPayload(
       { entry: makeStoryIndexEntry(files['Card.stories.tsx'], 'Layout/Card') },

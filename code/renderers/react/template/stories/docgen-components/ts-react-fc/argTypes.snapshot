@@ -1,1 +1,826 @@
-{}
+{
+  "aliasesIntersection": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "aliasesIntersection",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "never",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "never",
+    },
+  },
+  "aliasesUnion": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "aliasesUnion",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "AliasesUnion",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "AliasesUnion",
+    },
+  },
+  "any": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "any",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "any",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "any",
+    },
+  },
+  "arrayOfComplexObject": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "arrayOfComplexObject",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface[]",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ItemInterface[]",
+    },
+  },
+  "arrayOfPrimitive": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "arrayOfPrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string[]",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "string[]",
+    },
+  },
+  "bool": {
+    "control": {
+      "type": "boolean",
+    },
+    "description": "",
+    "name": "bool",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "boolean",
+      },
+    },
+    "type": {
+      "name": "boolean",
+      "required": true,
+    },
+  },
+  "defaultEnum": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "defaultEnum",
+    "options": [
+      0,
+      1,
+      2,
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "0 | 1 | 2",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "DefaultEnum.TopLeft | DefaultEnum.TopRight | DefaultEnum.TopCenter",
+      "required": true,
+      "value": [
+        0,
+        1,
+        2,
+      ],
+    },
+  },
+  "enumUnion": {
+    "control": {
+      "type": "select",
+    },
+    "description": "",
+    "name": "enumUnion",
+    "options": [
+      0,
+      0,
+      1,
+      2,
+      1,
+      2,
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "0 | 0 | 1 | 2 | 1 | 2",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "DefaultEnum.TopLeft | NumericEnum.TopLeft | DefaultEnum.TopRight | DefaultEnum.TopCenter | NumericEnum.TopRight | NumericEnum.TopCenter",
+      "required": true,
+      "value": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        2,
+      ],
+    },
+  },
+  "funcWithArgsAndReturns": {
+    "description": "",
+    "name": "funcWithArgsAndReturns",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "(a: string, b: string) => string",
+      },
+    },
+    "type": {
+      "name": "function",
+      "required": true,
+      "value": "(a: string, b: string) => string",
+    },
+  },
+  "funcWithIndexTypes": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "funcWithIndexTypes",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "<T, K extends keyof T>(o: T, propertyNames: K[]) => T[K][]",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "<T, K extends keyof T>(o: T, propertyNames: K[]) => T[K][]",
+    },
+  },
+  "funcWithMultipleUnionReturns": {
+    "description": "",
+    "name": "funcWithMultipleUnionReturns",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "() => string | ItemInterface",
+      },
+    },
+    "type": {
+      "name": "function",
+      "required": true,
+      "value": "() => string | ItemInterface",
+    },
+  },
+  "funcWithunionArg": {
+    "description": "",
+    "name": "funcWithunionArg",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "(a: string | number) => string",
+      },
+    },
+    "type": {
+      "name": "function",
+      "required": true,
+      "value": "(a: string | number) => string",
+    },
+  },
+  "genericAlias": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "genericAlias",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "GenericAlias<string>",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "GenericAlias<string>",
+    },
+  },
+  "genericInterface": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "genericInterface",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "GenericInterface<string>",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "GenericInterface<string>",
+    },
+  },
+  "inlinedNumericLiteralUnion": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "inlinedNumericLiteralUnion",
+    "options": [
+      0,
+      1,
+      2,
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "0 | 1 | 2",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "0 | 1 | 2",
+      "required": true,
+      "value": [
+        0,
+        1,
+        2,
+      ],
+    },
+  },
+  "inlinedStringLiteralUnion": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "inlinedStringLiteralUnion",
+    "options": [
+      "bottom-left",
+      "bottom-right",
+      "bottom-center",
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": ""bottom-left" | "bottom-right" | "bottom-center"",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": ""bottom-left" | "bottom-right" | "bottom-center"",
+      "required": true,
+      "value": [
+        "bottom-left",
+        "bottom-right",
+        "bottom-center",
+      ],
+    },
+  },
+  "interface": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "interface",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ItemInterface",
+    },
+  },
+  "intersectionType": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "intersectionType",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "InterfaceIntersection",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "InterfaceIntersection",
+    },
+  },
+  "intersectionWithInlineType": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "intersectionWithInlineType",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface & { inlineValue: string; }",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ItemInterface & { inlineValue: string; }",
+    },
+  },
+  "namedNumericLiteralUnion": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "namedNumericLiteralUnion",
+    "options": [
+      0,
+      1,
+      2,
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "0 | 1 | 2",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "0 | 1 | 2",
+      "required": true,
+      "value": [
+        0,
+        1,
+        2,
+      ],
+    },
+  },
+  "namedStringLiteralUnion": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "namedStringLiteralUnion",
+    "options": [
+      "top-left",
+      "top-right",
+      "top-center",
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": ""top-left" | "top-right" | "top-center"",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": ""top-left" | "top-right" | "top-center"",
+      "required": true,
+      "value": [
+        "top-left",
+        "top-right",
+        "top-center",
+      ],
+    },
+  },
+  "nullableComplexType": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "nullableComplexType",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": false,
+      "value": "ItemInterface",
+    },
+  },
+  "nullableComplexTypeUndefinedDefaultValue": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "nullableComplexTypeUndefinedDefaultValue",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": false,
+      "value": "ItemInterface",
+    },
+  },
+  "nullablePrimitive": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "nullablePrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": false,
+    },
+  },
+  "number": {
+    "control": {
+      "type": "number",
+    },
+    "description": "",
+    "name": "number",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "number",
+      },
+    },
+    "type": {
+      "name": "number",
+      "required": true,
+    },
+  },
+  "numericEnum": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "numericEnum",
+    "options": [
+      0,
+      1,
+      2,
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "0 | 1 | 2",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "NumericEnum.TopLeft | NumericEnum.TopRight | NumericEnum.TopCenter",
+      "required": true,
+      "value": [
+        0,
+        1,
+        2,
+      ],
+    },
+  },
+  "readonlyPrimitive": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "readonlyPrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": true,
+    },
+  },
+  "recordOfComplexObject": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "recordOfComplexObject",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "Record<string, ItemInterface>",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "Record<string, ItemInterface>",
+    },
+  },
+  "recordOfPrimitive": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "recordOfPrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "Record<string, number>",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "Record<string, number>",
+    },
+  },
+  "string": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "string",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": true,
+    },
+  },
+  "stringEnum": {
+    "control": {
+      "type": "radio",
+    },
+    "description": "",
+    "name": "stringEnum",
+    "options": [
+      "top-left",
+      "top-right",
+      "top-center",
+    ],
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": ""top-left" | "top-right" | "top-center"",
+      },
+    },
+    "type": {
+      "name": "enum",
+      "raw": "StringEnum.TopLeft | StringEnum.TopRight | StringEnum.TopCenter",
+      "required": true,
+      "value": [
+        "top-left",
+        "top-right",
+        "top-center",
+      ],
+    },
+  },
+  "symbol": {
+    "description": "",
+    "name": "symbol",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "symbol",
+      },
+    },
+    "type": {
+      "name": "symbol",
+      "required": true,
+    },
+  },
+  "tupleOfPrimitive": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "tupleOfPrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "[string, number]",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "[string, number]",
+    },
+  },
+  "tupleWithComplexType": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "tupleWithComplexType",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "[string, ItemInterface]",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "[string, ItemInterface]",
+    },
+  },
+  "typeAlias": {
+    "control": {
+      "type": "text",
+    },
+    "description": "",
+    "name": "typeAlias",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string",
+      },
+    },
+    "type": {
+      "name": "string",
+      "required": true,
+    },
+  },
+  "unionOfComplexType": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "unionOfComplexType",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "ItemInterface | InterfaceIntersection",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "ItemInterface | InterfaceIntersection",
+    },
+  },
+  "unionOfPrimitive": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "unionOfPrimitive",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "string | number",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "string | number",
+    },
+  },
+  "voidFunc": {
+    "description": "",
+    "name": "voidFunc",
+    "table": {
+      "defaultValue": undefined,
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "() => void",
+      },
+    },
+    "type": {
+      "name": "function",
+      "required": true,
+      "value": "() => void",
+    },
+  },
+}

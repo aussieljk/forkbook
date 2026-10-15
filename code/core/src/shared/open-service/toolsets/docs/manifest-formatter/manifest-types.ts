@@ -73,9 +73,7 @@ const BaseInlineComponentProperties = v.object({
   // Framework-authored Markdown, rendered in place of the props section derived from `react*`.
   apiDescription: v.optional(v.string()),
   renderer: v.optional(v.string()),
-  // Mirrors the docgen-engine payloads, which the parsers narrow structurally at runtime.
-  reactDocgen: v.optional(v.any()),
-  reactDocgenTypescript: v.optional(v.any()),
+  // The docgen payload. The parser reads only the fields that it needs.
   reactComponentMeta: v.optional(v.any()),
 });
 

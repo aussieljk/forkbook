@@ -1,396 +1,403 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`react component properties ts-function-component 1`] = `
-Object {
-  "arrayOptional": Object {
-    "control": Object {
+{
+  "arrayOptional": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "arrayOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "['array',    'optional']",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "Array",
+        "summary": "string[]",
       },
     },
-    "type": Object {
-      "name": "array",
-      "raw": "string[]",
+    "type": {
+      "name": "other",
       "required": false,
-      "value": Array [
-        Object {
-          "name": "string",
-        },
-      ],
+      "value": "string[]",
     },
   },
-  "arrayRequired": Object {
-    "control": Object {
+  "arrayRequired": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "arrayRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "Array",
+        "summary": "string[]",
       },
     },
-    "type": Object {
-      "name": "array",
-      "raw": "string[]",
+    "type": {
+      "name": "other",
       "required": true,
-      "value": Array [
-        Object {
-          "name": "string",
-        },
-      ],
+      "value": "string[]",
     },
   },
-  "booleanOptional": Object {
-    "control": Object {
+  "booleanOptional": {
+    "control": {
       "type": "boolean",
     },
     "description": "",
     "name": "booleanOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "false",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "boolean",
       },
     },
-    "type": Object {
+    "type": {
       "name": "boolean",
       "required": false,
     },
   },
-  "booleanRequired": Object {
-    "control": Object {
+  "booleanRequired": {
+    "control": {
       "type": "boolean",
     },
     "description": "",
     "name": "booleanRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "boolean",
       },
     },
-    "type": Object {
+    "type": {
       "name": "boolean",
       "required": true,
     },
   },
-  "dateOptional": Object {
-    "control": Object {
+  "dateOptional": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "dateOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "new Date('20 Jan 1983')",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "Date",
       },
     },
-    "type": Object {
+    "type": {
       "name": "other",
       "required": false,
       "value": "Date",
     },
   },
-  "dateRequired": Object {
-    "control": Object {
+  "dateRequired": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "dateRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "Date",
       },
     },
-    "type": Object {
+    "type": {
       "name": "other",
       "required": true,
       "value": "Date",
     },
   },
-  "functionOptional": Object {
+  "functionOptional": {
     "description": "",
     "name": "functionOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "() => 'foo'",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "signature",
+        "summary": "() => string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "function",
-      "raw": "() => string",
       "required": false,
+      "value": "() => string",
     },
   },
-  "functionRequired": Object {
+  "functionRequired": {
     "description": "",
     "name": "functionRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "signature",
+        "summary": "() => string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "function",
-      "raw": "() => string",
       "required": true,
+      "value": "() => string",
     },
   },
-  "globalReference": Object {
-    "control": Object {
+  "globalReference": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "globalReference",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "Date",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "any",
       },
     },
-    "type": Object {
+    "type": {
       "name": "other",
       "required": false,
       "value": "any",
     },
   },
-  "importedReference": Object {
-    "control": Object {
+  "importedReference": {
+    "control": {
       "type": "text",
     },
     "description": "",
     "name": "importedReference",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "imported",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "string",
       "required": false,
     },
   },
-  "localReference": Object {
-    "control": Object {
+  "localReference": {
+    "control": {
       "type": "text",
     },
     "description": "",
     "name": "localReference",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "'local-value'",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "string",
       "required": false,
     },
   },
-  "numberOptional": Object {
-    "control": Object {
+  "myClass": {
+    "control": {
+      "type": "object",
+    },
+    "description": "",
+    "name": "myClass",
+    "table": {
+      "defaultValue": {
+        "detail": undefined,
+        "summary": "styles.foo",
+      },
+      "jsDocTags": undefined,
+      "type": {
+        "detail": undefined,
+        "summary": "any",
+      },
+    },
+    "type": {
+      "name": "other",
+      "required": true,
+      "value": "any",
+    },
+  },
+  "numberOptional": {
+    "control": {
       "type": "number",
     },
     "description": "",
     "name": "numberOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "1",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "number",
       },
     },
-    "type": Object {
+    "type": {
       "name": "number",
       "required": false,
     },
   },
-  "numberRequired": Object {
-    "control": Object {
+  "numberRequired": {
+    "control": {
       "type": "number",
     },
     "description": "Description",
     "name": "numberRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "number",
       },
     },
-    "type": Object {
+    "type": {
       "name": "number",
       "required": true,
     },
   },
-  "objectOptional": Object {
-    "control": Object {
+  "objectOptional": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "objectOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "{ object: 'optional' }",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "Record",
+        "summary": "Record<string, string>",
       },
     },
-    "type": Object {
+    "type": {
       "name": "other",
-      "raw": "Record<string, string>",
       "required": false,
-      "value": "Record",
+      "value": "Record<string, string>",
     },
   },
-  "objectRequired": Object {
-    "control": Object {
+  "objectRequired": {
+    "control": {
       "type": "object",
     },
     "description": "",
     "name": "objectRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
-        "summary": "Record",
+        "summary": "Record<string, string>",
       },
     },
-    "type": Object {
+    "type": {
       "name": "other",
-      "raw": "Record<string, string>",
       "required": true,
-      "value": "Record",
+      "value": "Record<string, string>",
     },
   },
-  "stringGlobalName": Object {
-    "control": Object {
+  "stringGlobalName": {
+    "control": {
       "type": "text",
     },
     "description": "",
     "name": "stringGlobalName",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "'top'",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "string",
       "required": false,
     },
   },
-  "stringOptional": Object {
-    "control": Object {
+  "stringOptional": {
+    "control": {
       "type": "text",
     },
     "description": "",
     "name": "stringOptional",
-    "table": Object {
-      "defaultValue": Object {
+    "table": {
+      "defaultValue": {
         "detail": undefined,
         "summary": "'stringOptional'",
       },
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "string",
       "required": false,
     },
   },
-  "stringRequired": Object {
-    "control": Object {
+  "stringRequired": {
+    "control": {
       "type": "text",
     },
     "description": "",
     "name": "stringRequired",
-    "table": Object {
-      "defaultValue": null,
+    "table": {
+      "defaultValue": undefined,
       "jsDocTags": undefined,
-      "type": Object {
+      "type": {
         "detail": undefined,
         "summary": "string",
       },
     },
-    "type": Object {
+    "type": {
       "name": "string",
       "required": true,
     },
   },
 }
-`;

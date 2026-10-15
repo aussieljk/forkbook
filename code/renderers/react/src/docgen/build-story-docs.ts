@@ -4,11 +4,9 @@ import { getStoryImportPathFromEntry } from 'storybook/internal/common';
 import path from 'pathe';
 
 import { buildStoryDocsFromResolved } from '../componentManifest/buildReactComponentDocgen.ts';
-import type { TypescriptOptions } from '../componentManifest/getComponentImports.ts';
 import { resolveStoryFileComponents } from '../componentManifest/resolveComponents.ts';
 
 export interface BuildStoryDocsContext {
-  typescriptOptions?: Partial<TypescriptOptions>;
   /** Resolve a CSF import path to an absolute file path. Defaults to `process.cwd()` join. */
   resolvePath?: (importPath: string) => string;
 }
@@ -17,7 +15,7 @@ export interface BuildStoryDocsContext {
  * Build a {@link StoryDocsPayload} for the stories in one CSF story file.
  *
  * Uses {@link resolveStoryFileComponents} and {@link buildStoryDocsFromResolved} without running
- * RCM or any component docgen engine.
+ * the docgen engine.
  */
 export async function buildStoryDocsPayload(
   input: StoryDocsProviderInput,
@@ -37,8 +35,6 @@ export async function buildStoryDocsPayload(
     resolved = await resolveStoryFileComponents({
       storyPath,
       title: input.entry.title,
-      typescriptOptions: context.typescriptOptions,
-      docgenEngine: 'react-component-meta',
     });
   } catch {
     return undefined;

@@ -1,315 +1,555 @@
-import React from 'react';
-function concat(a, b) {
-  return a + b;
-}
-var DefaultEnum = /*#__PURE__*/function (DefaultEnum) {
-  DefaultEnum[DefaultEnum["TopLeft"] = 0] = "TopLeft";
-  DefaultEnum[DefaultEnum["TopRight"] = 1] = "TopRight";
-  DefaultEnum[DefaultEnum["TopCenter"] = 2] = "TopCenter";
-  return DefaultEnum;
-}(DefaultEnum || {});
-var NumericEnum = /*#__PURE__*/function (NumericEnum) {
-  NumericEnum[NumericEnum["TopLeft"] = 0] = "TopLeft";
-  NumericEnum[NumericEnum["TopRight"] = 1] = "TopRight";
-  NumericEnum[NumericEnum["TopCenter"] = 2] = "TopCenter";
-  return NumericEnum;
-}(NumericEnum || {});
-var StringEnum = /*#__PURE__*/function (StringEnum) {
-  StringEnum["TopLeft"] = "top-left";
-  StringEnum["TopRight"] = "top-right";
-  StringEnum["TopCenter"] = "top-center";
-  return StringEnum;
-}(StringEnum || {});
-export const TypeScriptProps = () => /*#__PURE__*/React.createElement("div", null, "TypeScript!");
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- we can't expect error as it isn't an error in 18 (development) but it is in 19 (sandbox)
-// @ts-ignore not present on react 19
-TypeScriptProps.defaultProps = {
-  any: 'Any value',
-  string: 'A string value',
-  bool: true,
-  number: 5,
-  voidFunc: () => {},
-  funcWithArgsAndReturns: concat,
-  symbol: Symbol('Default symbol'),
-  interface: {
-    text: 'foo',
-    value: 'bar'
-  },
-  genericInterface: {
-    value: 'A string value'
-  },
-  arrayOfPrimitive: ['foo', 'bar'],
-  arrayOfComplexObject: [{
-    text: 'foo',
-    value: 'bar'
-  }],
-  tupleOfPrimitive: ['string value', 5],
-  tupleWithComplexType: ['string value', {
-    text: 'foo',
-    value: 'bar'
-  }],
-  defaultEnum: DefaultEnum.TopRight,
-  numericEnum: NumericEnum.TopRight,
-  stringEnum: StringEnum.TopRight,
-  enumUnion: DefaultEnum.TopLeft,
-  recordOfPrimitive: {
-    foo: 1,
-    bar: 2
-  },
-  recordOfComplexObject: {
-    foo: {
-      text: 'bar',
-      value: 'bar2'
-    }
-  },
-  intersectionType: {
-    text: 'foo',
-    value: 'bar',
-    name: 'foo-bar'
-  },
-  intersectionWithInlineType: {
-    text: 'foo',
-    value: 'bar',
-    inlineValue: 'this is inlined'
-  },
-  unionOfPrimitive: 'A string value',
-  unionOfComplexType: {
-    text: 'foo',
-    value: 'bar'
-  },
-  nullableComplexTypeUndefinedDefaultValue: undefined,
-  typeAlias: 'foo',
-  aliasesUnion: 'foo',
-  genericAlias: {
-    value: 'foo'
-  },
-  namedStringLiteralUnion: 'top-right',
-  inlinedStringLiteralUnion: 'bottom-right',
-  namedNumericLiteralUnion: 0,
-  inlinedNumericLiteralUnion: 1
-};
-export const component = TypeScriptProps;
-TypeScriptProps.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "TypeScriptProps",
+  "jsDocTags": {},
   "props": {
     "any": {
-      "defaultValue": {
-        "value": "'Any value'",
-        "computed": false
+      "name": "any",
+      "required": true,
+      "type": {
+        "name": "any"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'Any value'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "string": {
-      "defaultValue": {
-        "value": "'A string value'",
-        "computed": false
+      "name": "string",
+      "required": true,
+      "type": {
+        "name": "string"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'A string value'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "bool": {
-      "defaultValue": {
-        "value": "true",
-        "computed": false
+      "name": "bool",
+      "required": true,
+      "type": {
+        "name": "boolean"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "true"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "number": {
-      "defaultValue": {
-        "value": "5",
-        "computed": false
+      "name": "number",
+      "required": true,
+      "type": {
+        "name": "number"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "5"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "voidFunc": {
-      "defaultValue": {
-        "value": "() => {}",
-        "computed": false
+      "name": "voidFunc",
+      "required": true,
+      "type": {
+        "name": "() => void"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "() => {}"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "funcWithArgsAndReturns": {
-      "defaultValue": {
-        "value": "function concat(a: string, b: string): string {\n  return a + b;\n}",
-        "computed": false
+      "name": "funcWithArgsAndReturns",
+      "required": true,
+      "type": {
+        "name": "(a: string, b: string) => string"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "concat"
+      },
+      "parent": "TypeScriptPropsProps"
+    },
+    "funcWithunionArg": {
+      "name": "funcWithunionArg",
+      "required": true,
+      "type": {
+        "name": "(a: string | number) => string"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
+    },
+    "funcWithMultipleUnionReturns": {
+      "name": "funcWithMultipleUnionReturns",
+      "required": true,
+      "type": {
+        "name": "() => string | ItemInterface"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
+    },
+    "funcWithIndexTypes": {
+      "name": "funcWithIndexTypes",
+      "required": true,
+      "type": {
+        "name": "<T, K extends keyof T>(o: T, propertyNames: K[]) => T[K][]"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
     },
     "symbol": {
-      "defaultValue": {
-        "value": "Symbol('Default symbol')",
-        "computed": true
+      "name": "symbol",
+      "required": true,
+      "type": {
+        "name": "symbol"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "Symbol('Default symbol')"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "interface": {
-      "defaultValue": {
-        "value": "{ text: 'foo', value: 'bar' }",
-        "computed": false
+      "name": "interface",
+      "required": true,
+      "type": {
+        "name": "ItemInterface"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ text: 'foo', value: 'bar' }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "genericInterface": {
-      "defaultValue": {
-        "value": "{ value: 'A string value' }",
-        "computed": false
+      "name": "genericInterface",
+      "required": true,
+      "type": {
+        "name": "GenericInterface<string>"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ value: 'A string value' }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "arrayOfPrimitive": {
-      "defaultValue": {
-        "value": "['foo', 'bar']",
-        "computed": false
+      "name": "arrayOfPrimitive",
+      "required": true,
+      "type": {
+        "name": "string[]"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "['foo', 'bar']"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "arrayOfComplexObject": {
-      "defaultValue": {
-        "value": "[{ text: 'foo', value: 'bar' }]",
-        "computed": false
+      "name": "arrayOfComplexObject",
+      "required": true,
+      "type": {
+        "name": "ItemInterface[]"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "[{ text: 'foo', value: 'bar' }]"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "tupleOfPrimitive": {
-      "defaultValue": {
-        "value": "['string value', 5]",
-        "computed": false
+      "name": "tupleOfPrimitive",
+      "required": true,
+      "type": {
+        "name": "[string, number]"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "['string value', 5]"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "tupleWithComplexType": {
-      "defaultValue": {
-        "value": "['string value', { text: 'foo', value: 'bar' }]",
-        "computed": false
+      "name": "tupleWithComplexType",
+      "required": true,
+      "type": {
+        "name": "[string, ItemInterface]"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "['string value', { text: 'foo', value: 'bar' }]"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "defaultEnum": {
-      "defaultValue": {
-        "value": "DefaultEnum.TopRight",
-        "computed": true
+      "name": "defaultEnum",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "DefaultEnum.TopLeft | DefaultEnum.TopRight | DefaultEnum.TopCenter",
+        "value": [
+          {
+            "value": "0"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "DefaultEnum.TopRight"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "numericEnum": {
-      "defaultValue": {
-        "value": "NumericEnum.TopRight",
-        "computed": true
+      "name": "numericEnum",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "NumericEnum.TopLeft | NumericEnum.TopRight | NumericEnum.TopCenter",
+        "value": [
+          {
+            "value": "0"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "NumericEnum.TopRight"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "stringEnum": {
-      "defaultValue": {
-        "value": "StringEnum.TopRight",
-        "computed": true
+      "name": "stringEnum",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "StringEnum.TopLeft | StringEnum.TopRight | StringEnum.TopCenter",
+        "value": [
+          {
+            "value": "\"top-left\""
+          },
+          {
+            "value": "\"top-right\""
+          },
+          {
+            "value": "\"top-center\""
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'top-right'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "enumUnion": {
-      "defaultValue": {
-        "value": "DefaultEnum.TopLeft",
-        "computed": true
+      "name": "enumUnion",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "DefaultEnum.TopLeft | NumericEnum.TopLeft | DefaultEnum.TopRight | DefaultEnum.TopCenter | NumericEnum.TopRight | NumericEnum.TopCenter",
+        "value": [
+          {
+            "value": "0"
+          },
+          {
+            "value": "0"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "DefaultEnum.TopLeft"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "recordOfPrimitive": {
-      "defaultValue": {
-        "value": "{ foo: 1, bar: 2 }",
-        "computed": false
+      "name": "recordOfPrimitive",
+      "required": true,
+      "type": {
+        "name": "Record<string, number>"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ foo: 1, bar: 2 }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "recordOfComplexObject": {
-      "defaultValue": {
-        "value": "{ foo: { text: 'bar', value: 'bar2' } }",
-        "computed": false
+      "name": "recordOfComplexObject",
+      "required": true,
+      "type": {
+        "name": "Record<string, ItemInterface>"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ foo: { text: 'bar', value: 'bar2' } }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "intersectionType": {
-      "defaultValue": {
-        "value": "{ text: 'foo', value: 'bar', name: 'foo-bar' }",
-        "computed": false
+      "name": "intersectionType",
+      "required": true,
+      "type": {
+        "name": "InterfaceIntersection"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ text: 'foo', value: 'bar', name: 'foo-bar' }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "intersectionWithInlineType": {
-      "defaultValue": {
-        "value": "{ text: 'foo', value: 'bar', inlineValue: 'this is inlined' }",
-        "computed": false
+      "name": "intersectionWithInlineType",
+      "required": true,
+      "type": {
+        "name": "ItemInterface & { inlineValue: string; }"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ text: 'foo', value: 'bar', inlineValue: 'this is inlined' }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "unionOfPrimitive": {
-      "defaultValue": {
-        "value": "'A string value'",
-        "computed": false
+      "name": "unionOfPrimitive",
+      "required": true,
+      "type": {
+        "name": "string | number"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'A string value'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "unionOfComplexType": {
-      "defaultValue": {
-        "value": "{ text: 'foo', value: 'bar' }",
-        "computed": false
+      "name": "unionOfComplexType",
+      "required": true,
+      "type": {
+        "name": "ItemInterface | InterfaceIntersection"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ text: 'foo', value: 'bar' }"
+      },
+      "parent": "TypeScriptPropsProps"
+    },
+    "nullablePrimitive": {
+      "name": "nullablePrimitive",
+      "required": false,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
+    },
+    "nullableComplexType": {
+      "name": "nullableComplexType",
+      "required": false,
+      "type": {
+        "name": "ItemInterface"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
     },
     "nullableComplexTypeUndefinedDefaultValue": {
-      "defaultValue": {
-        "value": "undefined",
-        "computed": true
+      "name": "nullableComplexTypeUndefinedDefaultValue",
+      "required": false,
+      "type": {
+        "name": "ItemInterface"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "undefined"
+      },
+      "parent": "TypeScriptPropsProps"
+    },
+    "readonlyPrimitive": {
+      "name": "readonlyPrimitive",
+      "required": true,
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
     },
     "typeAlias": {
-      "defaultValue": {
-        "value": "'foo'",
-        "computed": false
+      "name": "typeAlias",
+      "required": true,
+      "type": {
+        "name": "string"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'foo'"
+      },
+      "parent": "TypeScriptPropsProps"
+    },
+    "aliasesIntersection": {
+      "name": "aliasesIntersection",
+      "required": true,
+      "type": {
+        "name": "never"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "TypeScriptPropsProps"
     },
     "aliasesUnion": {
-      "defaultValue": {
-        "value": "'foo'",
-        "computed": false
+      "name": "aliasesUnion",
+      "required": true,
+      "type": {
+        "name": "AliasesUnion"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'foo'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "genericAlias": {
-      "defaultValue": {
-        "value": "{ value: 'foo' }",
-        "computed": false
+      "name": "genericAlias",
+      "required": true,
+      "type": {
+        "name": "GenericAlias<string>"
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "{ value: 'foo' }"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "namedStringLiteralUnion": {
-      "defaultValue": {
-        "value": "'top-right'",
-        "computed": false
+      "name": "namedStringLiteralUnion",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "\"top-left\" | \"top-right\" | \"top-center\"",
+        "value": [
+          {
+            "value": "\"top-left\""
+          },
+          {
+            "value": "\"top-right\""
+          },
+          {
+            "value": "\"top-center\""
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'top-right'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "inlinedStringLiteralUnion": {
-      "defaultValue": {
-        "value": "'bottom-right'",
-        "computed": false
+      "name": "inlinedStringLiteralUnion",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "\"bottom-left\" | \"bottom-right\" | \"bottom-center\"",
+        "value": [
+          {
+            "value": "\"bottom-left\""
+          },
+          {
+            "value": "\"bottom-right\""
+          },
+          {
+            "value": "\"bottom-center\""
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "'bottom-right'"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "namedNumericLiteralUnion": {
-      "defaultValue": {
-        "value": "0",
-        "computed": false
+      "name": "namedNumericLiteralUnion",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "0 | 1 | 2",
+        "value": [
+          {
+            "value": "0"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "0"
+      },
+      "parent": "TypeScriptPropsProps"
     },
     "inlinedNumericLiteralUnion": {
-      "defaultValue": {
-        "value": "1",
-        "computed": false
+      "name": "inlinedNumericLiteralUnion",
+      "required": true,
+      "type": {
+        "name": "enum",
+        "raw": "0 | 1 | 2",
+        "value": [
+          {
+            "value": "0"
+          },
+          {
+            "value": "1"
+          },
+          {
+            "value": "2"
+          }
+        ]
       },
-      "required": false
+      "description": "",
+      "defaultValue": {
+        "value": "1"
+      },
+      "parent": "TypeScriptPropsProps"
     }
   }
-};
+}

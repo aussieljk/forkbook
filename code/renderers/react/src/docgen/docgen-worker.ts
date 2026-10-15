@@ -2,16 +2,12 @@
  * Worker-target docgen module for the React renderer.
  *
  * Core's docgen worker imports this module and calls {@link createDocgenProvider} once to build the
- * middleware it folds into the provider chain. Everything here runs inside that worker thread: the
- * heavy `react-component-meta` extraction (a full TypeScript program build via
- * {@link ComponentMetaManager}) happens off the main event loop. The React renderer implements no
- * threading itself — it only describes this module to core through the `experimental_docgenProvider`
- * preset.
+ * middleware it folds into the provider chain. Everything here runs inside that worker thread, so
+ * the tsgo requests of the {@link ComponentMetaManager} do not block the main event loop. The React
+ * renderer implements no threading itself — it only describes this module to core through the
+ * `experimental_docgenProvider` preset.
  *
- * This provider needs no configuration: `react-component-meta` extraction reads nothing from the
- * user's `typescript` options. `ComponentMetaManager` builds its own program, and the only
- * docgen-relevant TS option (`reactDocgenTypescriptOptions`, including `propFilter`) applies solely
- * to the `react-docgen-typescript` engine used by the legacy manifest path — not here.
+ * This provider needs no configuration: tsgo finds the tsconfig of each story file itself.
  */
 import { createLazyDocgenMiddleware } from 'storybook/internal/common';
 import { logger } from 'storybook/internal/node-logger';
@@ -22,16 +18,15 @@ import { buildDocgenPayload } from './buildDocgen.ts';
 
 /**
  * Builds the React docgen middleware. Owns one {@link ComponentMetaManager} for the worker's
- * lifetime so the TypeScript language service / program stays warm across components. The manager is
- * created lazily on the first eligible request and memoized; when TypeScript is unavailable the
- * middleware passes through to the rest of the chain.
+ * lifetime so the tsgo programs stay warm across components. The manager is created lazily on the
+ * first eligible request; when tsgo cannot start, the middleware passes through to the rest of the
+ * chain.
  */
 export const createDocgenProvider = (): DocgenMiddleware =>
   createLazyDocgenMiddleware({
     createManager: async () => {
       try {
-        const ts = await import('typescript');
-        return new ComponentMetaManager(ts.default ?? ts);
+        return new ComponentMetaManager();
       } catch (err) {
         logger.debug(`[reactComponentMeta] Docgen provider disabled: ${err}`);
         return undefined;

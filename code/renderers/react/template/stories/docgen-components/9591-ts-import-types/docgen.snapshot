@@ -1,17 +1,28 @@
-import React from 'react';
-const Other = props => /*#__PURE__*/React.createElement("span", props, "Other");
-export const component = Other;
-Other.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Other",
+  "jsDocTags": {},
   "props": {
-    "other": {
+    "foo": {
+      "name": "foo",
       "required": false,
-      "tsType": {
+      "type": {
+        "name": "string"
+      },
+      "description": "",
+      "defaultValue": null,
+      "parent": "BarProps"
+    },
+    "other": {
+      "name": "other",
+      "required": false,
+      "type": {
         "name": "number"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": null,
+      "parent": "OtherProps"
     }
   }
-};
+}

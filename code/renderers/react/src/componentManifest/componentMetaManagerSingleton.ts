@@ -2,36 +2,31 @@ import { logger } from 'storybook/internal/node-logger';
 
 import { ComponentMetaManager } from './componentMeta/ComponentMetaManager.ts';
 
-let componentMetaManagerPromise: Promise<ComponentMetaManager | undefined> | undefined;
+let componentMetaManager: ComponentMetaManager | undefined | null;
 
 /**
- * Process-wide {@link ComponentMetaManager} for the experimental manifest generator: building a full
- * TypeScript program over every tsconfig project in the workspace is expensive, so the manifest
- * generator keeps a single set of programs (and one file-snapshot cache) hot for the lifetime of the
- * process rather than rebuilding per request.
+ * Process-wide {@link ComponentMetaManager} for the manifest generator and component tests. The
+ * tsgo session keeps its programs between requests, so all callers in this process share one
+ * session.
  *
- * `docgenServer` deliberately does NOT share this manager: its extraction runs in a
- * worker thread ({@link ../docgen/docgen-worker.ts}) with its own manager so the synchronous program
- * build stays off the main event loop. Worker threads have separate V8 heaps but share process RSS,
- * so enabling both the manifest generator and the docgen server keeps two full program sets resident
- * at once — acceptable today, but the reason this singleton is scoped to the manifest path only.
+ * The docgen service does not use this manager: it runs in a worker thread
+ * ({@link ../docgen/docgen-worker.ts}) with its own manager.
+ *
+ * Returns `undefined` when tsgo cannot start, for example when its binary is missing.
  */
-export function getSharedComponentMetaManager(): Promise<ComponentMetaManager | undefined> {
-  if (!componentMetaManagerPromise) {
-    componentMetaManagerPromise = (async () => {
-      try {
-        const ts = await import('typescript');
-        return new ComponentMetaManager(ts.default ?? ts);
-      } catch (err) {
-        logger.debug(`[reactComponentMeta] Skipping component metadata extraction: ${err}`);
-        return undefined;
-      }
-    })();
+export function getSharedComponentMetaManager(): ComponentMetaManager | undefined {
+  if (componentMetaManager === undefined) {
+    try {
+      componentMetaManager = new ComponentMetaManager();
+    } catch (error) {
+      logger.debug(`[reactComponentMeta] Cannot start tsgo: ${error}`);
+      componentMetaManager = null;
+    }
   }
-  return componentMetaManagerPromise;
+  return componentMetaManager ?? undefined;
 }
 
 export function disposeSharedComponentMetaManager(): void {
-  void componentMetaManagerPromise?.then((manager) => manager?.dispose());
-  componentMetaManagerPromise = undefined;
+  componentMetaManager?.dispose();
+  componentMetaManager = undefined;
 }

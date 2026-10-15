@@ -99,11 +99,6 @@
       "types": "./dist/common/index.d.ts",
       "default": "./dist/common/index.js"
     },
-    "./internal/component-meta": {
-      "code": "./src/component-meta/index.ts",
-      "types": "./dist/component-meta/index.d.ts",
-      "default": "./dist/component-meta/index.js"
-    },
     "./internal/components": {
       "code": "./src/components/index.ts",
       "types": "./dist/components/index.d.ts",
@@ -432,7 +427,6 @@
     "react-stately": "^3.50.0",
     "react-textarea-autosize": "^8.3.0",
     "react-transition-state": "^2.3.1",
-    "require-from-string": "^2.0.2",
     "rolldown": "^1.1.4",
     "sirv": "^2.0.4",
     "slash": "^5.0.0",

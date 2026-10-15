@@ -10,23 +10,13 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "union",
+        "summary": "ReactNode",
       },
     },
     "type": {
-      "name": "union",
-      "raw": "React.ReactNode | string",
+      "name": "other",
       "required": true,
-      "value": [
-        {
-          "name": "other",
-          "raw": "React.ReactNode",
-          "value": "ReactReactNode",
-        },
-        {
-          "name": "string",
-        },
-      ],
+      "value": "ReactNode",
     },
   },
 }

@@ -11,17 +11,12 @@ import path from 'pathe';
 import { buildComponentDocgenFromResolved } from '../componentManifest/buildReactComponentDocgen.ts';
 import type { ComponentMetaManager } from '../componentManifest/componentMeta/ComponentMetaManager.ts';
 import type { ComponentDoc } from '../componentManifest/componentMeta/componentMetaExtractor.ts';
-import type {
-  ComponentRef,
-  StoryRef,
-  TypescriptOptions,
-} from '../componentManifest/getComponentImports.ts';
+import type { ComponentRef, StoryRef } from '../componentManifest/getComponentImports.ts';
 import { resolveStoryFileComponents } from '../componentManifest/resolveComponents.ts';
 import { extractArgTypes } from '../extractArgTypes.ts';
 
 export interface BuildDocgenContext {
   componentMetaManager: ComponentMetaManager;
-  typescriptOptions?: Partial<TypescriptOptions>;
   /** Resolve a CSF import path to an absolute file path. Defaults to `process.cwd()` join. */
   resolvePath?: (importPath: string) => string;
 }
@@ -42,25 +37,15 @@ function isReactAttribute(prop: ComponentDoc['props'][string]) {
   );
 }
 
-/** Converts one RCM `ComponentDoc` into the `StrictArgTypes` shape consumed by args tables. */
-function extractArgTypesFromComponentMeta(
+/** Converts one `ComponentDoc` into the `StrictArgTypes` shape consumed by args tables. */
+export function extractArgTypesFromComponentMeta(
   componentMeta: ComponentDoc | undefined
 ): StrictArgTypes | undefined {
   if (!componentMeta) {
     return undefined;
   }
-  // RCM defaults are source text, so a string default already carries its quotes. Without
-  // `computed`, the shared conversion mistakes them for react-docgen-typescript output and quotes
-  // any unquoted value (such as an unresolved identifier) a second time.
   const props = Object.fromEntries(
-    Object.entries(componentMeta.props)
-      .filter(([, prop]) => !isReactAttribute(prop))
-      .map(([name, prop]) => [
-        name,
-        prop.defaultValue
-          ? { ...prop, defaultValue: { ...prop.defaultValue, computed: false } }
-          : prop,
-      ])
+    Object.entries(componentMeta.props).filter(([, prop]) => !isReactAttribute(prop))
   );
   return extractArgTypes({ __docgenInfo: { ...componentMeta, props } }) ?? undefined;
 }
@@ -121,8 +106,6 @@ export async function buildDocgenPayload(
     resolved = await resolveStoryFileComponents({
       storyPath,
       title: input.entry.title,
-      typescriptOptions: context.typescriptOptions,
-      docgenEngine: 'react-component-meta',
     });
   } catch {
     return undefined;
@@ -151,7 +134,6 @@ export async function buildDocgenPayload(
     componentName,
     component,
     subcomponents,
-    docgenEngine: 'react-component-meta',
   });
 
   return addArgTypesFromComponentMeta(componentDocgen);

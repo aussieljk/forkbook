@@ -82,7 +82,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
         jsDocTags: {
           deprecated: ['Use NewButton instead.'],
         },
-        reactDocgenTypescript: {
+        reactComponentMeta: {
           tags: {
             deprecated: 'Use LegacyButton instead.',
           },
@@ -101,13 +101,13 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
       `);
     });
 
-    it('falls back to react-docgen-typescript component tags', () => {
+    it('falls back to the component meta tags', () => {
       const manifest: ComponentManifest = {
         id: 'button',
         path: 'src/components/Button.tsx',
         name: 'Button',
         description: 'A button component',
-        reactDocgenTypescript: {
+        reactComponentMeta: {
           tags: {
             deprecated: 'Use NewButton instead.',
           },
@@ -590,7 +590,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
           },
         ],
         // Props are required to trigger the "Other Stories" section
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
             variant: {
               type: { name: 'string' },
@@ -675,7 +675,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
             snippet: '<Button icon="check">With Icon</Button>',
           },
         ],
-        // No reactDocgen means no props - all stories should be shown fully
+        // No reactComponentMeta means no props - all stories should be shown fully
       };
 
       const result = formatComponentManifest(manifest);
@@ -813,7 +813,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
             content: 'Detailed docs content',
           },
         },
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
             size: {
               type: { name: 'string' },
@@ -886,7 +886,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
         id: 'button',
         name: 'Button',
         path: 'src/components/Button.tsx',
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
             variant: {
               description: 'The visual style variant',
@@ -930,71 +930,6 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
   });
 
   describe('props section', () => {
-    it('should format props from reactDocgenTypescript', () => {
-      const manifest: ComponentManifest = {
-        id: 'button',
-        name: 'Button',
-        path: 'src/components/Button.tsx',
-        reactDocgenTypescript: {
-          displayName: 'Button',
-          filePath: 'src/components/Button.tsx',
-          description: '',
-          exportName: 'Button',
-          methods: [],
-          props: {
-            variant: {
-              name: 'variant',
-              description: 'The visual style variant',
-              type: { name: 'enum', raw: '"primary" | "secondary"' },
-              defaultValue: { value: 'primary' },
-              required: false,
-            },
-            disabled: {
-              name: 'disabled',
-              description: 'Whether the button is disabled',
-              type: { name: 'boolean' },
-              defaultValue: { value: 'false' },
-              required: false,
-            },
-            onClick: {
-              name: 'onClick',
-              description: 'Click handler',
-              type: { name: '(event: MouseEvent) => void' },
-              defaultValue: null,
-              required: true,
-            },
-          },
-        },
-      };
-
-      const result = formatComponentManifest(manifest);
-
-      expect(result).toMatchInlineSnapshot(`
-				"# Button
-
-				ID: button
-
-				## Props
-
-				\`\`\`
-				export type Props = {
-				  /**
-				    The visual style variant
-				  */
-				  variant?: "primary" | "secondary" = primary;
-				  /**
-				    Whether the button is disabled
-				  */
-				  disabled?: boolean = false;
-				  /**
-				    Click handler
-				  */
-				  onClick: (event: MouseEvent) => void;
-				}
-				\`\`\`"
-			`);
-    });
-
     it('should format props from reactComponentMeta', () => {
       const manifest: ComponentManifest = {
         id: 'button',
@@ -1046,137 +981,6 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
 				}
 				\`\`\`"
 			`);
-    });
-
-    it('should prefer reactDocgen over reactDocgenTypescript when both are present', () => {
-      const manifest: ComponentManifest = {
-        id: 'button',
-        name: 'Button',
-        path: 'src/components/Button.tsx',
-        reactDocgen: {
-          props: {
-            label: {
-              type: { name: 'string' },
-              description: 'From react-docgen',
-            },
-          },
-        },
-        reactDocgenTypescript: {
-          displayName: 'Button',
-          filePath: 'src/components/Button.tsx',
-          description: '',
-          exportName: 'Button',
-          methods: [],
-          props: {
-            label: {
-              name: 'label',
-              description: 'From react-docgen-typescript',
-              type: { name: 'string' },
-              defaultValue: null,
-              required: true,
-            },
-          },
-        },
-      };
-
-      const result = formatComponentManifest(manifest);
-
-      expect(result).toContain('From react-docgen');
-      expect(result).not.toContain('From react-docgen-typescript');
-    });
-
-    it('should prefer reactDocgenTypescript over reactComponentMeta when both are present', () => {
-      const manifest: ComponentManifest = {
-        id: 'button',
-        name: 'Button',
-        path: 'src/components/Button.tsx',
-        reactDocgenTypescript: {
-          displayName: 'Button',
-          filePath: 'src/components/Button.tsx',
-          description: '',
-          exportName: 'Button',
-          methods: [],
-          props: {
-            label: {
-              name: 'label',
-              description: 'From react-docgen-typescript',
-              type: { name: 'string' },
-              defaultValue: null,
-              required: true,
-            },
-          },
-        },
-        reactComponentMeta: {
-          displayName: 'Button',
-          filePath: 'src/components/Button.tsx',
-          description: '',
-          exportName: 'Button',
-          props: {
-            label: {
-              name: 'label',
-              description: 'From react-component-meta',
-              type: { name: 'string' },
-              defaultValue: null,
-              required: true,
-            },
-          },
-        },
-      };
-
-      const result = formatComponentManifest(manifest);
-
-      expect(result).toContain('From react-docgen-typescript');
-      expect(result).not.toContain('From react-component-meta');
-    });
-
-    it('should limit stories when reactDocgenTypescript has props', () => {
-      const manifest: ComponentManifest = {
-        id: 'button',
-        name: 'Button',
-        path: 'src/components/Button.tsx',
-        import: 'import { Button } from "@/components";',
-        stories: [
-          { name: 'Default', snippet: '<Button>Default</Button>' },
-          { name: 'Primary', snippet: '<Button variant="primary">Primary</Button>' },
-          { name: 'Secondary', snippet: '<Button variant="secondary">Secondary</Button>' },
-          {
-            name: 'Disabled',
-            summary: 'Button in disabled state',
-            snippet: '<Button disabled>Disabled</Button>',
-          },
-          {
-            name: 'WithIcon',
-            description: 'Button with an icon',
-            snippet: '<Button icon="check">With Icon</Button>',
-          },
-        ],
-        reactDocgenTypescript: {
-          displayName: 'Button',
-          filePath: 'src/components/Button.tsx',
-          description: '',
-          exportName: 'Button',
-          methods: [],
-          props: {
-            variant: {
-              name: 'variant',
-              description: '',
-              type: { name: 'string' },
-              defaultValue: null,
-              required: false,
-            },
-          },
-        },
-      };
-
-      const result = formatComponentManifest(manifest);
-
-      // Should show first 3 stories in full, then remaining under "Other Stories"
-      expect(result).toContain('### Default');
-      expect(result).toContain('### Primary');
-      expect(result).toContain('### Secondary');
-      expect(result).toContain('### Other Stories');
-      expect(result).toContain('- Disabled: Button in disabled state');
-      expect(result).toContain('- WithIcon: Button with an icon');
     });
 
     it('should limit stories when reactComponentMeta has props', () => {
@@ -1232,7 +1036,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
         id: 'button',
         name: 'Button',
         path: 'src/components/Button.tsx',
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
             variant: {
               type: { name: 'union', value: ['primary', 'secondary'] },
@@ -1267,7 +1071,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
         id: 'button',
         name: 'Button',
         path: 'src/components/Button.tsx',
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
             variant: {
               type: { name: 'union', value: ['primary', 'secondary'] },
@@ -1305,7 +1109,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
 			`);
     });
 
-    it('should omit props section when reactDocgen is not present', () => {
+    it('should omit props section when reactComponentMeta is not present', () => {
       const manifest: ComponentManifest = {
         id: 'button',
         name: 'Button',
@@ -1318,12 +1122,12 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
       expect(result).not.toContain('## Props');
     });
 
-    it('should omit props section when reactDocgen has no props', () => {
+    it('should omit props section when reactComponentMeta has no props', () => {
       const manifest: ComponentManifest = {
         id: 'button',
         name: 'Button',
         path: 'src/components/Button.tsx',
-        reactDocgen: {
+        reactComponentMeta: {
           props: {},
         },
       };
@@ -1339,7 +1143,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
       id: 'button',
       name: 'Button',
       path: 'src/components/Button.tsx',
-      reactDocgen: {
+      reactComponentMeta: {
         props: {
           variant: {
             type: { name: 'string' },
@@ -1441,15 +1245,15 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
       `);
     });
 
-    it('wins over the react docgen fields, which then do not also render', () => {
+    it('wins over the reactComponentMeta field, which then do not also render', () => {
       const manifest: ComponentManifest = {
         id: 'color-picker',
         name: 'ColorPickerComponent',
         path: 'src/color-picker.stories.ts',
         apiDescription: angularApiDescription,
-        reactDocgen: {
+        reactComponentMeta: {
           props: {
-            label: { type: { name: 'string' }, description: 'From react-docgen' },
+            label: { type: { name: 'string' }, description: 'From component meta' },
           },
         },
       };
@@ -1458,7 +1262,7 @@ describe('MarkdownFormatter - formatComponentManifest', () => {
 
       expect(result).toContain('## Inputs');
       expect(result).not.toContain('## Props');
-      expect(result).not.toContain('From react-docgen');
+      expect(result).not.toContain('From component meta');
     });
 
     it('limits the stories shown in full, as a react props table does', () => {

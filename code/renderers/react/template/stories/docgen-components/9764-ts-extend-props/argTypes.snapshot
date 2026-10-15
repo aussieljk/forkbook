@@ -48,21 +48,13 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "union",
+        "summary": "string | number | undefined",
       },
     },
     "type": {
-      "name": "union",
-      "raw": "string | number",
+      "name": "other",
       "required": false,
-      "value": [
-        {
-          "name": "string",
-        },
-        {
-          "name": "number",
-        },
-      ],
+      "value": "string | number | undefined",
     },
   },
 }

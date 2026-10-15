@@ -37,13 +37,13 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "union",
+        "summary": ""Code Red" | "Code Yellow" | "Code Green"",
       },
     },
     "type": {
       "name": "enum",
-      "raw": "'Code Red' | 'Code Yellow' | 'Code Green'",
-      "required": false,
+      "raw": ""Code Red" | "Code Yellow" | "Code Green"",
+      "required": true,
       "value": [
         "Code Red",
         "Code Yellow",

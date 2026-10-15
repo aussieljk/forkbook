@@ -1,7 +1,7 @@
 {
   "bar": {
     "control": {
-      "type": "object",
+      "type": "number",
     },
     "description": "",
     "name": "bar",
@@ -10,14 +10,12 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "Foo['bar']",
+        "summary": "number",
       },
     },
     "type": {
-      "name": "other",
-      "raw": "Foo['bar']",
+      "name": "number",
       "required": true,
-      "value": "Foo['bar']",
     },
   },
 }

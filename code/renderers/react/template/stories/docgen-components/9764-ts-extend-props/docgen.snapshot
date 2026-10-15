@@ -1,37 +1,38 @@
-import React from 'react';
-const Radio = props => /*#__PURE__*/React.createElement(React.Fragment, null, JSON.stringify(props));
-export const component = Radio;
-Radio.__docgenInfo = {
+{
+  "displayName": "component",
+  "exportName": "component",
   "description": "",
-  "methods": [],
-  "displayName": "Radio",
+  "jsDocTags": {},
   "props": {
-    "value": {
-      "required": false,
-      "tsType": {
-        "name": "union",
-        "raw": "string | number",
-        "elements": [{
-          "name": "string"
-        }, {
-          "name": "number"
-        }]
-      },
-      "description": "The input content value"
-    },
     "defaultChecked": {
+      "name": "defaultChecked",
       "required": false,
-      "tsType": {
+      "type": {
         "name": "boolean"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": null,
+      "parent": "RadioProps"
     },
     "checked": {
+      "name": "checked",
       "required": false,
-      "tsType": {
+      "type": {
         "name": "boolean"
       },
-      "description": ""
+      "description": "",
+      "defaultValue": null,
+      "parent": "RadioProps"
+    },
+    "value": {
+      "name": "value",
+      "required": false,
+      "type": {
+        "name": "string | number | undefined"
+      },
+      "description": "The input content value",
+      "defaultValue": null,
+      "parent": "InputProps"
     }
   }
-};
+}

@@ -15,6 +15,7 @@ import { vol } from 'memfs';
 import path from 'pathe';
 import { loadConfig } from 'tsconfig-paths';
 
+import { ComponentMetaManager } from './componentMeta/ComponentMetaManager.ts';
 import { fsMocks } from './fixtures.ts';
 import { cachedFindUp, cachedResolveImport, invalidateCache } from './utils.ts';
 
@@ -65,5 +66,34 @@ export function setupMemfsMocks() {
     }
 
     throw new Error(`Unable to resolve ${id}`);
+  });
+}
+
+/**
+ * A docgen manager whose tsgo session reads the files in the memfs volume. Paths that are not in
+ * the volume fall back to the real file system, so tsgo still finds its own `lib` files.
+ */
+export function createMemfsComponentMetaManager() {
+  const inVolume = (fileName: string) => vol.existsSync(fileName) || undefined;
+  return new ComponentMetaManager({
+    cwd: '/app',
+    fs: {
+      readFile: (fileName) =>
+        inVolume(fileName) ? vol.readFileSync(fileName, 'utf-8').toString() : undefined,
+      fileExists: (fileName) => (inVolume(fileName) ? vol.statSync(fileName).isFile() : undefined),
+      directoryExists: (directoryName) =>
+        inVolume(directoryName) ? vol.statSync(directoryName).isDirectory() : undefined,
+      getAccessibleEntries: (directoryName) => {
+        if (!inVolume(directoryName)) {
+          return undefined;
+        }
+        const names = vol.readdirSync(directoryName).map(String);
+        const isFile = (name: string) => vol.statSync(path.join(directoryName, name)).isFile();
+        return {
+          files: names.filter(isFile),
+          directories: names.filter((name) => !isFile(name)),
+        };
+      },
+    },
   });
 }

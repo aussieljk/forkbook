@@ -15,12 +15,7 @@ import type {
   Story,
   SubcomponentManifest,
 } from './manifest-types.ts';
-import {
-  parseReactComponentMeta,
-  parseReactDocgen,
-  parseReactDocgenTypescript,
-  type ParsedDocgen,
-} from './parse-react-docgen.ts';
+import { parseReactComponentMeta, type ParsedDocgen } from './parse-component-meta.ts';
 
 /**
  * Maximum number of stories to show in full detail in component manifests.
@@ -97,26 +92,13 @@ function extractSummary(
   return undefined;
 }
 
-/**
- * Extract parsed docgen from a component manifest, preferring reactDocgen over
- * reactDocgenTypescript over reactComponentMeta.
- */
+/** Gets the parsed docgen of a component manifest from its `reactComponentMeta` payload. */
 function getParsedDocgen(
-  componentManifest: Pick<
-    ComponentManifest | SubcomponentManifest,
-    'reactDocgen' | 'reactDocgenTypescript' | 'reactComponentMeta'
-  >
+  componentManifest: Pick<ComponentManifest | SubcomponentManifest, 'reactComponentMeta'>
 ): ParsedDocgen | undefined {
-  if (componentManifest.reactDocgen) {
-    return parseReactDocgen(componentManifest.reactDocgen);
-  }
-  if (componentManifest.reactDocgenTypescript) {
-    return parseReactDocgenTypescript(componentManifest.reactDocgenTypescript);
-  }
-  if (componentManifest.reactComponentMeta) {
-    return parseReactComponentMeta(componentManifest.reactComponentMeta);
-  }
-  return undefined;
+  return componentManifest.reactComponentMeta
+    ? parseReactComponentMeta(componentManifest.reactComponentMeta)
+    : undefined;
 }
 
 function getNonEmptyJsDocTags(jsDocTags: JsDocTags | undefined): JsDocTags | undefined {

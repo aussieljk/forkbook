@@ -10,7 +10,7 @@ Build your stories with [vite](https://vitejs.dev/) for fast startup times and n
   - [Migration from webpack / CRA](#migration-from-webpack--cra)
   - [Customize Vite config](#customize-vite-config)
   - [TypeScript](#typescript)
-  - [React Docgen](#react-docgen)
+  - [Docgen](#docgen)
   - [Note about working directory](#note-about-working-directory)
 - [Known issues](#known-issues)
 - [Contributing](#contributing)
@@ -133,19 +133,9 @@ export default config;
 
 See [Customize Vite config](#customize-vite-config) for details about using `viteFinal`.
 
-### React Docgen
+### Docgen
 
-Docgen is used in Storybook to populate the props table in docs view, the controls panel, and for several other addons. Docgen is supported in Svelte, Vue 3, and React. React docgen is configurable via the [`typescript.reactDocgen`](https://storybook.js.org/docs/api/main-config-typescript#reactdocgen?ref=readme) setting in `.storybook/main.js`.
-
-```javascript
-export default {
-  typescript: {
-    reactDocgen: 'react-docgen`
-  }
-}
-```
-
-If you're using TypeScript, we encourage you to experiment and see which option works better for your project.
+Docgen gives the data for the props table in docs view, the controls panel and some other addons. For React, the Storybook server reads the props with the TypeScript 7 native compiler (`tsgo`). You do not need to configure it.
 
 ### Note about working directory
 
