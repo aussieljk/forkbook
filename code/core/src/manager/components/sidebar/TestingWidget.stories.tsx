@@ -203,7 +203,8 @@ export const SettingsUpdated: Story = {
     await waitFor(() => expect(testingModule!.dataset.updated).toBe('false'));
     internal_fullTestProviderStore.settingsChanged();
     await waitFor(() => expect(testingModule!.dataset.updated).toBe('true'));
-    await waitFor(() => expect(testingModule!.dataset.updated).toBe('false'));
+    // The widget resets the flag after 1 second, which is also the default waitFor timeout.
+    await waitFor(() => expect(testingModule!.dataset.updated).toBe('false'), { timeout: 3000 });
   },
 };
 
