@@ -290,7 +290,6 @@ describe('Yarn 2 Proxy', () => {
       await yarn2Proxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
         nonInteractive: true,
-        installContext: 'create',
       });
 
       expect(mockedExecuteCommand).toHaveBeenLastCalledWith(
@@ -341,7 +340,6 @@ describe('Yarn 2 Proxy', () => {
       await yarn2Proxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
         nonInteractive: false,
-        installContext: 'create',
       });
 
       expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
@@ -391,7 +389,6 @@ describe('Yarn 2 Proxy', () => {
         yarn2Proxy.precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'create',
         })
       ).resolves.toBeUndefined();
     });
@@ -417,7 +414,6 @@ describe('Yarn 2 Proxy', () => {
         yarn2Proxy.precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'create',
         })
       ).rejects.toThrow(
         /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
@@ -450,7 +446,6 @@ describe('Yarn 2 Proxy', () => {
         yarn2Proxy.precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'create',
         })
       ).rejects.toThrow(
         /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
@@ -469,7 +464,6 @@ describe('Yarn 2 Proxy', () => {
         yarn2Proxy.precheckStorybookPackageInstall({
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
-          installContext: 'upgrade',
         })
       ).resolves.toBeUndefined();
 

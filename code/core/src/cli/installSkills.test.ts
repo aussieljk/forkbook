@@ -58,11 +58,12 @@ describe('supportsSkills', () => {
 });
 
 describe('supportsAiSetup', () => {
-  it.each([
-    [SupportedRenderer.REACT, SupportedBuilder.VITE, SupportedFramework.REACT_VITE, true],
-  ])('%s on %s (%s) is %s', (renderer, builder, framework, expected) => {
-    expect(supportsAiSetup(renderer, builder, framework)).toBe(expected);
-  });
+  it.each([[SupportedRenderer.REACT, SupportedBuilder.VITE, SupportedFramework.REACT_VITE, true]])(
+    '%s on %s (%s) is %s',
+    (renderer, builder, framework, expected) => {
+      expect(supportsAiSetup(renderer, builder, framework)).toBe(expected);
+    }
+  );
 });
 
 describe('hasStorybookSkills', () => {
@@ -185,9 +186,9 @@ describe('installSkills', () => {
       new Err({ command, args: [], exitCode: 1, logs: '' })
     );
 
-    const result = await installSkills({ packageManager, source: 'automigration' });
+    const result = await installSkills({ packageManager, source: 'refresh' });
 
-    expect(result).toEqual({ result: 'failed', source: 'automigration', exitCode: 1 });
+    expect(result).toEqual({ result: 'failed', source: 'refresh', exitCode: 1 });
     expect(logger.warn).toHaveBeenCalledWith(
       'Could not install the Storybook skills, continuing without them. Install them later with: npx skills@latest add storybookjs/skills#v10.6.0'
     );

@@ -54,7 +54,7 @@ const upgradeFields = (event: CacheEntry): UpgradeSummary => {
   };
 };
 
-const UPGRADE_EVENTS: EventType[] = ['init', 'upgrade'];
+const UPGRADE_EVENTS: EventType[] = ['init'];
 const RUN_EVENTS: EventType[] = ['build', 'dev', 'error'];
 
 const lastEvent = (lastEvents: Partial<Record<EventType, CacheEntry>>, eventTypes: EventType[]) => {

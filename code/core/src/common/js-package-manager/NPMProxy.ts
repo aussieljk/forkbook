@@ -25,8 +25,8 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
+  STORYBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
   parseReleaseTime,
@@ -267,11 +267,9 @@ export class NPMProxy extends JsPackageManager {
 
   async precheckStorybookPackageInstall({
     storybookVersion,
-    installContext,
   }: {
     storybookVersion: string;
     nonInteractive: boolean;
-    installContext: 'create' | 'upgrade';
   }): Promise<void> {
     const minimumReleaseAgeDays = await this.getMinimumReleaseAge();
 
@@ -307,7 +305,6 @@ export class NPMProxy extends JsPackageManager {
       message: this.createMinimumReleaseAgeRerunMessage({
         currentVersion: storybookVersion,
         compatibleVersion,
-        installContext,
       }),
     });
 
@@ -452,19 +449,16 @@ export class NPMProxy extends JsPackageManager {
   private createMinimumReleaseAgeRerunMessage({
     currentVersion,
     compatibleVersion,
-    installContext,
   }: {
     currentVersion: string;
     compatibleVersion: string | null;
-    installContext: 'create' | 'upgrade';
   }) {
-    const rerunCommand = getStorybookRerunCommand(installContext, compatibleVersion);
-    const rerunInstruction = getStorybookRerunInstruction(installContext);
+    const rerunCommand = getStorybookRerunCommand(compatibleVersion);
 
     return dedent`
       npm min-release-age blocked storybook@${currentVersion} from being installed.
 
-      ${rerunInstruction}
+      ${STORYBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:

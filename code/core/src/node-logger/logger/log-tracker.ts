@@ -24,9 +24,8 @@ class LogTracker {
   /** Array to store log entries */
   #logs: LogEntry[] = [];
   /**
-   * Flag indicating if logs should be written to file it is enabled either by users providing the
-   * `--logfile` flag to a CLI command or when we explicitly enable it by calling
-   * `logTracker.enableLogWriting()` e.g. in automigrate or doctor command when there are issues
+   * Flag indicating if logs should be written to file. It is enabled when users provide the
+   * `--logfile` flag to a CLI command.
    */
   #shouldWriteLogsToFile = false;
 

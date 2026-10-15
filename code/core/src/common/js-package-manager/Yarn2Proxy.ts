@@ -23,8 +23,8 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
+  STORYBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   hasStorybookMinimumAgeExclusions,
   parsePackageData,
   parsePackageTimeMap,
@@ -241,11 +241,9 @@ export class Yarn2Proxy extends JsPackageManager {
   async precheckStorybookPackageInstall({
     storybookVersion,
     nonInteractive,
-    installContext,
   }: {
     storybookVersion: string;
     nonInteractive: boolean;
-    installContext: 'create' | 'upgrade';
   }): Promise<void> {
     const minimumAgeGate = await this.getMinimumAgeGate();
 
@@ -306,7 +304,6 @@ export class Yarn2Proxy extends JsPackageManager {
       message: this.createMinimalAgeGateRerunMessage({
         currentVersion: storybookVersion,
         compatibleVersion,
-        installContext,
       }),
     });
 
@@ -481,19 +478,16 @@ export class Yarn2Proxy extends JsPackageManager {
   private createMinimalAgeGateRerunMessage({
     currentVersion,
     compatibleVersion,
-    installContext,
   }: {
     currentVersion: string;
     compatibleVersion: string | null;
-    installContext: 'create' | 'upgrade';
   }): string {
-    const rerunCommand = getStorybookRerunCommand(installContext, compatibleVersion);
-    const rerunInstruction = getStorybookRerunInstruction(installContext);
+    const rerunCommand = getStorybookRerunCommand(compatibleVersion);
 
     return dedent`
       yarn npmMinimalAgeGate blocked storybook@${currentVersion} from being installed.
 
-      ${rerunInstruction}
+      ${STORYBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:

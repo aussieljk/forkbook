@@ -104,8 +104,8 @@ export const getStorybookInfo = async (
   const mainConfig = (await loadMainConfig({
     configDir: configInfo.configDir,
     cwd,
-    // When the main config may have been rewritten earlier in the same process (e.g. an
-    // automigration switching frameworks), callers must skip the module cache to read the
+    // When the main config may have been rewritten earlier in the same process (e.g. by
+    // `storybook add`), callers must skip the module cache to read the
     // current on-disk config instead of a stale, previously-evaluated version.
     skipCache,
   })) as StorybookConfigRaw;

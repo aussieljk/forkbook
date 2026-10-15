@@ -3,8 +3,6 @@ import { gt, prerelease, valid } from 'semver';
 import type { JsPackageManager } from './JsPackageManager.ts';
 import { PackageManagerName } from './JsPackageManager.ts';
 
-export type StorybookInstallContext = 'create' | 'upgrade';
-
 export const STORYBOOK_PACKAGE_PATTERNS = [
   'storybook',
   '@storybook/*',
@@ -161,26 +159,12 @@ export function getMswInitCommand(packageManager: JsPackageManager) {
   return packageManager.getPackageCommand(['msw', 'init', './public', '--save']);
 }
 
-export const getStorybookRerunCommand = (
-  installContext: StorybookInstallContext,
-  compatibleVersion: string | null
-) => {
-  if (installContext === 'create') {
-    return compatibleVersion
-      ? `npx create-storybook@${compatibleVersion}`
-      : 'npx create-storybook@<compatible-version>';
-  }
+export const STORYBOOK_RERUN_INSTRUCTION = 'Please rerun Storybook creation with:';
 
-  return compatibleVersion
-    ? `npx storybook@${compatibleVersion} upgrade`
-    : 'npx storybook@<compatible-version> upgrade';
-};
-
-export const getStorybookRerunInstruction = (installContext: StorybookInstallContext) => {
-  return installContext === 'create'
-    ? 'Please rerun Storybook creation with:'
-    : 'Please rerun the Storybook upgrade with:';
-};
+export const getStorybookRerunCommand = (compatibleVersion: string | null) =>
+  compatibleVersion
+    ? `npx create-storybook@${compatibleVersion}`
+    : 'npx create-storybook@<compatible-version>';
 
 export const getErrorLogs = (error: unknown): string => {
   if (typeof error === 'string') {

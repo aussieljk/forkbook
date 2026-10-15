@@ -24,8 +24,8 @@ import {
   getAgeInMinutes,
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
+  STORYBOOK_RERUN_INSTRUCTION,
   getStorybookRerunCommand,
-  getStorybookRerunInstruction,
   hasStorybookMinimumAgeExclusions,
   parsePackageTimeMap,
   parsePositiveIntegerConfigValue,
@@ -436,11 +436,9 @@ export class PNPMProxy extends JsPackageManager {
   async precheckStorybookPackageInstall({
     storybookVersion,
     nonInteractive,
-    installContext,
   }: {
     storybookVersion: string;
     nonInteractive: boolean;
-    installContext: 'create' | 'upgrade';
   }): Promise<void> {
     const minimumReleaseAge = await this.getMinimumReleaseAge();
 
@@ -492,7 +490,6 @@ export class PNPMProxy extends JsPackageManager {
       message: this.createMinimumReleaseAgeRerunMessage({
         currentVersion: storybookVersion,
         compatibleVersion,
-        installContext,
       }),
     });
 
@@ -696,19 +693,16 @@ export class PNPMProxy extends JsPackageManager {
   private createMinimumReleaseAgeRerunMessage({
     currentVersion,
     compatibleVersion,
-    installContext,
   }: {
     currentVersion: string;
     compatibleVersion: string | null;
-    installContext: 'create' | 'upgrade';
   }): string {
-    const rerunCommand = getStorybookRerunCommand(installContext, compatibleVersion);
-    const rerunInstruction = getStorybookRerunInstruction(installContext);
+    const rerunCommand = getStorybookRerunCommand(compatibleVersion);
 
     return dedent`
       pnpm minimumReleaseAge blocked storybook@${currentVersion} from being installed.
 
-      ${rerunInstruction}
+      ${STORYBOOK_RERUN_INSTRUCTION}
       ${rerunCommand}
 
       Read more:
