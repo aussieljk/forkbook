@@ -10,7 +10,10 @@ import { styled } from 'storybook/theming';
 export type IconType = keyof typeof icons;
 type NewIconTypes = (typeof icons)[IconType];
 
-const NEW_ICON_MAP = StorybookIcons as unknown as Record<NewIconTypes, (props: unknown) => React.ReactNode>;
+const NEW_ICON_MAP = StorybookIcons as unknown as Record<
+  NewIconTypes,
+  (props: unknown) => React.ReactNode
+>;
 
 const Svg = styled.svg`
   display: inline-block;
@@ -213,7 +216,7 @@ export const icons = {
   statuspass: 'StatusPassIcon',
   statusfail: 'StatusFailIcon',
   statuswarn: 'StatusWarnIcon',
-  statusnew: 'StatusNewIcon',
+  statusnew: 'StatusAddIcon',
   clear: 'ClearIcon',
   sweep: 'SweepIcon',
   comment: 'CommentIcon',

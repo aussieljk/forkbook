@@ -17,11 +17,9 @@ const managerApiPath = join(currentDirPath, '../core/src/manager-api/index.mock.
 const previewApiPath = join(currentDirPath, '../core/src/preview-api/index.ts');
 const themingCreatePath = join(currentDirPath, '../core/src/theming/create.ts');
 const themingPath = join(currentDirPath, '../core/src/theming/index.ts');
-const imageContextPath = join(currentDirPath, '../frameworks/nextjs/src/image-context.ts');
 
 const config = defineMain({
   stories: [
-    './bench/*.stories.@(js|jsx|ts|tsx)',
     {
       directory: '../core/template/stories',
       titlePrefix: 'core',
@@ -163,7 +161,6 @@ const config = defineMain({
     experimentalTestSyntax: true,
     experimentalSearchDocsHeadings: true,
   },
-  staticDirs: [{ from: './bench/bundle-analyzer', to: '/bundle-analyzer' }],
   viteFinal: async (viteConfig: InlineConfig, { configType }: Options) => {
     const { mergeConfig } = await import('vite');
 
@@ -177,7 +174,6 @@ const config = defineMain({
                 'storybook/preview-api': previewApiPath,
                 'storybook/theming/create': themingCreatePath,
                 'storybook/theming': themingPath,
-                'sb-original/image-context': imageContextPath,
               }
             : {
                 // The components dist bundle inlines Base UI; resolving to source keeps the
