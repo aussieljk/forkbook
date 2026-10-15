@@ -7,10 +7,6 @@ export function hasDocgen<T = any>(
   return !!component.__docgenInfo;
 }
 
-export function isValidDocgenSection(docgenSection: any) {
-  return docgenSection != null && Object.keys(docgenSection).length > 0;
-}
-
 export function getDocgenSection(component: Component, section: string): any {
   return hasDocgen(component) ? component.__docgenInfo[section] : null;
 }

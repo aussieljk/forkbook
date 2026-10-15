@@ -1,103 +1,50 @@
-import { convert } from '../convert/index.ts';
+import { convert } from '../convert.ts';
 import type { JsDocParsingResult } from '../jsdocParser.ts';
 import { createSummaryValue } from '../utils.ts';
-import type { JsDocParam, PropDefaultValue } from './PropDef.ts';
-import { createFlowPropDef } from './flow/createPropDef.ts';
-import { createTsPropDef } from './typeScript/createPropDef.ts';
-import type { DocgenInfo, DocgenPropDefaultValue, DocgenType, PropDef } from './types.ts';
-import { TypeSystem } from './types.ts';
-import { isDefaultValueBlacklisted } from './utils/defaultValue.ts';
+import type { JsDocParam } from './PropDef.ts';
+import type { DocgenInfo, PropDef } from './types.ts';
 
-export type PropDefFactory = (
-  propName: string,
+/** Docgen gives these default values as text, but they are the same as no default value. */
+const EMPTY_DEFAULT_VALUES = ['null', 'undefined'];
+
+export function createPropDef(
+  name: string,
   docgenInfo: DocgenInfo,
-  jsDocParsingResult?: JsDocParsingResult
-) => PropDef;
+  jsDocParsingResult: JsDocParsingResult
+): PropDef {
+  const { type, description, required, defaultValue } = docgenInfo;
 
-function createType(type: DocgenType) {
-  // A type could be null if a defaultProp has been provided without a type definition.
-  return type != null ? createSummaryValue(type.name) : null;
-}
-
-function createDefaultValue(defaultValue: DocgenPropDefaultValue): PropDefaultValue | null {
-  if (defaultValue != null && !isDefaultValueBlacklisted(defaultValue.value)) {
-    return createSummaryValue(defaultValue.value);
-  }
-  return null;
-}
-
-function createBasicPropDef(name: string, type: DocgenType, docgenInfo: DocgenInfo): PropDef {
-  const { description, required, defaultValue } = docgenInfo;
-
-  return {
+  const propDef: PropDef = {
     name,
-    type: createType(type),
+    type: createSummaryValue(type.name),
+    sbType: convert(type),
     required,
     description,
-    defaultValue: createDefaultValue(defaultValue),
+    defaultValue:
+      defaultValue != null && !EMPTY_DEFAULT_VALUES.includes(defaultValue.value)
+        ? createSummaryValue(defaultValue.value)
+        : null,
   };
-}
 
-function applyJsDocResult(propDef: PropDef, jsDocParsingResult?: JsDocParsingResult): PropDef {
-  if (jsDocParsingResult?.includesJsDoc) {
-    const { description, extractedTags } = jsDocParsingResult;
+  if (jsDocParsingResult.includesJsDoc) {
+    const { extractedTags } = jsDocParsingResult;
 
-    if (description != null) {
+    if (jsDocParsingResult.description != null) {
       propDef.description = jsDocParsingResult.description;
     }
 
-    const value = {
+    const jsDocTags = {
       ...extractedTags,
-      params: extractedTags?.params?.map((x): JsDocParam => ({
-        name: x.getPrettyName(),
-        description: x.description,
+      params: extractedTags?.params?.map((param): JsDocParam => ({
+        name: param.getPrettyName(),
+        description: param.description,
       })),
     };
 
-    if (Object.values(value).filter(Boolean).length > 0) {
-      propDef.jsDocTags = value;
+    if (Object.values(jsDocTags).some(Boolean)) {
+      propDef.jsDocTags = jsDocTags;
     }
   }
 
   return propDef;
 }
-
-export const javaScriptFactory: PropDefFactory = (propName, docgenInfo, jsDocParsingResult) => {
-  const propDef = createBasicPropDef(propName, docgenInfo.type, docgenInfo);
-  propDef.sbType = convert(docgenInfo);
-
-  return applyJsDocResult(propDef, jsDocParsingResult);
-};
-
-export const tsFactory: PropDefFactory = (propName, docgenInfo, jsDocParsingResult) => {
-  const propDef = createTsPropDef(propName, docgenInfo);
-  propDef.sbType = convert(docgenInfo);
-
-  return applyJsDocResult(propDef, jsDocParsingResult);
-};
-
-export const flowFactory: PropDefFactory = (propName, docgenInfo, jsDocParsingResult) => {
-  const propDef = createFlowPropDef(propName, docgenInfo);
-  propDef.sbType = convert(docgenInfo);
-
-  return applyJsDocResult(propDef, jsDocParsingResult);
-};
-
-export const unknownFactory: PropDefFactory = (propName, docgenInfo, jsDocParsingResult) => {
-  const propDef = createBasicPropDef(propName, { name: 'unknown' }, docgenInfo);
-
-  return applyJsDocResult(propDef, jsDocParsingResult);
-};
-
-export const getPropDefFactory = (typeSystem: TypeSystem): PropDefFactory => {
-  switch (typeSystem) {
-    case TypeSystem.JAVASCRIPT:
-      return javaScriptFactory;
-    case TypeSystem.TYPESCRIPT:
-      return tsFactory;
-    case TypeSystem.FLOW:
-      return flowFactory;
-    default:
-      return unknownFactory;
-  }
-};

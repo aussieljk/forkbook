@@ -1,4 +1,3 @@
-export * from './convert/index.ts';
 export * from './docgen/index.ts';
 
 export * from './jsdocParser.ts';
