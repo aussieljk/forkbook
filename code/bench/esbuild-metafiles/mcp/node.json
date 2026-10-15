@@ -1,0 +1,308 @@
+{
+  "inputs": {
+    "package.json": {
+      "bytes": 1393,
+      "imports": [],
+      "format": "esm",
+      "with": {
+        "type": "json"
+      }
+    },
+    "../../core/dist/_browser-chunks/chunk-IE4ULIOQ.js": {
+      "bytes": 464,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../core/dist/_browser-chunks/chunk-QQVAH3EE.js": {
+      "bytes": 1322,
+      "imports": [
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-IE4ULIOQ.js",
+          "kind": "import-statement",
+          "original": "./chunk-IE4ULIOQ.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../core/dist/_browser-chunks/chunk-7OC3MZ62.js": {
+      "bytes": 1237,
+      "imports": [
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-QQVAH3EE.js",
+          "kind": "import-statement",
+          "original": "./chunk-QQVAH3EE.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../core/dist/_browser-chunks/chunk-L5KAIL7D.js": {
+      "bytes": 26477,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../core/dist/_browser-chunks/chunk-SS7PEYH2.js": {
+      "bytes": 1434,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../core/dist/_browser-chunks/chunk-IMSF75WX.js": {
+      "bytes": 1847,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../core/dist/shared/open-service/toolsets/docs/public.js": {
+      "bytes": 45164,
+      "imports": [
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-7OC3MZ62.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-7OC3MZ62.js"
+        },
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-QQVAH3EE.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-QQVAH3EE.js"
+        },
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-L5KAIL7D.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-L5KAIL7D.js"
+        },
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-IE4ULIOQ.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-IE4ULIOQ.js"
+        },
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-SS7PEYH2.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-SS7PEYH2.js"
+        },
+        {
+          "path": "../../core/dist/_browser-chunks/chunk-IMSF75WX.js",
+          "kind": "import-statement",
+          "original": "../../../../_browser-chunks/chunk-IMSF75WX.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/error-to-mcp-content.ts": {
+      "bytes": 1225,
+      "imports": [
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/multi-source-manifests.ts": {
+      "bytes": 1743,
+      "imports": [
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/tools/register.ts": {
+      "bytes": 11923,
+      "imports": [
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        },
+        {
+          "path": "src/utils/error-to-mcp-content.ts",
+          "kind": "import-statement",
+          "original": "../utils/error-to-mcp-content.ts"
+        },
+        {
+          "path": "src/utils/multi-source-manifests.ts",
+          "kind": "import-statement",
+          "original": "../utils/multi-source-manifests.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types.ts": {
+      "bytes": 7307,
+      "imports": [
+        {
+          "path": "valibot",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/index.ts": {
+      "bytes": 4024,
+      "imports": [
+        {
+          "path": "tmcp",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@tmcp/adapter-valibot",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@tmcp/transport-http",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "package.json",
+          "kind": "import-statement",
+          "original": "../package.json",
+          "with": {
+            "type": "json"
+          }
+        },
+        {
+          "path": "src/tools/register.ts",
+          "kind": "import-statement",
+          "original": "./tools/register.ts"
+        },
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        },
+        {
+          "path": "src/tools/register.ts",
+          "kind": "import-statement",
+          "original": "./tools/register.ts"
+        },
+        {
+          "path": "../../core/dist/shared/open-service/toolsets/docs/public.js",
+          "kind": "import-statement",
+          "original": "storybook/internal/toolsets-docs"
+        },
+        {
+          "path": "src/utils/multi-source-manifests.ts",
+          "kind": "import-statement",
+          "original": "./utils/multi-source-manifests.ts"
+        },
+        {
+          "path": "src/types.ts",
+          "kind": "import-statement",
+          "original": "./types.ts"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/index.js": {
+      "imports": [
+        {
+          "path": "tmcp",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@tmcp/adapter-valibot",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@tmcp/transport-http",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "valibot",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "COMPONENT_MANIFEST_PATH",
+        "ComponentManifestMap",
+        "DOCS_MANIFEST_PATH",
+        "DocsManifestMap",
+        "GET_STORY_TOOL_NAME",
+        "GET_TOOL_NAME",
+        "LIST_TOOL_NAME",
+        "RequiresOwnMcpError",
+        "STORYBOOK_MCP_INSTRUCTIONS",
+        "adaptCoreComponent",
+        "adaptCoreDoc",
+        "adaptCoreStories",
+        "addGetDocumentationTool",
+        "addGetStoryDocumentationTool",
+        "addListAllDocumentationTool",
+        "createStorybookMcpHandler",
+        "getDocumentationToolMetadata",
+        "getListAllDocumentationToolMetadata",
+        "getMultiSourceManifests",
+        "getStoryDocumentationToolMetadata",
+        "resolveComponentEntry",
+        "resolveComponentStories",
+        "resolveDoc"
+      ],
+      "entryPoint": "src/index.ts",
+      "inputs": {
+        "src/index.ts": {
+          "bytesInOutput": 1019
+        },
+        "package.json": {
+          "bytesInOutput": 1352
+        },
+        "../../core/dist/_browser-chunks/chunk-IE4ULIOQ.js": {
+          "bytesInOutput": 324
+        },
+        "../../core/dist/_browser-chunks/chunk-QQVAH3EE.js": {
+          "bytesInOutput": 1139
+        },
+        "../../core/dist/_browser-chunks/chunk-7OC3MZ62.js": {
+          "bytesInOutput": 671
+        },
+        "../../core/dist/_browser-chunks/chunk-L5KAIL7D.js": {
+          "bytesInOutput": 22648
+        },
+        "../../core/dist/_browser-chunks/chunk-SS7PEYH2.js": {
+          "bytesInOutput": 1371
+        },
+        "../../core/dist/_browser-chunks/chunk-IMSF75WX.js": {
+          "bytesInOutput": 322
+        },
+        "../../core/dist/shared/open-service/toolsets/docs/public.js": {
+          "bytesInOutput": 42645
+        },
+        "src/utils/error-to-mcp-content.ts": {
+          "bytesInOutput": 718
+        },
+        "src/utils/multi-source-manifests.ts": {
+          "bytesInOutput": 600
+        },
+        "src/tools/register.ts": {
+          "bytesInOutput": 5315
+        },
+        "src/types.ts": {
+          "bytesInOutput": 269
+        }
+      },
+      "bytes": 80538
+    }
+  }
+}

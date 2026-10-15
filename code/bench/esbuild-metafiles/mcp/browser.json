@@ -1,0 +1,36 @@
+{
+  "inputs": {
+    "src/constants.ts": {
+      "bytes": 462,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/preview.ts": {
+      "bytes": 2016,
+      "imports": [
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "./constants.ts"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/preview.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "src/preview.ts",
+      "inputs": {
+        "src/constants.ts": {
+          "bytesInOutput": 90
+        },
+        "src/preview.ts": {
+          "bytesInOutput": 1109
+        }
+      },
+      "bytes": 1238
+    }
+  }
+}

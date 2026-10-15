@@ -49,13 +49,19 @@ describe('storybook/test declaration contract', () => {
         cwd: REPOSITORY_ROOT,
         stdio: 'pipe',
       });
-    }
+    },
+    // The classic tsc is slow when the whole test suite runs at the same time.
+    120_000
   );
 
-  it.runIf(DTS_BUILT)('compiles the public test API consumer fixture with TypeScript 5.9.3', () => {
-    execFileSync(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
-      cwd: REPOSITORY_ROOT,
-      stdio: 'pipe',
-    });
-  });
+  it.runIf(DTS_BUILT)(
+    'compiles the public test API consumer fixture with TypeScript 5.9.3',
+    () => {
+      execFileSync(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
+        cwd: REPOSITORY_ROOT,
+        stdio: 'pipe',
+      });
+    },
+    120_000
+  );
 });

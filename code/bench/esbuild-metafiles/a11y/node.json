@@ -1,0 +1,24 @@
+{
+  "inputs": {
+    "src/preset.ts": {
+      "bytes": 198,
+      "imports": [],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/preset.js": {
+      "imports": [],
+      "exports": [
+        "isAddonA11yEnabled"
+      ],
+      "entryPoint": "src/preset.ts",
+      "inputs": {
+        "src/preset.ts": {
+          "bytesInOutput": 29
+        }
+      },
+      "bytes": 694
+    }
+  }
+}

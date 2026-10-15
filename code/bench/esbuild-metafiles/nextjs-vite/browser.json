@@ -1,0 +1,1944 @@
+{
+  "inputs": {
+    "src/head-manager/head-manager-provider.tsx": {
+      "bytes": 865,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/head-manager.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/head-manager-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/head-manager/decorator.tsx": {
+      "bytes": 261,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/head-manager/head-manager-provider.tsx",
+          "kind": "import-statement",
+          "original": "./head-manager-provider.tsx"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/images/decorator.tsx": {
+      "bytes": 459,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routing/app-router-provider.tsx": {
+      "bytes": 6352,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/navigation.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/app-router-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/hooks-client-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/segment.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routing/page-router-provider.tsx": {
+      "bytes": 787,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/router.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/router-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/routing/decorator.tsx": {
+      "bytes": 1373,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-boundary.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/routing/app-router-provider.tsx",
+          "kind": "import-statement",
+          "original": "./app-router-provider.tsx"
+        },
+        {
+          "path": "src/routing/page-router-provider.tsx",
+          "kind": "import-statement",
+          "original": "./page-router-provider.tsx"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/styledJsx/decorator.tsx": {
+      "bytes": 206,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "styled-jsx",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/preview.tsx": {
+      "bytes": 3170,
+      "imports": [
+        {
+          "path": "@storybook/nextjs-vite/navigation.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/router.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/is-next-router-error.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/head-manager/decorator.tsx",
+          "kind": "import-statement",
+          "original": "./head-manager/decorator.tsx"
+        },
+        {
+          "path": "src/images/decorator.tsx",
+          "kind": "import-statement",
+          "original": "./images/decorator.tsx"
+        },
+        {
+          "path": "src/routing/decorator.tsx",
+          "kind": "import-statement",
+          "original": "./routing/decorator.tsx"
+        },
+        {
+          "path": "src/styledJsx/decorator.tsx",
+          "kind": "import-statement",
+          "original": "./styledJsx/decorator.tsx"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../../node_modules/@storybook/global/dist/index.mjs": {
+      "bytes": 380,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../renderers/react/src/act-compat.ts": {
+      "bytes": 2905,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react-dom/test-utils",
+          "kind": "dynamic-import",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/render.tsx": {
+      "bytes": 449,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/react-dom-client.tsx": {
+      "bytes": 1939,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react-dom/client",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/renderToCanvas.tsx": {
+      "bytes": 4154,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../../node_modules/@storybook/global/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "@storybook/global"
+        },
+        {
+          "path": "../../renderers/react/src/act-compat.ts",
+          "kind": "import-statement",
+          "original": "./act-compat.ts"
+        },
+        {
+          "path": "../../renderers/react/src/react-dom-client.tsx",
+          "kind": "dynamic-import",
+          "original": "./react-dom-client.tsx"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/mount.ts": {
+      "bytes": 387,
+      "imports": [
+        {
+          "path": "./public-types.ts",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/applyDecorators.ts": {
+      "bytes": 482,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/entry-preview.tsx": {
+      "bytes": 3691,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../../node_modules/@storybook/global/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "@storybook/global"
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/act-compat.ts",
+          "kind": "import-statement",
+          "original": "./act-compat.ts"
+        },
+        {
+          "path": "../../renderers/react/src/render.tsx",
+          "kind": "import-statement",
+          "original": "./render.tsx"
+        },
+        {
+          "path": "../../renderers/react/src/renderToCanvas.tsx",
+          "kind": "import-statement",
+          "original": "./renderToCanvas.tsx"
+        },
+        {
+          "path": "../../renderers/react/src/mount.ts",
+          "kind": "import-statement",
+          "original": "./mount.ts"
+        },
+        {
+          "path": "../../renderers/react/src/applyDecorators.ts",
+          "kind": "import-statement",
+          "original": "./applyDecorators.ts"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/captions.ts": {
+      "bytes": 160,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../../node_modules/estraverse/estraverse.js": {
+      "bytes": 26957,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/esutils/lib/ast.js": {
+      "bytes": 4728,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/esutils/lib/code.js": {
+      "bytes": 29610,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/esutils/lib/keyword.js": {
+      "bytes": 5616,
+      "imports": [
+        {
+          "path": "../../../node_modules/esutils/lib/code.js",
+          "kind": "require-call",
+          "original": "./code"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/esutils/lib/utils.js": {
+      "bytes": 1527,
+      "imports": [
+        {
+          "path": "../../../node_modules/esutils/lib/ast.js",
+          "kind": "require-call",
+          "original": "./ast"
+        },
+        {
+          "path": "../../../node_modules/esutils/lib/code.js",
+          "kind": "require-call",
+          "original": "./code"
+        },
+        {
+          "path": "../../../node_modules/esutils/lib/keyword.js",
+          "kind": "require-call",
+          "original": "./keyword"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/base64.js": {
+      "bytes": 1540,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/base64-vlq.js": {
+      "bytes": 4714,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/base64.js",
+          "kind": "require-call",
+          "original": "./base64"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/util.js": {
+      "bytes": 12950,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/array-set.js": {
+      "bytes": 3197,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/util.js",
+          "kind": "require-call",
+          "original": "./util"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/mapping-list.js": {
+      "bytes": 2339,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/util.js",
+          "kind": "require-call",
+          "original": "./util"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-generator.js": {
+      "bytes": 14356,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/base64-vlq.js",
+          "kind": "require-call",
+          "original": "./base64-vlq"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/util.js",
+          "kind": "require-call",
+          "original": "./util"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/array-set.js",
+          "kind": "require-call",
+          "original": "./array-set"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/mapping-list.js",
+          "kind": "require-call",
+          "original": "./mapping-list"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/binary-search.js": {
+      "bytes": 4249,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/quick-sort.js": {
+      "bytes": 3616,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-consumer.js": {
+      "bytes": 40562,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/util.js",
+          "kind": "require-call",
+          "original": "./util"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/binary-search.js",
+          "kind": "require-call",
+          "original": "./binary-search"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/array-set.js",
+          "kind": "require-call",
+          "original": "./array-set"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/base64-vlq.js",
+          "kind": "require-call",
+          "original": "./base64-vlq"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/quick-sort.js",
+          "kind": "require-call",
+          "original": "./quick-sort"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/lib/source-node.js": {
+      "bytes": 13808,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-generator.js",
+          "kind": "require-call",
+          "original": "./source-map-generator"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/util.js",
+          "kind": "require-call",
+          "original": "./util"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/node_modules/source-map/source-map.js": {
+      "bytes": 405,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-generator.js",
+          "kind": "require-call",
+          "original": "./lib/source-map-generator"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-consumer.js",
+          "kind": "require-call",
+          "original": "./lib/source-map-consumer"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/lib/source-node.js",
+          "kind": "require-call",
+          "original": "./lib/source-node"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/escodegen/package.json": {
+      "bytes": 1757,
+      "imports": []
+    },
+    "../../../node_modules/escodegen/escodegen.js": {
+      "bytes": 97065,
+      "imports": [
+        {
+          "path": "../../../node_modules/estraverse/estraverse.js",
+          "kind": "require-call",
+          "original": "estraverse"
+        },
+        {
+          "path": "../../../node_modules/esutils/lib/utils.js",
+          "kind": "require-call",
+          "original": "esutils"
+        },
+        {
+          "path": "../../../node_modules/escodegen/node_modules/source-map/source-map.js",
+          "kind": "require-call",
+          "original": "source-map"
+        },
+        {
+          "path": "../../../node_modules/escodegen/package.json",
+          "kind": "require-call",
+          "original": "./package.json"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/ts-dedent/esm/index.js": {
+      "bytes": 1651,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/generateCode.ts": {
+      "bytes": 1777,
+      "imports": [
+        {
+          "path": "../../../node_modules/escodegen/escodegen.js",
+          "kind": "import-statement",
+          "original": "escodegen"
+        },
+        {
+          "path": "../../../node_modules/ts-dedent/esm/index.js",
+          "kind": "import-statement",
+          "original": "ts-dedent"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/inspection/types.ts": {
+      "bytes": 1489,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../../node_modules/acorn/dist/acorn.mjs": {
+      "bytes": 234658,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../../node_modules/acorn-jsx/xhtml.js": {
+      "bytes": 4718,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/acorn/dist/acorn.js": {
+      "bytes": 246643,
+      "imports": [],
+      "format": "cjs"
+    },
+    "../../../node_modules/acorn-jsx/index.js": {
+      "bytes": 15827,
+      "imports": [
+        {
+          "path": "../../../node_modules/acorn-jsx/xhtml.js",
+          "kind": "require-call",
+          "original": "./xhtml"
+        },
+        {
+          "path": "../../../node_modules/acorn/dist/acorn.js",
+          "kind": "require-call",
+          "original": "acorn"
+        },
+        {
+          "path": "../../../node_modules/acorn/dist/acorn.js",
+          "kind": "require-call",
+          "original": "acorn"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../../node_modules/acorn-walk/dist/walk.mjs": {
+      "bytes": 14560,
+      "imports": [],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/inspection/acornParser.ts": {
+      "bytes": 6361,
+      "imports": [
+        {
+          "path": "../../../node_modules/acorn/dist/acorn.mjs",
+          "kind": "import-statement",
+          "original": "acorn"
+        },
+        {
+          "path": "../../../node_modules/acorn-jsx/index.js",
+          "kind": "import-statement",
+          "original": "acorn-jsx"
+        },
+        {
+          "path": "../../../node_modules/acorn-walk/dist/walk.mjs",
+          "kind": "import-statement",
+          "original": "acorn-walk"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/types.ts",
+          "kind": "import-statement",
+          "original": "./types"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/inspection/inspectValue.ts": {
+      "bytes": 380,
+      "imports": [
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/acornParser.ts",
+          "kind": "import-statement",
+          "original": "./acornParser"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/types.ts",
+          "kind": "import-statement",
+          "original": "./types"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/inspection/index.ts": {
+      "bytes": 57,
+      "imports": [
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/types.ts",
+          "kind": "import-statement",
+          "original": "./types"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/inspectValue.ts",
+          "kind": "import-statement",
+          "original": "./inspectValue"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../../node_modules/html-tags/html-tags.json": {
+      "bytes": 1103,
+      "imports": []
+    },
+    "../../../node_modules/html-tags/index.js": {
+      "bytes": 60,
+      "imports": [
+        {
+          "path": "../../../node_modules/html-tags/html-tags.json",
+          "kind": "require-call",
+          "original": "./html-tags.json"
+        }
+      ],
+      "format": "cjs"
+    },
+    "../../renderers/react/src/docs/lib/isHtmlTag.ts": {
+      "bytes": 185,
+      "imports": [
+        {
+          "path": "../../../node_modules/html-tags/index.js",
+          "kind": "import-statement",
+          "original": "html-tags"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/defaultValues/generateArray.ts": {
+      "bytes": 710,
+      "imports": [
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/captions.ts",
+          "kind": "import-statement",
+          "original": "../captions"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/generateCode.ts",
+          "kind": "import-statement",
+          "original": "../generateCode"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/defaultValues/generateObject.ts": {
+      "bytes": 720,
+      "imports": [
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/captions.ts",
+          "kind": "import-statement",
+          "original": "../captions"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/generateCode.ts",
+          "kind": "import-statement",
+          "original": "../generateCode"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/defaultValues/prettyIdentifier.ts": {
+      "bytes": 930,
+      "imports": [
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/index.ts",
+          "kind": "import-statement",
+          "original": "../inspection"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/defaultValues/createDefaultValue.ts": {
+      "bytes": 2535,
+      "imports": [
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/captions.ts",
+          "kind": "import-statement",
+          "original": "../captions"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/generateCode.ts",
+          "kind": "import-statement",
+          "original": "../generateCode"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/inspection/index.ts",
+          "kind": "import-statement",
+          "original": "../inspection"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/isHtmlTag.ts",
+          "kind": "import-statement",
+          "original": "../isHtmlTag"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/defaultValues/generateArray.ts",
+          "kind": "import-statement",
+          "original": "./generateArray"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/defaultValues/generateObject.ts",
+          "kind": "import-statement",
+          "original": "./generateObject"
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/defaultValues/prettyIdentifier.ts",
+          "kind": "import-statement",
+          "original": "./prettyIdentifier"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/docs/lib/defaultValues/index.ts": {
+      "bytes": 38,
+      "imports": [
+        {
+          "path": "../../renderers/react/src/docs/lib/defaultValues/createDefaultValue.ts",
+          "kind": "import-statement",
+          "original": "./createDefaultValue"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/extractArgTypes.ts": {
+      "bytes": 1536,
+      "imports": [
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/docs/lib/defaultValues/index.ts",
+          "kind": "import-statement",
+          "original": "./docs/lib/defaultValues/index.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/entry-preview-argtypes.ts": {
+      "bytes": 455,
+      "imports": [
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/extractArgTypes.ts",
+          "kind": "import-statement",
+          "original": "./extractArgTypes.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "../../renderers/react/src/portable-stories.tsx": {
+      "bytes": 6012,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/entry-preview.tsx",
+          "kind": "import-statement",
+          "original": "./entry-preview.tsx"
+        },
+        {
+          "path": "../../renderers/react/src/entry-preview-argtypes.ts",
+          "kind": "import-statement",
+          "original": "./entry-preview-argtypes.ts"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/portable-stories.ts": {
+      "bytes": 5478,
+      "imports": [
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "../../renderers/react/src/portable-stories.tsx",
+          "kind": "import-statement",
+          "original": "../../../renderers/react/src/portable-stories.tsx"
+        },
+        {
+          "path": "src/preview.tsx",
+          "kind": "import-statement",
+          "original": "./preview.tsx"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types.ts": {
+      "bytes": 1857,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/index.ts": {
+      "bytes": 1038,
+      "imports": [
+        {
+          "path": "@storybook/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/preview.tsx",
+          "kind": "import-statement",
+          "original": "./preview.tsx"
+        },
+        {
+          "path": "@storybook/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/portable-stories.ts",
+          "kind": "import-statement",
+          "original": "./portable-stories.ts"
+        },
+        {
+          "path": "src/types.ts",
+          "kind": "import-statement",
+          "original": "./types.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/config/preview.ts": {
+      "bytes": 88,
+      "imports": [
+        {
+          "path": "next/config",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/cache/index.ts": {
+      "bytes": 1270,
+      "imports": [
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/headers/headers.ts": {
+      "bytes": 1298,
+      "imports": [
+        {
+          "path": "next/dist/server/web/spec-extension/adapters/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/headers/cookies.ts": {
+      "bytes": 1508,
+      "imports": [
+        {
+          "path": "@storybook/nextjs-vite/headers.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@edge-runtime/cookies/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/headers/index.ts": {
+      "bytes": 598,
+      "imports": [
+        {
+          "path": "next/dist/server/request/draft-mode.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/export-mocks/headers/headers.ts",
+          "kind": "import-statement",
+          "original": "./headers.ts"
+        },
+        {
+          "path": "src/export-mocks/headers/cookies.ts",
+          "kind": "import-statement",
+          "original": "./cookies.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/navigation/index.ts": {
+      "bytes": 3334,
+      "imports": [
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-status-code.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/link/index.tsx": {
+      "bytes": 3403,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/export-mocks/router/index.ts": {
+      "bytes": 3633,
+      "imports": [
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/_browser-chunks/react-dom-client-YL7V3F6E.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react-dom/client",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "renderElement",
+        "unmountElement"
+      ],
+      "entryPoint": "../../renderers/react/src/react-dom-client.tsx",
+      "inputs": {
+        "../../renderers/react/src/react-dom-client.tsx": {
+          "bytesInOutput": 1366
+        }
+      },
+      "bytes": 1493
+    },
+    "dist/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-H2GF3P6J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "@storybook/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react-dom/test-utils",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "dist/_browser-chunks/react-dom-client-YL7V3F6E.js",
+          "kind": "dynamic-import"
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/docs-tools",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "composeStories",
+        "composeStory",
+        "definePreview",
+        "setProjectAnnotations"
+      ],
+      "entryPoint": "src/index.ts",
+      "inputs": {
+        "../../../node_modules/estraverse/estraverse.js": {
+          "bytesInOutput": 19887
+        },
+        "../../../node_modules/esutils/lib/ast.js": {
+          "bytesInOutput": 3115
+        },
+        "../../../node_modules/esutils/lib/code.js": {
+          "bytesInOutput": 27892
+        },
+        "../../../node_modules/esutils/lib/keyword.js": {
+          "bytesInOutput": 3748
+        },
+        "../../../node_modules/esutils/lib/utils.js": {
+          "bytesInOutput": 250
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/base64.js": {
+          "bytesInOutput": 902
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/base64-vlq.js": {
+          "bytesInOutput": 1498
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/util.js": {
+          "bytesInOutput": 7079
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/array-set.js": {
+          "bytesInOutput": 1995
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/mapping-list.js": {
+          "bytesInOutput": 1216
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-generator.js": {
+          "bytesInOutput": 9115
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/binary-search.js": {
+          "bytesInOutput": 1239
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/quick-sort.js": {
+          "bytesInOutput": 904
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/source-map-consumer.js": {
+          "bytesInOutput": 21839
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/lib/source-node.js": {
+          "bytesInOutput": 8258
+        },
+        "../../../node_modules/escodegen/node_modules/source-map/source-map.js": {
+          "bytesInOutput": 355
+        },
+        "../../../node_modules/escodegen/package.json": {
+          "bytesInOutput": 1862
+        },
+        "../../../node_modules/escodegen/escodegen.js": {
+          "bytesInOutput": 65494
+        },
+        "../../../node_modules/acorn-jsx/xhtml.js": {
+          "bytesInOutput": 5639
+        },
+        "../../../node_modules/acorn/dist/acorn.js": {
+          "bytesInOutput": 207171
+        },
+        "../../../node_modules/acorn-jsx/index.js": {
+          "bytesInOutput": 14806
+        },
+        "../../../node_modules/html-tags/html-tags.json": {
+          "bytesInOutput": 1834
+        },
+        "../../../node_modules/html-tags/index.js": {
+          "bytesInOutput": 170
+        },
+        "src/index.ts": {
+          "bytesInOutput": 226
+        },
+        "src/portable-stories.ts": {
+          "bytesInOutput": 1029
+        },
+        "../../renderers/react/src/portable-stories.tsx": {
+          "bytesInOutput": 868
+        },
+        "../../renderers/react/src/entry-preview.tsx": {
+          "bytesInOutput": 2617
+        },
+        "../../../node_modules/@storybook/global/dist/index.mjs": {
+          "bytesInOutput": 214
+        },
+        "../../renderers/react/src/act-compat.ts": {
+          "bytesInOutput": 1786
+        },
+        "../../renderers/react/src/render.tsx": {
+          "bytesInOutput": 308
+        },
+        "../../renderers/react/src/renderToCanvas.tsx": {
+          "bytesInOutput": 2340
+        },
+        "../../renderers/react/src/mount.ts": {
+          "bytesInOutput": 141
+        },
+        "../../renderers/react/src/applyDecorators.ts": {
+          "bytesInOutput": 226
+        },
+        "../../renderers/react/src/entry-preview-argtypes.ts": {
+          "bytesInOutput": 389
+        },
+        "../../renderers/react/src/extractArgTypes.ts": {
+          "bytesInOutput": 1005
+        },
+        "../../renderers/react/src/docs/lib/defaultValues/createDefaultValue.ts": {
+          "bytesInOutput": 1662
+        },
+        "../../renderers/react/src/docs/lib/captions.ts": {
+          "bytesInOutput": 112
+        },
+        "../../renderers/react/src/docs/lib/generateCode.ts": {
+          "bytesInOutput": 1144
+        },
+        "../../../node_modules/ts-dedent/esm/index.js": {
+          "bytesInOutput": 1369
+        },
+        "../../renderers/react/src/docs/lib/inspection/index.ts": {
+          "bytesInOutput": 0
+        },
+        "../../../node_modules/acorn/dist/acorn.mjs": {
+          "bytesInOutput": 186670
+        },
+        "../../renderers/react/src/docs/lib/inspection/acornParser.ts": {
+          "bytesInOutput": 4317
+        },
+        "../../../node_modules/acorn-walk/dist/walk.mjs": {
+          "bytesInOutput": 8619
+        },
+        "../../renderers/react/src/docs/lib/inspection/inspectValue.ts": {
+          "bytesInOutput": 152
+        },
+        "../../renderers/react/src/docs/lib/isHtmlTag.ts": {
+          "bytesInOutput": 156
+        },
+        "../../renderers/react/src/docs/lib/defaultValues/generateArray.ts": {
+          "bytesInOutput": 433
+        },
+        "../../renderers/react/src/docs/lib/defaultValues/generateObject.ts": {
+          "bytesInOutput": 503
+        },
+        "../../renderers/react/src/docs/lib/defaultValues/prettyIdentifier.ts": {
+          "bytesInOutput": 560
+        },
+        "../../renderers/react/src/docs/lib/defaultValues/index.ts": {
+          "bytesInOutput": 0
+        }
+      },
+      "bytes": 626548
+    },
+    "dist/preview.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-H2GF3P6J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "decorators",
+        "loaders",
+        "parameters"
+      ],
+      "entryPoint": "src/preview.tsx",
+      "inputs": {},
+      "bytes": 189
+    },
+    "dist/_browser-chunks/chunk-H2GF3P6J.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "@storybook/nextjs-vite/navigation.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/router.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/is-next-router-error.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/head-manager.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/head-manager-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-boundary.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/navigation.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/app-router-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/hooks-client-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/segment.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/router.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/router-context.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "styled-jsx",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "decorators",
+        "loaders",
+        "parameters",
+        "preview_exports"
+      ],
+      "inputs": {
+        "src/preview.tsx": {
+          "bytesInOutput": 1910
+        },
+        "src/head-manager/head-manager-provider.tsx": {
+          "bytesInOutput": 498
+        },
+        "src/head-manager/decorator.tsx": {
+          "bytesInOutput": 155
+        },
+        "src/images/decorator.tsx": {
+          "bytesInOutput": 307
+        },
+        "src/routing/decorator.tsx": {
+          "bytesInOutput": 580
+        },
+        "src/routing/app-router-provider.tsx": {
+          "bytesInOutput": 3625
+        },
+        "src/routing/page-router-provider.tsx": {
+          "bytesInOutput": 322
+        },
+        "src/styledJsx/decorator.tsx": {
+          "bytesInOutput": 181
+        }
+      },
+      "bytes": 8022
+    },
+    "dist/config/preview.js": {
+      "imports": [
+        {
+          "path": "next/config",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/config/preview.ts",
+      "inputs": {
+        "src/config/preview.ts": {
+          "bytesInOutput": 87
+        }
+      },
+      "bytes": 112
+    },
+    "dist/export-mocks/cache/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "cacheLife",
+        "cacheTag",
+        "default",
+        "refresh",
+        "revalidatePath",
+        "revalidateTag",
+        "unstable_cache",
+        "unstable_cacheLife",
+        "unstable_cacheTag",
+        "unstable_noStore",
+        "updateTag"
+      ],
+      "entryPoint": "src/export-mocks/cache/index.ts",
+      "inputs": {
+        "src/export-mocks/cache/index.ts": {
+          "bytesInOutput": 800
+        }
+      },
+      "bytes": 1090
+    },
+    "dist/export-mocks/headers/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "next/dist/server/request/draft-mode.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/web/spec-extension/adapters/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/nextjs-vite/headers.mock",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@edge-runtime/cookies/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "cookies",
+        "draftMode",
+        "headers"
+      ],
+      "entryPoint": "src/export-mocks/headers/index.ts",
+      "inputs": {
+        "src/export-mocks/headers/index.ts": {
+          "bytesInOutput": 336
+        },
+        "src/export-mocks/headers/headers.ts": {
+          "bytesInOutput": 1217
+        },
+        "src/export-mocks/headers/cookies.ts": {
+          "bytesInOutput": 1102
+        }
+      },
+      "bytes": 2921
+    },
+    "dist/export-mocks/navigation/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-status-code.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "createNavigation",
+        "getRouter",
+        "notFound",
+        "permanentRedirect",
+        "redirect",
+        "useParams",
+        "usePathname",
+        "useRouter",
+        "useSearchParams",
+        "useSelectedLayoutSegment",
+        "useSelectedLayoutSegments",
+        "useServerInsertedHTML"
+      ],
+      "entryPoint": "src/export-mocks/navigation/index.ts",
+      "inputs": {
+        "src/export-mocks/navigation/index.ts": {
+          "bytesInOutput": 2437
+        }
+      },
+      "bytes": 2921
+    },
+    "dist/export-mocks/link/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "Link",
+        "default",
+        "useLinkStatus"
+      ],
+      "entryPoint": "src/export-mocks/link/index.tsx",
+      "inputs": {
+        "src/export-mocks/link/index.tsx": {
+          "bytesInOutput": 2534
+        }
+      },
+      "bytes": 2695
+    },
+    "dist/export-mocks/router/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-UAWMPV5J.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "createRouter",
+        "default",
+        "getRouter",
+        "useRouter",
+        "withRouter"
+      ],
+      "entryPoint": "src/export-mocks/router/index.ts",
+      "inputs": {
+        "src/export-mocks/router/index.ts": {
+          "bytesInOutput": 2426
+        }
+      },
+      "bytes": 2638
+    },
+    "dist/_browser-chunks/chunk-UAWMPV5J.js": {
+      "imports": [],
+      "exports": [
+        "__commonJS",
+        "__export",
+        "__toESM"
+      ],
+      "inputs": {},
+      "bytes": 1509
+    }
+  }
+}

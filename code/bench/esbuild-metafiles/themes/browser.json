@@ -1,0 +1,390 @@
+{
+  "inputs": {
+    "src/constants.ts": {
+      "bytes": 560,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/preview.ts": {
+      "bytes": 228,
+      "imports": [
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "./constants.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/decorators/helpers.ts": {
+      "bytes": 569,
+      "imports": [
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "../constants.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/decorators/class-name.decorator.tsx": {
+      "bytes": 1885,
+      "imports": [
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "../constants.ts"
+        },
+        {
+          "path": "src/decorators/helpers.ts",
+          "kind": "import-statement",
+          "original": "./helpers.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/decorators/data-attribute.decorator.tsx": {
+      "bytes": 1454,
+      "imports": [
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "../constants.ts"
+        },
+        {
+          "path": "src/decorators/helpers.ts",
+          "kind": "import-statement",
+          "original": "./helpers.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/decorators/provider.decorator.tsx": {
+      "bytes": 1869,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "../constants.ts"
+        },
+        {
+          "path": "src/decorators/helpers.ts",
+          "kind": "import-statement",
+          "original": "./helpers.ts"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/decorators/index.ts": {
+      "bytes": 185,
+      "imports": [
+        {
+          "path": "src/decorators/class-name.decorator.tsx",
+          "kind": "import-statement",
+          "original": "./class-name.decorator.tsx"
+        },
+        {
+          "path": "src/decorators/data-attribute.decorator.tsx",
+          "kind": "import-statement",
+          "original": "./data-attribute.decorator.tsx"
+        },
+        {
+          "path": "src/decorators/provider.decorator.tsx",
+          "kind": "import-statement",
+          "original": "./provider.decorator.tsx"
+        },
+        {
+          "path": "src/decorators/helpers.ts",
+          "kind": "import-statement",
+          "original": "./helpers.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/index.ts": {
+      "bytes": 335,
+      "imports": [
+        {
+          "path": "storybook/internal/csf",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/preview.ts",
+          "kind": "import-statement",
+          "original": "./preview.ts"
+        },
+        {
+          "path": "src/decorators/index.ts",
+          "kind": "import-statement",
+          "original": "./decorators/index.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/theme-switcher.tsx": {
+      "bytes": 3116,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/components",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/icons",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/manager-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "./constants.ts"
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/manager.tsx": {
+      "bytes": 436,
+      "imports": [
+        {
+          "path": "storybook/manager-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "./constants.ts"
+        },
+        {
+          "path": "src/theme-switcher.tsx",
+          "kind": "import-statement",
+          "original": "./theme-switcher.tsx"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/index.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-R3GPJ3N7.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "dist/_browser-chunks/chunk-DN7ZGZUH.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "storybook/internal/csf",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/preview-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "DecoratorHelpers",
+        "default",
+        "withThemeByClassName",
+        "withThemeByDataAttribute",
+        "withThemeFromJSXProvider"
+      ],
+      "entryPoint": "src/index.ts",
+      "inputs": {
+        "src/index.ts": {
+          "bytesInOutput": 124
+        },
+        "src/decorators/class-name.decorator.tsx": {
+          "bytesInOutput": 1107
+        },
+        "src/decorators/helpers.ts": {
+          "bytesInOutput": 463
+        },
+        "src/decorators/index.ts": {
+          "bytesInOutput": 0
+        },
+        "src/decorators/data-attribute.decorator.tsx": {
+          "bytesInOutput": 757
+        },
+        "src/decorators/provider.decorator.tsx": {
+          "bytesInOutput": 1047
+        }
+      },
+      "bytes": 4082
+    },
+    "dist/manager.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-DN7ZGZUH.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "storybook/manager-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/components",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@storybook/icons",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/manager-api",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/manager.tsx",
+      "inputs": {
+        "src/manager.tsx": {
+          "bytesInOutput": 319
+        },
+        "src/theme-switcher.tsx": {
+          "bytesInOutput": 2456
+        }
+      },
+      "bytes": 3025
+    },
+    "dist/preview.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-R3GPJ3N7.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "dist/_browser-chunks/chunk-DN7ZGZUH.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "initialGlobals"
+      ],
+      "entryPoint": "src/preview.ts",
+      "inputs": {},
+      "bytes": 147
+    },
+    "dist/_browser-chunks/chunk-R3GPJ3N7.js": {
+      "imports": [
+        {
+          "path": "dist/_browser-chunks/chunk-DN7ZGZUH.js",
+          "kind": "import-statement"
+        }
+      ],
+      "exports": [
+        "initialGlobals",
+        "preview_exports"
+      ],
+      "inputs": {
+        "src/preview.ts": {
+          "bytesInOutput": 142
+        }
+      },
+      "bytes": 274
+    },
+    "dist/_browser-chunks/chunk-DN7ZGZUH.js": {
+      "imports": [],
+      "exports": [
+        "ADDON_ID",
+        "DEFAULT_ADDON_STATE",
+        "DEFAULT_THEME_PARAMETERS",
+        "GLOBAL_KEY",
+        "PARAM_KEY",
+        "THEME_SWITCHER_ID",
+        "THEMING_EVENTS",
+        "__export"
+      ],
+      "inputs": {
+        "src/constants.ts": {
+          "bytesInOutput": 305
+        }
+      },
+      "bytes": 644
+    }
+  }
+}

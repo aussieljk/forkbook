@@ -1,0 +1,913 @@
+{
+  "inputs": {
+    "src/utils/nextjs.ts": {
+      "bytes": 2066,
+      "imports": [
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@next/env",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/output/log.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/swc/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/lib/find-pages-dir.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-env/plugin.ts": {
+      "bytes": 2962,
+      "imports": [
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/nextjs.ts",
+          "kind": "import-statement",
+          "original": "../../utils/nextjs.ts"
+        },
+        {
+          "path": "next/dist/build/define-env.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/webpack/plugins/define-env-plugin.js",
+          "kind": "dynamic-import",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-font/google/get-font-face-declarations.ts": {
+      "bytes": 2246,
+      "imports": [
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/fetch-css-from-google-fonts.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/get-font-axes.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/get-google-fonts-url.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/validate-google-font-function-call.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/loader-utils3/index.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-font/local/get-font-face-declarations.ts": {
+      "bytes": 3017,
+      "imports": [
+        {
+          "path": "next/dist/compiled/@next/font/dist/local/validate-local-font-function-call.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/loader-utils3/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/base64-url.ts": {
+      "bytes": 458,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-font/utils/get-css-meta.ts": {
+      "bytes": 2063,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-font/utils/set-font-declarations-in-head.ts": {
+      "bytes": 1510,
+      "imports": [
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-font/local/get-font-face-declarations.ts",
+          "kind": "import-statement",
+          "original": "../local/get-font-face-declarations.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-font/plugin.ts": {
+      "bytes": 5276,
+      "imports": [
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-font/google/get-font-face-declarations.ts",
+          "kind": "import-statement",
+          "original": "./google/get-font-face-declarations.ts"
+        },
+        {
+          "path": "src/plugins/next-font/local/get-font-face-declarations.ts",
+          "kind": "import-statement",
+          "original": "./local/get-font-face-declarations.ts"
+        },
+        {
+          "path": "src/utils/base64-url.ts",
+          "kind": "import-statement",
+          "original": "../../utils/base64-url.ts"
+        },
+        {
+          "path": "src/plugins/next-font/utils/get-css-meta.ts",
+          "kind": "import-statement",
+          "original": "./utils/get-css-meta.ts"
+        },
+        {
+          "path": "src/plugins/next-font/utils/set-font-declarations-in-head.ts",
+          "kind": "import-statement",
+          "original": "./utils/set-font-declarations-in-head.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils.ts": {
+      "bytes": 972,
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/swc/styles.ts": {
+      "bytes": 1768,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/utils/swc/options.ts": {
+      "bytes": 4640,
+      "imports": [
+        {
+          "path": "next/dist/build/swc/options.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/swc/styles.ts",
+          "kind": "import-statement",
+          "original": "./styles.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/swc/transform.ts": {
+      "bytes": 3984,
+      "imports": [
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/nextjs.ts",
+          "kind": "import-statement",
+          "original": "../nextjs.ts"
+        },
+        {
+          "path": "src/utils/swc/options.ts",
+          "kind": "import-statement",
+          "original": "./options.ts"
+        },
+        {
+          "path": "next/dist/build/get-supported-browsers.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/utils.js",
+          "kind": "dynamic-import",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/typescript.ts": {
+      "bytes": 141,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-swc/plugin.ts": {
+      "bytes": 3607,
+      "imports": [
+        {
+          "path": "next/dist/build/load-jsconfig.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/swc/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "vite",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "../../utils.ts"
+        },
+        {
+          "path": "src/utils/nextjs.ts",
+          "kind": "import-statement",
+          "original": "../../utils/nextjs.ts"
+        },
+        {
+          "path": "src/utils/swc/transform.ts",
+          "kind": "import-statement",
+          "original": "../../utils/swc/transform.ts"
+        },
+        {
+          "path": "src/utils/typescript.ts",
+          "kind": "import-statement",
+          "original": "../../utils/typescript.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/polyfills/promise-with-resolvers.ts": {
+      "bytes": 624,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-dynamic/plugin.ts": {
+      "bytes": 1805,
+      "imports": [
+        {
+          "path": "magic-string",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-image/alias/index.tsx": {
+      "bytes": 494,
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "../../../utils.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-image/plugin.ts": {
+      "bytes": 7326,
+      "imports": [
+        {
+          "path": "node:crypto",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@rollup/pluginutils",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "probe-image-size/sync.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "../../utils.ts"
+        },
+        {
+          "path": "src/plugins/next-image/alias/index.tsx",
+          "kind": "import-statement",
+          "original": "./alias/index.tsx"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/compatibility/compatibility-map.ts": {
+      "bytes": 1072,
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "semver",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "../../../utils.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/plugin.ts": {
+      "bytes": 2524,
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "../../utils.ts"
+        },
+        {
+          "path": "src/plugins/next-mocks/compatibility/compatibility-map.ts",
+          "kind": "import-statement",
+          "original": "./compatibility/compatibility-map.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/next-config.ts": {
+      "bytes": 2103,
+      "imports": [
+        {
+          "path": "next/dist/server/config-shared.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/config.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/index.ts": {
+      "bytes": 9099,
+      "imports": [
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "vite-tsconfig-paths",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-env/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-env/plugin.ts"
+        },
+        {
+          "path": "src/plugins/next-font/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-font/plugin.ts"
+        },
+        {
+          "path": "src/plugins/next-swc/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-swc/plugin.ts"
+        },
+        {
+          "path": "src/polyfills/promise-with-resolvers.ts",
+          "kind": "import-statement",
+          "original": "./polyfills/promise-with-resolvers.ts"
+        },
+        {
+          "path": "next/dist/build/load-jsconfig.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/constants.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-dynamic/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-dynamic/plugin.ts"
+        },
+        {
+          "path": "src/plugins/next-image/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-image/plugin.ts"
+        },
+        {
+          "path": "src/plugins/next-mocks/plugin.ts",
+          "kind": "import-statement",
+          "original": "./plugins/next-mocks/plugin.ts"
+        },
+        {
+          "path": "src/utils.ts",
+          "kind": "import-statement",
+          "original": "./utils.ts"
+        },
+        {
+          "path": "src/utils/next-config.ts",
+          "kind": "import-statement",
+          "original": "./utils/next-config.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/mocks/storybook.global.ts": {
+      "bytes": 653,
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module-alias",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-image/alias/index.tsx",
+          "kind": "import-statement",
+          "original": "../plugins/next-image/alias/index.tsx"
+        },
+        {
+          "path": "src/plugins/next-mocks/plugin.ts",
+          "kind": "import-statement",
+          "original": "../plugins/next-mocks/plugin.ts"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/index.js": {
+      "imports": [
+        {
+          "path": "dist/_node-chunks/chunk-FE3U6HT3.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "vite-tsconfig-paths",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@next/env",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/output/log.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/swc/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/lib/find-pages-dir.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/define-env.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/webpack/plugins/define-env-plugin.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/fetch-css-from-google-fonts.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/get-font-axes.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/get-google-fonts-url.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/google/validate-google-font-function-call.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/loader-utils3/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@next/font/dist/local/validate-local-font-function-call.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/loader-utils3/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/load-jsconfig.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/swc/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "vite",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/swc/options.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/get-supported-browsers.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/utils.js",
+          "kind": "dynamic-import",
+          "external": true
+        },
+        {
+          "path": "next/dist/build/load-jsconfig.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/shared/lib/constants.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "magic-string",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:crypto",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@rollup/pluginutils",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "pathe",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "probe-image-size/sync.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ts-dedent",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/config-shared.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/config.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/index.ts",
+      "inputs": {
+        "src/index.ts": {
+          "bytesInOutput": 7308
+        },
+        "src/plugins/next-env/plugin.ts": {
+          "bytesInOutput": 1856
+        },
+        "src/utils/nextjs.ts": {
+          "bytesInOutput": 995
+        },
+        "src/plugins/next-font/plugin.ts": {
+          "bytesInOutput": 3699
+        },
+        "src/plugins/next-font/google/get-font-face-declarations.ts": {
+          "bytesInOutput": 1522
+        },
+        "src/plugins/next-font/local/get-font-face-declarations.ts": {
+          "bytesInOutput": 1706
+        },
+        "src/utils/base64-url.ts": {
+          "bytesInOutput": 138
+        },
+        "src/plugins/next-font/utils/get-css-meta.ts": {
+          "bytesInOutput": 1555
+        },
+        "src/plugins/next-font/utils/set-font-declarations-in-head.ts": {
+          "bytesInOutput": 1308
+        },
+        "src/plugins/next-swc/plugin.ts": {
+          "bytesInOutput": 2318
+        },
+        "src/utils/swc/transform.ts": {
+          "bytesInOutput": 2835
+        },
+        "src/utils/swc/options.ts": {
+          "bytesInOutput": 2732
+        },
+        "src/utils/swc/styles.ts": {
+          "bytesInOutput": 308
+        },
+        "src/utils/typescript.ts": {
+          "bytesInOutput": 45
+        },
+        "src/polyfills/promise-with-resolvers.ts": {
+          "bytesInOutput": 216
+        },
+        "src/plugins/next-dynamic/plugin.ts": {
+          "bytesInOutput": 862
+        },
+        "src/plugins/next-image/plugin.ts": {
+          "bytesInOutput": 5669
+        },
+        "src/utils/next-config.ts": {
+          "bytesInOutput": 1649
+        }
+      },
+      "bytes": 38456
+    },
+    "dist/mocks/storybook.global.js": {
+      "imports": [
+        {
+          "path": "dist/_node-chunks/chunk-FE3U6HT3.js",
+          "kind": "import-statement"
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module-alias",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/mocks/storybook.global.ts",
+      "inputs": {
+        "src/mocks/storybook.global.ts": {
+          "bytesInOutput": 461
+        }
+      },
+      "bytes": 1192
+    },
+    "dist/_node-chunks/chunk-FE3U6HT3.js": {
+      "imports": [
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "semver",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "VITEST_PLUGIN_NAME",
+        "getAlias",
+        "getAlias2",
+        "getExecutionEnvironment",
+        "getNextjsMajorVersion",
+        "getViteMajorVersion",
+        "isVitestEnv",
+        "vitePluginNextMocks"
+      ],
+      "inputs": {
+        "src/utils.ts": {
+          "bytesInOutput": 777
+        },
+        "src/plugins/next-image/alias/index.tsx": {
+          "bytesInOutput": 382
+        },
+        "src/plugins/next-mocks/plugin.ts": {
+          "bytesInOutput": 2244
+        },
+        "src/plugins/next-mocks/compatibility/compatibility-map.ts": {
+          "bytesInOutput": 758
+        }
+      },
+      "bytes": 5149
+    }
+  }
+}

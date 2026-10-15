@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { TabList } from './TabList.tsx';
@@ -150,16 +150,21 @@ export const PreserveState = meta.story({
       const tab2 = canvas.getByRole('tab', { name: 'Tab 2' });
       await userEvent.click(tab2);
 
-      expect(canvas.getByText('Content for Tab 2')).toBeVisible();
-      expect(canvas.queryByText('Content for Tab 1')).not.toBeVisible();
+      // Base UI shows and hides the panels just after the click.
+      await waitFor(() => {
+        expect(canvas.getByText('Content for Tab 2')).toBeVisible();
+        expect(canvas.queryByText('Content for Tab 1')).not.toBeVisible();
+      });
     });
 
     await step('Switch back to Tab 1, notice preserved button state', async () => {
       const tab1 = canvas.getByRole('tab', { name: 'Tab 1' });
       await userEvent.click(tab1);
 
-      expect(canvas.getByText('Content for Tab 1')).toBeVisible();
-      expect(canvas.queryByText('Content for Tab 2')).not.toBeVisible();
+      await waitFor(() => {
+        expect(canvas.getByText('Content for Tab 1')).toBeVisible();
+        expect(canvas.queryByText('Content for Tab 2')).not.toBeVisible();
+      });
       expect(canvas.getByRole('button')).toHaveTextContent('Clicked 1 time');
     });
   },

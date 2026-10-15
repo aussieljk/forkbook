@@ -1,0 +1,707 @@
+{
+  "inputs": {
+    "src/plugins/next-mocks/alias/cache/index.ts": {
+      "bytes": 1554,
+      "imports": [
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/navigation/index.ts": {
+      "bytes": 4565,
+      "imports": [
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-status-code.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/headers/headers.ts": {
+      "bytes": 1298,
+      "imports": [
+        {
+          "path": "next/dist/server/web/spec-extension/adapters/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/headers/cookies.ts": {
+      "bytes": 1095,
+      "imports": [
+        {
+          "path": "next/dist/compiled/@edge-runtime/cookies/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-mocks/alias/headers/headers.ts",
+          "kind": "import-statement",
+          "original": "./headers.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/headers/index.ts": {
+      "bytes": 622,
+      "imports": [
+        {
+          "path": "next/dist/server/request/draft-mode",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/plugins/next-mocks/alias/headers/headers.ts",
+          "kind": "import-statement",
+          "original": "./headers.ts"
+        },
+        {
+          "path": "src/plugins/next-mocks/alias/headers/cookies.ts",
+          "kind": "import-statement",
+          "original": "./cookies.ts"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/router/index.ts": {
+      "bytes": 4920,
+      "imports": [
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/link/index.tsx": {
+      "bytes": 3800,
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/rsc/server-only.ts": {
+      "bytes": 19,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/dynamic/index.tsx": {
+      "bytes": 6459,
+      "imports": [
+        {
+          "path": "next/dist/shared/lib/loadable.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/alias/safe-stable-stringify/index.ts": {
+      "bytes": 468,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-mocks/compatibility/draft-mode.compat.ts": {
+      "bytes": 111,
+      "imports": [
+        {
+          "path": "next/dist/client/components/headers",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-image/alias/next-image.tsx": {
+      "bytes": 1398,
+      "imports": [
+        {
+          "path": "next/image",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/default-loader",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-image/alias/next-legacy-image.tsx": {
+      "bytes": 968,
+      "imports": [
+        {
+          "path": "next/legacy/image",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/default-loader",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/plugins/next-image/alias/image-default-loader.tsx": {
+      "bytes": 990,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/plugins/next-image/alias/image-context.tsx": {
+      "bytes": 703,
+      "imports": [
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/plugins/next-mocks/compatibility/draft-mode.compat.js": {
+      "imports": [
+        {
+          "path": "next/dist/client/components/headers",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "draftMode"
+      ],
+      "entryPoint": "src/plugins/next-mocks/compatibility/draft-mode.compat.ts",
+      "inputs": {
+        "src/plugins/next-mocks/compatibility/draft-mode.compat.ts": {
+          "bytesInOutput": 65
+        }
+      },
+      "bytes": 150
+    },
+    "dist/plugins/next-image/alias/next-image.js": {
+      "imports": [
+        {
+          "path": "next/image",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/default-loader",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "default",
+        "getImageProps"
+      ],
+      "entryPoint": "src/plugins/next-image/alias/next-image.tsx",
+      "inputs": {
+        "src/plugins/next-image/alias/next-image.tsx": {
+          "bytesInOutput": 1037
+        }
+      },
+      "bytes": 1163
+    },
+    "dist/plugins/next-image/alias/next-legacy-image.js": {
+      "imports": [
+        {
+          "path": "next/legacy/image",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/default-loader",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "sb-original/image-context",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/plugins/next-image/alias/next-legacy-image.tsx",
+      "inputs": {
+        "src/plugins/next-image/alias/next-legacy-image.tsx": {
+          "bytesInOutput": 727
+        }
+      },
+      "bytes": 832
+    },
+    "dist/plugins/next-image/alias/image-default-loader.js": {
+      "imports": [],
+      "exports": [
+        "defaultLoader"
+      ],
+      "entryPoint": "src/plugins/next-image/alias/image-default-loader.tsx",
+      "inputs": {
+        "src/plugins/next-image/alias/image-default-loader.tsx": {
+          "bytesInOutput": 820
+        }
+      },
+      "bytes": 905
+    },
+    "dist/plugins/next-image/alias/image-context.js": {
+      "imports": [
+        {
+          "path": "next/dist/compiled/react",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "ImageContext"
+      ],
+      "entryPoint": "src/plugins/next-image/alias/image-context.tsx",
+      "inputs": {
+        "src/plugins/next-image/alias/image-context.tsx": {
+          "bytesInOutput": 96
+        }
+      },
+      "bytes": 173
+    },
+    "dist/plugins/next-mocks/alias/cache/index.js": {
+      "imports": [
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "cacheLife",
+        "cacheTag",
+        "default",
+        "refresh",
+        "revalidatePath",
+        "revalidateTag",
+        "unstable_cache",
+        "unstable_cacheLife",
+        "unstable_cacheTag",
+        "unstable_noStore",
+        "updateTag"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/cache/index.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/cache/index.ts": {
+          "bytesInOutput": 800
+        }
+      },
+      "bytes": 1051
+    },
+    "dist/plugins/next-mocks/alias/navigation/index.js": {
+      "imports": [
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect-status-code.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/redirect.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/components/navigation.js",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "ReadonlyURLSearchParams",
+        "RedirectType",
+        "ServerInsertedHTMLContext",
+        "createNavigation",
+        "forbidden",
+        "getRouter",
+        "notFound",
+        "permanentRedirect",
+        "redirect",
+        "unauthorized",
+        "unstable_isUnrecognizedActionError",
+        "unstable_rethrow",
+        "useParams",
+        "usePathname",
+        "useRouter",
+        "useSearchParams",
+        "useSelectedLayoutSegment",
+        "useSelectedLayoutSegments",
+        "useServerInsertedHTML"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/navigation/index.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/navigation/index.ts": {
+          "bytesInOutput": 2775
+        }
+      },
+      "bytes": 3470
+    },
+    "dist/plugins/next-mocks/alias/headers/index.js": {
+      "imports": [
+        {
+          "path": "next/dist/server/request/draft-mode",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/request/headers",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/server/web/spec-extension/adapters/headers.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/compiled/@edge-runtime/cookies/index.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "cookies",
+        "draftMode",
+        "headers"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/headers/index.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/headers/index.ts": {
+          "bytesInOutput": 357
+        },
+        "src/plugins/next-mocks/alias/headers/headers.ts": {
+          "bytesInOutput": 1217
+        },
+        "src/plugins/next-mocks/alias/headers/cookies.ts": {
+          "bytesInOutput": 1024
+        }
+      },
+      "bytes": 2861
+    },
+    "dist/plugins/next-mocks/alias/router/index.js": {
+      "imports": [
+        {
+          "path": "next/dist/client/router.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/internal/preview-errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "next/dist/client/router",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "Router",
+        "createRouter",
+        "default",
+        "getRouter",
+        "useRouter",
+        "withRouter"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/router/index.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/router/index.ts": {
+          "bytesInOutput": 2500
+        }
+      },
+      "bytes": 2683
+    },
+    "dist/plugins/next-mocks/alias/link/index.js": {
+      "imports": [
+        {
+          "path": "react",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "storybook/test",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "Link",
+        "default",
+        "useLinkStatus"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/link/index.tsx",
+      "inputs": {
+        "src/plugins/next-mocks/alias/link/index.tsx": {
+          "bytesInOutput": 2533
+        }
+      },
+      "bytes": 2655
+    },
+    "dist/plugins/next-mocks/alias/rsc/server-only.js": {
+      "imports": [],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/rsc/server-only.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/rsc/server-only.ts": {
+          "bytesInOutput": 30
+        }
+      },
+      "bytes": 126
+    },
+    "dist/plugins/next-mocks/alias/dynamic/index.js": {
+      "imports": [
+        {
+          "path": "next/dist/shared/lib/loadable.shared-runtime.js",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "react/jsx-runtime",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [
+        "default",
+        "noSSR"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/dynamic/index.tsx",
+      "inputs": {
+        "src/plugins/next-mocks/alias/dynamic/index.tsx": {
+          "bytesInOutput": 1685
+        }
+      },
+      "bytes": 1777
+    },
+    "dist/plugins/next-mocks/alias/safe-stable-stringify/index.js": {
+      "imports": [],
+      "exports": [
+        "default"
+      ],
+      "entryPoint": "src/plugins/next-mocks/alias/safe-stable-stringify/index.ts",
+      "inputs": {
+        "src/plugins/next-mocks/alias/safe-stable-stringify/index.ts": {
+          "bytesInOutput": 124
+        }
+      },
+      "bytes": 232
+    }
+  }
+}
