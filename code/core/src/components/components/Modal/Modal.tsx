@@ -5,12 +5,12 @@ import type { DecoratorFunction } from 'storybook/internal/csf';
 
 import { Dialog } from '@base-ui/react/dialog';
 import { useTransitionState } from 'react-transition-state';
+import { themeToCssVars, useTheme } from 'storybook/theming';
 
 import { useMediaQuery } from '../../../manager/hooks/useMedia.tsx';
 import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { trapTabKey } from '../shared/trapTabKey.ts';
 import * as Components from './Modal.styled.tsx';
-import { PortalTheme } from '../shared/PortalTheme.tsx';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   container?: HTMLElement;
@@ -108,6 +108,10 @@ function BaseModal({
   }
 
   const portalContainer = useContext(PortalContainerContext);
+  // The portal renders outside the ThemeProvider element, so the overlay and the dialog get the
+  // theme variables themselves. A wrapper element would change which element Base UI hides when
+  // modals are stacked.
+  const theme = useTheme();
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [{ status, isMounted }, toggle] = useTransitionState({
     timeout: reducedMotion ? 0 : transitionDuration,
@@ -179,34 +183,39 @@ function BaseModal({
       disablePointerDismissal={!dismissOnClickOutside}
     >
       <Dialog.Portal container={containerElement}>
-        <PortalTheme>
-          <Dialog.Backdrop
-            forceRender
-            render={
-              <Components.Overlay $status={status} $transitionDuration={transitionDuration} />
-            }
-          />
-          <Dialog.Popup
-            aria-label={ariaLabel}
-            // Base UI traps focus with focus guards. We also wrap Tab ourselves, so focus does not
-            // stop on the guards.
-            onKeyDown={(event) => trapTabKey(event.nativeEvent, event.currentTarget)}
-            render={
-              <Components.Container
-                data-deprecated={deprecated}
-                $variant={variant}
-                $status={status}
-                $transitionDuration={transitionDuration}
-                className={className}
-                width={width}
-                height={height}
-                {...props}
-              />
-            }
-          >
-            <ModalContext.Provider value={{ close }}>{children}</ModalContext.Provider>
-          </Dialog.Popup>
-        </PortalTheme>
+        <Dialog.Backdrop
+          forceRender
+          render={
+            <Components.Overlay
+              $status={status}
+              $transitionDuration={transitionDuration}
+              data-sb-theme={theme.base}
+              style={themeToCssVars(theme)}
+            />
+          }
+        />
+        <Dialog.Popup
+          aria-label={ariaLabel}
+          // Base UI traps focus with focus guards. We also wrap Tab ourselves, so focus does not
+          // stop on the guards.
+          onKeyDown={(event) => trapTabKey(event.nativeEvent, event.currentTarget)}
+          render={
+            <Components.Container
+              data-deprecated={deprecated}
+              $variant={variant}
+              $status={status}
+              $transitionDuration={transitionDuration}
+              className={className}
+              width={width}
+              height={height}
+              data-sb-theme={theme.base}
+              {...props}
+              style={{ ...themeToCssVars(theme), ...props.style }}
+            />
+          }
+        >
+          <ModalContext.Provider value={{ close }}>{children}</ModalContext.Provider>
+        </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>
   );

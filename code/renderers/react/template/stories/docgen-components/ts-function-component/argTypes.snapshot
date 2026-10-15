@@ -232,7 +232,7 @@
   },
   "myClass": {
     "control": {
-      "type": "object",
+      "type": "text",
     },
     "description": "",
     "name": "myClass",
@@ -244,13 +244,12 @@
       "jsDocTags": undefined,
       "type": {
         "detail": undefined,
-        "summary": "any",
+        "summary": "string",
       },
     },
     "type": {
-      "name": "other",
+      "name": "string",
       "required": true,
-      "value": "any",
     },
   },
   "numberOptional": {

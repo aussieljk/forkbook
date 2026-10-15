@@ -210,7 +210,7 @@
       "name": "myClass",
       "required": true,
       "type": {
-        "name": "any"
+        "name": "string"
       },
       "description": "",
       "defaultValue": {

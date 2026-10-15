@@ -30,9 +30,7 @@
     "node >= 20"
   ],
   "dependencies": {
-    "@chromatic-com/storybook": "^5.1.2",
     "@storybook/addon-a11y": "workspace:*",
-    "@storybook/addon-designs": "^11.0.3",
     "@storybook/addon-docs": "workspace:*",
     "@storybook/addon-links": "workspace:*",
     "@storybook/addon-mcp": "workspace:*",

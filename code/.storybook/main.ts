@@ -124,12 +124,10 @@ const config = defineMain({
     '@storybook/addon-onboarding',
     '@storybook/addon-themes',
     '@storybook/addon-docs',
-    '@storybook/addon-designs',
     '@storybook/addon-vitest',
     '@storybook/addon-a11y',
     '@storybook/addon-mcp',
     'storybook-addon-pseudo-states',
-    '@chromatic-com/storybook',
     './services-preset.ts',
   ],
   previewAnnotations: [
