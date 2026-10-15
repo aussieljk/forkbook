@@ -9,7 +9,6 @@ import {
   type CacheEntry,
   getLastEvents,
   getSessionId,
-  type InitPayload,
   telemetry,
 } from 'storybook/internal/telemetry';
 
@@ -23,13 +22,11 @@ export const makePayload = (
   let timeSinceInit: number | undefined;
   const payload = {
     userAgent,
-    isNewUser: false,
     timeSinceInit,
   };
 
   if (sessionId && lastInit?.body?.sessionId === sessionId) {
     payload.timeSinceInit = Date.now() - lastInit.timestamp;
-    payload.isNewUser = !!(lastInit.body.payload as InitPayload).newUser;
   }
   return payload;
 };

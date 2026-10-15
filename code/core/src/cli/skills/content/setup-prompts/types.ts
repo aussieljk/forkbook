@@ -5,7 +5,6 @@ export interface SetupInstructionsContext {
   docsUrl: (path: string) => string;
   mockDateInstall: string;
   mswInstall: string;
-  needsUserOnboarding: boolean;
   packageManager: JsPackageManager;
   packageManagerName: string | undefined;
   tsx: string;

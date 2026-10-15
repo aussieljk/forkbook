@@ -16,7 +16,6 @@ const userSettingSchema = z.object({
   // NOTE: every key (and subkey) below must be optional, for forwards compatibility reasons
   // (we can remove keys once they are deprecated)
   userSince: z.number().optional(),
-  init: z.object({ skipOnboarding: z.boolean().optional() }).optional(),
 });
 
 let settings: Settings | undefined;

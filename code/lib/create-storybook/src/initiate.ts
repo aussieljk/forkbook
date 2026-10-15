@@ -74,7 +74,6 @@ async function checkFeatureSupport(
 export async function doInitiate(options: CommandOptions): Promise<
   | {
       shouldRunDev: true;
-      shouldOnboard: boolean;
       projectType: ProjectType;
       packageManager: JsPackageManager;
       storybookCommand?: string | null;
@@ -114,12 +113,11 @@ export async function doInitiate(options: CommandOptions): Promise<
     renderer
   );
 
-  const { newUser, selectedFeatures } = await executeUserPreferences({
+  const { selectedFeatures } = await executeUserPreferences({
     options,
     framework,
     builder,
     renderer,
-    projectType,
     isTestFeatureAvailable,
     // Skip AI feature recommendation when scaffolding into an empty directory,
     // since the user hasn't yet committed to a project setup where AI tooling adds value.
@@ -214,12 +212,7 @@ export async function doInitiate(options: CommandOptions): Promise<
   });
 
   // Step 10: Track telemetry (pass configDir so RN `.rnstorybook` metadata is resolved)
-  await telemetryService.trackInitWithContext(projectType, selectedFeatures, newUser, configDir);
-
-  // Signal dev to redirect to onboarding on first run
-  if (selectedFeatures.has(Feature.ONBOARDING)) {
-    await cache.set('onboarding-pending', true).catch(() => {});
-  }
+  await telemetryService.trackInitWithContext(projectType, selectedFeatures, configDir);
 
   return {
     shouldRunDev:
@@ -227,7 +220,6 @@ export async function doInitiate(options: CommandOptions): Promise<
       !options.skipInstall &&
       shouldRunDev !== false &&
       dependencyInstallationResult.status === 'success',
-    shouldOnboard: newUser,
     projectType,
     packageManager,
     storybookCommand,

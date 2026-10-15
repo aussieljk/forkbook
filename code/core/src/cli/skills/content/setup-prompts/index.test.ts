@@ -20,7 +20,6 @@ const projectInfo: ProjectInfo = {
   packageManager: JsPackageManagerFactory.getPackageManager({ force: PackageManagerName.NPM }),
   packageManagerName: 'npm',
   hasCsfFactoryPreview: false,
-  needsUserOnboarding: false,
   monorepoType: undefined,
 };
 

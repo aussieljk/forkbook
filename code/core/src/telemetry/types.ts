@@ -32,8 +32,6 @@ export type EventType =
   | 'testing-module-crash-report'
   | 'addon-test'
   | 'test-run'
-  | 'addon-onboarding'
-  | 'onboarding-survey'
   | 'mocking'
   | 'automigrate'
   | 'migrate'
@@ -172,10 +170,8 @@ export interface InitPayload {
     dev: boolean;
     docs: boolean;
     test: boolean;
-    onboarding: boolean;
     ai: boolean;
   };
-  newUser: boolean;
   versionSpecifier: string | undefined;
   cliIntegration: string | undefined;
 }

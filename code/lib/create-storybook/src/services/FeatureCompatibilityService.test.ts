@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { AddonVitestService, ProjectType } from 'storybook/internal/cli';
+import { AddonVitestService } from 'storybook/internal/cli';
 import type { JsPackageManager } from 'storybook/internal/common';
 import { SupportedBuilder, SupportedFramework } from 'storybook/internal/types';
 
@@ -26,21 +26,6 @@ describe('FeatureCompatibilityService', () => {
 
     mockAddonVitestService = new AddonVitestService(mockPackageManager);
     service = new FeatureCompatibilityService(mockPackageManager, mockAddonVitestService);
-  });
-
-  describe('supportsOnboarding', () => {
-    it('should return true for supported project types', () => {
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.REACT)).toBe(true);
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.NEXTJS)).toBe(true);
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.VUE3)).toBe(true);
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.ANGULAR)).toBe(true);
-    });
-
-    it('should return false for unsupported project types', () => {
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.SVELTE)).toBe(false);
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.EMBER)).toBe(false);
-      expect(FeatureCompatibilityService.supportsOnboarding(ProjectType.HTML)).toBe(false);
-    });
   });
 
   describe('validateTestFeatureCompatibility', () => {

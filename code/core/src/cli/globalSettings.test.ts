@@ -76,12 +76,12 @@ describe('Settings', () => {
 
   describe('save', () => {
     it('overwrites existing settings', async () => {
-      settings.value.init = { skipOnboarding: true };
+      settings.value.userSince = 42;
       await settings.save();
 
       expect(fs.writeFile).toHaveBeenCalledWith(
         TEST_SETTINGS_FILE,
-        JSON.stringify({ ...baseSettings, init: { skipOnboarding: true } }, null, 2)
+        JSON.stringify({ ...baseSettings, userSince: 42 }, null, 2)
       );
     });
 

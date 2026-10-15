@@ -38,8 +38,7 @@ import {
 import type { SetupInstructionsContext } from './types.ts';
 
 export function instructions(projectInfo: ProjectInfo): string {
-  const { configDir, language, needsUserOnboarding, packageManager, packageManagerName } =
-    projectInfo;
+  const { configDir, language, packageManager, packageManagerName } = projectInfo;
   const tsx = ext(language, isReactProject(projectInfo));
   const ts = ext(language, false);
   const docsUrl = (path: string) => getDocsMarkdownUrl(path, projectInfo);
@@ -51,7 +50,6 @@ export function instructions(projectInfo: ProjectInfo): string {
     docsUrl,
     mockDateInstall,
     mswInstall,
-    needsUserOnboarding,
     packageManager,
     packageManagerName,
     tsx,
@@ -87,7 +85,7 @@ export function instructions(projectInfo: ProjectInfo): string {
         writeStoriesWithAllowedFailuresStep(projectInfo, ctx),
         interactionPlayStep(projectInfo, ctx),
         verifyWithAllowedFailureStep(projectInfo, ctx),
-        cleanupStep(projectInfo, ctx),
+        cleanupStep(),
       ],
       { level: 3 }
     )}

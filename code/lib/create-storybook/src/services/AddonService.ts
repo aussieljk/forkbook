@@ -13,7 +13,6 @@ export class AddonService {
     const addons: string[] = [];
 
     if (features.has(Feature.TEST)) {
-      addons.push('@chromatic-com/storybook');
       addons.push('@storybook/addon-vitest');
     }
 
@@ -23,10 +22,6 @@ export class AddonService {
 
     if (features.has(Feature.DOCS)) {
       addons.push('@storybook/addon-docs');
-    }
-
-    if (features.has(Feature.ONBOARDING)) {
-      addons.push('@storybook/addon-onboarding');
     }
 
     return addons;
