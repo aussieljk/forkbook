@@ -6,62 +6,31 @@ import { deprecate } from 'storybook/internal/client-logger';
 import { sanitize } from 'storybook/internal/csf';
 import type { Addon_RenderOptions } from 'storybook/internal/types';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { FlexBar } from '../Bar/Bar.tsx';
 import { TabButton } from './Button.tsx';
 import { EmptyTabContent } from './EmptyTabContent.tsx';
 import { VisuallyHidden, childrenToList } from './Tabs.helpers.tsx';
 import { useList } from './Tabs.hooks.tsx';
-
-const ignoreSsrWarning =
-  '/* emotion-disable-server-rendering-unsafe-selector-warning-please-do-not-use-this-the-warning-exists-for-a-reason */';
+import styles from './Tabs.module.css';
 
 export interface WrapperProps {
   bordered?: boolean;
   absolute?: boolean;
 }
 
-const Wrapper = styled.div<WrapperProps>(
-  ({ theme, bordered }) =>
-    bordered
-      ? {
-          backgroundClip: 'padding-box',
-          border: `1px solid ${theme.appBorderColor}`,
-          borderRadius: theme.appBorderRadius,
-          overflow: 'hidden',
-          boxSizing: 'border-box',
-        }
-      : {},
-  ({ absolute }) =>
-    absolute
-      ? {
-          width: '100%',
-          height: '100%',
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'column',
-        }
-      : {
-          display: 'block',
-        }
-);
-
-const StyledTabBar = styled.div({
-  overflow: 'hidden',
-
-  '&:first-of-type': {
-    marginLeft: -3,
-  },
-
-  whiteSpace: 'nowrap',
-  flexGrow: 1,
-});
-
 export const TabBar = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   (props, ref) => {
     deprecate('The `TabBar` component is deprecated. Use `TabsView` instead.');
-    return <StyledTabBar data-deprecated="TabBar" {...props} ref={ref} />;
+    return (
+      <div
+        data-deprecated="TabBar"
+        {...props}
+        className={clsx(styles.tabBar, props.className)}
+        ref={ref}
+      />
+    );
   }
 );
 TabBar.displayName = 'TabBar';
@@ -70,46 +39,6 @@ export interface ContentProps {
   absolute?: boolean;
   bordered?: boolean;
 }
-
-const Content = styled.div<ContentProps>(
-  {
-    display: 'block',
-    position: 'relative',
-    container: 'tab-content / inline-size',
-  },
-  ({ theme }) => ({
-    fontSize: theme.typography.size.s2 - 1,
-    background: theme.background.content,
-  }),
-  ({ bordered, theme }) =>
-    bordered
-      ? {
-          borderRadius: `0 0 ${theme.appBorderRadius - 1}px ${theme.appBorderRadius - 1}px`,
-        }
-      : {},
-  ({ absolute, bordered }) =>
-    absolute
-      ? {
-          height: `calc(100% - ${bordered ? 42 : 40}px)`,
-
-          position: 'absolute',
-          left: 0 + (bordered ? 1 : 0),
-          right: 0 + (bordered ? 1 : 0),
-          bottom: 0 + (bordered ? 1 : 0),
-          top: 40 + (bordered ? 1 : 0),
-          overflow: 'auto',
-          [`& > *:first-child${ignoreSsrWarning}`]: {
-            position: 'absolute',
-            left: 0 + (bordered ? 1 : 0),
-            right: 0 + (bordered ? 1 : 0),
-            bottom: 0 + (bordered ? 1 : 0),
-            top: 0 + (bordered ? 1 : 0),
-            height: `calc(100% - ${bordered ? 2 : 0}px)`,
-            overflow: 'auto',
-          },
-        }
-      : {}
-);
 
 export interface TabWrapperProps {
   active: boolean;
@@ -221,7 +150,13 @@ function TabsImpl({
   }
 
   return (
-    <Wrapper data-deprecated="Tabs" absolute={absolute} bordered={bordered} id={htmlId}>
+    <div
+      data-deprecated="Tabs"
+      className={styles.wrapper}
+      data-absolute={absolute || undefined}
+      data-bordered={bordered || undefined}
+      id={htmlId}
+    >
       <FlexBar scrollable={false} border backgroundColor={backgroundColor}>
         {/* @ts-expect-error (non strict) */}
         <TabBar style={{ whiteSpace: 'normal' }} ref={tabBarRef} role="tablist">
@@ -255,7 +190,12 @@ function TabsImpl({
         </TabBar>
         {tools}
       </FlexBar>
-      <Content id="panel-tab-content" bordered={bordered} absolute={absolute}>
+      <div
+        id="panel-tab-content"
+        className={styles.content}
+        data-absolute={absolute || undefined}
+        data-bordered={bordered || undefined}
+      >
         {list.length
           ? list.map(({ id, active, render }) => {
               return (
@@ -265,8 +205,8 @@ function TabsImpl({
               );
             })
           : EmptyContent}
-      </Content>
-    </Wrapper>
+      </div>
+    </div>
   );
 }
 

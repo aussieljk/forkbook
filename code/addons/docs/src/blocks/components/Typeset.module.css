@@ -1,0 +1,30 @@
+.label {
+  margin-right: 30px;
+  font-size: var(--sb-size-s1);
+  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.4));
+}
+
+:where([data-sb-theme='dark']) .label {
+  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.6));
+}
+
+.sample {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.typeSpecimen {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.wrapper {
+  margin: 25px 0 40px;
+  padding: 30px 20px;
+}

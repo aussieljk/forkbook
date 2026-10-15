@@ -1,19 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
+import { withClassName } from '../lib/withClassName.tsx';
+import { withReset } from '../lib/common.tsx';
+import styles from './LI.module.css';
 
-import { codeCommon, withReset } from '../lib/common.tsx';
-
-export const LI = styled.li(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  fontSize: theme.typography.size.s2,
-  color: theme.color.defaultText,
-  lineHeight: '24px',
-  '& + li': {
-    marginTop: '.25em',
-  },
-  '& ul, & ol': {
-    marginTop: '.25em',
-    marginBottom: 0,
-  },
-  '& code': codeCommon({ theme }) as CSSObject,
-}));
+export const LI = withClassName('li', withReset, styles.li);

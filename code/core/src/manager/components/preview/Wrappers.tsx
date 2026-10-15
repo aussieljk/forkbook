@@ -4,8 +4,8 @@ import React, { Fragment } from 'react';
 import { Addon_TypesEnum } from 'storybook/internal/types';
 import type { Addon_WrapperType } from 'storybook/internal/types';
 
-import { IframeWrapper } from './utils/components.ts';
 import type { ApplyWrappersProps } from './utils/types.tsx';
+import styles from './Wrappers.module.css';
 
 export const ApplyWrappers: FC<PropsWithChildren<ApplyWrappersProps>> = ({
   wrappers,
@@ -29,6 +29,10 @@ export const defaultWrappers: Addon_WrapperType[] = [
   {
     id: 'iframe-wrapper',
     type: Addon_TypesEnum.PREVIEW,
-    render: (p) => <IframeWrapper id="storybook-preview-wrapper">{p.children}</IframeWrapper>,
+    render: (p) => (
+      <div className={styles.iframeWrapper} id="storybook-preview-wrapper">
+        {p.children}
+      </div>
+    ),
   },
 ];

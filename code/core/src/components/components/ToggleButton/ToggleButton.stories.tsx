@@ -1,8 +1,7 @@
+import type { ComponentProps } from 'react';
 import React, { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { styled } from 'storybook/theming';
 
 import { ToggleButton } from './ToggleButton.tsx';
 
@@ -16,9 +15,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Stack = styled.div({ display: 'flex', flexDirection: 'column', gap: '1rem' });
+const Stack = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
+);
 
-const Row = styled.div({ display: 'flex', alignItems: 'center', gap: '1rem' });
+const Row = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} />
+);
 
 export const Base: Story = {
   args: { pressed: false },

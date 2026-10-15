@@ -17,8 +17,8 @@ import { FramesRenderer } from './FramesRenderer.tsx';
 import { ToolbarComp } from './Toolbar.tsx';
 import { ApplyWrappers } from './Wrappers.tsx';
 import { ZoomConsumer, ZoomProvider } from './tools/zoom.tsx';
-import * as S from './utils/components.ts';
 import type { PreviewProps } from './utils/types.tsx';
+import styles from './Preview.module.css';
 
 const canvasMapper = ({ state, api }: Combo) => ({
   api,
@@ -92,7 +92,7 @@ const Preview = React.memo<PreviewProps>(function Preview(props) {
         </Helmet>
       )}
       <ZoomProvider shouldScale={shouldScale}>
-        <S.PreviewContainer>
+        <div className={styles.previewContainer}>
           {customisedShowToolbar && isReviewCollectionStory ? <ReviewToolbarHeader /> : null}
           <ToolbarComp
             key="tools"
@@ -100,15 +100,15 @@ const Preview = React.memo<PreviewProps>(function Preview(props) {
             tools={tools}
             toolsExtra={toolsExtra}
           />
-          <S.FrameWrap ref={mainRef} {...landmarkProps}>
+          <main className={styles.frameWrap} ref={mainRef} {...landmarkProps}>
             <h2 id="main-preview-heading" className="sb-sr-only">
               Main preview area
             </h2>
-            <S.CanvasWrap>
+            <div className={styles.canvasWrap}>
               <Canvas {...{ withLoader, baseUrl }} wrappers={wrappers} />
-            </S.CanvasWrap>
-          </S.FrameWrap>
-        </S.PreviewContainer>
+            </div>
+          </main>
+        </div>
       </ZoomProvider>
     </Fragment>
   );
@@ -166,9 +166,9 @@ const Canvas: FC<{
               return (
                 <>
                   {withLoader && isLoading && (
-                    <S.LoaderWrapper>
+                    <div className={styles.loaderWrapper}>
                       <Loader id="preview-loader" role="progressbar" progress={progress} />
-                    </S.LoaderWrapper>
+                    </div>
                   )}
                   <ApplyWrappers id={id} storyId={storyId} viewMode={viewMode} wrappers={wrappers}>
                     {customCanvas ? (

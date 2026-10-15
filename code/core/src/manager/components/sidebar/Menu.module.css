@@ -1,0 +1,48 @@
+.sidebarButton {
+  position: relative;
+  overflow: visible;
+  margin-top: 0;
+  z-index: 1;
+
+  &[data-mobile] {
+    width: 36px;
+    height: 36px;
+  }
+
+  &[data-highlighted] {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 5px;
+      height: 5px;
+      z-index: 2;
+      border-radius: 50%;
+      background: var(--sb-background-app);
+      border: 1px solid var(--sb-background-app);
+      box-shadow: 0 0 0 2px var(--sb-background-app);
+    }
+
+    &:after {
+      background: var(--sb-color-positive);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 0 2px var(--sb-background-app);
+    }
+
+    &:hover:after,
+    &:focus-visible:after {
+      box-shadow: 0 0 0 2px rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.88));
+    }
+  }
+}
+
+.container {
+  min-width: 250px;
+}
+
+.menuButtonGroup {
+  display: flex;
+  gap: 6px;
+}

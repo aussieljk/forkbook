@@ -1,0 +1,12 @@
+.name {
+  color: var(--sb-color-orange);
+}
+
+.important {
+  color: var(--sb-color-ancillary);
+  text-decoration: underline;
+}
+
+.detail {
+  color: var(--sb-text-muted-color);
+}

@@ -3,10 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Form } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
-
 import { getControlId } from './helpers';
 import type { ControlProps, DateConfig, DateValue } from './types';
+import styles from './Date.module.css';
 
 export const parseDate = (value: string) => {
   const [year, month, day] = value.split('-');
@@ -37,33 +36,6 @@ export const formatTime = (value: Date | number) => {
   const minutes = `0${date.getMinutes()}`.slice(-2);
   return `${hours}:${minutes}`;
 };
-
-const FormInput = styled(Form.Input)(({ theme }) => ({
-  '&[readonly]': {
-    background: theme.base === 'light' ? theme.color.lighter : 'transparent',
-  },
-  '&::-webkit-calendar-picker-indicator': {
-    opacity: 0.5,
-    height: 12,
-    filter: theme.base === 'light' ? undefined : 'invert(1)',
-  },
-}));
-
-const FlexSpaced = styled.fieldset({
-  flex: 1,
-  display: 'flex',
-  border: 0,
-  marginInline: 0,
-  padding: 0,
-  gap: 10,
-
-  'div:first-of-type': {
-    flex: 4,
-  },
-  'div:last-of-type': {
-    flex: 3,
-  },
-});
 
 export type DateProps = ControlProps<DateValue> & DateConfig;
 export const DateControl: FC<DateProps> = ({
@@ -127,12 +99,13 @@ export const DateControl: FC<DateProps> = ({
   const controlId = getControlId(name, storyId, controlsId);
 
   return (
-    <FlexSpaced>
+    <fieldset className={styles.fieldset}>
       <legend className="sb-sr-only">{name}</legend>
       <label htmlFor={`${controlId}-date`} className="sb-sr-only">
         Date
       </label>
-      <FormInput
+      <Form.Input
+        className={styles.input}
         type="date"
         max="9999-12-31" // I do this because of a rendering bug in chrome
         ref={dateRef as RefObject<HTMLInputElement>}
@@ -146,7 +119,8 @@ export const DateControl: FC<DateProps> = ({
       <label htmlFor={`${controlId}-time`} className="sb-sr-only">
         Time
       </label>
-      <FormInput
+      <Form.Input
+        className={styles.input}
         type="time"
         id={`${controlId}-time`}
         name={`${controlId}-time`}
@@ -157,6 +131,6 @@ export const DateControl: FC<DateProps> = ({
         {...{ onFocus, onBlur }}
       />
       {!valid ? <div>invalid</div> : null}
-    </FlexSpaced>
+    </fieldset>
   );
 };

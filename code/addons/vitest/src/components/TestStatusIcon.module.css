@@ -1,0 +1,50 @@
+.icon {
+  --status-color: var(--sb-text-muted-color);
+  --status-background: rgb(from var(--status-color) r g b / 0.4);
+
+  width: 6px;
+  height: 6px;
+  margin: 4px;
+  background: var(--status-color);
+  border-radius: 50%;
+
+  &[data-percentage] {
+    width: 12px;
+    height: 12px;
+    margin: 1px;
+    background: conic-gradient(
+      var(--status-color) var(--percentage),
+      var(--status-background) calc(var(--percentage) + 1%)
+    );
+  }
+
+  &[data-running] {
+    animation: glow 1.5s ease-in-out infinite;
+  }
+
+  &[data-status='positive'] {
+    --status-color: var(--sb-color-positive);
+  }
+
+  &[data-status='warning'] {
+    --status-color: var(--sb-color-gold);
+  }
+
+  &[data-status='negative'] {
+    --status-color: var(--sb-color-negative);
+  }
+
+  &[data-status='critical'] {
+    --status-color: var(--sb-color-default-text);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

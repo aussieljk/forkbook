@@ -1,0 +1,27 @@
+.selectedOptionCount {
+  appearance: none;
+  color: var(--sb-text-muted-color);
+  font-size: 12px;
+}
+
+/* The trigger while the listbox is open or an option is selected. */
+.highlightedButton {
+  box-shadow: none;
+  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.93));
+  color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+}
+
+:where([data-sb-theme='dark']) .highlightedButton {
+  color: var(--sb-color-secondary);
+}
+
+.underlay {
+  position: fixed;
+  inset: 0;
+  /*
+   * This will do for now, our popovers use the max z-index of 2147483647. We'll want to inherit a
+   * base from a CSS variable and add preset values to it in the future (e.g. 100 for underlay, 200
+   * for overlay) if we start using Select in dialogs.
+   */
+  z-index: 1000;
+}

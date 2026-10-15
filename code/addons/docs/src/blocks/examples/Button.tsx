@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { styled } from 'storybook/theming';
+import styles from './Button.module.css';
 
 interface ButtonProps {
   /** Is this the principal call to action on the page? */
@@ -14,47 +14,6 @@ interface ButtonProps {
   /** Optional click handler */
   onClick?: () => void;
 }
-
-const StyledButton = styled.button<Omit<ButtonProps, 'label' | 'onClick'>>(
-  ({ primary, size, backgroundColor }) => {
-    const modeStyles = primary
-      ? {
-          color: 'white',
-          backgroundColor: '#1ea7fd',
-        }
-      : {
-          color: '#333',
-          backgroundColor: 'transparent',
-          boxShadow: 'rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset',
-        };
-    const sizeStyles = {
-      small: {
-        fontSize: '12px',
-        padding: '10px 16px',
-      },
-      medium: {
-        fontSize: '14px',
-        padding: '11px 20px',
-      },
-      large: {
-        fontSize: '16px',
-        padding: '12px 24px',
-      },
-    };
-    return {
-      fontFamily: "'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      fontWeight: 700,
-      border: 0,
-      borderRadius: '3em',
-      cursor: 'pointer',
-      display: 'inline-block',
-      lineHeight: 1,
-      ...modeStyles,
-      ...sizeStyles[size || 'medium'],
-      ...(backgroundColor && { backgroundColor }),
-    };
-  }
-);
 
 /**
  * ## Example button component
@@ -72,13 +31,14 @@ export const Button = ({
   label,
   ...props
 }: ButtonProps) => (
-  <StyledButton
+  <button
     type="button"
-    size={size}
-    primary={primary}
-    backgroundColor={backgroundColor}
+    className={styles.button}
+    data-size={size}
+    data-primary={primary || undefined}
+    style={backgroundColor ? { backgroundColor } : undefined}
     {...props}
   >
     {label}
-  </StyledButton>
+  </button>
 );

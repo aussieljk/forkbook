@@ -1,0 +1,39 @@
+.region {
+  width: 100%;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  /*
+   * Reserve room for the dismiss button, which is positioned in the top-right
+   * corner so it comes last in the tab order (after the review action).
+   */
+  padding-right: 24px;
+}
+
+.headerTitle {
+  margin: 0;
+  color: var(--sb-color-default-text);
+  font-weight: var(--sb-weight-bold);
+  font-size: var(--sb-size-s1);
+  line-height: var(--sb-size-s3);
+}
+
+.agenticIcon {
+  color: var(--sb-fg-color-agentic);
+}
+
+.dismissButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+}
+
+.dismissIcon {
+  padding: 1px;
+}

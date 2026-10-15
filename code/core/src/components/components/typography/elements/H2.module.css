@@ -1,0 +1,5 @@
+.h2 {
+  font-size: var(--sb-size-m2);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--sb-app-border-color);
+}

@@ -1,0 +1,207 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes expand {
+  from {
+    max-height: 0;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+@keyframes slideFromBottom {
+  from {
+    opacity: 0;
+    max-height: 0px;
+  }
+  to {
+    opacity: 1;
+    max-height: 80dvh;
+  }
+}
+
+@keyframes slideToBottom {
+  from {
+    opacity: 1;
+    max-height: 80dvh;
+  }
+  to {
+    opacity: 0;
+    max-height: 0px;
+  }
+}
+
+.overlay {
+  backdrop-filter: blur(24px);
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: fadeIn var(--sb-modal-duration);
+    animation-fill-mode: forwards;
+
+    &[data-exiting] {
+      animation-name: fadeOut;
+    }
+  }
+}
+
+.container {
+  background-color: var(--sb-background-bar);
+  border-radius: 6px;
+  box-shadow: 0px 4px 67px 0px #00000040;
+  position: absolute;
+  overflow: auto;
+  z-index: 100000;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &[data-variant='dialog'] {
+    top: 50%;
+    left: 50%;
+    width: 740px;
+    height: auto;
+    max-width: calc(100% - 40px);
+    max-height: 85vh;
+
+    @media (prefers-reduced-motion: no-preference) {
+      will-change: transform, opacity;
+      animation: zoomIn var(--sb-modal-duration);
+      animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+      animation-fill-mode: forwards !important;
+
+      &[data-exiting] {
+        animation-name: zoomOut;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  &[data-variant='bottom-drawer'] {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    width: 100%;
+    height: 80%;
+    max-width: 100%;
+    background: var(--sb-background-content);
+
+    @supports (interpolate-size: allow-keywords) {
+      interpolate-size: allow-keywords;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: slideFromBottom var(--sb-modal-duration);
+      animation-timing-function: cubic-bezier(0.9, 0.16, 0.77, 0.64);
+      animation-fill-mode: forwards !important;
+
+      &[data-exiting] {
+        animation-name: slideToBottom;
+      }
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin: 16px;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--sb-size-s3);
+  font-weight: var(--sb-weight-bold);
+}
+
+.description {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: var(--sb-size-s2);
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 8px;
+}
+
+.errorWrapper {
+  max-height: 100px;
+  overflow: auto;
+  background-color: var(--sb-background-critical);
+  color: var(--sb-color-lightest);
+  font-size: var(--sb-size-s2);
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation:
+      expand 300ms,
+      fadeIn 300ms;
+  }
+
+  & > div {
+    position: relative;
+    padding: 8px 16px;
+  }
+}

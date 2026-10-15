@@ -2,9 +2,10 @@ import type { ComponentProps, FC, ReactNode } from 'react';
 import React from 'react';
 
 import { Tabs } from '@base-ui/react/tabs';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { ScrollArea } from '../ScrollArea/ScrollArea.tsx';
+import styles from './StatelessTabPanel.module.css';
 
 export interface StatelessTabPanelProps extends Omit<
   ComponentProps<typeof Tabs.Panel>,
@@ -23,23 +24,24 @@ export interface StatelessTabPanelProps extends Omit<
   hasScrollbar?: boolean;
 }
 
-const Root = styled(Tabs.Panel)({
-  overflowY: 'hidden',
-  height: '100%',
-  display: 'block',
-  '&[hidden]': { display: 'none' },
-});
-
 export const StatelessTabPanel: FC<StatelessTabPanelProps> = ({
   children,
   hasScrollbar = true,
   keepMounted = true,
   name,
+  className,
   ...rest
 }) => {
   return (
-    <Root {...rest} keepMounted={keepMounted} value={name}>
+    <Tabs.Panel
+      {...rest}
+      className={(state) =>
+        clsx(styles.panel, typeof className === 'function' ? className(state) : className)
+      }
+      keepMounted={keepMounted}
+      value={name}
+    >
       {hasScrollbar ? <ScrollArea vertical>{children}</ScrollArea> : children}
-    </Root>
+    </Tabs.Panel>
   );
 };

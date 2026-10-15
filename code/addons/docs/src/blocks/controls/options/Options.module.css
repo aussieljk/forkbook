@@ -1,0 +1,47 @@
+.wrapper {
+  border: none;
+  margin-inline: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 8px;
+
+  & label {
+    display: flex;
+  }
+
+  &[data-inline] {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    & label {
+      display: inline-flex;
+    }
+  }
+}
+
+.label {
+  line-height: 20px;
+  align-items: center;
+  cursor: pointer;
+
+  & input {
+    cursor: pointer;
+    margin: 0;
+    margin-right: 6px;
+  }
+
+  &[data-readonly] {
+    cursor: not-allowed;
+
+    & input {
+      cursor: not-allowed;
+    }
+
+    & .text {
+      opacity: 0.5;
+    }
+  }
+}

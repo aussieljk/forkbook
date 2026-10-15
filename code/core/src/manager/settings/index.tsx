@@ -10,37 +10,21 @@ import { global } from '@storybook/global';
 import { CloseIcon } from '@storybook/icons';
 
 import { types, useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { menuTool } from '../components/preview/tools/menu.tsx';
 import { matchesKeyCode, matchesModifiers } from '../keybinding.ts';
 import { AboutPage } from './AboutPage.tsx';
 import { ShortcutsPage } from './ShortcutsPage.tsx';
 import { WhatsNewPage } from './whats_new_page.tsx';
+import styles from './index.module.css';
 
 const { document } = global;
 
-const Content = styled(ScrollArea)(({ theme }) => ({
-  background: theme.background.content,
-}));
-
-const SidebarToggle = styled.div({
-  // Extra specificity is necessary here
-  '&&:has(*)': {
-    order: 0,
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: 10,
-    marginRight: 6,
-    gap: 6,
-  },
-});
-
 const RouteWrapper: FC<{ children: ReactNode; path: string }> = ({ children, path }) => {
   return (
-    <Content vertical horizontal={false}>
+    <ScrollArea className={styles.content} vertical horizontal={false}>
       <Route path={path}>{children}</Route>
-    </Content>
+    </ScrollArea>
   );
 };
 
@@ -114,7 +98,7 @@ const Pages: FC<{
             tabs={tabs}
             tools={
               <>
-                <SidebarToggle>{menuTool.render({})}</SidebarToggle>
+                <div className={styles.sidebarToggle}>{menuTool.render({})}</div>
                 {toolsExtra.map((item) => (
                   <React.Fragment key={item.id}>{item.render({})}</React.Fragment>
                 ))}

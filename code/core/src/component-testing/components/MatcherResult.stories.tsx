@@ -1,26 +1,25 @@
 import React from 'react';
 
-import { styled } from 'storybook/theming';
 import { dedent } from 'ts-dedent';
 
 import { MatcherResult } from './MatcherResult.tsx';
 
-const StyledWrapper = styled.div(({ theme }) => ({
-  backgroundColor: theme.background.content,
+const wrapperStyle: React.CSSProperties = {
+  backgroundColor: 'var(--sb-background-content)',
   padding: '12px 0',
-  boxShadow: `0 0 0 1px ${theme.appBorderColor}`,
-  color: theme.color.defaultText,
+  boxShadow: '0 0 0 1px var(--sb-app-border-color)',
+  color: 'var(--sb-color-default-text)',
   fontSize: 13,
-}));
+};
 
 export default {
   title: 'MatcherResult',
   component: MatcherResult,
   decorators: [
     (Story: any) => (
-      <StyledWrapper>
+      <div style={wrapperStyle}>
         <Story />
-      </StyledWrapper>
+      </div>
     ),
   ],
   parameters: {

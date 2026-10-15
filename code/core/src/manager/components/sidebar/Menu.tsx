@@ -5,93 +5,53 @@ import { ActionList, Button, PopoverProvider, ToggleButton } from 'storybook/int
 
 import { CloseIcon, CogIcon } from '@storybook/icons';
 
-import { transparentize } from 'polished';
+import { clsx } from 'clsx';
 import { useStorybookApi } from 'storybook/manager-api';
-import { type Theme, css, styled } from 'storybook/theming';
 
 import type { useMenu } from '../../container/Menu.tsx';
 import { useLayout } from '../layout/LayoutProvider.tsx';
+import styles from './Menu.module.css';
 
 export type MenuList = ReturnType<typeof useMenu>;
 
-const buttonStyleAdditions = ({
-  highlighted,
-  isMobile,
-  theme,
-}: {
+interface SidebarButtonStyleProps {
   highlighted: boolean;
   isMobile: boolean;
-  theme: Theme;
-}) => css`
-  position: relative;
-  overflow: visible;
-  margin-top: 0;
-  z-index: 1;
-  ${
-    isMobile &&
-    `
-    width: 36px;
-    height: 36px;
-  `
-  }
-  ${
-    highlighted &&
-    `
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      width: 5px;
-      height: 5px;
-      z-index: 2;
-      border-radius: 50%;
-      background: ${theme.background.app};
-      border: 1px solid ${theme.background.app};
-      box-shadow: 0 0 0 2px ${theme.background.app};
-    }
-    &:after {
-      background: ${theme.color.positive};
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 0 0 2px ${theme.background.app};
-    }
-    &:hover:after,
-    &:focus-visible:after {
-      box-shadow: 0 0 0 2px ${transparentize(0.88, theme.color.secondary)};
-    }
-  `
-  }
-`;
+}
 
-const Container = styled.div({
-  minWidth: 250,
+/** Props that style a menu button: a dot when highlighted, a bigger size on mobile. */
+const sidebarButtonProps = (
+  { highlighted, isMobile }: SidebarButtonStyleProps,
+  className: string | undefined
+) => ({
+  className: clsx(styles.sidebarButton, className),
+  'data-highlighted': highlighted || undefined,
+  'data-mobile': isMobile || undefined,
 });
 
-export const SidebarButton = styled(Button)<
-  ComponentProps<typeof Button> & {
-    highlighted: boolean;
-    isMobile: boolean;
-  }
->(buttonStyleAdditions);
+export const SidebarButton = ({
+  highlighted,
+  isMobile,
+  className,
+  ...props
+}: ComponentProps<typeof Button> & SidebarButtonStyleProps) => (
+  <Button {...sidebarButtonProps({ highlighted, isMobile }, className)} {...props} />
+);
 
-export const SidebarToggleButton = styled(ToggleButton)<
-  ComponentProps<typeof ToggleButton> & {
-    highlighted: boolean;
-    isMobile: boolean;
-  }
->(buttonStyleAdditions);
-
-const MenuButtonGroup = styled.div({
-  display: 'flex',
-  gap: 6,
-});
+export const SidebarToggleButton = ({
+  highlighted,
+  isMobile,
+  className,
+  ...props
+}: ComponentProps<typeof ToggleButton> & SidebarButtonStyleProps) => (
+  <ToggleButton {...sidebarButtonProps({ highlighted, isMobile }, className)} {...props} />
+);
 
 const SidebarMenuList: FC<{
   menu: MenuList;
   onHide: () => void;
 }> = ({ menu, onHide }) => (
-  <Container>
+  <div className={styles.container}>
     {menu
       .filter((links) => links.length)
       .flatMap((links) => (
@@ -156,7 +116,7 @@ const SidebarMenuList: FC<{
           })}
         </ActionList>
       ))}
-  </Container>
+  </div>
 );
 
 export interface SidebarMenuProps {
@@ -172,7 +132,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
 
   if (isMobile) {
     return (
-      <MenuButtonGroup>
+      <div className={styles.menuButtonGroup}>
         <SidebarButton
           padding="small"
           variant="ghost"
@@ -199,7 +159,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
         >
           <CloseIcon />
         </SidebarButton>
-      </MenuButtonGroup>
+      </div>
     );
   }
 

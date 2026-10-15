@@ -1,0 +1,466 @@
+.subtitle {
+  font-weight: var(--sb-weight-regular);
+  font-size: var(--sb-size-s3);
+  line-height: 20px;
+  border-bottom: none;
+  margin-bottom: 15px;
+  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.25));
+
+  @media (min-width: 600px) {
+    font-size: var(--sb-size-m1);
+    line-height: 28px;
+    margin-bottom: 24px;
+  }
+}
+
+.docsWrapper {
+  background: var(--sb-background-content);
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  padding: 4rem 40px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  gap: 3rem;
+}
+
+/*
+ * The selectors below style all raw elements inside the DocsPage like this example with a `<div/>`:
+ * :where(div:not(.sb-unstyled, .sb-anchor, .sb-unstyled div))
+ *
+ * 1. ':where': ensures this has a specificity of 0, making it easier to override.
+ * 2. 'div:not(...)': selects all div elements that are not...
+ * 3. '.sb-anchor': Ensures anchors are not styled, which would have led to inheritable styles bleeding
+ *    all the way down to stories
+ * 4. '.sb-unstyled, .sb-unstyled div': any element with sb-unstyled class, or descendants thereof
+ * 5. .sb-unstyled is an escape hatch that allows the user to opt-out of the default styles by wrapping
+ *    their content in an element with the 'sb-unstyled' class or the <Unstyled /> block.
+ *
+ * Most Storybook doc blocks has the sb-unstyled class to opt-out of the default styles.
+ */
+.docsContent {
+  --docs-code-border: var(--sb-color-mediumlight);
+  --docs-code-color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.1));
+  --docs-code-background: var(--sb-color-lighter);
+  --docs-even-row-background: var(--sb-color-lighter);
+
+  max-width: 1000px;
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+
+  /* The reset for each element */
+  & :global(:where(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a))),
+  & :global(:where(blockquote:not(.sb-anchor, .sb-unstyled, .sb-unstyled blockquote))),
+  & :global(:where(div:not(.sb-anchor, .sb-unstyled, .sb-unstyled div))),
+  & :global(:where(dl:not(.sb-anchor, .sb-unstyled, .sb-unstyled dl))),
+  & :global(:where(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1))),
+  & :global(:where(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2))),
+  & :global(:where(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3))),
+  & :global(:where(h4:not(.sb-anchor, .sb-unstyled, .sb-unstyled h4))),
+  & :global(:where(h5:not(.sb-anchor, .sb-unstyled, .sb-unstyled h5))),
+  & :global(:where(h6:not(.sb-anchor, .sb-unstyled, .sb-unstyled h6))),
+  & :global(:where(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li))),
+  & :global(:where(ol:not(.sb-anchor, .sb-unstyled, .sb-unstyled ol))),
+  & :global(:where(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))),
+  & :global(:where(pre:not(.sb-anchor, .sb-unstyled, .sb-unstyled pre))),
+  & :global(:where(span:not(.sb-anchor, .sb-unstyled, .sb-unstyled span))),
+  & :global(:where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table))),
+  & :global(:where(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul))) {
+    font-family: var(--sb-font-base);
+    font-size: var(--sb-size-s3);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* The common header styles */
+  & :global(:where(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1))),
+  & :global(:where(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2))),
+  & :global(:where(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3))),
+  & :global(:where(h4:not(.sb-anchor, .sb-unstyled, .sb-unstyled h4))),
+  & :global(:where(h5:not(.sb-anchor, .sb-unstyled, .sb-unstyled h5))),
+  & :global(:where(h6:not(.sb-anchor, .sb-unstyled, .sb-unstyled h6))) {
+    margin: 20px 0 8px;
+    padding: 0;
+    cursor: text;
+    position: relative;
+    color: var(--sb-color-default-text);
+
+    &:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    &:hover a:global(.anchor) {
+      text-decoration: none;
+    }
+
+    & code {
+      font-size: inherit;
+    }
+  }
+
+  /* The common inline code styles */
+  & :global(:where(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li))) code,
+  & :global(:where(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))) code {
+    line-height: 1;
+    margin: 0 2px;
+    padding: 3px 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: calc(var(--sb-size-s2) - 1px);
+    border: 1px solid var(--docs-code-border);
+    color: var(--docs-code-color);
+    background-color: var(--docs-code-background);
+  }
+
+  & :global(:where(a:not(.sb-anchor, .sb-unstyled, .sb-unstyled a))) {
+    font-size: inherit;
+    line-height: 24px;
+    color: var(--sb-color-secondary);
+    /* Ensure WCAG Level A compliance (SC 1.4.1), see https://www.w3.org/WAI/WCAG22/Techniques/failures/F73 */
+    text-decoration: underline;
+    text-decoration-thickness: 0.03125rem;
+    text-underline-offset: 0.11em;
+
+    &:global(.absent) {
+      color: #cc0000;
+    }
+
+    &:global(.anchor) {
+      display: block;
+      padding-left: 30px;
+      margin-left: -30px;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      text-decoration: none;
+    }
+
+    &:global(.anchor):hover,
+    &:global(.anchor):focus {
+      text-decoration: underline;
+    }
+  }
+
+  & :global(:where(blockquote:not(.sb-anchor, .sb-unstyled, .sb-unstyled blockquote))) {
+    margin: 16px 0;
+    border-left: 4px solid var(--sb-color-medium);
+    padding: 0 15px;
+    color: var(--sb-color-dark);
+
+    & > :first-of-type {
+      margin-top: 0;
+    }
+
+    & > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & :global(:where(dl:not(.sb-anchor, .sb-unstyled, .sb-unstyled dl))) {
+    margin: 16px 0;
+    padding: 0;
+
+    & dt {
+      font-size: 14px;
+      font-weight: bold;
+      font-style: italic;
+      padding: 0;
+      margin: 16px 0 4px;
+    }
+
+    & dt:first-of-type {
+      padding: 0;
+    }
+
+    & dt > :first-of-type {
+      margin-top: 0;
+    }
+
+    & dt > :last-child {
+      margin-bottom: 0;
+    }
+
+    & dd {
+      margin: 0 0 16px;
+      padding: 0 15px;
+    }
+
+    & dd > :first-of-type {
+      margin-top: 0;
+    }
+
+    & dd > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & :global(:where(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1))) {
+    font-size: var(--sb-size-l1);
+    font-weight: var(--sb-weight-bold);
+  }
+
+  & :global(:where(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2))) {
+    font-size: var(--sb-size-m2);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--sb-app-border-color);
+  }
+
+  & :global(:where(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3))) {
+    font-size: var(--sb-size-m1);
+    font-weight: var(--sb-weight-bold);
+  }
+
+  & :global(:where(h4:not(.sb-anchor, .sb-unstyled, .sb-unstyled h4))) {
+    font-size: var(--sb-size-s3);
+  }
+
+  & :global(:where(h5:not(.sb-anchor, .sb-unstyled, .sb-unstyled h5))) {
+    font-size: var(--sb-size-s2);
+  }
+
+  & :global(:where(h6:not(.sb-anchor, .sb-unstyled, .sb-unstyled h6))) {
+    font-size: var(--sb-size-s2);
+    color: var(--sb-color-dark);
+  }
+
+  & :global(:where(hr:not(.sb-anchor, .sb-unstyled, .sb-unstyled hr))) {
+    border: 0 none;
+    border-top: 1px solid var(--sb-app-border-color);
+    height: 4px;
+    padding: 0;
+  }
+
+  & :global(:where(img:not(.sb-anchor, .sb-unstyled, .sb-unstyled img))) {
+    max-width: 100%;
+  }
+
+  & :global(:where(li:not(.sb-anchor, .sb-unstyled, .sb-unstyled li))) {
+    font-size: var(--sb-size-s2);
+    color: var(--sb-color-default-text);
+    line-height: 24px;
+
+    & + li {
+      margin-top: 0.25em;
+    }
+
+    & ul,
+    & ol {
+      margin-top: 0.25em;
+      margin-bottom: 0;
+    }
+  }
+
+  & :global(:where(ol:not(.sb-anchor, .sb-unstyled, .sb-unstyled ol))),
+  & :global(:where(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul))) {
+    margin: 16px 0;
+    padding-left: 30px;
+
+    & :first-of-type {
+      margin-top: 0;
+    }
+
+    & :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & :global(:where(ul:not(.sb-anchor, .sb-unstyled, .sb-unstyled ul))) {
+    list-style: disc;
+  }
+
+  & :global(:where(p:not(.sb-anchor, .sb-unstyled, .sb-unstyled p))) {
+    margin: 16px 0;
+    font-size: var(--sb-size-s2);
+    line-height: 24px;
+    color: var(--sb-color-default-text);
+  }
+
+  & :global(:where(pre:not(.sb-anchor, .sb-unstyled, .sb-unstyled pre))) {
+    font-family: var(--sb-font-mono);
+    line-height: 18px;
+    padding: 11px 1rem;
+    white-space: pre-wrap;
+    color: inherit;
+    border-radius: 3px;
+    margin: 1rem 0;
+
+    &:not(:global(.prismjs)) {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    & pre,
+    &:global(.prismjs) {
+      padding: 15px;
+      margin: 0;
+      white-space: pre-wrap;
+      color: inherit;
+      font-size: 13px;
+      line-height: 19px;
+
+      & code {
+        color: inherit;
+        font-size: inherit;
+      }
+    }
+
+    & code {
+      white-space: pre;
+    }
+
+    & code,
+    & tt {
+      border: none;
+    }
+  }
+
+  & :global(:where(span:not(.sb-anchor, .sb-unstyled, .sb-unstyled span))) {
+    &:global(.frame) {
+      display: block;
+      overflow: hidden;
+
+      & > span {
+        border: 1px solid var(--sb-color-medium);
+        display: block;
+        float: left;
+        overflow: hidden;
+        margin: 13px 0 0;
+        padding: 7px;
+        width: auto;
+      }
+
+      & span img {
+        display: block;
+        float: left;
+      }
+
+      & span span {
+        clear: both;
+        color: var(--sb-color-darkest);
+        display: block;
+        padding: 5px 0 0;
+      }
+    }
+
+    &:global(.align-center) {
+      display: block;
+      overflow: hidden;
+      clear: both;
+
+      & > span {
+        display: block;
+        overflow: hidden;
+        margin: 13px auto 0;
+        text-align: center;
+      }
+
+      & span img {
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
+
+    &:global(.align-right) {
+      display: block;
+      overflow: hidden;
+      clear: both;
+
+      & > span {
+        display: block;
+        overflow: hidden;
+        margin: 13px 0 0;
+        text-align: right;
+      }
+
+      & span img {
+        margin: 0;
+        text-align: right;
+      }
+    }
+
+    &:global(.float-left) {
+      display: block;
+      margin-right: 13px;
+      overflow: hidden;
+      float: left;
+
+      & span {
+        margin: 13px 0 0;
+      }
+    }
+
+    &:global(.float-right) {
+      display: block;
+      margin-left: 13px;
+      overflow: hidden;
+      float: right;
+
+      & > span {
+        display: block;
+        overflow: hidden;
+        margin: 13px auto 0;
+        text-align: right;
+      }
+    }
+  }
+
+  & :global(:where(table:not(.sb-anchor, .sb-unstyled, .sb-unstyled table))) {
+    margin: 16px 0;
+    font-size: var(--sb-size-s2);
+    line-height: 24px;
+    padding: 0;
+    border-collapse: collapse;
+
+    & tr {
+      border-top: 1px solid var(--sb-app-border-color);
+      margin: 0;
+      padding: 0;
+    }
+
+    & tr:nth-of-type(2n) {
+      background-color: var(--docs-even-row-background);
+    }
+
+    & tr th {
+      font-weight: bold;
+      color: var(--sb-color-default-text);
+      border: 1px solid var(--sb-app-border-color);
+      margin: 0;
+      padding: 6px 13px;
+    }
+
+    & tr td {
+      border: 1px solid var(--sb-app-border-color);
+      color: var(--sb-color-default-text);
+      margin: 0;
+      padding: 6px 13px;
+    }
+
+    & tr th :first-of-type,
+    & tr td :first-of-type {
+      margin-top: 0;
+    }
+
+    & tr th :last-child,
+    & tr td :last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+:where([data-sb-theme='dark']) .docsContent {
+  --docs-code-border: var(--sb-color-darker);
+  --docs-code-color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.3));
+  --docs-code-background: var(--sb-color-border);
+  --docs-even-row-background: var(--sb-color-darker);
+}

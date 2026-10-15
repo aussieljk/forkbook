@@ -4,11 +4,9 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import type { API_Layout, API_ViewMode } from 'storybook/internal/types';
 
 import { useStorybookApi, useStorybookState, type API } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
-
 import { isPagesViewMode } from '../../../manager-api/modules/layout.ts';
 
-import { MEDIA_DESKTOP_BREAKPOINT, MINIMUM_CONTENT_WIDTH_PX } from '../../constants.ts';
+import { MINIMUM_CONTENT_WIDTH_PX } from '../../constants.ts';
 import { Notifications } from '../../container/Notifications.tsx';
 import { MobileNavigation } from '../mobile/navigation/MobileNavigation.tsx';
 import { useLayout } from './LayoutProvider.tsx';
@@ -17,6 +15,7 @@ import { PanelContainer } from './PanelContainer.tsx';
 import { SidebarContainer } from './SidebarContainer.tsx';
 import { useDragging } from './useDragging.ts';
 import { useLandmarkIndicator } from './useLandmarkIndicator.ts';
+import styles from './Layout.module.css';
 
 interface InternalLayoutState {
   isDragging: boolean;
@@ -145,9 +144,35 @@ const useLayoutSyncingState = ({
   };
 };
 
-const OrderedMobileNavigation = styled(MobileNavigation)({
-  order: 1,
-});
+/** The grid areas of the desktop layout. */
+const getGridTemplateAreas = (
+  panelPosition: LayoutState['panelPosition'],
+  showPanel: boolean,
+  showSidebar: boolean
+) => {
+  if (!showSidebar && !showPanel) {
+    return `"content content"
+            "content content"`;
+  }
+  if (!showSidebar && showPanel) {
+    if (panelPosition === 'right') {
+      return `"content panel"
+              "content panel"`;
+    }
+    return `"content content"
+            "panel   panel"`;
+  }
+  if (!showPanel) {
+    return `"sidebar content content"
+            "sidebar content content"`;
+  }
+  if (panelPosition === 'right') {
+    return `"sidebar content panel"
+            "sidebar content panel"`;
+  }
+  return `"sidebar content content"
+          "sidebar panel   panel"`;
+};
 
 export const Layout = ({ managerLayoutState, setManagerLayoutState, ...slots }: Props) => {
   const { isDesktop, isMobile } = useLayout();
@@ -175,15 +200,21 @@ export const Layout = ({ managerLayoutState, setManagerLayoutState, ...slots }: 
   useLandmarkIndicator();
 
   return (
-    <LayoutContainer
-      panelPosition={managerLayoutState.panelPosition}
-      showPanel={showPanel}
-      showSidebar={showSidebar}
+    <div
+      className={styles.layout}
       style={
         {
           '--nav-width': `${navSize}px`,
           '--right-panel-width': `${rightPanelWidth}px`,
           '--bottom-panel-height': `${bottomPanelHeight}px`,
+          '--grid-template-columns': showSidebar
+            ? `minmax(0, var(--nav-width)) minmax(${MINIMUM_CONTENT_WIDTH_PX}px, 1fr) minmax(0, var(--right-panel-width))`
+            : `minmax(${MINIMUM_CONTENT_WIDTH_PX}px, 1fr) minmax(0, var(--right-panel-width))`,
+          '--grid-template-areas': getGridTemplateAreas(
+            managerLayoutState.panelPosition,
+            showPanel,
+            showSidebar
+          ),
         } as CSSProperties
       }
     >
@@ -198,7 +229,8 @@ export const Layout = ({ managerLayoutState, setManagerLayoutState, ...slots }: 
           </SidebarContainer>
         )}
         {isMobile && !showPages && (
-          <OrderedMobileNavigation
+          <MobileNavigation
+            className={styles.mobileNavigation}
             menu={slots.slotSidebar}
             panel={slots.slotPanel}
             showMenu={showSidebar}
@@ -212,7 +244,7 @@ export const Layout = ({ managerLayoutState, setManagerLayoutState, ...slots }: 
           slotPages={slots.slotPages}
         />
 
-        {slots.slotOverlay && <ContentOverlayCell>{slots.slotOverlay}</ContentOverlayCell>}
+        {slots.slotOverlay && <div className={styles.contentOverlayCell}>{slots.slotOverlay}</div>}
 
         {isDesktop && showPanel && (
           <PanelContainer
@@ -227,77 +259,7 @@ export const Layout = ({ managerLayoutState, setManagerLayoutState, ...slots }: 
         )}
         {isMobile && !showPages && <Notifications />}
       </>
-      {isDragging && <DragShield style={{ cursor: dragCursor }} />}
-    </LayoutContainer>
+      {isDragging && <div className={styles.dragShield} style={{ cursor: dragCursor }} />}
+    </div>
   );
 };
-/**
- * Occupies the main content cell (the full container on mobile) without intercepting interaction;
- * overlay content re-enables pointer events itself when visible. Kept below the toolbar (z-index 4)
- * and the mobile navigation (z-index 10).
- */
-const ContentOverlayCell = styled.div({
-  position: 'absolute',
-  inset: 0,
-  pointerEvents: 'none',
-  zIndex: 2,
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    position: 'relative',
-    inset: 'auto',
-    gridArea: 'content',
-  },
-});
-
-const DragShield = styled.div({
-  position: 'fixed',
-  inset: 0,
-  zIndex: 10,
-});
-
-const LayoutContainer = styled.div<{
-  panelPosition: LayoutState['panelPosition'];
-  showPanel: boolean;
-  showSidebar: boolean;
-}>(({ panelPosition, showPanel, showSidebar }) => ({
-  position: 'relative',
-  width: '100%',
-  height: ['100vh', '100dvh'],
-  overflow: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-  colorScheme: 'light dark',
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    display: 'grid',
-    gap: 0,
-    gridTemplateColumns: showSidebar
-      ? `minmax(0, var(--nav-width)) minmax(${MINIMUM_CONTENT_WIDTH_PX}px, 1fr) minmax(0, var(--right-panel-width))`
-      : `minmax(${MINIMUM_CONTENT_WIDTH_PX}px, 1fr) minmax(0, var(--right-panel-width))`,
-    gridTemplateRows: `1fr minmax(0, var(--bottom-panel-height))`,
-    gridTemplateAreas: (() => {
-      if (!showSidebar && !showPanel) {
-        return `"content content"
-                "content content"`;
-      }
-      if (!showSidebar && showPanel) {
-        if (panelPosition === 'right') {
-          return `"content panel"
-                  "content panel"`;
-        }
-        return `"content content"
-                "panel   panel"`;
-      }
-      if (!showPanel) {
-        return `"sidebar content content"
-                "sidebar content content"`;
-      }
-      if (panelPosition === 'right') {
-        return `"sidebar content panel"
-                "sidebar content panel"`;
-      }
-      return `"sidebar content content"
-              "sidebar panel   panel"`;
-    })(),
-  },
-}));

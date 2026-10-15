@@ -1,0 +1,15 @@
+.sideBySide {
+  display: grid;
+  grid-column-gap: 30px;
+  grid-template-columns: 1fr 1fr;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  top: 0;
+  left: 0;
+
+  & > * {
+    padding: 20px;
+  }
+}

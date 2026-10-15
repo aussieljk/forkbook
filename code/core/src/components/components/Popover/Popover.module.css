@@ -1,0 +1,58 @@
+.popover {
+  display: inline-block;
+  position: relative;
+  z-index: 2147483647;
+  color-scheme: light dark;
+
+  &[data-close-button] {
+    min-height: 36px;
+  }
+
+  &[data-chrome] {
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+    border-radius: calc(var(--sb-app-border-radius) + 2px);
+    font-family: var(--sb-font-base);
+    font-size: var(--sb-size-s1);
+  }
+
+  &[data-color='default'] {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--sb-color-default-text);
+  }
+
+  &[data-color='inverse'] {
+    background: var(--sb-color-darkest);
+    color: var(--sb-color-inverse-text);
+  }
+
+  &[data-color='positive'] {
+    background: var(--sb-background-positive);
+    color: var(--sb-color-positive-text);
+  }
+
+  &[data-color='negative'] {
+    background: var(--sb-background-negative);
+    color: var(--sb-color-negative-text);
+  }
+
+  &[data-color='warning'] {
+    background: var(--sb-background-warning);
+    color: var(--sb-color-warning-text);
+  }
+}
+
+:where([data-sb-theme='dark']) .popover {
+  &[data-color='default'] {
+    background: var(--sb-background-app);
+  }
+
+  &[data-color='inverse'] {
+    background: var(--sb-color-lightest);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}

@@ -1,0 +1,77 @@
+.component {
+  display: inline-block;
+}
+
+.fadeIn {
+  animation: fadeIn 3s linear;
+}
+
+.infinite {
+  animation: rotate 3s linear infinite alternate;
+}
+
+.container {
+  height: 150vh;
+  width: 100vw;
+  background: linear-gradient(to bottom, white, silver);
+  position: relative;
+  text-align: center;
+  padding: 120px 0;
+}
+
+.bar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 10px;
+  background: crimson;
+  transform-origin: 0 50%;
+  animation: growProgress auto linear;
+  animation-timeline: scroll();
+}
+
+.button {
+  background: crimson;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  transition: background 3s linear;
+
+  &:focus {
+    background: mediumblue;
+    outline: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+    color: crimson;
+  }
+  100% {
+    transform: rotate(360deg);
+    color: yellow;
+  }
+}
+
+@keyframes growProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

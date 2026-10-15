@@ -19,21 +19,14 @@ import addonPseudoStates from 'storybook-addon-pseudo-states';
 import { DocsContext as DocsContextProps, useArgs } from 'storybook/preview-api';
 import type { PreviewWeb } from 'storybook/preview-api';
 import { expect, sb } from 'storybook/test';
-import {
-  Global,
-  ThemeProvider,
-  convert,
-  createReset,
-  styled,
-  themes,
-  useTheme,
-} from 'storybook/theming';
+import { ThemeProvider, convert, resetCss, themes, useTheme } from 'storybook/theming';
 
 import { DocsPageWrapper } from '../addons/docs/src/blocks/components/index.ts';
 import { toHaveLiveRegion } from '../core/src/shared/utils/toHaveLiveRegion.ts';
 import * as templatePreview from '../core/template/stories/preview.ts';
 import '../renderers/react/template/components/index.js';
 import { isChromatic } from './isChromatic.ts';
+import styles from './preview.module.css';
 import * as vitestPreview from './vitest.preview.ts';
 
 sb.mock(import('@storybook/global'), { spy: true });
@@ -74,69 +67,18 @@ const renderAsDevelopment = () => {
   }
 };
 
-const ThemeBlock = styled.div<{ side: 'left' | 'right'; layout: string }>(
-  {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: '50vw',
-    width: '50vw',
-    height: '100vh',
-    bottom: 0,
-    overflow: 'auto',
-  },
-  ({ layout }) => ({
-    padding: layout === 'fullscreen' ? 0 : '1rem',
-  }),
-  ({ theme }) => ({
-    background: theme.background.content,
-    color: theme.color.defaultText,
-  }),
-  ({ side }) =>
-    side === 'left'
-      ? {
-          left: 0,
-          right: '50vw',
-        }
-      : {
-          right: 0,
-          left: '50vw',
-        }
+type ThemeBoxProps = { side: 'left' | 'right'; layout: string; children: React.ReactNode };
+
+const ThemeBlock = ({ side, layout, children }: ThemeBoxProps) => (
+  <div className={styles.themeBlock} data-side={side} data-layout={layout}>
+    {children}
+  </div>
 );
 
-const ThemeStack = styled.div<{ layout: string }>(
-  {
-    position: 'relative',
-    flex: 1,
-  },
-  ({ theme }) => ({
-    background: theme.background.content,
-    color: theme.color.defaultText,
-  }),
-  ({ layout }) => ({
-    padding: layout === 'fullscreen' ? 0 : '1rem',
-  })
-);
-
-const PlayFnNotice = styled.div(
-  {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    borderBottom: '1px solid #ccc',
-    padding: '3px 8px',
-    fontSize: '10px',
-    fontWeight: 'bold',
-    zIndex: 99,
-    '> *': {
-      display: 'block',
-    },
-  },
-  ({ theme }) => ({
-    background: '#fffbd9',
-    color: theme.color.defaultText,
-  })
+const ThemeStack = ({ side, layout, children }: ThemeBoxProps) => (
+  <div className={styles.themeStack} data-side={side} data-layout={layout}>
+    {children}
+  </div>
 );
 
 const StackContainer: FC<React.PropsWithChildren<{ layout: string }>> = ({ children, layout }) => (
@@ -266,16 +208,14 @@ const decorators = [
       case 'side-by-side': {
         return (
           <Fragment>
+            <style>{resetCss}</style>
             <ThemeProvider theme={convert(themes.light)}>
-              <Global styles={createReset} />
-            </ThemeProvider>
-            <ThemeProvider theme={convert(themes.light)}>
-              <ThemeBlock side="left" data-side="left" layout={parameters.layout}>
+              <ThemeBlock side="left" layout={parameters.layout}>
                 <StoryFn />
               </ThemeBlock>
             </ThemeProvider>
             <ThemeProvider theme={convert(themes.dark)}>
-              <ThemeBlock side="right" data-side="right" layout={parameters.layout}>
+              <ThemeBlock side="right" layout={parameters.layout}>
                 <StoryFn />
               </ThemeBlock>
             </ThemeProvider>
@@ -285,17 +225,15 @@ const decorators = [
       case 'stacked': {
         return (
           <Fragment>
-            <ThemeProvider theme={convert(themes.light)}>
-              <Global styles={createReset} />
-            </ThemeProvider>
+            <style>{resetCss}</style>
             <StackContainer layout={parameters.layout}>
               <ThemeProvider theme={convert(themes.light)}>
-                <ThemeStack data-side="left" layout={parameters.layout}>
+                <ThemeStack side="left" layout={parameters.layout}>
                   <StoryFn />
                 </ThemeStack>
               </ThemeProvider>
               <ThemeProvider theme={convert(themes.dark)}>
-                <ThemeStack data-side="right" layout={parameters.layout}>
+                <ThemeStack side="right" layout={parameters.layout}>
                   <StoryFn />
                 </ThemeStack>
               </ThemeProvider>
@@ -307,16 +245,16 @@ const decorators = [
       default: {
         return (
           <ThemeProvider theme={convert(themes[theme as keyof typeof themes])}>
-            <Global styles={createReset} />
+            <style>{resetCss}</style>
             <ThemedSetRoot />
             {showPlayFnNotice && (
               <>
-                <PlayFnNotice>
+                <div className={styles.playFnNotice}>
                   <span>
                     Detected play/test function in Chromatic. Rendering only light theme to avoid
                     multiple play/test functions in the same story.
                   </span>
-                </PlayFnNotice>
+                </div>
                 <div style={{ marginBottom: 20 }} />
               </>
             )}

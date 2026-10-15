@@ -1,27 +1,25 @@
 import React from 'react';
 
-import { styled, typography } from 'storybook/theming';
-
 import type { Call } from '../../instrumenter/types.ts';
 import { MethodCall, Node } from './MethodCall.tsx';
 
-const StyledWrapper = styled.div(({ theme }) => ({
-  backgroundColor: theme.background.content,
+const wrapperStyle: React.CSSProperties = {
+  backgroundColor: 'var(--sb-background-content)',
   padding: '20px',
-  boxShadow: `0 0 0 1px ${theme.appBorderColor}`,
-  color: theme.color.defaultText,
-  fontFamily: typography.fonts.mono,
-  fontSize: typography.size.s1,
-}));
+  boxShadow: '0 0 0 1px var(--sb-app-border-color)',
+  color: 'var(--sb-color-default-text)',
+  fontFamily: 'var(--sb-font-mono)',
+  fontSize: 'var(--sb-size-s1)',
+};
 
 export default {
   title: 'MethodCall',
   component: MethodCall,
   decorators: [
     (Story: any) => (
-      <StyledWrapper>
+      <div style={wrapperStyle}>
         <Story />
-      </StyledWrapper>
+      </div>
     ),
   ],
   parameters: {

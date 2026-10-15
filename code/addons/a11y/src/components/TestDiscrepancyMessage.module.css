@@ -1,0 +1,22 @@
+.wrapper {
+  text-align: start;
+  padding: 11px 15px;
+  font-size: var(--sb-size-s2);
+  font-weight: var(--sb-weight-regular);
+  line-height: 1rem;
+  background: var(--sb-background-app);
+  border-bottom: 1px solid var(--sb-color-border);
+  color: var(--sb-color-default-text);
+  background-clip: padding-box;
+  position: relative;
+
+  & code {
+    font-size: calc(var(--sb-size-s1) - 1px);
+    color: inherit;
+    margin: 0 0.2em;
+    padding: 0 0.2em;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+}

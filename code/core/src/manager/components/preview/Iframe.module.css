@@ -1,0 +1,17 @@
+.iframe {
+  background-color: var(--sb-background-preview);
+  display: block;
+  box-sizing: content-box;
+  height: 100%;
+  width: 100%;
+  border: none;
+  transition:
+    background-position 0s,
+    visibility 0s;
+  background-position:
+    -1px -1px,
+    -1px -1px,
+    -1px -1px,
+    -1px -1px;
+  margin: auto;
+}

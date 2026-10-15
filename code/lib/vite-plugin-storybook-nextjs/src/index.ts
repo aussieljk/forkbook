@@ -160,7 +160,6 @@ function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginO
               // Refer to this pnpm issue for more details:
               // https://github.com/vitejs/vite/issues/16293
               'next > styled-jsx/style',
-              ...(nextConfig.compiler?.emotion ? ['@emotion/react/jsx-dev-runtime'] : []),
               ...(isNext16orNewer ? [] : ['next/config']),
               // Next.js 16 ships internal re-export chains that Vite's esbuild
               // pre-bundler fails to resolve in dev mode, causing missing exports

@@ -1,0 +1,11 @@
+/* The card look of docs blocks such as Preview, ColorPalette and Typeset. */
+.blockBackground {
+  border-radius: var(--sb-app-border-radius);
+  background: var(--sb-background-content);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
+  border: 1px solid var(--sb-app-border-color);
+}
+
+:where([data-sb-theme='dark']) .blockBackground {
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px 0;
+}

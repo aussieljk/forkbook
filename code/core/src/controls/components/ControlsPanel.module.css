@@ -1,0 +1,18 @@
+/*
+ * `min-height` (not `height`) so the wrapper fills a short panel but grows with tall content;
+ * otherwise a fixed height clips the bottom padding into the middle of the scrolled content and
+ * the save bar overlaps the last control (#34531).
+ */
+.wrapper {
+  min-height: 100%;
+  padding-bottom: 0;
+  background-color: var(--sb-background-content);
+
+  &[data-save-from-ui] {
+    padding-bottom: 41px;
+  }
+
+  & table {
+    background-color: var(--sb-background-app);
+  }
+}

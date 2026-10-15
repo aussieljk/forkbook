@@ -8,8 +8,6 @@ import React, {
 
 import type { DecoratorFunction } from 'storybook/internal/csf';
 
-import { styled } from 'storybook/theming';
-
 export const POPPER_PLACEMENTS = [
   'top',
   'top-start',
@@ -43,16 +41,6 @@ export const convertToBaseUiPlacement = (placement: PopperPlacement) => {
 export const PortalContainerContext = createContext<HTMLElement | undefined>(undefined);
 
 // Story helper
-const Container = styled.div({
-  width: 500,
-  height: 500,
-  paddingTop: 100,
-  overflowY: 'scroll',
-  background: '#eee',
-  position: 'relative',
-});
-
-// Story helper
 interface TriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
@@ -77,11 +65,20 @@ export const OverlayTriggerDecorator: DecoratorFunction = (Story, { args }) => {
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
   return (
-    <Container>
+    <div
+      style={{
+        width: 500,
+        height: 500,
+        paddingTop: 100,
+        overflowY: 'scroll',
+        background: '#eee',
+        position: 'relative',
+      }}
+    >
       <PortalContainerContext.Provider value={container ?? undefined}>
         <Story args={args} />
       </PortalContainerContext.Provider>
       <div id="portal" ref={(element) => setContainer(element ?? null)}></div>
-    </Container>
+    </div>
   );
 };

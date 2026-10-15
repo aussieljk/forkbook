@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import React, { Fragment, useCallback, useState } from 'react';
 
 import { logger } from 'storybook/internal/client-logger';
@@ -14,54 +14,16 @@ import { global } from '@storybook/global';
 import { ChevronDownIcon, LockIcon, SweepIcon, SyncIcon } from '@storybook/icons';
 
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import { Contained, Loader } from './Loader.tsx';
 import { NoResults } from './NoResults.tsx';
+import styles from './RefBlocks.module.css';
 
 const { window: globalWindow } = global;
 
-const TextStyle = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2,
-  lineHeight: '20px',
-  margin: 0,
-}));
-const Text = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2,
-  lineHeight: '20px',
-  margin: 0,
-
-  code: {
-    fontSize: theme.typography.size.s1,
-  },
-
-  ul: {
-    paddingLeft: 20,
-    marginTop: 8,
-    marginBottom: 8,
-  },
-}));
-
-const ErrorDisplay = styled.pre<{ isMobile: boolean }>(
-  {
-    boxSizing: 'border-box',
-    borderRadius: 8,
-    overflow: 'auto',
-    whiteSpace: 'pre',
-  },
-  ({ isMobile }) =>
-    isMobile
-      ? {
-          maxWidth: 'calc(100vw - 40px)',
-        }
-      : {
-          minWidth: 420,
-          maxWidth: 640,
-        },
-  ({ theme }) => ({
-    color: theme.color.dark,
-  })
+const Text = ({ children }: { children: ReactNode }) => (
+  <div className={styles.text}>{children}</div>
 );
 
 export const AuthBlock: FC<{ loginUrl: string; id: string }> = ({ loginUrl, id }) => {
@@ -124,7 +86,7 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
   return (
     <Contained>
       <Spaced>
-        <TextStyle>
+        <div className={styles.textStyle}>
           Oh no! Something went wrong loading this Storybook.
           <br />
           <PopoverProvider
@@ -133,9 +95,9 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
             offset={isMobile ? 0 : 8}
             placement={isMobile ? 'bottom-end' : 'bottom-start'}
             popover={
-              <ErrorDisplay isMobile={isMobile}>
+              <pre className={styles.errorDisplay} data-mobile={isMobile || undefined}>
                 <ErrorFormatter error={error} />
-              </ErrorDisplay>
+              </pre>
             }
           >
             <Link>
@@ -145,18 +107,11 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
           <Link href="https://storybook.js.org/docs?ref=ui" cancel={false} target="_blank">
             View docs
           </Link>
-        </TextStyle>
+        </div>
       </Spaced>
     </Contained>
   );
 };
-
-const FlexSpaced = styled(Spaced)({
-  display: 'flex',
-});
-const WideSpaced = styled(Spaced)({
-  flex: 1,
-});
 
 export const EmptyBlock = ({
   isMain,
@@ -171,8 +126,8 @@ export const EmptyBlock = ({
 
   return (
     <Contained>
-      <FlexSpaced col={1}>
-        <WideSpaced>
+      <Spaced className={styles.flexSpaced} col={1}>
+        <Spaced className={styles.wideSpaced}>
           {hasEntries ? (
             <NoResults>
               <strong>No stories found</strong>
@@ -229,8 +184,8 @@ export const EmptyBlock = ({
               This composed Storybook is empty. Perhaps no stories match your selected filters.
             </Text>
           )}
-        </WideSpaced>
-      </FlexSpaced>
+        </Spaced>
+      </Spaced>
     </Contained>
   );
 };

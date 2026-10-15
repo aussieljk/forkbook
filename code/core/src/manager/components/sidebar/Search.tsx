@@ -11,7 +11,6 @@ import Downshift from 'downshift';
 import type { FuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
 import { shortcutToHumanString, useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { getGroupStatus, getMostCriticalStatusValue } from '../../utils/status.tsx';
@@ -27,6 +26,7 @@ import type {
   Selection,
 } from './types.ts';
 import { isExpandType, isSearchResult } from './types.ts';
+import styles from './Search.module.css';
 
 const { document } = global;
 
@@ -49,114 +49,6 @@ const options = {
     { name: 'anchors.title', weight: 0.1 },
   ],
 } as FuseOptions<SearchItem>;
-
-const SearchBar = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  columnGap: 6,
-});
-
-const ScreenReaderLabel = styled.label({
-  position: 'absolute',
-  left: -10000,
-  top: 'auto',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-});
-
-const SearchField = styled.div<{ isMobile: boolean }>(({ theme, isMobile }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  padding: isMobile ? 4 : 2,
-  flexGrow: 1,
-  height: isMobile ? 36 : 32,
-  width: '100%',
-  boxShadow: `${theme.button.border} 0 0 0 1px inset`,
-  borderRadius: theme.appBorderRadius + 2,
-
-  '&:has(input:focus), &:has(input:active)': {
-    background: theme.background.app,
-    outline: `2px solid ${theme.color.secondary}`,
-    outlineOffset: 2,
-  },
-}));
-
-const IconWrapper = styled.div(({ theme, onClick }) => ({
-  cursor: onClick ? 'pointer' : 'default',
-  flex: '0 0 28px',
-  height: '100%',
-  pointerEvents: onClick ? 'auto' : 'none',
-  color: theme.textMutedColor,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const Input = styled.input<{ isMobile: boolean }>(({ theme, isMobile }) => ({
-  appearance: 'none',
-  height: 28,
-  width: '100%',
-  padding: 0,
-  border: 0,
-  background: 'transparent',
-  fontSize: isMobile ? '16px' : `${theme.typography.size.s1 + 1}px`,
-  fontFamily: 'inherit',
-  transition: 'all 150ms',
-  color: theme.color.defaultText,
-  outline: 0,
-
-  '&::placeholder': {
-    color: theme.textMutedColor,
-    opacity: 1,
-  },
-  '&:valid ~ code, &:focus ~ code': {
-    display: 'none',
-  },
-  '&:invalid ~ svg': {
-    display: 'none',
-  },
-  '&:valid ~ svg': {
-    display: 'block',
-  },
-  '&::-ms-clear': {
-    display: 'none',
-  },
-  '&::-webkit-search-decoration, &::-webkit-search-cancel-button, &::-webkit-search-results-button, &::-webkit-search-results-decoration':
-    {
-      display: 'none',
-    },
-}));
-
-const FocusKey = styled.code(({ theme }) => ({
-  margin: 5,
-  marginTop: 6,
-  height: 16,
-  fontFamily: theme.typography.fonts.base,
-  lineHeight: '16px',
-  textAlign: 'center',
-  fontSize: '11px',
-  color: theme.base === 'light' ? theme.color.dark : theme.textMutedColor,
-  userSelect: 'none',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-  flexShrink: 0,
-}));
-
-const FocusKeyCmd = styled.span({
-  fontSize: '14px',
-});
-
-const Actions = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 2,
-});
-
-const FocusContainer = styled.div({ outline: 0 });
 
 export type SearchProps = {
   children: SearchChildrenFn;
@@ -492,29 +384,35 @@ export const Search = React.memo<SearchProps>(function Search({
 
         return (
           <>
-            <ScreenReaderLabel {...labelProps}>Search for components</ScreenReaderLabel>
-            <SearchBar ref={searchLandmarkRef} {...landmarkProps}>
-              <SearchField
+            <label className={styles.screenReaderLabel} {...labelProps}>
+              Search for components
+            </label>
+            <div className={styles.searchBar} ref={searchLandmarkRef} {...landmarkProps}>
+              <div
                 {...getRootProps({ refKey: '' }, { suppressRefError: true })}
-                isMobile={isMobile}
-                className="search-field"
+                data-mobile={isMobile || undefined}
+                className={`search-field ${styles.searchField}`}
               >
-                <IconWrapper>
+                <div className={styles.iconWrapper}>
                   <SearchIcon />
-                </IconWrapper>
-                <Input {...inputProps} isMobile={isMobile} />
+                </div>
+                <input
+                  className={styles.input}
+                  {...inputProps}
+                  data-mobile={isMobile || undefined}
+                />
                 {!isMobile && enableShortcuts && !isOpen && (
-                  <FocusKey>
+                  <code className={styles.focusKey}>
                     {searchShortcut === '⌘ K' ? (
                       <>
-                        <FocusKeyCmd>⌘</FocusKeyCmd>K
+                        <span className={styles.focusKeyCmd}>⌘</span>K
                       </>
                     ) : (
                       searchShortcut
                     )}
-                  </FocusKey>
+                  </code>
                 )}
-                <Actions>
+                <div className={styles.actions}>
                   {input && (
                     <Button
                       padding="small"
@@ -530,11 +428,11 @@ export const Search = React.memo<SearchProps>(function Search({
                     </Button>
                   )}
                   {searchFieldContent}
-                </Actions>
-              </SearchField>
-            </SearchBar>
+                </div>
+              </div>
+            </div>
             {!isOpen && belowSearchContent}
-            <FocusContainer tabIndex={0} id="storybook-explorer-menu">
+            <div className={styles.focusContainer} tabIndex={0} id="storybook-explorer-menu">
               {children({
                 query: input,
                 results,
@@ -546,7 +444,7 @@ export const Search = React.memo<SearchProps>(function Search({
                 getItemProps,
                 highlightedIndex,
               })}
-            </FocusContainer>
+            </div>
           </>
         );
       }}

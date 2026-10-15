@@ -1,0 +1,32 @@
+.li {
+  font-size: var(--sb-size-s2);
+  color: var(--sb-color-default-text);
+  line-height: 24px;
+
+  & + li {
+    margin-top: 0.25em;
+  }
+
+  & ul,
+  & ol {
+    margin-top: 0.25em;
+    margin-bottom: 0;
+  }
+
+  & code {
+    line-height: 1;
+    margin: 0 2px;
+    padding: 3px 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: calc(var(--sb-size-s2) - 1px);
+    border: 1px solid hsl(0 0 0 / 0.05);
+    color: var(--sb-color-default-text);
+    background-color: hsl(0 0 0 / 0.01);
+  }
+}
+
+:where([data-sb-theme='dark']) .li code {
+  border: 1px solid hsl(0 0 100 / 0.05);
+  background-color: hsl(0 0 100 / 0.02);
+}

@@ -1,8 +1,4 @@
-import { styled } from 'storybook/theming';
+import { withClassName } from '../lib/withClassName.tsx';
+import styles from './HR.module.css';
 
-export const HR = styled.hr(({ theme }) => ({
-  border: '0 none',
-  borderTop: `1px solid ${theme.appBorderColor}`,
-  height: 4,
-  padding: 0,
-}));
+export const HR = withClassName('hr', styles.hr);

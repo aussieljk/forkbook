@@ -2,17 +2,11 @@ import type { ComponentProps } from 'react';
 import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { keyframes, styled } from 'storybook/theming';
+import styles from './Particles.module.css';
 
-const Shape = styled.svg(({ color }) => ({
-  fill: color,
-  position: 'absolute',
-  inset: '0',
-  margin: 'auto',
-  width: '12px',
-  height: '12px',
-  pointerEvents: 'none',
-}));
+const Shape = ({ color, style, ...props }: ComponentProps<'svg'>) => (
+  <svg className={styles.shape} style={{ fill: color, ...style }} {...props} />
+);
 
 const Donut = (props: ComponentProps<typeof Shape>) => (
   <Shape viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" color="red" {...props}>
@@ -62,45 +56,6 @@ const Z = (props: ComponentProps<typeof Shape>) => (
   </Shape>
 );
 
-const fadeToTransparent = keyframes`
-  to {
-    opacity: 0;
-  }
-`;
-
-const disperse = keyframes`
-  to {
-    transform: translate(
-      calc(cos(var(--angle)) * var(--distance)),
-      calc(sin(var(--angle)) * var(--distance))
-    ) rotate(var(--rotation));
-  }
-`;
-
-const slideDown = keyframes`
-  to {
-    transform: translateY(50px);
-  }
-`;
-
-const Container = styled.div({
-  position: 'absolute',
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  gap: 10,
-  '--particle-curve': 'cubic-bezier(0.2, 0.56, 0, 1)',
-  animation: `${slideDown} 1000ms forwards cubic-bezier(0.587, -0.381, 0.583, 0.599)`,
-  animationDelay: '150ms',
-  zIndex: 999,
-
-  svg: {
-    width: 15,
-    height: 15,
-    animation: `${fadeToTransparent} var(--fade-duration) forwards, ${disperse} 1000ms forwards var(--particle-curve)`,
-  },
-});
-
 const FADE_DURATION = 1200;
 const NUM_OF_PARTICLES = 8;
 // `JITTER` is the amount of variance allowed for each angle.
@@ -142,7 +97,7 @@ export const Particles = memo(function Particles({
     <div ref={anchorRef}>
       <Anchor />
       {createPortal(
-        <Container style={{ top: top + 'px', left: left + 'px' }}>
+        <div className={styles.container} style={{ top: top + 'px', left: left + 'px' }}>
           {shapes.map((Particle, index) => {
             const angle = (360 / NUM_OF_PARTICLES) * index + random(-JITTER, JITTER);
             const distance = random(50, 80);
@@ -157,7 +112,7 @@ export const Particles = memo(function Particles({
 
             return <Particle key={Particle.name} style={style} color={colors[index]} />;
           })}
-        </Container>,
+        </div>,
         document.getElementById('root') ?? document.body
       )}
     </div>

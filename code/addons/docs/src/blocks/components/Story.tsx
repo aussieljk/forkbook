@@ -5,8 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ErrorFormatter, Loader } from 'storybook/internal/components';
 import type { DocsContextProps, PreparedStory } from 'storybook/internal/types';
 
-import { styled } from 'storybook/theming';
-
 import { getStoryHref } from '../getStoryHref';
 import { IFrame } from './IFrame';
 import { ZoomContext } from './ZoomContext';
@@ -118,22 +116,18 @@ const IFrameStory: FunctionComponent<IFrameStoryProps> = ({ story, height = '500
 
 /** A story element, either rendered inline or in an iframe, with configurable height. */
 
-const ErrorMessage = styled.strong(({ theme }) => ({
-  color: theme.color.orange,
-}));
-
 const Story: FunctionComponent<StoryProps> = (props) => {
   const { inline, story } = props;
 
   if (inline && !props.autoplay && story.usesMount) {
     return (
-      <ErrorMessage>
+      <strong style={{ color: 'var(--sb-color-orange)' }}>
         This story mounts inside of play. Set{' '}
         <a href="https://storybook.js.org/docs/api/doc-blocks/doc-block-story?ref=ui#autoplay">
           autoplay
         </a>{' '}
         to true to view this story.
-      </ErrorMessage>
+      </strong>
     );
   }
 

@@ -8,9 +8,9 @@ import { global } from '@storybook/global';
 import { TrashIcon } from '@storybook/icons';
 
 import type { ControllerStateAndHelpers } from 'downshift';
-import { transparentize } from 'polished';
+import { clsx } from 'clsx';
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import { matchesKeyCode, matchesModifiers } from '../../keybinding.ts';
 import { getStatus } from '../../utils/status.tsx';
@@ -20,85 +20,9 @@ import { StatusLabel } from './StatusButton.tsx';
 import { TypeIcon } from './TreeNode.tsx';
 import type { DownshiftItem, Match, SearchResult } from './types.ts';
 import { isExpandType } from './types.ts';
+import styles from './SearchResults.module.css';
 
 const { document } = global;
-
-const ResultsList = styled.ol({
-  listStyle: 'none',
-  margin: 0,
-  padding: 0,
-});
-
-const ResultRow = styled.li<{ isHighlighted: boolean }>(({ theme, isHighlighted }) => ({
-  width: '100%',
-  border: 'none',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'start',
-  justifyContent: 'space-between',
-  textAlign: 'left',
-  color: 'inherit',
-  fontSize: `${theme.typography.size.s2}px`,
-  background: isHighlighted ? theme.background.hoverable : 'transparent',
-  minHeight: 28,
-  borderRadius: 4,
-  gap: 6,
-  paddingTop: 7,
-  paddingBottom: 7,
-  paddingLeft: 8,
-  paddingRight: 8,
-
-  '&:hover, &:focus': {
-    background: transparentize(0.93, theme.color.secondary),
-    outline: 'none',
-  },
-}));
-
-const IconWrapper = styled.div({
-  marginTop: 2,
-});
-
-const ResultRowContent = styled.div({
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const Mark = styled.mark(({ theme }) => ({
-  background: 'transparent',
-  color: theme.color.secondary,
-  '@media (forced-colors: active)': {
-    color: 'HighlightText',
-    background: 'Highlight',
-  },
-}));
-
-const MoreWrapper = styled.div({
-  marginTop: 8,
-});
-
-const RecentlyOpenedTitle = styled.div(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  fontSize: `${theme.typography.size.s1 - 1}px`,
-  fontWeight: theme.typography.weight.bold,
-  minHeight: 28,
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color: theme.textMutedColor,
-  marginBottom: 4,
-  alignItems: 'center',
-
-  '.search-result-recentlyOpened-clear': {
-    visibility: 'hidden',
-  },
-
-  '&:hover': {
-    '.search-result-recentlyOpened-clear': {
-      visibility: 'visible',
-    },
-  },
-}));
 
 const Highlight: FC<PropsWithChildren<{ match?: Match }>> = React.memo(function Highlight({
   children,
@@ -111,7 +35,11 @@ const Highlight: FC<PropsWithChildren<{ match?: Match }>> = React.memo(function 
   const { nodes: result } = indices.reduce<{ cursor: number; nodes: ReactNode[] }>(
     ({ cursor, nodes }, [start, end], index, { length }) => {
       nodes.push(<span key={`${index}-1`}>{value.slice(cursor, start)}</span>);
-      nodes.push(<Mark key={`${index}-2`}>{value.slice(start, end + 1)}</Mark>);
+      nodes.push(
+        <mark className={styles.mark} key={`${index}-2`}>
+          {value.slice(start, end + 1)}
+        </mark>
+      );
       if (index === length - 1) {
         nodes.push(<span key={`${index}-3`}>{value.slice(end + 1)}</span>);
       }
@@ -122,47 +50,11 @@ const Highlight: FC<PropsWithChildren<{ match?: Match }>> = React.memo(function 
   return <span>{result}</span>;
 });
 
-const Title = styled.div({
-  display: 'grid',
-  justifyContent: 'start',
-  gridAutoColumns: 'auto',
-  gridAutoFlow: 'column',
-
-  '& > span': {
-    display: 'block',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-});
-
-const Path = styled.div(({ theme }) => ({
-  display: 'grid',
-  justifyContent: 'start',
-  gridAutoColumns: 'auto',
-  gridAutoFlow: 'column',
-  fontSize: `${theme.typography.size.s1 - 1}px`,
-
-  '& > span': {
-    display: 'block',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-
-  '& > span + span': {
-    '&:before': {
-      content: "' / '",
-      whiteSpace: 'pre',
-    },
-  },
-}));
-
 const Result: FC<
   SearchResult & {
     isHighlighted: boolean;
   } & React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>
-> = React.memo(function Result({ item, matches, onClick, ...props }) {
+> = React.memo(function Result({ item, matches, onClick, isHighlighted, className, ...props }) {
   const theme = useTheme();
   const click: MouseEventHandler<HTMLLIElement> = useCallback(
     (event) => {
@@ -174,10 +66,10 @@ const Result: FC<
 
   const api = useStorybookApi();
   useEffect(() => {
-    if (api && props.isHighlighted && item.type === 'component') {
+    if (api && isHighlighted && item.type === 'component') {
       api.emit(PRELOAD_ENTRIES, { ids: [item.children[0]] }, { options: { target: item.refId } });
     }
-  }, [api, props.isHighlighted, item]);
+  }, [api, isHighlighted, item]);
 
   const nameMatch = matches.find((match: Match) => match.key === 'name');
   const pathMatches = matches.filter((match: Match) => match.key === 'path');
@@ -185,8 +77,13 @@ const Result: FC<
   const icon = item.status ? getStatus(theme, item.status).icon : null;
 
   return (
-    <ResultRow {...props} onClick={click}>
-      <IconWrapper>
+    <li
+      className={clsx(styles.resultRow, className)}
+      data-highlighted={isHighlighted || undefined}
+      {...props}
+      onClick={click}
+    >
+      <div className={styles.iconWrapper}>
         {item.type === 'component' && (
           <TypeIcon viewBox="0 0 14 14" width="14" height="14" type="component">
             <UseSymbol type="component" />
@@ -202,12 +99,12 @@ const Result: FC<
             <UseSymbol type="document" />
           </TypeIcon>
         )}
-      </IconWrapper>
-      <ResultRowContent className="search-result-item--label">
-        <Title>
+      </div>
+      <div className={clsx(styles.resultRowContent, 'search-result-item--label')}>
+        <div className={styles.title}>
           <Highlight match={nameMatch}>{item.name}</Highlight>
-        </Title>
-        <Path>
+        </div>
+        <div className={styles.path}>
           {item.path.map((group, index) => (
             <span key={index}>
               <Highlight match={pathMatches.find((match: Match) => match.arrayIndex === index)}>
@@ -215,10 +112,10 @@ const Result: FC<
               </Highlight>
             </span>
           ))}
-        </Path>
-      </ResultRowContent>
+        </div>
+      </div>
       {item.status ? <StatusLabel status={item.status}>{icon}</StatusLabel> : null}
-    </ResultRow>
+    </li>
   );
 });
 
@@ -290,9 +187,9 @@ export const SearchResults: FC<{
   };
 
   return (
-    <ResultsList {...getMenuProps()} key="results-list">
+    <ol className={styles.resultsList} {...getMenuProps()} key="results-list">
       {results.length > 0 && !query && (
-        <RecentlyOpenedTitle className="search-result-recentlyOpened">
+        <div className={clsx(styles.recentlyOpenedTitle, 'search-result-recentlyOpened')}>
           Recently opened
           <Button
             padding="small"
@@ -303,7 +200,7 @@ export const SearchResults: FC<{
           >
             <TrashIcon />
           </Button>
-        </RecentlyOpenedTitle>
+        </div>
       )}
       {results.length === 0 && query && (
         <li>
@@ -318,11 +215,11 @@ export const SearchResults: FC<{
           const props = { ...results, ...getItemProps({ key: index, index, item: result }) };
           const { key, ...rest } = props;
           return (
-            <MoreWrapper key="search-result-expand">
+            <div className={styles.moreWrapper} key="search-result-expand">
               <Button key={key} {...rest} size="small">
                 Show {result.moreCount} more results
               </Button>
-            </MoreWrapper>
+            </div>
           );
         }
 
@@ -341,6 +238,6 @@ export const SearchResults: FC<{
           />
         );
       })}
-    </ResultsList>
+    </ol>
   );
 });

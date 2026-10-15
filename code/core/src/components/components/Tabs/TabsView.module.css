@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* The tools come before the tab list in the DOM, for the tab order, but show after it. */
+.bar {
+  & > * {
+    flex-shrink: 0;
+  }
+
+  & > *:not(:last-child) {
+    order: 2;
+  }
+}
+
+.flexTabPanel {
+  flex: 1;
+  min-height: 0;
+}
+
+.flexTabList {
+  flex: 1 1 0%;
+
+  &:has(:global(.tablist-has-scroll)) {
+    margin-inline-end: var(--sb-tabs-gap);
+  }
+}
+
+.statelessContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  & :global(.tablist) {
+    flex: 1 1 100%;
+  }
+
+  & :global(.tablist.tablist-has-scroll) {
+    margin-inline-end: var(--sb-tabs-gap);
+  }
+
+  & > :not(:first-child) {
+    flex: 1;
+  }
+}

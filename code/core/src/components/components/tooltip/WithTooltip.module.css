@@ -1,0 +1,74 @@
+.wrapper {
+  /* With a colour, or in the light theme, the tooltip is white. */
+  --tooltip-bg: rgba(255, 255, 255, 0.95);
+
+  display: inline-block;
+  z-index: 2147483647;
+  color-scheme: light dark;
+
+  &[data-chrome] {
+    background: var(--tooltip-bg);
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
+    border-radius: calc(var(--sb-app-border-radius) + 2px);
+    font-family: var(--sb-font-base);
+    font-size: var(--sb-size-s1);
+  }
+}
+
+:where([data-sb-theme='dark']) .wrapper:not([data-color]) {
+  --tooltip-bg: var(--sb-background-app);
+}
+
+.arrow {
+  position: absolute;
+  border-style: solid;
+  border-width: 8px;
+  border-color: transparent;
+  inset: auto;
+
+  &[data-side='top'] {
+    transform: translate3d(8px, 0px, 0px);
+    bottom: -8px;
+    border-bottom-width: 0;
+    border-top-color: var(--tooltip-bg);
+  }
+
+  &[data-side='bottom'] {
+    transform: translate3d(8px, 0px, 0px);
+    top: -8px;
+    border-top-width: 0;
+    border-bottom-color: var(--tooltip-bg);
+  }
+
+  &[data-side='left'] {
+    transform: translate3d(0px, 8px, 0px);
+    right: -8px;
+    border-right-width: 0;
+    border-left-color: var(--tooltip-bg);
+  }
+
+  &[data-side='right'] {
+    transform: translate3d(0px, 8px, 0px);
+    left: -8px;
+    border-left-width: 0;
+    border-right-color: var(--tooltip-bg);
+  }
+}
+
+/* A target that doesn't speak popper */
+.target {
+  display: inline-block;
+  cursor: pointer;
+
+  &[data-hover] {
+    cursor: default;
+  }
+}
+
+.targetSvg {
+  cursor: pointer;
+
+  &[data-hover] {
+    cursor: default;
+  }
+}

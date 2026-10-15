@@ -5,6 +5,7 @@ import { Addon_TypesEnum, type Addon_BaseType } from 'storybook/internal/types';
 
 import { CloseIcon, ExpandIcon } from '@storybook/icons';
 
+import { clsx } from 'clsx';
 import {
   Consumer,
   addons,
@@ -15,11 +16,11 @@ import {
   type LeafEntry,
   type State,
 } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import type { PreviewProps } from './utils/types.tsx';
+import styles from './Toolbar.module.css';
 
 export const getTools = (getFn: API['getElements']) => Object.values(getFn(types.TOOL));
 export const getToolsExtra = (getFn: API['getElements']) => Object.values(getFn(types.TOOLEXTRA));
@@ -88,8 +89,8 @@ export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
   );
 
   return isShown && (tools.length > 0 || toolsExtra.length > 0) ? (
-    <StyledSection
-      className="sb-bar"
+    <section
+      className={clsx('sb-bar', styles.section)}
       key="toolbar"
       data-testid="sb-preview-toolbar"
       ref={sectionRef}
@@ -98,22 +99,22 @@ export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
       <h2 id="sb-preview-toolbar-title" className="sb-sr-only">
         Toolbar
       </h2>
-      <StyledToolbar>
+      <AbstractToolbar className={styles.toolbar}>
         <Tools key="left" list={tools} />
         <Tools key="right" list={toolsExtra} />
-      </StyledToolbar>
-    </StyledSection>
+      </AbstractToolbar>
+    </section>
   ) : null;
 });
 
 export const Tools = React.memo<{ list: Addon_BaseType[] }>(function Tools({ list }) {
   return (
-    <ToolGroup>
+    <div className={styles.toolGroup}>
       {list.filter(Boolean).map(({ render: Render, id, ...t }, index) => (
         // @ts-expect-error (Converted from ts-ignore)
         <Render key={id || t.key || `f-${index}`} />
       ))}
-    </ToolGroup>
+    </div>
   );
 });
 
@@ -153,38 +154,3 @@ export function filterToolsSide(
 
   return tools.filter(filter);
 }
-
-const StyledSection = styled.section(({ theme }) => ({
-  position: 'relative',
-  display: 'flex',
-  alignItems: 'center',
-  color: theme.barTextColor,
-  width: '100%',
-  flexShrink: 0,
-  overflowX: 'auto',
-  overflowY: 'hidden',
-  boxShadow: `${theme.appBorderColor}  0 -1px 0 0 inset`,
-  background: theme.barBg,
-  scrollbarColor: `${theme.barTextColor} ${theme.barBg}`,
-  scrollbarWidth: 'thin',
-  zIndex: 4,
-}));
-
-const StyledToolbar = styled(AbstractToolbar)({
-  flex: 1,
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexWrap: 'nowrap',
-  flexShrink: 0,
-  height: 40,
-  marginInline: 10,
-  gap: 30,
-});
-
-const ToolGroup = styled.div({
-  display: 'flex',
-  whiteSpace: 'nowrap',
-  flexBasis: 'auto',
-  gap: 6,
-  alignItems: 'center',
-});

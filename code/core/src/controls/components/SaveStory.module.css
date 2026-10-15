@@ -1,0 +1,90 @@
+.container {
+  container-type: size;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 41px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bar {
+  --highlight-bg-color: #e0f0ff;
+  padding-inline: 4px;
+  animation:
+    slideIn 300ms,
+    highlight 2s;
+  background: var(--sb-background-bar);
+  border-top: 1px solid var(--sb-app-border-color);
+  font-size: var(--sb-size-s2);
+
+  @container (max-width: 799px) {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+:where([data-sb-theme='dark']) .bar {
+  --highlight-bg-color: #153b5b;
+}
+
+.info {
+  display: flex;
+  flex: 99 0 auto;
+  align-items: center;
+  margin-inline-start: 7px;
+  margin-inline-end: 10px;
+  gap: 6px;
+}
+
+/*
+ * We want actions to appear first and be hidden last on overflow,
+ * but the screenreader reading order must start with Info.
+ */
+.actions {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  gap: 2px;
+  color: var(--sb-text-muted-color);
+  font-size: var(--sb-size-s2);
+}
+
+.label {
+  @container (max-width: 799px) {
+    line-height: 0;
+    text-indent: -9999px;
+
+    &::after {
+      content: attr(data-short-label);
+      display: block;
+      line-height: initial;
+      text-indent: 0;
+    }
+  }
+}
+
+.modalInput {
+  &::placeholder {
+    color: var(--sb-color-mediumdark);
+  }
+
+  &:invalid:not(:placeholder-shown) {
+    box-shadow: var(--sb-color-negative) 0 0 0 1px inset;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(40px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes highlight {
+  from {
+    background: var(--highlight-bg-color);
+  }
+}

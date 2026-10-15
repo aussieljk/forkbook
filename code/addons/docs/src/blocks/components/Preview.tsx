@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { CSSProperties, FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Children, useCallback, useContext, useId, useMemo, useState } from 'react';
 
 import { logger } from 'storybook/internal/client-logger';
@@ -7,18 +7,18 @@ import { Bar, Button, ToggleButton, Zoom } from 'storybook/internal/components';
 
 import { CopyIcon, MarkupIcon } from '@storybook/icons';
 
-import { darken } from 'polished';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import type { SourceProps } from '.';
 import { Source } from '.';
 import { DocsContext } from '../blocks/DocsContext';
 import { getStoryId } from '../blocks/Story';
-import { getBlockBackgroundStyle } from './BlockBackgroundStyles';
+import { blockBackground } from './BlockBackgroundStyles';
 import { SnippetWarning } from './SnippetWarning';
 import { StorySkeleton } from './Story';
-import { TRAILING_INSET, Toolbar } from './Toolbar';
+import { Toolbar } from './Toolbar';
 import { ZoomContext } from './ZoomContext';
+import styles from './Preview.module.css';
 
 export type PreviewProps = PropsWithChildren<{
   isLoading?: true;
@@ -36,90 +36,6 @@ export type PreviewProps = PropsWithChildren<{
 
 export type Layout = 'padded' | 'fullscreen' | 'centered';
 
-const ChildrenContainer = styled.div<PreviewProps & { layout: Layout }>(
-  ({ isColumn, columns, layout }) => ({
-    display: isColumn || !columns ? 'block' : 'flex',
-    position: 'relative',
-    flexWrap: 'wrap',
-    overflow: 'auto',
-    flexDirection: isColumn ? 'column' : 'row',
-
-    '& .innerZoomElementWrapper > *': isColumn
-      ? {
-          width: layout !== 'fullscreen' ? 'calc(100% - 20px)' : '100%',
-          display: 'block',
-        }
-      : {
-          maxWidth: layout !== 'fullscreen' ? 'calc(100% - 20px)' : '100%',
-          display: 'inline-block',
-        },
-  }),
-  ({ layout = 'padded', inline }) =>
-    layout === 'centered' || layout === 'padded'
-      ? {
-          padding: inline ? '32px 22px' : '0px',
-          '& .innerZoomElementWrapper > *': {
-            width: 'auto',
-            border: '8px solid transparent!important',
-          },
-        }
-      : {},
-  ({ layout = 'padded', inline }) =>
-    layout === 'centered' && inline
-      ? {
-          display: 'flex',
-          justifyContent: 'center',
-          justifyItems: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-        }
-      : {},
-  ({ columns }) =>
-    columns && columns > 1
-      ? { '.innerZoomElementWrapper > *': { minWidth: `calc(100% / ${columns} - 20px)` } }
-      : {}
-);
-
-const ActionBar = styled(Bar)({
-  marginTop: -40,
-  marginBottom: 40,
-});
-
-const TrailingSnippetWarning = styled(SnippetWarning)({
-  marginInlineStart: 'auto',
-  marginInlineEnd: TRAILING_INSET,
-});
-
-const StyledSource = styled(Source)(({ theme }) => ({
-  margin: 0,
-  borderTopLeftRadius: 0,
-  borderTopRightRadius: 0,
-  borderBottomLeftRadius: theme.appBorderRadius,
-  borderBottomRightRadius: theme.appBorderRadius,
-  border: 'none',
-
-  background:
-    theme.base === 'light' ? 'rgba(0, 0, 0, 0.85)' : darken(0.05, theme.background.content),
-  color: theme.color.lightest,
-  button: {
-    background:
-      theme.base === 'light' ? 'rgba(0, 0, 0, 0.85)' : darken(0.05, theme.background.content),
-  },
-}));
-
-const PreviewContainer = styled.div<PreviewProps>(
-  ({ theme }) => ({
-    position: 'relative',
-    overflow: 'hidden',
-    margin: '25px 0 40px',
-    ...getBlockBackgroundStyle(theme),
-    'h3 + &': {
-      marginTop: '16px',
-    },
-  }),
-  ({ withToolbar }) => withToolbar && { paddingTop: 40 }
-);
-
 function getChildProps(children: ReactNode) {
   if (Children.count(children) === 1) {
     const elt = children as ReactElement;
@@ -129,14 +45,6 @@ function getChildProps(children: ReactNode) {
   }
   return null;
 }
-
-const PositionedToolbar = styled(Toolbar)({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  height: 40,
-});
 
 const COPIED_LABEL_ANIMATION_DURATION = 2000;
 
@@ -167,7 +75,6 @@ export const Preview: FC<PreviewProps> = ({
     [additionalActions]
   );
   const sourceId = useId();
-  const previewClasses = [className].concat(['sbdocs', 'sbdocs-preview', 'sb-unstyled']);
 
   const context = useContext(DocsContext);
 
@@ -193,16 +100,23 @@ export const Preview: FC<PreviewProps> = ({
   const { warning: sourceWarning, ...sourceProps } = withSource ?? {};
   const hasSourceError = !!(withSource && withSource.error);
   const hasValidSource = !!(withSource && !withSource.error);
+  const showsColumn = isColumn || !Array.isArray(children);
 
   return (
     <>
-      <PreviewContainer
-        {...{ withSource, withToolbar }}
+      <div
         {...props}
-        className={previewClasses.join(' ')}
+        data-with-toolbar={withToolbar || undefined}
+        className={clsx(
+          blockBackground,
+          styles.previewContainer,
+          className,
+          'sbdocs sbdocs-preview sb-unstyled'
+        )}
       >
         {withToolbar && (
-          <PositionedToolbar
+          <Toolbar
+            className={styles.positionedToolbar}
             isLoading={isLoading}
             border
             zoom={(z: number) => setScale(scale * z)}
@@ -212,12 +126,18 @@ export const Preview: FC<PreviewProps> = ({
           />
         )}
         <ZoomContext.Provider value={{ scale }}>
-          <ChildrenContainer
-            isColumn={isColumn || !Array.isArray(children)}
-            columns={columns}
-            layout={layout}
-            inline={inline}
-            className="docs-story"
+          <div
+            className={clsx(styles.childrenContainer, 'docs-story')}
+            data-column={showsColumn || undefined}
+            data-flex={(!showsColumn && !!columns) || undefined}
+            data-layout={layout}
+            data-inline={inline || undefined}
+            data-columns={(columns && columns > 1) || undefined}
+            style={
+              columns && columns > 1
+                ? ({ '--preview-columns': columns } as CSSProperties)
+                : undefined
+            }
           >
             <Zoom.Element centered={layout === 'centered'} scale={inline ? scale : 1}>
               {Array.isArray(children) ? (
@@ -226,16 +146,19 @@ export const Preview: FC<PreviewProps> = ({
                 <div>{children}</div>
               )}
             </Zoom.Element>
-          </ChildrenContainer>
+          </div>
         </ZoomContext.Provider>
         {hasValidSource && expanded && (
           <div id={sourceId}>
-            <StyledSource {...sourceProps} dark copyable={false} />
+            <Source {...sourceProps} className={styles.source} dark copyable={false} />
           </div>
         )}
-      </PreviewContainer>
+      </div>
       {(withSource || additionalActionItems.length > 0) && (
-        <ActionBar className="sbdocs sbdocs-preview-actions" innerStyle={{ paddingInline: 0 }}>
+        <Bar
+          className={clsx(styles.actionBar, 'sbdocs sbdocs-preview-actions')}
+          innerStyle={{ paddingInline: 0 }}
+        >
           {hasSourceError && (
             <Button
               lang="en"
@@ -280,22 +203,17 @@ export const Preview: FC<PreviewProps> = ({
               </Button>
             )
           )}
-          {hasValidSource && <TrailingSnippetWarning warning={sourceWarning} />}
-        </ActionBar>
+          {hasValidSource && (
+            <SnippetWarning className={styles.trailingSnippetWarning} warning={sourceWarning} />
+          )}
+        </Bar>
       )}
     </>
   );
 };
 
-const StyledPreview = styled(Preview)(() => ({
-  '.docs-story': {
-    paddingTop: 32,
-    paddingBottom: 40,
-  },
-}));
-
 export const PreviewSkeleton = () => (
-  <StyledPreview isLoading withToolbar>
+  <Preview className={styles.skeleton} isLoading withToolbar>
     <StorySkeleton />
-  </StyledPreview>
+  </Preview>
 );

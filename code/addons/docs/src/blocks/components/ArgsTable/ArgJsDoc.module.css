@@ -1,0 +1,86 @@
+/*
+ * The class is tripled for a higher specificity than the docs page styles of raw elements and the
+ * styles of the args table that contains this table.
+ */
+.table.table.table {
+  /* Escape default table styles */
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: none;
+
+  & tr {
+    border: none !important;
+    background: none;
+  }
+
+  & td,
+  & th {
+    padding: 0;
+    border: none;
+    width: auto !important;
+  }
+  /* End escape */
+
+  margin-top: 0;
+  margin-bottom: 0;
+
+  & p {
+    margin: 0 0 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  & a {
+    color: var(--sb-color-secondary);
+  }
+
+  & th:first-of-type,
+  & td:first-of-type {
+    padding-left: 0;
+  }
+
+  & th:last-of-type,
+  & td:last-of-type {
+    padding-right: 0;
+  }
+
+  & td {
+    padding-top: 0;
+    padding-bottom: 4px;
+
+    &:not(:first-of-type) {
+      padding-left: 10px;
+      padding-right: 0;
+    }
+  }
+
+  & tbody {
+    box-shadow: none;
+    border: none;
+  }
+
+  /* The same as codeCommon, with a smaller font */
+  & code {
+    line-height: 1;
+    margin: 0;
+    padding: 3px 5px;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: var(--sb-size-s1);
+    border: 1px solid hsl(0 0 0 / 0.05);
+    color: var(--sb-color-default-text);
+    background-color: hsl(0 0 0 / 0.01);
+    display: inline-block;
+  }
+
+  & div span {
+    font-weight: bold;
+  }
+}
+
+:where([data-sb-theme='dark']) .table.table.table code {
+  border: 1px solid hsl(0 0 100 / 0.05);
+  background-color: hsl(0 0 100 / 0.02);
+}

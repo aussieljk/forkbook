@@ -1,32 +1,11 @@
-import type { ComponentProps, ReactNode, SyntheticEvent } from 'react';
+import type { HTMLAttributes, ReactNode, SyntheticEvent } from 'react';
 import React, { Fragment, useCallback } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { styled } from 'storybook/theming';
-
 import type { LinkWrapperType, ListItemProps } from './ListItem.tsx';
 import ListItem from './ListItem.tsx';
-
-const List = styled.div(
-  {
-    minWidth: 180,
-    overflow: 'hidden',
-    overflowY: 'auto',
-    maxHeight: 15.5 * 32 + 8, // 15.5 items at 32px each + 8px padding
-  },
-  ({ theme }) => ({
-    borderRadius: theme.appBorderRadius + 2,
-  }),
-  ({ theme }) => (theme.base === 'dark' ? { background: theme.background.content } : {})
-);
-
-const Group = styled.div(({ theme }) => ({
-  padding: 4,
-  '& + &': {
-    borderTop: `1px solid ${theme.appBorderColor}`,
-  },
-}));
+import styles from './TooltipLinkList.module.css';
 
 export interface NormalLink extends Omit<ListItemProps, 'onClick'> {
   id: string;
@@ -62,7 +41,7 @@ const Item = ({ id, onClick, ...rest }: ItemProps) => {
   return <ListItem id={`list-item-${id}`} {...rest} {...(onClick && { onClick: handleClick })} />;
 };
 
-export interface TooltipLinkListProps extends ComponentProps<typeof List> {
+export interface TooltipLinkListProps extends HTMLAttributes<HTMLDivElement> {
   links: Link[] | Link[][];
   LinkWrapper?: LinkWrapperType;
 }
@@ -77,12 +56,12 @@ export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkLis
     group.some((link) => ('icon' in link && link.icon) || ('input' in link && link.input))
   );
   return (
-    <List data-deprecated="TooltipLinkList" {...props} className="sb-list">
+    <div data-deprecated="TooltipLinkList" {...props} className={`sb-list ${styles.list}`}>
       {groups
         .filter((group) => group.length)
         .map((group, index) => {
           return (
-            <Group key={group.map((link) => link.id).join(`~${index}~`)}>
+            <div className={styles.group} key={group.map((link) => link.id).join(`~${index}~`)}>
               {group.map((link) => {
                 if ('content' in link) {
                   return <Fragment key={link.id}>{link.content}</Fragment>;
@@ -91,9 +70,9 @@ export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkLis
                   <Item key={link.id} isIndented={isIndented} LinkWrapper={LinkWrapper} {...link} />
                 );
               })}
-            </Group>
+            </div>
           );
         })}
-    </List>
+    </div>
   );
 };

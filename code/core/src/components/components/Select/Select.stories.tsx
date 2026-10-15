@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { Button, Toolbar } from 'storybook/internal/components';
@@ -6,7 +7,6 @@ import { LinuxIcon } from '@storybook/icons';
 
 import type { StoryAnnotations } from 'storybook/internal/types';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { Select } from './Select.tsx';
@@ -31,9 +31,13 @@ const meta = preview.meta({
   tags: ['!vitest'],
 });
 
-const Stack = styled.div({ display: 'flex', flexDirection: 'column', gap: '1rem' });
+const Stack = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
+);
 
-const Row = styled.div({ display: 'flex', alignItems: 'center', gap: '1rem' });
+const Row = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} />
+);
 
 export const Base = meta.story({});
 

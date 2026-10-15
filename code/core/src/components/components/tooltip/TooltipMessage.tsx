@@ -3,36 +3,8 @@ import React from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { styled } from 'storybook/theming';
-
 import { Link } from '../typography/link/link.tsx';
-
-const Title = styled.div(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-}));
-
-const Desc = styled.span();
-
-const Links = styled.div(({ theme }) => ({
-  marginTop: 8,
-  textAlign: 'center',
-
-  '> *': {
-    margin: '0 8px',
-    fontWeight: theme.typography.weight.bold,
-  },
-}));
-
-const Message = styled.div(({ theme }) => ({
-  color: theme.color.defaultText,
-  lineHeight: '18px',
-}));
-
-const MessageWrapper = styled.div({
-  padding: 15,
-  width: 280,
-  boxSizing: 'border-box',
-});
+import styles from './TooltipMessage.module.css';
 
 export interface TooltipMessageProps {
   title?: ReactNode;
@@ -50,20 +22,20 @@ export const TooltipMessage = ({ title, desc, links }: TooltipMessageProps) => {
   );
 
   return (
-    <MessageWrapper data-deprecated="TooltipMessage">
-      <Message>
-        {title && <Title>{title}</Title>}
-        {desc && <Desc>{desc}</Desc>}
-      </Message>
+    <div className={styles.messageWrapper} data-deprecated="TooltipMessage">
+      <div className={styles.message}>
+        {title && <div className={styles.title}>{title}</div>}
+        {desc && <span>{desc}</span>}
+      </div>
       {links && (
-        <Links>
+        <div className={styles.links}>
           {links.map(({ title: linkTitle, ...other }) => (
             <Link {...other} key={linkTitle}>
               {linkTitle}
             </Link>
           ))}
-        </Links>
+        </div>
       )}
-    </MessageWrapper>
+    </div>
   );
 };

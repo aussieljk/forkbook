@@ -4,33 +4,52 @@ import React from 'react';
 import type { StoryObj } from '@storybook/react-vite';
 
 import { expect, screen } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { TooltipMessage } from './TooltipMessage.tsx';
 import { WithToolTipState as WithTooltip } from './WithTooltip.tsx';
 
-const ViewPort = styled.div({
-  height: 300,
-});
+const ViewPort = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      height: 300,
+    }}
+  />
+);
 
-const BackgroundBox = styled.div({
-  width: 500,
-  height: 500,
-  overflowY: 'scroll',
-  background: '#eee',
-  position: 'relative',
-});
+const BackgroundBox = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      width: 500,
+      height: 500,
+      overflowY: 'scroll',
+      background: '#eee',
+      position: 'relative',
+    }}
+  />
+);
 
-const Spacer = styled.div({
-  height: 100,
-});
+const Spacer = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      height: 100,
+    }}
+  />
+);
 
-const Trigger = styled.div({
-  width: 200,
-  height: 100,
-  backgroundColor: 'red',
-  color: 'white',
-});
+const Trigger = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      width: 200,
+      height: 100,
+      backgroundColor: 'red',
+      color: 'white',
+    }}
+  />
+);
 
 interface TooltipProps {
   onHide?: () => void;

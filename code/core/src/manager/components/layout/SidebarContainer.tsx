@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { styled } from 'storybook/theming';
-
 import { Drag } from './Drag.tsx';
+import styles from './SidebarContainer.module.css';
 
 interface SidebarContainerProps {
   children: React.ReactNode;
@@ -10,17 +9,6 @@ interface SidebarContainerProps {
   sidebarMaxWidth: number | undefined;
   sidebarResizerRef: React.Ref<HTMLDivElement>;
 }
-
-const Container = styled.div(({ theme }) => ({
-  backgroundColor: theme.appBg,
-  gridArea: 'sidebar',
-  position: 'relative',
-  borderRight: `1px solid ${theme.appBorderColor}`,
-}));
-
-const SidebarSlot = styled.div({
-  height: '100%',
-});
 
 /**
  * Shows the sidebar and its resize drag handle. The drag handle is always rendered so users can
@@ -33,15 +21,16 @@ const SidebarContainer = React.memo<SidebarContainerProps>(function SidebarConta
   const shouldHideSidebarContent = navSize === 0;
 
   return (
-    <Container>
-      <SidebarSlot
+    <div className={styles.container}>
+      <div
+        className={styles.slot}
         // This ensures that the sidebar content is not reachable by keyboard or assistive
         // tech when actually collapsed.
         hidden={shouldHideSidebarContent ? true : undefined}
         aria-hidden={shouldHideSidebarContent ? true : undefined}
       >
         {children}
-      </SidebarSlot>
+      </div>
       <Drag
         ref={sidebarResizerRef}
         position="left"
@@ -49,7 +38,7 @@ const SidebarContainer = React.memo<SidebarContainerProps>(function SidebarConta
         aria-valuenow={navSize}
         aria-valuemax={sidebarMaxWidth}
       />
-    </Container>
+    </div>
   );
 });
 

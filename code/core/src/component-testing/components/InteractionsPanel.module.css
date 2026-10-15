@@ -1,0 +1,69 @@
+.container {
+  height: 100%;
+  background: var(--sb-background-content);
+}
+
+.section {
+  position: relative;
+}
+
+.heading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+}
+
+.caughtException {
+  border-bottom: 1px solid var(--sb-app-border-color);
+  background-color: var(--sb-background-warning);
+  padding: 15px;
+  font-size: calc(var(--sb-size-s2) - 1px);
+  line-height: 19px;
+}
+
+:where([data-sb-theme='dark']) .caughtException {
+  background-color: rgb(from var(--sb-color-negative) r g b / calc(alpha - 0.93));
+}
+
+.caughtExceptionCode {
+  margin: 0 1px;
+  padding: 3px;
+  font-size: calc(var(--sb-size-s1) - 1px);
+  line-height: 1;
+  vertical-align: top;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--sb-app-border-color);
+  border-radius: 3px;
+}
+
+.caughtExceptionTitle {
+  padding-bottom: 4px;
+  font-weight: bold;
+}
+
+.caughtExceptionDescription {
+  margin: 0;
+  padding: 0 0 20px;
+}
+
+.caughtExceptionStack {
+  margin: 0;
+  padding: 0;
+  font-size: calc(var(--sb-size-s1) - 1px);
+
+  &:not(:last-child) {
+    padding-bottom: 16px;
+  }
+}

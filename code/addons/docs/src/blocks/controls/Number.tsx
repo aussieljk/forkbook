@@ -3,14 +3,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, Form } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
-
 import { getControlId, getControlSetterButtonId } from './helpers';
 import type { ControlProps, NumberConfig, NumberValue } from './types';
-
-const Wrapper = styled.label({
-  display: 'flex',
-});
+import styles from './Number.module.css';
 
 type NumberProps = ControlProps<NumberValue | null> & NumberConfig;
 
@@ -20,10 +15,6 @@ export const parse = (value: string) => {
 };
 
 export const format = (value: NumberValue) => (value != null ? String(value) : '');
-
-const FormInput = styled(Form.Input)(({ theme }) => ({
-  background: theme.base === 'light' ? theme.color.lighter : 'transparent',
-}));
 
 export const NumberControl: FC<NumberProps> = ({
   name,
@@ -115,8 +106,9 @@ export const NumberControl: FC<NumberProps> = ({
   }
 
   return (
-    <Wrapper>
-      <FormInput
+    <label className={styles.wrapper}>
+      <Form.Input
+        className={styles.input}
         ref={htmlElRef}
         id={getControlId(name, storyId, controlsId)}
         type="number"
@@ -130,6 +122,6 @@ export const NumberControl: FC<NumberProps> = ({
         readOnly={readonly}
         {...{ name, min, max, step, onFocus, onBlur }}
       />
-    </Wrapper>
+    </label>
   );
 };

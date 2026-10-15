@@ -4,7 +4,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { isChromatic } from '../../../../.storybook/isChromatic.ts';
 import { CallStates } from '../../instrumenter/types.ts';
@@ -13,9 +12,9 @@ import { getCalls, getInteractions } from '../mocks/index.ts';
 import { InteractionsPanel } from './InteractionsPanel.tsx';
 import ToolbarStories from './Toolbar.stories.tsx';
 
-const StyledWrapper = styled.div(({ theme }) => ({
-  backgroundColor: theme.background.content,
-  color: theme.color.defaultText,
+const wrapperStyle: React.CSSProperties = {
+  backgroundColor: 'var(--sb-background-content)',
+  color: 'var(--sb-color-default-text)',
   display: 'block',
   height: '100%',
   position: 'absolute',
@@ -23,7 +22,7 @@ const StyledWrapper = styled.div(({ theme }) => ({
   right: 0,
   bottom: 0,
   overflow: 'auto',
-}));
+};
 
 const interactions = getInteractions(CallStates.DONE);
 const managerContext: any = {
@@ -49,9 +48,9 @@ const meta = {
   decorators: [
     (Story: any) => (
       <ManagerContext.Provider value={managerContext}>
-        <StyledWrapper id="panel-tab-content">
+        <div id="panel-tab-content" style={wrapperStyle}>
           <Story />
-        </StyledWrapper>
+        </div>
       </ManagerContext.Provider>
     ),
   ],

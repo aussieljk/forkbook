@@ -1,0 +1,20 @@
+.field {
+  display: flex;
+  border-bottom: 1px solid var(--sb-app-border-color);
+  margin: 0 15px;
+  padding: 8px 0;
+
+  &:last-child {
+    margin-bottom: 3rem;
+  }
+}
+
+.label {
+  min-width: 100px;
+  font-weight: var(--sb-weight-bold);
+  margin-right: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  line-height: 16px;
+}

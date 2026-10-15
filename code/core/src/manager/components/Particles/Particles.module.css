@@ -1,0 +1,51 @@
+.shape {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+}
+
+.container {
+  --particle-curve: cubic-bezier(0.2, 0.56, 0, 1);
+
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  animation: slideDown 1000ms forwards cubic-bezier(0.587, -0.381, 0.583, 0.599);
+  animation-delay: 150ms;
+  z-index: 999;
+
+  & svg {
+    width: 15px;
+    height: 15px;
+    animation:
+      fadeToTransparent var(--fade-duration) forwards,
+      disperse 1000ms forwards var(--particle-curve);
+  }
+}
+
+@keyframes fadeToTransparent {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes disperse {
+  to {
+    transform: translate(
+        calc(cos(var(--angle)) * var(--distance)),
+        calc(sin(var(--angle)) * var(--distance))
+      )
+      rotate(var(--rotation));
+  }
+}
+
+@keyframes slideDown {
+  to {
+    transform: translateY(50px);
+  }
+}

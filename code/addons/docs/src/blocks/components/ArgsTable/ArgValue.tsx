@@ -5,10 +5,11 @@ import { PopoverProvider, SyntaxHighlighter, codeCommon } from 'storybook/intern
 
 import { ChevronSmallDownIcon, ChevronSmallUpIcon } from '@storybook/icons';
 
+import { clsx } from 'clsx';
 import { uniq } from 'es-toolkit/array';
-import { styled } from 'storybook/theming';
 
 import type { PropSummaryValue } from './types';
+import styles from './ArgValue.module.css';
 
 interface ArgValueProps {
   value?: PropSummaryValue;
@@ -27,115 +28,16 @@ interface ArgSummaryProps {
 
 const ITEMS_BEFORE_EXPANSION = 8;
 
-const Summary = styled.div<{ isExpanded?: boolean }>(({ isExpanded }) => ({
-  display: 'flex',
-  flexDirection: isExpanded ? 'column' : 'row',
-  flexWrap: 'wrap',
-  alignItems: 'flex-start',
-  marginBottom: '-4px',
-  minWidth: 100,
-}));
-
-const DetailsContainer = styled.details({
-  display: 'flex',
-  flexDirection: 'column',
-  summary: {
-    order: 2,
-  },
-  'summary::-webkit-details-marker': {
-    display: 'none',
-  },
-  'summary::marker': {
-    content: 'none',
-  },
-});
-
-const AlignedDetails = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  flexWrap: 'wrap',
-  alignItems: 'flex-start',
-});
-
-const Text = styled.span<{ simple?: boolean }>(codeCommon, ({ theme, simple = false }) => ({
-  flex: '0 0 auto',
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1,
-  wordBreak: 'break-word',
-  whiteSpace: 'normal',
-  maxWidth: '100%',
-  margin: 0,
-  marginRight: '4px',
-  marginBottom: '4px',
-  paddingTop: '2px',
-  paddingBottom: '2px',
-  lineHeight: '13px',
-  ...(simple && {
-    background: 'transparent',
-    border: '0 none',
-    paddingLeft: 0,
-  }),
-}));
-
-const ExpandButton = styled.summary(({ theme }) => ({
-  fontFamily: theme.typography.fonts.mono,
-  color: theme.color.secondary,
-  cursor: 'pointer',
-  lineHeight: 'normal',
-  margin: '0 0 4px',
-  padding: '1px 6px',
-  background: 'none',
-  border: 'none',
-}));
-
-const Expandable = styled.button(codeCommon, ({ theme }) => ({
-  fontFamily: theme.typography.fonts.mono,
-  color: theme.color.secondary,
-  fontSize: theme.typography.size.s1, // overrides codeCommon
-  margin: 0,
-  whiteSpace: 'nowrap',
-  display: 'flex',
-  alignItems: 'center',
-  cursor: 'pointer',
-  '&:hover': {
-    border:
-      theme.base === 'light' ? '1px solid hsl(0 0 0 / 0.15)' : '1px solid hsl(0 0 100 / 0.15)',
-  },
-  '&:focus-visible': {
-    outline: `2px solid ${theme.color.secondary}`,
-    outlineOffset: '2px',
-  },
-}));
-
-const Detail = styled.div(({ theme }) => ({
-  minWidth: 200,
-  maxWidth: 800,
-  paddingRight: 16,
-  // Don't remove the mono fontFamily here even if it seems useless, this is used by the browser to calculate the length of a "ch" unit.
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: theme.typography.size.s1,
-  // Most custom stylesheet will reset the box-sizing to "border-box" and will break the tooltip.
-  boxSizing: 'content-box',
-
-  '& code': {
-    padding: '0 !important',
-  },
-}));
-
-const ChevronUpIcon = styled(ChevronSmallUpIcon)({
-  marginLeft: 4,
-});
-
-const ChevronDownIcon = styled(ChevronSmallDownIcon)({
-  marginLeft: 4,
-});
-
 const EmptyArg = () => {
   return <span>-</span>;
 };
 
 const ArgText: FC<ArgTextProps> = ({ text, simple }) => {
-  return <Text simple={simple}>{text}</Text>;
+  return (
+    <span className={clsx(codeCommon, styles.text)} data-simple={simple || undefined}>
+      {text}
+    </span>
+  );
 };
 
 const getSummaryItems = (summary: string) => {
@@ -187,17 +89,21 @@ const ArgSummary: FC<ArgSummaryProps> = ({ value, initialExpandedArgs }) => {
     const hasManyItems = itemsCount > ITEMS_BEFORE_EXPANSION;
 
     return hasManyItems ? (
-      <Summary isExpanded={isExpanded}>
+      <div className={styles.summary} data-expanded={isExpanded || undefined}>
         {renderSummaryItems(summaryItems)}
-        <DetailsContainer open={isExpanded} onToggle={(e) => setIsExpanded(e.currentTarget.open)}>
-          <AlignedDetails>{renderExpandedItems(summaryItems)}</AlignedDetails>
-          <ExpandButton role="button">
+        <details
+          className={styles.detailsContainer}
+          open={isExpanded}
+          onToggle={(e) => setIsExpanded(e.currentTarget.open)}
+        >
+          <div className={styles.alignedDetails}>{renderExpandedItems(summaryItems)}</div>
+          <summary className={styles.expandButton} role="button">
             {isExpanded ? 'Show less...' : `Show ${itemsCount - ITEMS_BEFORE_EXPANSION} more...`}
-          </ExpandButton>
-        </DetailsContainer>
-      </Summary>
+          </summary>
+        </details>
+      </div>
     ) : (
-      <Summary>{renderSummaryItems(summaryItems)}</Summary>
+      <div className={styles.summary}>{renderSummaryItems(summaryItems)}</div>
     );
   }
 
@@ -211,17 +117,21 @@ const ArgSummary: FC<ArgSummaryProps> = ({ value, initialExpandedArgs }) => {
       }}
       hasCloseButton
       popover={
-        <Detail>
+        <div className={styles.detail}>
           <SyntaxHighlighter language="jsx" format={false}>
             {detail}
           </SyntaxHighlighter>
-        </Detail>
+        </div>
       }
     >
-      <Expandable className="sbdocs-expandable">
+      <button className={clsx(codeCommon, styles.expandable, 'sbdocs-expandable')}>
         <span>{summaryAsString}</span>
-        {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-      </Expandable>
+        {isOpen ? (
+          <ChevronSmallUpIcon className={styles.chevron} />
+        ) : (
+          <ChevronSmallDownIcon className={styles.chevron} />
+        )}
+      </button>
     </PopoverProvider>
   );
 };

@@ -1,7 +1,8 @@
 import React, { type CSSProperties, type FC } from 'react';
 
 import { Badge, Button, Loader } from 'storybook/internal/components';
-import { styled } from 'storybook/theming';
+
+import { clsx } from 'clsx';
 
 import {
   hasFixedViewportDimensions,
@@ -9,63 +10,12 @@ import {
 } from '../../../../shared/constants/iframe-resize.ts';
 import { fallbackStoryInfo, type StoryInfo } from '../review-types.ts';
 import { usePreviewThumbnail } from './usePreviewThumbnail.ts';
-
-// Per-breakpoint grid: `cols` columns (each cell clamped to 400px) capped at
-// two rows. Overflow beyond the cap is hidden and a "Review all" cell takes the
-// last slot — all via CSS (`:has()` + `:nth-child`), no JS measurement.
-const band = (cols: number) => {
-  const cap = cols * 2;
-  return {
-    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-    [`&:not([data-show-all]):has(> [data-cell]:nth-child(${cap + 1})) > [data-cell]:nth-child(n + ${cap})`]:
-      {
-        display: 'none',
-      },
-    [`&:not([data-show-all]):has(> [data-cell]:nth-child(${cap + 1})) > [data-review-all]`]: {
-      display: 'flex',
-    },
-  };
-};
-
-const GridContainer = styled.div({
-  containerType: 'inline-size',
-  containerName: 'review-grid',
-});
-
-const Grid = styled.div({
-  display: 'grid',
-  alignItems: 'stretch',
-  gap: 12,
-  padding: 12,
-  gridTemplateColumns: 'minmax(0, 1fr)',
-  '@container review-grid (max-width: 629.98px)': band(1),
-  '@container review-grid (min-width: 630px) and (max-width: 844.98px)': band(2),
-  '@container review-grid (min-width: 845px) and (max-width: 1259.98px)': band(3),
-  '@container review-grid (min-width: 1260px)': band(4),
-});
-
-const Cell = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  minWidth: 0,
-  overflow: 'hidden',
-});
-
-const FrameShell = styled.div({
-  width: '100%',
-  minWidth: 0,
-  maxWidth: '100%',
-  aspectRatio: '3 / 2',
-  position: 'relative',
-});
-
-/** Default `--content-w` before the embed iframe reports its size. */
-const DEFAULT_CONTENT_WIDTH = 300;
+import styles from './CollectionGrid.module.css';
 
 /** Pre-measurement scale so the embed iframe viewport is 2× the frame width (100% / 0.5). */
 const THUMBNAIL_BOOTSTRAP_SCALE = 0.5;
 
-// Feeds the CSS variables consumed by `Frame` below (`--scale`, `--content-w`,
+// Feeds the CSS variables consumed by `.frame` in CollectionGrid.module.css (`--scale`, `--content-w`,
 // `--vp-w`/`--vp-h`); `viewportFill` toggles the `data-viewport-fill` branch.
 const getPreviewFrameLayout = (
   dimensions: IframeResizeDimensions | null
@@ -89,137 +39,6 @@ const getPreviewFrameLayout = (
 
   return { style: { '--content-w': dimensions.width } as CSSProperties, viewportFill: false };
 };
-
-const Frame = styled.a(({ theme }) => ({
-  position: 'absolute',
-  inset: 0,
-  display: 'block',
-  boxSizing: 'border-box',
-  containerType: 'inline-size',
-  containerName: 'preview-frame',
-  '--content-w': DEFAULT_CONTENT_WIDTH,
-  '--fit-w': 'calc(100cqw / (var(--content-w) * 1px))',
-  '--fit': 'min(1, var(--fit-w))',
-  '--scale': 'max(0.5, min(1, round(down, var(--fit), 0.25)))',
-  '--vp-scale': 'calc(100cqw / (var(--vp-w) * 1px))',
-  borderRadius: 6,
-  overflow: 'hidden',
-  background: theme.background.app,
-  border: `1px solid ${theme.appBorderColor}`,
-  transition: 'border-color 120ms ease',
-  textDecoration: 'none',
-  outline: 'none',
-  '& [data-preview-scale]': {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    transformOrigin: 'top left',
-  },
-  '&[data-viewport-fill] [data-preview-scale]': {
-    width: 'calc(var(--vp-w) * 1px)',
-    height: 'calc(var(--vp-h) * 1px)',
-    transform: 'scale(var(--vp-scale))',
-  },
-  '&:not([data-viewport-fill]) [data-preview-scale]': {
-    width: 'calc(100% / var(--scale))',
-    height: 'calc(100% / var(--scale))',
-    transform: 'scale(var(--scale))',
-  },
-  '&[href]:hover': {
-    borderColor: theme.color.secondary,
-  },
-  '&:focus-visible': {
-    outline: `${theme.barSelectedColor} solid 2px`,
-    outlineOffset: -2,
-  },
-}));
-
-const Preview = styled.iframe(({ theme }) => ({
-  display: 'block',
-  width: '100%',
-  height: '100%',
-  background: theme.background.preview,
-  border: 0,
-  pointerEvents: 'none',
-}));
-
-// Outside PreviewScale so bootstrap scaling does not shrink the loading indicator.
-const PreviewLoading = styled.div(({ theme }) => ({
-  position: 'absolute',
-  inset: 0,
-  zIndex: 1,
-  display: 'grid',
-  placeItems: 'center',
-  background: theme.background.app,
-  pointerEvents: 'none',
-}));
-
-const ActionBar = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 8,
-  minHeight: 36,
-  marginTop: 'auto',
-});
-
-const Label = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-  flex: 1,
-  minWidth: 0,
-  marginLeft: 10,
-  overflow: 'hidden',
-});
-
-const LabelComponent = styled.span({
-  fontWeight: 700,
-  whiteSpace: 'nowrap',
-  flexShrink: 0,
-  maxWidth: '60%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-});
-
-const LabelSeparator = styled.span(({ theme }) => ({
-  color: theme.textMutedColor,
-  flexShrink: 0,
-}));
-
-const LabelStory = styled.span({
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  marginRight: 4,
-});
-
-const NewBadge = styled(Badge)({
-  flexShrink: 0,
-});
-
-const ReviewAllCell = styled(Cell)({
-  display: 'none',
-});
-
-const ReviewAllShell = styled.div({
-  width: '100%',
-  minWidth: 0,
-  maxWidth: '100%',
-  aspectRatio: '3 / 2',
-  minHeight: 50,
-});
-
-const ReviewAllFrame = styled.div(({ theme }) => ({
-  display: 'grid',
-  placeItems: 'center',
-  width: '100%',
-  height: '100%',
-  boxSizing: 'border-box',
-  borderRadius: 6,
-  background: theme.background.app,
-  border: `1px dashed ${theme.appBorderColor}`,
-}));
 
 const deriveStoryInfo = (info: StoryInfo): { component: string; name: string } => ({
   component: info.title.split('/').pop() ?? info.title,
@@ -246,10 +65,12 @@ const StoryPreviewCell: FC<{
   const { component, name } = deriveStoryInfo(info);
   const readableTitle = `${component} – ${name}`;
   const { style: frameStyle, viewportFill } = getPreviewFrameLayout(rememberedDimensions);
+  const FrameElement = href ? 'a' : 'div';
 
   const preview = src ? (
     <div data-preview-scale>
-      <Preview
+      <iframe
+        className={styles.preview}
         ref={iframeRef}
         data-is-storybook-thumbnail
         title={readableTitle}
@@ -265,10 +86,16 @@ const StoryPreviewCell: FC<{
   ) : null;
 
   return (
-    <Cell ref={cellRef} role="listitem" data-cell data-testid="review-collection-grid-cell">
-      <FrameShell>
-        <Frame
-          as={href ? 'a' : 'div'}
+    <div
+      className={styles.cell}
+      ref={cellRef}
+      role="listitem"
+      data-cell
+      data-testid="review-collection-grid-cell"
+    >
+      <div className={styles.frameShell}>
+        <FrameElement
+          className={styles.frame}
           {...(href ? { href } : {})}
           data-testid="review-collection-grid-frame"
           data-viewport-fill={viewportFill || undefined}
@@ -278,26 +105,26 @@ const StoryPreviewCell: FC<{
           onFocus={forceStartCurrent}
         >
           {isPreviewLoading ? (
-            <PreviewLoading data-testid="review-preview-loading">
+            <div className={styles.previewLoading} data-testid="review-preview-loading">
               <Loader />
-            </PreviewLoading>
+            </div>
           ) : null}
           {preview}
-        </Frame>
-      </FrameShell>
-      <ActionBar>
-        <Label>
-          <LabelComponent>{component}</LabelComponent>
-          <LabelSeparator>/</LabelSeparator>
-          <LabelStory>{name}</LabelStory>
+        </FrameElement>
+      </div>
+      <div className={styles.actionBar}>
+        <div className={styles.label}>
+          <span className={styles.labelComponent}>{component}</span>
+          <span className={styles.labelSeparator}>/</span>
+          <span className={styles.labelStory}>{name}</span>
           {info.changeStatus === 'new' || info.isNewlyAdded ? (
-            <NewBadge status="positive" compact>
+            <Badge status="positive" compact>
               New
-            </NewBadge>
+            </Badge>
           ) : null}
-        </Label>
-      </ActionBar>
-    </Cell>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -325,8 +152,13 @@ export const CollectionGrid: FC<CollectionGridProps> = ({
   storyInfo,
   summaryHidden = false,
 }) => (
-  <GridContainer>
-    <Grid role="list" data-show-all={showAll || undefined} data-testid="review-collection-grid">
+  <div className={styles.gridContainer}>
+    <div
+      className={styles.grid}
+      role="list"
+      data-show-all={showAll || undefined}
+      data-testid="review-collection-grid"
+    >
       {storyIds.map((storyId, storyIndex) => {
         const info = storyInfo[storyId] ?? fallbackStoryInfo(storyId);
         return (
@@ -340,16 +172,16 @@ export const CollectionGrid: FC<CollectionGridProps> = ({
           />
         );
       })}
-      <ReviewAllCell role="presentation" data-review-all>
-        <ReviewAllShell>
-          <ReviewAllFrame>
+      <div className={clsx(styles.cell, styles.reviewAllCell)} role="presentation" data-review-all>
+        <div className={styles.reviewAllShell}>
+          <div className={styles.reviewAllFrame}>
             <Button size="medium" onClick={() => onShowAll?.()}>
               Review all {storyIds.length}
             </Button>
-          </ReviewAllFrame>
-        </ReviewAllShell>
-        <ActionBar aria-hidden="true" />
-      </ReviewAllCell>
-    </Grid>
-  </GridContainer>
+          </div>
+        </div>
+        <div className={styles.actionBar} aria-hidden="true" />
+      </div>
+    </div>
+  </div>
 );

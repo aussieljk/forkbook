@@ -1,0 +1,39 @@
+.alignmentWrapper {
+  display: block;
+  position: relative;
+
+  & svg {
+    visibility: hidden;
+  }
+
+  &:hover svg,
+  &:focus-within svg {
+    visibility: visible;
+  }
+}
+
+.anchorWrapper {
+  /*
+   * Position the anchor in the heading's left gutter instead of floating it, so the
+   * Button's dimensions never shift the heading text. The parent header is relatively
+   * positioned to anchor this.
+   */
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  line-height: inherit;
+  padding-right: 8px;
+  /* Allow the theme's text color to override the default link color. */
+  color: inherit;
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* Increase specificity to avoid being overridden by DocsPage based on CSS block load order. */
+.anchorWrapper.anchorWrapper {
+  /* Half the Button's height to center it vertically */
+  margin-top: -14px;
+}

@@ -1,0 +1,111 @@
+.summary {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: -4px;
+  min-width: 100px;
+
+  &[data-expanded] {
+    flex-direction: column;
+  }
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+
+  & summary {
+    order: 2;
+  }
+
+  & summary::-webkit-details-marker {
+    display: none;
+  }
+
+  & summary::marker {
+    content: none;
+  }
+}
+
+.alignedDetails {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.text {
+  flex: 0 0 auto;
+  font-family: var(--sb-font-mono);
+  font-size: var(--sb-size-s1);
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+  margin: 0;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  line-height: 13px;
+
+  &[data-simple] {
+    background: transparent;
+    border: 0 none;
+    padding-left: 0;
+  }
+}
+
+.expandButton {
+  font-family: var(--sb-font-mono);
+  color: var(--sb-color-secondary);
+  cursor: pointer;
+  line-height: normal;
+  margin: 0 0 4px;
+  padding: 1px 6px;
+  background: none;
+  border: none;
+}
+
+.expandable {
+  font-family: var(--sb-font-mono);
+  color: var(--sb-color-secondary);
+  font-size: var(--sb-size-s1); /* overrides codeCommon */
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid hsl(0 0 0 / 0.15);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sb-color-secondary);
+    outline-offset: 2px;
+  }
+}
+
+:where([data-sb-theme='dark']) .expandable:hover {
+  border: 1px solid hsl(0 0 100 / 0.15);
+}
+
+.detail {
+  min-width: 200px;
+  max-width: 800px;
+  padding-right: 16px;
+  /* Don't remove the mono font-family here even if it seems useless, this is used by the browser to calculate the length of a "ch" unit. */
+  font-family: var(--sb-font-mono);
+  font-size: var(--sb-size-s1);
+  /* Most custom stylesheet will reset the box-sizing to "border-box" and will break the tooltip. */
+  box-sizing: content-box;
+
+  & code {
+    padding: 0 !important;
+  }
+}
+
+.chevron {
+  margin-left: 4px;
+}

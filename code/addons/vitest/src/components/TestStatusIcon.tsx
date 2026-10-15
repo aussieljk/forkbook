@@ -1,46 +1,30 @@
-import { styled } from 'storybook/theming';
+import type { ComponentProps, CSSProperties } from 'react';
+import React from 'react';
 
-export const TestStatusIcon = styled.div<{
+import { clsx } from 'clsx';
+
+import styles from './TestStatusIcon.module.css';
+
+interface TestStatusIconProps extends ComponentProps<'div'> {
   isRunning: boolean;
   status: 'positive' | 'warning' | 'negative' | 'critical' | 'unknown';
   percentage?: number;
-}>(
-  ({ percentage }) => ({
-    width: percentage ? 12 : 6,
-    height: percentage ? 12 : 6,
-    margin: percentage ? 1 : 4,
-    background: percentage
-      ? `conic-gradient(var(--status-color) ${percentage}%, var(--status-background) ${percentage + 1}%)`
-      : 'var(--status-color)',
-    borderRadius: '50%',
-  }),
-  ({ isRunning, theme }) =>
-    isRunning && {
-      animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-    },
-  ({ status, theme }) =>
-    status === 'positive' && {
-      '--status-color': theme.color.positive,
-      '--status-background': `${theme.color.positive}66`,
-    },
-  ({ status, theme }) =>
-    status === 'warning' && {
-      '--status-color': theme.color.gold,
-      '--status-background': `${theme.color.gold}66`,
-    },
-  ({ status, theme }) =>
-    status === 'negative' && {
-      '--status-color': theme.color.negative,
-      '--status-background': `${theme.color.negative}66`,
-    },
-  ({ status, theme }) =>
-    status === 'critical' && {
-      '--status-color': theme.color.defaultText,
-      '--status-background': `${theme.color.defaultText}66`,
-    },
-  ({ status, theme }) =>
-    status === 'unknown' && {
-      '--status-color': theme.textMutedColor,
-      '--status-background': `${theme.textMutedColor}66`,
-    }
+}
+
+export const TestStatusIcon = ({
+  isRunning,
+  status,
+  percentage,
+  className,
+  style,
+  ...props
+}: TestStatusIconProps) => (
+  <div
+    className={clsx(styles.icon, className)}
+    data-status={status}
+    data-running={isRunning || undefined}
+    data-percentage={percentage || undefined}
+    style={percentage ? ({ '--percentage': `${percentage}%`, ...style } as CSSProperties) : style}
+    {...props}
+  />
 );

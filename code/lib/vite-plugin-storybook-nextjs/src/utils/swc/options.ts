@@ -15,7 +15,7 @@ import { getParserOptions } from 'next/dist/build/swc/options.js';
 import type { ExperimentalConfig } from 'next/dist/server/config-shared.js';
 
 import { createRequire } from 'node:module';
-import { getEmotionOptions, getStyledComponentsOptions } from './styles.ts';
+import { getStyledComponentsOptions } from './styles.ts';
 
 const require = createRequire(import.meta.url);
 
@@ -74,9 +74,7 @@ export function getBaseSWCOptions({
         decoratorMetadata: emitDecoratorMetadata,
         useDefineForClassFields: useDefineForClassFields,
         react: {
-          importSource:
-            jsConfig?.compilerOptions?.jsxImportSource ??
-            (compiler?.emotion ? '@emotion/react' : 'react'),
+          importSource: jsConfig?.compilerOptions?.jsxImportSource ?? 'react',
           runtime: 'automatic',
           pragmaFrag: 'React.Fragment',
           throwIfNamespace: true,
@@ -108,7 +106,6 @@ export function getBaseSWCOptions({
     // Always transform styled-jsx and error when `client-only` condition is triggered
     styledJsx: {},
     // Disable css-in-js libs (without client-only integration) transform on server layer for server components
-    emotion: getEmotionOptions(compiler?.emotion, development),
     styledComponents: getStyledComponentsOptions(compiler?.styledComponents, development),
     serverComponents: undefined,
     serverActions: undefined,

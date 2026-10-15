@@ -1,44 +1,16 @@
 import React, { useCallback, useState } from 'react';
 
-import { Badge, Button, PopoverProvider } from 'storybook/internal/components';
+import { Button, PopoverProvider } from 'storybook/internal/components';
 import type { StatusesByStoryIdAndTypeId, StoryIndex } from 'storybook/internal/types';
 import type { StatusValue } from 'storybook/internal/types';
 
 import { FilterIcon } from '@storybook/icons';
 
 import { type API, type Combo, Consumer, experimental_useStatusStore } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { getActiveFilterCount } from '../../../shared/utils/story-index-filters.ts';
 import { FilterPanel } from './FilterPanel.tsx';
-
-const StyledButton = styled(Button)<{ $isHighlighted: boolean }>(({ $isHighlighted, theme }) => ({
-  '&:focus-visible': {
-    outlineOffset: 4,
-  },
-  ...($isHighlighted && {
-    background: theme.background.hoverable,
-    color: theme.color.secondary,
-  }),
-}));
-
-const TagSelected = styled(Badge)(({ theme }) => ({
-  position: 'absolute',
-  top: 7,
-  right: 7,
-  transform: 'translate(50%, -50%)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: 3,
-  height: 6,
-  minWidth: 6,
-  lineHeight: 'px',
-  boxShadow: `${theme.barSelectedColor} 0 0 0 1px inset`,
-  fontSize: theme.typography.size.s1 - 1,
-  background: theme.barSelectedColor,
-  color: theme.color.inverseText,
-}));
+import styles from './Filter.module.css';
 
 const filterMapper = ({ api, state }: Combo) => ({
   api,
@@ -107,8 +79,9 @@ const FilterInner = ({
         />
       )}
     >
-      <StyledButton
+      <Button
         key="tags"
+        className={styles.filterButton}
         ariaLabel={
           activeFilterCount
             ? `${activeFilterCount} active tag ${activeFilterCount !== 1 ? 'filters' : 'filter'}`
@@ -117,12 +90,12 @@ const FilterInner = ({
         ariaDescription="Filter the items shown in a sidebar based on the tags applied to them."
         variant="ghost"
         padding="small"
-        $isHighlighted={activeFilterCount > 0}
+        data-highlighted={activeFilterCount > 0 || undefined}
         onClick={handleToggleExpand}
       >
         <FilterIcon />
-        {activeFilterCount > 0 && <TagSelected />}
-      </StyledButton>
+        {activeFilterCount > 0 && <div className={styles.tagSelected} />}
+      </Button>
     </PopoverProvider>
   );
 };

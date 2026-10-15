@@ -2,9 +2,10 @@ import React, { type HTMLAttributes, forwardRef } from 'react';
 
 import { CloseIcon } from '@storybook/icons';
 
-import { lighten, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { Button } from '../Button/Button.tsx';
+import styles from './Popover.module.css';
 
 export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
   /** Content of the popover. */
@@ -26,55 +27,6 @@ export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
   padding?: number | string;
 }
 
-const Wrapper = styled.div<{
-  bgColor: NonNullable<PopoverProps['color']>;
-  hasChrome: boolean;
-  hasCloseButton: boolean;
-  padding: NonNullable<PopoverProps['padding']>;
-}>(
-  ({ hasCloseButton, padding }) => ({
-    display: 'inline-block',
-    position: 'relative',
-    minHeight: hasCloseButton ? 36 : undefined,
-    zIndex: 2147483647,
-    colorScheme: 'light dark',
-    padding,
-  }),
-  ({ theme, hasChrome }) =>
-    hasChrome
-      ? {
-          filter: `
-            drop-shadow(0px 5px 5px rgba(0,0,0,0.05))
-            drop-shadow(0 1px 3px rgba(0,0,0,0.1))
-          `,
-          borderRadius: theme.appBorderRadius + 2,
-          fontFamily: theme.typography.fonts.base,
-          fontSize: theme.typography.size.s1,
-        }
-      : {},
-  ({ theme, bgColor }) =>
-    bgColor === 'default' && {
-      background: theme.base === 'light' ? lighten(theme.background.app) : theme.background.app,
-      color: theme.color.defaultText,
-    },
-  ({ theme, bgColor }) =>
-    bgColor === 'inverse' && {
-      background: theme.base === 'light' ? theme.color.darkest : theme.color.lightest,
-      color: theme.color.inverseText,
-    },
-  ({ theme, bgColor }) =>
-    (bgColor === 'positive' || bgColor === 'negative' || bgColor === 'warning') && {
-      background: theme.background[bgColor],
-      color: theme.color[`${bgColor}Text`],
-    }
-);
-
-const AbsoluteButton = styled(Button)({
-  position: 'absolute',
-  top: 4,
-  right: 4,
-});
-
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
   (
     {
@@ -84,22 +36,26 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
       hideLabel = 'Close',
       onHide,
       padding = 8,
+      className,
+      style,
       ...props
     },
     ref
   ) => {
     return (
-      <Wrapper
-        bgColor={color}
-        hasChrome={hasChrome}
-        hasCloseButton={!!onHide}
-        padding={padding}
+      <div
         ref={ref}
         {...props}
+        className={clsx(styles.popover, className)}
+        style={{ padding, ...style }}
+        data-color={color}
+        data-chrome={hasChrome || undefined}
+        data-close-button={onHide ? true : undefined}
       >
         {children}
         {onHide && (
-          <AbsoluteButton
+          <Button
+            className={styles.closeButton}
             ariaLabel={hideLabel}
             onClick={onHide}
             padding="small"
@@ -107,9 +63,9 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             size="small"
           >
             <CloseIcon />
-          </AbsoluteButton>
+          </Button>
         )}
-      </Wrapper>
+      </div>
     );
   }
 );

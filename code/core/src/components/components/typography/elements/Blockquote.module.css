@@ -1,0 +1,13 @@
+.blockquote {
+  border-left: 4px solid var(--sb-color-medium);
+  padding: 0 15px;
+  color: var(--sb-color-dark);
+
+  & > :first-of-type {
+    margin-top: 0;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}

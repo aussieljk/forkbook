@@ -1,0 +1,46 @@
+.meta {
+  color: #666;
+  font-size: 12px;
+}
+
+.item {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 0 1 16%;
+  min-width: 120px;
+  margin: 16px;
+
+  & svg {
+    margin-right: 6px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.item[data-minimal] {
+  flex: none;
+  min-width: auto;
+  padding: 0;
+  margin: 16px;
+
+  & svg {
+    display: block;
+    margin-right: 0;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.list {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  font-size: 16px;
+  margin: 16px;
+}

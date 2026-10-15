@@ -1,17 +1,16 @@
 import React, { forwardRef } from 'react';
 
+import { clsx } from 'clsx';
 import TextareaAutoResize from 'react-textarea-autosize';
-import { styled } from 'storybook/theming';
 
 import {
   type Alignments,
   type Sizes,
   type ValidationStates,
-  alignment,
-  sizes,
-  styles,
-  validation,
+  controlClassName,
+  sizeClassName,
 } from './styles.ts';
+import styles from './Textarea.module.css';
 
 /**
  * These types are copied from `react-textarea-autosize`. I copied them because of
@@ -48,16 +47,20 @@ type TextareaProps = Omit<
   height?: number;
 } & React.RefAttributes<HTMLTextAreaElement>;
 
-export const Textarea = Object.assign(
-  styled(
-    forwardRef<any, TextareaProps>(function Textarea({ size, valid, align, ...props }, ref) {
-      return <TextareaAutoResize {...props} ref={ref} />;
-    })
-  )<TextareaProps>(styles, sizes, alignment, validation, ({ height = 400 }) => ({
-    overflow: 'visible',
-    maxHeight: height,
-  })),
-  {
-    displayName: 'Textarea',
-  }
-);
+export const Textarea = forwardRef<any, TextareaProps>(function Textarea(
+  { size, valid, align, height = 400, className, style, ...props },
+  ref
+) {
+  return (
+    <TextareaAutoResize
+      {...props}
+      ref={ref}
+      className={clsx(controlClassName, sizeClassName, styles.textarea, className)}
+      data-size={size}
+      data-align={align}
+      data-valid={valid}
+      style={{ ...style, '--sb-textarea-max-height': `${height}px` } as Style}
+    />
+  );
+});
+Textarea.displayName = 'Textarea';

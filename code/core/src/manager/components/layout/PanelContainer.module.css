@@ -1,0 +1,16 @@
+.container {
+  grid-area: panel;
+  position: relative;
+
+  &[data-position='bottom'] {
+    border-top: 1px solid var(--sb-app-border-color);
+  }
+
+  &[data-position='right'] {
+    border-left: 1px solid var(--sb-app-border-color);
+  }
+}
+
+.slot {
+  height: 100%;
+}

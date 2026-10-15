@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import { TooltipLinkList } from 'storybook/internal/components';
@@ -8,11 +9,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { useMenu } from '../../container/Menu.tsx';
 import { LayoutProvider } from '../layout/LayoutProvider.tsx';
 import { type MenuList, SidebarMenu } from './Menu.tsx';
+import styles from './Menu.stories.module.css';
 
 const getAPIMocks = () => ({
   getShortcutKeys: fn()
@@ -89,11 +90,9 @@ export const Real: Story = {
   render: (args) => <SidebarMenu menu={fakemenu} {...args} />,
 };
 
-const DoubleThemeRenderingHack = styled.div({
-  '#storybook-root > [data-side="left"] > &': {
-    textAlign: 'right',
-  },
-});
+const DoubleThemeRenderingHack = ({ children }: { children: ReactNode }) => (
+  <div className={styles.doubleThemeRenderingHack}>{children}</div>
+);
 
 export const Expanded: Story = {
   globals: { sb_theme: 'light', viewport: 'desktop' },

@@ -1,3 +1,4 @@
+import type { CSSProperties, ReactNode } from 'react';
 import React from 'react';
 
 import { Channel, type Listener } from 'storybook/internal/channels';
@@ -12,20 +13,27 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fireEvent, fn, waitFor } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { internal_fullTestProviderStore } from '../../manager-stores.mock.ts';
 import { TestingWidget } from './TestingWidget.tsx';
 
-const Wrapper = styled.div(({ theme }) => ({
-  maxWidth: 250,
-  '--card-box-shadow': `0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px ${theme.background.app}`,
-}));
+const Wrapper = ({ children }: { children: ReactNode }) => (
+  <div
+    style={
+      {
+        maxWidth: 250,
+        '--card-box-shadow':
+          '0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--sb-background-app)',
+      } as CSSProperties
+    }
+  >
+    {children}
+  </div>
+);
 
-const TestProvider = styled.div({
-  padding: 8,
-  fontSize: 12,
-});
+const TestProvider = ({ children }: { children: ReactNode }) => (
+  <div style={{ padding: 8, fontSize: 12 }}>{children}</div>
+);
 
 const registeredTestProviders: Addon_Collection<Addon_TestProviderType> = {
   'component-tests': {

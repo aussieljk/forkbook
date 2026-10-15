@@ -1,0 +1,9 @@
+.dimensions {
+  display: flex;
+  gap: 2px;
+  margin-left: 20px;
+  font-family: var(--sb-font-mono);
+  font-size: calc(var(--sb-size-s1) - 1px);
+  font-weight: var(--sb-weight-regular);
+  color: var(--sb-text-muted-color);
+}

@@ -1,6 +1,9 @@
-import type React from 'react';
+import type { ComponentProps } from 'react';
+import React, { forwardRef } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './helpers.module.css';
 
 export const PAGE_STEP_SIZE = 5;
 export const UNDEFINED_VALUE = Symbol.for('undefined');
@@ -68,12 +71,9 @@ export function externalToValue(value: Value): InternalValue {
   return value;
 }
 
-export const Listbox = styled('ul')({
-  minWidth: 180,
-  height: '100%',
-  borderRadius: 6,
-  overflow: 'hidden auto',
-  listStyle: 'none',
-  margin: 0,
-  padding: 4,
-});
+export const Listbox = forwardRef<HTMLUListElement, ComponentProps<'ul'>>(
+  ({ className, ...props }, ref) => (
+    <ul ref={ref} className={clsx(styles.listbox, className)} {...props} />
+  )
+);
+Listbox.displayName = 'Listbox';

@@ -1,41 +1,15 @@
-import type React from 'react';
+import React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { within } from 'storybook/test';
-import { keyframes, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    scale: 0.5;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-  }
-`;
+import styles from './Animations.module.css';
 
-const rotate = keyframes`
-  0% {
-    transform: rotate(0deg);
-    color: crimson;
-  }
-  100% {
-    transform: rotate(360deg);
-    color: yellow;
-  }
-`;
-
-const growProgress = keyframes`
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-`;
-
-const Component = styled.div(({ styles }: { styles?: React.CSSProperties }) => ({
-  display: 'inline-block',
-  ...styles,
-}));
+const Component = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
+  <div className={clsx(styles.component, className)}>{children}</div>
+);
 
 const meta = {
   component: Component,
@@ -51,48 +25,23 @@ type Story = StoryObj<typeof meta>;
 
 export const FadeIn: Story = {
   args: {
-    styles: {
-      animation: `${fadeIn} 3s linear`,
-    },
+    className: styles.fadeIn,
   },
 };
 
 export const Infinite: Story = {
   args: {
-    styles: {
-      animation: `${rotate} 3s linear infinite alternate`,
-    },
+    className: styles.infinite,
   },
 };
-
-const Container = styled.div({
-  height: '150vh',
-  width: '100vw',
-  background: 'linear-gradient(to bottom, white, silver)',
-  position: 'relative',
-  textAlign: 'center',
-  padding: '120px 0',
-});
-
-const Bar = styled.div({
-  position: 'fixed',
-  left: 0,
-  top: 0,
-  width: '100%',
-  height: 10,
-  background: 'crimson',
-  transformOrigin: '0 50%',
-  animation: `${growProgress} auto linear`,
-  animationTimeline: 'scroll()',
-});
 
 export const Scroll: Story = {
   args: {
     children: (
-      <Container>
-        <Bar />
+      <div className={styles.container}>
+        <div className={styles.bar} />
         <span>A red bar appears as you scroll ↓</span>
-      </Container>
+      </div>
     ),
   },
   play: async () => {
@@ -105,25 +54,12 @@ export const Scroll: Story = {
   },
 };
 
-const Button = styled.button({
-  background: 'crimson',
-  color: 'white',
-  padding: '10px 20px',
-  borderRadius: '5px',
-  border: 'none',
-  transition: 'background 3s linear',
-  '&:focus': {
-    background: 'mediumblue',
-    outline: 'none',
-  },
-});
-
 export const Transition: Story = {
   args: {
     children: (
       <div style={{ display: 'flex', gap: '10px' }}>
-        <Button>I turn blue</Button>
-        <Button>I stay red</Button>
+        <button className={styles.button}>I turn blue</button>
+        <button className={styles.button}>I stay red</button>
       </div>
     ),
   },

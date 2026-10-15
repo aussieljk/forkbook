@@ -5,20 +5,18 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { API, State } from 'storybook/manager-api';
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
-
 import type { ActionDisplay } from '../../models/index.ts';
 import { EVENT_ID } from '../../constants.ts';
 import ActionLogger from './index.tsx';
 
-const StyledWrapper = styled.div(({ theme }) => ({
-  backgroundColor: theme.background.content,
-  color: theme.color.defaultText,
+const wrapperStyle: React.CSSProperties = {
+  backgroundColor: 'var(--sb-background-content)',
+  color: 'var(--sb-color-default-text)',
   display: 'block',
   height: '400px',
   position: 'relative',
   overflow: 'auto',
-}));
+};
 
 /**
  * A minimal event-emitter mock for the Storybook manager API.
@@ -84,9 +82,9 @@ const meta = {
 
     return (
       <ManagerContext.Provider value={managerContext}>
-        <StyledWrapper id="panel-tab-content">
+        <div id="panel-tab-content" style={wrapperStyle}>
           <ActionLogger {...args} api={api} />
-        </StyledWrapper>
+        </div>
       </ManagerContext.Provider>
     );
   },

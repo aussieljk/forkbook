@@ -6,12 +6,12 @@ import { ActionList, Button, Link, ScrollArea } from 'storybook/internal/compone
 import { ArrowLeftIcon, GithubIcon, ShareAltIcon, StorybookIcon } from '@storybook/icons';
 
 import { useTransitionState } from 'react-transition-state';
-import { keyframes, styled } from 'storybook/theming';
 
 import { MOBILE_TRANSITION_DURATION } from '../../../constants.ts';
 import { useFocusTrap } from '../../../hooks/useFocusTrap.ts';
 import { useLayout } from '../../layout/LayoutProvider.tsx';
 import { UpgradeBlock } from '../../upgrade/UpgradeBlock.tsx';
+import styles from './MobileAbout.module.css';
 
 export const MobileAbout: FC = () => {
   const { isMobileAboutOpen, setMobileAboutOpen } = useLayout();
@@ -37,14 +37,16 @@ export const MobileAbout: FC = () => {
   }
 
   return (
-    <Container
+    <div
+      className={styles.container}
       ref={aboutRef}
-      $status={state.status}
-      $transitionDuration={MOBILE_TRANSITION_DURATION}
+      data-status={state.status}
+      style={{ animationDuration: `${MOBILE_TRANSITION_DURATION}ms` }}
     >
       <ScrollArea vertical offset={3} scrollbarSize={6}>
-        <InnerArea>
-          <CloseButton
+        <div className={styles.innerArea}>
+          <Button
+            className={styles.closeButton}
             onClick={() => setMobileAboutOpen(false)}
             ariaLabel="Close about section"
             tooltip="Close about section"
@@ -52,8 +54,8 @@ export const MobileAbout: FC = () => {
           >
             <ArrowLeftIcon />
             Back
-          </CloseButton>
-          <LinkList>
+          </Button>
+          <ActionList className={styles.linkList}>
             <ActionList.Item>
               <ActionList.Link
                 ariaLabel={false}
@@ -90,9 +92,9 @@ export const MobileAbout: FC = () => {
                 </ActionList.Icon>
               </ActionList.Link>
             </ActionList.Item>
-          </LinkList>
+          </ActionList>
           <UpgradeBlock />
-          <BottomText>
+          <div className={styles.bottomText}>
             Open source software maintained by{' '}
             <Link href="https://chromatic.com" target="_blank" rel="noopener noreferrer">
               Chromatic
@@ -105,70 +107,9 @@ export const MobileAbout: FC = () => {
             >
               Storybook Community
             </Link>
-          </BottomText>
-        </InnerArea>
+          </div>
+        </div>
       </ScrollArea>
-    </Container>
+    </div>
   );
 };
-
-const slideFromRight = keyframes({
-  from: {
-    opacity: 0,
-    transform: 'translate(20px, 0)',
-  },
-  to: {
-    opacity: 1,
-    transform: 'translate(0, 0)',
-  },
-});
-
-const slideToRight = keyframes({
-  from: {
-    opacity: 1,
-    transform: 'translate(0, 0)',
-  },
-  to: {
-    opacity: 0,
-    transform: 'translate(20px, 0)',
-  },
-});
-
-const Container = styled.div<{ $status: string; $transitionDuration: number }>(
-  ({ theme, $status, $transitionDuration }) => ({
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    borderRadius: '10px 10px 0 0',
-    top: 0,
-    left: 0,
-    zIndex: 11,
-    overflow: 'auto',
-    color: theme.color.defaultText,
-    background: theme.background.content,
-    animation:
-      $status === 'exiting'
-        ? `${slideToRight} ${$transitionDuration}ms`
-        : `${slideFromRight} ${$transitionDuration}ms`,
-  })
-);
-
-const InnerArea = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 20,
-  padding: '25px 12px 20px',
-});
-
-const LinkList = styled(ActionList)({
-  padding: 0,
-});
-
-const BottomText = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2 - 1,
-  marginTop: 30,
-}));
-
-const CloseButton = styled(Button)({
-  alignSelf: 'start',
-});

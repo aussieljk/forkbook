@@ -27,8 +27,6 @@ export const STYLING_PACKAGES = [
   'tailwindcss',
   'autoprefixer',
   'sass',
-  'emotion',
-  '@emotion/*',
   'less',
   'styled-components',
   '@stylexjs/*',

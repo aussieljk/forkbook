@@ -24,7 +24,6 @@ export default {
 
 For tool-specific setup, check out the recipes below
 
-- [`@emotion/styled`](https://github.com/storybookjs/storybook/tree/next/code/addons/themes/docs/getting-started/emotion.md)
 - [`@mui/material`](https://github.com/storybookjs/storybook/tree/next/code/addons/themes/docs/getting-started/material-ui.md)
 - [`bootstrap`](https://github.com/storybookjs/storybook/tree/next/code/addons/themes/docs/getting-started/bootstrap.md)
 - [`postcss`](https://github.com/storybookjs/storybook/tree/next/code/addons/themes/docs/getting-started/postcss.md)

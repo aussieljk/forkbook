@@ -1,0 +1,17 @@
+.list {
+  z-index: 200;
+
+  & > * + * {
+    margin-top: 12px;
+  }
+
+  &:empty {
+    display: none;
+  }
+
+  &[data-mobile] {
+    position: fixed;
+    bottom: 40px;
+    margin: 20px;
+  }
+}

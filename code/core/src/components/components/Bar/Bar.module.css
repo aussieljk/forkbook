@@ -1,0 +1,76 @@
+/*
+ * State selectors are in :where() so each rule has the specificity of one class. Components that
+ * add a class to a Bar can then override these styles.
+ */
+.bar {
+  color: var(--sb-bar-text-color);
+  width: 100%;
+  min-height: 40px;
+  flex-shrink: 0;
+  /* TODO in Storybook 11: Apply background regardless of border. */
+  scrollbar-color: var(--sb-bar-text-color) transparent;
+  scrollbar-width: thin;
+  overflow: hidden;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 6px;
+}
+
+.bar:where([data-scrollable]) {
+  overflow: auto;
+  overflow-y: hidden;
+  gap: 0;
+  padding-inline: 0;
+}
+
+.bar:where([data-border]) {
+  scrollbar-color: var(--sb-bar-text-color) var(--bar-bg, var(--sb-bar-bg));
+  box-shadow: var(--sb-app-border-color) 0 -1px 0 0 inset;
+  background: var(--bar-bg, var(--sb-bar-bg));
+}
+
+.heightPreserver {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+  padding-inline: 6px;
+}
+
+.side {
+  display: flex;
+  white-space: nowrap;
+  flex-basis: auto;
+  margin-left: 3px;
+  margin-right: 10px;
+}
+
+.side:where([data-scrollable]) {
+  flex-shrink: 0;
+}
+
+.side:where([data-left]) > * {
+  margin-left: 4px;
+}
+
+.side:where([data-right]) {
+  gap: 6px;
+}
+
+.barInner {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  height: 40px;
+  width: 100%;
+}
+
+/* Compensate new default inline padding for Bar to reduce the extent of visible changes in 10.1 for FlexBar users. */
+.barWithoutPadding {
+  padding-inline: 0;
+}

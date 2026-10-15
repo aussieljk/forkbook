@@ -1,0 +1,33 @@
+.wrapper {
+  position: relative;
+  font-size: var(--sb-size-s1);
+
+  & input {
+    width: 70px;
+    height: 28px;
+    min-height: 28px;
+    padding-left: 25px;
+    padding-right: 0;
+    font-size: inherit;
+
+    &:focus {
+      box-shadow: none;
+      outline: 2px solid var(--sb-color-secondary);
+      outline-offset: -2px;
+    }
+  }
+
+  &[data-prefix]::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: attr(data-prefix);
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    z-index: 1;
+    color: var(--sb-text-muted-color);
+  }
+}

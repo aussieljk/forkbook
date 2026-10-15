@@ -1,10 +1,8 @@
-import type { ComponentProps } from 'react';
+import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Button, Spaced } from 'storybook/internal/components';
+import { Button } from 'storybook/internal/components';
 import type { DocsContextProps, ModuleExport } from 'storybook/internal/types';
-
-import { styled } from 'storybook/theming';
 
 import * as ButtonStories from '../examples/Button.stories';
 import { Preview, PreviewSkeleton } from './Preview';
@@ -202,10 +200,11 @@ export const WithToolbar = (
   </Preview>
 );
 
-const Horizontal = styled((props: ComponentProps<typeof Spaced>) => <Spaced col={1} {...props} />)({
-  display: 'grid',
-  gridTemplateColumns: '100px calc(100vw + 100px) 100px',
-});
+const Horizontal = ({ children }: { children: ReactNode }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '100px calc(100vw + 100px) 100px' }}>
+    {children}
+  </div>
+);
 
 export const Wide = () => (
   <Preview inline withToolbar>

@@ -1,0 +1,60 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  color: var(--sb-color-default-text);
+  color-scheme: light;
+
+  &[data-bordered] {
+    border: 1px solid var(--sb-app-border-color);
+    background: var(--sb-background-content);
+  }
+}
+
+:where([data-sb-theme='dark']) .wrapper {
+  color-scheme: dark;
+}
+
+.scroller {
+  flex: 1;
+  flex-shrink: 0;
+  flex-basis: fit-content;
+  max-width: 100%;
+}
+
+/* The sugar-high colours (--sh-*) come from the theme variables. */
+.pre {
+  margin: 0;
+  padding: 0;
+  padding-right: var(--sb-layout-margin);
+  font-family: var(--sb-font-mono);
+  white-space: pre;
+  counter-reset: sh-line;
+
+  &[data-padded] {
+    padding: var(--sb-layout-margin);
+  }
+
+  &[data-wrap] {
+    white-space: pre-wrap;
+  }
+
+  & :global(.sh__line) {
+    display: block;
+  }
+
+  & :global(.sh__token--comment) {
+    font-style: italic;
+  }
+
+  &[data-line-numbers] :global(.sh__line)::before {
+    counter-increment: sh-line;
+    content: counter(sh-line);
+    display: inline-block;
+    min-width: 2.25em;
+    padding-right: 1em;
+    text-align: right;
+    opacity: 0.5;
+  }
+}

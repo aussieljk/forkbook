@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { styled, typography } from 'storybook/theming';
-
 import { useAnsiToHtmlFilter } from '../utils.ts';
 import { Node } from './MethodCall.tsx';
+import styles from './MatcherResult.module.css';
 
 const getParams = (line: string, fromIndex = 0): string => {
   for (let i = fromIndex, depth = 1; i < line.length; i += 1) {
@@ -28,19 +27,11 @@ const parseValue = (value: string): any => {
   }
 };
 
-const StyledExpected = styled.span(({ theme }) => ({
-  color: theme.base === 'light' ? theme.color.positiveText : theme.color.positive,
-}));
-
-const StyledReceived = styled.span(({ theme }) => ({
-  color: theme.base === 'light' ? theme.color.negativeText : theme.color.negative,
-}));
-
 export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
   parsed ? (
     <Node showObjectInspector value={value} style={{ color: '#D43900' }} />
   ) : (
-    <StyledReceived>{value}</StyledReceived>
+    <span className={styles.received}>{value}</span>
   );
 
 export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
@@ -50,7 +41,7 @@ export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) =>
     }
     return <Node showObjectInspector value={value} style={{ color: '#16B242' }} />;
   }
-  return <StyledExpected>{value}</StyledExpected>;
+  return <span className={styles.expected}>{value}</span>;
 };
 
 export const MatcherResult = ({
@@ -67,7 +58,7 @@ export const MatcherResult = ({
       style={{
         margin: 0,
         padding: '8px 10px 8px 36px',
-        fontSize: typography.size.s1,
+        fontSize: 'var(--sb-size-s1)',
         ...style,
       }}
     >

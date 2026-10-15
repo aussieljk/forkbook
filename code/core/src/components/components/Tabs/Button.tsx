@@ -1,4 +1,5 @@
 import type {
+  CSSProperties,
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   DetailedHTMLProps,
@@ -12,7 +13,9 @@ import React, { forwardRef } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { isPropValid, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './Button.module.css';
 
 interface ButtonProps extends DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -85,59 +88,21 @@ export interface TabButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> 
   textColor?: string;
 }
 
-const StyledTabButton = styled(ButtonOrLink, { shouldForwardProp: isPropValid })<TabButtonProps>(
-  {
-    whiteSpace: 'normal',
-    display: 'inline-flex',
-    overflow: 'hidden',
-    verticalAlign: 'top',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    textDecoration: 'none',
-
-    '&:empty': {
-      display: 'none',
-    },
-    '&[hidden]': {
-      display: 'none',
-    },
-  },
-  ({ theme }) => ({
-    padding: '0 15px',
-    transition: 'color 0.2s linear, border-bottom-color 0.2s linear',
-    height: 40,
-    lineHeight: '12px',
-    cursor: 'pointer',
-    background: 'transparent',
-    border: '0 solid transparent',
-    borderTop: '3px solid transparent',
-    borderBottom: '3px solid transparent',
-    fontWeight: 'bold',
-    fontSize: 13,
-
-    '&:focus': {
-      outline: '0 none',
-      borderBottomColor: theme.barSelectedColor,
-    },
-  }),
-  ({ active, textColor, theme }) =>
-    active
-      ? {
-          color: textColor || theme.barSelectedColor,
-          borderBottomColor: theme.barSelectedColor,
+export const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(
+  ({ active, textColor, className, style, ...props }, ref) => {
+    deprecate('The `TabButton` component is deprecated. Use `TabList` instead.');
+    return (
+      <ButtonOrLink
+        data-deprecated="TabButton"
+        ref={ref}
+        className={clsx(styles.tabButton, className)}
+        data-active={active || undefined}
+        style={
+          textColor ? ({ '--sb-tab-text-color': textColor, ...style } as CSSProperties) : style
         }
-      : {
-          color: textColor || theme.barTextColor,
-          borderBottomColor: 'transparent',
-          '&:hover': {
-            color: theme.barHoverColor,
-          },
-        }
+        {...props}
+      />
+    );
+  }
 );
-
-export const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>((props, ref) => {
-  deprecate('The `TabButton` component is deprecated. Use `TabList` instead.');
-  return <StyledTabButton data-deprecated="TabButton" ref={ref} {...props} />;
-});
 TabButton.displayName = 'TabButton';

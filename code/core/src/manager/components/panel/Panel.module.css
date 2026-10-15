@@ -1,0 +1,11 @@
+.aside {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

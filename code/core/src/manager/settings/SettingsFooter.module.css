@@ -1,0 +1,11 @@
+.footer {
+  display: flex;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--sb-app-border-color);
+  font-weight: var(--sb-weight-bold);
+
+  & > * + * {
+    margin-left: 20px;
+  }
+}

@@ -1,27 +1,16 @@
 import React, { type ComponentProps } from 'react';
 
+import { clsx } from 'clsx';
+
 import { Link as LinkComponent } from 'storybook/internal/components';
 import type { TestProviderState } from 'storybook/internal/types';
-
-import { styled } from 'storybook/theming';
 
 import type { StoreState } from '../types.ts';
 import { GlobalErrorContext } from './GlobalErrorModal.tsx';
 import { RelativeTime } from './RelativeTime.tsx';
+import styles from './Description.module.css';
 
-export const Wrapper = styled.div(({ theme }) => ({
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  textOverflow: 'ellipsis',
-  fontSize: theme.typography.size.s1,
-  color: theme.textMutedColor,
-}));
-
-const PositiveText = styled.span(({ theme }) => ({
-  color: theme.color.positiveText,
-}));
-
-interface DescriptionProps extends Omit<ComponentProps<typeof Wrapper>, 'results'> {
+interface DescriptionProps extends ComponentProps<'div'> {
   storeState: StoreState;
   testProviderState: TestProviderState;
   entryId?: string;
@@ -33,6 +22,7 @@ export function Description({
   storeState,
   testProviderState,
   isSettingsUpdated,
+  className,
   ...props
 }: DescriptionProps) {
   const { setModalOpen } = React.useContext(GlobalErrorContext);
@@ -42,7 +32,7 @@ export function Description({
 
   let description: string | React.ReactNode = 'Not run';
   if (!entryId && isSettingsUpdated) {
-    description = <PositiveText>Settings updated</PositiveText>;
+    description = <span className={styles.positiveText}>Settings updated</span>;
   } else if (testProviderState === 'test-provider-state:running') {
     description =
       (finishedTestCount ?? 0) === 0
@@ -74,5 +64,9 @@ export function Description({
     description = 'Watching for file changes';
   }
 
-  return <Wrapper {...props}>{description}</Wrapper>;
+  return (
+    <div className={clsx(styles.wrapper, className)} {...props}>
+      {description}
+    </div>
+  );
 }

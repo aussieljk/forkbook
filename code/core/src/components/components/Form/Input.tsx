@@ -1,44 +1,16 @@
 import React, { type HTMLProps } from 'react';
 import { forwardRef, useId } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import {
   type Alignments,
   type Sizes,
   type ValidationStates,
-  alignment,
-  sizes,
-  styles,
-  validation,
+  controlClassName,
+  sizeClassName,
 } from './styles.ts';
-
-const Wrapper = styled.div({
-  position: 'relative',
-  width: '100%',
-});
-
-const Mask = styled.div(
-  ({ theme }) => ({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    pointerEvents: 'none',
-    overflow: 'hidden',
-    color: theme.textMutedColor,
-    'span:first-of-type': {
-      opacity: 0,
-    },
-  }),
-  (props) => {
-    const { fontSize, lineHeight, padding } = styles(props);
-    return { fontSize, lineHeight, padding };
-  }
-);
+import styles from './Input.module.css';
 
 type InputProps = Omit<
   HTMLProps<HTMLInputElement>,
@@ -56,35 +28,30 @@ type InputProps = Omit<
   suffix?: string;
 };
 
-export const Input = Object.assign(
-  styled(
-    forwardRef<any, InputProps>(function Input(
-      { size, valid, align, value, suffix, ...props },
-      ref
-    ) {
-      const suffixId = useId();
-      return (
-        <Wrapper>
-          <input
-            {...props}
-            value={value}
-            ref={ref}
-            aria-describedby={suffix ? suffixId : undefined}
-          />
-          {suffix && (
-            <Mask aria-hidden>
-              <span>{value}</span>
-              <span id={suffixId}>{suffix}</span>
-            </Mask>
-          )}
-        </Wrapper>
-      );
-    })
-  )<InputProps>(styles, sizes, alignment, validation, {
-    minHeight: 32,
-    width: '100%',
-  }),
-  {
-    displayName: 'Input',
-  }
-);
+export const Input = forwardRef<any, InputProps>(function Input(
+  { size, valid, align, value, suffix, className, ...props },
+  ref
+) {
+  const suffixId = useId();
+  return (
+    <div className={styles.wrapper}>
+      <input
+        {...props}
+        className={clsx(controlClassName, sizeClassName, styles.input, className)}
+        data-size={size}
+        data-align={align}
+        data-valid={valid}
+        value={value}
+        ref={ref}
+        aria-describedby={suffix ? suffixId : undefined}
+      />
+      {suffix && (
+        <div className={styles.mask} aria-hidden>
+          <span>{value}</span>
+          <span id={suffixId}>{suffix}</span>
+        </div>
+      )}
+    </div>
+  );
+});
+Input.displayName = 'Input';

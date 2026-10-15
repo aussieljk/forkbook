@@ -5,24 +5,17 @@ import { deprecate, logger } from 'storybook/internal/client-logger';
 
 import * as StorybookIcons from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
+import styles from './icon.module.css';
 
 export type IconType = keyof typeof icons;
 type NewIconTypes = (typeof icons)[IconType];
 
-const NEW_ICON_MAP = StorybookIcons as unknown as Record<NewIconTypes, (props: unknown) => React.ReactNode>;
+const NEW_ICON_MAP = StorybookIcons as unknown as Record<
+  NewIconTypes,
+  (props: unknown) => React.ReactNode
+>;
 
-const Svg = styled.svg`
-  display: inline-block;
-  shape-rendering: inherit;
-  vertical-align: middle;
-  fill: currentColor;
-  path {
-    fill: currentColor;
-  }
-`;
-
-export interface IconsProps extends ComponentProps<typeof Svg> {
+export interface IconsProps extends ComponentProps<'svg'> {
   icon: IconType;
   useSymbol?: boolean;
   onClick?: () => void;
@@ -74,7 +67,8 @@ export interface SymbolsProps {
  */
 export const Symbols = memo<SymbolsProps>(function Symbols({ icons: keys = Object.keys(icons) }) {
   return (
-    <Svg
+    <svg
+      className={styles.svg}
       viewBox="0 0 14 14"
       style={{ position: 'absolute', width: 0, height: 0 }}
       data-chromatic="ignore"
@@ -85,7 +79,7 @@ export const Symbols = memo<SymbolsProps>(function Symbols({ icons: keys = Objec
           {icons[key]}
         </symbol>
       ))}
-    </Svg>
+    </svg>
   );
 });
 

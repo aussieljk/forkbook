@@ -5,25 +5,11 @@ import { Button, TabsView } from 'storybook/internal/components';
 import { CollapseIcon, ExpandAltIcon, EyeCloseIcon, EyeIcon, SyncIcon } from '@storybook/icons';
 
 import type { Result } from 'axe-core';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import type { RuleType } from '../types.ts';
 import { useA11yContext } from './A11yContext.tsx';
-
-const Container = styled.div({
-  width: '100%',
-  position: 'relative',
-  height: '100%',
-  overflow: 'hidden',
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const ActionsWrapper = styled.div({
-  display: 'flex',
-  justifyContent: 'flex-end',
-  gap: 6,
-});
+import styles from './Tabs.module.css';
 
 interface TabsProps {
   tabs: {
@@ -49,7 +35,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
   const theme = useTheme();
 
   return (
-    <Container>
+    <div className={styles.container}>
       <TabsView
         backgroundColor={theme.background.app}
         panelProps={{ hasScrollbar: true }}
@@ -62,7 +48,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
         // Safe to cast key to RuleType because we use RuleTypes as IDs above.
         onSelectionChange={(key) => setTab(key as RuleType)}
         tools={
-          <ActionsWrapper>
+          <div className={styles.actions}>
             <Button
               variant="ghost"
               padding="small"
@@ -92,9 +78,9 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
             >
               <SyncIcon />
             </Button>
-          </ActionsWrapper>
+          </div>
         }
       />
-    </Container>
+    </div>
   );
 };

@@ -3,19 +3,9 @@ import React from 'react';
 
 import { Zoom } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const StyledIframe = styled.iframe(({ theme }) => ({
-  backgroundColor: theme.background.preview,
-  display: 'block',
-  boxSizing: 'content-box',
-  height: '100%',
-  width: '100%',
-  border: 'none',
-  transition: 'background-position 0s, visibility 0s',
-  backgroundPosition: '-1px -1px, -1px -1px, -1px -1px, -1px -1px',
-  margin: `auto`,
-}));
+import styles from './Iframe.module.css';
 
 export interface IFrameProps {
   id: string;
@@ -27,11 +17,12 @@ export interface IFrameProps {
 }
 
 export function IFrame(props: IFrameProps & IframeHTMLAttributes<HTMLIFrameElement>) {
-  const { active, id, title, src, allowFullScreen, scale, ...rest } = props;
+  const { active, id, title, src, allowFullScreen, scale, className, ...rest } = props;
   const iFrameRef = React.useRef<HTMLIFrameElement>(null);
   return (
     <Zoom.IFrame scale={scale} active={active} iFrameRef={iFrameRef}>
-      <StyledIframe
+      <iframe
+        className={clsx(styles.iframe, className)}
         data-is-storybook={active ? 'true' : 'false'}
         onLoad={(e) => e.currentTarget.setAttribute('data-is-loaded', 'true')}
         id={id}

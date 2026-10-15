@@ -1,0 +1,44 @@
+.textStyle {
+  font-size: var(--sb-size-s2);
+  line-height: 20px;
+  margin: 0;
+}
+
+.text {
+  font-size: var(--sb-size-s2);
+  line-height: 20px;
+  margin: 0;
+
+  & code {
+    font-size: var(--sb-size-s1);
+  }
+
+  & ul {
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+}
+
+.errorDisplay {
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: auto;
+  white-space: pre;
+  min-width: 420px;
+  max-width: 640px;
+  color: var(--sb-color-dark);
+
+  &[data-mobile] {
+    min-width: 0;
+    max-width: calc(100vw - 40px);
+  }
+}
+
+.flexSpaced {
+  display: flex;
+}
+
+.wideSpaced {
+  flex: 1;
+}

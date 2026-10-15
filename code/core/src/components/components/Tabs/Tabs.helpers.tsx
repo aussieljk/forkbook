@@ -1,20 +1,21 @@
 import type { FC, PropsWithChildren, ReactChild, ReactElement, ReactNode } from 'react';
-import React, { Children } from 'react';
+import React, { Children, forwardRef } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 import type { Addon_RenderOptions } from 'storybook/internal/types';
 
-import { styled } from 'storybook/theming';
-
 import type { TabsProps } from './Tabs.tsx';
 
-export interface VisuallyHiddenProps {
+export interface VisuallyHiddenProps extends React.HTMLAttributes<HTMLDivElement> {
   active?: boolean;
 }
 
-export const VisuallyHidden = styled.div<VisuallyHiddenProps>(({ active }) =>
-  active ? { display: 'block' } : { display: 'none' }
+export const VisuallyHidden = forwardRef<HTMLDivElement, VisuallyHiddenProps>(
+  ({ active, style, ...props }, ref) => (
+    <div ref={ref} style={{ display: active ? 'block' : 'none', ...style }} {...props} />
+  )
 );
+VisuallyHidden.displayName = 'VisuallyHidden';
 
 export const childrenToList = (children: TabsProps['children']) => {
   deprecate('The `childrenToList` tabs helper is deprecated. Use `TabsView` instead.');

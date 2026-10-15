@@ -5,99 +5,10 @@ import { logger } from 'storybook/internal/client-logger';
 
 import { ChevronSmallDownIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-import type { CSSObject } from 'storybook/theming';
-
 import { getControlId } from '../helpers';
 import type { ControlProps, NormalizedOptionsConfig, OptionsSelection } from '../types';
 import { selectedKey, selectedKeys, selectedValues } from './helpers';
-
-const styleResets: CSSObject = {
-  // resets
-  appearance: 'none',
-  border: '0 none',
-  boxSizing: 'inherit',
-  display: ' block',
-  margin: ' 0',
-  background: 'transparent',
-  padding: 0,
-  fontSize: 'inherit',
-  position: 'relative',
-};
-
-const OptionsSelect = styled.select(styleResets, ({ theme }) => ({
-  boxSizing: 'border-box',
-  position: 'relative',
-  padding: '6px 10px',
-  width: '100%',
-
-  color: theme.input.color || 'inherit',
-  background: theme.input.background,
-  borderRadius: theme.input.borderRadius,
-  boxShadow: `${theme.input.border} 0 0 0 1px inset`,
-
-  fontSize: theme.typography.size.s2 - 1,
-  lineHeight: '20px',
-
-  '&:focus': {
-    boxShadow: `${theme.color.secondary} 0 0 0 1px inset`,
-    outline: 'none',
-  },
-
-  '&[disabled]': {
-    cursor: 'not-allowed',
-    opacity: 0.5,
-  },
-
-  '::placeholder': {
-    color: theme.textMutedColor,
-  },
-
-  '&[multiple]': {
-    overflow: 'auto',
-    padding: 0,
-
-    option: {
-      display: 'block',
-      padding: '6px 10px',
-      marginLeft: 1,
-      marginRight: 1,
-
-      '&:hover': {
-        background: theme.background.hoverable,
-      },
-      '&:checked': {
-        background: 'transparent',
-        color: theme.color.secondary,
-        fontWeight: theme.typography.weight.bold,
-      },
-    },
-  },
-}));
-
-const SelectWrapper = styled.span(({ theme }) => ({
-  display: 'inline-block',
-  lineHeight: 'normal',
-  overflow: 'hidden',
-  position: 'relative',
-  verticalAlign: 'top',
-  width: '100%',
-
-  svg: {
-    position: 'absolute',
-    zIndex: 1,
-    pointerEvents: 'none',
-    height: '12px',
-    marginTop: '-6px',
-    right: '12px',
-    top: '50%',
-    fill: theme.textMutedColor,
-
-    path: {
-      fill: theme.textMutedColor,
-    },
-  },
-}));
+import styles from './Select.module.css';
 
 type SelectConfig = NormalizedOptionsConfig & { isMulti: boolean };
 type SelectProps = ControlProps<OptionsSelection> & SelectConfig;
@@ -123,12 +34,13 @@ const SingleSelect: FC<SelectProps> = ({
   const readonly = !!argType?.table?.readonly;
 
   return (
-    <SelectWrapper>
+    <span className={styles.wrapper}>
       <ChevronSmallDownIcon />
       <label htmlFor={controlId} className="sb-sr-only">
         {name}
       </label>
-      <OptionsSelect
+      <select
+        className={styles.select}
         disabled={readonly}
         id={controlId}
         value={selection}
@@ -143,8 +55,8 @@ const SingleSelect: FC<SelectProps> = ({
             {key}
           </option>
         ))}
-      </OptionsSelect>
-    </SelectWrapper>
+      </select>
+    </span>
   );
 };
 
@@ -170,11 +82,12 @@ const MultiSelect: FC<SelectProps> = ({
   const readonly = !!argType?.table?.readonly;
 
   return (
-    <SelectWrapper>
+    <span className={styles.wrapper}>
       <label htmlFor={controlId} className="sb-sr-only">
         {name}
       </label>
-      <OptionsSelect
+      <select
+        className={styles.select}
         disabled={readonly}
         id={controlId}
         multiple
@@ -187,8 +100,8 @@ const MultiSelect: FC<SelectProps> = ({
             {key}
           </option>
         ))}
-      </OptionsSelect>
-    </SelectWrapper>
+      </select>
+    </span>
   );
 };
 

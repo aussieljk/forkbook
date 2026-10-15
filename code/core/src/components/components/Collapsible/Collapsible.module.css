@@ -1,0 +1,24 @@
+.content {
+  block-size: auto;
+  content-visibility: visible;
+  transform: translateY(0);
+  opacity: 1;
+  overflow: hidden;
+
+  @supports (interpolate-size: allow-keywords) {
+    interpolate-size: allow-keywords;
+    transition: all var(--transition-duration, 0.2s);
+    transition-behavior: allow-discrete;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.content:where([data-collapsed]) {
+  block-size: 0;
+  content-visibility: hidden;
+  transform: translateY(-10px);
+  opacity: 0;
+}

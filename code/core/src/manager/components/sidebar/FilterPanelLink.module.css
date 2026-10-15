@@ -1,0 +1,11 @@
+.mutedText {
+  color: var(--sb-text-muted-color);
+}
+
+.statusIcon {
+  display: contents;
+
+  & > svg {
+    transform: scale(1.3);
+  }
+}

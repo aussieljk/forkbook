@@ -1,71 +1,40 @@
+import type { CSSProperties } from 'react';
 import React from 'react';
 
-import { ignoreSsrWarning, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './Spaced.module.css';
 
 const toNumber = (input: any) => (typeof input === 'number' ? input : Number(input));
-
-export interface ContainerProps {
-  col?: number;
-  row?: number;
-  outer?: number;
-}
-
-const Container = styled.div<ContainerProps>(
-  ({ theme, col, row = 1 }) =>
-    col
-      ? {
-          display: 'inline-block',
-          verticalAlign: 'inherit',
-          '& > *': {
-            marginLeft: col * theme.layoutMargin,
-            verticalAlign: 'inherit',
-          },
-          [`& > *:first-child${ignoreSsrWarning}`]: {
-            marginLeft: 0,
-          },
-        }
-      : {
-          '& > *': {
-            marginTop: row * theme.layoutMargin,
-          },
-          [`& > *:first-child${ignoreSsrWarning}`]: {
-            marginTop: 0,
-          },
-        },
-  ({ theme, outer, col, row }) => {
-    switch (true) {
-      case !!(outer && col): {
-        return {
-          marginLeft: outer * theme.layoutMargin,
-          marginRight: outer * theme.layoutMargin,
-        };
-      }
-      case !!(outer && row): {
-        return {
-          marginTop: outer * theme.layoutMargin,
-          marginBottom: outer * theme.layoutMargin,
-        };
-      }
-      default: {
-        return {};
-      }
-    }
-  }
-);
 
 export interface SpacedProps {
   children?: React.ReactNode;
   col?: number;
   row?: number;
   outer?: number | boolean;
+  className?: string;
 }
 
-export const Spaced = ({ col, row, outer, children, ...rest }: SpacedProps) => {
+export const Spaced = ({ col, row, outer, children, className, ...rest }: SpacedProps) => {
   const outerAmount = toNumber(typeof outer === 'number' || !outer ? outer : col || row);
 
   return (
-    <Container col={col} row={row} outer={outerAmount} {...rest}>
+    <div
+      className={clsx(
+        col ? styles.col : styles.row,
+        outerAmount && col ? styles.outerCol : outerAmount && row ? styles.outerRow : undefined,
+        className
+      )}
+      style={
+        {
+          '--spaced-col': col,
+          '--spaced-row': row ?? 1,
+          '--spaced-outer': outerAmount,
+        } as CSSProperties
+      }
+      {...rest}
+    >
       {children}
-    </Container>
+    </div>
   );
 };

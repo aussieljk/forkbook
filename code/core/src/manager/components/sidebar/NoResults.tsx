@@ -1,21 +1,10 @@
-import { styled } from 'storybook/theming';
+import type { ComponentProps } from 'react';
+import React from 'react';
 
-export const NoResults = styled.div(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  textAlign: 'center',
-  textWrap: 'balance',
-  gap: 4,
-  padding: '20px 0',
-  lineHeight: `18px`,
-  fontSize: `${theme.typography.size.s2}px`,
-  color: theme.color.defaultText,
-  small: {
-    color: theme.textMutedColor,
-    fontSize: `${theme.typography.size.s1}px`,
-  },
-  button: {
-    marginTop: 8,
-    alignSelf: 'center',
-  },
-}));
+import { clsx } from 'clsx';
+
+import styles from './NoResults.module.css';
+
+export const NoResults = ({ className, ...props }: ComponentProps<'div'>) => (
+  <div className={clsx(styles.noResults, className)} {...props} />
+);

@@ -3,31 +3,9 @@ import React, { useMemo } from 'react';
 import { Link } from 'storybook/internal/components';
 
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { DOCUMENTATION_DISCREPANCY_LINK } from '../constants.ts';
-
-const Wrapper = styled.div(({ theme: { color, typography, background } }) => ({
-  textAlign: 'start',
-  padding: '11px 15px',
-  fontSize: `${typography.size.s2}px`,
-  fontWeight: typography.weight.regular,
-  lineHeight: '1rem',
-  background: background.app,
-  borderBottom: `1px solid ${color.border}`,
-  color: color.defaultText,
-  backgroundClip: 'padding-box',
-  position: 'relative',
-  code: {
-    fontSize: `${typography.size.s1 - 1}px`,
-    color: 'inherit',
-    margin: '0 0.2em',
-    padding: '0 0.2em',
-    background: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: '2px',
-    boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1)',
-  },
-}));
+import styles from './TestDiscrepancyMessage.module.css';
 
 export type TestDiscrepancy =
   | 'browserPassedCliFailed'
@@ -64,11 +42,11 @@ export const TestDiscrepancyMessage = ({ discrepancy }: TestDiscrepancyMessagePr
   }
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       {message}{' '}
       <Link href={docsUrl} target="_blank" withArrow>
         Learn what could cause this
       </Link>
-    </Wrapper>
+    </div>
   );
 };

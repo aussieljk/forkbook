@@ -1,99 +1,21 @@
-import type { ChangeEvent, FC, FocusEvent } from 'react';
+import type { CSSProperties, ChangeEvent, FC, FocusEvent } from 'react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button, Form, PopoverProvider } from 'storybook/internal/components';
 
 import { MarkupIcon } from '@storybook/icons';
 
+import { clsx } from 'clsx';
+
 import convert from 'color-convert';
 import { debounce } from 'es-toolkit/function';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
-import { styled } from 'storybook/theming';
 
 import { getControlId } from './helpers';
 import type { ColorConfig, ColorValue, ControlProps, PresetColor } from './types';
+import styles from './Color.module.css';
 
-const Wrapper = styled.div({
-  position: 'relative',
-  maxWidth: 250,
-});
-
-const TooltipContent = styled.div({
-  width: 200,
-  margin: 5,
-
-  '.react-colorful__saturation': {
-    borderRadius: '4px 4px 0 0',
-  },
-  '.react-colorful__hue': {
-    boxShadow: 'inset 0 0 0 1px rgb(0 0 0 / 5%)',
-  },
-  '.react-colorful__last-control': {
-    borderRadius: '0 0 4px 4px',
-  },
-});
-
-const Swatches = styled.div({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(9, 16px)',
-  gap: 6,
-  padding: 3,
-  marginTop: 5,
-  width: 200,
-});
-
-const swatchBackground = (isDark: boolean) =>
-  `url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill-opacity="0.05" fill="${isDark ? 'white' : 'black'}"><path d="M8 0h8v8H8zM0 8h8v8H0z"/></svg>')`;
-
-const SwatchColor = styled(Button)<{ selected?: boolean; value: string }>(
-  ({ value, selected, theme }) => ({
-    width: 16,
-    height: 16,
-    boxShadow: selected
-      ? `${theme.appBorderColor} 0 0 0 1px inset, ${theme.textMutedColor}50 0 0 0 4px`
-      : `${theme.appBorderColor} 0 0 0 1px inset`,
-    border: 'none',
-    borderRadius: theme.appBorderRadius,
-    '&, &:hover': {
-      background: 'unset',
-      backgroundColor: 'unset',
-      backgroundImage: `linear-gradient(${value}, ${value}), ${swatchBackground(theme.base === 'dark')}`,
-    },
-  })
-);
-
-const Input = styled(Form.Input)(({ theme }) => ({
-  width: '100%',
-  paddingLeft: 30,
-  paddingRight: 30,
-  boxSizing: 'border-box',
-  fontFamily: theme.typography.fonts.base,
-
-  '[aria-readonly="true"] > &': {
-    background: theme.base === 'light' ? theme.color.lighter : 'transparent',
-  },
-}));
-
-const PopoverTrigger = styled(SwatchColor)<{ disabled: boolean }>(({ disabled }) => ({
-  position: 'absolute',
-  top: 4,
-  left: 4,
-  zIndex: 1,
-  cursor: disabled ? 'not-allowed' : 'pointer',
-}));
-
-const CycleColorSpaceButton = styled(Button)(({ theme }) => ({
-  position: 'absolute',
-  zIndex: 1,
-  top: 6,
-  right: 7,
-  width: 20,
-  height: 20,
-  padding: 4,
-  boxSizing: 'border-box',
-  cursor: 'pointer',
-  color: theme.input.color,
-}));
+const swatchStyle = (color: string) => ({ '--sb-swatch-color': color }) as CSSProperties;
 
 enum ColorSpace {
   RGB = 'rgb',
@@ -390,11 +312,12 @@ export const ColorControl: FC<ColorControlProps> = ({
   const controlId = getControlId(name, storyId, controlsId);
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <label htmlFor={controlId} className="sb-sr-only">
         {name}
       </label>
-      <Input
+      <Form.Input
+        className={styles.input}
         id={controlId}
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) => updateValue(e.target.value)}
@@ -409,50 +332,51 @@ export const ColorControl: FC<ColorControlProps> = ({
         visible={readOnly ? false : undefined}
         onVisibleChange={() => color && addPreset(color)}
         popover={
-          <TooltipContent>
+          <div className={styles.tooltipContent}>
             <Picker
               color={realValue === 'transparent' ? '#000000' : realValue}
               {...{ onChange: updateValue, onFocus, onBlur }}
             />
             {presets.length > 0 && (
-              <Swatches>
+              <div className={styles.swatches}>
                 {presets.map((preset, index: number) => (
-                  <SwatchColor
+                  <Button
+                    className={styles.swatch}
                     key={`${preset?.value || index}-${index}`}
                     variant="ghost"
                     padding="small"
                     size="small"
                     ariaLabel="Pick this color"
                     tooltip={preset?.keyword || preset?.value || ''}
-                    value={preset?.value || ''}
-                    selected={
-                      !!(
-                        color &&
+                    style={swatchStyle(preset?.value || '')}
+                    data-selected={
+                      (color &&
                         preset &&
                         preset[colorSpace] &&
-                        id(preset[colorSpace] || '') === id(color[colorSpace])
-                      )
+                        id(preset[colorSpace] || '') === id(color[colorSpace])) ||
+                      undefined
                     }
                     onClick={() => preset && updateValue(preset.value || '')}
                   />
                 ))}
-              </Swatches>
+              </div>
             )}
-          </TooltipContent>
+          </div>
         }
       >
-        <PopoverTrigger
+        <Button
+          className={clsx(styles.swatch, styles.popoverTrigger)}
           variant="ghost"
           padding="small"
           size="small"
           ariaLabel="Open color picker"
-          value={realValue}
-          style={{ margin: 4 }}
+          style={{ ...swatchStyle(realValue), margin: 4 }}
           disabled={readOnly}
         />
       </PopoverProvider>
       {value ? (
-        <CycleColorSpaceButton
+        <Button
+          className={styles.cycleColorSpaceButton}
           variant="ghost"
           padding="small"
           size="small"
@@ -461,9 +385,9 @@ export const ColorControl: FC<ColorControlProps> = ({
           onClick={readOnly ? undefined : cycleColorSpace}
         >
           <MarkupIcon />
-        </CycleColorSpaceButton>
+        </Button>
       ) : null}
-    </Wrapper>
+    </div>
   );
 };
 

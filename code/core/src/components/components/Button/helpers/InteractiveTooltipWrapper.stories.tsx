@@ -1,6 +1,5 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
-
-import { styled } from 'storybook/theming';
 
 import preview from '../../../../../../.storybook/preview.tsx';
 import { POPPER_PLACEMENTS } from '../../shared/overlayHelpers.tsx';
@@ -19,9 +18,13 @@ const meta = preview.meta({
   },
 });
 
-const Stack = styled.div({ display: 'flex', flexDirection: 'column', gap: '1rem' });
+const Stack = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} />
+);
 
-const Row = styled.div({ display: 'flex', alignItems: 'center', gap: '1rem' });
+const Row = (props: ComponentProps<'div'>) => (
+  <div {...props} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} />
+);
 
 export const All = meta.story({
   render: () => (

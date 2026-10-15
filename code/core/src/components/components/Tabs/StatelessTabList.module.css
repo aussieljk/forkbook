@@ -1,0 +1,46 @@
+.root {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  flex: 1;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tabList {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.scrollButtonContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+
+  &[data-border='start'] {
+    box-shadow: inset 1px 0 0 var(--sb-app-border-color);
+  }
+
+  &[data-border='end'] {
+    box-shadow: inset -1px 0 0 var(--sb-app-border-color);
+  }
+}
+
+.scrollButton {
+  flex-shrink: 0;
+  padding-inline: 0;
+  width: 16px;
+}

@@ -7,7 +7,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ManagerContext, addons } from 'storybook/manager-api';
 import { expect, fn, waitFor } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { ADDON_ID as A11Y_ADDON_ID } from '../../../a11y/src/constants.ts';
 import { storeOptions } from '../constants.ts';
@@ -25,13 +24,6 @@ const managerContext: any = {
     togglePanel: fn().mockName('api::togglePanel'),
   },
 };
-
-const Content = styled.div({
-  padding: '12px 6px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-});
 
 const meta = {
   title: 'TestProviderRender',
@@ -59,9 +51,9 @@ const meta = {
   },
   decorators: [
     (StoryFn) => (
-      <Content>
+      <div style={{ padding: '12px 6px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <StoryFn />
-      </Content>
+      </div>
     ),
     (StoryFn) => (
       <ManagerContext.Provider value={managerContext}>

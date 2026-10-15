@@ -18,8 +18,6 @@ import {
   useStorybookState,
 } from 'storybook/manager-api';
 import type { DocgenService } from 'storybook/open-service';
-import { styled } from 'storybook/theming';
-
 import {
   ArgsTable,
   type SortType,
@@ -27,6 +25,7 @@ import {
 import type { PresetColor } from '../../../../addons/docs/src/blocks/controls/types.ts';
 import { PARAM_KEY } from '../constants.ts';
 import { SaveStory } from './SaveStory.tsx';
+import styles from './ControlsPanel.module.css';
 
 // Remove undefined values (top-level only)
 const clean = (obj: { [key: string]: any }) =>
@@ -39,19 +38,6 @@ const clean = (obj: { [key: string]: any }) =>
 // of its "No controls" empty state. Used to decide between showing controls and the loading skeleton
 // while docgen for the story is still pending, so the empty state never flashes before docgen lands.
 const hasAnyControl = (rows: ArgTypes) => Object.values(rows).some((arg) => arg?.control);
-
-const AddonWrapper = styled.div<{ showSaveFromUI: boolean }>(({ showSaveFromUI, theme }) => ({
-  // `minHeight` (not `height`) so the wrapper fills a short panel but grows with tall
-  // content; otherwise a fixed height clips the bottom padding into the middle of the
-  // scrolled content and the save bar overlaps the last control (#34531).
-  minHeight: '100%',
-  paddingBottom: showSaveFromUI ? 41 : 0,
-  backgroundColor: theme.background.content,
-
-  table: {
-    backgroundColor: theme.background.app,
-  },
-}));
 
 interface ControlsParameters {
   sort?: SortType;
@@ -116,7 +102,7 @@ function ControlsPanelTable({
     disableSaveFromUI !== true;
 
   return (
-    <AddonWrapper showSaveFromUI={showSaveFromUI}>
+    <div className={styles.wrapper} data-save-from-ui={showSaveFromUI || undefined}>
       <ArgsTable
         key={path} // resets state when switching stories
         compact={!expanded && hasControls}
@@ -130,7 +116,7 @@ function ControlsPanelTable({
         isLoading={isLoading}
       />
       {showSaveFromUI && <SaveStory {...{ resetArgs, saveStory, createStory }} />}
-    </AddonWrapper>
+    </div>
   );
 }
 

@@ -4,54 +4,12 @@ import { Badge, Button } from 'storybook/internal/components';
 
 import { SyncIcon } from '@storybook/icons';
 
-import { styled } from 'storybook/theming';
-
 import { RuleType } from '../types.ts';
 import { useA11yContext } from './A11yContext.tsx';
 import { Report } from './Report/Report.tsx';
 import { Tabs } from './Tabs.tsx';
 import { TestDiscrepancyMessage } from './TestDiscrepancyMessage.tsx';
-
-const RotatingIcon = styled(SyncIcon)(({ theme }) => ({
-  animation: `${theme.animation.rotate360} 1s linear infinite;`,
-  margin: 4,
-}));
-
-const Tab = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 6,
-});
-
-const Centered = styled.span(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  fontSize: theme.typography.size.s2,
-  height: '100%',
-  gap: 24,
-
-  div: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 8,
-  },
-  p: {
-    margin: 0,
-    color: theme.textMutedColor,
-  },
-  code: {
-    display: 'inline-block',
-    fontSize: theme.typography.size.s2 - 1,
-    backgroundColor: theme.background.app,
-    border: `1px solid ${theme.color.border}`,
-    borderRadius: 4,
-    padding: '2px 3px',
-  },
-}));
+import styles from './A11YPanel.module.css';
 
 export const A11YPanel: React.FC = () => {
   const {
@@ -76,12 +34,12 @@ export const A11YPanel: React.FC = () => {
     return [
       {
         label: (
-          <Tab>
+          <div className={styles.tab}>
             Violations
             <Badge compact status={tab === 'violations' ? 'active' : 'neutral'}>
               {violations.length}
             </Badge>
-          </Tab>
+          </div>
         ),
         panel: (
           <Report
@@ -98,12 +56,12 @@ export const A11YPanel: React.FC = () => {
       },
       {
         label: (
-          <Tab>
+          <div className={styles.tab}>
             Passes
             <Badge compact status={tab === 'passes' ? 'active' : 'neutral'}>
               {passes.length}
             </Badge>
-          </Tab>
+          </div>
         ),
         panel: (
           <Report
@@ -120,12 +78,12 @@ export const A11YPanel: React.FC = () => {
       },
       {
         label: (
-          <Tab>
+          <div className={styles.tab}>
             Inconclusive
             <Badge compact status={tab === 'incomplete' ? 'active' : 'neutral'}>
               {incomplete.length}
             </Badge>
-          </Tab>
+          </div>
         ),
         panel: (
           <Report
@@ -145,7 +103,7 @@ export const A11YPanel: React.FC = () => {
 
   if (parameters.disable || parameters.test === 'off') {
     return (
-      <Centered>
+      <span className={styles.centered}>
         <div>
           <strong>Accessibility tests are disabled for this story</strong>
           <p>
@@ -154,7 +112,7 @@ export const A11YPanel: React.FC = () => {
             to enable accessibility tests.
           </p>
         </div>
-      </Centered>
+      </span>
     );
   }
 
@@ -164,10 +122,10 @@ export const A11YPanel: React.FC = () => {
       {status === 'ready' || status === 'ran' ? (
         <Tabs key="tabs" tabs={tabs} />
       ) : (
-        <Centered style={{ marginTop: discrepancy ? '1em' : 0 }}>
+        <span className={styles.centered} style={{ marginTop: discrepancy ? '1em' : 0 }}>
           {status === 'initial' && (
             <div>
-              <RotatingIcon size={12} />
+              <SyncIcon size={12} className={styles.rotatingIcon} />
               <strong>Preparing accessibility scan</strong>
               <p>Please wait while the addon is initializing...</p>
             </div>
@@ -191,7 +149,7 @@ export const A11YPanel: React.FC = () => {
           )}
           {status === 'running' && (
             <div>
-              <RotatingIcon size={12} />
+              <SyncIcon size={12} className={styles.rotatingIcon} />
               <strong>Accessibility scan in progress</strong>
               <p>Please wait while the accessibility scan is running...</p>
             </div>
@@ -227,7 +185,7 @@ export const A11YPanel: React.FC = () => {
               </Button>
             </>
           )}
-        </Centered>
+        </span>
       )}
     </>
   );

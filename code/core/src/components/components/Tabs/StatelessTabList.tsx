@@ -4,60 +4,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronSmallLeftIcon, ChevronSmallRightIcon } from '@storybook/icons';
 
 import { Tabs } from '@base-ui/react/tabs';
-import { styled } from 'storybook/theming';
-
 import { Button } from '../Button/Button.tsx';
-
-const Root = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  flexShrink: 0,
-  position: 'relative',
-  overflow: 'hidden',
-});
-
-const ScrollContainer = styled.div({
-  display: 'flex',
-  overflowX: 'auto',
-  scrollbarWidth: 'none',
-  msOverflowStyle: 'none',
-  WebkitScrollbar: 'none',
-  scrollSnapType: 'x mandatory',
-  flex: 1,
-
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-});
-
-const StyledTabList = styled(Tabs.List)({
-  display: 'flex',
-  flexShrink: 0,
-});
+import styles from './StatelessTabList.module.css';
 
 const SCROLL_BUTTON_WIDTH = 28; // 16 width + 6 + 6 padding
-
-const ScrollButtonContainer = styled.div<{
-  $showStartBorder?: boolean;
-  $showEndBorder?: boolean;
-}>(({ $showStartBorder, $showEndBorder, theme }) => ({
-  flexShrink: 0,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: 6,
-  boxShadow: $showStartBorder
-    ? `inset 1px 0 0 ${theme.appBorderColor}`
-    : $showEndBorder
-      ? `inset -1px 0 0 ${theme.appBorderColor}`
-      : 'none',
-}));
-
-const ScrollButton = styled(Button)({
-  flexShrink: 0,
-  paddingInline: 0,
-  width: 16,
-});
 
 export interface StatelessTabListProps {
   children?: ReactNode;
@@ -150,10 +100,17 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
   const scrollForward = useCallback(() => scroll('forward'), [scroll]);
 
   return (
-    <Root ref={containerRef} className={`tablist ${showScrollButtons ? 'tablist-has-scroll' : ''}`}>
+    <div
+      ref={containerRef}
+      className={`${styles.root} tablist ${showScrollButtons ? 'tablist-has-scroll' : ''}`}
+    >
       {showScrollButtons && (
-        <ScrollButtonContainer $showEndBorder={canScrollLeft}>
-          <ScrollButton
+        <div
+          className={styles.scrollButtonContainer}
+          data-border={canScrollLeft ? 'end' : undefined}
+        >
+          <Button
+            className={styles.scrollButton}
             variant="ghost"
             padding="small"
             size="small"
@@ -163,17 +120,21 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
             tabIndex={-1}
           >
             <ChevronSmallLeftIcon />
-          </ScrollButton>
-        </ScrollButtonContainer>
+          </Button>
+        </div>
       )}
-      <ScrollContainer ref={scrollContainerRef}>
-        <StyledTabList activateOnFocus {...rest}>
+      <div className={styles.scrollContainer} ref={scrollContainerRef}>
+        <Tabs.List className={styles.tabList} activateOnFocus {...rest}>
           {children}
-        </StyledTabList>
-      </ScrollContainer>
+        </Tabs.List>
+      </div>
       {showScrollButtons && (
-        <ScrollButtonContainer $showStartBorder={canScrollRight}>
-          <ScrollButton
+        <div
+          className={styles.scrollButtonContainer}
+          data-border={canScrollRight ? 'start' : undefined}
+        >
+          <Button
+            className={styles.scrollButton}
             variant="ghost"
             padding="small"
             size="small"
@@ -183,9 +144,9 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
             tabIndex={-1}
           >
             <ChevronSmallRightIcon />
-          </ScrollButton>
-        </ScrollButtonContainer>
+          </Button>
+        </div>
       )}
-    </Root>
+    </div>
   );
 };

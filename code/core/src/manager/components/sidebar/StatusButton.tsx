@@ -1,79 +1,53 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
 import React, { forwardRef } from 'react';
 
 import { Button } from 'storybook/internal/components';
 import type { StatusValue } from 'storybook/internal/types';
 
-import type { Theme } from '@emotion/react';
-import { darken, lighten } from 'polished';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+import { useTheme } from 'storybook/theming';
 
 import { getStatus } from '../../utils/status.tsx';
+import styles from './StatusButton.module.css';
 
-const withStatusColor = ({ theme, status }: { theme: Theme; status: StatusValue }) => ({
-  color: getStatus(theme, status).iconColor ?? undefined,
-});
+/** Props that give an element the icon colour of a status. */
+const useStatusColor = (status: StatusValue, style?: CSSProperties) => {
+  const iconColor = getStatus(useTheme(), status).iconColor;
+  return {
+    'data-status-color': iconColor ? true : undefined,
+    style: iconColor ? ({ '--sb-status-color': iconColor, ...style } as CSSProperties) : style,
+  };
+};
 
-export const StatusLabel = styled.div<{ status: StatusValue }>(withStatusColor, {
-  margin: 3,
-});
-
-export type StatusButtonProps = ComponentProps<typeof StyledButton>;
-
-const StyledButton = styled(Button)<{
-  height?: number;
-  width?: number;
-  status: StatusValue;
-  selectedItem?: boolean;
-}>(
-  withStatusColor,
-  ({ theme, height, width }) => ({
-    transition: 'none',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: width || 28,
-    height: height || 28,
-
-    '&:hover': {
-      color: theme.color.secondary,
-      background:
-        theme.base === 'dark'
-          ? darken(0.3, theme.color.secondary)
-          : lighten(0.4, theme.color.secondary),
-    },
-
-    '[data-selected="true"] &': {
-      background:
-        theme.base === 'dark' ? darken(0.18, theme.color.secondary) : theme.color.secondary,
-      boxShadow: `0 0 5px 5px ${theme.base === 'dark' ? darken(0.18, theme.color.secondary) : theme.color.secondary}`,
-
-      '&:hover': {
-        background:
-          theme.base === 'dark' ? darken(0.1, theme.color.secondary) : theme.color.secondary,
-      },
-    },
-
-    '&:focus': {
-      color: theme.color.secondary,
-      borderColor: theme.color.secondary,
-      outlineOffset: -2,
-
-      '&:not(:focus-visible)': {
-        borderColor: 'transparent',
-      },
-    },
-  }),
-  ({ theme, selectedItem }) =>
-    selectedItem && {
-      '&:hover': {
-        boxShadow: `inset 0 0 0 2px ${theme.color.secondary}`,
-        background: 'rgba(255, 255, 255, 0.2)',
-      },
-    }
+export const StatusLabel = ({
+  status,
+  className,
+  style,
+  ...props
+}: ComponentProps<'div'> & { status: StatusValue }) => (
+  <div
+    className={clsx(styles.statusLabel, className)}
+    {...useStatusColor(status, style)}
+    {...props}
+  />
 );
 
-export const StatusButton = forwardRef<HTMLButtonElement, StatusButtonProps>((props, ref) => {
-  return <StyledButton variant="ghost" padding="small" {...props} ref={ref} />;
-});
+export interface StatusButtonProps extends ComponentProps<typeof Button> {
+  status: StatusValue;
+  selectedItem?: boolean;
+}
+
+export const StatusButton = forwardRef<HTMLButtonElement, StatusButtonProps>(
+  ({ status, selectedItem, className, style, ...props }, ref) => (
+    <Button
+      variant="ghost"
+      padding="small"
+      className={clsx(styles.statusButton, className)}
+      data-selected-item={selectedItem || undefined}
+      {...useStatusColor(status, style)}
+      {...props}
+      ref={ref}
+    />
+  )
+);
 StatusButton.displayName = 'StatusButton';

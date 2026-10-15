@@ -1,4 +1,4 @@
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 import React, { Component } from 'react';
 
 import { Button, Form, Tooltip, TooltipProvider } from 'storybook/internal/components';
@@ -11,108 +11,20 @@ import {
   shortcutMatchesShortcut,
   shortcutToHumanString,
 } from 'storybook/manager-api';
-import { keyframes, styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import SettingsFooter from './SettingsFooter.tsx';
-
-const Header = styled.header(({ theme }) => ({
-  marginBottom: 20,
-  fontSize: theme.typography.size.m3,
-  fontWeight: theme.typography.weight.bold,
-  alignItems: 'center',
-  display: 'flex',
-}));
-
-// Grid
-export const HeaderItem = styled.div(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-}));
-
-export const GridHeaderRow = styled.div({
-  alignSelf: 'flex-end',
-  display: 'grid',
-  margin: '10px 0',
-  gridTemplateColumns: '1fr 1fr 12px',
-  '& > *:last-of-type': {
-    gridColumn: '2 / 2',
-    justifySelf: 'flex-end',
-    gridRow: '1',
-  },
-});
-
-export const Row = styled.div(({ theme }) => ({
-  padding: '6px 0',
-  borderTop: `1px solid ${theme.appBorderColor}`,
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 0px',
-}));
-
-export const GridWrapper = styled.div({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  gridAutoRows: 'minmax(auto, auto)',
-  marginBottom: 20,
-});
-
-// Form
-export const Description = styled.div({
-  alignSelf: 'center',
-});
+import styles from './shortcuts.module.css';
 
 export type ValidationStates = 'valid' | 'error' | 'warn';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore-error (this only errors during compilation for production)
-export const TextInput: FC<
-  ComponentProps<typeof Form.Input> & { valid: ValidationStates | undefined }
-> = styled(Form.Input)<{ valid: ValidationStates }>(
-  ({ valid, theme }) =>
-    valid === 'error'
-      ? {
-          animation: `${theme.animation.jiggle} 700ms ease-out`,
-        }
-      : {},
-  {
-    display: 'flex',
-    width: 80,
-    flexDirection: 'column',
-    justifySelf: 'flex-end',
-    paddingLeft: 4,
-    paddingRight: 4,
-    textAlign: 'center',
-  }
+const TextInput = ({
+  valid,
+  className,
+  ...props
+}: ComponentProps<typeof Form.Input> & { valid: ValidationStates | undefined }) => (
+  <Form.Input className={clsx(styles.textInput, className)} data-valid={valid} {...props} />
 );
-
-export const Fade = keyframes`
-0%,100% { opacity: 0; }
-  50% { opacity: 1; }
-`;
-
-const SuccessIcon = styled(CheckIcon)<{ valid: string }>(
-  ({ valid, theme }) =>
-    valid === 'valid'
-      ? {
-          color: theme.color.positive,
-          animation: `${Fade} 2s ease forwards`,
-        }
-      : {
-          opacity: 0,
-        },
-  {
-    alignSelf: 'center',
-    display: 'flex',
-    marginLeft: 10,
-    height: 14,
-    width: 14,
-  }
-);
-
-const Container = styled.div(({ theme }) => ({
-  fontSize: theme.typography.size.s2,
-  padding: `3rem 20px`,
-  maxWidth: 600,
-  margin: '0 auto',
-}));
 
 const shortcutLabels = {
   fullScreen: 'Go full screen',
@@ -311,9 +223,11 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
 
     const arr = availableShortcuts.map(
       ([feature, { shortcut, hardcoded }]: [Feature, ConfiguredShortcut]) => (
-        <Row key={feature}>
-          {/* @ts-expect-error (non strict) */}
-          <Description>{shortcutLabels[feature] || addonsShortcutLabels[feature]}</Description>
+        <div className={styles.row} key={feature}>
+          <div className={styles.description}>
+            {/* @ts-expect-error (non strict) */}
+            {shortcutLabels[feature] || addonsShortcutLabels[feature]}
+          </div>
 
           {hardcoded ? (
             <>
@@ -344,9 +258,11 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
             />
           )}
 
-          {/* @ts-expect-error (non strict) */}
-          <SuccessIcon valid={this.displaySuccessMessage(feature)} />
-        </Row>
+          <CheckIcon
+            className={styles.successIcon}
+            data-valid={this.displaySuccessMessage(feature)}
+          />
+        </div>
       )
     );
 
@@ -354,20 +270,20 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   };
 
   renderKeyForm = () => (
-    <GridWrapper>
-      <GridHeaderRow>
-        <HeaderItem>Commands</HeaderItem>
-        <HeaderItem>Shortcut</HeaderItem>
-      </GridHeaderRow>
+    <div className={styles.gridWrapper}>
+      <div className={styles.gridHeaderRow}>
+        <div className={styles.headerItem}>Commands</div>
+        <div className={styles.headerItem}>Shortcut</div>
+      </div>
       {this.renderKeyInput()}
-    </GridWrapper>
+    </div>
   );
 
   render() {
     const layout = this.renderKeyForm();
     return (
-      <Container>
-        <Header>Keyboard shortcuts</Header>
+      <div className={styles.container}>
+        <header className={styles.header}>Keyboard shortcuts</header>
 
         {layout}
         <Button
@@ -380,7 +296,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
           Restore defaults
         </Button>
         <SettingsFooter />
-      </Container>
+      </div>
     );
   }
 }

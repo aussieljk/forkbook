@@ -1,48 +1,16 @@
 import type { ComponentProps } from 'react';
 import React, { Children } from 'react';
 
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { SyntaxHighlighter } from '../../syntaxhighlighter/syntaxhighlighter.tsx';
 import { codeCommon } from '../lib/common.tsx';
 import { isReactChildString } from '../lib/isReactChildString.tsx';
+import styles from './Code.module.css';
 
 const isInlineCodeRegex = /[\n\r]/g;
 
-const DefaultCodeBlock = styled.code(({ theme }) => ({
-  // from reset
-  fontFamily: theme.typography.fonts.mono,
-  WebkitFontSmoothing: 'antialiased',
-  MozOsxFontSmoothing: 'grayscale',
-  display: 'inline-block',
-  paddingLeft: 2,
-  paddingRight: 2,
-  verticalAlign: 'baseline',
-  color: 'inherit',
-  ...(codeCommon({ theme }) as CSSObject),
-}));
-
-const StyledSyntaxHighlighter = styled(SyntaxHighlighter)(({ theme }) => ({
-  // DocBlocks-specific styling and overrides
-  fontFamily: theme.typography.fonts.mono,
-  fontSize: `${theme.typography.size.s2 - 1}px`,
-  lineHeight: '19px',
-  margin: '25px 0 40px',
-  borderRadius: theme.appBorderRadius,
-  boxShadow:
-    theme.base === 'light' ? 'rgba(0, 0, 0, 0.10) 0 1px 3px 0' : 'rgba(0, 0, 0, 0.20) 0 2px 5px 0',
-  'pre.prismjs': {
-    padding: 20,
-    background: 'inherit',
-  },
-}));
-
-export const Code = ({
-  className,
-  children,
-  ...props
-}: ComponentProps<typeof DefaultCodeBlock>) => {
+export const Code = ({ className, children, ...props }: ComponentProps<'code'>) => {
   const language = (className || '').match(/lang-(\S+)/);
   const childrenArray = Children.toArray(children);
   const isInlineCode = !childrenArray
@@ -51,14 +19,15 @@ export const Code = ({
 
   if (isInlineCode) {
     return (
-      <DefaultCodeBlock {...props} className={className}>
+      <code {...props} className={clsx(codeCommon, styles.inlineCode, className)}>
         {childrenArray}
-      </DefaultCodeBlock>
+      </code>
     );
   }
 
   return (
-    <StyledSyntaxHighlighter
+    <SyntaxHighlighter
+      className={styles.codeBlock}
       bordered
       copyable
       language={language?.[1] ?? 'text'}
@@ -66,6 +35,6 @@ export const Code = ({
       {...props}
     >
       {children}
-    </StyledSyntaxHighlighter>
+    </SyntaxHighlighter>
   );
 };

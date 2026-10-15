@@ -4,10 +4,10 @@ import React from 'react';
 import { Button, Toolbar as SharedToolbar } from 'storybook/internal/components';
 
 import { ShareAltIcon, SyncIcon, ZoomIcon, ZoomOutIcon, ZoomResetIcon } from '@storybook/icons';
-
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { getStoryHref } from '../getStoryHref';
+import styles from './Toolbar.module.css';
 
 interface ZoomProps {
   zoom: (val: number) => void;
@@ -30,34 +30,13 @@ interface LoadingProps {
   isLoading?: boolean;
 }
 
-export type ToolbarProps = BarProps & ZoomProps & EjectProps & LoadingProps & ReloadProps;
+export type ToolbarProps = BarProps &
+  ZoomProps &
+  EjectProps &
+  LoadingProps &
+  ReloadProps & { className?: string };
 
 export const TRAILING_INSET = 10;
-
-const AbsoluteBar = styled(SharedToolbar)({
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  top: 0,
-  transition: 'transform .2s linear',
-  display: 'flex',
-  alignItems: 'center',
-});
-
-const Wrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-});
-
-const IconPlaceholder = styled.div(({ theme }) => ({
-  width: 14,
-  height: 14,
-  borderRadius: 2,
-  margin: '0 7px',
-  backgroundColor: theme.appBorderColor,
-  animation: `${theme.animation.glow} 1.5s ease-in-out infinite`,
-}));
 
 export const Toolbar: FC<ToolbarProps> = ({
   isLoading,
@@ -65,9 +44,11 @@ export const Toolbar: FC<ToolbarProps> = ({
   zoom,
   resetZoom,
   onReloadStory,
+  className,
   ...rest
 }) => (
-  <AbsoluteBar
+  <SharedToolbar
+    className={clsx(styles.absoluteBar, className)}
     // The toolbar is absolutely positioned inside the preview container's 1px border, so it lands
     // on the shared edge one pixel short of the inset the other two icons use.
     innerStyle={{
@@ -79,9 +60,9 @@ export const Toolbar: FC<ToolbarProps> = ({
     lang="en"
     {...rest}
   >
-    <Wrapper key="left">
+    <div key="left" className={styles.wrapper}>
       {isLoading ? (
-        [1, 2, 3].map((key) => <IconPlaceholder key={key} />)
+        [1, 2, 3].map((key) => <div key={key} className={styles.iconPlaceholder} />)
       ) : (
         <>
           {onReloadStory && (
@@ -133,15 +114,15 @@ export const Toolbar: FC<ToolbarProps> = ({
           </Button>
         </>
       )}
-    </Wrapper>
+    </div>
 
     {isLoading ? (
-      <Wrapper key="right">
-        <IconPlaceholder />
-      </Wrapper>
+      <div key="right" className={styles.wrapper}>
+        <div className={styles.iconPlaceholder} />
+      </div>
     ) : (
       storyId && (
-        <Wrapper key="right">
+        <div key="right" className={styles.wrapper}>
           <Button
             asChild
             padding="small"
@@ -153,8 +134,8 @@ export const Toolbar: FC<ToolbarProps> = ({
               <ShareAltIcon />
             </a>
           </Button>
-        </Wrapper>
+        </div>
       )
     )}
-  </AbsoluteBar>
+  </SharedToolbar>
 );

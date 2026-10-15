@@ -3,20 +3,9 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { expect, within } from 'storybook/test';
-import { styled } from 'storybook/theming';
 
 import { Heading } from '../blocks/Heading';
 import { TableOfContents } from './TableOfContents';
-
-const MockPage = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const MockContent = styled.div`
-  width: 75%;
-  border: 1px solid #ccc;
-`;
 
 const meta = {
   component: TableOfContents,
@@ -29,8 +18,8 @@ const meta = {
   },
   render: (args) => {
     return (
-      <MockPage>
-        <MockContent className="local-story-docs">
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div className="local-story-docs" style={{ width: '75%', border: '1px solid #ccc' }}>
           <h1>Page title</h1>
           <Heading>Section A</Heading>
           Some content.
@@ -38,9 +27,9 @@ const meta = {
           More content.
           <Heading>Section C</Heading>
           Extra content.
-        </MockContent>
+        </div>
         <TableOfContents {...args} />
-      </MockPage>
+      </div>
     );
   },
 } satisfies Meta<typeof TableOfContents>;

@@ -80,7 +80,7 @@ describe('get-known-packages', () => {
           // styling
           tailwindcss: '3.0.0',
           'styled-components': '6.0.0',
-          emotion: '11.0.0',
+          goober: '2.0.0',
           '@stylexjs/stylex': '0.15.4',
           '@stylexjs/postcss-plugin': '0.15.4',
           // state management
@@ -110,7 +110,7 @@ describe('get-known-packages', () => {
 
       const result = await analyzeEcosystemPackages(packageJson);
       expect(result.stylingPackages).toEqual({
-        emotion: '11.0.0',
+        goober: '2.0.0',
         tailwindcss: '3.0.0',
         'styled-components': '6.0.0',
         '@stylexjs/stylex': '0.15.4',
@@ -155,8 +155,8 @@ describe('get-known-packages', () => {
         dependencies: {
           '@testing-library/react': '13.0.0',
           '@testing-library/jest-dom': '5.0.0',
-          '@emotion/react': '11.0.0',
-          '@emotion/styled': '11.0.0',
+          '@stylexjs/stylex': '0.15.4',
+          '@stylexjs/postcss-plugin': '0.15.4',
         },
       };
 
@@ -168,8 +168,8 @@ describe('get-known-packages', () => {
       });
 
       expect(result.stylingPackages).toEqual({
-        '@emotion/react': '11.0.0',
-        '@emotion/styled': '11.0.0',
+        '@stylexjs/stylex': '0.15.4',
+        '@stylexjs/postcss-plugin': '0.15.4',
       });
     });
 
@@ -203,7 +203,7 @@ describe('get-known-packages', () => {
       const packageJson: PackageJson = {
         dependencies: {
           '@testing-library/react': 'file:../some/path',
-          '@emotion/react': 'latest',
+          '@stylexjs/stylex': 'latest',
           'styled-components': '*',
           tailwindcss: 'workspace:*',
         },
@@ -216,7 +216,7 @@ describe('get-known-packages', () => {
       });
 
       expect(result.stylingPackages).toEqual({
-        '@emotion/react': 'latest',
+        '@stylexjs/stylex': 'latest',
         'styled-components': 'latest',
         tailwindcss: 'custom-protocol',
       });

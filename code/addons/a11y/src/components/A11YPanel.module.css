@@ -1,0 +1,51 @@
+.rotatingIcon {
+  animation: rotate360 1s linear infinite;
+  margin: 4px;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--sb-size-s2);
+  height: 100%;
+  gap: 24px;
+
+  & div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  & p {
+    margin: 0;
+    color: var(--sb-text-muted-color);
+  }
+
+  & code {
+    display: inline-block;
+    font-size: calc(var(--sb-size-s2) - 1px);
+    background-color: var(--sb-background-app);
+    border: 1px solid var(--sb-color-border);
+    border-radius: 4px;
+    padding: 2px 3px;
+  }
+}

@@ -5,7 +5,6 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { action } from 'storybook/actions';
 import { screen } from 'storybook/test';
 import { ThemeProvider, useTheme } from 'storybook/theming';
-import type { Theme } from 'storybook/theming';
 
 import { Heading } from './Heading.tsx';
 
@@ -37,7 +36,7 @@ export const MenuHighlighted: Story = () => (
 export const standardData = { menu: menuItems };
 
 export const Standard: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -56,7 +55,7 @@ export const Standard: Story = () => {
 };
 
 export const StandardNoLink: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -75,7 +74,7 @@ export const StandardNoLink: Story = () => {
 };
 
 export const LinkAndText: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -94,7 +93,7 @@ export const LinkAndText: Story = () => {
 };
 
 export const OnlyText: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -113,7 +112,7 @@ export const OnlyText: Story = () => {
 };
 
 export const LongText: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -132,7 +131,7 @@ export const LongText: Story = () => {
 };
 
 export const CustomTitle: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -151,7 +150,7 @@ export const CustomTitle: Story = () => {
 };
 
 export const CustomBrandImage: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -170,7 +169,7 @@ export const CustomBrandImage: Story = () => {
 };
 
 export const CustomBrandImageTall: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -189,7 +188,7 @@ export const CustomBrandImageTall: Story = () => {
 };
 
 export const CustomBrandImageUnsizedSVG: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{
@@ -208,7 +207,7 @@ export const CustomBrandImageUnsizedSVG: Story = () => {
 };
 
 export const NoBrand: Story = () => {
-  const theme = useTheme() as Theme;
+  const theme = useTheme();
   return (
     <ThemeProvider
       theme={{

@@ -1,11 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
-
+import { withClassName } from '../lib/withClassName.tsx';
 import { headerCommon, withReset } from '../lib/common.tsx';
+import styles from './H6.module.css';
 
-export const H6 = styled.h6(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  ...(headerCommon({ theme }) as CSSObject),
-  fontSize: `${theme.typography.size.s2}px`,
-  color: theme.color.dark,
-}));
+export const H6 = withClassName('h6', withReset, headerCommon, styles.h6);

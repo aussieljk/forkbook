@@ -1,16 +1,20 @@
-import React from 'react';
-
-import { styled } from 'storybook/theming';
+import React, { type ReactNode } from 'react';
 
 import preview from '../../../../../.storybook/preview.tsx';
 import { Bar } from './Bar.tsx';
 
-const Wrapper = styled.div(({ theme }) => ({
-  background: theme.background.app,
-  border: `1px solid ${theme.appBorderColor}`,
-  maxWidth: 500,
-  height: 200,
-}));
+const Wrapper = ({ children }: { children: ReactNode }) => (
+  <div
+    style={{
+      background: 'var(--sb-background-app)',
+      border: '1px solid var(--sb-app-border-color)',
+      maxWidth: 500,
+      height: 200,
+    }}
+  >
+    {children}
+  </div>
+);
 
 const meta = preview.meta({
   component: Bar,

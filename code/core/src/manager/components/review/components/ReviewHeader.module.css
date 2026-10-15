@@ -1,0 +1,92 @@
+.root {
+  container-type: inline-size;
+  container-name: review-header;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 100%;
+  background: var(--sb-background-content);
+  color: var(--sb-color-default-text);
+  border-bottom: 1px solid var(--sb-app-border-color);
+
+  &[data-variant='toolbar'] {
+    background: var(--sb-bar-bg);
+    border-bottom: none;
+  }
+}
+
+.topRow {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  min-height: 40px;
+
+  &[data-variant='toolbar'] {
+    padding: 16px 16px 8px 16px;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.leading {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 2px 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--sb-size-m1);
+  font-weight: var(--sb-weight-bold);
+  line-height: 24px;
+}
+
+.subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--sb-text-muted-color);
+  font-size: var(--sb-size-s2);
+  line-height: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+.secondRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 2px 16px;
+  min-height: 39px;
+}

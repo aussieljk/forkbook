@@ -1,51 +1,16 @@
-import type { ComponentProps, FC } from 'react';
+import type { FC } from 'react';
 import React, { Fragment, useEffect, useState } from 'react';
 
 import { Button, Loader } from 'storybook/internal/components';
 
 import { global } from '@storybook/global';
-import { AlertIcon as AlertIconSvg, EyeCloseIcon, EyeIcon, HeartIcon } from '@storybook/icons';
+import { AlertIcon, EyeCloseIcon, EyeIcon, HeartIcon } from '@storybook/icons';
 
 import { useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import { useCopyButton } from '../../shared/useCopyButton.ts';
-
-const Centered = styled.div({
-  top: '50%',
-  position: 'absolute',
-  transform: 'translateY(-50%)',
-  width: '100%',
-  textAlign: 'center',
-});
-
-const LoaderWrapper = styled.div({
-  position: 'relative',
-  height: '32px',
-});
-
-const Message = styled.div(({ theme }) => ({
-  paddingTop: '12px',
-  color: theme.textMutedColor,
-  maxWidth: '295px',
-  margin: '0 auto',
-  fontSize: `${theme.typography.size.s1}px`,
-  lineHeight: `16px`,
-}));
-
-const Container = styled.div(({ theme }) => ({
-  position: 'absolute',
-  width: '100%',
-  height: 40,
-  bottom: 0,
-  background: theme.background.bar,
-  fontSize: theme.typography.size.s2,
-  borderTop: `1px solid ${theme.color.border}`,
-  padding: '0 10px 0 15px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-}));
+import styles from './whats_new.module.css';
 
 export const WhatsNewFooter = ({
   isNotificationsEnabled,
@@ -63,7 +28,7 @@ export const WhatsNewFooter = ({
   });
 
   return (
-    <Container>
+    <div className={styles.footer}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <HeartIcon color={theme.color.mediumdark} />
         <div>Share this with your team.</div>
@@ -82,50 +47,26 @@ export const WhatsNewFooter = ({
           Show notifications
         </Button>
       )}
-    </Container>
+    </div>
   );
 };
 
-const Iframe = styled.iframe<{ isLoaded: boolean }>(
-  {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    border: 0,
-    margin: 0,
-    padding: 0,
-    width: '100%',
-    height: 'calc(100% - 40px)',
-    background: 'white',
-  },
-  ({ isLoaded }) => ({ visibility: isLoaded ? 'visible' : 'hidden' })
-);
-
-const AlertIcon = styled(((props) => <AlertIconSvg {...props} />) as FC<
-  Omit<ComponentProps<typeof AlertIconSvg>, 'icon'>
->)(({ theme }) => ({
-  color: theme.textMutedColor,
-  width: 32,
-  height: 32,
-  margin: '0 auto',
-}));
-
 const WhatsNewLoader: FC = () => (
-  <Centered>
-    <LoaderWrapper>
+  <div className={styles.centered}>
+    <div className={styles.loaderWrapper}>
       <Loader />
-    </LoaderWrapper>
-    <Message>Loading...</Message>
-  </Centered>
+    </div>
+    <div className={styles.message}>Loading...</div>
+  </div>
 );
 
 const MaxWaitTimeMessaging: FC = () => (
-  <Centered>
-    <AlertIcon />
-    <Message>The page couldn't be loaded. Check your internet connection and try again.</Message>
-  </Centered>
+  <div className={styles.centered}>
+    <AlertIcon className={styles.alertIcon} />
+    <div className={styles.message}>
+      The page couldn't be loaded. Check your internet connection and try again.
+    </div>
+  </div>
 );
 
 export interface WhatsNewProps {
@@ -153,7 +94,13 @@ const PureWhatsNewScreen: FC<WhatsNewProps> = ({
       <MaxWaitTimeMessaging />
     ) : (
       <>
-        <Iframe isLoaded={isLoaded} onLoad={onLoad} src={url} title={`What's new?`} />
+        <iframe
+          className={styles.iframe}
+          data-loaded={isLoaded || undefined}
+          onLoad={onLoad}
+          src={url}
+          title={`What's new?`}
+        />
         <WhatsNewFooter
           isNotificationsEnabled={isNotificationsEnabled}
           onToggleNotifications={onToggleNotifications}

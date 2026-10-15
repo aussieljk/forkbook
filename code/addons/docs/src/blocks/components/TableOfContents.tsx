@@ -4,8 +4,10 @@ import React, { useEffect } from 'react';
 import type { Channel } from 'storybook/internal/channels';
 import { NAVIGATE_URL } from 'storybook/internal/core-events';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 import tocbot from 'tocbot';
+
+import styles from './TableOfContents.module.css';
 
 // Define our own interface based on tocbot's actual options
 interface TocbotOptions {
@@ -48,89 +50,6 @@ export interface TocParameters {
   unsafeTocbotOptions?: Omit<TocbotOptions, 'onClick' | 'scrollEndCallback'>;
 }
 
-const Aside = styled.aside(() => ({
-  width: '10rem',
-
-  '@media (max-width: 768px)': {
-    display: 'none',
-  },
-}));
-
-const Nav = styled.nav(({ theme }) => ({
-  position: 'fixed',
-  bottom: 0,
-  top: 0,
-  width: '10rem',
-  paddingTop: '4rem',
-  paddingBottom: '2rem',
-  overflowY: 'auto',
-
-  fontFamily: theme.typography.fonts.base,
-  fontSize: theme.typography.size.s2,
-
-  WebkitFontSmoothing: 'antialiased',
-  MozOsxFontSmoothing: 'grayscale',
-  WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
-  WebkitOverflowScrolling: 'touch',
-
-  '& *': {
-    boxSizing: 'border-box',
-  },
-
-  '& > .toc-wrapper > .toc-list': {
-    paddingLeft: 0,
-    borderLeft: `solid 2px ${theme.color.mediumlight}`,
-
-    '.toc-list': {
-      paddingLeft: 0,
-      borderLeft: `solid 2px ${theme.color.mediumlight}`,
-
-      '.toc-list': {
-        paddingLeft: 0,
-        borderLeft: `solid 2px ${theme.color.mediumlight}`,
-      },
-    },
-  },
-  '& .toc-list-item': {
-    position: 'relative',
-    listStyleType: 'none',
-    marginLeft: 20,
-    paddingTop: 3,
-    paddingBottom: 3,
-  },
-  '& .toc-list-item::before': {
-    content: '""',
-    position: 'absolute',
-    height: '100%',
-    top: 0,
-    left: 0,
-    transform: `translateX(calc(-2px - 20px))`,
-    borderLeft: `solid 2px ${theme.color.mediumdark}`,
-    opacity: 0,
-    transition: 'opacity 0.2s',
-  },
-  '& .toc-list-item.is-active-li::before': {
-    opacity: 1,
-  },
-  '& .toc-list-item > a': {
-    color: theme.color.defaultText,
-    textDecoration: 'none',
-  },
-  '& .toc-list-item.is-active-li > a': {
-    fontWeight: 600,
-    color: theme.color.secondary,
-    textDecoration: 'none',
-  },
-}));
-
-const Heading = styled.p(({ theme }) => ({
-  fontWeight: 600,
-  fontSize: '0.875em',
-  color: theme.color.defaultText,
-  textTransform: 'uppercase',
-  marginBottom: 10,
-}));
-
 type TableOfContentsProps = React.PropsWithChildren<
   TocParameters & {
     className?: string;
@@ -145,14 +64,13 @@ const Title: FC<{
   // General case.
   if (typeof title === 'string' || !title) {
     return (
-      <Heading
-        as="h2"
+      <h2
         id={headingId}
-        className={title ? '' : 'sb-sr-only'}
+        className={clsx(styles.heading, !title && 'sb-sr-only')}
         lang={title ? undefined : 'en'}
       >
         {title || 'Table of contents'}
-      </Heading>
+      </h2>
     );
   }
 
@@ -209,13 +127,13 @@ export const TableOfContents = ({
   const headingId = 'table-of-contents';
 
   return (
-    <Aside className={className}>
+    <aside className={clsx(styles.aside, className)}>
       {!disable ? (
-        <Nav aria-labelledby={headingId}>
+        <nav className={styles.nav} aria-labelledby={headingId}>
           <Title headingId={headingId} title={title} />
           <div className="toc-wrapper" />
-        </Nav>
+        </nav>
       ) : null}
-    </Aside>
+    </aside>
   );
 };

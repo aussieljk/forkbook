@@ -1,0 +1,11 @@
+.wrapper {
+  display: flex;
+}
+
+.input {
+  background: var(--sb-color-lighter);
+}
+
+:where([data-sb-theme='dark']) .input {
+  background: transparent;
+}

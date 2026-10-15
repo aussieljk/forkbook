@@ -1,19 +1,6 @@
 import React, { Children } from 'react';
 
-import { styled } from 'storybook/theming';
-
-const Title = styled.div(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-}));
-
-const Desc = styled.div();
-
-const Message = styled.div(({ theme }) => ({
-  padding: 30,
-  textAlign: 'center',
-  color: theme.color.defaultText,
-  fontSize: theme.typography.size.s2 - 1,
-}));
+import styles from './placeholder.module.css';
 
 export interface PlaceholderProps {
   children?: React.ReactNode;
@@ -22,9 +9,9 @@ export interface PlaceholderProps {
 export const Placeholder = ({ children, ...props }: PlaceholderProps) => {
   const [title, desc] = Children.toArray(children);
   return (
-    <Message {...props}>
-      <Title>{title}</Title>
-      {desc && <Desc>{desc}</Desc>}
-    </Message>
+    <div className={styles.message} {...props}>
+      <div className={styles.title}>{title}</div>
+      {desc && <div>{desc}</div>}
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import type { FC, MouseEventHandler, ReactNode } from 'react';
+import type { ComponentProps, FC, MouseEventHandler, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useMemo } from 'react';
 
 import { Button, PopoverProvider, Select, Spaced } from 'storybook/internal/components';
@@ -14,13 +14,15 @@ import {
   TimeIcon,
 } from '@storybook/icons';
 
+import { clsx } from 'clsx';
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled, useTheme } from 'storybook/theming';
+import { useTheme } from 'storybook/theming';
 
 import type { NormalLink } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import type { getStateType } from '../../utils/tree.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import type { RefType } from './types.ts';
+import styles from './RefIndicator.module.css';
 
 const { document, window: globalWindow } = global;
 
@@ -33,68 +35,9 @@ export interface CurrentVersionProps {
   versions: RefType['versions'];
 }
 
-const IndicatorPlacement = styled.div(({ theme }) => ({
-  height: 16,
-
-  display: 'flex',
-  alignItems: 'center',
-
-  '& > * + *': {
-    marginLeft: theme.layoutMargin,
-  },
-}));
-
-const IndicatorClickTarget = styled(Button)(({ theme }) => ({
-  color: theme.textMutedColor,
-  svg: {
-    height: 14,
-    width: 14,
-    padding: 2,
-    transition: 'all 150ms ease-out',
-    color: 'inherit',
-  },
-}));
-
-const MessageTitle = styled.span(({ theme }) => ({
-  fontWeight: theme.typography.weight.bold,
-}));
-
-const StyledMessage = styled.a(({ theme }) => ({
-  textDecoration: 'none',
-  lineHeight: '16px',
-  padding: 15,
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  color: theme.color.defaultText,
-
-  '&:not(:last-child)': {
-    borderBottom: `1px solid ${theme.appBorderColor}`,
-  },
-  '&:hover': {
-    background: theme.background.hoverable,
-    color: theme.color.defaultText,
-  },
-  '&:link, &:active, &:focus': {
-    color: theme.color.defaultText,
-  },
-  '&:focus-visible': {
-    background: theme.background.hoverable,
-    borderRadius: 8,
-    boxShadow: `inset 0 0 0 2px ${theme.color.secondary}`,
-    outline: 'none',
-  },
-  '& > *': {
-    flex: 1,
-  },
-  '& > svg': {
-    marginTop: 3,
-    width: 16,
-    height: 16,
-    marginRight: 10,
-    flex: 'unset',
-  },
-}));
+const MessageTitle = ({ children }: { children: ReactNode }) => (
+  <span className={styles.messageTitle}>{children}</span>
+);
 
 const Message: FC<{
   blank?: boolean;
@@ -103,32 +46,28 @@ const Message: FC<{
   onClick?: MouseEventHandler;
 }> = ({ href, blank = true, children, onClick }) => {
   return (
-    <StyledMessage href={href} target={blank ? '_blank' : undefined} onClick={onClick}>
+    <a
+      className={styles.message}
+      href={href}
+      target={blank ? '_blank' : undefined}
+      onClick={onClick}
+    >
       {children}
-    </StyledMessage>
+    </a>
   );
 };
 
-export const MessageWrapper = styled.div<{
-  isMobile: boolean;
-}>(
-  ({ isMobile }) => ({
-    width: isMobile ? 'calc(100vw - 20px)' : 280,
-    boxSizing: 'border-box',
-    borderRadius: 8,
-    overflow: 'hidden',
-  }),
-  ({ theme }) => ({
-    color: theme.color.dark,
-  })
+export const MessageWrapper = ({
+  isMobile,
+  className,
+  ...props
+}: ComponentProps<'div'> & { isMobile: boolean }) => (
+  <div
+    className={clsx(styles.messageWrapper, className)}
+    data-mobile={isMobile || undefined}
+    {...props}
+  />
 );
-
-const SubtleSelect = styled(Select)(({ theme }) => ({
-  background: 'transparent',
-  color: theme.color.defaultText,
-  fontSize: theme.typography.size.s1,
-  fontWeight: theme.typography.weight.regular,
-}));
 
 export const RefIndicator = React.memo(
   forwardRef<HTMLDivElement, RefType & { state: ReturnType<typeof getStateType> }>(
@@ -153,7 +92,7 @@ export const RefIndicator = React.memo(
       }, [ref.versions, ref.url]);
 
       return (
-        <IndicatorPlacement ref={forwardedRef}>
+        <div className={styles.indicatorPlacement} ref={forwardedRef}>
           <PopoverProvider
             ariaLabel="Composed Storybook status"
             placement={isMobile ? 'bottom' : 'bottom-start'}
@@ -180,7 +119,8 @@ export const RefIndicator = React.memo(
               </MessageWrapper>
             )}
           >
-            <IndicatorClickTarget
+            <Button
+              className={styles.indicatorClickTarget}
               variant="ghost"
               padding="small"
               size="small"
@@ -188,12 +128,13 @@ export const RefIndicator = React.memo(
               ariaLabel="Extra actions"
             >
               <GlobeIcon />
-            </IndicatorClickTarget>
+            </Button>
           </PopoverProvider>
 
           {ref.versions && Object.keys(ref.versions).length ? (
             <>
-              <SubtleSelect
+              <Select
+                className={styles.subtleSelect}
                 padding="small"
                 size="small"
                 ariaLabel="Version"
@@ -213,10 +154,10 @@ export const RefIndicator = React.memo(
                 }))}
               >
                 version
-              </SubtleSelect>
+              </Select>
             </>
           ) : null}
-        </IndicatorPlacement>
+        </div>
       );
     }
   )

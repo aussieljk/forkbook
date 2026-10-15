@@ -1,28 +1,12 @@
-import type { FC, ReactNode } from 'react';
+import type { CSSProperties, FC, ReactNode } from 'react';
 import React, { isValidElement, useState } from 'react';
 
 import { Tabs } from '@base-ui/react/tabs';
-import { styled } from 'storybook/theming';
-
+import { clsx } from 'clsx';
 import { Bar } from '../Bar/Bar.tsx';
 import { EmptyTabContent } from './EmptyTabContent.tsx';
-import type { TabsViewProps } from './TabsView.tsx';
-
-const Container = styled(Tabs.Root)<{ $simulatedGap: string | number }>(({ $simulatedGap }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-
-  '.tablist': {
-    flex: '1 1 100%',
-  },
-
-  '.tablist.tablist-has-scroll': {
-    marginInlineEnd: $simulatedGap,
-  },
-
-  '& > :not(:first-child)': { flex: 1 },
-}));
+import { type TabsViewProps, toLength } from './TabsView.tsx';
+import styles from './TabsView.module.css';
 
 /** Reads the `name` of each StatelessTab passed to the StatelessTabList. */
 const getTabNames = (tabList: ReactNode): string[] =>
@@ -46,6 +30,8 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
   selected,
   showToolsWhenEmpty,
   tools,
+  className,
+  style,
   ...props
 }) => {
   const [internalSelected, setInternalSelected] = useState(defaultSelected);
@@ -64,9 +50,10 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
   const value = requested && isKnown(requested) ? requested : (tabNames[0] ?? null);
 
   return (
-    <Container
+    <Tabs.Root
       {...props}
-      $simulatedGap={barInnerStyle?.gap ?? 6}
+      className={clsx(styles.statelessContainer, className)}
+      style={{ '--sb-tabs-gap': toLength(barInnerStyle?.gap ?? 6), ...style } as CSSProperties}
       value={value}
       onValueChange={(key: string) => {
         setInternalSelected(key);
@@ -77,20 +64,15 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
         scrollable={false}
         border
         backgroundColor={backgroundColor}
+        // A11y: the tools must be before the tab list in the DOM for correct tab order. The
+        // `bar` class puts them after it, without a wrapper div, leading to better flex behavior
+        // on tools for our callees (e.g. containerType: 'inline-size' in a11y-addon).
+        className={styles.bar}
         innerStyle={{
           display: 'flex',
           justifyContent: 'space-between',
           paddingInlineStart: 0,
           paddingInlineEnd: 10,
-          // A11y: the tools must be before the tab list in the DOM for correct tab order.
-          // This lets us control order without adding a wrapper div, leading to better flex
-          // behavior on tools for our callees (e.g. containerType: 'inline-size' in a11y-addon).
-          '> *:not(:last-child)': {
-            order: 2,
-          },
-          '> *': {
-            flexShrink: 0,
-          },
           ...barInnerStyle,
           gap: 0,
         }}
@@ -99,6 +81,6 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
         {hasContent ? tabListChild : <div />}
       </Bar>
       {hasContent ? tabPanelChildren : EmptyContent}
-    </Container>
+    </Tabs.Root>
   );
 };

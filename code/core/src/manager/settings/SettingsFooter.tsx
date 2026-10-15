@@ -3,21 +3,12 @@ import React from 'react';
 
 import { Link } from 'storybook/internal/components';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const Footer = styled.div(({ theme }) => ({
-  display: 'flex',
-  paddingTop: 20,
-  marginTop: 20,
-  borderTop: `1px solid ${theme.appBorderColor}`,
-  fontWeight: theme.typography.weight.bold,
+import styles from './SettingsFooter.module.css';
 
-  '& > * + *': {
-    marginLeft: 20,
-  },
-}));
-const SettingsFooter: FC<any> = (props) => (
-  <Footer {...props}>
+const SettingsFooter: FC<any> = ({ className, ...props }) => (
+  <div className={clsx(styles.footer, className)} {...props}>
     <Link secondary href="https://storybook.js.org?ref=ui" cancel={false} target="_blank">
       Docs
     </Link>
@@ -32,7 +23,7 @@ const SettingsFooter: FC<any> = (props) => (
     >
       Support
     </Link>
-  </Footer>
+  </div>
 );
 
 export default SettingsFooter;

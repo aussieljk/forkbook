@@ -5,15 +5,8 @@ import { EmptyTabContent, Link } from 'storybook/internal/components';
 import { DocumentIcon } from '@storybook/icons';
 
 import { useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
-
 import { DOCUMENTATION_PLAY_FUNCTION_LINK } from '../constants.ts';
-
-const Links = styled.div(({ theme }) => ({
-  display: 'flex',
-  fontSize: theme.typography.size.s2 - 1,
-  gap: 25,
-}));
+import styles from './EmptyState.module.css';
 
 export const Empty = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,11 +43,11 @@ export const Empty = () => {
           </>
         }
         footer={
-          <Links>
+          <div className={styles.links}>
             <Link href={docsUrl} target="_blank" withArrow>
               <DocumentIcon /> Read docs
             </Link>
-          </Links>
+          </div>
         }
       />
     </div>

@@ -1,0 +1,12 @@
+.remountButton[data-remount-animating] svg {
+  animation: rotate360 1000ms ease-out;
+}
+
+@keyframes rotate360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

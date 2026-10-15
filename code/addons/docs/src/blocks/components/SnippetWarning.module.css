@@ -1,0 +1,9 @@
+.warningButton {
+  color: var(--sb-fg-color-warning);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--sb-fg-color-warning);
+    background: var(--sb-bg-color-warning);
+  }
+}

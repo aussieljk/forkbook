@@ -1,18 +1,8 @@
-import { styled } from 'storybook/theming';
+import type { ReactNode } from 'react';
+import React from 'react';
 
-export const SideBySide = styled.div({
-  display: 'grid',
-  gridColumnGap: 30,
-  gridTemplateColumns: '1fr 1fr',
+import styles from './SideBySide.module.css';
 
-  position: 'absolute',
-  width: '100vw',
-  height: '100vh',
-  overflow: 'auto',
-  top: 0,
-  left: 0,
-
-  '& > *': {
-    padding: 20,
-  },
-});
+export const SideBySide = ({ children }: { children?: ReactNode }) => (
+  <div className={styles.sideBySide}>{children}</div>
+);

@@ -2,32 +2,12 @@ import React, { useRef } from 'react';
 
 import { Match } from 'storybook/internal/router';
 
-import { styled } from 'storybook/theming';
-
-import { MEDIA_DESKTOP_BREAKPOINT } from '../../constants.ts';
 import { useLandmark } from '../../hooks/useLandmark.ts';
+import styles from './MainAreaContainer.module.css';
 
 interface PagesContainerProps {
   children: React.ReactNode;
 }
-
-const PagesInnerContainer = styled.main(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  // On mobile the layout root is a column flexbox; fill it and let pages scroll internally
-  // instead of growing past the viewport, which is not scrollable.
-  flex: 1,
-  minHeight: 0,
-  backgroundColor: theme.appContentBg,
-  zIndex: 1,
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    gridRowStart: 'sidebar-start',
-    gridRowEnd: '-1',
-    gridColumnStart: 'sidebar-end',
-    gridColumnEnd: '-1',
-  },
-}));
 
 /**
  * Shows Router-controlled pages (e.g. settings/about), inside a landmark for navigability. Assumes
@@ -44,27 +24,14 @@ const PagesContainer = React.memo<PagesContainerProps>(function PagesContainer(p
   );
 
   return (
-    <PagesInnerContainer id="main-content-wrapper" ref={mainRef} {...landmarkProps}>
+    <main className={styles.pages} id="main-content-wrapper" ref={mainRef} {...landmarkProps}>
       <h2 id="main-content-heading" className="sb-sr-only">
         Main content
       </h2>
       {children}
-    </PagesInnerContainer>
+    </main>
   );
 });
-
-const MainInnerContainer = styled.div<{ shown: boolean }>(({ theme, shown }) => ({
-  flex: 1,
-  position: 'relative',
-  backgroundColor: theme.appContentBg,
-  display: shown ? 'grid' : 'none', // This is needed to make the content container fill the available space
-  overflow: 'auto',
-
-  [MEDIA_DESKTOP_BREAKPOINT]: {
-    flex: 'auto',
-    gridArea: 'content',
-  },
-}));
 
 interface MainAreaContainerProps {
   showPages: boolean;
@@ -87,7 +54,11 @@ const MainAreaContainer = React.memo<MainAreaContainerProps>(function MainAreaCo
         <PagesContainer>{slotPages}</PagesContainer>
       ) : (
         <Match path={/(^\/story|docs|onboarding\/|^\/$)/} startsWith={false}>
-          {({ match }) => <MainInnerContainer shown={!!match}>{slotMain}</MainInnerContainer>}
+          {({ match }) => (
+            <div className={styles.main} data-shown={!!match || undefined}>
+              {slotMain}
+            </div>
+          )}
         </Match>
       )}
     </>

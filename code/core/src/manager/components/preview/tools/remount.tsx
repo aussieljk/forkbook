@@ -1,4 +1,3 @@
-import type { ComponentProps } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import { Button } from 'storybook/internal/components';
@@ -9,20 +8,8 @@ import { SyncIcon } from '@storybook/icons';
 
 import { Consumer, types } from 'storybook/manager-api';
 import type { Combo } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
-interface AnimatedButtonProps {
-  animating?: boolean;
-}
-
-const StyledAnimatedButton = styled(Button)<
-  AnimatedButtonProps & Pick<ComponentProps<typeof Button>, 'disabled'>
->(({ theme, animating, disabled }) => ({
-  opacity: disabled ? 0.5 : 1,
-  svg: {
-    animation: animating ? `${theme.animation.rotate360} 1000ms ease-out` : undefined,
-  },
-}));
+import styles from './remount.module.css';
 
 const menuMapper = ({ api, state }: Combo) => {
   const { storyId } = state;
@@ -56,18 +43,19 @@ export const remountTool: Addon_BaseType = {
         }, [api]);
 
         return (
-          <StyledAnimatedButton
+          <Button
             key="remount"
+            className={styles.remountButton}
+            data-remount-animating={isAnimating || undefined}
             padding="small"
             variant="ghost"
             ariaLabel="Reload story"
             onClick={remountComponent}
             onAnimationEnd={() => setIsAnimating(false)}
-            animating={isAnimating}
             disabled={!storyId}
           >
             <SyncIcon />
-          </StyledAnimatedButton>
+          </Button>
         );
       }}
     </Consumer>

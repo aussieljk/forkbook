@@ -1,0 +1,21 @@
+.wrapper {
+  display: inline-grid;
+  grid-template-columns: max-content;
+  overflow: hidden;
+}
+
+.content {
+  display: inline-block;
+  grid-area: 1/1;
+  opacity: 1;
+  visibility: visible;
+
+  /* Hidden until the first measurement */
+  &[data-hidden='unknown'] {
+    opacity: 0;
+  }
+
+  &[data-hidden='true'] {
+    visibility: hidden;
+  }
+}

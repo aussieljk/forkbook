@@ -1,0 +1,98 @@
+/*
+ * Shared styles of the text inputs. The state selectors are in :where() so each rule has the
+ * specificity of one class, and components that add a class can override these styles.
+ */
+.control {
+  /* resets */
+  appearance: none;
+  border: 0 none;
+  display: block;
+  margin: 0;
+  position: relative;
+
+  transition:
+    box-shadow 200ms ease-out,
+    opacity 200ms ease-out;
+  color: var(--sb-input-color, inherit);
+  background: var(--sb-input-background);
+  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
+  border-radius: var(--sb-input-border-radius);
+  font-size: calc(var(--sb-size-s2) - 1px);
+  line-height: 20px;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  height: 32px;
+
+  &[type='file'] {
+    height: auto;
+  }
+
+  &:focus {
+    box-shadow: var(--sb-color-secondary) 0 0 0 1px inset;
+    outline: none;
+
+    @media (forced-colors: active) {
+      outline: 1px solid highlight;
+    }
+  }
+
+  &:where([disabled], [aria-disabled='true']) {
+    background: var(--sb-color-lighter);
+    cursor: not-allowed;
+  }
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 3em var(--sb-color-lightest) inset;
+  }
+
+  &::placeholder {
+    color: var(--sb-text-muted-color);
+    opacity: 1;
+  }
+}
+
+:where([data-sb-theme='dark']) .control:where([disabled], [aria-disabled='true']) {
+  background: transparent;
+}
+
+/* Sizes */
+
+.size:where(:not([data-size='100%'], [data-size='flex'])) {
+  display: inline;
+}
+
+.size:where([data-size='100%']) {
+  width: 100%;
+}
+
+.size:where([data-size='flex']) {
+  flex: 1;
+}
+
+/* Alignment */
+
+.control {
+  text-align: left;
+}
+
+.control:where([data-align='end']) {
+  text-align: right;
+}
+
+.control:where([data-align='center']) {
+  text-align: center;
+}
+
+/* Validation */
+
+.control:where([data-valid='valid']) {
+  box-shadow: var(--sb-color-positive) 0 0 0 1px inset !important;
+}
+
+.control:where([data-valid='error']) {
+  box-shadow: var(--sb-color-negative) 0 0 0 1px inset !important;
+}
+
+.control:where([data-valid='warn']) {
+  box-shadow: var(--sb-color-warning) 0 0 0 1px inset;
+}

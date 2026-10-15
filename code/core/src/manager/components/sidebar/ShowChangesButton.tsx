@@ -16,29 +16,12 @@ import {
   useStorybookApi,
   useStorybookState,
 } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { computeStatusFilterFn } from '../../../manager-api/modules/statuses.ts';
 import { computeTagsFilterFn } from '../../../manager-api/modules/tags.ts';
 import { UseSymbol } from './IconSymbols.tsx';
 import { useActiveReviewStoryCount } from './ReviewWidget.tsx';
-
-// Pulls the CTA closer to the search field than the sidebar's default stack gap.
-const Wrapper = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  gap: 4,
-  marginTop: -8,
-});
-
-const StyledCTA = styled(ToggleButton)({
-  flex: 1,
-  justifyContent: 'flex-start',
-});
-
-const StyledIcon = styled.svg(({ theme }) => ({
-  color: theme.fgColor.accent,
-}));
+import styles from './ShowChangesButton.module.css';
 
 const NEW = 'status-value:new' as StatusValue;
 const MOD = 'status-value:modified' as StatusValue;
@@ -142,19 +125,20 @@ export const ShowChangesButton = () => {
   const ariaLabel = `${label} since last commit`;
 
   return (
-    <Wrapper>
-      <StyledCTA
+    <div className={styles.wrapper}>
+      <ToggleButton
+        className={styles.cta}
         variant="ghost"
         padding="small"
         pressed={isActive}
         ariaLabel={ariaLabel}
         onClick={onClick}
       >
-        <StyledIcon viewBox="0 0 14 14" width="14" height="14" aria-hidden>
+        <svg className={styles.icon} viewBox="0 0 14 14" width="14" height="14" aria-hidden>
           <UseSymbol type="modified" />
-        </StyledIcon>
+        </svg>
         {label}
-      </StyledCTA>
+      </ToggleButton>
       {isActive && (
         <Button
           variant="ghost"
@@ -166,6 +150,6 @@ export const ShowChangesButton = () => {
           <UndoIcon />
         </Button>
       )}
-    </Wrapper>
+    </div>
   );
 };

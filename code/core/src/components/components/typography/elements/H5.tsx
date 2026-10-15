@@ -1,10 +1,5 @@
-import type { CSSObject } from 'storybook/theming';
-import { styled } from 'storybook/theming';
-
+import { withClassName } from '../lib/withClassName.tsx';
 import { headerCommon, withReset } from '../lib/common.tsx';
+import styles from './H5.module.css';
 
-export const H5 = styled.h5(({ theme }) => ({
-  ...(withReset({ theme }) as CSSObject),
-  ...(headerCommon({ theme }) as CSSObject),
-  fontSize: `${theme.typography.size.s2}px`,
-}));
+export const H5 = withClassName('h5', withReset, headerCommon, styles.h5);

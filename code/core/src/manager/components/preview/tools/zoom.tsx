@@ -7,31 +7,15 @@ import type { Addon_BaseType } from 'storybook/internal/types';
 import { UndoIcon, ZoomIcon } from '@storybook/icons';
 
 import { types, useStorybookApi } from 'storybook/manager-api';
-import { styled } from 'storybook/theming';
 
 import { Shortcut } from '../../Shortcut.tsx';
 import { NumericInput } from '../NumericInput.tsx';
+import styles from './zoom.module.css';
 
 const ZOOM_LEVELS = [0.25, 0.5, 0.75, 0.9, 1, 1.1, 1.25, 1.5, 2, 3, 4, 8] as const;
 const INITIAL_ZOOM_LEVEL = 1;
 
-const ZoomButton = styled(ToggleButton)({
-  minWidth: 48,
-});
-
-const ZoomResetButton = styled(ActionList.Button)<{ $isInitialValue: boolean }>(
-  ({ $isInitialValue }) => ({
-    visibility: $isInitialValue ? 'hidden' : undefined,
-  })
-);
-
 const Context = createContext({ value: INITIAL_ZOOM_LEVEL, set: (v: number) => {} });
-
-const ZoomInput = styled(NumericInput)({
-  input: {
-    width: 100,
-  },
-});
 
 export const ZoomConsumer = Context.Consumer;
 
@@ -78,7 +62,8 @@ export const Zoom = memo<{
         <>
           <ActionList>
             <ActionList.Item>
-              <ZoomInput
+              <NumericInput
+                className={styles.zoomInput}
                 aria-label="Zoom percentage"
                 ref={inputRef}
                 unit="%"
@@ -88,16 +73,16 @@ export const Zoom = memo<{
                   </ActionList.Button>
                 }
                 after={
-                  <ZoomResetButton
+                  <ActionList.Button
                     size="small"
                     padding="small"
-                    $isInitialValue={value === INITIAL_ZOOM_LEVEL}
+                    style={{ visibility: value === INITIAL_ZOOM_LEVEL ? 'hidden' : undefined }}
                     onClick={() => zoomTo(INITIAL_ZOOM_LEVEL)}
                     ariaLabel="Reset zoom"
                     aria-hidden={value === INITIAL_ZOOM_LEVEL}
                   >
                     <UndoIcon />
-                  </ZoomResetButton>
+                  </ActionList.Button>
                 }
                 value={`${Math.round(value * 100)}%`}
                 minValue={1}
@@ -152,7 +137,8 @@ export const Zoom = memo<{
         </>
       }
     >
-      <ZoomButton
+      <ToggleButton
+        className={styles.zoomButton}
         padding="small"
         variant="ghost"
         ariaLabel="Change zoom level"
@@ -188,7 +174,7 @@ export const Zoom = memo<{
         }}
       >
         {Math.round(value * 100)}%
-      </ZoomButton>
+      </ToggleButton>
     </PopoverProvider>
   );
 });

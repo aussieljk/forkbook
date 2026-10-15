@@ -1,27 +1,36 @@
+import type { ComponentProps } from 'react';
 import type { ReactElement } from 'react';
 import React, { Fragment } from 'react';
 
-import { styled } from 'storybook/theming';
-
 import { ScrollArea } from './ScrollArea.tsx';
 
-const Block = styled.span({
-  display: 'inline-block',
-  height: 40,
-  width: 40,
-  border: '1px solid silver',
-  lineHeight: '40px',
-  textAlign: 'center',
-  fontSize: 9,
-});
+const Block = (props: ComponentProps<'span'>) => (
+  <span
+    {...props}
+    style={{
+      display: 'inline-block',
+      height: 40,
+      width: 40,
+      border: '1px solid silver',
+      lineHeight: '40px',
+      textAlign: 'center',
+      fontSize: 9,
+    }}
+  />
+);
 
-const Wrapper = styled.div({
-  whiteSpace: 'nowrap',
-  lineHeight: '0px',
-  width: 500,
-  height: 500,
-  overflow: 'hidden',
-});
+const Wrapper = (props: ComponentProps<'div'>) => (
+  <div
+    {...props}
+    style={{
+      whiteSpace: 'nowrap',
+      lineHeight: '0px',
+      width: 500,
+      height: 500,
+      overflow: 'hidden',
+    }}
+  />
+);
 
 const list = (filler: (data: number) => ReactElement) => {
   const data = [];

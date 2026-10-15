@@ -1,31 +1,47 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useId, useRef, useState } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
 import { useLocationHash } from '../../hooks/useLocation.ts';
+import styles from './Focus.module.css';
 
-const FocusOutline = styled.div<{ active?: boolean; outlineOffset?: number }>(
-  ({ theme, active = false, outlineOffset = 0 }) => ({
-    width: '100%',
-    borderRadius: 'inherit',
-    transition: 'outline-color var(--transition-duration, 0.2s)',
-    outline: `2px solid ${active ? theme.color.secondary : 'transparent'}`,
-    outlineOffset,
-  })
+type FocusOutlineProps = React.ComponentProps<'div'> & {
+  active?: boolean;
+  outlineOffset?: number;
+};
+
+const FocusOutline = forwardRef<HTMLDivElement, FocusOutlineProps>(
+  ({ active = false, outlineOffset = 0, className, style, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={clsx(styles.outline, className)}
+      data-active={active || undefined}
+      style={{ outlineOffset, ...style }}
+      {...props}
+    />
+  )
 );
+FocusOutline.displayName = 'FocusOutline';
 
-const FocusProxy = styled(FocusOutline)<{ targetId: string }>(({ theme, targetId }) => ({
-  [`&:has([data-target-id="${targetId}"]:focus-visible)`]: {
-    outlineColor: theme.color.secondary,
-  },
-}));
+/** An outline that shows while the element with `data-target-id={targetId}` has visible focus. */
+const FocusProxy = ({ targetId, ...props }: FocusOutlineProps & { targetId: string }) => {
+  const id = useId();
+  return (
+    <>
+      <style>
+        {`[data-focus-proxy="${id}"]:has([data-target-id="${targetId}"]:focus-visible) { outline-color: var(--sb-color-secondary); }`}
+      </style>
+      <FocusOutline data-focus-proxy={id} {...props} />
+    </>
+  );
+};
 
 const FocusRing = ({
   active = false,
   highlightDuration,
   nodeRef,
   ...props
-}: React.ComponentProps<typeof FocusOutline> & {
+}: FocusOutlineProps & {
   highlightDuration?: number;
   nodeRef?: React.RefObject<HTMLDivElement>;
 }) => {

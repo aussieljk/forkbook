@@ -1,0 +1,17 @@
+.expected {
+  color: var(--sb-color-positive-text);
+}
+
+.received {
+  color: var(--sb-color-negative-text);
+}
+
+:where([data-sb-theme='dark']) {
+  & .expected {
+    color: var(--sb-color-positive);
+  }
+
+  & .received {
+    color: var(--sb-color-negative);
+  }
+}

@@ -1,12 +1,13 @@
-import type { AnchorHTMLAttributes, MouseEvent } from 'react';
+import type { AnchorHTMLAttributes, ElementType, MouseEvent } from 'react';
 import React, { forwardRef } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
 import { ChevronRightIcon } from '@storybook/icons';
 
-import { darken } from 'polished';
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
+
+import styles from './link.module.css';
 
 // Cmd/Ctrl/Shift/Alt + Click should trigger default browser behavior. Same applies to non-left clicks
 const LEFT_BUTTON = 0;
@@ -34,164 +35,12 @@ export interface LinkInnerProps {
   containsIcon?: boolean;
 }
 
-const LinkInner = styled.span<LinkInnerProps>(
-  ({ withArrow }) =>
-    withArrow
-      ? {
-          '> svg:last-of-type': {
-            height: '0.7em',
-            width: '0.7em',
-            marginRight: 0,
-            marginLeft: '0.25em',
-            bottom: 'auto',
-            verticalAlign: 'inherit',
-          },
-        }
-      : {},
-  ({ containsIcon }) =>
-    containsIcon
-      ? {
-          svg: {
-            height: '1em',
-            width: '1em',
-            verticalAlign: 'middle',
-            position: 'relative',
-            bottom: 0,
-            marginRight: 0,
-          },
-        }
-      : {}
-);
-
 type AProps = AnchorHTMLAttributes<HTMLAnchorElement>;
-
-const A = styled.a<LinkStylesProps>(
-  ({ theme }) => ({
-    display: 'inline-block',
-    transition: 'all 150ms ease-out',
-    textDecoration: 'none',
-
-    color: theme.color.secondary,
-
-    '&:hover, &:focus': {
-      cursor: 'pointer',
-      color: darken(0.07, theme.color.secondary),
-      'svg path:not([fill])': {
-        fill: darken(0.07, theme.color.secondary),
-      },
-    },
-    '&:active': {
-      color: darken(0.1, theme.color.secondary),
-      'svg path:not([fill])': {
-        fill: darken(0.1, theme.color.secondary),
-      },
-    },
-
-    '&:focus-visible': {
-      outline: `2px solid ${theme.color.secondary}`,
-      outlineOffset: 2,
-      borderRadius: theme.input.borderRadius,
-      // Should ensure focus outline gets drawn above next sibling
-      zIndex: '1',
-    },
-
-    svg: {
-      display: 'inline-block',
-      height: '1em',
-      width: '1em',
-      verticalAlign: 'text-top',
-      position: 'relative',
-      bottom: '-0.125em',
-      marginRight: '0.4em',
-
-      '& path': {
-        fill: theme.color.secondary,
-      },
-    },
-  }),
-  ({ theme, secondary, tertiary }) => {
-    let colors;
-    if (secondary) {
-      colors = [theme.textMutedColor, theme.color.secondary, theme.color.secondary];
-    }
-    if (tertiary) {
-      colors = [theme.color.dark, theme.color.secondary, theme.color.secondary];
-    }
-
-    return colors
-      ? {
-          color: colors[0],
-          'svg path:not([fill])': {
-            fill: colors[0],
-          },
-
-          '&:hover': {
-            color: colors[1],
-            'svg path:not([fill])': {
-              fill: colors[1],
-            },
-          },
-
-          '&:active': {
-            color: colors[2],
-            'svg path:not([fill])': {
-              fill: colors[2],
-            },
-          },
-        }
-      : {};
-  },
-  ({ nochrome }) =>
-    nochrome
-      ? {
-          color: 'inherit',
-
-          '&:hover, &:active': {
-            color: 'inherit',
-            textDecoration: 'underline',
-          },
-        }
-      : {},
-  ({ theme, inverse }) =>
-    inverse
-      ? {
-          color: theme.color.lightest,
-          ':not([fill])': {
-            fill: theme.color.lightest,
-          },
-
-          '&:hover': {
-            color: theme.color.lighter,
-            'svg path:not([fill])': {
-              fill: theme.color.lighter,
-            },
-          },
-
-          '&:active': {
-            color: theme.color.light,
-            'svg path:not([fill])': {
-              fill: theme.color.light,
-            },
-          },
-        }
-      : {},
-  ({ isButton, theme }) =>
-    isButton
-      ? {
-          border: 0,
-          borderRadius: theme.input.borderRadius,
-          background: 'none',
-          padding: 0,
-          fontSize: 'inherit',
-          lineHeight: 'inherit',
-        }
-      : {}
-);
 
 export interface LinkProps extends LinkInnerProps, LinkStylesProps, AProps {
   cancel?: boolean;
   className?: string;
-  style?: object;
+  style?: React.CSSProperties;
   onClick?: (e: MouseEvent) => void;
   href?: string;
 }
@@ -206,6 +55,10 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       containsIcon = false,
       className = undefined,
       isButton = undefined,
+      secondary,
+      tertiary,
+      nochrome,
+      inverse,
       href,
       ...rest
     },
@@ -217,21 +70,30 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       );
     }
 
+    const Comp = (href ? 'a' : 'button') as ElementType;
+
     return (
-      <A
-        as={href ? 'a' : 'button'}
+      <Comp
         href={href}
         {...rest}
         ref={ref}
-        isButton={!href || isButton === true}
-        onClick={onClick && cancel ? (e) => cancelled(e, onClick) : onClick}
-        className={className}
+        data-secondary={secondary || undefined}
+        data-tertiary={tertiary || undefined}
+        data-nochrome={nochrome || undefined}
+        data-inverse={inverse || undefined}
+        data-button={!href || isButton === true || undefined}
+        onClick={onClick && cancel ? (e: MouseEvent) => cancelled(e, onClick) : onClick}
+        className={clsx(styles.link, className)}
       >
-        <LinkInner withArrow={withArrow} containsIcon={containsIcon}>
+        <span
+          className={styles.inner}
+          data-with-arrow={withArrow || undefined}
+          data-contains-icon={containsIcon || undefined}
+        >
           {children}
           {withArrow && <ChevronRightIcon />}
-        </LinkInner>
-      </A>
+        </span>
+      </Comp>
     );
   }
 );

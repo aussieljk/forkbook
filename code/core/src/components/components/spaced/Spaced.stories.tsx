@@ -1,19 +1,14 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { styled } from 'storybook/theming';
-
 import { Spaced } from './Spaced.tsx';
 
-const PlaceholderBlock = styled.div(({ color }) => ({
-  background: color || 'hotpink',
-  padding: 20,
-}));
-const PlaceholderInline = styled.span(({ color }) => ({
-  background: color || 'hotpink',
-  display: 'inline-block',
-  padding: 20,
-}));
+const PlaceholderBlock = ({ color }: { color?: string }) => (
+  <div style={{ background: color || 'hotpink', padding: 20 }} />
+);
+const PlaceholderInline = ({ color }: { color?: string }) => (
+  <span style={{ background: color || 'hotpink', display: 'inline-block', padding: 20 }} />
+);
 
 export default {
   component: Spaced,

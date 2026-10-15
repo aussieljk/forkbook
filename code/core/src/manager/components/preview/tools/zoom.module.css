@@ -1,0 +1,7 @@
+.zoomButton {
+  min-width: 48px;
+}
+
+.zoomInput input {
+  width: 100px;
+}

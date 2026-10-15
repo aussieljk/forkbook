@@ -1,0 +1,28 @@
+.container {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 0;
+  border-color: var(--sb-app-border-color);
+  font-size: var(--sb-size-s2);
+  width: 100%;
+
+  /* MEDIA_DESKTOP_BREAKPOINT */
+  @media (min-width: 600px) {
+    max-width: 400px;
+  }
+}
+
+.code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  font-size: calc(var(--sb-size-s2) - 1px);
+  margin: 4px 0 16px;
+}
+
+:where([data-sb-theme='dark']) .code {
+  background: var(--sb-app-border-color);
+}

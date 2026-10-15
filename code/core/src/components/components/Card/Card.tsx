@@ -1,162 +1,95 @@
-import React, { forwardRef, type ComponentProps, type DOMAttributes } from 'react';
+import React, {
+  forwardRef,
+  type ComponentProps,
+  type CSSProperties,
+  type DOMAttributes,
+} from 'react';
 
+import { clsx } from 'clsx';
 import type { StorybookTheme } from 'storybook/theming';
-import { keyframes, styled } from 'storybook/theming';
+
+import styles from './Card.module.css';
 
 type ThemeColor = keyof StorybookTheme['color'] | keyof StorybookTheme['fgColor'];
 
+const kebab = (key: string) => key.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
+
 // A ThemeColor may live in any of theme.color / fgColor / bgColor / borderColor, which don't share
-// a key space, so each lookup is a presence check rather than a direct index. Returning undefined
-// when absent is intentional: it lets the CSS property fall back to inherit/default.
-const resolveThemeColor = (
-  colors: Partial<Record<string, string>>,
-  key?: ThemeColor
-): string | undefined => (key && key in colors ? colors[key] : undefined);
+// a key space. So each lookup is a chain of CSS variables, `var(--a, var(--b))`. When no variable
+// exists, the CSS property falls back to inherit/default.
+const varChain = (names: (string | false | undefined)[], fallback = '') =>
+  names.reduceRight<string>(
+    (inner, name) => (name ? `var(${name}${inner ? `, ${inner}` : ''})` : inner),
+    fallback
+  ) || undefined;
 
-const getColor = (theme: StorybookTheme, color?: ThemeColor): string | undefined =>
-  resolveThemeColor(theme.fgColor, color) ?? resolveThemeColor(theme.color, color);
-
-const getBorderColor = (
-  theme: StorybookTheme,
-  color?: ThemeColor,
-  outlineColor?: ThemeColor
-): string | undefined =>
-  resolveThemeColor(theme.borderColor, color) ?? resolveThemeColor(theme.color, outlineColor);
-
-const getBackgroundColor = (theme: StorybookTheme, color?: ThemeColor): string =>
-  resolveThemeColor(theme.bgColor, color) ?? theme.background.content;
-
-// Compose the (possibly translucent) themed background over an opaque base. Some
-// themed bgColors are intentionally translucent for tinting (e.g. `agentic` in
-// dark mode), which would otherwise let the animated outline behind the content
-// bleed through the whole card instead of just the 1px ring.
-const getOpaqueBackground = (theme: StorybookTheme, color?: ThemeColor): string => {
-  const bg = getBackgroundColor(theme, color);
-  return `linear-gradient(${bg}, ${bg}), ${theme.background.content}`;
-};
-
-const fadeInOut = keyframes({
-  '0%': { opacity: 0 },
-  '10%': { opacity: 1 },
-  '80%': { opacity: 1 },
-  '100%': { opacity: 0 },
+const colorVars = (color?: ThemeColor) => ({
+  '--card-color':
+    color && varChain([`--sb-fg-color-${kebab(color)}`, `--sb-color-${kebab(color)}`]),
+  '--card-background': varChain(
+    [color && `--sb-bg-color-${kebab(color)}`],
+    'var(--sb-background-content)'
+  ),
 });
 
-const spin = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '10%': { transform: 'rotate(20deg)' },
-  '40%': { transform: 'rotate(170deg)' },
-  '50%': { transform: 'rotate(180deg)' },
-  '60%': { transform: 'rotate(190deg)' },
-  '90%': { transform: 'rotate(340deg)' },
-  '100%': { transform: 'rotate(360deg)' },
+interface CardContentProps extends ComponentProps<'div'> {
+  color?: ThemeColor;
+}
+
+const CardContent = forwardRef<HTMLDivElement, CardContentProps>(function CardContent(
+  { color, className, style, ...props },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      className={clsx(styles.content, className)}
+      style={{ ...colorVars(color), ...style } as CSSProperties}
+      {...props}
+    />
+  );
 });
 
-// Half the layer's width plus half its height projects exactly one hue cycle onto the 45°
-// gradient axis, so the loop wraps seamlessly at any card size. Animating transform instead
-// of background-position keeps the infinite shimmer on the compositor — background-position
-// forced a main-thread repaint on every frame for as long as the card was mounted.
-const slide = keyframes({
-  to: {
-    transform: 'translate(-50%, 50%)',
-  },
-});
-
-const CardContent = styled.div<{ color?: ThemeColor }>(({ color, theme }) => ({
-  color: getColor(theme, color),
-  borderRadius: theme.appBorderRadius,
-  background: getOpaqueBackground(theme, color),
-  position: 'relative',
-}));
-
-const CardOutline = styled.div<{
+interface CardOutlineProps extends ComponentProps<'div'> {
   animation?: 'none' | 'rainbow' | 'spin';
   color?: ThemeColor;
   outlineColor?: ThemeColor;
-}>(({ animation = 'none', color, outlineColor = color, theme }) => ({
-  position: 'relative',
-  width: '100%',
-  padding: 1,
-  overflow: 'hidden',
-  backgroundColor: getBackgroundColor(theme, color),
-  borderRadius: theme.appBorderRadius + 1,
-  boxShadow: `inset 0 0 0 1px ${(animation === 'none' && getBorderColor(theme, color, outlineColor)) || theme.appBorderColor}, var(--card-box-shadow, transparent 0 0)`,
-  transition: 'box-shadow 1s',
+}
 
-  '@supports (interpolate-size: allow-keywords)': {
-    interpolateSize: 'allow-keywords',
-    transition: 'all var(--transition-duration, 0.2s), box-shadow 1s',
-    transitionBehavior: 'allow-discrete',
-  },
+const CardOutline = forwardRef<HTMLDivElement, CardOutlineProps>(function CardOutline(
+  { animation = 'none', color, outlineColor = color, className, style, ...props },
+  ref
+) {
+  // The outline only takes the theme colour when it has no animation.
+  const borderColor =
+    animation === 'none'
+      ? varChain([
+          color && `--sb-border-color-${kebab(color)}`,
+          outlineColor && `--sb-color-${kebab(outlineColor)}`,
+        ])
+      : undefined;
 
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'box-shadow 1s',
-  },
+  return (
+    <div
+      ref={ref}
+      className={clsx(styles.outline, className)}
+      data-animation={animation}
+      data-outline-color={outlineColor}
+      style={{ ...colorVars(color), '--card-border-color': borderColor, ...style } as CSSProperties}
+      {...props}
+    />
+  );
+});
 
-  '&:before': {
-    content: '""',
-    display: animation === 'none' ? 'none' : 'block',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width: '100%',
-    height: '100%',
-    opacity: 1,
-
-    ...(animation === 'rainbow' && {
-      // Oversized so the card stays covered throughout the diagonal slide.
-      width: '1000%',
-      height: '200%',
-      top: '-100%',
-      animation: `${slide} 10s linear forwards, ${fadeInOut} 10s linear forwards`,
-      // 13 stops: 6 hues twice plus the first hue again, so the hue pattern repeats at
-      // exactly 50% of the gradient line.
-      backgroundImage: `linear-gradient(45deg,rgb(234, 0, 0),rgb(255, 157, 0),rgb(255, 208, 0),rgb(0, 172, 0),rgb(0, 166, 255),rgb(181, 0, 181), rgb(234, 0, 0),rgb(255, 157, 0),rgb(255, 208, 0),rgb(0, 172, 0),rgb(0, 166, 255),rgb(181, 0, 181), rgb(234, 0, 0))`,
-      willChange: 'transform, opacity',
-      '@media (prefers-reduced-motion: reduce)': {
-        animation: 'none',
-        width: '100%',
-        height: '100%',
-        top: 0,
-        opacity: 0,
-      },
-    }),
-
-    ...(animation === 'spin' && {
-      left: '50%',
-      top: '50%',
-      marginLeft: 'calc(max(100vw, 100vh) * -0.5)',
-      marginTop: 'calc(max(100vw, 100vh) * -0.5)',
-      height: 'max(100vw, 100vh)',
-      width: 'max(100vw, 100vh)',
-      animation: `${spin} 5s linear infinite`,
-      // Hardcoded colors to prevent themes from messing with them
-      // (orange+gold, lavender+pink, secondary+seafoam)
-      backgroundImage:
-        outlineColor === 'negative'
-          ? `conic-gradient(transparent 90deg, #FC521F 150deg, #FFAE00 210deg, transparent 270deg)`
-          : outlineColor === 'agentic'
-            ? // Agentic is intentionally subtle. Pale lavender stays low-contrast on a
-              // light background, but the same colors read as a bright sweep on dark, so
-              // the dark arc is dimmed with low-alpha hues to keep it a faint glow.
-              theme.base === 'dark'
-              ? `conic-gradient(transparent 90deg, rgba(114,58,166,0.65) 150deg, rgba(157,98,214,0.6) 210deg, transparent 270deg)`
-              : `conic-gradient(transparent 90deg, #b6a7ff 150deg, #d8aeff 210deg, transparent 270deg)`
-            : `conic-gradient(transparent 90deg, #029CFD 150deg, #37D5D3 210deg, transparent 270deg)`,
-    }),
-  },
-}));
-
-interface CardProps extends ComponentProps<typeof CardContent> {
+interface CardProps extends CardContentProps {
   outlineAnimation?: 'none' | 'rainbow' | 'spin';
-  color?: ThemeColor;
   outlineColor?: ThemeColor;
   outlineAttrs?: DOMAttributes<HTMLDivElement>;
 }
 
 export const Card = Object.assign(
   forwardRef<HTMLDivElement, CardProps>(function Card(
-    { outlineAnimation = 'none', color, outlineColor, outlineAttrs: outlineAttrs = {}, ...props },
+    { outlineAnimation = 'none', color, outlineColor, outlineAttrs = {}, ...props },
     ref
   ) {
     return (

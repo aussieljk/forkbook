@@ -1,40 +1,21 @@
-import React, { type ReactNode } from 'react';
+import React, { type ComponentProps, type ReactNode } from 'react';
 
-import { styled } from 'storybook/theming';
+import { clsx } from 'clsx';
 
-const Wrapper = styled.label(({ theme }) => ({
-  display: 'flex',
-  borderBottom: `1px solid ${theme.appBorderColor}`,
-  margin: '0 15px',
-  padding: '8px 0',
+import styles from './Field.module.css';
 
-  '&:last-child': {
-    marginBottom: '3rem',
-  },
-}));
-
-const Label = styled.span(({ theme }) => ({
-  minWidth: 100,
-  fontWeight: theme.typography.weight.bold,
-  marginRight: 15,
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  lineHeight: '16px',
-}));
-
-export interface FieldProps {
+export interface FieldProps extends Omit<ComponentProps<'label'>, 'children'> {
   children?: ReactNode;
   label?: ReactNode;
 }
 
-export const Field = ({ label, children, ...props }: FieldProps) => (
-  <Wrapper {...props}>
+export const Field = ({ label, children, className, ...props }: FieldProps) => (
+  <label className={clsx(styles.field, className)} {...props}>
     {label ? (
-      <Label>
+      <span className={styles.label}>
         <span>{label}</span>
-      </Label>
+      </span>
     ) : null}
     {children}
-  </Wrapper>
+  </label>
 );
