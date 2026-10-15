@@ -357,6 +357,7 @@
     "bundle-require": "^5.1.0",
     "camelcase": "^9.0.0",
     "chai": "^5.1.1",
+    "clsx": "^2.1.1",
     "commander": "^14.0.2",
     "comment-json": "^4.2.5",
     "comment-parser": "^1.4.1",

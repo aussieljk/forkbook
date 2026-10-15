@@ -29,9 +29,7 @@ interface PropsWriterProps {
   importedReference?: string;
   globalReference?: any;
   stringGlobalName?: string;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore no types for this
-  myClass: typeof styles;
+  myClass: string;
 }
 
 /** A component that renders its props */

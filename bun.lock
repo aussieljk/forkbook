@@ -340,6 +340,7 @@
         "bundle-require": "^5.1.0",
         "camelcase": "^9.0.0",
         "chai": "^5.1.1",
+        "clsx": "^2.1.1",
         "commander": "^14.0.2",
         "comment-json": "^4.2.5",
         "comment-parser": "^1.4.1",
@@ -643,6 +644,7 @@
         "esbuild-raw-plugin": "^0.3.1",
         "eslint-plugin-local-rules": "file:./eslint-plugin-local-rules",
         "knip": "^6.38.0",
+        "lightningcss": "^1.33.0",
         "oxlint": "1.85.0",
         "p-limit": "^7.2.0",
         "pathe": "^1.1.2",
@@ -1755,7 +1757,7 @@
 
     "clipanion": ["clipanion@4.0.0-rc.4", "", { "dependencies": { "typanion": "^3.8.0" } }, "sha512-CXkMQxU6s9GklO/1f714dkKBMu1lopS1WFF0B8o4AxPykR1hpozxSiUZ5ZUeBjfPgCWqbcNOtZVFhB8Lkfp1+Q=="],
 
-    "clsx": ["clsx@1.1.0", "", {}, "sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA=="],
+    "clsx": ["clsx@2.1.1", "", {}, "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="],
 
     "collapse-white-space": ["collapse-white-space@2.1.0", "", {}, "sha512-loKTxY1zCOuG4j9f6EPnuyyYkf58RnhhWTvRoZEokgB+WbdXehfjFviyOVYkqzEWz1Q5kRiZdBYS5SwxbQYwzw=="],
 
@@ -3183,13 +3185,21 @@
 
     "@cypress/request/safe-buffer": ["safe-buffer@5.2.1", "", {}, "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ=="],
 
+    "@design-systems/utils/clsx": ["clsx@1.1.0", "", {}, "sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA=="],
+
     "@devtools-ds/object-inspector/@babel/runtime": ["@babel/runtime@7.7.2", "", { "dependencies": { "regenerator-runtime": "^0.13.2" } }, "sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw=="],
+
+    "@devtools-ds/object-inspector/clsx": ["clsx@1.1.0", "", {}, "sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA=="],
 
     "@devtools-ds/object-parser/@babel/runtime": ["@babel/runtime@7.5.5", "", { "dependencies": { "regenerator-runtime": "^0.13.2" } }, "sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ=="],
 
     "@devtools-ds/themes/@babel/runtime": ["@babel/runtime@7.5.5", "", { "dependencies": { "regenerator-runtime": "^0.13.2" } }, "sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ=="],
 
+    "@devtools-ds/themes/clsx": ["clsx@1.1.0", "", {}, "sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA=="],
+
     "@devtools-ds/tree/@babel/runtime": ["@babel/runtime@7.7.2", "", { "dependencies": { "regenerator-runtime": "^0.13.2" } }, "sha512-JONRbXbTXc9WQE2mAZd1p0Z3DZ/6vaQIkgYMSTP3KjRCyd7rCZCcfhCyX+YjwcKxcZ82UrxbRD358bpExNgrjw=="],
+
+    "@devtools-ds/tree/clsx": ["clsx@1.1.0", "", {}, "sha512-3avwM37fSK5oP6M5rQ9CNe99lwxhXDOeSWVPAOYF6OazUTgZCMb0yWlJpmdD74REy1gkEaFiub2ULv4fq9GUhA=="],
 
     "@emotion/babel-plugin/convert-source-map": ["convert-source-map@1.9.0", "", {}, "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A=="],
 

@@ -7,17 +7,7 @@ export { default as styled } from '@emotion/styled';
 
 export type { StyledComponent } from '@emotion/styled';
 
-export {
-  CacheProvider,
-  ClassNames,
-  css,
-  Global,
-  jsx,
-  keyframes,
-  ThemeProvider,
-  useTheme,
-  withTheme,
-} from '@emotion/react';
+export { CacheProvider, ClassNames, css, Global, jsx, keyframes, withTheme } from '@emotion/react';
 export type { CSSObject, Keyframes } from '@emotion/react';
 
 type FunctionInterpolationEnhanced<T = {}> = FunctionInterpolation<T & { theme: StorybookTheme }>;
@@ -33,7 +23,11 @@ export * from './types.ts';
 export { default as createCache } from '@emotion/cache';
 export { default as isPropValid } from '@emotion/is-prop-valid';
 
-export { createGlobal, createReset, srOnlyStyles, srOnlyUnsetStyles } from './global.ts';
+export { createGlobal, createReset, srOnlyStyles, srOnlyUnsetStyles } from './global-emotion.ts';
+export { globalCss, resetCss } from './global.ts';
+export { ThemeProvider, useTheme } from './ThemeProvider.tsx';
+export { themeToCssVars, cssVarsToString } from './css-vars.ts';
+export type { CssVars } from './css-vars.ts';
 export * from './create.ts';
 export * from './convert.ts';
 export * from './ensure.ts';

@@ -1,16 +1,16 @@
-import type { ComponentProps, ReactElement, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ElementType, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
 import { useRender } from '@base-ui/react/use-render';
-import { darken, lighten, rgba, transparentize } from 'polished';
+import { clsx } from 'clsx';
 import { shortcutToAriaKeyshortcuts, type API_KeyCollection } from 'storybook/manager-api';
-import { isPropValid, styled } from 'storybook/theming';
 import type { PopperPlacement } from '../shared/overlayHelpers.tsx';
 
 import { InteractiveTooltipWrapper } from './helpers/InteractiveTooltipWrapper.tsx';
 import { useAriaDescription } from './helpers/useAriaDescription.tsx';
+import styles from './Button.module.css';
 
 /** Renders its only child with the props given to it, so a Button can style a link (`asChild`). */
 const Slot = forwardRef<HTMLElement, { children?: ReactNode }>(({ children, ...props }, ref) =>
@@ -18,9 +18,19 @@ const Slot = forwardRef<HTMLElement, { children?: ReactNode }>(({ children, ...p
 );
 Slot.displayName = 'Slot';
 
-export interface ButtonProps extends Omit<ComponentProps<typeof StyledButton>, 'as'> {
-  as?: ComponentProps<typeof StyledButton>['as'] | typeof Slot;
+export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+  as?: ElementType;
   asChild?: boolean;
+
+  size?: 'small' | 'medium';
+  padding?: 'small' | 'medium' | 'none';
+  appearance?: 'default' | 'agentic';
+  variant?: 'outline' | 'solid' | 'ghost';
+  /** @deprecated Use specialized components like `ToggleButton` or `Select` instead. */
+  active?: boolean;
+  readOnly?: boolean;
+  /** An animation for the icon, played on click. */
+  animation?: 'none' | 'rotate360' | 'glow' | 'jiggle';
 
   /**
    * A concise action label for the button announced by screen readers. Needed for buttons without
@@ -82,6 +92,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       tooltipPlacement = 'top',
       shortcut = undefined,
       disableAllTooltips = false,
+      className,
       ...props
     },
     ref
@@ -147,20 +158,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           tooltip={finalTooltip}
           tooltipPlacement={tooltipPlacement}
         >
-          <StyledButton
+          <Comp
             data-deprecated={deprecated}
-            as={Comp}
             ref={ref}
-            appearance={appearance}
-            variant={variant}
-            size={size}
-            padding={padding}
-            $disabled={disabled || readOnly}
+            className={clsx(styles.button, className)}
+            data-appearance={appearance}
+            data-variant={variant}
+            data-size={size}
+            data-padding={padding}
+            data-disabled={disabled || readOnly || undefined}
+            data-readonly={readOnly || undefined}
+            data-active={active || undefined}
+            data-animating={isAnimating && animation !== 'none' ? animation : undefined}
             aria-disabled={disabled || readOnly ? 'true' : undefined}
-            readOnly={readOnly}
-            active={active}
-            animating={isAnimating}
-            animation={animation}
             onClick={disabled || readOnly ? undefined : handleClick}
             aria-label={!readOnly && ariaLabel !== false ? ariaLabel : undefined}
             aria-keyshortcuts={readOnly ? undefined : shortcutAttribute}
@@ -175,191 +185,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = 'Button';
-
-const StyledButton = styled('button', {
-  shouldForwardProp: (prop) => isPropValid(prop),
-})<{
-  size?: 'small' | 'medium';
-  padding?: 'small' | 'medium' | 'none';
-  appearance?: 'default' | 'agentic';
-  variant?: 'outline' | 'solid' | 'ghost';
-  active?: boolean;
-  $disabled?: boolean;
-  readOnly?: boolean;
-  animating?: boolean;
-  animation?: 'none' | 'rotate360' | 'glow' | 'jiggle';
-}>(({
-  theme,
-  appearance,
-  variant,
-  size,
-  $disabled,
-  readOnly,
-  active,
-  animating,
-  animation = 'none',
-  padding,
-}) => {
-  const colors =
-    appearance === 'agentic'
-      ? {
-          foreground: theme.fgColor.agentic,
-          background: theme.bgColor.agentic,
-          outline: theme.borderColor.agentic,
-        }
-      : {
-          foreground: theme.color.secondary,
-          background: theme.button.background,
-          outline: theme.button.border,
-        };
-
-  return {
-    border: 0,
-    cursor: readOnly ? 'inherit' : $disabled ? 'not-allowed' : 'pointer',
-    display: 'inline-flex',
-    gap: '6px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-    padding: (() => {
-      if (padding === 'none') {
-        return 0;
-      }
-      if (padding === 'small' && size === 'small') {
-        return '0 7px';
-      }
-      if (padding === 'small' && size === 'medium') {
-        return '0 9px';
-      }
-      if (size === 'small') {
-        return '0 10px';
-      }
-      if (size === 'medium') {
-        return '0 12px';
-      }
-      return 0;
-    })(),
-    height: size === 'small' ? '28px' : '32px',
-    position: 'relative',
-    textAlign: 'center',
-    textDecoration: 'none',
-    transitionProperty: 'background, box-shadow',
-    transitionDuration: '150ms',
-    transitionTimingFunction: 'ease-out',
-    verticalAlign: 'top',
-    whiteSpace: 'nowrap',
-    userSelect: 'none',
-    opacity: $disabled && !readOnly ? 0.5 : 1,
-    margin: 0,
-    fontSize: `${theme.typography.size.s1}px`,
-    fontWeight: theme.typography.weight.bold,
-    lineHeight: '1',
-    background: (() => {
-      if (variant === 'solid') {
-        return theme.base === 'light' ? colors.foreground : darken(0.18, colors.foreground);
-      }
-
-      if (variant === 'outline') {
-        return colors.background;
-      }
-
-      if (variant === 'ghost' && active) {
-        return transparentize(
-          0.93,
-          appearance === 'agentic' ? theme.bgColor.agentic : theme.barSelectedColor
-        );
-      }
-
-      return 'transparent';
-    })(),
-    color: (() => {
-      if (variant === 'solid') {
-        return theme.color.lightest;
-      }
-
-      if (variant === 'outline') {
-        return appearance === 'agentic' ? theme.fgColor.agentic : theme.input.color;
-      }
-
-      if (variant === 'ghost' && active) {
-        return theme.base === 'light' ? darken(0.1, colors.foreground) : colors.foreground;
-      }
-
-      if (variant === 'ghost') {
-        return theme.textMutedColor;
-      }
-      return theme.input.color;
-    })(),
-    boxShadow: variant === 'outline' ? `${colors.outline} 0 0 0 1px inset` : 'none',
-    borderRadius: theme.input.borderRadius,
-    // Making sure that the button never shrinks below its minimum size
-    flexShrink: 0,
-
-    ...(!readOnly && {
-      '&:hover': {
-        color: variant === 'ghost' ? colors.foreground : undefined,
-        background: (() => {
-          let bgColor = colors.foreground;
-
-          if (variant === 'solid') {
-            bgColor =
-              theme.base === 'light'
-                ? lighten(0.1, colors.foreground)
-                : darken(0.3, colors.foreground);
-          }
-
-          if (variant === 'outline') {
-            bgColor = colors.background;
-          }
-
-          if (variant === 'ghost') {
-            return transparentize(0.86, colors.foreground);
-          }
-
-          return theme.base === 'light' ? darken(0.02, bgColor) : lighten(0.03, bgColor);
-        })(),
-      },
-
-      '&:active': {
-        color: variant === 'ghost' ? colors.foreground : undefined,
-        background: (() => {
-          let bgColor = colors.foreground;
-
-          if (variant === 'solid') {
-            bgColor = colors.foreground;
-          }
-
-          if (variant === 'outline') {
-            bgColor = colors.background;
-          }
-
-          if (variant === 'ghost') {
-            return appearance === 'agentic' ? theme.bgColor.agentic : theme.background.hoverable;
-          }
-
-          return theme.base === 'light' ? darken(0.02, bgColor) : lighten(0.03, bgColor);
-        })(),
-      },
-
-      '&:focus-visible': {
-        outline: `2px solid ${rgba(colors.foreground, 1)}`,
-        outlineOffset: 2,
-        // Should ensure focus outline gets drawn above next sibling
-        zIndex: '1',
-      },
-
-      '.sb-bar &:focus-visible, .sb-list &:focus-visible': {
-        outlineOffset: 0,
-      },
-    }),
-
-    '> svg': {
-      flex: '0 0 auto',
-      animation:
-        animating && animation !== 'none' ? `${theme.animation[animation]} 1000ms ease-out` : '',
-    },
-  };
-});
 
 export const IconButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   deprecate(

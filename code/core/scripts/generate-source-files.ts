@@ -8,6 +8,7 @@ import { format } from 'oxfmt';
 import { rolldown } from 'rolldown';
 import { dedent } from 'ts-dedent';
 
+import { rolldownCssPlugin } from '../../../scripts/build/utils/css-modules.ts';
 import { getWorkspace } from '../../../scripts/utils/tools.ts';
 
 const CODE_DIR = join(import.meta.dirname, '..', '..', '..', 'code');
@@ -137,6 +138,7 @@ async function generateExportsFile(): Promise<void> {
     platform: 'browser',
     logLevel: 'silent',
     plugins: [
+      rolldownCssPlugin(),
       {
         name: 'virtual',
         resolveId(id) {
