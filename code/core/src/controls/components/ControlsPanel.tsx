@@ -21,8 +21,8 @@ import type { DocgenService } from 'storybook/open-service';
 import {
   ArgsTable,
   type SortType,
-} from '../../../../addons/docs/src/blocks/components/ArgsTable/ArgsTable.tsx';
-import type { PresetColor } from '../../../../addons/docs/src/blocks/controls/types.ts';
+} from '../../addon-docs/blocks/components/ArgsTable/ArgsTable.tsx';
+import type { PresetColor } from '../../addon-docs/blocks/controls/types.ts';
 import { PARAM_KEY } from '../constants.ts';
 import { SaveStory } from './SaveStory.tsx';
 import styles from './ControlsPanel.module.css';

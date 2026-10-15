@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, waitFor, within } from 'storybook/test';

@@ -231,7 +231,7 @@ export async function generateBundle({
 
           We're adding unique names to the imports to avoid collisions
           when one of our packages bundles in another of our packages,
-          like create-storybook bundling in parts of storybook core.
+          like storybook/internal/create bundling in parts of storybook core.
           Similarly we're using var definitions as they can be redefined
           without causing errors.
           */

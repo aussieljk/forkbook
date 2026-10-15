@@ -133,7 +133,7 @@ describe(`Errors Helpers`, () => {
         const separator = `/`;
         const homedir = `/home/sandbox`;
         const cwd = `/var/build`;
-        const retainedSegment = `@storybook/addon-docs`;
+        const retainedSegment = `storybook/addon-docs`;
         const forbidden = `sandbox`;
 
         vi.spyOn(process, `cwd`).mockImplementation(() => cwd);
@@ -177,7 +177,7 @@ describe(`Errors Helpers`, () => {
         const separator = `/`;
         const homedir = `/Users/foo`;
         const cwd = `/tmp/storybook`;
-        const retainedSegment = `@storybook/addon-links`;
+        const retainedSegment = `storybook/addon-links`;
         const forbidden = `foo`;
 
         vi.spyOn(process, `cwd`).mockImplementation(() => cwd);

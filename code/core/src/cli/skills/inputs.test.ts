@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 
 function createMockOptions({
-  framework = '@storybook/react-vite',
+  framework = 'storybook/react-vite',
   configDir,
 }: {
   framework?: string | { name: string };
@@ -41,34 +41,25 @@ function createMockOptions({
 
 describe('resolveSkillInputs', () => {
   it('resolves the framework and its mapped renderer from a string preset', async () => {
-    const options = createMockOptions({ framework: '@storybook/react-vite' });
+    const options = createMockOptions({ framework: 'storybook/react-vite' });
 
     const inputs = await resolveSkillInputs(options);
 
-    expect(inputs.framework).toBe('@storybook/react-vite');
-    expect(inputs.renderer).toBe('@storybook/react');
+    expect(inputs.framework).toBe('storybook/react-vite');
+    expect(inputs.renderer).toBe('storybook/react');
   });
 
   it('resolves the framework from an object preset', async () => {
-    const options = createMockOptions({ framework: { name: '@storybook/nextjs-vite' } });
+    const options = createMockOptions({ framework: { name: 'storybook/nextjs-vite' } });
 
     const inputs = await resolveSkillInputs(options);
 
-    expect(inputs.framework).toBe('@storybook/nextjs-vite');
-    expect(inputs.renderer).toBe('@storybook/react');
+    expect(inputs.framework).toBe('storybook/nextjs-vite');
+    expect(inputs.renderer).toBe('storybook/react');
   });
 
   it.each([
-    [
-      'C:\\repo\\node_modules\\@storybook\\nextjs-vite',
-      '@storybook/nextjs-vite',
-      '@storybook/react',
-    ],
-    [
-      '/repo/node_modules/.pnpm/@storybook+react-vite@11.0.0',
-      '@storybook/react-vite',
-      '@storybook/react',
-    ],
+    ['C:\\repo\\node_modules\\@storybook\\nextjs-vite', 'storybook/nextjs-vite', 'storybook/react'],
   ])('normalizes absolute framework preset %s', async (name, framework, renderer) => {
     const inputs = await resolveSkillInputs(createMockOptions({ framework: { name } }));
     expect(inputs).toMatchObject({ framework, renderer });
@@ -91,7 +82,7 @@ describe('resolveSkillInputs', () => {
 
   it('detects CSF Factories from a preview file that imports definePreview', async () => {
     vol.fromNestedJSON({
-      '/project/.storybook/preview.tsx': `import { definePreview } from '@storybook/react-vite';\nexport default definePreview({});`,
+      '/project/.storybook/preview.tsx': `import { definePreview } from 'storybook/react-vite';\nexport default definePreview({});`,
     });
 
     const inputs = await resolveSkillInputs(

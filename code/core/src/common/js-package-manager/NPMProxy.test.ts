@@ -139,7 +139,7 @@ describe('NPM Proxy', () => {
         const originalError = new Error(
           [
             'npm error code ETARGET',
-            'npm error notarget No matching version found for @storybook/react-vite@10.4.0-alpha.17 with a date before 02/05/2026, 13:32:18.',
+            'npm error notarget No matching version found for storybook/react-vite@10.4.0-alpha.17 with a date before 02/05/2026, 13:32:18.',
             "npm error notarget In most cases you or one of your dependencies are requesting a package version that doesn't exist.",
           ].join('\n')
         );
@@ -153,7 +153,7 @@ describe('NPM Proxy', () => {
         expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
         expect(error).toMatchObject({ cause: originalError });
         expect(error?.message).toContain('min-release-age');
-        expect(error?.message).toContain('@storybook/react-vite@10.4.0-alpha.17');
+        expect(error?.message).toContain('storybook/react-vite@10.4.0-alpha.17');
       });
     });
   });
@@ -181,7 +181,7 @@ describe('NPM Proxy', () => {
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
       expect(error).toBeTruthy();
-      expect(error?.message).toContain('npx create-storybook@10.3.9');
+      expect(error?.message).toContain('npx storybook@10.3.9 init');
       expect(error?.message).toContain('min-release-age');
     });
   });
@@ -293,7 +293,7 @@ describe('NPM Proxy', () => {
             dependencies: {},
             devDependencies: {
               '@storybook/manager-webpack5': 'x.x.x',
-              '@storybook/react': 'x.x.x',
+              'storybook/react': 'x.x.x',
             },
           };
         });
@@ -304,7 +304,7 @@ describe('NPM Proxy', () => {
           {
             dependencies: {},
             devDependencies: {
-              '@storybook/react': 'x.x.x',
+              'storybook/react': 'x.x.x',
             },
           },
           expect.any(String)
@@ -426,17 +426,15 @@ describe('NPM Proxy', () => {
 
   describe('getVersion', () => {
     it('with a Storybook package listed in versions.json it returns the version', async () => {
-      const storybookReactViteVersion = (await import('../versions.ts')).default[
-        '@storybook/react-vite'
-      ];
+      const storybookReactViteVersion = (await import('../versions.ts')).default['storybook'];
       const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
 
-      const version = await npmProxy.getVersion('@storybook/react-vite');
+      const version = await npmProxy.getVersion('storybook');
 
       expect(executeCommandSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           command: 'npm',
-          args: ['info', '@storybook/react-vite', 'version'],
+          args: ['info', 'storybook', 'version'],
         })
       );
       expect(version).toEqual(`^${storybookReactViteVersion}`);

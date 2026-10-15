@@ -69,7 +69,7 @@ describe('Yarn 2 Proxy', () => {
         await Promise.resolve(fn());
       });
       const originalError = new Error(
-        '➤ YN0016: │ @storybook/react-vite@npm:10.4.0-alpha.17: All versions satisfying "10.4.0-alpha.17" are quarantined'
+        '➤ YN0016: │ storybook/react-vite@npm:10.4.0-alpha.17: All versions satisfying "10.4.0-alpha.17" are quarantined'
       );
       mockedExecuteCommand.mockRejectedValueOnce(originalError);
 
@@ -131,7 +131,7 @@ describe('Yarn 2 Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         };
       });
@@ -142,7 +142,7 @@ describe('Yarn 2 Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -393,7 +393,7 @@ describe('Yarn 2 Proxy', () => {
       ).resolves.toBeUndefined();
     });
 
-    it('should tell create-storybook users how to rerun when they choose rerun', async () => {
+    it('should tell users how to rerun when they choose rerun', async () => {
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({ stdout: '[]\n' } as any)
@@ -415,9 +415,7 @@ describe('Yarn 2 Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(
-        /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
-      );
+      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
     });
 
     it('should show the same rerun guidance when the prompt is cancelled', async () => {
@@ -447,9 +445,7 @@ describe('Yarn 2 Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(
-        /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
-      );
+      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
     });
 
     it('should skip the precheck when Storybook packages are already preapproved', async () => {

@@ -8,8 +8,6 @@ import { join } from 'pathe';
 import { dedent } from 'ts-dedent';
 
 import { MIN_SUPPORTED_NODE_DESCRIPTION, isNodeVersionSupported } from '../common/node-version.ts';
-import { getProcessAncestry } from '../common/utils/process-ancestry.ts';
-import versions from '../common/versions.ts';
 import { resolvePackageDir } from '../shared/utils/module.ts';
 
 /**
@@ -17,11 +15,9 @@ import { resolvePackageDir } from '../shared/utils/module.ts';
  *
  * This function serves as the main entry point for Storybook CLI operations.
  *
- * - Core Storybook commands (dev, build, index, tools, skills) are routed to the core binary at
- *   storybook/dist/bin/core.js — `tools` and `skills` are bundled because agent workflows invoke
- *   them repeatedly and must never wait on an npx download
- * - Init is routed to the create-storybook package via the detected package manager
- * - Other CLI commands (add, remove) are routed to @storybook/cli the same way
+ * - Core Storybook commands (dev, build, index, tools, skills) go to dist/bin/core.js
+ * - Init goes to the create CLI (dist/create/bin/index.js)
+ * - Other CLI commands (add, remove) go to the CLI commands (dist/cli-commands/bin/index.js)
  */
 if (!isNodeVersionSupported(process.versions.node)) {
   logger.error(
@@ -50,82 +46,18 @@ async function run() {
     process.env.STORYBOOK_ATTACHED_TOOLS = 'true';
   }
 
-  if (['dev', 'build', 'index', 'tools', 'skills'].includes(args[0])) {
-    const coreBin = pathToFileURL(join(resolvePackageDir('storybook'), 'dist/bin/core.js')).href;
-    await import(coreBin);
-    return;
+  const bin = ['dev', 'build', 'index', 'tools', 'skills'].includes(args[0])
+    ? 'dist/bin/core.js'
+    : args[0] === 'init'
+      ? 'dist/create/bin/index.js'
+      : 'dist/cli-commands/bin/index.js';
+
+  if (args[0] === 'init') {
+    // The create CLI takes its options without the `init` command name.
+    process.argv.splice(2, 1);
   }
 
-  // Only the external-CLI routes below need the package-manager machinery; importing it lazily
-  // keeps the (hot) core route above from evaluating that dependency-heavy part of `common`.
-  const {
-    JsPackageManagerFactory,
-    executeNodeCommand,
-    getPkgPrNewPackageSpecifier,
-    getRemotePackageRunnerArgs,
-    resolveStorybookVersionSpecifier,
-  } = await import('storybook/internal/common');
-
-  const targetCli =
-    args[0] === 'init'
-      ? ({
-          pkg: 'create-storybook',
-          args: args.slice(1),
-        } as const)
-      : ({
-          pkg: '@storybook/cli',
-          args,
-        } as const);
-
-  let storybookVersionSpecifier: string | undefined;
-  try {
-    storybookVersionSpecifier = resolveStorybookVersionSpecifier(getProcessAncestry());
-  } catch {
-    storybookVersionSpecifier = resolveStorybookVersionSpecifier([]);
-  }
-  if (storybookVersionSpecifier) {
-    process.env.STORYBOOK_VERSION_SPECIFIER = storybookVersionSpecifier;
-  }
-
-  const dispatchedVersion =
-    getPkgPrNewPackageSpecifier(targetCli.pkg, storybookVersionSpecifier) ??
-    versions[targetCli.pkg];
-
-  try {
-    const { default: targetCliPackageJson } = await import(`${targetCli.pkg}/package.json`, {
-      with: { type: 'json' },
-    });
-    if (targetCliPackageJson.version === versions[targetCli.pkg]) {
-      const child = executeNodeCommand({
-        scriptPath: join(resolvePackageDir(targetCli.pkg), 'dist/bin/index.js'),
-        args: targetCli.args,
-        options: {
-          stdio: 'inherit',
-        },
-      });
-      child.on('exit', (code) => {
-        process.exit(code ?? 1);
-      });
-      return;
-    }
-  } catch {
-    // the package couldn't be imported, download and run it with the detected package manager
-  }
-
-  const packageManager = JsPackageManagerFactory.getPackageManager();
-  const child = packageManager.runPackageCommand({
-    args: getRemotePackageRunnerArgs(
-      packageManager.type,
-      targetCli.pkg,
-      dispatchedVersion,
-      targetCli.args
-    ),
-    useRemotePkg: true,
-    stdio: 'inherit',
-  });
-  child.on('exit', (code) => {
-    process.exit(code ?? 1);
-  });
+  await import(pathToFileURL(join(resolvePackageDir('storybook'), bin)).href);
 }
 
 run();

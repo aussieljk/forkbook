@@ -396,7 +396,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn } from '@storybook/react';
+          import type { Meta, StoryFn } from 'storybook/react';
           type PropTypes = {};
           export default { title: 'foo/bar/baz' } as Meta<PropTypes>;
           export const A: StoryFn<PropTypes> = () => <>A</>;
@@ -440,7 +440,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+          import type { Meta, StoryFn, StoryObj } from 'storybook/react';
           type PropTypes = {};
           export default { title: 'foo/bar' } satisfies Meta<PropTypes>;
           export const A = { name: 'AA' } satisfies StoryObj<PropTypes>;
@@ -491,7 +491,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+          import type { Meta, StoryFn, StoryObj } from 'storybook/react';
           type PropTypes = {};
           export default { title: 'foo/bar' } as Meta<PropTypes>;
           export const A = { name: 'AA' } as StoryObj<PropTypes>;
@@ -542,7 +542,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+          import type { Meta, StoryFn, StoryObj } from 'storybook/react';
           type PropTypes = {};
           export default { title: 'foo/bar' } satisfies Meta<PropTypes> as Meta<PropTypes>;
           export const A = { name: 'AA' } satisfies StoryObj<PropTypes>;
@@ -593,7 +593,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn } from '@storybook/react';
+          import type { Meta, StoryFn } from 'storybook/react';
           type PropTypes = {};
           const meta = { title: 'foo/bar/baz' } as Meta<PropTypes>;
           export default meta;
@@ -638,7 +638,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn } from '@storybook/react';
+          import type { Meta, StoryFn } from 'storybook/react';
           type PropTypes = {};
           const meta = { title: 'foo/bar/baz' } satisfies Meta<PropTypes>;
           export default meta;
@@ -683,7 +683,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn } from '@storybook/react';
+          import type { Meta, StoryFn } from 'storybook/react';
           type PropTypes = {};
           const meta = { title: 'foo/bar/baz' } satisfies Meta<PropTypes> as Meta<PropTypes>;
           export default meta;
@@ -728,7 +728,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+          import type { Meta, StoryFn, StoryObj } from 'storybook/react';
           type PropTypes = {};
           export default { title: 'foo/bar' } as Meta<PropTypes>;
           export const A = { name: 'AA' } satisfies StoryObj<PropTypes> as StoryObj<PropTypes>;
@@ -779,7 +779,7 @@ describe('CsfFile', () => {
       expect(
         parse(
           dedent`
-          import type { Meta, StoryFn } from '@storybook/react';
+          import type { Meta, StoryFn } from 'storybook/react';
           type PropTypes = {};
           const meta = { title: 'foo/bar/baz' } satisfies Meta<PropTypes> as Meta<PropTypes>;
           const story1 = { name: 'Story A' };
@@ -1313,7 +1313,7 @@ describe('CsfFile', () => {
       expect(() =>
         parse(
           dedent`
-            import { storiesOf } from '@storybook/react';
+            import { storiesOf } from 'storybook/react';
             export default { title: 'foo/bar' };
             export const A = () => {};
             storiesOf('foo').add('bar', () => <baz />);
@@ -3047,7 +3047,7 @@ describe('CsfFile', () => {
         expect(() =>
           parse(
             dedent`
-            import { defineConfig } from '@storybook/react/preview';
+            import { defineConfig } from 'storybook/react/preview';
             const config = defineConfig({ });
             const meta = config.meta({ component: 'foo' });
             export const A = meta.story({})

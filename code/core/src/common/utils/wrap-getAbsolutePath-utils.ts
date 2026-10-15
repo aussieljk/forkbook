@@ -33,12 +33,12 @@ export function doesVariableOrFunctionDeclarationExist(node: t.Node, name: strin
  * ```ts
  * // Before
  * {
- *   framework: '@storybook/react-vite';
+ *   framework: 'storybook/react-vite';
  * }
  *
  * // After
  * {
- *   framework: getAbsolutePath('@storybook/react-vite');
+ *   framework: getAbsolutePath('storybook/react-vite');
  * }
  * ```
  */

@@ -4,7 +4,7 @@ import { Link } from 'storybook/internal/components';
 
 import { DocumentIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { EmptyTabContent } from './EmptyTabContent.tsx';
 

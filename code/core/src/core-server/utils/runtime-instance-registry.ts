@@ -13,7 +13,7 @@ import { CLAUDE_PREVIEW_AGENT_NAME } from '../../shared/constants/agent-provenan
 import { isClaudePreviewLaunch } from '../../shared/utils/agent-environment.ts';
 import { detectAgent } from '../../telemetry/detect-agent.ts';
 
-const STORYBOOK_MCP_ADDON = '@storybook/addon-mcp';
+const STORYBOOK_MCP_ADDON = 'storybook/addon-mcp';
 const DEFAULT_MCP_ENDPOINT = '/mcp';
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const SEVEN_DAYS_MS = 7 * ONE_DAY_MS;

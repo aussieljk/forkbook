@@ -3,8 +3,23 @@ import path from 'node:path';
 import { x as exec } from 'tinyexec';
 
 import type { BuildEntries } from '../../scripts/build/utils/entry-utils.ts';
+import react from './build-config/react.ts';
+import reactVite from './build-config/react-vite.ts';
+import nextjsVite from './build-config/nextjs-vite.ts';
+import nextjsVitePlugin from './build-config/nextjs-vite-plugin.ts';
+import builderVite from './build-config/builder-vite.ts';
+import addonA11y from './build-config/addon-a11y.ts';
+import addonDocs from './build-config/addon-docs.ts';
+import addonLinks from './build-config/addon-links.ts';
+import addonMcp from './build-config/addon-mcp.ts';
+import addonPseudoStates from './build-config/addon-pseudo-states.ts';
+import addonThemes from './build-config/addon-themes.ts';
+import addonVitest from './build-config/addon-vitest.ts';
+import mcp from './build-config/mcp.ts';
+import create from './build-config/create.ts';
+import cliCommands from './build-config/cli-commands.ts';
 
-const config: BuildEntries = {
+const coreConfig: BuildEntries = {
   prebuild: async (cwd) => {
     await exec('jiti', [path.join(import.meta.dirname, 'scripts', 'generate-source-files.ts')], {
       nodeOptions: {
@@ -215,7 +230,7 @@ const config: BuildEntries = {
         entryPoint: './src/shared/open-service/index.ts',
       },
       {
-        // Dependency-light docs toolset surface bundled into `@storybook/mcp`'s dist (core is a
+        // Dependency-light docs toolset surface bundled into `storybook/mcp`'s dist (core is a
         // dev dependency there), replacing that package's own manifest-formatter copies. Portable:
         // its d.ts is one flat self-contained file so that consumer can inline it through standard
         // resolution; guarded by `portable-dist.test.ts` next to the entry source.
@@ -261,6 +276,41 @@ const config: BuildEntries = {
       },
     ],
   },
+};
+
+// The package is one npm package. Each area (renderer, framework, addon, CLI) lists its own
+// entries in build-config/<area>.ts, and they all build together here.
+const areas: BuildEntries[] = [
+  react,
+  reactVite,
+  nextjsVite,
+  nextjsVitePlugin,
+  builderVite,
+  addonA11y,
+  addonDocs,
+  addonLinks,
+  addonMcp,
+  addonPseudoStates,
+  addonThemes,
+  addonVitest,
+  mcp,
+  create,
+  cliCommands,
+];
+
+const config: BuildEntries = {
+  ...coreConfig,
+  entries: Object.fromEntries(
+    (['node', 'browser', 'runtime', 'globalizedRuntime'] as const).map((platform) => [
+      platform,
+      [coreConfig, ...areas].flatMap((area) => area.entries[platform] ?? []),
+    ])
+  ),
+  extraOutputs: Object.assign(
+    {},
+    coreConfig.extraOutputs,
+    ...areas.map((area) => area.extraOutputs)
+  ),
 };
 
 export default config;

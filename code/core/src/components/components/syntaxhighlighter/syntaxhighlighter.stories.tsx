@@ -174,7 +174,7 @@ export const CSharpDark = {
 export const Story = {
   args: {
     language: 'jsx',
-    children: `import type { Meta, StoryObj } from '@storybook/react-vite';
+    children: `import type { Meta, StoryObj } from 'storybook/react-vite';
 
     import { Header } from './Header';
     

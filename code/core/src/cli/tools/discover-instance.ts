@@ -28,7 +28,7 @@ export type InstanceDiscovery = {
  *
  * Applies the shared matching rules (cwd/config-dir keys, agent buckets, recency, pid liveness)
  * but ignores the record's MCP status: the tools CLI only needs a live origin for its URLs, so any
- * running Storybook counts — with or without `@storybook/addon-mcp` installed.
+ * running Storybook counts — with or without `storybook/addon-mcp` installed.
  */
 export async function discoverRunningInstance(
   target: ToolsTarget,

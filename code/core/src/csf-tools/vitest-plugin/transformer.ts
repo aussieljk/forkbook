@@ -409,7 +409,7 @@ export async function vitestTransform({
         t.importSpecifier(testStoryId, t.identifier('testStory')),
         t.importSpecifier(t.identifier('convertToFilePath'), t.identifier('convertToFilePath')),
       ],
-      t.stringLiteral('@storybook/addon-vitest/internal/test-utils')
+      t.stringLiteral('storybook/addon-vitest/internal/test-utils')
     ),
   ];
 

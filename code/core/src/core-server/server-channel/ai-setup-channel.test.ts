@@ -128,8 +128,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(false);
 
@@ -165,8 +165,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup-final-scoring': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(false);
 
@@ -202,8 +202,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup-final-scoring': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
       vi.mocked(mockTelemetry.isStoryCreatedByAISetup).mockReturnValue(true);
       vi.mocked(mockRunStoryTests.runStoryTests).mockResolvedValue({
@@ -265,7 +265,7 @@ describe('initAIAnalyticsChannel', () => {
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
         renderer: '@storybook/vue',
-        addons: { '@storybook/addon-vitest': {} },
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
 
       initAIAnalyticsChannel(mockChannel, {} as Options);
@@ -286,7 +286,7 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
+        renderer: 'storybook/react',
         addons: {},
       } as any);
 
@@ -308,8 +308,8 @@ describe('initAIAnalyticsChannel', () => {
         'ai-setup': { body: { payload: { runId: 'session-A' } } },
       } as any);
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
       vi.mocked(mockWaitForIdleVitest.waitForIdleVitest).mockResolvedValue(false);
 

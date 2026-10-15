@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { StoryContext } from '@storybook/react-vite';
+import type { StoryContext } from 'storybook/react-vite';
 
 import { expect, fn } from 'storybook/test';
 

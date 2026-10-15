@@ -113,13 +113,13 @@ afterEach(() => {
 
 describe('getMcpMetadataFromMainConfig', () => {
   it('marks MCP as not-installed when addon-mcp is not configured', () => {
-    expect(getMcpMetadataFromMainConfig({ addons: ['@storybook/addon-docs'] })).toEqual({
+    expect(getMcpMetadataFromMainConfig({ addons: ['storybook/addon-docs'] })).toEqual({
       status: 'not-installed',
     });
   });
 
   it('uses the default endpoint when addon-mcp is configured as a string', () => {
-    expect(getMcpMetadataFromMainConfig({ addons: ['@storybook/addon-mcp'] })).toEqual({
+    expect(getMcpMetadataFromMainConfig({ addons: ['storybook/addon-mcp'] })).toEqual({
       status: 'ready',
       endpoint: '/mcp',
     });
@@ -128,49 +128,11 @@ describe('getMcpMetadataFromMainConfig', () => {
   it('uses endpoint from addon-mcp options', () => {
     expect(
       getMcpMetadataFromMainConfig({
-        addons: [{ name: '@storybook/addon-mcp', options: { endpoint: '/custom-mcp' } }],
+        addons: [{ name: 'storybook/addon-mcp', options: { endpoint: '/custom-mcp' } }],
       })
     ).toEqual({
       status: 'ready',
       endpoint: '/custom-mcp',
-    });
-  });
-
-  it('detects addon-mcp registered as an absolute path via getAbsolutePath()', () => {
-    expect(
-      getMcpMetadataFromMainConfig({
-        addons: ['/Users/me/project/node_modules/@storybook/addon-mcp'],
-      })
-    ).toEqual({
-      status: 'ready',
-      endpoint: '/mcp',
-    });
-  });
-
-  it('detects addon-mcp registered as an object whose name is an absolute path', () => {
-    expect(
-      getMcpMetadataFromMainConfig({
-        addons: [
-          {
-            name: '/Users/me/project/node_modules/@storybook/addon-mcp',
-            options: { endpoint: '/custom-mcp' },
-          },
-        ],
-      })
-    ).toEqual({
-      status: 'ready',
-      endpoint: '/custom-mcp',
-    });
-  });
-
-  it('detects addon-mcp from a Windows-style absolute path', () => {
-    expect(
-      getMcpMetadataFromMainConfig({
-        addons: ['C:\\project\\node_modules\\@storybook\\addon-mcp'],
-      })
-    ).toEqual({
-      status: 'ready',
-      endpoint: '/mcp',
     });
   });
 

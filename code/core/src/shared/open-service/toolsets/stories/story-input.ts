@@ -8,7 +8,7 @@ import { toMcpToolName } from '../../toolset-names.ts';
  * The prose predates the toolsets and is eval-tuned, so it is kept verbatim. It names sibling
  * capabilities by their MCP tool names rather than through `getToolName`, because valibot descriptions
  * are static strings with no per-consumer rendering. One of them, `get-storybook-story-instructions`,
- * is an `@storybook/addon-mcp` tool with no toolset method;
+ * is an `storybook/addon-mcp` tool with no toolset method;
  * a CLI consumer would need this sentence rewritten rather than re-rendered.
  */
 const storyInputProps = {

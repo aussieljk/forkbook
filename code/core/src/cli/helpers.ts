@@ -62,7 +62,7 @@ export const writeFileAsJson = (jsonPath: string, content: unknown) => {
  *   packageJson
  * ); // you can then spread the result when using installDependencies
  * installDependencies(npmOptions, [
- *   `@storybook/react@${storybookVersion}`,
+ *   `storybook/react@${storybookVersion}`,
  *   ...babelDependencies,
  * ]);
  * ```
@@ -178,13 +178,13 @@ export async function copyTemplateFiles({
     [SupportedLanguage.TYPESCRIPT]: 'ts',
   };
   const templatePath = async () => {
-    const baseDir = await getRendererDir(packageManager, templateLocation);
+    const baseDir = getRendererDir(templateLocation);
 
     if (!baseDir) {
       return null;
     }
 
-    const assetsDir = join(baseDir, 'template', 'cli');
+    const assetsDir = join(baseDir, 'cli');
 
     const assetsLanguage = join(assetsDir, languageFolderMapping[language]);
     const assetsJS = join(assetsDir, languageFolderMapping[SupportedLanguage.JAVASCRIPT]);

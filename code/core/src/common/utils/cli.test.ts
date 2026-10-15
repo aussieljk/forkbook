@@ -4,7 +4,7 @@ import { isCorePackage, isSatelliteAddon } from './cli.ts';
 
 describe('UTILS', () => {
   describe.each([
-    ['@storybook/react', true],
+    ['storybook/react', true],
     ['storybook', true],
     ['@storybook/linter-config', false],
     ['@storybook/design-system', false],
@@ -20,8 +20,8 @@ describe('UTILS', () => {
     });
   });
 
-  it('classifies @storybook/addon-mcp as a core monorepo package, not a satellite addon', () => {
-    expect(isCorePackage('@storybook/addon-mcp')).toBe(true);
-    expect(isSatelliteAddon('@storybook/addon-mcp')).toBe(false);
+  it('classifies storybook/addon-mcp as a core monorepo package, not a satellite addon', () => {
+    expect(isCorePackage('storybook/addon-mcp')).toBe(true);
+    expect(isSatelliteAddon('storybook/addon-mcp')).toBe(false);
   });
 });

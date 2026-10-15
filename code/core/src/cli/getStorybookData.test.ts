@@ -49,10 +49,10 @@ const storybookInfo = {
   configDir: '.storybook',
   previewConfigPath: undefined,
   versionSpecifier: '9.0.0',
-  frameworkPackage: '@storybook/react-vite',
-  rendererPackage: '@storybook/react',
+  frameworkPackage: 'storybook/react-vite',
+  rendererPackage: 'storybook/react',
   renderer: 'react',
-  builderPackage: '@storybook/builder-vite',
+  builderPackage: 'storybook/builder-vite',
   addons: [],
 };
 

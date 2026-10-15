@@ -8,7 +8,6 @@ import {
   getErrorLogs,
   getLatestStableVersionAdheringToMinimumAgeGate,
   getMswInitCommand,
-  getRemotePackageRunnerArgs,
   getStorybookRerunCommand,
   getVitestStorybookRunCommand,
   hasStorybookMinimumAgeExclusions,
@@ -106,41 +105,8 @@ describe('js package manager util', () => {
   });
 
   it('builds the rerun command', () => {
-    expect(getStorybookRerunCommand('10.3.2')).toBe('npx create-storybook@10.3.2');
-    expect(getStorybookRerunCommand(null)).toBe('npx create-storybook@<compatible-version>');
-  });
-
-  it('builds remote package runner args for the active package manager', () => {
-    // npm and Yarn Classic run through npx, which needs --yes to skip the install prompt
-    expect(
-      getRemotePackageRunnerArgs(PackageManagerName.NPM, '@storybook/cli', '10.3.2', ['upgrade'])
-    ).toEqual(['--yes', '@storybook/cli@10.3.2', 'upgrade']);
-    expect(
-      getRemotePackageRunnerArgs(PackageManagerName.YARN1, '@storybook/cli', '10.3.2', ['upgrade'])
-    ).toEqual(['--yes', '@storybook/cli@10.3.2', 'upgrade']);
-    // dlx/bunx-based managers download without prompting, so no --yes
-    expect(
-      getRemotePackageRunnerArgs(PackageManagerName.PNPM, '@storybook/cli', '10.3.2', ['upgrade'])
-    ).toEqual(['@storybook/cli@10.3.2', 'upgrade']);
-    expect(
-      getRemotePackageRunnerArgs(PackageManagerName.YARN2, '@storybook/cli', '10.3.2', ['upgrade'])
-    ).toEqual(['@storybook/cli@10.3.2', 'upgrade']);
-    expect(
-      getRemotePackageRunnerArgs(PackageManagerName.BUN, '@storybook/cli', '10.3.2', ['upgrade'])
-    ).toEqual(['@storybook/cli@10.3.2', 'upgrade']);
-    expect(
-      getRemotePackageRunnerArgs(
-        PackageManagerName.NPM,
-        '@storybook/cli',
-        'https://pkg.pr.new/storybookjs/storybook/@storybook/cli@deadbeef',
-        ['upgrade']
-      )
-    ).toEqual([
-      '--yes',
-      '--allow-remote=all',
-      '@storybook/cli@https://pkg.pr.new/storybookjs/storybook/@storybook/cli@deadbeef',
-      'upgrade',
-    ]);
+    expect(getStorybookRerunCommand('10.3.2')).toBe('npx storybook@10.3.2 init');
+    expect(getStorybookRerunCommand(null)).toBe('npx storybook@<compatible-version> init');
   });
 
   it('builds package-manager-aware setup commands', () => {

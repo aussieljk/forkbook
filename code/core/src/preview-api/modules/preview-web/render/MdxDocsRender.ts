@@ -140,7 +140,7 @@ export class MdxDocsRender<TRenderer extends Renderer> implements Render<TRender
 
     if (!baseDocsParameter) {
       throw new Error(
-        `Cannot render a story in viewMode=docs if \`@storybook/addon-docs\` is not installed`
+        `Cannot render a story in viewMode=docs if \`storybook/addon-docs\` is not installed`
       );
     }
 

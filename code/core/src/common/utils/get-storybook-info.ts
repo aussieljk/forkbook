@@ -21,17 +21,17 @@ import { getStorybookConfiguration } from './get-storybook-configuration.ts';
 import { loadMainConfig } from './load-main-config.ts';
 
 export const rendererPackages: Record<string, SupportedRenderer> = {
-  '@storybook/react': SupportedRenderer.REACT,
+  'storybook/react': SupportedRenderer.REACT,
   '@storybook/react-native': SupportedRenderer.REACT_NATIVE,
 };
 
 export const frameworkPackages: Record<string, SupportedFramework> = {
-  '@storybook/react-vite': SupportedFramework.REACT_VITE,
-  '@storybook/nextjs-vite': SupportedFramework.NEXTJS_VITE,
+  'storybook/react-vite': SupportedFramework.REACT_VITE,
+  'storybook/nextjs-vite': SupportedFramework.NEXTJS_VITE,
 };
 
 export const builderPackages: Record<string, SupportedBuilder> = {
-  '@storybook/builder-vite': SupportedBuilder.VITE,
+  'storybook/builder-vite': SupportedBuilder.VITE,
 };
 
 const findDependency = (

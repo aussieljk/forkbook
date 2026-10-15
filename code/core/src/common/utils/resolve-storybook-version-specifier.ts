@@ -3,7 +3,7 @@ import {
   type ProcessAncestryEntry,
 } from './get-storybook-version-specifier-from-ancestry.ts';
 
-/** Set by the `storybook` dispatcher before it respawns `@storybook/cli` or `create-storybook`. */
+/** Set by the `storybook` dispatcher before it respawns `storybook/internal/cli-commands` or `storybook/internal/create`. */
 export const STORYBOOK_VERSION_SPECIFIER_ENV = 'STORYBOOK_VERSION_SPECIFIER';
 
 export const resolveStorybookVersionSpecifier = (

@@ -137,8 +137,8 @@ describe('ghostStoriesChannel', () => {
 
       // Has React + Vitest
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
 
       // Has valid candidates for story files
@@ -236,8 +236,8 @@ describe('ghostStoriesChannel', () => {
 
       // Has React + Vitest
       vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-        renderer: '@storybook/react',
-        addons: { '@storybook/addon-vitest': {} },
+        renderer: 'storybook/react',
+        addons: { 'storybook/addon-vitest': {} },
       } as any);
 
       // Has valid candidates for story files
@@ -403,8 +403,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
 
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
-          addons: { '@storybook/addon-vitest': {} },
+          renderer: 'storybook/react',
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
 
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
@@ -436,7 +436,7 @@ describe('ghostStoriesChannel', () => {
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
           renderer: '@storybook/vue',
-          addons: { '@storybook/addon-vitest': {} },
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
 
         initGhostStoriesChannel(mockChannel, {} as Options);
@@ -460,7 +460,7 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
+          renderer: 'storybook/react',
           addons: {},
         } as any);
 
@@ -487,8 +487,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
-          addons: { '@storybook/addon-vitest': {} },
+          renderer: 'storybook/react',
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: [],
@@ -526,8 +526,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
-          addons: { '@storybook/addon-vitest': {} },
+          renderer: 'storybook/react',
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: [],
@@ -566,8 +566,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
-          addons: { '@storybook/addon-vitest': {} },
+          renderer: 'storybook/react',
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: ['component1.tsx'],
@@ -609,8 +609,8 @@ describe('ghostStoriesChannel', () => {
         } as any);
         vi.mocked(mockTelemetry.getSessionId).mockResolvedValue('test-session');
         vi.mocked(mockTelemetry.getStorybookMetadata).mockResolvedValue({
-          renderer: '@storybook/react',
-          addons: { '@storybook/addon-vitest': {} },
+          renderer: 'storybook/react',
+          addons: { 'storybook/addon-vitest': {} },
         } as any);
         vi.mocked(mockStoryGeneration.getComponentCandidates).mockResolvedValue({
           candidates: ['component1.tsx'],

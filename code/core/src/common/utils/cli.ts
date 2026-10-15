@@ -9,7 +9,6 @@ import uniqueString from 'unique-string';
 
 import type { JsPackageManager } from '../js-package-manager/index.ts';
 import satelliteAddons from '../satellite-addons.ts';
-import storybookPackagesVersions from '../versions.ts';
 
 const tempDir = () => realpath(os.tmpdir());
 
@@ -138,6 +137,6 @@ export const createLogStream = async (
   });
 };
 
-export const isCorePackage = (pkg: string) =>
-  !!storybookPackagesVersions[pkg as keyof typeof storybookPackagesVersions];
+/** The package itself, or a framework, renderer or addon that ships inside it (`storybook/<area>`). */
+export const isCorePackage = (pkg: string) => pkg === 'storybook' || pkg.startsWith('storybook/');
 export const isSatelliteAddon = (pkg: string) => satelliteAddons.includes(pkg);

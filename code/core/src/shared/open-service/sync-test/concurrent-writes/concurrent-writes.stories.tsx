@@ -1,6 +1,6 @@
 import React, { useState, useSyncExternalStore } from 'react';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { expect, fireEvent, userEvent, waitFor } from 'storybook/test';
 

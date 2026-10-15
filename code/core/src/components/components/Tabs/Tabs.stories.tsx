@@ -4,7 +4,7 @@ import { Button } from 'storybook/internal/components';
 
 import { BottomBarIcon, CloseIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { action } from 'storybook/actions';
 import { expect, spyOn } from 'storybook/test';

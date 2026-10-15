@@ -1,6 +1,6 @@
 import type { StoryIndex } from 'storybook/internal/types';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { expect, fn, within } from 'storybook/test';
 

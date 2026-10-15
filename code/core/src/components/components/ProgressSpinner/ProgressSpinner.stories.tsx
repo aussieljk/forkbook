@@ -2,7 +2,7 @@ import React from 'react';
 
 import { StopAltIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { ProgressSpinner } from './ProgressSpinner.tsx';
 

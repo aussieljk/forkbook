@@ -27,8 +27,8 @@ const describedTools = (output: string) =>
 const deps = () => ({
   loadStorybook: vi.fn().mockResolvedValue({ presets: { apply: vi.fn() } }),
   resolveSkillInputs: vi.fn().mockResolvedValue({
-    framework: '@storybook/react-vite',
-    renderer: '@storybook/react',
+    framework: 'storybook/react-vite',
+    renderer: 'storybook/react',
     csfFactories: false,
     previewFile: '.storybook/preview.ts',
     typescript: true,
@@ -43,7 +43,7 @@ const deps = () => ({
   }),
   getProjectInfo: vi.fn().mockResolvedValue({
     ok: true,
-    projectInfo: { rendererPackage: '@storybook/react', builderPackage: '@storybook/builder-vite' },
+    projectInfo: { rendererPackage: 'storybook/react', builderPackage: 'storybook/builder-vite' },
   }),
   getSetupMarkdown: vi
     .fn()
@@ -144,7 +144,7 @@ describe('runSkillsCommand', () => {
     const d = deps();
     const result = await runSkillsCommand({ tokens: ['write-story'], target: {} }, d);
     expect(result.exitCode).toBe(0);
-    expect(result.output).toContain('@storybook/react');
+    expect(result.output).toContain('storybook/react');
     expect(result.output).toContain('npx storybook tools stories changed');
   });
 
@@ -185,28 +185,25 @@ describe('runSkillsCommand', () => {
 
     expect(setup.setupRun).toEqual({
       projectInfo: {
-        rendererPackage: '@storybook/react',
-        builderPackage: '@storybook/builder-vite',
+        rendererPackage: 'storybook/react',
+        builderPackage: 'storybook/builder-vite',
       },
       prompt: 'optimized-tests',
     });
     expect(all.setupRun).toBeUndefined();
   });
 
-  it.each(['@storybook/react'])(
-    'setup accepts renderer %s',
-    async (rendererPackage) => {
-      const d = deps();
-      const projectInfo = { rendererPackage, builderPackage: '@storybook/builder-vite' };
-      d.getProjectInfo.mockResolvedValue({ ok: true, projectInfo });
+  it.each(['storybook/react'])('setup accepts renderer %s', async (rendererPackage) => {
+    const d = deps();
+    const projectInfo = { rendererPackage, builderPackage: 'storybook/builder-vite' };
+    d.getProjectInfo.mockResolvedValue({ ok: true, projectInfo });
 
-      const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
+    const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
 
-      expect(result.exitCode).toBe(0);
-      expect(result.output).toBe('# Storybook Setup');
-      expect(d.getSetupMarkdown).toHaveBeenCalledWith(projectInfo);
-    }
-  );
+    expect(result.exitCode).toBe(0);
+    expect(result.output).toBe('# Storybook Setup');
+    expect(d.getSetupMarkdown).toHaveBeenCalledWith(projectInfo);
+  });
 
   it.each([
     '@storybook/svelte',
@@ -221,7 +218,7 @@ describe('runSkillsCommand', () => {
     const d = deps();
     d.getProjectInfo.mockResolvedValue({
       ok: true,
-      projectInfo: { rendererPackage, builderPackage: '@storybook/builder-vite' },
+      projectInfo: { rendererPackage, builderPackage: 'storybook/builder-vite' },
     });
 
     const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
@@ -238,7 +235,7 @@ describe('runSkillsCommand', () => {
       ok: true,
       projectInfo: {
         rendererPackage: '@storybook/svelte',
-        builderPackage: '@storybook/builder-vite',
+        builderPackage: 'storybook/builder-vite',
       },
     });
 
@@ -250,7 +247,7 @@ describe('runSkillsCommand', () => {
     expect(d.getSetupMarkdown).not.toHaveBeenCalled();
   });
 
-  it.each(['@storybook/react'])(
+  it.each(['storybook/react'])(
     'setup rejects renderer %s without the Vite builder',
     async (rendererPackage) => {
       const d = deps();
@@ -316,7 +313,7 @@ describe('runSkillsCommand', () => {
     expect(result.skill).toBe('all');
     expect(result.output).toContain('# Storybook Setup');
     expect(result.output).toContain('npx storybook tools stories changed');
-    expect(result.output).toContain('@storybook/react');
+    expect(result.output).toContain('storybook/react');
     expect(d.loadStorybook).toHaveBeenCalledTimes(1);
     expect(d.getProjectInfo).toHaveBeenCalledTimes(1);
   });

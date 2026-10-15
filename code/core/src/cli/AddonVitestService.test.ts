@@ -100,7 +100,7 @@ describe('AddonVitestService', () => {
       expect(deps.every((d) => !d.includes('nextjs-vite'))).toBe(true);
     });
 
-    it('should not add @storybook/nextjs-vite for non-Next.js frameworks', async () => {
+    it('should not add storybook/nextjs-vite for non-Next.js frameworks', async () => {
       const deps = await service.collectDependencies();
 
       expect(deps.every((d) => !d.includes('nextjs-vite'))).toBe(true);

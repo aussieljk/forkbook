@@ -13,12 +13,8 @@ const threadCount = process.env.CI ? (process.platform === 'win32' ? 4 : 7) : un
 const shouldRunStorybookTests = !(process.env.CI && process.platform === 'win32');
 
 const projects = [
-  'code/addons/*/vitest.config.ts',
-  'code/frameworks/*/vitest.config.ts',
-  'code/lib/*/vitest.config.ts',
   'code/core/vitest.config.ts',
-  'code/builders/*/vitest.config.ts',
-  'code/renderers/*/vitest.config.ts',
+  'code/core/src/*/vitest.config.ts',
   'scripts/vitest.config.ts',
 ];
 

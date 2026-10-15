@@ -63,9 +63,9 @@ const defaultInfo = {
   framework: SupportedFramework.REACT_VITE,
   renderer: SupportedRenderer.REACT,
   builder: SupportedBuilder.VITE,
-  frameworkPackage: '@storybook/react-vite',
-  rendererPackage: '@storybook/react',
-  builderPackage: '@storybook/builder-vite',
+  frameworkPackage: 'storybook/react-vite',
+  rendererPackage: 'storybook/react',
+  builderPackage: 'storybook/builder-vite',
   addons: [],
   mainConfig: {
     stories: [],
@@ -110,8 +110,8 @@ beforeEach(() => {
 
   vi.mocked(getActualPackageJson).mockImplementation(async () => ({
     dependencies: {
-      '@storybook/react': 'x.x.x',
-      '@storybook/builder-vite': 'x.x.x',
+      'storybook/react': 'x.x.x',
+      'storybook/builder-vite': 'x.x.x',
     },
   }));
 
@@ -279,7 +279,7 @@ describe('storybook-metadata', () => {
         });
 
         expect(unixResult.framework).toEqual({
-          name: '@storybook/react-vite',
+          name: 'storybook/react-vite',
           options: { strictMode: false },
         });
 
@@ -299,7 +299,7 @@ describe('storybook-metadata', () => {
         });
 
         expect(windowsResult.framework).toEqual({
-          name: '@storybook/react-vite',
+          name: 'storybook/react-vite',
           options: { strictMode: false },
         });
       });
@@ -404,7 +404,7 @@ describe('storybook-metadata', () => {
         packageJson: {
           ...packageJsonMock,
           devDependencies: {
-            '@storybook/react': 'x.y.z',
+            'storybook/react': 'x.y.z',
             '@storybook/addon-essentials': 'x.x.x',
             '@storybook/addon-knobs': 'x.x.y',
             'storybook-addon-deprecated': 'x.x.z',
@@ -440,7 +440,7 @@ describe('storybook-metadata', () => {
       `);
       expect(result.storybookPackages).toMatchInlineSnapshot(`
         {
-          "@storybook/react": {
+          "storybook/react": {
             "version": "x.x.x",
           },
         }
@@ -471,13 +471,13 @@ describe('storybook-metadata', () => {
           configDir: '.storybook',
           mainConfig: {
             ...mainJsMock,
-            framework: '@storybook/react-vite',
+            framework: 'storybook/react-vite',
           },
         })
       ).toMatchObject({
-        framework: { name: '@storybook/react-vite' },
-        renderer: '@storybook/react',
-        builder: '@storybook/builder-vite',
+        framework: { name: 'storybook/react-vite' },
+        renderer: 'storybook/react',
+        builder: 'storybook/builder-vite',
       });
     });
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ModalDecorator } from 'storybook/internal/components';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { expect, fireEvent, fn, screen, within } from 'storybook/test';
 

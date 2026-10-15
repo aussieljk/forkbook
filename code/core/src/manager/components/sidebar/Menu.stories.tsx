@@ -5,7 +5,7 @@ import { TooltipLinkList } from 'storybook/internal/components';
 
 import { LinkIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';

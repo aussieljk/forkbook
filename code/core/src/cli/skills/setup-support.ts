@@ -1,6 +1,6 @@
 import type { ProjectInfo } from './project-info.ts';
 
-const SUPPORTED_SETUP_RENDERERS = ['@storybook/react'];
+const SUPPORTED_SETUP_RENDERERS = ['storybook/react'];
 
 export function getSetupSupportError({
   rendererPackage,
@@ -9,7 +9,7 @@ export function getSetupSupportError({
   if (
     rendererPackage &&
     SUPPORTED_SETUP_RENDERERS.includes(rendererPackage) &&
-    builderPackage === '@storybook/builder-vite'
+    builderPackage === 'storybook/builder-vite'
   ) {
     return undefined;
   }

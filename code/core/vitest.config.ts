@@ -1,12 +1,19 @@
+import { existsSync, readdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
 
 import { textAssetLoaderPlugins, vitestCommonConfig } from '../vitest.shared.ts';
 
 const require = createRequire(import.meta.url);
 const polkaUrlEsm = join(dirname(require.resolve('@polka/url/package.json')), 'build.mjs');
+
+// Areas with their own Vitest project (src/<area>/vitest.config.ts) run there, not here.
+const src = join(import.meta.dirname, 'src');
+const areasWithOwnProject = readdirSync(src).filter((area) =>
+  existsSync(join(src, area, 'vitest.config.ts'))
+);
 
 export default mergeConfig(
   vitestCommonConfig,
@@ -29,6 +36,7 @@ export default mergeConfig(
     },
     test: {
       name: 'core',
+      exclude: [...configDefaults.exclude, ...areasWithOwnProject.map((area) => `src/${area}/**`)],
       typecheck: {
         enabled: true,
       },

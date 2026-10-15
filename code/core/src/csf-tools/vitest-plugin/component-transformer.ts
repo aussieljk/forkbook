@@ -17,7 +17,7 @@ import {
 import { createTestGuardDeclaration } from './transformer.ts';
 
 const VITEST_IMPORT_SOURCE = 'vitest';
-const TEST_UTILS_IMPORT_SOURCE = '@storybook/addon-vitest/internal/test-utils';
+const TEST_UTILS_IMPORT_SOURCE = 'storybook/addon-vitest/internal/test-utils';
 const STORYBOOK_TEST_IMPORT_SOURCE = 'storybook/test';
 
 type ComponentExport = {

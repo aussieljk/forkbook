@@ -10,7 +10,7 @@ import { jsModuleExtensions } from '../../shared/constants/extensions.ts';
 import { extractFrameworkPackageName } from '../index.ts';
 import { frameworkPackages } from './get-storybook-info.ts';
 
-const rendererNames = ['react', '@storybook/react'];
+const rendererNames = ['react', 'storybook/react'];
 
 export function validateFrameworkName(
   frameworkName: string | undefined

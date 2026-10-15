@@ -139,7 +139,7 @@ describe('Yarn 1 Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         };
       });
@@ -150,7 +150,7 @@ describe('Yarn 1 Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -260,7 +260,7 @@ describe('Yarn 1 Proxy', () => {
 
   describe('mapDependencies', () => {
     it('should display duplicated dependencies based on yarn output', async () => {
-      // yarn list --pattern "@storybook/*" "@storybook/react" --recursive --json
+      // yarn list --pattern "@storybook/*" "storybook/react" --recursive --json
       mockedExecuteCommand.mockResolvedValueOnce({
         stdout: `
         {

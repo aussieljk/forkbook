@@ -11,9 +11,9 @@ import { recordSetupRun } from './record-setup-run.ts';
 vi.mock('storybook/internal/telemetry', { spy: true });
 
 const projectInfo = {
-  framework: '@storybook/react-vite',
-  rendererPackage: '@storybook/react',
-  builderPackage: '@storybook/builder-vite',
+  framework: 'storybook/react-vite',
+  rendererPackage: 'storybook/react',
+  builderPackage: 'storybook/builder-vite',
   configDir: '.storybook',
   language: 'ts',
   packageManager: { type: PackageManagerName.NPM },
@@ -42,9 +42,9 @@ it('persists a project-scoped flag and reports the setup session under the same 
     {
       cliOptions: { packageManager: 'npm', prompt: 'optimized-tests' },
       project: {
-        framework: '@storybook/react-vite',
-        renderer: '@storybook/react',
-        builder: '@storybook/builder-vite',
+        framework: 'storybook/react-vite',
+        renderer: 'storybook/react',
+        builder: 'storybook/builder-vite',
         language: 'ts',
       },
       runId: (flag as { runId: string }).runId,

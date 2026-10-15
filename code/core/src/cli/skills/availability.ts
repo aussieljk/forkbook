@@ -20,11 +20,11 @@ export interface ToolAvailability {
   /** The component-manifest feature flag is enabled (drives the docs "why disabled" copy). */
   docsFeatureEnabled: boolean;
   /**
-   * `@storybook/addon-vitest` is enabled (not merely installed), matching the condition under
+   * `storybook/addon-vitest` is enabled (not merely installed), matching the condition under
    * which it registers the `test` toolset. Gates the `test` toolset (`test-run`).
    */
   testSupported: boolean;
-  /** `@storybook/addon-a11y` is enabled. Gates the accessibility sub-feature of `test-run`. */
+  /** `storybook/addon-a11y` is enabled. Gates the accessibility sub-feature of `test-run`. */
   a11yEnabled: boolean;
   /** `docgenServer` mode: read manifest data in-process from the open services. */
   docgenServer: boolean;

@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { startCase } from 'es-toolkit/string';
 import { ManagerContext, useStorybookApi } from 'storybook/manager-api';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { DiscordIcon, SidebarIcon } from '@storybook/icons';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { action } from 'storybook/actions';
 import { expect, fn } from 'storybook/test';

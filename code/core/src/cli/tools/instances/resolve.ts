@@ -50,7 +50,7 @@ export type InstanceSelection =
 // restricted by an explicit `--config-dir`. Nothing on the port → `port-mismatch`.
 //
 // Competing matches narrow to the invoking agent's bucket when one exists. MCP status plays no
-// role: attaching over the channel works without `@storybook/addon-mcp`.
+// role: attaching over the channel works without `storybook/addon-mcp`.
 export function selectInstances(
   records: StorybookInstanceRecord[],
   target: ResolveTarget

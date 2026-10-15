@@ -3,7 +3,7 @@ import { getToolName } from '../../toolset-names.ts';
 const ref = getToolName({ transport: 'mcp' });
 
 /**
- * Server instructions for an MCP server that only serves the docs tools (`@storybook/mcp`).
+ * Server instructions for an MCP server that only serves the docs tools (`storybook/mcp`).
  *
  * This is the workflow an agent should follow across the three tools, which no single tool
  * description can state: discover ids first, then fetch, and never invent a prop. It names its

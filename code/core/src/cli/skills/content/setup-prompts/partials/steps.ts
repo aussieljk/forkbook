@@ -69,16 +69,16 @@ function missingVitestAddonNote(
   { addons }: ProjectInfo,
   packageManager: InstructionsContext['packageManager']
 ): string {
-  if (addons.includes('@storybook/addon-vitest')) {
+  if (addons.includes('storybook/addon-vitest')) {
     return '';
   }
   const add = packageManager.getPackageCommand([
     'storybook',
     'add',
-    '@storybook/addon-vitest',
+    'storybook/addon-vitest',
     '--yes',
   ]);
-  return `This project doesn't have \`@storybook/addon-vitest\` yet, which runs stories as tests. Add it first with \`${add}\`; the steps below need it.\n\n`;
+  return `This project doesn't have \`storybook/addon-vitest\` yet, which runs stories as tests. Add it first with \`${add}\`; the steps below need it.\n\n`;
 }
 
 export function verifyStep(

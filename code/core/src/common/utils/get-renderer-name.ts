@@ -25,7 +25,7 @@ export async function getRendererName(options: Options) {
  * @example
  *
  * ```ts
- * extractRenderer('@storybook/react'); // => 'react'
+ * extractRenderer('storybook/react'); // => 'react'
  * extractRenderer('@third-party/framework'); // => null
  * ```
  *

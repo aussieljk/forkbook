@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryFn, StoryObj } from 'storybook/react-vite';
 
 import { action } from 'storybook/actions';
 import { screen } from 'storybook/test';

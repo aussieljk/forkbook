@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CHANGE_DETECTION_STATUS_TYPE_ID } from 'storybook/internal/types';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { MemoryRouter } from 'storybook/internal/router';
 import { ManagerContext, internal_fullStatusStore } from 'storybook/manager-api';

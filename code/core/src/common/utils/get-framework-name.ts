@@ -27,20 +27,13 @@ export async function getFrameworkName(options: Options) {
  * @example
  *
  * ```ts
- * extractFrameworkPackageName('/path/to/@storybook/react-vite'); // => '@storybook/react-vite'
+ * extractFrameworkPackageName('/path/to/@storybook/react-vite'); // => 'storybook/react-vite'
  * extractFrameworkPackageName('@third-party/framework'); // => '@third-party/framework'
  * ```
  */
 export const extractFrameworkPackageName = (framework: string) => {
   const normalizedPath = normalizePath(framework);
-  const frameworkName = Object.keys(frameworkPackages).find(
-    (pkg) =>
-      normalizedPath.endsWith(pkg) ||
-      // pnpm virtual-store dirs encode the scope slash as '+' and append '@<version>',
-      // e.g. .../node_modules/.pnpm/@storybook+react-vite@9.0.0 — the trailing '@' keeps
-      // '@storybook/react' from matching '@storybook+react-vite@...'.
-      normalizedPath.includes(`/.pnpm/${pkg.replace('/', '+')}@`)
-  );
+  const frameworkName = Object.keys(frameworkPackages).find((pkg) => normalizedPath.endsWith(pkg));
 
   return frameworkName ?? framework;
 };

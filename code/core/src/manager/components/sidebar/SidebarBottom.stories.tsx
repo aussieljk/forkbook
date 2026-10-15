@@ -6,7 +6,7 @@ import {
   Addon_TypesEnum,
 } from 'storybook/internal/types';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { type API, ManagerContext } from 'storybook/manager-api';
 import { expect, fireEvent, fn, waitFor, within } from 'storybook/test';

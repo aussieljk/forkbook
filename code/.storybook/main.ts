@@ -1,7 +1,7 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { defineMain } from '@storybook/react-vite/node';
+import { defineMain } from 'storybook/react-vite/node';
 import type { Options } from 'storybook/internal/types';
 
 import react from '@vitejs/plugin-react';
@@ -65,64 +65,64 @@ const config = defineMain({
       titlePrefix: 'actions',
     },
     {
-      directory: '../addons/a11y/src',
+      directory: '../core/src/addon-a11y',
       titlePrefix: 'addons/accessibility',
     },
     {
-      directory: '../addons/a11y/template/stories',
+      directory: '../core/template/addon-a11y/stories',
       titlePrefix: 'addons/accessibility',
     },
     {
-      directory: '../addons/docs/template/stories',
+      directory: '../core/template/addon-docs/stories',
       titlePrefix: 'addons/docs',
     },
     {
-      directory: '../addons/docs/src',
+      directory: '../core/src/addon-docs',
       titlePrefix: 'addons/docs',
     },
     {
-      directory: '../addons/links/template/stories',
+      directory: '../core/template/addon-links/stories',
       titlePrefix: 'addons/links',
     },
     {
-      directory: '../addons/themes/template/stories',
+      directory: '../core/template/addon-themes/stories',
       titlePrefix: 'addons/themes',
     },
     {
-      directory: '../addons/pseudo-states/src',
+      directory: '../core/src/addon-pseudo-states',
       titlePrefix: 'addons/pseudo-states',
     },
     {
-      directory: '../addons/vitest/src/components',
+      directory: '../core/src/addon-vitest/components',
       titlePrefix: 'addons/vitest',
     },
     {
-      directory: '../addons/vitest/template/stories',
+      directory: '../core/template/addon-vitest/stories',
       titlePrefix: 'addons/vitest',
     },
     {
-      directory: '../addons/vitest/src',
+      directory: '../core/src/addon-vitest',
       titlePrefix: 'addons/vitest',
       files: 'stories.tsx',
     },
     {
-      directory: '../renderers/react/src/__test__',
+      directory: '../core/src/react/__test__',
       titlePrefix: 'renderer/react',
       files: '@(ReactDomClient|RenderToCanvas).stories.tsx',
     },
   ],
   addons: [
-    '@storybook/addon-themes',
-    '@storybook/addon-docs',
-    '@storybook/addon-vitest',
-    '@storybook/addon-a11y',
-    '@storybook/addon-mcp',
-    'storybook-addon-pseudo-states',
+    'storybook/addon-themes',
+    'storybook/addon-docs',
+    'storybook/addon-vitest',
+    'storybook/addon-a11y',
+    'storybook/addon-mcp',
+    'storybook/addon-pseudo-states',
     './services-preset.ts',
   ],
   previewAnnotations: [
     './core/template/stories/preview.ts',
-    './renderers/react/template/components/index.js',
+    './core/template/react/components/index.js',
   ],
   build: {
     test: {
@@ -133,7 +133,7 @@ const config = defineMain({
     },
   },
   framework: {
-    name: '@storybook/react-vite',
+    name: 'storybook/react-vite',
     options: {},
   },
   refs: {

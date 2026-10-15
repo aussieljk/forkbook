@@ -242,7 +242,7 @@ describe('loader', () => {
     it('should not modify absolute imports', () => {
       const testCases = [
         `import foo from 'react';`,
-        `import bar from '@storybook/react';`,
+        `import bar from 'storybook/react';`,
         `import baz from 'node:fs';`,
       ];
 

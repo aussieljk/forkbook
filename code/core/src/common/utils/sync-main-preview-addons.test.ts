@@ -19,7 +19,7 @@ expect.addSnapshotSerializer({
 describe('syncPreviewAddonsWithMainConfig', () => {
   const mainConfig: StorybookConfigRaw = {
     stories: [],
-    addons: ['custom-addon', '@storybook/addon-a11y'],
+    addons: ['custom-addon', 'storybook/addon-a11y'],
   };
 
   const configDir = '/user/storybook/.storybook';
@@ -27,7 +27,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
   it('should sync addons between main and preview', async () => {
     const preview = loadConfig(`
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: [myAddonAnnotations],
@@ -35,14 +35,14 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     `).parse();
 
     (getAddonAnnotations as Mock).mockImplementation(() => {
-      return { importName: 'addonA11yAnnotations', importPath: '@storybook/addon-a11y/preview' };
+      return { importName: 'addonA11yAnnotations', importPath: 'storybook/addon-a11y/preview' };
     });
 
     const result = await syncPreviewAddonsWithMainConfig(mainConfig, preview, configDir);
     expect(printConfig(result).code).toMatchInlineSnapshot(`
-      import * as addonA11yAnnotations from "@storybook/addon-a11y/preview";
+      import * as addonA11yAnnotations from "storybook/addon-a11y/preview";
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: [myAddonAnnotations, addonA11yAnnotations],
@@ -53,7 +53,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
   it('should sync addons as functions when they are core packages', async () => {
     const preview = loadConfig(`
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: [myAddonAnnotations],
@@ -63,16 +63,16 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     (getAddonAnnotations as Mock).mockImplementation(() => {
       return {
         importName: 'addonA11yAnnotations',
-        importPath: '@storybook/addon-a11y',
+        importPath: 'storybook/addon-a11y',
         isCoreAddon: true,
       };
     });
 
     const result = await syncPreviewAddonsWithMainConfig(mainConfig, preview, configDir);
     expect(printConfig(result).code).toMatchInlineSnapshot(`
-      import addonA11yAnnotations from "@storybook/addon-a11y";
+      import addonA11yAnnotations from "storybook/addon-a11y";
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: [myAddonAnnotations, addonA11yAnnotations()],
@@ -82,7 +82,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
 
   it('should add addons if the preview has no addons field', async () => {
     const originalCode = dedent`
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         tags: []
@@ -91,13 +91,13 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     const preview = loadConfig(originalCode).parse();
 
     (getAddonAnnotations as Mock).mockImplementation(() => {
-      return { importName: 'addonA11yAnnotations', importPath: '@storybook/addon-a11y/preview' };
+      return { importName: 'addonA11yAnnotations', importPath: 'storybook/addon-a11y/preview' };
     });
 
     const result = await syncPreviewAddonsWithMainConfig(mainConfig, preview, configDir);
     expect(printConfig(result).code).toMatchInlineSnapshot(`
-      import * as addonA11yAnnotations from "@storybook/addon-a11y/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import * as addonA11yAnnotations from "storybook/addon-a11y/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         tags: [],
@@ -110,9 +110,9 @@ describe('syncPreviewAddonsWithMainConfig', () => {
   const normalizeLineBreaks = (str: string) => str.replace(/\r/g, '').trim();
   it('should not add an addon if its annotations path has already been imported', async () => {
     const originalCode = dedent`
-      import * as addonA11yAnnotations from "@storybook/addon-a11y/preview";
+      import * as addonA11yAnnotations from "storybook/addon-a11y/preview";
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
       const extraAddons = [addonA11yAnnotations]
       export default definePreview({
         addons: [myAddonAnnotations, ...extraAddons],
@@ -121,7 +121,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     const preview = loadConfig(originalCode).parse();
 
     (getAddonAnnotations as Mock).mockImplementation(() => {
-      return { importName: 'addonA11yAnnotations', importPath: '@storybook/addon-a11y/preview' };
+      return { importName: 'addonA11yAnnotations', importPath: 'storybook/addon-a11y/preview' };
     });
 
     const result = await syncPreviewAddonsWithMainConfig(mainConfig, preview, configDir);
@@ -132,9 +132,9 @@ describe('syncPreviewAddonsWithMainConfig', () => {
 
   it('should not modify the code if all addons are already synced', async () => {
     const originalCode = dedent`
-      import * as addonA11yAnnotations from "@storybook/addon-a11y/preview";
+      import * as addonA11yAnnotations from "storybook/addon-a11y/preview";
       import * as myAddonAnnotations from "custom-addon/preview";
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: [myAddonAnnotations, addonA11yAnnotations],
@@ -143,7 +143,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     const preview = loadConfig(originalCode).parse();
 
     (getAddonAnnotations as Mock).mockImplementation(() => {
-      return { importName: 'addonA11yAnnotations', importPath: '@storybook/addon-a11y/preview' };
+      return { importName: 'addonA11yAnnotations', importPath: 'storybook/addon-a11y/preview' };
     });
 
     const result = await syncPreviewAddonsWithMainConfig(mainConfig, preview, configDir);
@@ -154,7 +154,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
 
   it('should add an empty addons array if no addons are installed', async () => {
     const originalCode = dedent`
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({});
     `;
@@ -171,7 +171,7 @@ describe('syncPreviewAddonsWithMainConfig', () => {
     const transformedCode = normalizeLineBreaks(printConfig(result).code);
 
     expect(transformedCode).toMatchInlineSnapshot(`
-      import { definePreview } from "@storybook/react/preview";
+      import { definePreview } from "storybook/react/preview";
 
       export default definePreview({
         addons: []

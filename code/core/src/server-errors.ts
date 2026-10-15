@@ -12,7 +12,7 @@ export { StorybookError } from './storybook-error.ts';
 /**
  * If you can't find a suitable category for your error, create one based on the package name/file
  * path of which the error is thrown. For instance: If it's from `@storybook/node-logger`, then
- * NODE-LOGGER If it's from a package that is too broad, e.g. @storybook/cli in the init command,
+ * NODE-LOGGER If it's from a package that is too broad, e.g. storybook/internal/cli-commands in the init command,
  * then use a combination like CLI_INIT
  */
 export enum Category {
@@ -60,7 +60,7 @@ export class MissingFrameworkFieldError extends StorybookError {
       message: dedent`
         Could not find a 'framework' field in Storybook config.
         
-        Set it to '@storybook/react-vite' or '@storybook/nextjs-vite'.`,
+        Set it to 'storybook/react-vite' or 'storybook/nextjs-vite'.`,
     });
   }
 }
@@ -76,7 +76,7 @@ export class InvalidFrameworkNameError extends StorybookError {
       message: dedent`
         Invalid value of '${data.frameworkName}' in the 'framework' field of Storybook config.
         
-        Set it to '@storybook/react-vite' or '@storybook/nextjs-vite'.
+        Set it to 'storybook/react-vite' or 'storybook/nextjs-vite'.
       `,
     });
   }
@@ -364,7 +364,7 @@ export class OpenServiceTestRunTimeoutError extends StorybookError {
       name: 'OpenServiceTestRunTimeoutError',
       category: Category.CORE_COMMON,
       code: 21,
-      message: `Timed out after ${data.timeoutMs}ms waiting for addon-vitest response to test run "${data.requestId}". Ensure @storybook/addon-vitest is installed and responding.`,
+      message: `Timed out after ${data.timeoutMs}ms waiting for addon-vitest response to test run "${data.requestId}". Ensure storybook/addon-vitest is installed and responding.`,
     });
   }
 }
@@ -522,7 +522,7 @@ export class MissingBuilderError extends StorybookError {
       documentation: 'https://github.com/storybookjs/storybook/issues/24071',
       message: dedent`
         Storybook could not find a builder configuration for your project. 
-        Builders normally come from a framework package e.g. '@storybook/react-vite', or from builder packages e.g. '@storybook/builder-vite'.
+        Builders normally come from a framework package e.g. 'storybook/react-vite', or from builder packages e.g. 'storybook/builder-vite'.
         
         - Does your main config file contain a 'framework' field configured correctly?
         - Is the Storybook framework package installed correctly?
@@ -576,10 +576,10 @@ export class NoMatchingExportError extends StorybookError {
         Please check whether the versions of your Storybook packages match whenever possible, as this might be the cause.
         
         Problematic example:
-        { "@storybook/react": "7.5.3", "@storybook/react-vite": "7.4.5", "storybook": "7.3.0" }
+        { "storybook/react": "7.5.3", "storybook/react-vite": "7.4.5", "storybook": "7.3.0" }
         
         Correct example:
-        { "@storybook/react": "7.5.3", "@storybook/react-vite": "7.5.3", "storybook": "7.5.3" }`,
+        { "storybook/react": "7.5.3", "storybook/react-vite": "7.5.3", "storybook": "7.5.3" }`,
     });
   }
 }

@@ -1,6 +1,6 @@
 import { defaultExclude, defineProject } from 'vitest/config';
 
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import { storybookTest } from 'storybook/addon-vitest/vitest-plugin';
 
 import { playwright } from '@vitest/browser-playwright';
 import Inspect from 'vite-plugin-inspect';
@@ -26,7 +26,7 @@ export default defineProject({
         include: ['vitest'],
       },
       // Pinned for the InitialGlobals story, which asserts this reaches the run (see
-      // addons/vitest/src/components/InitialGlobals.stories.tsx).
+      // core/src/addon-vitest/components/InitialGlobals.stories.tsx).
       initialGlobals: { initialGlobalsWork: true },
     }),
     ...extraPlugins,
@@ -41,7 +41,7 @@ export default defineProject({
       '**/__mockdata__/**',
       '**/*.bench.ts', // benchmark files are Node-only; never run in the browser project
       '**/Zoom.stories.tsx', // expected to fail in Vitest because of fetching /iframe.html to cause ECONNREFUSED
-      './addons/docs/src/blocks/**', // won't work because of https://github.com/storybookjs/storybook/issues/29783
+      './core/src/addon-docs/blocks/**', // won't work because of https://github.com/storybookjs/storybook/issues/29783
     ],
     // TODO: bring this back once portable stories support storybook/preview-api hooks
     testNamePattern: /^(?!.*(UseState)).*$/,

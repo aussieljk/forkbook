@@ -9,4 +9,4 @@ It contains:
 - `storybook build` static builder
 - presets handling
 
-The "preview" (aka iframe) side is implemented in `@storybook/builder-vite`.
+The "preview" (aka iframe) side is implemented in `storybook/builder-vite`.

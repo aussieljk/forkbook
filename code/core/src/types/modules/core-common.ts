@@ -589,7 +589,7 @@ export interface StorybookFeatures {
   /**
    * Enable component manifest generation for MCP and other tooling integrations.
    *
-   * `@storybook/react` defaults this to `true`. Set it to `false` to opt out.
+   * `storybook/react` defaults this to `true`. Set it to `false` to opt out.
    *
    * @default false // `true` for React
    */
@@ -805,7 +805,7 @@ export interface StorybookConfig {
    */
   stories: PresetValue<StorybookConfigRaw['stories']>;
 
-  /** Framework, e.g. '@storybook/react-vite', required in v7 */
+  /** Framework, e.g. 'storybook/react-vite', required in v7 */
   framework?: StorybookConfigRaw['framework'];
 
   /** Controls how Storybook handles TypeScript files. */
@@ -941,9 +941,9 @@ export interface CoreCommon_StorybookInfo {
  * @example
  *
  * ```ts
- * type Framework = CompatibleString<'@storybook/nextjs-vite'>;
- * const framework: Framework = '@storybook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
- * path.dirname(require.resolve(path.join('@storybook/nextjs-vite', 'package.json'))); // valid
+ * type Framework = CompatibleString<'storybook/nextjs-vite'>;
+ * const framework: Framework = 'storybook/nextjs-vite'; // valid and will be autocompleted const framework: Framework =
+ * path.dirname(require.resolve(path.join('storybook/nextjs-vite', 'package.json'))); // valid
  * ```
  */
 export type CompatibleString<T extends string> = T | (string & {});

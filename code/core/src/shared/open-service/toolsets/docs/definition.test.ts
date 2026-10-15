@@ -92,7 +92,7 @@ describe('docs.show', () => {
     expect(outcome.markdown).toContain('Guide');
   });
 
-  it('answers unknown ids with a failure carrying the @storybook/mcp miss message', async () => {
+  it('answers unknown ids with a failure carrying the storybook/mcp miss message', async () => {
     const outcome = await toolset.methods.show.handler({ id: 'nope' }, mcpCtx);
 
     expect(outcome.ok).toBe(false);

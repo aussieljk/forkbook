@@ -2,7 +2,7 @@ import React from 'react';
 
 import { STORY_FINISHED, STORY_PREPARED } from 'storybook/internal/core-events';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { global } from '@storybook/global';
 

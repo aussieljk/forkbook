@@ -49,7 +49,7 @@ export const canInstallLatestVitest = (allDependencies: Record<string, string>):
 };
 
 /**
- * Centralized service for @storybook/addon-vitest dependency collection and compatibility
+ * Centralized service for storybook/addon-vitest dependency collection and compatibility
  * validation
  *
  * This service consolidates logic from:
@@ -76,12 +76,12 @@ export class AddonVitestService {
   }
 
   /**
-   * Collect all dependencies needed for @storybook/addon-vitest
+   * Collect all dependencies needed for storybook/addon-vitest
    *
    * Returns versioned package strings ready for installation:
    *
    * - Base packages: vitest, @vitest/browser-playwright, playwright
-   * - Next.js specific: @storybook/nextjs-vite
+   * - Next.js specific: storybook/nextjs-vite
    * - Coverage reporter: @vitest/coverage-v8
    */
   async collectDependencies(): Promise<string[]> {
@@ -134,7 +134,7 @@ export class AddonVitestService {
   }
 
   /**
-   * Install Playwright browser binaries for @storybook/addon-vitest
+   * Install Playwright browser binaries for storybook/addon-vitest
    *
    * Installs Chromium via `npx playwright install chromium`. In CI environments and on
    * macOS/Windows (officially supported platforms), also installs system-level browser dependencies
@@ -175,7 +175,7 @@ export class AddonVitestService {
         ? true
         : await (async () => {
             logger.log(dedent`
-            Playwright browser binaries are necessary for @storybook/addon-vitest. The download can take some time. If you don't want to wait, you can skip the installation and run the following command manually later:
+            Playwright browser binaries are necessary for storybook/addon-vitest. The download can take some time. If you don't want to wait, you can skip the installation and run the following command manually later:
             ${CLI_COLORS.cta(playwrightCommandString)}
             `);
             return prompt.confirm({
@@ -232,7 +232,7 @@ export class AddonVitestService {
   }
 
   /**
-   * Validate full compatibility for @storybook/addon-vitest
+   * Validate full compatibility for storybook/addon-vitest
    *
    * Checks:
    *
@@ -312,7 +312,7 @@ export class AddonVitestService {
   /**
    * Validate vitest config files for addon compatibility
    *
-   * Public method that can be used by both postinstall and create-storybook flows
+   * Public method that can be used by both postinstall and storybook/internal/create flows
    */
   async validateConfigFiles(directory: string): Promise<Result> {
     const reasons: string[] = [];

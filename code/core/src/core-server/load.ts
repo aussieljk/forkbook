@@ -76,7 +76,7 @@ export async function loadStorybook(
   const builderName = typeof builder === 'string' ? builder : builder?.name;
 
   if (builderName) {
-    /* builderName can be a bare package name (e.g. '@storybook/builder-vite') or an already-resolved
+    /* builderName can be a bare package name (e.g. 'storybook/builder-vite') or an already-resolved
        file URL / absolute path (e.g. 'file:///.../.../dist/index.js'). For bare package names, we
        need to resolve the package directory first; for already-resolved paths, dirname works directly.
     */

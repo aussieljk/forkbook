@@ -165,7 +165,7 @@ function resolveShowStory(data: DocsShowStoryOutput): ShowStoryResolution {
  * Whether `docs.show` failed: an unusable source, or an id that resolved to nothing.
  *
  * The handlers encode this in the outcome tag; the predicate stays exported because it is part of
- * the frozen `@storybook/mcp` API.
+ * the frozen `storybook/mcp` API.
  */
 export function isDocsShowError(output: DocsShowOutput): boolean {
   const { kind } = resolveShow(output);

@@ -147,21 +147,21 @@ describe('PNPM Proxy', () => {
           const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
 
           pnpmProxy.runPackageCommand({
-            args: ['create-storybook@10.5.5', '-y'],
+            args: ['storybook@10.5.5', '-y'],
             useRemotePkg: true,
           });
 
           expect(executeCommandSpy).toHaveBeenCalledWith(
             expect.objectContaining({
               command: 'pnpm',
-              args: ['--allow-build=esbuild', 'dlx', 'create-storybook@10.5.5', '-y'],
+              args: ['--allow-build=esbuild', 'dlx', 'storybook@10.5.5', '-y'],
             })
           );
         });
 
         it('should print --allow-build=esbuild before dlx', () => {
-          expect(pnpmProxy.getRemoteRunCommand(['create-storybook@10.5.5', '-y'])).toBe(
-            'pnpm --allow-build=esbuild dlx create-storybook@10.5.5 -y'
+          expect(pnpmProxy.getRemoteRunCommand(['storybook@10.5.5', '-y'])).toBe(
+            'pnpm --allow-build=esbuild dlx storybook@10.5.5 -y'
           );
         });
       });
@@ -176,21 +176,21 @@ describe('PNPM Proxy', () => {
           const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
 
           pnpmProxy.runPackageCommand({
-            args: ['create-storybook@10.5.5', '-y'],
+            args: ['storybook@10.5.5', '-y'],
             useRemotePkg: true,
           });
 
           expect(executeCommandSpy).toHaveBeenCalledWith(
             expect.objectContaining({
               command: 'pnpm',
-              args: ['dlx', 'create-storybook@10.5.5', '-y'],
+              args: ['dlx', 'storybook@10.5.5', '-y'],
             })
           );
         });
 
         it('should not print --allow-build on dlx', () => {
-          expect(pnpmProxy.getRemoteRunCommand(['create-storybook@10.5.5', '-y'])).toBe(
-            'pnpm dlx create-storybook@10.5.5 -y'
+          expect(pnpmProxy.getRemoteRunCommand(['storybook@10.5.5', '-y'])).toBe(
+            'pnpm dlx storybook@10.5.5 -y'
           );
         });
       });
@@ -236,7 +236,7 @@ describe('PNPM Proxy', () => {
           dependencies: {},
           devDependencies: {
             '@storybook/manager-webpack5': 'x.x.x',
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         };
       });
@@ -247,7 +247,7 @@ describe('PNPM Proxy', () => {
         {
           dependencies: {},
           devDependencies: {
-            '@storybook/react': 'x.x.x',
+            'storybook/react': 'x.x.x',
           },
         },
         expect.any(String)
@@ -296,17 +296,15 @@ describe('PNPM Proxy', () => {
 
   describe('getVersion', () => {
     it('with a Storybook package listed in versions.json it returns the version', async () => {
-      const storybookReactViteVersion = (await import('../versions.ts')).default[
-        '@storybook/react-vite'
-      ];
+      const storybookReactViteVersion = (await import('../versions.ts')).default['storybook'];
       const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
 
-      const version = await pnpmProxy.getVersion('@storybook/react-vite');
+      const version = await pnpmProxy.getVersion('storybook');
 
       expect(executeCommandSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           command: 'pnpm',
-          args: ['info', '@storybook/react-vite', 'version'],
+          args: ['info', 'storybook', 'version'],
         })
       );
       expect(version).toEqual(`^${storybookReactViteVersion}`);
@@ -616,7 +614,7 @@ describe('PNPM Proxy', () => {
       );
     });
 
-    it('should tell create-storybook users how to rerun when they choose rerun', async () => {
+    it('should tell users how to rerun when they choose rerun', async () => {
       mockedExecuteCommand
         .mockResolvedValueOnce({ stdout: '1440\n' } as any)
         .mockResolvedValueOnce({ stdout: '[]' } as any)
@@ -630,7 +628,7 @@ describe('PNPM Proxy', () => {
       });
 
       await expect(rerunPromise).rejects.toThrow(
-        /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
+        /Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/
       );
 
       await expect(rerunPromise).rejects.not.toThrow(
@@ -654,9 +652,7 @@ describe('PNPM Proxy', () => {
           storybookVersion: '10.4.0-alpha.17',
           nonInteractive: false,
         })
-      ).rejects.toThrow(
-        /Please rerun Storybook creation with:[\s\S]*npx create-storybook@10\.3\.2/
-      );
+      ).rejects.toThrow(/Please rerun Storybook creation with:[\s\S]*npx storybook@10\.3\.2 init/);
     });
 
     describe('release-time checks', () => {

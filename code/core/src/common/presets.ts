@@ -63,10 +63,10 @@ function readAddonManifest(dir: string): { name?: string; exports?: unknown } | 
  *
  * Valid inputs:
  *
- * - `'@storybook/addon-docs/preset' => { type: 'presets', item }`
- * - `'@storybook/addon-docs' => { type: 'presets', item: '@storybook/addon-docs/preset' }`
- * - `{ name: '@storybook/addon-docs(/preset)?', options: { } } => { type: 'presets', item: { name:
- *   '@storybook/addon-docs/preset', options } }`
+ * - `'storybook/addon-docs/preset' => { type: 'presets', item }`
+ * - `'storybook/addon-docs' => { type: 'presets', item: 'storybook/addon-docs/preset' }`
+ * - `{ name: 'storybook/addon-docs(/preset)?', options: { } } => { type: 'presets', item: { name:
+ *   'storybook/addon-docs/preset', options } }`
  */
 export const resolveAddonName = (
   configDir: string,

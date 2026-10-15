@@ -33,7 +33,9 @@
     "url": "https://opencollective.com/storybook"
   },
   "license": "MIT",
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/nextjs-vite-plugin/polyfills/promise-with-resolvers.ts"
+  ],
   "type": "module",
   "imports": {
     "#manager-stores": {
@@ -43,6 +45,10 @@
     "#utils": {
       "storybook": "./template/stories/utils.mock.ts",
       "default": "./template/stories/utils.ts"
+    },
+    "#manager-store": {
+      "storybook": "./src/addon-vitest/manager-store.mock.ts",
+      "default": "./src/addon-vitest/manager-store.ts"
     }
   },
   "exports": {
@@ -56,10 +62,180 @@
       "types": "./dist/actions/decorator.d.ts",
       "default": "./dist/actions/decorator.js"
     },
+    "./addon-a11y": {
+      "code": "./src/addon-a11y/index.ts",
+      "types": "./dist/addon-a11y/index.d.ts",
+      "default": "./dist/addon-a11y/index.js"
+    },
+    "./addon-a11y/manager": {
+      "code": "./src/addon-a11y/manager.tsx",
+      "default": "./dist/addon-a11y/manager.js"
+    },
+    "./addon-a11y/preset": {
+      "code": "./src/addon-a11y/preset.ts",
+      "default": "./dist/addon-a11y/preset.js"
+    },
+    "./addon-a11y/preview": {
+      "code": "./src/addon-a11y/preview.tsx",
+      "types": "./dist/addon-a11y/preview.d.ts",
+      "default": "./dist/addon-a11y/preview.js"
+    },
+    "./addon-docs": {
+      "code": "./src/addon-docs/index.ts",
+      "types": "./dist/addon-docs/index.d.ts",
+      "default": "./dist/addon-docs/index.js"
+    },
+    "./addon-docs/blocks": {
+      "code": "./src/addon-docs/blocks.ts",
+      "types": "./dist/addon-docs/blocks.d.ts",
+      "default": "./dist/addon-docs/blocks.js"
+    },
+    "./addon-docs/manager": {
+      "code": "./src/addon-docs/manager.tsx",
+      "default": "./dist/addon-docs/manager.js"
+    },
+    "./addon-docs/mdx-react-shim": {
+      "code": "./src/addon-docs/mdx-react-shim.ts",
+      "types": "./dist/addon-docs/mdx-react-shim.d.ts",
+      "default": "./dist/addon-docs/mdx-react-shim.js"
+    },
+    "./addon-docs/preset": {
+      "code": "./src/addon-docs/preset.ts",
+      "default": "./dist/addon-docs/preset.js"
+    },
+    "./addon-docs/preview": {
+      "code": "./src/addon-docs/preview.ts",
+      "types": "./dist/addon-docs/preview.d.ts",
+      "default": "./dist/addon-docs/preview.js"
+    },
+    "./addon-links": {
+      "code": "./src/addon-links/index.ts",
+      "types": "./dist/addon-links/index.d.ts",
+      "default": "./dist/addon-links/index.js"
+    },
+    "./addon-links/manager": {
+      "code": "./src/addon-links/manager.ts",
+      "default": "./dist/addon-links/manager.js"
+    },
+    "./addon-links/preview": {
+      "code": "./src/addon-links/preview.ts",
+      "types": "./dist/addon-links/preview.d.ts",
+      "default": "./dist/addon-links/preview.js"
+    },
+    "./addon-links/react": {
+      "code": "./src/addon-links/react/index.ts",
+      "types": "./dist/addon-links/react/index.d.ts",
+      "default": "./dist/addon-links/react/index.js"
+    },
+    "./addon-mcp/internal/preview-stories-app-script": {
+      "code": "./src/addon-mcp/tools/preview-stories/preview-stories-app-script.ts",
+      "default": "./dist/addon-mcp/tools/preview-stories/preview-stories-app-script.js"
+    },
+    "./addon-mcp/preset": {
+      "code": "./src/addon-mcp/preset.ts",
+      "default": "./dist/addon-mcp/preset.js"
+    },
+    "./addon-pseudo-states": {
+      "code": "./src/addon-pseudo-states/index.ts",
+      "types": "./dist/addon-pseudo-states/index.d.ts",
+      "default": "./dist/addon-pseudo-states/index.js"
+    },
+    "./addon-pseudo-states/manager": {
+      "code": "./src/addon-pseudo-states/manager.ts",
+      "default": "./dist/addon-pseudo-states/manager.js"
+    },
+    "./addon-pseudo-states/preview": {
+      "code": "./src/addon-pseudo-states/preview.ts",
+      "types": "./dist/addon-pseudo-states/preview.d.ts",
+      "default": "./dist/addon-pseudo-states/preview.js"
+    },
+    "./addon-themes": {
+      "code": "./src/addon-themes/index.ts",
+      "types": "./dist/addon-themes/index.d.ts",
+      "default": "./dist/addon-themes/index.js"
+    },
+    "./addon-themes/manager": {
+      "code": "./src/addon-themes/manager.tsx",
+      "default": "./dist/addon-themes/manager.js"
+    },
+    "./addon-themes/postinstall": {
+      "code": "./src/addon-themes/postinstall.ts",
+      "default": "./dist/addon-themes/postinstall.js"
+    },
+    "./addon-themes/preview": {
+      "code": "./src/addon-themes/preview.ts",
+      "types": "./dist/addon-themes/preview.d.ts",
+      "default": "./dist/addon-themes/preview.js"
+    },
+    "./addon-vitest": {
+      "code": "./src/addon-vitest/index.ts",
+      "types": "./dist/addon-vitest/index.d.ts",
+      "default": "./dist/addon-vitest/index.js"
+    },
+    "./addon-vitest/constants": {
+      "code": "./src/addon-vitest/constants.ts",
+      "types": "./dist/addon-vitest/constants.d.ts",
+      "default": "./dist/addon-vitest/constants.js"
+    },
+    "./addon-vitest/internal/coverage-reporter": {
+      "code": "./src/addon-vitest/node/coverage-reporter.ts",
+      "default": "./dist/addon-vitest/node/coverage-reporter.js"
+    },
+    "./addon-vitest/internal/global-setup": {
+      "code": "./src/addon-vitest/vitest-plugin/global-setup.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/global-setup.js"
+    },
+    "./addon-vitest/internal/setup-file": {
+      "code": "./src/addon-vitest/vitest-plugin/setup-file.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/setup-file.js"
+    },
+    "./addon-vitest/internal/setup-file-with-project-annotations": {
+      "code": "./src/addon-vitest/vitest-plugin/setup-file-with-project-annotations.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/setup-file-with-project-annotations.js"
+    },
+    "./addon-vitest/internal/setup-file.browser.4": {
+      "code": "./src/addon-vitest/vitest-plugin/setup-file.browser.4.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/setup-file.browser.4.js"
+    },
+    "./addon-vitest/internal/test-utils": {
+      "code": "./src/addon-vitest/vitest-plugin/test-utils.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/test-utils.js"
+    },
+    "./addon-vitest/manager": {
+      "code": "./src/addon-vitest/manager.tsx",
+      "default": "./dist/addon-vitest/manager.js"
+    },
+    "./addon-vitest/postinstall": {
+      "code": "./src/addon-vitest/postinstall.ts",
+      "default": "./dist/addon-vitest/postinstall.js"
+    },
+    "./addon-vitest/preset": {
+      "code": "./src/addon-vitest/preset.ts",
+      "default": "./dist/addon-vitest/preset.js"
+    },
+    "./addon-vitest/vitest": {
+      "code": "./src/addon-vitest/node/vitest.ts",
+      "default": "./dist/addon-vitest/node/vitest.js"
+    },
+    "./addon-vitest/vitest-plugin": {
+      "code": "./src/addon-vitest/vitest-plugin/index.ts",
+      "types": "./dist/addon-vitest/vitest-plugin/index.d.ts",
+      "default": "./dist/addon-vitest/vitest-plugin/index.js"
+    },
     "./backgrounds": {
       "code": "./src/backgrounds/index.ts",
       "types": "./dist/backgrounds/index.d.ts",
       "default": "./dist/backgrounds/index.js"
+    },
+    "./builder-vite": {
+      "code": "./src/builder-vite/index.ts",
+      "types": "./dist/builder-vite/index.d.ts",
+      "default": "./dist/builder-vite/index.js"
+    },
+    "./builder-vite/input/iframe.html": "./assets/builder-vite/iframe.html",
+    "./builder-vite/preset": {
+      "code": "./src/builder-vite/preset.ts",
+      "default": "./dist/builder-vite/preset.js"
     },
     "./highlight": {
       "code": "./src/highlight/index.ts",
@@ -118,6 +294,10 @@
       "code": "./src/core-server/presets/common-override-preset.ts",
       "default": "./dist/core-server/presets/common-override-preset.js"
     },
+    "./internal/create": {
+      "code": "./src/create/index.ts",
+      "default": "./dist/create/index.js"
+    },
     "./internal/csf": {
       "code": "./src/csf/index.ts",
       "types": "./dist/csf/index.d.ts",
@@ -174,6 +354,115 @@
     "./internal/mocking-utils/mocker-runtime": {
       "code": "./src/mocking-utils/mocker-runtime.js",
       "default": "./dist/mocking-utils/mocker-runtime.js"
+    },
+    "./internal/nextjs-vite-plugin": {
+      "code": "./src/nextjs-vite-plugin/index.ts",
+      "types": "./dist/nextjs-vite-plugin/index.d.ts",
+      "default": "./dist/nextjs-vite-plugin/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/cache": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/cache/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/cache/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/draft-mode.compat": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/compatibility/draft-mode.compat.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/compatibility/draft-mode.compat.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/dynamic": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/dynamic/index.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/dynamic/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/headers": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/headers/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/headers/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/image": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/next-image.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/next-image.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/image-context": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/image-context.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/image-context.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/image-default-loader": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/image-default-loader.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/image-default-loader.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/legacy-image": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/next-legacy-image.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/next-legacy-image.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/link": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/link/index.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/link/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/navigation": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/navigation/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/navigation/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/router": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/router/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/router/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/safe-stable-stringify": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/safe-stable-stringify/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/safe-stable-stringify/index.js"
+    },
+    "./internal/nextjs-vite-plugin/browser/mocks/server-only": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/rsc/server-only.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/rsc/server-only.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/cache": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/cache/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/cache/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/draft-mode.compat": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/compatibility/draft-mode.compat.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/compatibility/draft-mode.compat.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/dynamic": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/dynamic/index.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/dynamic/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/headers": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/headers/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/headers/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/image": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/next-image.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/next-image.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/image-context": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/image-context.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/image-context.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/image-default-loader": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/image-default-loader.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/image-default-loader.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/legacy-image": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-image/alias/next-legacy-image.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-image/alias/next-legacy-image.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/link": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/link/index.tsx",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/link/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/navigation": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/navigation/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/navigation/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/router": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/router/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/router/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/safe-stable-stringify": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/safe-stable-stringify/index.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/safe-stable-stringify/index.js"
+    },
+    "./internal/nextjs-vite-plugin/node/mocks/server-only": {
+      "code": "./src/nextjs-vite-plugin/plugins/next-mocks/alias/rsc/server-only.ts",
+      "default": "./dist/nextjs-vite-plugin/plugins/next-mocks/alias/rsc/server-only.js"
     },
     "./internal/node-logger": {
       "code": "./src/node-logger/index.ts",
@@ -249,6 +538,64 @@
       "types": "./dist/manager-api/index.d.ts",
       "default": "./dist/manager-api/index.js"
     },
+    "./mcp": {
+      "code": "./src/mcp/index.ts",
+      "types": "./dist/mcp/index.d.ts",
+      "default": "./dist/mcp/index.js"
+    },
+    "./nextjs-vite": {
+      "code": "./src/nextjs-vite/index.ts",
+      "types": "./dist/nextjs-vite/index.d.ts",
+      "default": "./dist/nextjs-vite/index.js"
+    },
+    "./nextjs-vite/cache.mock": {
+      "code": "./src/nextjs-vite/export-mocks/cache/index.ts",
+      "types": "./dist/nextjs-vite/export-mocks/cache/index.d.ts",
+      "default": "./dist/nextjs-vite/export-mocks/cache/index.js"
+    },
+    "./nextjs-vite/config/preview": {
+      "code": "./src/nextjs-vite/config/preview.ts",
+      "default": "./dist/nextjs-vite/config/preview.js"
+    },
+    "./nextjs-vite/headers.mock": {
+      "code": "./src/nextjs-vite/export-mocks/headers/index.ts",
+      "types": "./dist/nextjs-vite/export-mocks/headers/index.d.ts",
+      "default": "./dist/nextjs-vite/export-mocks/headers/index.js"
+    },
+    "./nextjs-vite/link.mock": {
+      "code": "./src/nextjs-vite/export-mocks/link/index.tsx",
+      "types": "./dist/nextjs-vite/export-mocks/link/index.d.ts",
+      "default": "./dist/nextjs-vite/export-mocks/link/index.js"
+    },
+    "./nextjs-vite/navigation.mock": {
+      "code": "./src/nextjs-vite/export-mocks/navigation/index.ts",
+      "types": "./dist/nextjs-vite/export-mocks/navigation/index.d.ts",
+      "default": "./dist/nextjs-vite/export-mocks/navigation/index.js"
+    },
+    "./nextjs-vite/node": {
+      "code": "./src/nextjs-vite/node/index.ts",
+      "types": "./dist/nextjs-vite/node/index.d.ts",
+      "default": "./dist/nextjs-vite/node/index.js"
+    },
+    "./nextjs-vite/preset": {
+      "code": "./src/nextjs-vite/preset.ts",
+      "default": "./dist/nextjs-vite/preset.js"
+    },
+    "./nextjs-vite/preview": {
+      "code": "./src/nextjs-vite/preview.tsx",
+      "types": "./dist/nextjs-vite/preview.d.ts",
+      "default": "./dist/nextjs-vite/preview.js"
+    },
+    "./nextjs-vite/router.mock": {
+      "code": "./src/nextjs-vite/export-mocks/router/index.ts",
+      "types": "./dist/nextjs-vite/export-mocks/router/index.d.ts",
+      "default": "./dist/nextjs-vite/export-mocks/router/index.js"
+    },
+    "./nextjs-vite/vite-plugin": {
+      "code": "./src/nextjs-vite/vite-plugin/index.ts",
+      "types": "./dist/nextjs-vite/vite-plugin/index.d.ts",
+      "default": "./dist/nextjs-vite/vite-plugin/index.js"
+    },
     "./open-service": {
       "code": "./src/shared/open-service/index.ts",
       "types": "./dist/shared/open-service/index.d.ts",
@@ -259,6 +606,55 @@
       "code": "./src/preview-api/index.ts",
       "types": "./dist/preview-api/index.d.ts",
       "default": "./dist/preview-api/index.js"
+    },
+    "./react": {
+      "code": "./src/react/index.ts",
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    },
+    "./react-vite": {
+      "code": "./src/react-vite/index.ts",
+      "types": "./dist/react-vite/index.d.ts",
+      "default": "./dist/react-vite/index.js"
+    },
+    "./react-vite/node": {
+      "code": "./src/react-vite/node/index.ts",
+      "types": "./dist/react-vite/node/index.d.ts",
+      "default": "./dist/react-vite/node/index.js"
+    },
+    "./react-vite/preset": {
+      "code": "./src/react-vite/preset.ts",
+      "types": "./dist/react-vite/preset.d.ts",
+      "default": "./dist/react-vite/preset.js"
+    },
+    "./react/entry-preview": {
+      "code": "./src/react/entry-preview.tsx",
+      "default": "./dist/react/entry-preview.js"
+    },
+    "./react/entry-preview-argtypes": {
+      "code": "./src/react/entry-preview-argtypes.ts",
+      "default": "./dist/react/entry-preview-argtypes.js"
+    },
+    "./react/entry-preview-docs": {
+      "code": "./src/react/entry-preview-docs.ts",
+      "default": "./dist/react/entry-preview-docs.js"
+    },
+    "./react/entry-preview-rsc": {
+      "code": "./src/react/entry-preview-rsc.tsx",
+      "default": "./dist/react/entry-preview-rsc.js"
+    },
+    "./react/internal/docgen-worker": {
+      "code": "./src/react/docgen/docgen-worker.ts",
+      "default": "./dist/react/docgen/docgen-worker.js"
+    },
+    "./react/preset": {
+      "code": "./src/react/preset.ts",
+      "default": "./dist/react/preset.js"
+    },
+    "./react/preview": {
+      "code": "./src/react/preview.tsx",
+      "types": "./dist/react/preview.d.ts",
+      "default": "./dist/react/preview.js"
     },
     "./test": {
       "code": "./src/test/index.ts",
@@ -283,32 +679,49 @@
   },
   "bin": "./dist/bin/dispatcher.js",
   "files": [
-    "bin/**/*",
     "dist/**/*",
     "assets/**/*",
+    "template/*/cli/**/*",
     "README.md",
     "!src/**/*"
   ],
   "dependencies": {
+    "@mdx-js/react": "^3.0.0",
+    "@next/env": "^15.0.0 || ^16.0.0",
     "@parcel/watcher": "^2.6.0",
+    "@rollup/pluginutils": "^5.0.2",
     "@storybook/global": "^5.0.0",
     "@storybook/icons": "^2.0.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/user-event": "^14.6.3",
+    "@tmcp/adapter-valibot": "^0.1.5",
+    "@tmcp/transport-http": "^0.8.5",
     "@types/chai": "^5.2.2",
     "@vitest/expect": "3.2.4",
     "@vitest/spy": "3.2.4",
     "@webcontainer/env": "^1.1.1",
+    "axe-core": "^4.2.0",
+    "commander": "^14.0.2",
     "esbuild": "^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0 || ^0.28.0",
     "jsonc-parser": "^3.3.1",
+    "magic-string": "^0.30.11",
+    "module-alias": "^2.2.3",
     "open": "^10.2.0",
     "oxc-parser": "^0.127.0",
     "oxc-resolver": "11.21.2",
     "oxfmt": "^0.70.0",
+    "pathe": "^2.0.3",
+    "probe-image-size": "^7.3.0",
     "recast": "^0.23.5",
     "semver": "^7.7.3",
+    "styled-jsx": "5.1.6",
+    "tmcp": "^1.19.4",
+    "ts-dedent": "^2.0.0",
+    "typescript-native": "npm:typescript@^7.0.2",
     "use-sync-external-store": "^1.5.0",
+    "valibot": "^1.4.0",
+    "vite-tsconfig-paths": "^5.1.4",
     "ws": "^8.21.1"
   },
   "devDependencies": {
@@ -325,36 +738,49 @@
     "@discoveryjs/json-ext": "^0.5.3",
     "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
     "@happy-dom/global-registrator": "^20.0.11",
+    "@mdx-js/mdx": "^3.0.0",
+    "@modelcontextprotocol/sdk": "^1.22.0",
     "@ngard/tiny-isequal": "^1.1.0",
     "@polka/compression": "^1.0.0-next.28",
     "@preact/signals-core": "^1.14.2",
     "@rolldown/pluginutils": "1.0.0-beta.18",
     "@standard-schema/spec": "^1.1.0",
     "@testing-library/react": "^14.0.0",
+    "@tmcp/transport-stdio": "^0.4.3",
+    "@types/color-convert": "^2.0.0",
     "@types/cross-spawn": "^6.0.6",
     "@types/detect-port": "^1.3.0",
     "@types/diff": "^5.0.9",
     "@types/ejs": "^3.1.1",
+    "@types/escodegen": "^0.0.6",
+    "@types/estree": "^1.0.6",
+    "@types/istanbul-lib-report": "^3.0.3",
     "@types/js-yaml": "^4.0.5",
+    "@types/micromatch": "^4.0.0",
     "@types/node": "^22.19.1",
     "@types/npmlog": "^7.0.0",
     "@types/picomatch": "^4.0.3",
     "@types/pretty-hrtime": "^1.0.0",
+    "@types/probe-image-size": "^7.2.5",
     "@types/prompts": "^2.0.9",
+    "@types/react": "^18.0.0 || ^19.0.0",
     "@types/semver": "^7.7.1",
     "@types/ws": "^8",
     "@valibot/to-json-schema": "^1.3.0",
+    "@vitest/browser-playwright": "^5.0.0",
+    "@vitest/istanbul-lib-report": "^1.0.1",
     "@vitest/mocker": "3.2.4",
     "@vitest/utils": "^3.2.4",
     "acorn": "^8.15.0",
     "acorn-jsx": "^5.3.2",
+    "acorn-walk": "^7.2.0",
     "ansi-to-html": "^0.7.2",
     "browser-dtector": "^3.4.0",
     "bundle-require": "^5.1.0",
     "camelcase": "^9.0.0",
     "chai": "^5.1.1",
     "clsx": "^2.1.1",
-    "commander": "^14.0.2",
+    "color-convert": "^2.0.1",
     "comment-json": "^4.2.5",
     "comment-parser": "^1.4.1",
     "copy-to-clipboard": "^3.3.1",
@@ -368,9 +794,13 @@
     "downshift": "^9.0.4",
     "ejs": "^3.1.10",
     "empathic": "^2.0.0",
+    "envinfo": "^7.14.0",
+    "es-module-lexer": "^1.5.0",
     "es-toolkit": "^1.43.0",
     "esbuild": "^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0 || ^0.28.0",
+    "escodegen": "^2.1.0",
     "execa": "^9.6.1",
+    "expect-type": "^0.15.0",
     "exsolve": "^1.0.7",
     "extend-to-be-announced": "^2.0.0",
     "fetch-retry": "^6.0.0",
@@ -382,41 +812,56 @@
     "globby": "^14.1.0",
     "hast-util-to-estree": "^3.0.0",
     "host-validation-middleware": "^0.1.2",
+    "html-tags": "^3.1.0",
+    "istanbul-lib-report": "^3.0.1",
+    "istanbul-reports": "^3.2.0",
     "jiti": "^2.6.1",
     "js-yaml": "^4.1.0",
     "jsdoc-type-pratt-parser": "^4.0.0",
+    "knitwork": "^1.1.0",
     "launch-editor": "^2.13.2",
     "lazy-universal-dotenv": "^4.0.0",
     "leven": "^4.0.0",
+    "lilconfig": "^3.0.0",
+    "markdown-to-jsx": "^7.7.2",
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-mdx": "^3.0.0",
     "mdast-util-mdx-jsx": "^3.2.0",
     "memfs": "4.56.11",
     "memoizerific": "^1.11.3",
     "micromark-extension-mdxjs": "^3.0.0",
+    "micromatch": "^4.0.8",
     "modern-tar": "^0.5.5",
     "nanoid": "^4.0.2",
+    "next": "^15.2.3",
     "npmlog": "^7.0.0",
     "p-limit": "^7.2.0",
     "package-manager-detector": "^1.1.0",
-    "pathe": "^1.1.2",
     "picocolors": "^1.1.0",
     "picomatch": "^4.0.5",
     "picoquery": "^2.5.0",
     "polished": "^4.2.2",
     "polka": "^1.0.0-next.28",
+    "postcss-load-config": "^6.0.1",
     "pretty-hrtime": "^1.0.3",
+    "prop-types": "^15.7.2",
     "react": "^18.2.0",
+    "react-colorful": "^5.1.2",
     "react-dom": "^18.2.0",
+    "react-element-to-jsx-string": "npm:@7rulnik/react-element-to-jsx-string@15.0.1",
     "react-helmet-async": "^1.3.0",
     "react-inspector": "^6.0.0",
+    "react-resize-detector": "^7.1.2",
     "react-router-dom": "6.15.0",
     "react-textarea-autosize": "^8.3.0",
     "react-transition-state": "^2.3.1",
+    "rehype-external-links": "^3.0.0",
+    "rehype-slug": "^6.0.0",
     "rolldown": "^1.1.4",
     "sirv": "^2.0.4",
     "slash": "^5.0.0",
     "source-map": "^0.7.4",
+    "srvx": "^0.8.16",
     "std-env": "^4.0.0",
     "store2": "^2.14.2",
     "strip-ansi": "^7.1.0",
@@ -424,28 +869,56 @@
     "sugar-high": "^2.6.0",
     "telejson": "8.0.0",
     "tiny-invariant": "^1.3.1",
+    "tinyexec": "^1.0.2",
+    "tinyglobby": "^0.2.10",
     "tinyspy": "^3.0.2",
-    "ts-dedent": "^2.0.0",
+    "tocbot": "^4.20.1",
+    "tree-kill": "^1.2.2",
     "tsconfig-paths": "^4.2.0",
     "type-fest": "^5.6.0",
     "typescript": "^6.0.3",
     "typescript-5": "npm:typescript@5.9.3",
     "unique-string": "^3.0.0",
     "use-resize-observer": "^9.1.0",
-    "valibot": "^1.4.0",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.0",
+    "vitest-axe": "^0.1.0",
     "wrap-ansi": "^9.0.2",
     "yaml": "^2.8.2",
     "zod": "^3.25.76"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0 || ^19.0.0",
-    "vite-plus": "^0.1.15 || ^0.2.0 || ^0.3.0"
+    "@types/react-dom": "^18.0.0 || ^19.0.0",
+    "@vitest/browser": "^4.0.0 || ^5.0.0",
+    "@vitest/browser-playwright": "^4.0.0 || ^5.0.0",
+    "next": "^15.0.0 || ^16.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "vite": "^8.0.0",
+    "vite-plus": "^0.1.15 || ^0.2.0 || ^0.3.0",
+    "vitest": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
       "optional": true
     },
+    "@types/react-dom": {
+      "optional": true
+    },
+    "@vitest/browser": {
+      "optional": true
+    },
+    "@vitest/browser-playwright": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
     "vite-plus": {
+      "optional": true
+    },
+    "vitest": {
       "optional": true
     }
   },

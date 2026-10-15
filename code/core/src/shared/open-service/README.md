@@ -155,7 +155,7 @@ preset-independent so manager- or preview-realm toolsets can use it later). A to
 registered wherever a consumer resolves it, including consumers that only read its descriptions and
 schemas: `getToolset(id)` throws on an unregistered id rather than silently dropping a tool.
 Adapters resolve one toolset with `getToolset(id)` or take the whole set via
-`getRegisteredToolsets()`; `@storybook/addon-mcp`, `@storybook/mcp`, and the `storybook tools` CLI
+`getRegisteredToolsets()`; `storybook/addon-mcp`, `storybook/mcp`, and the `storybook tools` CLI
 consume them today.
 
 Telemetry classification belongs in Storybook-owned telemetry calls, not on the generic toolset

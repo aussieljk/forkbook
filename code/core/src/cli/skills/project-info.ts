@@ -11,7 +11,7 @@ export interface ProjectInfo {
   storybookVersion: string | undefined;
   majorVersion: number | undefined;
   framework: string | null;
-  /** The full renderer package name, e.g. "@storybook/react" */
+  /** The full renderer package name, e.g. "storybook/react" */
   rendererPackage: string | null;
   /** The short renderer name for docs URLs, e.g. "react" */
   renderer?: SupportedRenderer;

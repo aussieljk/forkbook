@@ -40,12 +40,6 @@ const baseConfig = {
     '.': {
       project,
     },
-    'addons/*': {
-      project,
-    },
-    'builders/*': {
-      project,
-    },
     core: {
       entry: [
         'src/manager-api/index.mock.ts',
@@ -56,19 +50,6 @@ const baseConfig = {
         'src/*/{globals*,index,decorator,manager,preview,runtime}.{ts,tsx}',
         'src/core-server/presets/*.ts',
       ],
-      project,
-    },
-    'frameworks/*': {
-      project,
-    },
-    'lib/create-storybook': {
-      entry: ['src/index.ts', 'src/ink/steps/checks/index.tsx'],
-      project,
-    },
-    'lib/*': {
-      project,
-    },
-    'renderers/*': {
       project,
     },
   },

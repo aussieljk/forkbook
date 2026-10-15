@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/nextjs-vite/**/*", "src/nextjs-vite-plugin/**/*", "template/nextjs-vite/**/*"],
+  // The Next.js Vite plugin tests use partial Next.js configs, as before the merge.
+  "exclude": ["dist", "src/nextjs-vite-plugin/**/*.test.ts"]
+}

@@ -97,17 +97,11 @@ describe('getAddonNames', () => {
 
 describe('normalizeAddonName', () => {
   it('returns the bare name for a string entry', () => {
-    expect(normalizeAddonName('@storybook/addon-mcp')).toBe('@storybook/addon-mcp');
+    expect(normalizeAddonName('storybook/addon-mcp')).toBe('storybook/addon-mcp');
   });
 
   it('returns the name for an object entry', () => {
-    expect(normalizeAddonName({ name: '@storybook/addon-mcp' })).toBe('@storybook/addon-mcp');
-  });
-
-  it('resolves an absolute path to its bare package name', () => {
-    expect(normalizeAddonName('/sandbox/project/node_modules/@storybook/addon-mcp')).toBe(
-      '@storybook/addon-mcp'
-    );
+    expect(normalizeAddonName({ name: 'storybook/addon-mcp' })).toBe('storybook/addon-mcp');
   });
 
   it('returns undefined for relative local addon paths', () => {

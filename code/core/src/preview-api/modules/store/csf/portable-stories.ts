@@ -45,7 +45,7 @@ import { prepareContext, prepareStory } from './prepareStory.ts';
 declare global {
   var globalProjectAnnotations: NormalizedProjectAnnotations<any>;
   var defaultProjectAnnotations: ProjectAnnotations<any>;
-  // Set by @storybook/addon-vitest once its setup file has applied the project annotations.
+  // Set by storybook/addon-vitest once its setup file has applied the project annotations.
   var __STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__: boolean | undefined;
   var __STORYBOOK_SET_PROJECT_ANNOTATIONS_CALLED__: boolean | undefined;
 }
@@ -196,7 +196,7 @@ export function composeStory<TRenderer extends Renderer = Renderer, TArgs extend
         // render are flushed when `StoryRender` emits `STORY_RENDERED`, whose listener also detaches
         // the hooks context. The portable path never emits that event, so invoke the same listener
         // directly here (after the render resolves, before play + the a11y `afterEach` observe the
-        // DOM): it triggers the effects (e.g. `@storybook/addon-themes` setting `data-theme` on
+        // DOM): it triggers the effects (e.g. `storybook/addon-themes` setting `data-theme` on
         // `<html>`), clears the current context, and removes the now-stale render listener. (Effect-
         // only decorators; preview-api state updates that re-render are a separate, unsupported case.)
         hooks.renderListener(context.id);

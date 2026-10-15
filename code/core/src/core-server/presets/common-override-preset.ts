@@ -34,7 +34,7 @@ export const typescript: PresetProperty<'typescript'> = async (input, options) =
 
 const createTestBuildFeatures = (value: boolean): Required<TestBuildFlags> => ({
   disableBlocks: value,
-  disabledAddons: value ? ['@storybook/addon-docs', '@storybook/addon-coverage'] : [],
+  disabledAddons: value ? ['storybook/addon-docs', '@storybook/addon-coverage'] : [],
   disableMDXEntries: value,
   disableAutoDocs: value,
   disableDocgen: value,

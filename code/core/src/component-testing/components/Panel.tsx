@@ -24,7 +24,7 @@ import {
 import {
   STATUS_TYPE_ID_COMPONENT_TEST,
   STORYBOOK_ADDON_TEST_CHANNEL,
-} from '../../../../addons/vitest/src/constants.ts';
+} from '../../addon-vitest/constants.ts';
 import { EVENTS } from '../../instrumenter/EVENTS.ts';
 import {
   type Call,

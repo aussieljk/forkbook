@@ -1,4 +1,4 @@
-import type { Loader } from '@storybook/react-vite';
+import type { Loader } from 'storybook/react-vite';
 
 // Under Vitest browser mode, drive interactions through Vitest's interactivity API instead of
 // storybook/test's userEvent: https://vitest.dev/guide/browser/interactivity-api.html

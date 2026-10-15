@@ -7,7 +7,7 @@ import {
   type StatusesByStoryIdAndTypeId,
 } from 'storybook/internal/types';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { action } from 'storybook/actions';
 import { type ComponentEntry, type IndexHash, ManagerContext } from 'storybook/manager-api';

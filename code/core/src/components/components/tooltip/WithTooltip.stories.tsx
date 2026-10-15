@@ -1,7 +1,7 @@
 import type { ComponentProps, FunctionComponent } from 'react';
 import React from 'react';
 
-import type { StoryObj } from '@storybook/react-vite';
+import type { StoryObj } from 'storybook/react-vite';
 
 import { expect, screen } from 'storybook/test';
 

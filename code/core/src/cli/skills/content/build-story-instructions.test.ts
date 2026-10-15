@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildStoryInstructions } from './build-story-instructions.ts';
 
 const baseInputs = {
-  framework: '@storybook/react-vite',
+  framework: 'storybook/react-vite',
   testSupported: true,
   a11yEnabled: false,
   docsEnabled: false,
@@ -26,7 +26,7 @@ describe('buildStoryInstructions transport refs', () => {
 
   it('maps framework to renderer, falling back to the framework name', () => {
     expect(buildStoryInstructions({ ...baseInputs, transport: 'mcp' })).toContain(
-      '@storybook/react'
+      'storybook/react'
     );
     expect(
       buildStoryInstructions({ ...baseInputs, transport: 'mcp', framework: '@storybook/who-knows' })
@@ -38,8 +38,8 @@ describe('buildStoryInstructions placeholder resolution', () => {
   it('replaces framework and renderer placeholders with no leftovers', () => {
     const instructions = buildStoryInstructions({ ...baseInputs, transport: 'mcp' });
 
-    expect(instructions).toContain('@storybook/react-vite');
-    expect(instructions).toContain('@storybook/react');
+    expect(instructions).toContain('storybook/react-vite');
+    expect(instructions).toContain('storybook/react');
     expect(instructions).toContain('stories-preview');
     expect(instructions).toContain('stories-changed');
 

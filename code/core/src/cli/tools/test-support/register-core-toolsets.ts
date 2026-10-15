@@ -6,7 +6,7 @@
  * (with stub runtime dependencies) rather than fakes, so the CLI is tested against the definitions
  * it ships with — the same approach as addon-mcp's scaffold.
  *
- * The `test` toolset is owned by `@storybook/addon-vitest` and is intentionally not registered
+ * The `test` toolset is owned by `storybook/addon-vitest` and is intentionally not registered
  * here. Cover it in the addon's own unit tests; core/CLI tests that need "test absent" behavior
  * already match this default.
  */

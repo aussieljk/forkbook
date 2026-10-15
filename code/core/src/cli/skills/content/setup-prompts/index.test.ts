@@ -9,10 +9,10 @@ import { DEFAULT_PROMPT_NAME, getSetupMarkdownOutput, PROMPT_NAMES } from './ind
 const projectInfo: ProjectInfo = {
   storybookVersion: '10.5.0',
   majorVersion: 10,
-  framework: '@storybook/react-vite',
-  rendererPackage: '@storybook/react',
+  framework: 'storybook/react-vite',
+  rendererPackage: 'storybook/react',
   renderer: SupportedRenderer.REACT,
-  builderPackage: '@storybook/builder-vite',
+  builderPackage: 'storybook/builder-vite',
   addons: [],
   configDir: '.storybook',
   storiesPaths: [],
@@ -26,7 +26,7 @@ const projectInfo: ProjectInfo = {
 afterEach(() => vi.unstubAllEnvs());
 
 describe.each(['ts', 'js'] as const)('setup instructions in %s projects', (language) => {
-  it.each(['@storybook/react-vite', '@storybook/nextjs-vite'])(
+  it.each(['storybook/react-vite', 'storybook/nextjs-vite'])(
     'preserves React examples for %s',
     async (framework) => {
       for (const name of [
@@ -111,12 +111,12 @@ it('has the agent add the Vitest addon only when the project lacks it', async ()
   const without = await getSetupMarkdownOutput(projectInfo);
   const withAddon = await getSetupMarkdownOutput({
     ...projectInfo,
-    addons: ['@storybook/addon-vitest'],
+    addons: ['storybook/addon-vitest'],
   });
 
-  expect(without.markdown).toContain('npx storybook add @storybook/addon-vitest --yes');
+  expect(without.markdown).toContain('npx storybook add storybook/addon-vitest --yes');
   expect(without.markdown).not.toContain('storybook build');
-  expect(withAddon.markdown).not.toContain('storybook add @storybook/addon-vitest');
+  expect(withAddon.markdown).not.toContain('storybook add storybook/addon-vitest');
 });
 
 it('only lets the agent delete the examples that storybook init generated', async () => {

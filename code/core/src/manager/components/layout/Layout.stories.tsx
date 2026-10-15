@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { LocationProvider } from 'storybook/internal/router';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { startCase } from 'es-toolkit/string';
 import { action } from 'storybook/actions';

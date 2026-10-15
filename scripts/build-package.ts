@@ -79,7 +79,7 @@ async function run() {
   > = packages
     .map((pkg) => {
       let suffix = pkg.name.replace('@storybook/', '');
-      if (pkg.name === '@storybook/cli') {
+      if (pkg.name === 'storybook/internal/cli-commands') {
         suffix = 'sb-cli';
       }
       return {

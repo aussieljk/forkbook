@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { StoryContext } from '@storybook/react-vite';
+import type { StoryContext } from 'storybook/react-vite';
 
 import { expect, fireEvent, fn, screen, waitFor, within } from 'storybook/test';
 

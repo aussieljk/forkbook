@@ -32,19 +32,19 @@ vi.mock('../shared/utils/module', () => ({
 const mockedResolveUtils = vi.mocked(resolveUtils);
 
 const KNOWN_FILES = [
-  '@storybook/react',
+  'storybook/react',
   'storybook/actions/manager',
   './local/preset',
   './local/addons',
   '/absolute/preset',
   '/absolute/addons',
-  '@storybook/addon-docs',
+  'storybook/addon-docs',
   '@storybook/addon-cool',
-  '@storybook/addon-docs/preset',
+  'storybook/addon-docs/preset',
   '@storybook/addon-essentials',
-  '@storybook/addon-themes/manager',
-  '@storybook/addon-a11y/preview',
-  '@storybook/addon-links/manager',
+  'storybook/addon-themes/manager',
+  'storybook/addon-a11y/preview',
+  'storybook/addon-links/manager',
   '@storybook/preset-alpha',
   '@storybook/preset-beta',
   'addon-bar/preset.js',
@@ -107,13 +107,13 @@ describe('presets', () => {
 
   it('loads a framework preset from the project config directory', async () => {
     mockedResolveUtils.safeResolveModule.mockImplementation(({ specifier, parent }) =>
-      specifier === '@storybook/react-vite/preset' && parent === '/project/.storybook'
+      specifier === 'storybook/react-vite/preset' && parent === '/project/.storybook'
         ? '/project/node_modules/@storybook/react-vite/preset.js'
         : undefined
     );
     mockedResolveUtils.importModule.mockResolvedValue({});
 
-    await loadPreset('@storybook/react-vite/preset', 0, {
+    await loadPreset('storybook/react-vite/preset', 0, {
       configDir: '/project/.storybook',
     } as any);
 
@@ -485,8 +485,8 @@ describe('resolveAddonName', () => {
   });
 
   it('should resolve presets', () => {
-    expect(resolveAddonName({} as any, '@storybook/addon-docs/preset', {})).toEqual({
-      name: '@storybook/addon-docs/preset',
+    expect(resolveAddonName({} as any, 'storybook/addon-docs/preset', {})).toEqual({
+      name: 'storybook/addon-docs/preset',
       type: 'presets',
     });
   });
@@ -543,13 +543,13 @@ describe('loadPreset', () => {
     vi.spyOn(logger, 'warn');
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       switch (path) {
-        case '@storybook/react':
+        case 'storybook/react':
         case '@storybook/preset-beta':
-        case '@storybook/addon-docs/preset':
+        case 'storybook/addon-docs/preset':
         case 'addon-foo/register.js':
         case '@storybook/addon-cool':
         case 'addon-baz/register.js':
-        case '@storybook/addon-links/manager':
+        case 'storybook/addon-links/manager':
           return {};
         case 'addon-bar':
           return {
@@ -567,9 +567,9 @@ describe('loadPreset', () => {
         name: '',
         // @ts-expect-error (invalid use)
         type: 'virtual',
-        framework: '@storybook/react',
+        framework: 'storybook/react',
         presets: ['@storybook/preset-beta'],
-        addons: ['@storybook/addon-docs/preset'],
+        addons: ['storybook/addon-docs/preset'],
       },
       0,
       {}
@@ -582,16 +582,16 @@ describe('loadPreset', () => {
           "preset": {},
         },
         {
-          "name": "@storybook/addon-docs/preset",
+          "name": "storybook/addon-docs/preset",
           "options": {},
           "preset": {},
         },
         {
           "name": {
             "addons": [
-              "@storybook/addon-docs/preset",
+              "storybook/addon-docs/preset",
             ],
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
             "name": "",
             "presets": [
               "@storybook/preset-beta",
@@ -600,7 +600,7 @@ describe('loadPreset', () => {
           },
           "options": {},
           "preset": {
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
           },
         },
       ]
@@ -615,11 +615,11 @@ describe('loadPreset', () => {
         type: 'virtual',
         presets: ['@storybook/preset-beta'],
         addons: [
-          '@storybook/addon-docs/preset',
+          'storybook/addon-docs/preset',
           'addon-foo/register.js',
           'addon-bar',
           'addon-baz/register.js',
-          '@storybook/addon-links/manager',
+          'storybook/addon-links/manager',
         ],
       },
       0,
@@ -632,7 +632,7 @@ describe('loadPreset', () => {
         preset: {},
       },
       {
-        name: '@storybook/addon-docs/preset',
+        name: 'storybook/addon-docs/preset',
         options: {},
         preset: {},
       },
@@ -661,21 +661,21 @@ describe('loadPreset', () => {
         },
       },
       {
-        name: '@storybook/addon-links/manager',
+        name: 'storybook/addon-links/manager',
         options: {},
         preset: {
-          managerEntries: [normalize('@storybook/addon-links/manager')],
+          managerEntries: [normalize('storybook/addon-links/manager')],
         },
       },
       {
         name: {
           presets: ['@storybook/preset-beta'],
           addons: [
-            '@storybook/addon-docs/preset',
+            'storybook/addon-docs/preset',
             'addon-foo/register.js',
             'addon-bar',
             'addon-baz/register.js',
-            '@storybook/addon-links/manager',
+            'storybook/addon-links/manager',
           ],
           name: '',
           type: 'virtual',
@@ -692,9 +692,9 @@ describe('loadPreset', () => {
         name: '',
         // @ts-expect-error (invalid use)
         type: 'virtual',
-        framework: '@storybook/react',
+        framework: 'storybook/react',
         presets: ['@storybook/preset-beta'],
-        addons: ['@storybook/addon-docs/preset', 'uninstalled-addon'],
+        addons: ['storybook/addon-docs/preset', 'uninstalled-addon'],
       },
       0,
       {}
@@ -710,17 +710,17 @@ describe('loadPreset', () => {
           "preset": {},
         },
         {
-          "name": "@storybook/addon-docs/preset",
+          "name": "storybook/addon-docs/preset",
           "options": {},
           "preset": {},
         },
         {
           "name": {
             "addons": [
-              "@storybook/addon-docs/preset",
+              "storybook/addon-docs/preset",
               "uninstalled-addon",
             ],
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
             "name": "",
             "presets": [
               "@storybook/preset-beta",
@@ -729,7 +729,7 @@ describe('loadPreset', () => {
           },
           "options": {},
           "preset": {
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
           },
         },
       ]
@@ -742,15 +742,15 @@ describe('loadPreset', () => {
         name: '',
         // @ts-expect-error (invalid use)
         type: 'virtual',
-        framework: '@storybook/react',
+        framework: 'storybook/react',
         presets: ['@storybook/preset-beta'],
-        addons: ['@storybook/addon-docs', 'addon-bar'],
+        addons: ['storybook/addon-docs', 'addon-bar'],
       },
       0,
       {
         build: {
           test: {
-            disabledAddons: ['@storybook/addon-docs'],
+            disabledAddons: ['storybook/addon-docs'],
           },
         },
       }
@@ -777,10 +777,10 @@ describe('loadPreset', () => {
         {
           "name": {
             "addons": [
-              "@storybook/addon-docs",
+              "storybook/addon-docs",
               "addon-bar",
             ],
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
             "name": "",
             "presets": [
               "@storybook/preset-beta",
@@ -789,7 +789,7 @@ describe('loadPreset', () => {
           },
           "options": {},
           "preset": {
-            "framework": "@storybook/react",
+            "framework": "storybook/react",
           },
         },
       ]

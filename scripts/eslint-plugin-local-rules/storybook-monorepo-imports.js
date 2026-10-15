@@ -21,7 +21,7 @@ module.exports = {
         const isInCLI = !!fileName.includes(path.join('code', 'lib', 'cli') + path.sep);
         const isInCodemod = !!fileName.includes(path.join('code', 'lib', 'codemod'));
         const isInCreateStorybook = !!fileName.includes(
-          path.join('code', 'lib', 'create-storybook')
+          path.join('code', 'lib', 'storybook/internal/create')
         );
         const isInCore = !!fileName.includes(path.join('code', 'core'));
 

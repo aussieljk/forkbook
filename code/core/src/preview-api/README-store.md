@@ -95,7 +95,7 @@ Arg types add type information and metadata about args that are used to control 
 
 To add a argTypes enhancer, `export const argTypesEnhancers = []` from `preview.js` or and addon
 
-There is a default enhancer that ensures that each `arg` in a story has a baseline `argType`. This value can be improved by subsequent enhancers, e.g. those provided by `@storybook/addon-docs`.
+There is a default enhancer that ensures that each `arg` in a story has a baseline `argType`. This value can be improved by subsequent enhancers, e.g. those provided by `storybook/addon-docs`.
 
 ## Globals
 

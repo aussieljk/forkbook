@@ -4,7 +4,7 @@ import type { DocsIndexEntry, StoryIndex, StoryIndexEntry } from 'storybook/inte
 
 import { global } from '@storybook/global';
 
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from 'storybook/react-vite';
 
 import { ManagerContext } from 'storybook/manager-api';
 import { expect, screen, userEvent, waitFor } from 'storybook/test';

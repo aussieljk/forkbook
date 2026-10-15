@@ -4,25 +4,25 @@ import type { Channel } from 'storybook/internal/channels';
 
 import { global } from '@storybook/global';
 
-import type { Decorator, Loader, ReactRenderer } from '@storybook/react-vite';
-import { definePreview } from '@storybook/react-vite';
+import type { Decorator, Loader, ReactRenderer } from 'storybook/react-vite';
+import { definePreview } from 'storybook/react-vite';
 
-import addonA11y from '@storybook/addon-a11y';
-import addonDocs from '@storybook/addon-docs';
-import { DocsContext } from '@storybook/addon-docs/blocks';
-import addonThemes from '@storybook/addon-themes';
-import addonTest from '@storybook/addon-vitest';
+import addonA11y from 'storybook/addon-a11y';
+import addonDocs from 'storybook/addon-docs';
+import { DocsContext } from 'storybook/addon-docs/blocks';
+import addonThemes from 'storybook/addon-themes';
+import addonTest from 'storybook/addon-vitest';
 
-import addonPseudoStates from 'storybook-addon-pseudo-states';
+import addonPseudoStates from 'storybook/addon-pseudo-states';
 import { DocsContext as DocsContextProps, useArgs } from 'storybook/preview-api';
 import type { PreviewWeb } from 'storybook/preview-api';
 import { expect, sb } from 'storybook/test';
 import { ThemeProvider, convert, resetCss, themes, useTheme } from 'storybook/theming';
 
-import { DocsPageWrapper } from '../addons/docs/src/blocks/components/index.ts';
+import { DocsPageWrapper } from '../core/src/addon-docs/blocks/components/index.ts';
 import { toHaveLiveRegion } from '../core/src/shared/utils/toHaveLiveRegion.ts';
 import * as templatePreview from '../core/template/stories/preview.ts';
-import '../renderers/react/template/components/index.js';
+import '../core/template/react/components/index.js';
 import { isChromatic } from './isChromatic.ts';
 import styles from './preview.module.css';
 import * as vitestPreview from './vitest.preview.ts';
@@ -131,7 +131,7 @@ const loaders = [
     }
     const csfFiles = await Promise.all(
       (relativeCsfPaths as string[]).map(async (blocksRelativePath) => {
-        const projectRelativePath = `./addons/docs/src/blocks/${blocksRelativePath.replace(
+        const projectRelativePath = `./core/src/addon-docs/blocks/${blocksRelativePath.replace(
           /^..\//,
           ''
         )}.tsx`;

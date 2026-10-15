@@ -28,20 +28,24 @@ While you work, use `verify --changed` or one test file. Run the full `bun run v
 
 - `master` is the only branch. Merge each agent branch with `bun run merge-agent <branch>`. Do not push.
 - A command that can take more than 2 minutes (full test run, full build) must run in the background. Wait for its completion notice. Do not let it reach the 10 minute tool limit.
-- Plan parallel agents by folder. Two agents must not change the same files. A large change gets a set-up step first (for example the theme), then agents in parallel on separate folders (`code/core/src/components`, `code/core/src/manager`, `code/addons/*`).
+- Plan parallel agents by folder. Two agents must not change the same files. A large change gets a set-up step first (for example the theme), then agents in parallel on separate folders (`code/core/src/components`, `code/core/src/manager`, `code/core/src/addon-*`).
 - Each agent works in its own worktree and runs `bun install` first.
 - Commit messages: ASD-STE100 Simplified Technical English, Australian spelling, no em dashes.
 
 ## Layout
 
-- `code/core`: the `storybook` package. Manager UI (`src/manager`), UI components (`src/components`), preview API, core server, CLI, theming (`src/theming`, public as `storybook/theming`), docs tools, component docgen (tsgo).
-- `code/renderers/react`: the React renderer, argTypes and the component manifest (`src/componentManifest`).
-- `code/frameworks/react-vite`, `code/frameworks/nextjs-vite`, `code/builders/builder-vite`, `code/lib/vite-plugin-storybook-nextjs`.
-- `code/addons/*`: a11y, docs, links, mcp, pseudo-states, themes, vitest.
-- `code/lib/cli-storybook`, `code/lib/create-storybook`, `code/lib/cli-sb`, `code/lib/mcp`.
+- `code/core`: the one published package. Every area is a folder in `src/` and a subpath export:
+  - Core: manager UI (`src/manager`), UI components (`src/components`), preview API, core server, CLI (`src/cli`, `src/bin`), theming (`src/theming`), docs tools, component docgen (tsgo).
+  - Renderer and frameworks: `src/react` (argTypes, component manifest), `src/react-vite`, `src/nextjs-vite`, `src/nextjs-vite-plugin`, `src/builder-vite`.
+  - Addons: `src/addon-a11y`, `-docs`, `-links`, `-mcp`, `-pseudo-states`, `-themes`, `-vitest`.
+  - CLI parts: `src/create` (init), `src/cli-commands` (add, remove), `src/mcp` (docs MCP library).
+  - `template/<area>`: stories and CLI templates for each area. `assets/<area>`: files that ship as they are.
+- `code/core/build-config.ts` merges the entry lists in `code/core/build-config/<area>.ts`.
+- An area with its own `src/<area>/vitest.config.ts` is its own Vitest project. The `core` project skips it.
+- Next.js code has its own TypeScript project (`code/core/tsconfig.nextjs.json`), so the global Next.js types do not leak into the rest.
 - `code/.storybook`: the internal Storybook. Its stories run as browser tests in the `storybook-ui` Vitest project.
 - `scripts/`: build (`build-package.ts`, `build/`), `verify.ts`, `merge-agent.ts`.
-- Each package's `build-config.ts` lists its entries. `scripts/build/utils/generate-package-json.ts` writes the `exports` field. Each export has a `code` condition that points to the source. TypeScript uses it (`customConditions: ["code"]`), so the type check does not need a build.
+- The build configs list the entries. `scripts/build/utils/generate-package-json.ts` writes the `exports` field. Each export has a `code` condition that points to the source. TypeScript uses it (`customConditions: ["code"]`), so the type check does not need a build.
 
 ## Known traps
 

@@ -424,7 +424,7 @@ export class ProjectAnnotationsAlreadyAppliedError extends StorybookError {
       documentation:
         'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files',
       message: dedent`
-        setProjectAnnotations() was called from a Vitest setup file, but @storybook/addon-vitest applies your project annotations itself: your .storybook/preview file and the previews of the addons registered in .storybook/main. Calling it again replaces those annotations, so the call has to go:
+        setProjectAnnotations() was called from a Vitest setup file, but storybook/addon-vitest applies your project annotations itself: your .storybook/preview file and the previews of the addons registered in .storybook/main. Calling it again replaces those annotations, so the call has to go:
 
         - If it only passes your .storybook/preview annotations, delete the call.
         - If it passes an addon's annotations, register that addon in the "addons" field of .storybook/main instead.

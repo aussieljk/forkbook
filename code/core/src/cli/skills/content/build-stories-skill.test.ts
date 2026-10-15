@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { buildStoriesSkill, type StoriesSkillInputs } from './build-stories-skill.ts';
 
 const everything: StoriesSkillInputs = {
-  framework: '@storybook/react-vite',
+  framework: 'storybook/react-vite',
   csfFactories: false,
   previewFile: '.storybook/preview.ts',
   typescript: true,

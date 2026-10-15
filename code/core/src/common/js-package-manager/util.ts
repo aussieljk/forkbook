@@ -116,37 +116,6 @@ export const getLatestStableVersionAdheringToMinimumAgeGate = (
   return latestStableVersion;
 };
 
-/**
- * Args for `runPackageCommand({ useRemotePkg: true })` when bootstrapping a Storybook CLI package
- * that isn't installed locally.
- *
- * npm and Yarn Classic both execute the remote package through `npx`, which prompts "Ok to
- * proceed?" before downloading and hangs in non-interactive/CI environments. `--yes` auto-confirms
- * that install. pnpm (`dlx`), Yarn Berry (`dlx`) and Bun (`bunx`) download without prompting, so
- * they must not receive the npx-only `--yes` flag.
- */
-export function getRemotePackageRunnerArgs(
-  packageManagerType: PackageManagerName,
-  pkg: string,
-  version: string,
-  args: string[]
-): string[] {
-  const pkgWithVersion = `${pkg}@${version}`;
-  const usesNpx =
-    packageManagerType === PackageManagerName.NPM ||
-    packageManagerType === PackageManagerName.YARN1;
-  if (!usesNpx) {
-    return [pkgWithVersion, ...args];
-  }
-
-  // npm 12 defaults allow-remote to none. pkg.pr.new specifiers are remote URLs.
-  if (/^https?:\/\//.test(version)) {
-    return ['--yes', '--allow-remote=all', pkgWithVersion, ...args];
-  }
-
-  return ['--yes', pkgWithVersion, ...args];
-}
-
 export function getVitestStorybookRunCommand(packageManager: JsPackageManager, file?: string) {
   const args = ['vitest', '--project', 'storybook', 'run'];
   if (file) {
@@ -163,8 +132,8 @@ export const STORYBOOK_RERUN_INSTRUCTION = 'Please rerun Storybook creation with
 
 export const getStorybookRerunCommand = (compatibleVersion: string | null) =>
   compatibleVersion
-    ? `npx create-storybook@${compatibleVersion}`
-    : 'npx create-storybook@<compatible-version>';
+    ? `npx storybook@${compatibleVersion} init`
+    : 'npx storybook@<compatible-version> init';
 
 export const getErrorLogs = (error: unknown): string => {
   if (typeof error === 'string') {

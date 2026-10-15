@@ -1,20 +1,2 @@
 // auto generated file, do not edit
-export default {
-  '@storybook/addon-a11y': '11.0.0-alpha.6',
-  '@storybook/addon-docs': '11.0.0-alpha.6',
-  '@storybook/addon-links': '11.0.0-alpha.6',
-  '@storybook/addon-mcp': '11.0.0-alpha.6',
-  'storybook-addon-pseudo-states': '11.0.0-alpha.6',
-  '@storybook/addon-themes': '11.0.0-alpha.6',
-  '@storybook/addon-vitest': '11.0.0-alpha.6',
-  '@storybook/builder-vite': '11.0.0-alpha.6',
-  storybook: '11.0.0-alpha.6',
-  '@storybook/nextjs-vite': '11.0.0-alpha.6',
-  '@storybook/react-vite': '11.0.0-alpha.6',
-  sb: '11.0.0-alpha.6',
-  '@storybook/cli': '11.0.0-alpha.6',
-  'create-storybook': '11.0.0-alpha.6',
-  '@storybook/mcp': '11.0.0-alpha.6',
-  'vite-plugin-storybook-nextjs': '11.0.0-alpha.6',
-  '@storybook/react': '11.0.0-alpha.6',
-};
+export default { storybook: '11.0.0-alpha.6' };

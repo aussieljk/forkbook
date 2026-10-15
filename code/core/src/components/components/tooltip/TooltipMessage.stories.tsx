@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { DecoratorFunction } from 'storybook/internal/csf';
 
-import type { Meta } from '@storybook/react-vite';
+import type { Meta } from 'storybook/react-vite';
 
 import { Button } from '../Button/Button.tsx';
 import { PopoverProvider } from '../Popover/PopoverProvider.tsx';

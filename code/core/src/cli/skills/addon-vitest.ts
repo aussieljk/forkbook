@@ -1,7 +1,7 @@
 import type { Options } from '../../types/index.ts';
 
 /**
- * Whether `@storybook/addon-vitest` is enabled in this project.
+ * Whether `storybook/addon-vitest` is enabled in this project.
  *
  * Reads the `isAddonVitestEnabled` marker that addon's preset exports, so this is true exactly
  * when its presets loaded — the same condition under which its `services` hook registers the

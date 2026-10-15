@@ -19,7 +19,7 @@ export type RemoveAddonOptions = {
  * @example
  *
  * ```sh
- * sb remove @storybook/addon-links
+ * sb remove storybook/addon-links
  * ```
  */
 export async function removeAddon(addon: string, options: RemoveAddonOptions) {

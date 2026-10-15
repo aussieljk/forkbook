@@ -69,7 +69,7 @@ export function getPrettyPackageManagerName(packageManager: string | undefined):
 /**
  * Extract package name and version from input
  *
- * @param pkg A string like `@storybook/cli`, `react` or `react@^16`
+ * @param pkg A string like `storybook/internal/cli-commands`, `react` or `react@^16`
  * @returns A tuple of 2 elements: [packageName, packageVersion]
  */
 export function getPackageDetails(pkg: string): [string, string?] {
@@ -355,8 +355,8 @@ export abstract class JsPackageManager {
    *
    * ```ts
    * addDependencies(options, [
-   *   `@storybook/react@${storybookVersion}`,
-   *   `@storybook/addon-links@${linksVersion}`,
+   *   `storybook/react@${storybookVersion}`,
+   *   `storybook/addon-links@${linksVersion}`,
    * ]);
    * ```
    *
@@ -429,7 +429,7 @@ export abstract class JsPackageManager {
    * @example
    *
    * ```ts
-   * removeDependencies([`@storybook/react`]);
+   * removeDependencies([`storybook/react`]);
    * ```
    *
    * @param dependencies Contains a list of packages to remove.

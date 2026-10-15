@@ -52,11 +52,11 @@ export function initAIAnalyticsChannel(
       }
 
       const metadata = await getStorybookMetadata(options.configDir);
-      const isReactStorybook = metadata?.renderer?.includes('@storybook/react');
+      const isReactStorybook = metadata?.renderer?.includes('storybook/react');
       const hasVitestAddon =
         !!metadata?.addons &&
         Object.keys(metadata.addons).some((addonKey) =>
-          addonKey.includes('@storybook/addon-vitest')
+          addonKey.includes('storybook/addon-vitest')
         );
 
       // For now this is gated by React + Vitest

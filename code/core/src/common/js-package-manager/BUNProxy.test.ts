@@ -79,7 +79,7 @@ describe('BUN Proxy', () => {
         await Promise.resolve(fn());
       });
       const originalError = new Error(
-        'error: @storybook/react@10.4.0-alpha.17 blocked by minimum-release-age'
+        'error: storybook/react@10.4.0-alpha.17 blocked by minimum-release-age'
       );
       mockedExecuteCommand.mockRejectedValueOnce(originalError);
 
@@ -167,7 +167,7 @@ describe('BUN Proxy', () => {
         );
 
       expect(error).toBeInstanceOf(MinimumReleaseAgeHandledError);
-      expect(error?.message).toContain('npx create-storybook@10.3.9');
+      expect(error?.message).toContain('npx storybook@10.3.9 init');
     });
 
     it('skips the precheck when Storybook packages are already excluded', async () => {
