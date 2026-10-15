@@ -11,6 +11,7 @@
 import { spawnSync } from 'node:child_process';
 
 import { ROOT_DIRECTORY } from './utils/constants.ts';
+import { emitEvent, flushOtel, initOtel } from './utils/otel.ts';
 
 const [branch, ...verifyArgs] = process.argv.slice(2);
 if (!branch) {
@@ -27,17 +28,42 @@ function run(command: string, args: string[]) {
   return spawnSync(command, args, { cwd: ROOT_DIRECTORY, stdio: 'inherit' }).status === 0;
 }
 
-function fail(message: string): never {
+// One `merge-agent` event for each run, to see how often agent branches merge and verify cleanly.
+initOtel('forkbook-merge-agent');
+const startedAt = Date.now();
+const stats: Record<string, string | number | boolean> = { 'agent.branch': branch };
+
+async function finish(result: 'merged' | 'failed', message?: string) {
+  emitEvent(
+    'merge-agent',
+    {
+      ...stats,
+      'merge.result': result,
+      'merge.seconds': Math.round((Date.now() - startedAt) / 1000),
+      ...(message ? { 'merge.error': message.split('\n')[0] } : {}),
+    },
+    result === 'merged' ? 'INFO' : 'ERROR'
+  );
+  await flushOtel();
+}
+
+async function fail(message: string): Promise<never> {
   console.error(message);
+  await finish('failed', message);
   process.exit(1);
 }
 
 if (git('branch', '--show-current').out !== 'master') {
-  fail('Switch to master first.');
+  await fail('Switch to master first.');
 }
 if (git('status', '--porcelain', '--untracked-files=no').out !== '') {
-  fail('master has changes that are not committed. Commit them first.');
+  await fail('master has changes that are not committed. Commit them first.');
 }
+
+stats['agent.commits'] = Number(git('rev-list', '--count', `master..${branch}`).out) || 0;
+stats['agent.files_changed'] = git('diff', '--name-only', `master...${branch}`)
+  .out.split('\n')
+  .filter(Boolean).length;
 
 const merged = git('branch', '--merged', 'master', '--format=%(refname:short)')
   .out.split('\n')
@@ -47,20 +73,21 @@ if (!merged) {
   if (!merge.ok) {
     const conflicts = git('diff', '--name-only', '--diff-filter=U').out.split('\n').filter(Boolean);
     if (conflicts.length !== 1 || conflicts[0] !== 'bun.lock') {
-      fail(
+      await fail(
         `Merge conflicts to fix by hand, then commit and run this again:\n${conflicts.join('\n')}`
       );
     }
+    stats['merge.lock_conflict'] = true;
     git('checkout', '--theirs', 'bun.lock');
-    if (!run('bun', ['install'])) fail('bun install failed.');
+    if (!run('bun', ['install'])) await fail('bun install failed.');
     git('add', 'bun.lock');
-    if (!git('commit', '--no-edit').ok) fail('Could not commit the merge.');
+    if (!git('commit', '--no-edit').ok) await fail('Could not commit the merge.');
   }
 }
 
-if (!run('bun', ['install'])) fail('bun install failed.');
+if (!run('bun', ['install'])) await fail('bun install failed.');
 if (!run('bun', ['scripts/verify.ts', ...verifyArgs])) {
-  fail(
+  await fail(
     `The merge is on master, but verify failed. Fix master. The branch ${branch} is still there.`
   );
 }
@@ -71,7 +98,8 @@ const worktree = git('worktree', 'list', '--porcelain')
   ?.match(/^worktree (.+)$/m)?.[1];
 // Agent worktrees are locked, and a locked worktree needs --force twice.
 if (worktree && !git('worktree', 'remove', '--force', '--force', worktree).ok) {
-  fail(`Could not remove the worktree ${worktree}.`);
+  await fail(`Could not remove the worktree ${worktree}.`);
 }
-if (!git('branch', '-D', branch).ok) fail(`Could not delete the branch ${branch}.`);
+if (!git('branch', '-D', branch).ok) await fail(`Could not delete the branch ${branch}.`);
 console.log(`Merged ${branch}, verified, and removed its worktree and branch.`);
+await finish('merged');

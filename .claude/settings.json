@@ -1,0 +1,19 @@
+{
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://signoz.ljk.dev",
+    "OTEL_SERVICE_NAME": "claude-code",
+    "OTEL_RESOURCE_ATTRIBUTES": "project=forkbook"
+  },
+  "hooks": {
+    "SubagentStop": [
+      { "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" subagent-stop" }] }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" stop" }] }
+    ]
+  }
+}

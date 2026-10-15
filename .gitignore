@@ -77,6 +77,7 @@ CLAUDE.local.md
 .claude/*
 !.claude/skills/
 !.claude/skills/**
+!.claude/settings.json
 .cursor/mcp.json
 .vscode/mcp.json
 .mcp.json

@@ -32,6 +32,11 @@ export default defineConfig({
       NODE_ENV: 'test',
     },
 
+    // Send test results to OpenTelemetry (SigNoz) when an endpoint is set.
+    reporters: process.env.OTEL_EXPORTER_OTLP_ENDPOINT
+      ? ['default', './scripts/vitest-otel-reporter.ts']
+      : ['default'],
+
     pool: 'threads',
     maxWorkers: threadCount,
     projects,

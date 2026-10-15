@@ -22,6 +22,7 @@ import { measure } from './utils/entry-utils.ts';
 import { generateBundle } from './utils/generate-bundle.ts';
 import { generatePackageJsonFile } from './utils/generate-package-json.ts';
 import { generateTypesFiles } from './utils/generate-types-rolldown.ts';
+import { flushOtel, initOtel, withSpan } from '../utils/otel.ts';
 
 const {
   values: {
@@ -94,19 +95,21 @@ async function run() {
 
   if (hasPrebuild(entry)) {
     console.log(`Running prebuild script`);
-    prebuildTime = await measure(() => entry.prebuild(DIR_CWD));
+    prebuildTime = await measure(() => withSpan('build.prebuild', {}, () => entry.prebuild(DIR_CWD)));
   }
 
   await generatePackageJsonFile(DIR_CWD, entry);
 
   const [bundleTime, typesTime] = await Promise.all([
-    measure(async () => generateBundle({ cwd: DIR_CWD, entry, name, isWatch })),
+    measure(async () =>
+      withSpan('build.bundle', {}, () => generateBundle({ cwd: DIR_CWD, entry, name, isWatch }))
+    ),
     measure(async () => {
       if (isProduction) {
-        await generateTypesFiles(DIR_CWD, entry, {
+        await withSpan('build.types', {}, () => generateTypesFiles(DIR_CWD, entry, {
           tsgo: (entry.dtsBundler ?? resolvedDtsBundler) === 'rolldown-tsgo',
           resolver: resolvedDtsResolver,
-        });
+        }));
       }
     }),
   ]);
@@ -125,4 +128,7 @@ async function run() {
   );
 }
 
-run();
+// One trace for each package build (not in watch mode, where the process keeps running).
+initOtel('forkbook-build');
+await withSpan('build', { 'build.watch': !!watch }, run);
+await flushOtel();

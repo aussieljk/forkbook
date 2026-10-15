@@ -24,6 +24,14 @@ Run these from the repo root.
 
 While you work, use `verify --changed` or one test file. Run the full `bun run verify` once at the end.
 
+## SigNoz (OpenTelemetry)
+
+Data goes to `https://signoz.ljk.dev` when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
+- Claude Code metrics and events: `.claude/settings.json`. Agent stop events: `scripts/otel-hook.ts`.
+- `verify`, the package build and `merge-agent` send traces and events through `scripts/utils/otel.ts`.
+- Tests: `scripts/vitest-otel-reporter.ts` sends a span for each test file and a log for each failed or flaky test.
+- The key is `OTEL_EXPORTER_OTLP_HEADERS`. It is only in `.env.local` (Bun loads it) and `.claude/settings.local.json`. Git ignores both. Do not commit it.
+
 ## Rules for agents
 
 - `master` is the only branch. Merge each agent branch with `bun run merge-agent <branch>`. Agents in worktrees do not push. The main session pushes master to GitHub after verify passes.
