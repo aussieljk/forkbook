@@ -1,7 +1,6 @@
 import React, { type HTMLProps } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 
-import { useId } from 'react-aria/useId';
 import { styled } from 'storybook/theming';
 
 import {

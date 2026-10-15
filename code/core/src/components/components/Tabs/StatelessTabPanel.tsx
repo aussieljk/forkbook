@@ -1,12 +1,15 @@
-import type { FC, ReactNode } from 'react';
+import type { ComponentProps, FC, ReactNode } from 'react';
 import React from 'react';
 
-import { TabPanel } from 'react-aria-components/Tabs';
+import { Tabs } from '@base-ui/react/tabs';
 import { styled } from 'storybook/theming';
 
 import { ScrollArea } from '../ScrollArea/ScrollArea.tsx';
 
-export interface StatelessTabPanelProps {
+export interface StatelessTabPanelProps extends Omit<
+  ComponentProps<typeof Tabs.Panel>,
+  'value' | 'children'
+> {
   /** Content of the tab panel. */
   children: ReactNode;
 
@@ -20,21 +23,22 @@ export interface StatelessTabPanelProps {
   hasScrollbar?: boolean;
 }
 
-const Root = styled(TabPanel)({
+const Root = styled(Tabs.Panel)({
   overflowY: 'hidden',
   height: '100%',
   display: 'block',
-  ['&[inert="true"]']: { display: 'none' },
+  '&[hidden]': { display: 'none' },
 });
 
 export const StatelessTabPanel: FC<StatelessTabPanelProps> = ({
   children,
   hasScrollbar = true,
+  keepMounted = true,
   name,
   ...rest
 }) => {
   return (
-    <Root {...rest} shouldForceMount id={name}>
+    <Root {...rest} keepMounted={keepMounted} value={name}>
       {hasScrollbar ? <ScrollArea vertical>{children}</ScrollArea> : children}
     </Root>
   );

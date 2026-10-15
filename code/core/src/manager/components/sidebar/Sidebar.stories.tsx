@@ -16,9 +16,7 @@ import { ManagerContext } from 'storybook/manager-api';
 import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { defaultShortcuts } from '../../settings/defaultShortcuts.tsx';
-import {
-  internal_fullStatusStore,
-} from '../../manager-stores.mock.ts';
+import { internal_fullStatusStore } from '../../manager-stores.mock.ts';
 import { LayoutProvider } from '../layout/LayoutProvider.tsx';
 import { standardData as standardHeaderData } from './Heading.stories.tsx';
 import { DEFAULT_REF_ID, Sidebar } from './Sidebar.tsx';
@@ -181,8 +179,7 @@ const refsEmpty = {
   },
 };
 
-export const Simple: Story = {
-};
+export const Simple: Story = {};
 
 export const SimpleInProduction: Story = {
   beforeEach: () => {
@@ -502,7 +499,8 @@ export const Scrolled: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = await within(canvasElement);
-    const scrollable = await canvasElement.querySelector('[data-radix-scroll-area-viewport]');
+    // The viewport of the Base UI scroll area.
+    const scrollable = await canvasElement.querySelector('.base-ui-disable-scrollbar');
     await step('expand component', async () => {
       const componentNode = await canvas.queryAllByText('Child A2')[1];
       await userEvent.click(componentNode);

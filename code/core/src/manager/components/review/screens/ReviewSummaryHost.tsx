@@ -44,10 +44,8 @@ export const ReviewSummaryHost: FC = () => {
         }
       }}
       $visible={isSummaryVisible}
-      // Also mark the hidden host aria-hidden: @react-aria/landmark's F6 cycle
-      // only skips landmarks inside `[aria-hidden=true]` (not `inert`), so without
-      // this the hidden summary's collection/footer landmarks stay in the cycle
-      // but can't be focused, trapping F6 on the preview.
+      // Also mark the hidden host aria-hidden, so screen readers and the F6
+      // landmark cycle (useLandmark) skip the hidden summary's landmarks.
       aria-hidden={!isSummaryVisible ? true : undefined}
       data-review-summary={isSummaryVisible ? 'visible' : 'hidden'}
     >

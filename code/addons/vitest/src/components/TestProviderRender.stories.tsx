@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { destroyAnnouncer } from 'storybook/internal/components';
 import { type TestProviderState } from 'storybook/internal/types';
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { destroyAnnouncer } from '@react-aria/live-announcer';
 import { ManagerContext, addons } from 'storybook/manager-api';
 import { expect, fn, waitFor } from 'storybook/test';
 import { styled } from 'storybook/theming';

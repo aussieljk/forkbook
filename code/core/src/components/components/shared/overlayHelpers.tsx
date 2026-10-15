@@ -1,10 +1,13 @@
-import React, { type ButtonHTMLAttributes, type ReactNode, forwardRef, useState } from 'react';
+import React, {
+  type ButtonHTMLAttributes,
+  type ReactNode,
+  createContext,
+  forwardRef,
+  useState,
+} from 'react';
 
 import type { DecoratorFunction } from 'storybook/internal/csf';
 
-import { UNSAFE_PortalProvider } from 'react-aria/PortalProvider';
-import type { PositionProps } from 'react-aria/useOverlayPosition';
-import memoize from 'memoizerific';
 import { styled } from 'storybook/theming';
 
 export const POPPER_PLACEMENTS = [
@@ -24,27 +27,20 @@ export const POPPER_PLACEMENTS = [
 
 export type PopperPlacement = (typeof POPPER_PLACEMENTS)[number];
 
-export const convertToReactAriaPlacement = memoize(1000)((
-  p: PopperPlacement
-): NonNullable<PositionProps['placement']> => {
-  if (p === 'left-end') {
-    return 'left bottom';
-  }
+/** Converts a Popper.js placement to the `side` and `align` props of a Base UI positioner. */
+export const convertToBaseUiPlacement = (placement: PopperPlacement) => {
+  const [side, align = 'center'] = placement.split('-') as [
+    'top' | 'bottom' | 'left' | 'right',
+    'start' | 'center' | 'end' | undefined,
+  ];
+  return { side, align };
+};
 
-  if (p === 'right-end') {
-    return 'right bottom';
-  }
-
-  if (p === 'left-start') {
-    return 'left top';
-  }
-
-  if (p === 'right-start') {
-    return 'right top';
-  }
-
-  return p.replace('-', ' ') as NonNullable<PositionProps['placement']>;
-});
+/**
+ * The element that overlays (popovers, tooltips and modals) are portalled into. When it is
+ * undefined, overlays go into the document body.
+ */
+export const PortalContainerContext = createContext<HTMLElement | undefined>(undefined);
 
 // Story helper
 const Container = styled.div({
@@ -82,9 +78,9 @@ export const OverlayTriggerDecorator: DecoratorFunction = (Story, { args }) => {
 
   return (
     <Container>
-      <UNSAFE_PortalProvider getContainer={() => container}>
+      <PortalContainerContext.Provider value={container ?? undefined}>
         <Story args={args} />
-      </UNSAFE_PortalProvider>
+      </PortalContainerContext.Provider>
       <div id="portal" ref={(element) => setContainer(element ?? null)}></div>
     </Container>
   );

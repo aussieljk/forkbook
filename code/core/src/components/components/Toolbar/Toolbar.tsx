@@ -1,7 +1,5 @@
-import type { FC } from 'react';
-import React, { useRef } from 'react';
-
-import { useToolbar } from 'react-aria/useToolbar';
+import type { FC, KeyboardEvent } from 'react';
+import React from 'react';
 
 import { Bar, type BarProps } from '../Bar/Bar.tsx';
 
@@ -13,42 +11,50 @@ export interface AbstractToolbarProps {
   lang?: string;
 }
 
-export const AbstractToolbar: FC<AbstractToolbarProps> = ({
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  ...rest
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
+const FOCUSABLE =
+  'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  const { toolbarProps } = useToolbar(
-    {
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledby,
-      orientation: 'horizontal',
-    },
-    ref
+/** Moves focus between the items of a horizontal toolbar with the arrow, Home and End keys. */
+const onToolbarKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+  const target = event.target as HTMLElement;
+  if (
+    event.defaultPrevented ||
+    !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key) ||
+    target.matches('input, select, textarea, [contenteditable="true"]')
+  ) {
+    return;
+  }
+
+  const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+    (item) => item.getClientRects().length > 0
   );
+  const index = items.findIndex((item) => item === target || item.contains(target));
+  if (index === -1) {
+    return;
+  }
 
-  return <div ref={ref} {...toolbarProps} {...rest} />;
+  const next = {
+    ArrowLeft: Math.max(index - 1, 0),
+    ArrowRight: Math.min(index + 1, items.length - 1),
+    Home: 0,
+    End: items.length - 1,
+  }[event.key as 'ArrowLeft' | 'ArrowRight' | 'Home' | 'End'];
+
+  event.preventDefault();
+  event.stopPropagation();
+  items[next].focus();
 };
+
+const toolbarProps = {
+  role: 'toolbar',
+  'aria-orientation': 'horizontal',
+  onKeyDown: onToolbarKeyDown,
+} as const;
+
+export const AbstractToolbar: FC<AbstractToolbarProps> = (props) => (
+  <div {...toolbarProps} {...props} />
+);
 
 export interface ToolbarProps extends AbstractToolbarProps, BarProps {}
 
-export const Toolbar: FC<ToolbarProps> = ({
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
-  ...rest
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { toolbarProps } = useToolbar(
-    {
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledby,
-      orientation: 'horizontal',
-    },
-    ref
-  );
-
-  return <Bar ref={ref} {...toolbarProps} {...rest} />;
-};
+export const Toolbar: FC<ToolbarProps> = (props) => <Bar {...toolbarProps} {...props} />;

@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 const WARNING =
   'LocalComponent is declared in the story file, so the snippet references it without importing it.';
 
-// Focus, not hover: react-aria delays a hovered tooltip by 400ms unless another was shown in the
+// Focus, not hover: Base UI delays a hovered tooltip by 400ms unless another was shown in the
 // last 500ms, which it tracks globally, so hover races the findBy timeout. Focus opens immediately.
 export const Default: Story = {
   args: { warning: WARNING },

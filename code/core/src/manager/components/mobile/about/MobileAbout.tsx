@@ -5,17 +5,17 @@ import { ActionList, Button, Link, ScrollArea } from 'storybook/internal/compone
 
 import { ArrowLeftIcon, GithubIcon, ShareAltIcon, StorybookIcon } from '@storybook/icons';
 
-import { FocusScope } from 'react-aria/FocusScope';
 import { useTransitionState } from 'react-transition-state';
 import { keyframes, styled } from 'storybook/theming';
 
 import { MOBILE_TRANSITION_DURATION } from '../../../constants.ts';
+import { useFocusTrap } from '../../../hooks/useFocusTrap.ts';
 import { useLayout } from '../../layout/LayoutProvider.tsx';
 import { UpgradeBlock } from '../../upgrade/UpgradeBlock.tsx';
 
 export const MobileAbout: FC = () => {
   const { isMobileAboutOpen, setMobileAboutOpen } = useLayout();
-  const aboutRef = useRef(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
 
   const [state, toggle] = useTransitionState({
     timeout: MOBILE_TRANSITION_DURATION,
@@ -28,6 +28,10 @@ export const MobileAbout: FC = () => {
     toggle(isMobileAboutOpen);
   }, [isMobileAboutOpen, toggle]);
 
+  // The overlay covers the menu drawer's content but stays inside its focus trap, so without a
+  // trap of its own, Tab would keep cycling through the obscured menu underneath.
+  useFocusTrap(aboutRef, state.isMounted);
+
   if (!state.isMounted) {
     return null;
   }
@@ -38,77 +42,72 @@ export const MobileAbout: FC = () => {
       $status={state.status}
       $transitionDuration={MOBILE_TRANSITION_DURATION}
     >
-      {/* The overlay covers the menu drawer's content but stays inside its focus scope, so without
-       a scope of its own, Tab would keep cycling through the obscured menu underneath. */}
-      {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-      <FocusScope contain restoreFocus autoFocus>
-        <ScrollArea vertical offset={3} scrollbarSize={6}>
-          <InnerArea>
-            <CloseButton
-              onClick={() => setMobileAboutOpen(false)}
-              ariaLabel="Close about section"
-              tooltip="Close about section"
-              variant="ghost"
-            >
-              <ArrowLeftIcon />
-              Back
-            </CloseButton>
-            <LinkList>
-              <ActionList.Item>
-                <ActionList.Link
-                  ariaLabel={false}
-                  href="https://github.com/storybookjs/storybook"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ActionList.Icon>
-                    <GithubIcon />
-                  </ActionList.Icon>
-                  <ActionList.Text>
-                    <span>GitHub</span>
-                  </ActionList.Text>
-                  <ActionList.Icon>
-                    <ShareAltIcon />
-                  </ActionList.Icon>
-                </ActionList.Link>
-              </ActionList.Item>
-              <ActionList.Item>
-                <ActionList.Link
-                  ariaLabel={false}
-                  href="https://storybook.js.org/docs/get-started/install?ref=ui"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ActionList.Icon>
-                    <StorybookIcon />
-                  </ActionList.Icon>
-                  <ActionList.Text>
-                    <span>Documentation</span>
-                  </ActionList.Text>
-                  <ActionList.Icon>
-                    <ShareAltIcon />
-                  </ActionList.Icon>
-                </ActionList.Link>
-              </ActionList.Item>
-            </LinkList>
-            <UpgradeBlock />
-            <BottomText>
-              Open source software maintained by{' '}
-              <Link href="https://chromatic.com" target="_blank" rel="noopener noreferrer">
-                Chromatic
-              </Link>{' '}
-              and the{' '}
-              <Link
-                href="https://github.com/storybookjs/storybook/graphs/contributors"
+      <ScrollArea vertical offset={3} scrollbarSize={6}>
+        <InnerArea>
+          <CloseButton
+            onClick={() => setMobileAboutOpen(false)}
+            ariaLabel="Close about section"
+            tooltip="Close about section"
+            variant="ghost"
+          >
+            <ArrowLeftIcon />
+            Back
+          </CloseButton>
+          <LinkList>
+            <ActionList.Item>
+              <ActionList.Link
+                ariaLabel={false}
+                href="https://github.com/storybookjs/storybook"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Storybook Community
-              </Link>
-            </BottomText>
-          </InnerArea>
-        </ScrollArea>
-      </FocusScope>
+                <ActionList.Icon>
+                  <GithubIcon />
+                </ActionList.Icon>
+                <ActionList.Text>
+                  <span>GitHub</span>
+                </ActionList.Text>
+                <ActionList.Icon>
+                  <ShareAltIcon />
+                </ActionList.Icon>
+              </ActionList.Link>
+            </ActionList.Item>
+            <ActionList.Item>
+              <ActionList.Link
+                ariaLabel={false}
+                href="https://storybook.js.org/docs/get-started/install?ref=ui"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ActionList.Icon>
+                  <StorybookIcon />
+                </ActionList.Icon>
+                <ActionList.Text>
+                  <span>Documentation</span>
+                </ActionList.Text>
+                <ActionList.Icon>
+                  <ShareAltIcon />
+                </ActionList.Icon>
+              </ActionList.Link>
+            </ActionList.Item>
+          </LinkList>
+          <UpgradeBlock />
+          <BottomText>
+            Open source software maintained by{' '}
+            <Link href="https://chromatic.com" target="_blank" rel="noopener noreferrer">
+              Chromatic
+            </Link>{' '}
+            and the{' '}
+            <Link
+              href="https://github.com/storybookjs/storybook/graphs/contributors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Storybook Community
+            </Link>
+          </BottomText>
+        </InnerArea>
+      </ScrollArea>
     </Container>
   );
 };

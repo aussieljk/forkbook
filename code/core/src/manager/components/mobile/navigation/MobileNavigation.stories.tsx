@@ -266,7 +266,9 @@ export const AboutResetOnReopen: Story = {
     await userEvent.click(await screen.findByLabelText('About Storybook'));
     await screen.findByLabelText('Close about section');
 
-    await userEvent.keyboard('{Escape}');
+    // The first Escape can close the tooltip of the focused Back button. The second one closes
+    // the drawer.
+    await userEvent.keyboard('{Escape}{Escape}');
     await waitFor(() =>
       expect(screen.queryByLabelText('Close about section')).not.toBeInTheDocument()
     );
@@ -306,6 +308,9 @@ export const AboutFocusTrapped: Story = {
     await expect(screen.getByRole('tab', { name: 'yarn' })).toHaveFocus();
     await userEvent.keyboard('{ArrowLeft}');
     await expect(screen.getByRole('tab', { name: 'npm' })).toHaveFocus();
+    // Like Base UI tab panels, the panel itself is a tab stop.
+    await userEvent.tab();
+    await expect(screen.getByRole('tabpanel', { name: 'npm' })).toHaveFocus();
     await userEvent.tab();
     await expect(screen.getByRole('button', { name: 'Copy command' })).toHaveFocus();
     await userEvent.tab();

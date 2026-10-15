@@ -1,14 +1,14 @@
 import type { FC, ReactNode } from 'react';
-import React from 'react';
+import React, { isValidElement, useState } from 'react';
 
-import { Tabs } from 'react-aria-components/Tabs';
+import { Tabs } from '@base-ui/react/tabs';
 import { styled } from 'storybook/theming';
 
 import { Bar } from '../Bar/Bar.tsx';
 import { EmptyTabContent } from './EmptyTabContent.tsx';
 import type { TabsViewProps } from './TabsView.tsx';
 
-const Container = styled(Tabs)<{ $simulatedGap: string | number }>(({ $simulatedGap }) => ({
+const Container = styled(Tabs.Root)<{ $simulatedGap: string | number }>(({ $simulatedGap }) => ({
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
@@ -23,6 +23,14 @@ const Container = styled(Tabs)<{ $simulatedGap: string | number }>(({ $simulated
 
   '& > :not(:first-child)': { flex: 1 },
 }));
+
+/** Reads the `name` of each StatelessTab passed to the StatelessTabList. */
+const getTabNames = (tabList: ReactNode): string[] =>
+  isValidElement<{ children?: ReactNode }>(tabList)
+    ? React.Children.toArray(tabList.props.children).flatMap((tab) =>
+        isValidElement<{ name?: string }>(tab) && tab.props.name ? [tab.props.name] : []
+      )
+    : [];
 
 export interface StatelessTabsViewProps extends Omit<TabsViewProps, 'tabs'> {
   children: ReactNode;
@@ -40,6 +48,7 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
   tools,
   ...props
 }) => {
+  const [internalSelected, setInternalSelected] = useState(defaultSelected);
   const EmptyContent = emptyState ?? <EmptyTabContent title="Nothing found" />;
   const [tabListChild, ...tabPanelChildren] = React.Children.toArray(children);
   const hasContent = tabPanelChildren && tabPanelChildren.length > 0;
@@ -48,13 +57,21 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
     return EmptyContent;
   }
 
+  // Like a native tab list, select the first tab when the requested tab does not exist.
+  const tabNames = getTabNames(tabListChild);
+  const requested = selected ?? internalSelected;
+  const isKnown = (name: string) => tabNames.length === 0 || tabNames.includes(name);
+  const value = requested && isKnown(requested) ? requested : (tabNames[0] ?? null);
+
   return (
     <Container
       {...props}
       $simulatedGap={barInnerStyle?.gap ?? 6}
-      defaultSelectedKey={defaultSelected}
-      onSelectionChange={(k) => onSelectionChange?.(k ? `${k}` : '')}
-      selectedKey={selected}
+      value={value}
+      onValueChange={(key: string) => {
+        setInternalSelected(key);
+        onSelectionChange?.(key);
+      }}
     >
       <Bar
         scrollable={false}

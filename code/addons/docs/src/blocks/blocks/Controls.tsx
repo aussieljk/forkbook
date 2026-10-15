@@ -1,7 +1,5 @@
 import type { FC } from 'react';
-import React, { useContext } from 'react';
-
-import { useId } from 'react-aria/useId';
+import React, { useContext, useId } from 'react';
 
 import type { Args, Globals, Renderer, StrictArgTypes } from 'storybook/internal/csf';
 import type { DocsContextProps, ModuleExports, PreparedStory } from 'storybook/internal/types';
@@ -68,8 +66,6 @@ function useControlsInteractiveState(
   context: DocsContextProps
 ): ControlsInteractiveState {
   // Disambiguate multiple <Controls /> blocks rendered for the same story on a single page.
-  // React Aria's useId gives a stable id per component instance, with a polyfill for
-  // React versions that lack the built-in useId.
   const controlsId = useId();
   const [args, updateArgs, resetArgs] = useArgs(story, context);
   const [globals] = useGlobals(story, context);

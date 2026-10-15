@@ -4,7 +4,7 @@ import { Button, Link, SyntaxHighlighter } from 'storybook/internal/components';
 
 import { CheckIcon, CopyIcon, LocationIcon } from '@storybook/icons';
 
-import * as Tabs from '@radix-ui/react-tabs';
+import { Tabs } from '@base-ui/react/tabs';
 import { styled } from 'storybook/theming';
 
 import { getFriendlySummaryForAxeResult } from '../../axeRuleMappingHelper.ts';
@@ -84,7 +84,7 @@ const Item = styled(Button)(({ theme }) => ({
   width: '100%',
   textAlign: 'left',
   padding: '0 12px',
-  '&[data-state="active"]': {
+  '&[data-active]': {
     color: theme.color.secondary,
     backgroundColor: theme.background.hoverable,
   },
@@ -139,40 +139,40 @@ export const Details = ({ id, item, type, selection, handleSelectionChange }: De
     </Info>
 
     <Tabs.Root
-      defaultValue={selection}
       orientation="vertical"
-      value={selection}
+      value={selection ?? null}
       onValueChange={handleSelectionChange}
-      asChild
+      render={<Columns />}
     >
-      <Columns>
-        <Tabs.List aria-label={type}>
-          {item.nodes.map((node, index) => {
-            const key = `${type}.${item.id}.${index + 1}`;
-            return (
-              <Fragment key={key}>
-                <Tabs.Trigger value={key} asChild>
-                  <Item ariaLabel={false} variant="ghost" size="medium" id={key}>
-                    {index + 1}. {node.html}
-                  </Item>
-                </Tabs.Trigger>
-                <Tabs.Content value={key} asChild>
-                  <Content side="left">{getContent(node)}</Content>
-                </Tabs.Content>
-              </Fragment>
-            );
-          })}
-        </Tabs.List>
-
+      <Tabs.List activateOnFocus aria-label={type}>
         {item.nodes.map((node, index) => {
           const key = `${type}.${item.id}.${index + 1}`;
           return (
-            <Tabs.Content key={key} value={key} asChild>
-              <Content side="right">{getContent(node)}</Content>
-            </Tabs.Content>
+            <Fragment key={key}>
+              <Tabs.Tab
+                value={key}
+                render={
+                  <Item ariaLabel={false} variant="ghost" size="medium" id={key}>
+                    {index + 1}. {node.html}
+                  </Item>
+                }
+              />
+              <Tabs.Panel value={key} render={<Content side="left">{getContent(node)}</Content>} />
+            </Fragment>
           );
         })}
-      </Columns>
+      </Tabs.List>
+
+      {item.nodes.map((node, index) => {
+        const key = `${type}.${item.id}.${index + 1}`;
+        return (
+          <Tabs.Panel
+            key={key}
+            value={key}
+            render={<Content side="right">{getContent(node)}</Content>}
+          />
+        );
+      })}
     </Tabs.Root>
   </Wrapper>
 );

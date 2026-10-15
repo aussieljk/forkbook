@@ -46,8 +46,8 @@ export const App = ({ managerLayoutState, setManagerLayoutState, pages }: Props)
   }, [enableShortcuts]);
 
   /**
-   * Detects when our component library has enabled a focus trap. By convention, react-aria sets the
-   * document root to `inert` when a focus trap is enabled. We observe that attribute and inform the
+   * Detects when our component library has enabled a focus trap. A modal Base UI dialog sets
+   * `aria-hidden` on the document root when it traps focus. We observe that attribute and inform the
    * preview iframe when to respect the focus trap, via a channel event. This is necessary because
    * inert is no longer propagated into iframes as per https://github.com/whatwg/html/issues/7605,
    * and the replacement permission policy is not yet widely available
@@ -60,13 +60,13 @@ export const App = ({ managerLayoutState, setManagerLayoutState, pages }: Props)
     }
 
     const observer = new MutationObserver(() => {
-      const hasInert = rootElement.hasAttribute('inert');
+      const hasInert = rootElement.getAttribute('aria-hidden') === 'true';
       addons.getChannel().emit(Events.MANAGER_INERT_ATTRIBUTE_CHANGED, hasInert);
     });
 
     observer.observe(rootElement, {
       attributes: true,
-      attributeFilter: ['inert'],
+      attributeFilter: ['aria-hidden'],
     });
 
     return () => observer.disconnect();

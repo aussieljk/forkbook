@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { ScrollArea as ScrollAreaPrimitive } from '@base-ui/react/scroll-area';
 import { styled } from 'storybook/theming';
 
 export interface ScrollAreaProps {
@@ -24,15 +24,14 @@ const ScrollAreaRoot = styled(ScrollAreaPrimitive.Root)<{ scrollbarsize: number;
     height: '100%',
     overflow: 'hidden',
     '--scrollbar-size': `${scrollbarsize + offset}px`,
-    '--radix-scroll-area-thumb-width': `${scrollbarsize}px`,
   })
 );
 
-const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport)<{ focusable: boolean }>(
-  ({ focusable, theme }) => ({
+const ScrollAreaViewport = styled(ScrollAreaPrimitive.Viewport)<{ $focusable: boolean }>(
+  ({ $focusable, theme }) => ({
     width: '100%',
     height: '100%',
-    '&:focus': focusable
+    '&:focus': $focusable
       ? {
           outline: `2px solid ${theme.color.secondary}`,
           outlineOffset: -2,
@@ -53,6 +52,14 @@ const ScrollAreaScrollbar = styled(ScrollAreaPrimitive.Scrollbar)<{
   transition: 'all 0.2s ease-out',
   borderRadius: 'var(--scrollbar-size)',
   zIndex: 1,
+  // Like the previous Radix scroll area, only show the scrollbar on hover or while scrolling.
+  opacity: 0,
+  pointerEvents: 'none',
+
+  '&[data-hovering], &[data-scrolling]': {
+    opacity: 1,
+    pointerEvents: 'auto',
+  },
 
   '&[data-orientation="vertical"]': {
     width: 'var(--scrollbar-size)',
@@ -109,11 +116,16 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
     <ScrollAreaRoot scrollbarsize={scrollbarSize} offset={offset} className={className}>
       <ScrollAreaViewport
         ref={ref}
-        style={{ scrollPadding }}
+        style={{
+          scrollPadding,
+          overflowX: horizontal ? 'scroll' : 'hidden',
+          overflowY: vertical ? 'scroll' : 'hidden',
+        }}
+        // Base UI puts every scrollable viewport in the tab order. We only do it when asked.
         tabIndex={focusable ? 0 : undefined}
-        focusable={focusable}
+        $focusable={focusable}
       >
-        {children}
+        <ScrollAreaPrimitive.Content>{children}</ScrollAreaPrimitive.Content>
       </ScrollAreaViewport>
       {horizontal && (
         <ScrollAreaScrollbar

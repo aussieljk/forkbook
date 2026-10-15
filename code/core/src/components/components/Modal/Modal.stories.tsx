@@ -135,6 +135,15 @@ const meta = preview.meta({
   ],
 });
 
+/**
+ * The modal backdrop covers the page around an open modal, so a click outside the modal lands on
+ * the backdrop. Simulated clicks skip that hit test, so we click the backdrop ourselves.
+ */
+const clickOutside = async () => {
+  const backdrop = screen.getByRole('dialog').parentElement?.querySelector('[role="presentation"]');
+  await userEvent.click(backdrop as HTMLElement);
+};
+
 export const Base = meta.story({
   args: {
     children: <SampleModalContent />,
@@ -288,8 +297,7 @@ export const OnInteractOutside = meta.story({
     });
 
     await step('Click outside to close', async () => {
-      const outsideButton = canvas.getByText('Outside Button');
-      await userEvent.click(outsideButton);
+      await clickOutside();
       expect(args.onInteractOutside).toHaveBeenCalled();
       await waitFor(() => {
         expect(screen.queryByText('Sample Modal')).not.toBeInTheDocument();
@@ -329,8 +337,7 @@ export const OnInteractOutsidePreventDefault = meta.story({
     });
 
     await step('Click outside to close but modal stays open', async () => {
-      const outsideButton = canvas.getByText('Outside Button');
-      await userEvent.click(outsideButton);
+      await clickOutside();
       // Wait a bit to ensure the modal close animation would've had time to play.
       await new Promise((r) => setTimeout(r, 300));
       await waitFor(() => {
@@ -372,8 +379,7 @@ export const OnInteractOutsideDismissDisabled = meta.story({
     });
 
     await step('Click outside to close, nothing should happen', async () => {
-      const outsideButton = canvas.getByText('Outside Button');
-      await userEvent.click(outsideButton);
+      await clickOutside();
       expect(args.onInteractOutside).not.toHaveBeenCalled();
       // Wait a bit to ensure the modal close animation would've had time to play.
       await new Promise((r) => setTimeout(r, 300));
@@ -813,8 +819,7 @@ export const InteractiveMouse = meta.story({
       await userEvent.click(trigger);
       await expect(screen.queryByText('Sample Modal')).toBeInTheDocument();
 
-      const outsideButton = canvas.getByText('Outside Button');
-      await userEvent.click(outsideButton);
+      await clickOutside();
     });
 
     await step('Await exit animation and check modal is closed', async () => {
@@ -1032,7 +1037,7 @@ export const WithPortalSelector = meta.story({
 });
 
 // A modal opened while another modal is open (e.g. from within the mobile menu drawer) must stay
-// interactive: the parent modal's aria hiding must not make the new modal inert (regression test).
+// interactive: the parent modal's aria hiding must not hide the new modal (regression test).
 export const StackedModals = meta.story({
   args: {
     children: undefined,
@@ -1085,11 +1090,13 @@ export const StackedModals = meta.story({
       await waitFor(() => expect(dialogByLabel('Outer modal')).toBeInTheDocument());
     });
 
-    await step('Open inner modal on top; only the outer modal becomes inert', async () => {
+    await step('Open inner modal on top; only the outer modal becomes hidden', async () => {
       await userEvent.click(await screen.findByText('Open Inner Modal'));
       await waitFor(() => expect(dialogByLabel('Inner modal')).toBeInTheDocument());
-      expect(dialogByLabel('Inner modal')).not.toHaveAttribute('inert');
-      await waitFor(() => expect(dialogByLabel('Outer modal')).toHaveAttribute('inert'));
+      expect(dialogByLabel('Inner modal')).not.toHaveAttribute('aria-hidden');
+      await waitFor(() =>
+        expect(dialogByLabel('Outer modal')).toHaveAttribute('aria-hidden', 'true')
+      );
     });
 
     await step('The inner modal is interactive', async () => {
@@ -1104,7 +1111,7 @@ export const StackedModals = meta.story({
       await userEvent.keyboard('{Escape}');
       await waitFor(() => expect(dialogByLabel('Inner modal')).not.toBeInTheDocument());
       expect(dialogByLabel('Outer modal')).toBeInTheDocument();
-      await waitFor(() => expect(dialogByLabel('Outer modal')).not.toHaveAttribute('inert'));
+      await waitFor(() => expect(dialogByLabel('Outer modal')).not.toHaveAttribute('aria-hidden'));
       await waitFor(() => expect(screen.getByText('Open Inner Modal')).toHaveFocus());
     });
 

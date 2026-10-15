@@ -1,11 +1,11 @@
 import * as React from 'react';
 
 import { transparentize } from 'polished';
-import { announce } from '@react-aria/live-announcer';
 import type { API } from 'storybook/manager-api';
 import { srOnlyStyles, styled } from 'storybook/theming';
 
 import { type Call, type CallStates, type ControlStates } from '../../instrumenter/types.ts';
+import { announce } from '../../shared/announce.ts';
 import { INTERNAL_RENDER_CALL_ID } from '../constants.ts';
 import { isTestAssertionError, useAnsiToHtmlFilter } from '../utils.ts';
 import { DetachedDebuggerMessage } from './DetachedDebuggerMessage.tsx';

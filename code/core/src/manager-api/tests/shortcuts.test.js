@@ -411,7 +411,7 @@ describe('keydown listeners registered by init', () => {
     expect(event.stopPropagation).toHaveBeenCalled();
   });
 
-  it('lets landmark navigation keys through to react-aria', () => {
+  it('lets landmark navigation keys through to useLandmark', () => {
     const event = dispatch({ key: 'F6', code: 'F6' });
 
     expect(event.stopPropagation).not.toHaveBeenCalled();

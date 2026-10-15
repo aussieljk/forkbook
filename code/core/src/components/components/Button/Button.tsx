@@ -1,9 +1,9 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { Slot } from '@radix-ui/react-slot';
+import { useRender } from '@base-ui/react/use-render';
 import { darken, lighten, rgba, transparentize } from 'polished';
 import { shortcutToAriaKeyshortcuts, type API_KeyCollection } from 'storybook/manager-api';
 import { isPropValid, styled } from 'storybook/theming';
@@ -11,6 +11,12 @@ import type { PopperPlacement } from '../shared/overlayHelpers.tsx';
 
 import { InteractiveTooltipWrapper } from './helpers/InteractiveTooltipWrapper.tsx';
 import { useAriaDescription } from './helpers/useAriaDescription.tsx';
+
+/** Renders its only child with the props given to it, so a Button can style a link (`asChild`). */
+const Slot = forwardRef<HTMLElement, { children?: ReactNode }>(({ children, ...props }, ref) =>
+  useRender({ render: children as ReactElement, props, ref })
+);
+Slot.displayName = 'Slot';
 
 export interface ButtonProps extends Omit<ComponentProps<typeof StyledButton>, 'as'> {
   as?: ComponentProps<typeof StyledButton>['as'] | typeof Slot;

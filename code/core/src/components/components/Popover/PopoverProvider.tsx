@@ -1,13 +1,15 @@
 import type { DOMAttributes, ReactElement, ReactNode } from 'react';
-import React, { cloneElement, useCallback, useState } from 'react';
+import React, { useCallback, useContext, useId, useState } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { Pressable } from 'react-aria-components/Pressable';
-import { DialogTrigger } from 'react-aria-components/Dialog';
-import { Popover as PopoverUpstream } from 'react-aria-components/Popover';
+import { Popover as BasePopover } from '@base-ui/react/popover';
 
-import { type PopperPlacement, convertToReactAriaPlacement } from '../shared/overlayHelpers.tsx';
+import {
+  type PopperPlacement,
+  PortalContainerContext,
+  convertToBaseUiPlacement,
+} from '../shared/overlayHelpers.tsx';
 import { Popover } from './Popover.tsx';
 
 export interface PopoverProviderProps {
@@ -62,7 +64,7 @@ export interface PopoverProviderProps {
 
 export const PopoverProvider = ({
   ariaLabel,
-  placement: placementProp = 'bottom-start',
+  placement = 'bottom-start',
   hasChrome = true,
   hasCloseButton = false,
   closeLabel,
@@ -73,7 +75,6 @@ export const PopoverProvider = ({
   defaultVisible,
   visible,
   onVisibleChange,
-  ...props
 }: PopoverProviderProps) => {
   if (!ariaLabel) {
     deprecate(
@@ -81,8 +82,10 @@ export const PopoverProvider = ({
     );
   }
 
-  // Map Popper.js placement to react-aria placement best we can.
-  const placement = convertToReactAriaPlacement(placementProp);
+  const portalContainer = useContext(PortalContainerContext);
+  // Base UI needs the trigger ID to position a popover that is open before any click.
+  const generatedId = useId();
+  const triggerId = (children.props as { id?: string }).id ?? generatedId;
 
   const [isOpen, setIsOpen] = useState(defaultVisible ?? false);
   const onOpenChange = useCallback(
@@ -95,37 +98,26 @@ export const PopoverProvider = ({
   const onHide = useCallback(() => onOpenChange(false), [onOpenChange]);
 
   return (
-    <DialogTrigger
-      defaultOpen={defaultVisible}
-      isOpen={visible ?? isOpen}
-      onOpenChange={onOpenChange}
-      {...props}
-    >
-      <Pressable>
-        {
-          /* React-aria does not inject aria-haspopup='dialog' to support legacy screen readers, so we do it ourselves. */
-          cloneElement(
-            children,
-            // @ts-expect-error aria-haspopup is a valid ARIA attribute but cloneElement types are too strict
-            { 'aria-haspopup': 'dialog' }
-          )
-        }
-      </Pressable>
-      <PopoverUpstream
-        aria-label={ariaLabel}
-        placement={placement}
-        offset={offset}
-        style={{ outline: 'none' }}
-      >
-        <Popover
-          hasChrome={hasChrome}
-          hideLabel={closeLabel}
-          onHide={hasCloseButton ? onHide : undefined}
-          padding={padding}
+    <BasePopover.Root open={visible ?? isOpen} onOpenChange={onOpenChange} triggerId={triggerId}>
+      <BasePopover.Trigger id={triggerId} render={children} />
+      <BasePopover.Portal container={portalContainer}>
+        <BasePopover.Positioner
+          {...convertToBaseUiPlacement(placement)}
+          sideOffset={offset}
+          style={{ zIndex: 100000 }}
         >
-          {typeof popover === 'function' ? popover({ onHide }) : popover}
-        </Popover>
-      </PopoverUpstream>
-    </DialogTrigger>
+          <BasePopover.Popup aria-label={ariaLabel} style={{ outline: 'none' }}>
+            <Popover
+              hasChrome={hasChrome}
+              hideLabel={closeLabel}
+              onHide={hasCloseButton ? onHide : undefined}
+              padding={padding}
+            >
+              {typeof popover === 'function' ? popover({ onHide }) : popover}
+            </Popover>
+          </BasePopover.Popup>
+        </BasePopover.Positioner>
+      </BasePopover.Portal>
+    </BasePopover.Root>
   );
 };

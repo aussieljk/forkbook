@@ -1,21 +1,25 @@
 import type { FC, KeyboardEvent } from 'react';
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { RefreshIcon } from '@storybook/icons';
 
-import { useInteractOutside } from 'react-aria/useInteractOutside';
-import { useOverlay } from 'react-aria/useOverlay';
-import { useOverlayPosition } from 'react-aria/useOverlayPosition';
-import { Overlay } from 'react-aria/Overlay';
-import { ariaHideOutside } from '@react-aria/overlays';
-import { useObjectRef } from 'react-aria/useObjectRef';
-import { useOverlayTriggerState } from 'react-stately/useOverlayTriggerState';
+import { Popover as BasePopover } from '@base-ui/react/popover';
 import { darken, transparentize } from 'polished';
 import { styled, useTheme } from 'storybook/theming';
 
 import { Button, type ButtonProps } from '../Button/Button.tsx';
 import { Form } from '../Form/Form.tsx';
 import { Popover } from '../Popover/Popover.tsx';
+import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { SelectOption } from './SelectOption.tsx';
 import type { InternalOption, Option, ResetOption, Value } from './helpers.tsx';
 import {
@@ -139,65 +143,58 @@ const Underlay = styled.div({
 });
 
 /*
- * This popover does not do any keyboard handling or placement. It uses a portal to place
- * its children under its sibling's position. When clicking outside the popover, it closes.
+ * This popover does not do any keyboard handling or focus management. It places its children
+ * under the trigger. When clicking outside the popover, it closes.
  */
 const MinimalistPopover: FC<{
   children: React.ReactNode;
   handleClose: () => void;
   triggerRef: React.RefObject<HTMLElement>;
 }> = ({ children, handleClose, triggerRef }) => {
-  const popoverRef = React.useRef(null);
-
-  useInteractOutside({
-    ref: popoverRef,
-    onInteractOutside: handleClose,
-  });
-
-  useEffect(() => {
-    if (popoverRef.current) {
-      return ariaHideOutside([popoverRef.current], { shouldUseInert: true });
-    }
-  }, []);
-
-  const { overlayProps: positionProps } = useOverlayPosition({
-    targetRef: triggerRef,
-    overlayRef: popoverRef,
-    placement: 'bottom start',
-    offset: 8,
-    maxHeight: 504,
-    isOpen: true,
-  });
-
-  const { overlayProps, underlayProps } = useOverlay(
-    {
-      isOpen: true,
-      onClose: handleClose,
-      isDismissable: true,
-      /* We do this ourselves. */
-      shouldCloseOnBlur: false,
-      /* We also do this ourselves. */
-      isKeyboardDismissDisabled: true,
-    },
-    popoverRef
-  );
-
   const theme = useTheme();
-
-  positionProps.style = {
-    ...positionProps.style,
-    overflow: 'hidden auto',
-    scrollbarColor: `${theme.barTextColor} transparent`,
-    scrollbarWidth: 'thin',
-  };
+  const portalContainer = useContext(PortalContainerContext);
 
   return (
-    <Overlay disableFocusManagement {...overlayProps}>
-      <Underlay {...underlayProps} />
-      <Popover hasChrome ref={popoverRef} padding={0} {...positionProps}>
-        {children}
-      </Popover>
-    </Overlay>
+    <BasePopover.Root
+      open
+      onOpenChange={(open, { reason }) => {
+        // Escape is handled by the listbox itself.
+        if (!open && reason !== 'escape-key') {
+          handleClose();
+        }
+      }}
+    >
+      <BasePopover.Portal container={portalContainer}>
+        <Underlay />
+        <BasePopover.Positioner
+          anchor={triggerRef}
+          side="bottom"
+          align="start"
+          sideOffset={8}
+          style={{ zIndex: 100000 }}
+        >
+          <BasePopover.Popup
+            role="presentation"
+            initialFocus={false}
+            finalFocus={false}
+            render={
+              <Popover
+                hasChrome
+                padding={0}
+                style={{
+                  maxHeight: 'min(504px, var(--available-height))',
+                  overflow: 'hidden auto',
+                  scrollbarColor: `${theme.barTextColor} transparent`,
+                  scrollbarWidth: 'thin',
+                }}
+              >
+                {children}
+              </Popover>
+            }
+          />
+        </BasePopover.Positioner>
+      </BasePopover.Portal>
+    </BasePopover.Root>
   );
 };
 
@@ -223,9 +220,11 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     },
     ref
   ) => {
-    const [isOpen, setIsOpen] = useState(props.defaultOpen || false);
+    const [isOpenState, setIsOpen] = useState(props.defaultOpen || false);
+    const isOpen = isOpenState && !disabled;
     const [shouldRefocusTrigger, setShouldRefocusTrigger] = useState(false);
-    const triggerRef = useObjectRef(ref);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    useImperativeHandle(ref, () => triggerRef.current!);
 
     const id = useMemo(() => {
       return 'select-' + Math.random().toString(36).substring(2, 15);
@@ -233,27 +232,21 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     const listboxId = `${id}-listbox`;
     const listboxRef = useRef<HTMLUListElement>(null);
 
-    const otState = useOverlayTriggerState({
-      isOpen: isOpen && !disabled,
-      onOpenChange: setIsOpen,
-    });
-
     const handleClose = useCallback(() => {
       setIsOpen(false);
       setShouldRefocusTrigger(true);
     }, []);
 
-    // We must delay refocusing the trigger because we first need the listbox to close,
-    // and @react-aria/overlays to remove the inert attribute set up by MinimalistPopover.
+    // We must delay refocusing the trigger because we first need the listbox to close.
     useEffect(() => {
-      if (!otState.isOpen && shouldRefocusTrigger) {
+      if (!isOpen && shouldRefocusTrigger) {
         // Only focus a trigger that still lives in a real browsing context.
         if (triggerRef.current?.ownerDocument?.defaultView) {
           triggerRef.current.focus();
         }
         setShouldRefocusTrigger(false);
       }
-    }, [otState.isOpen, shouldRefocusTrigger, triggerRef]);
+    }, [isOpen, shouldRefocusTrigger]);
 
     // The last selected option(s), which will be used by the app.
     const [selectedOptions, setSelectedOptions] = useState<InternalOption[]>(
@@ -555,7 +548,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
             </>
           )}
         </StyledButton>
-        {otState.isOpen && (
+        {isOpen && (
           <MinimalistPopover handleClose={handleClose} triggerRef={triggerRef}>
             <Listbox
               aria-label={ariaLabel}

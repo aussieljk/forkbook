@@ -169,8 +169,8 @@ export const defaultShortcuts: API_Shortcuts = Object.freeze({
   openInEditor: ['alt', 'shift', 'E'],
   openInIsolation: ['alt', 'shift', 'I'],
   copyStoryLink: ['alt', 'shift', 'L'],
-  goToPreviousLandmark: ['shift', 'F6'], // hardcoded in react-aria
-  goToNextLandmark: ['F6'], // hardcoded in react-aria
+  goToPreviousLandmark: ['shift', 'F6'], // hardcoded in useLandmark
+  goToNextLandmark: ['F6'], // hardcoded in useLandmark
   // TODO: bring this back once we want to add shortcuts for this
   // copyStoryName: ['alt', 'shift', 'C'],
 });
@@ -307,7 +307,7 @@ export const init: ModuleFn = ({ store, fullAPI, provider }) => {
         event.preventDefault();
       }
       switch (feature) {
-        // Handled by @react-aria/interactions and useLandmarkIndicator
+        // Handled by useLandmark and useLandmarkIndicator
         case 'goToNextLandmark':
         case 'goToPreviousLandmark':
           break;
@@ -561,7 +561,7 @@ export const init: ModuleFn = ({ store, fullAPI, provider }) => {
       { capture: true }
     );
 
-    // Escape is deliberately not part of the shortcut map: react-aria overlays (menus,
+    // Escape is deliberately not part of the shortcut map: Base UI overlays (menus,
     // popovers, modals) handle it at the element level and stop propagation when they consume
     // it, so this bubble-phase listener only sees presses nothing else claimed. Those exit
     // fullscreen. Running at the capture phase instead would close overlays and exit
