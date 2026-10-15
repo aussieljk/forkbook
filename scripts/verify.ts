@@ -8,7 +8,7 @@
  *   bun run verify --project core   any other argument goes to vitest
  */
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { ROOT_DIRECTORY } from './utils/constants.ts';
@@ -73,49 +73,23 @@ if (!typecheck.ok) {
   );
 }
 
-const reportFile = join(logDir, 'vitest.json');
-const tests = step('tests', [
-  'bun',
-  'x',
-  'vitest',
-  'run',
-  '--reporter=dot',
-  '--reporter=json',
-  `--outputFile.json=${reportFile}`,
-  ...vitestArgs,
-]);
+// Only the dot reporter: the JSON reporter added about 45 s to a full run, for the same memory.
+const tests = step('tests', ['bun', 'x', 'vitest', 'run', '--reporter=dot', ...vitestArgs]);
 
-type Report = {
-  numTotalTests: number;
-  numPassedTests: number;
-  numFailedTests: number;
-  numPendingTests: number;
-  testResults: {
-    name: string;
-    message?: string;
-    assertionResults: { fullName: string; status: string; failureMessages: string[] }[];
-  }[];
-};
-try {
-  const report: Report = JSON.parse(readFileSync(reportFile, 'utf8'));
-  console.log(
-    `\nTests: ${report.numPassedTests} passed, ${report.numFailedTests} failed, ${report.numPendingTests} skipped, ${report.numTotalTests} total`
-  );
-  for (const file of report.testResults) {
-    const name = file.name.replace(ROOT_DIRECTORY + '/', '');
-    const failed = file.assertionResults.filter((test) => test.status === 'failed');
-    if (file.message && failed.length === 0) {
-      console.log(`\n${name}\n  ${file.message.split('\n')[0]}`);
-    }
-    for (const test of failed) {
-      console.log(
-        `\n${name} > ${test.fullName}\n  ${(test.failureMessages[0] ?? '').split('\n')[0]}`
-      );
-    }
+// The totals, and each failed test with the first line of its error.
+const lines = tests.output.split('\n');
+for (const [index, line] of lines.entries()) {
+  if (/^\s*(Test Files|Tests)\s/.test(line)) {
+    console.log(line.trim());
   }
-} catch {
-  // Vitest did not write a report, for example when it could not start.
-  console.log(tests.output.split('\n').slice(-30).join('\n'));
+  if (/^\s*FAIL\s/.test(line)) {
+    const error = lines.slice(index + 1).find((next) => next.trim() && !/^\s*FAIL\s/.test(next));
+    console.log(`\n${line.trim()}\n  ${error?.trim() ?? ''}`);
+  }
+}
+if (!lines.some((line) => /^\s*Tests\s/.test(line))) {
+  // Vitest did not get to the tests, for example when it could not start.
+  console.log(lines.slice(-30).join('\n'));
 }
 
 process.exit(typecheck.ok && tests.ok ? 0 : 1);
