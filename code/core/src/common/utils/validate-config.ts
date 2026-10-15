@@ -10,9 +10,7 @@ import { jsModuleExtensions } from '../../shared/constants/extensions.ts';
 import { extractFrameworkPackageName } from '../index.ts';
 import { frameworkPackages } from './get-storybook-info.ts';
 
-const renderers = ['html', 'preact', 'react', 'server', 'svelte', 'vue', 'vue3', 'web-components'];
-
-const rendererNames = [...renderers, ...renderers.map((renderer) => `@storybook/${renderer}`)];
+const rendererNames = ['react', '@storybook/react'];
 
 export function validateFrameworkName(
   frameworkName: string | undefined
@@ -23,7 +21,7 @@ export function validateFrameworkName(
     throw new MissingFrameworkFieldError();
   }
 
-  // Account for legacy scenario where the framework was referring to a renderer
+  // The framework field must name a framework, not the renderer
   if (rendererNames.includes(frameworkName)) {
     throw new InvalidFrameworkNameError({ frameworkName });
   }

@@ -23,14 +23,7 @@ export enum Category {
   PREVIEW_REACT_DOM_SHIM = 'PREVIEW_REACT-DOM-SHIM',
   PREVIEW_ROUTER = 'PREVIEW_ROUTER',
   PREVIEW_THEMING = 'PREVIEW_THEMING',
-  RENDERER_HTML = 'RENDERER_HTML',
-  RENDERER_PREACT = 'RENDERER_PREACT',
   RENDERER_REACT = 'RENDERER_REACT',
-  RENDERER_SERVER = 'RENDERER_SERVER',
-  RENDERER_SVELTE = 'RENDERER_SVELTE',
-  RENDERER_VUE = 'RENDERER_VUE',
-  RENDERER_VUE3 = 'RENDERER_VUE3',
-  RENDERER_WEB_COMPONENTS = 'RENDERER_WEB-COMPONENTS',
   FRAMEWORK_NEXTJS = 'FRAMEWORK_NEXTJS',
   ADDON_VITEST = 'ADDON_VITEST',
   ADDON_A11Y = 'ADDON_A11Y',
@@ -254,8 +247,6 @@ export class MountMustBeDestructuredError extends StorybookError {
          This is because destructuring statements and async/await usages are otherwise transpiled away, 
          which prevents Storybook from recognizing your usage of \`mount\`.
       
-      Note that Angular is not supported. As async/await is transpiled to support the zone.js polyfill. 
-      
       More info: https://storybook.js.org/docs/writing-tests/interaction-testing?ref=error#run-code-before-the-component-gets-rendered
       
       Received the following play function:
@@ -439,8 +430,6 @@ export class ProjectAnnotationsAlreadyAppliedError extends StorybookError {
         - If it passes an addon's annotations, register that addon in the "addons" field of .storybook/main instead.
         - If it passes custom annotations, move them into .storybook/preview.
         - If the setup file is shared with a Vitest project that uses portable stories directly, list it only in that project's "setupFiles".
-
-        Run "npx storybook automigrate vitest-setup-file" to remove calls that only pass your .storybook/preview annotations, or @storybook/addon-a11y/preview when that addon is already registered.
       `,
     });
   }

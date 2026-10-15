@@ -1,7 +1,6 @@
 import { StorybookError } from '../../storybook-error.ts';
 import {
   ExecaCommandFailedError,
-  NuxtModuleAddFailedError,
   PackageInstallDependencyConflictError,
   PackageInstallFailedError,
   PackageInstallMissingManifestError,
@@ -63,11 +62,6 @@ export function extractPackageManagerErrorCode(logs: string): string | undefined
   }
 
   return undefined;
-}
-
-function isNuxtModuleAdd(args: string[]) {
-  const joined = args.join(' ');
-  return joined.includes('nuxi') && joined.includes('module add') && joined.includes('storybook');
 }
 
 function isPlaywrightInstall(args: string[]) {
@@ -133,10 +127,6 @@ export function categorizeExecaError(error: unknown, context: ExecaErrorContext)
 
   const data = extractExecaCommandErrorData(error, context);
   const { command, args } = data;
-
-  if (isNuxtModuleAdd(args)) {
-    return new NuxtModuleAddFailedError({ ...data, cause: error });
-  }
 
   if (isPlaywrightInstall(args)) {
     return new PlaywrightInstallFailedError({ ...data, cause: error });

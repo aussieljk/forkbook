@@ -18,8 +18,6 @@ export { StorybookError } from './storybook-error.ts';
 export enum Category {
   CLI = 'CLI',
   CLI_INIT = 'CLI_INIT',
-  CLI_AUTOMIGRATE = 'CLI_AUTOMIGRATE',
-  CLI_UPGRADE = 'CLI_UPGRADE',
   CLI_ADD = 'CLI_ADD',
   CODEMOD = 'CODEMOD',
   CORE_SERVER = 'CORE-SERVER',
@@ -30,30 +28,11 @@ export enum Category {
   TELEMETRY = 'TELEMETRY',
   BUILDER_MANAGER = 'BUILDER-MANAGER',
   BUILDER_VITE = 'BUILDER-VITE',
-  BUILDER_WEBPACK5 = 'BUILDER-WEBPACK5',
   SOURCE_LOADER = 'SOURCE-LOADER',
   POSTINSTALL = 'POSTINSTALL',
   DOCS_TOOLS = 'DOCS-TOOLS',
-  CORE_WEBPACK = 'CORE-WEBPACK',
-  FRAMEWORK_ANGULAR = 'FRAMEWORK_ANGULAR',
-  FRAMEWORK_EMBER = 'FRAMEWORK_EMBER',
-  FRAMEWORK_HTML_VITE = 'FRAMEWORK_HTML-VITE',
-  FRAMEWORK_HTML_WEBPACK5 = 'FRAMEWORK_HTML-WEBPACK5',
   FRAMEWORK_NEXTJS = 'FRAMEWORK_NEXTJS',
-  FRAMEWORK_PREACT_VITE = 'FRAMEWORK_PREACT-VITE',
-  FRAMEWORK_PREACT_WEBPACK5 = 'FRAMEWORK_PREACT-WEBPACK5',
   FRAMEWORK_REACT_VITE = 'FRAMEWORK_REACT-VITE',
-  FRAMEWORK_REACT_WEBPACK5 = 'FRAMEWORK_REACT-WEBPACK5',
-  FRAMEWORK_SERVER_WEBPACK5 = 'FRAMEWORK_SERVER-WEBPACK5',
-  FRAMEWORK_SVELTE_VITE = 'FRAMEWORK_SVELTE-VITE',
-  FRAMEWORK_SVELTEKIT = 'FRAMEWORK_SVELTEKIT',
-  FRAMEWORK_VUE_VITE = 'FRAMEWORK_VUE-VITE',
-  FRAMEWORK_VUE_WEBPACK5 = 'FRAMEWORK_VUE-WEBPACK5',
-  FRAMEWORK_VUE3_VITE = 'FRAMEWORK_VUE3-VITE',
-  FRAMEWORK_VUE3_WEBPACK5 = 'FRAMEWORK_VUE3-WEBPACK5',
-  FRAMEWORK_WEB_COMPONENTS_VITE = 'FRAMEWORK_WEB-COMPONENTS-VITE',
-  FRAMEWORK_WEB_COMPONENTS_WEBPACK5 = 'FRAMEWORK_WEB-COMPONENTS-WEBPACK5',
-  RENDERER_WEB_COMPONENTS = 'RENDERER_WEB-COMPONENTS',
 }
 
 export class NxProjectDetectedError extends StorybookError {
@@ -81,7 +60,7 @@ export class MissingFrameworkFieldError extends StorybookError {
       message: dedent`
         Could not find a 'framework' field in Storybook config.
         
-        Please run 'npx storybook automigrate' to automatically fix your config.`,
+        Set it to '@storybook/react-vite' or '@storybook/nextjs-vite'.`,
     });
   }
 }
@@ -97,7 +76,7 @@ export class InvalidFrameworkNameError extends StorybookError {
       message: dedent`
         Invalid value of '${data.frameworkName}' in the 'framework' field of Storybook config.
         
-        Please run 'npx storybook automigrate' to automatically fix your config.
+        Set it to '@storybook/react-vite' or '@storybook/nextjs-vite'.
       `,
     });
   }
@@ -506,165 +485,8 @@ export class OpenServiceDuplicateToolNameError extends StorybookError {
   }
 }
 
-export class WebpackMissingStatsError extends StorybookError {
-  constructor() {
-    super({
-      name: 'WebpackMissingStatsError',
-      category: Category.BUILDER_WEBPACK5,
-      code: 1,
-      documentation: [
-        'https://webpack.js.org/configuration/stats/',
-        'https://storybook.js.org/docs/builders/webpack#configure',
-      ],
-      message: dedent`
-        No Webpack stats found. Did you turn off stats reporting in your Webpack config?
-        Storybook needs Webpack stats (including errors) in order to build correctly.`,
-    });
-  }
-}
-
-export class WebpackInvocationError extends StorybookError {
-  constructor(
-    public data: {
-      error: Error;
-    }
-  ) {
-    super({
-      name: 'WebpackInvocationError',
-      category: Category.BUILDER_WEBPACK5,
-      code: 2,
-      message: data.error.message.trim(),
-    });
-  }
-}
-
 function removeAnsiEscapeCodes(input = '') {
   return input.replace(/\u001B\[[0-9;]*m/g, '');
-}
-
-export class WebpackCompilationError extends StorybookError {
-  constructor(
-    public data: {
-      errors: {
-        message: string;
-        stack?: string;
-        name?: string;
-      }[];
-    }
-  ) {
-    data.errors = data.errors.map((err) => {
-      return {
-        ...err,
-        message: removeAnsiEscapeCodes(err.message),
-        stack: removeAnsiEscapeCodes(err.stack),
-        name: err.name,
-      };
-    });
-
-    super({
-      name: 'WebpackCompilationError',
-      category: Category.BUILDER_WEBPACK5,
-      code: 3,
-      // This error message is a followup of errors logged by Webpack to the user
-      message: dedent`
-        There were problems when compiling your code with Webpack.
-        Run Storybook with --debug-webpack for more information.
-      `,
-    });
-  }
-}
-
-export class WebpackMissingPreviewTemplateError extends StorybookError {
-  constructor() {
-    super({
-      name: 'WebpackMissingPreviewTemplateError',
-      category: Category.BUILDER_WEBPACK5,
-      code: 4,
-      message: dedent`
-        Storybook's Webpack5 builder requires a template to be specified.
-        Somehow you've ended up with a falsy value for the template option.
-
-        Please file an issue at https://github.com/storybookjs/storybook with a reproduction.`,
-    });
-  }
-}
-
-export class MissingAngularJsonError extends StorybookError {
-  constructor(
-    public data: {
-      path: string;
-    }
-  ) {
-    super({
-      name: 'MissingAngularJsonError',
-      category: Category.CLI_INIT,
-      code: 2,
-      documentation: 'https://storybook.js.org/docs/faq#error-no-angularjson-file-found?ref=error',
-      message: dedent`
-        An angular.json file was not found in the current working directory: ${data.path}
-        Storybook needs it to work properly, so please rerun the command at the root of your project, where the angular.json file is located.`,
-    });
-  }
-}
-
-export class AngularLegacyBuildOptionsError extends StorybookError {
-  constructor() {
-    super({
-      name: 'AngularLegacyBuildOptionsError',
-      category: Category.FRAMEWORK_ANGULAR,
-      code: 1,
-      documentation: [
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#angular-drop-support-for-calling-storybook-directly',
-        'https://github.com/storybookjs/storybook/tree/next/code/frameworks/angular#how-do-i-migrate-to-an-angular-storybook-builder',
-      ],
-      message: dedent`
-        Your Storybook startup script uses a solution that is not supported anymore.
-        You must use Angular builder to have an explicit configuration on the project used in angular.json.
-        
-        Please run 'npx storybook automigrate' to automatically fix your config.`,
-    });
-  }
-}
-
-export class AngularUnresolvedStyleError extends StorybookError {
-  constructor(public data: { stylePath: string; workspaceRoot: string; extensions: string[] }) {
-    super({
-      name: 'AngularUnresolvedStyleError',
-      category: Category.FRAMEWORK_ANGULAR,
-      code: 2,
-      documentation: 'https://storybook.js.org/docs/get-started/frameworks/angular-vite',
-      message: dedent`
-        Cannot resolve the stylesheet '${data.stylePath}' from the Angular workspace root '${data.workspaceRoot}'.
-
-        No file matches it there, with or without a ${data.extensions.join(', ')} extension.
-
-        Angular resolves a 'styles' entry from the workspace root, so a relative entry has to point at a file below it. Check the 'styles' array on your Storybook builder target in angular.json.`,
-    });
-  }
-}
-
-export class AngularMissingStylePreprocessorError extends StorybookError {
-  constructor(public data: { stylePath: string; install: string; alternative?: string }) {
-    super({
-      name: 'AngularMissingStylePreprocessorError',
-      category: Category.FRAMEWORK_ANGULAR,
-      code: 3,
-      documentation: 'https://storybook.js.org/docs/get-started/frameworks/angular-vite',
-      message: [
-        dedent`
-          Cannot compile '${data.stylePath}': the '${data.install}' package is not installed where Vite can load it.
-
-          Add it to your project:
-
-            npm install --save-dev ${data.install}
-
-          Vite resolves a CSS preprocessor from your project directory upwards, so a copy installed deeper in the tree - such as the one Angular's builders bring in for themselves - is invisible to it. That is why a project which compiles with 'ng build' can still fail here.`,
-        data.alternative && `'${data.alternative}' works as well, if you would rather use that.`,
-      ]
-        .filter(Boolean)
-        .join('\n\n'),
-    });
-  }
 }
 
 export class CriticalPresetLoadError extends StorybookError {
@@ -738,21 +560,6 @@ export class GoogleFontsLoadingError extends StorybookError {
         An error occurred when trying to load Google Fonts with URL \`${data.url}\`.
         
         ${data.error instanceof Error ? data.error.message : ''}`,
-    });
-  }
-}
-
-export class SvelteViteWithSvelteKitError extends StorybookError {
-  constructor() {
-    super({
-      name: 'SvelteViteWithSvelteKitError',
-      category: Category.FRAMEWORK_SVELTE_VITE,
-      code: 1,
-      documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#sveltekit-needs-the-storybooksveltekit-framework',
-      message: dedent`
-        We've detected a SvelteKit project using the @storybook/svelte-vite framework, which is not supported.
-        Please use the @storybook/sveltekit framework instead.`,
     });
   }
 }
@@ -996,55 +803,6 @@ export class AddonVitestPostinstallError extends StorybookError {
   }
 }
 
-export class UpgradeStorybookToLowerVersionError extends StorybookError {
-  constructor(public data: { beforeVersion: string; currentVersion: string }) {
-    super({
-      name: 'UpgradeStorybookToLowerVersionError',
-      category: Category.CLI_UPGRADE,
-      code: 3,
-      message: dedent`
-        You are trying to upgrade Storybook to a lower version than the version currently installed. This is not supported.
-        
-        Storybook version ${data.beforeVersion} was detected in your project, but you are trying to "upgrade" to version ${data.currentVersion}.
-        
-        This usually happens when running the upgrade command without a version specifier, e.g. "npx storybook upgrade".
-        This will cause npm to run the globally cached storybook binary, which might be an older version.
-        
-        Instead you should always run the Storybook CLI with a version specifier to force npm to download the latest version:
-        
-        "npx storybook@latest upgrade"`,
-    });
-  }
-}
-
-export class UpgradeStorybookUnknownCurrentVersionError extends StorybookError {
-  constructor() {
-    super({
-      name: 'UpgradeStorybookUnknownCurrentVersionError',
-      category: Category.CLI_UPGRADE,
-      code: 5,
-      message: dedent`
-        We couldn't determine the current version of Storybook in your project.
-        
-        Are you running the Storybook CLI in a project without Storybook?
-        It might help if you specify your Storybook config directory with the --config-dir flag.`,
-    });
-  }
-}
-
-export class UpgradeStorybookConfigDirNotFoundError extends StorybookError {
-  constructor() {
-    super({
-      name: 'UpgradeStorybookConfigDirNotFoundError',
-      category: Category.CLI_UPGRADE,
-      isHandledError: true,
-      code: 6,
-      message:
-        'No .storybook directory was found. Pass --config-dir <path> to upgrade a Storybook whose configuration lives elsewhere.',
-    });
-  }
-}
-
 export class NoStatsForViteDevError extends StorybookError {
   constructor() {
     super({
@@ -1125,36 +883,6 @@ export class SavingGlobalSettingsFileError extends StorybookError {
       message: dedent`
         Unable to save global settings file to ${data.filePath}
         ${data.error && `Reason: ${data.error}`}`,
-    });
-  }
-}
-
-export class CommonJsConfigNotSupportedError extends StorybookError {
-  constructor() {
-    super({
-      name: 'CommonJsConfigNotSupportedError',
-      category: Category.CLI_AUTOMIGRATE,
-      code: 1,
-      documentation: 'https://storybook.js.org/docs/configure/overview?ref=error#es-modules',
-      message: dedent`
-        Support for CommonJS Storybook config files has been removed in Storybook 10.0.0.
-        Please migrate your config to a valid ESM file.
-        
-        CommonJS files (ending in .cjs, .cts, .cjsx, .ctsx) or files containing 'module.exports' are no longer supported.
-        Please convert your config to use ES modules (import/export syntax).`,
-    });
-  }
-}
-
-export class AutomigrateError extends StorybookError {
-  constructor(public data: { errors: Array<Error | unknown> }) {
-    super({
-      name: 'AutomigrateError',
-      category: Category.CLI_AUTOMIGRATE,
-      code: 2,
-      message: dedent`
-        An error occurred while running the automigrate command.
-      `,
     });
   }
 }
@@ -1308,21 +1036,6 @@ export class PlaywrightInstallFailedError extends StorybookError {
       cause: data.cause,
       message: dedent`
         Failed to install Playwright browser binaries.
-
-        ${formatExecaFailureDetails(data)}`,
-    });
-  }
-}
-
-export class NuxtModuleAddFailedError extends StorybookError {
-  constructor(public data: ExecaCommandErrorData & { cause?: unknown }) {
-    super({
-      name: 'NuxtModuleAddFailedError',
-      category: Category.CLI_INIT,
-      code: 17,
-      cause: data.cause,
-      message: dedent`
-        Failed to add @nuxtjs/storybook to the Nuxt project via nuxi.
 
         ${formatExecaFailureDetails(data)}`,
     });

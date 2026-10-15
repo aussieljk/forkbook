@@ -1,5 +1,4 @@
 export * from './helpers.ts';
-export * from './angular/helpers.ts';
 export * from './dirs.ts';
 export * from './projectTypes.ts';
 export * from './NpmOptions.ts';
