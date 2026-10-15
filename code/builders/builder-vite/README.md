@@ -7,7 +7,6 @@ Build your stories with [vite](https://vitejs.dev/) for fast startup times and n
 - [Installation](#installation)
 - [Usage](#usage)
   - [Getting started with Vite and Storybook (on a new project)](#getting-started-with-vite-and-storybook-on-a-new-project)
-  - [Migration from webpack / CRA](#migration-from-webpack--cra)
   - [Customize Vite config](#customize-vite-config)
   - [TypeScript](#typescript)
   - [Docgen](#docgen)
@@ -40,27 +39,6 @@ See https://vitejs.dev/guide/#scaffolding-your-first-vite-project,
 npm create vite@latest # follow the prompts
 npx storybook@latest init --builder vite && npm run storybook
 ```
-
-### Migration from webpack / CRA
-
-1. Install `vite` and `@storybook/builder-vite`
-2. Remove any explicit project dependencies on `webpack`, `react-scripts`, and any other Webpack plugins or loaders.
-3. If you were previously using `@storybook/manager-webpack5`, you can remove it. Also remove `@storybook/builder-webpack5` or `@storybook/builder-webpack4` if they are installed.
-4. Choose a Vite-based Storybook "framework" to set in the `framework` option of your `.storybook/main.js` file.
-5. Remove Storybook Webpack cache (`rm -rf node_modules/.cache`)
-6. Update your `/public/index.html` file for Vite (be sure there are no `%PUBLIC_URL%` inside it, which is a CRA variable)
-7. Be sure that any files containing JSX syntax use a `.jsx` or `.tsx` file extension, which [Vite requires](https://vitejs.dev/guide/features.html#jsx). This includes `.storybook/preview.jsx` if it contains JSX syntax.
-8. For now you'll need to add a [workaround](https://github.com/storybookjs/storybook/issues/18399) for jest-mock relying on the node `global` variable by creating a `.storybook/preview-head.html` file containing the following:
-
-```html
-<script>
-  window.global = window;
-</script>
-```
-
-9.  Start up your Storybook using the same `yarn storybook` or `npm run storybook` commands you are used to.
-
-For other details about the differences between Vite and Webpack projects, be sure to read through the [Vite documentation](https://vitejs.dev/).
 
 ### Customize Vite config
 
@@ -150,8 +128,6 @@ Storybook configuration directory. This can be overridden in [viteFinal](https:/
 ## Contributing
 
 The Vite builder cannot build itself.
-
-Are you willing to contribute? We are especially looking for Vue and Svelte experts, as the current maintainers are React users.
 
 Have a look at the GitHub issues with the `vite` label for known bugs. If you find any new bugs,
 feel free to create an issue or send a pull request!

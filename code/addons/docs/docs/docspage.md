@@ -23,7 +23,7 @@ Like `addon-info`, `DocsPage` provides sensible defaults, meaning it adds docume
 
 However, `DocsPage` brings the following improvements:
 
-- It supports all frameworks that Storybook supports, including React, Vue 3, Angular and [many others](../README.md#framework-support).
+- It supports React with Vite and Next.js with Vite.
 - It generates better documentation that can be used as a standalone docs site, independently of Storybook.
 - It supports better configuration, so you can capture project specific information with ease.
 - It's built to work with [`MDX`](./mdx.md) when you need more control of your documentation.
@@ -121,33 +121,9 @@ You can interleave your own components to customize the auto-generated contents 
 
 ## Story file names
 
-Unless you use a custom webpack configuration, all of your story files should have the suffix `*.stories.@(j|t)sx?`, e.g. `"Badge.stories.js"`, `"Badge.stories.tsx"`, etc.
+All of your story files should have the suffix `*.stories.@(j|t)sx?`, e.g. `"Badge.stories.js"`, `"Badge.stories.tsx"`, etc.
 
 The docs preset assumes this naming convention for its `source-loader` setup. If you want to use a different naming convention, you'll need a [manual configuration](../README.md#manual-configuration).
-
-## Inline stories vs. Iframe stories
-
-Due to the complex nature of writing a cross-framework utility like Storybook, the story blocks for most frameworks exist within an `<iframe>` element. This creates a clean separation of the context the code for each framework lives inside, but it isn't a perfect tradeoff. It does create a set of disadvantages--namely, you have to explicitly set the height of a story. It also causes some headaches for certain dev tools (Vue dev tools, for example, don't pick up components that exist in an iframe, without substantial jerry-rigging).
-
-That being said, there is a system in place to remove the necessity of this tradeoff. The docs configuration contains two options, `inlineStories` and `prepareForInline` that can work together to integrate non-react stories seamlessly (or should I say "scroll-bar-less-ly") into DocsPage. Setting `inlineStories` to `true` tells storybook to stop putting your stories into an iframe. The hard(er) part is providing the `prepareForInline` parameter. This parameter accepts a function that transforms story content in your given framework into something react can render. Any given framework will need to approach this in a different way. Angular, for example, might convert its story content into a custom element (you can read about that [here](https://angular.io/guide/elements)). We've actually taken the initiative and implemented Vue inline stories _for you_ in the default docs config for Vue, because we're such nice people. The following docs config block allows Vue components to be rendered inline through an effect hook provided by [@egoist/vue-to-react](https://github.com/egoist/vue-to-react):
-
-```js
-import React from 'react';
-import { render } from 'react-dom';
-import { addParameters } from '@storybook/vue';
-import toReact from '@egoist/vue-to-react';
-
-addParameters({
-  docs: {
-    prepareForInline: (storyFn, { args }) => {
-      const Story = toReact(storyFn());
-      return <Story {...args} />;
-    },
-  },
-});
-```
-
-With that function, anyone using the docs addon for `@storybook/vue` can make their stories render inline, either globally with the `docs.story.inline` parameter, or on a per-story-basis using the `inline` prop on the `<Story>` doc block. If you come up with an elegant and flexible implementation for the `prepareForInline` function for your own framework, let us know! We'd love to make it the default configuration, to make inline stories more accessible for a larger variety of frameworks!
 
 ## Show/Hide code
 
@@ -170,6 +146,6 @@ With that flag, now the docs addon will show all code blocks open by default.
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
-- Framework-specific docs: [React](../react/README.md) / [Vue](../vue/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
+- Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)

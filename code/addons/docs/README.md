@@ -12,7 +12,7 @@ Storybook Docs transforms your Storybook stories into world-class component docu
 
 **MDX.** If you want more control, `MDX` allows you to write long-form markdown documentation and include stories in one file. You can also use it to write pure documentation pages and embed them inside your Storybook alongside your stories.
 
-Just like Storybook, Docs supports every major view layer including React, Vue 3, Angular, HTML, Web components, Svelte, and many more.
+Docs supports React with Vite and Next.js with Vite.
 
 Read on to learn more:
 
@@ -21,7 +21,6 @@ Read on to learn more:
   - [MDX](#mdx)
   - [Framework support](#framework-support)
   - [Installation](#installation)
-    - [Be sure to check framework specific installation needs](#be-sure-to-check-framework-specific-installation-needs)
   - [Preset options](#preset-options)
   - [TypeScript configuration](#typescript-configuration)
   - [More resources](#more-resources)
@@ -74,13 +73,7 @@ For more information on `MDX`, see the [`MDX` reference](https://github.com/stor
 
 ## Framework support
 
-Storybook Docs supports all view layers that Storybook supports except for React Native (currently). There are some framework-specific features as well, such as props tables and inline story rendering. The following page captures the current state of support:
-
-[Framework Support](https://storybook.js.org/docs/configure/integration/frameworks-feature-support?ref=readme)
-
-**Note:** `#` = WIP support
-
-Want to add enhanced features to your favorite framework? Check out this [dev guide](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/multiframework.md)
+Storybook Docs supports React with Vite and Next.js with Vite. It does not support React Native.
 
 ## Installation
 
@@ -110,18 +103,9 @@ export default {
 };
 ```
 
-### Be sure to check framework specific installation needs
-
-- [React](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/react) (covered here)
-- [Vue 3](https://github.com/storybookjs/storybook/blob/next/code/addons/docs/vue3)
-- [Angular](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/angular)
-- [Ember](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/ember)
-- [Web Components](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/web-components)
-- [Common setup (all other frameworks)](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/common)
-
 ## Preset options
 
-The `addon-docs` preset has a few configuration options that can be used to configure its babel/webpack loading behavior. Here's an example of how to use the preset with options:
+The `addon-docs` preset has a few configuration options that can be used to configure its Vite plugins. Here's an example of how to use the preset with options:
 
 ```js
 export default {

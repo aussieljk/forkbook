@@ -9,7 +9,7 @@ You've read the [Storybook Docs README](../README.md). You're already familiar w
 
 ## Does Docs support framework X?
 
-Docs does not currently support [React Native](https://github.com/storybookjs/react-native). Otherwise, [it supports all frameworks that Storybook supports](../README.md#framework-support), including React, Vue 3, Angular, Ember, Svelte, and others.
+Docs does not currently support [React Native](https://github.com/storybookjs/react-native). It supports React with Vite and Next.js with Vite.
 
 ## How does Docs interact with existing addons?
 
@@ -23,7 +23,7 @@ Currently we hide the addons panel when docs is visible. It's tricky because all
 
 > "My story renders in docs, but doesn’t show up the way I’d expect in the Canvas”
 
-The original MDX gets compiled to Javascript, and the easiest way to debug your MDX stories in the Canvas is to inspect that Javascript. To do this, open your browser dev tools and view the source that’s being served by the webpack dev server. You may need to hunt for it a little bit under the `webpack > > . > path/to/your/stories` folder, but it’s there.
+The original MDX gets compiled to Javascript, and the easiest way to debug your MDX stories in the Canvas is to inspect that Javascript. To do this, open your browser dev tools and view the source that’s being served by the Vite dev server.
 
 For example, the following MDX story:
 
@@ -44,6 +44,6 @@ This is [Component Story Format (CSF)](https://medium.com/storybookjs/component-
 ## More resources
 
 - References: [README](../README.md) / [DocsPage](docspage.md) / [MDX](mdx.md) / [FAQ](faq.md) / [Recipes](recipes.md) / [Theming](theming.md) / [Props](props-tables.md)
-- Framework-specific docs: [React](../react/README.md) / [Vue 3](../vue3/README.md) / [Angular](../angular/README.md) / [Web components](../web-components/README.md) / [Ember](../ember/README.md)
+- Framework-specific docs: [React](frameworks/REACT.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
 - Example: [Storybook Design System](https://github.com/storybookjs/design-system)
