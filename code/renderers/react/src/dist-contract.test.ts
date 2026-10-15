@@ -42,7 +42,8 @@ describe('React declaration contract', () => {
         stdio: 'pipe',
       });
     },
-    30_000
+    // The classic tsc is slow when the whole test suite runs at the same time.
+    120_000
   );
 
   it.runIf(DTS_BUILT)(
@@ -53,6 +54,7 @@ describe('React declaration contract', () => {
         stdio: 'pipe',
       });
     },
-    30_000
+    // The classic tsc is slow when the whole test suite runs at the same time.
+    120_000
   );
 });

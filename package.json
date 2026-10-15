@@ -15,14 +15,21 @@
     ]
   },
   "scripts": {
+    "browsers": "pw-browsers",
+    "build": "bun --cwd=scripts ./build-package.ts --all --no-watch --prod",
+    "build:changed": "bun --cwd=scripts ./build-package.ts --changed --no-watch --prod",
     "fmt:check": "oxfmt --check .",
     "fmt:write": "oxfmt .",
     "lint": "cd code && bun run lint",
+    "merge-agent": "bun scripts/merge-agent.ts",
     "storybook:vitest": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch --project storybook-ui",
-    "task": "bun --cwd=./scripts task",
     "test": "NODE_OPTIONS=--max_old_space_size=4096 vitest run",
+    "test:changed": "NODE_OPTIONS=--max_old_space_size=4096 vitest run --changed",
+    "test:ui": "NODE_OPTIONS=--max_old_space_size=4096 vitest run --project storybook-ui",
+    "test:unit": "NODE_OPTIONS=--max_old_space_size=4096 vitest run --project '!storybook-ui'",
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch",
-    "typecheck": "bun check -b -p code/tsconfig.packages.json"
+    "typecheck": "bun check -b -p code/tsconfig.packages.json",
+    "verify": "bun scripts/verify.ts"
   },
   "devDependencies": {
     "@types/kill-port": "^2.0.3",

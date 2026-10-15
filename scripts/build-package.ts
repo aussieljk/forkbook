@@ -11,7 +11,8 @@
  *
  * When you pass no package names, you will be prompted to select which packages to build.
  */
-import { rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { existsSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { exec } from 'child_process';
@@ -24,6 +25,42 @@ import { isBuildEntries } from './build/entry-configs.ts';
 import { ROOT_DIRECTORY } from './utils/constants.ts';
 import { findMostMatchText } from './utils/diff.ts';
 import { getCodeWorkspaces } from './utils/workspace.ts';
+
+const stampPath = (location: string) =>
+  join(ROOT_DIRECTORY, 'code', location, 'dist', '.build-stamp');
+
+/** True when a file in the package is newer than its last successful build. */
+function hasChanged(location: string) {
+  const stamp = stampPath(location);
+  if (!existsSync(stamp)) {
+    return true;
+  }
+  const newer = execFileSync(
+    'find',
+    [
+      join(ROOT_DIRECTORY, 'code', location),
+      '(',
+      '-name',
+      'node_modules',
+      '-o',
+      '-name',
+      'dist',
+      '-o',
+      '-name',
+      '.dts-emit',
+      ')',
+      '-prune',
+      '-o',
+      '-type',
+      'f',
+      '-newer',
+      stamp,
+      '-print',
+    ],
+    { encoding: 'utf8' }
+  );
+  return newer.trim() !== '';
+}
 
 async function run() {
   const packages = (await getCodeWorkspaces())
@@ -62,6 +99,7 @@ async function run() {
     .version('5.0.0')
     .allowExcessArguments(true)
     .option('--all', `build everything ${picocolors.gray('(all)')}`, false)
+    .option('--changed', 'build only the packages that changed since their last build', false)
     .option('--watch', `build in watch mode`)
     .option('--prod', `build in production mode`)
     .option('--no-watch', `do not build in watch mode`)
@@ -76,7 +114,8 @@ async function run() {
   Object.keys(tasks).forEach((key) => {
     // checks if a flag is passed e.g. yarn build addon-docs --watch
     const containsFlag = main.args.includes(tasks[key].suffix);
-    tasks[key].value = containsFlag || opts.all;
+    tasks[key].value =
+      containsFlag || opts.all || (opts.changed && hasChanged(tasks[key].location));
   });
 
   let selection = Object.values(tasks).filter((item) => item.value === true);
@@ -107,7 +146,7 @@ async function run() {
   // Workspaces without build-config (e.g. agent-eval) appear in yarn workspaces but
   // cannot be built by this script. Filter --all silently; reject explicit picks.
   const nonBuildable = selection.filter((item) => !isBuildEntries(item.name));
-  if (nonBuildable.length && !opts.all) {
+  if (nonBuildable.length && !opts.all && !opts.changed) {
     for (const item of nonBuildable) {
       process.stderr.write(
         `${picocolors.red('Error')}: ${picocolors.cyan(
@@ -120,6 +159,11 @@ async function run() {
   selection = selection.filter((item) => isBuildEntries(item.name));
 
   const buildablePackages = packages.filter((pkg) => isBuildEntries(pkg.name));
+
+  if (!selection.length && opts.changed) {
+    process.stdout.write('No package changed since its last build.\n');
+    return;
+  }
 
   if (!selection.length) {
     selection = await prompts(
@@ -197,7 +241,12 @@ async function run() {
         lastName = v.name;
         process.stderr.write(data);
       });
-      sub.on('exit', (code) => done(code === 0));
+      sub.on('exit', (code) => {
+        if (code === 0 && !watchMode) {
+          writeFileSync(stampPath(v.location), '');
+        }
+        done(code === 0);
+      });
     });
 
   // Other packages bundle against core's dist, so core must finish first. In watch mode core

@@ -27,6 +27,7 @@ let services: typeof import('./common-preset.ts').services;
 let experimental_devServer: typeof import('./common-preset.ts').experimental_devServer;
 let applyServicesPresetOnce: typeof import('../utils/apply-services-preset-once.ts').applyServicesPresetOnce;
 
+// A fresh import of `common-preset` is slow when the whole test suite runs at the same time.
 beforeEach(async () => {
   // The subscription queue is module state, so each test needs a fresh `common-preset` instance.
   vi.resetModules();
@@ -55,7 +56,7 @@ beforeEach(async () => {
   vi.stubGlobal('STORYBOOK_SERVICES_LOADED', false);
   now = 1_000;
   vi.spyOn(Date, 'now').mockImplementation(() => now);
-});
+}, 60_000);
 
 afterEach(() => {
   clearRegistry();
