@@ -61,7 +61,7 @@ export { Select } from './components/Select/Select.tsx';
 export { Form } from './components/Form/Form.tsx';
 
 // Overlay helpers for popovers, menus, tooltips
-export { convertToReactAriaPlacement } from './components/shared/overlayHelpers.tsx';
+export { convertToBaseUiPlacement } from './components/shared/overlayHelpers.tsx';
 export type { PopperPlacement } from './components/shared/overlayHelpers.tsx';
 
 // Popovers
@@ -130,6 +130,7 @@ export { withReset, codeCommon } from './components/typography/lib/common.tsx';
 export { ClipboardCode } from './components/clipboard/ClipboardCode.tsx';
 
 export { useCopyButton } from '../shared/useCopyButton.ts';
+export { announce, clearAnnouncer, destroyAnnouncer } from '../shared/announce.ts';
 export type { UseCopyButtonOptions, UseCopyButtonResult } from '../shared/useCopyButton.ts';
 
 export const components = typography.components;

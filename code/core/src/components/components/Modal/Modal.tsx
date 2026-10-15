@@ -1,26 +1,14 @@
-import React, {
-  type HTMLAttributes,
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { type HTMLAttributes, createContext, useContext, useEffect, useState } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 import type { DecoratorFunction } from 'storybook/internal/csf';
 
-import { FocusScope } from 'react-aria/FocusScope';
-import { Overlay } from 'react-aria/Overlay';
-import { UNSAFE_PortalProvider } from 'react-aria/PortalProvider';
-import { useModalOverlay } from 'react-aria/useModalOverlay';
-import { ariaHideOutside } from '@react-aria/overlays';
-import { mergeProps } from 'react-aria/mergeProps';
-import { useOverlayTriggerState } from '@react-stately/overlays';
-import type { KeyboardEvent as RAKeyboardEvent } from '@react-types/shared';
+import { Dialog } from '@base-ui/react/dialog';
 import { useTransitionState } from 'react-transition-state';
 
 import { useMediaQuery } from '../../../manager/hooks/useMedia.tsx';
+import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
+import { trapTabKey } from '../shared/trapTabKey.ts';
 import * as Components from './Modal.styled.tsx';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
@@ -118,8 +106,7 @@ function BaseModal({
     );
   }
 
-  const overlayRef = useRef<HTMLDivElement>(null);
-
+  const portalContainer = useContext(PortalContainerContext);
   const reducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [{ status, isMounted }, toggle] = useTransitionState({
     timeout: reducedMotion ? 0 : transitionDuration,
@@ -127,39 +114,10 @@ function BaseModal({
     unmountOnExit: true,
   });
 
-  // Create state for the overlay trigger
-  const state = useOverlayTriggerState({
-    isOpen: open || isMounted,
-    defaultOpen,
-    onOpenChange: (isOpen: boolean) => {
-      toggle(isOpen);
-      onOpenChange?.(isOpen);
-    },
-  });
-
   const close = () => {
-    state.close();
+    toggle(false);
+    onOpenChange?.(false);
   };
-
-  const { modalProps, underlayProps } = useModalOverlay(
-    {
-      isDismissable: dismissOnClickOutside,
-      isKeyboardDismissDisabled: true,
-      shouldCloseOnInteractOutside: onInteractOutside
-        ? (element: Element) => {
-            const mockedEvent = new MouseEvent('click', {
-              bubbles: true,
-              cancelable: true,
-              relatedTarget: element,
-            });
-            onInteractOutside(mockedEvent);
-            return !mockedEvent.defaultPrevented;
-          }
-        : undefined,
-    },
-    state,
-    overlayRef
-  );
 
   // Sync external open state with transition state
   useEffect(() => {
@@ -179,75 +137,73 @@ function BaseModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
-  // Layout effect, so this runs in the same task that inserted the portal: it disconnects an
-  // already-open modal's ariaHideOutside MutationObserver before that observer processes the
-  // insertion and makes this modal inert (unfocusable and unclickable).
-  useLayoutEffect(() => {
-    if (isMounted && (open || defaultOpen) && overlayRef.current) {
-      return ariaHideOutside([overlayRef.current], { shouldUseInert: true });
-    }
-  }, [isMounted, open, defaultOpen, overlayRef]);
-
   if (!isMounted || status === 'exited' || status === 'unmounted') {
     return null;
   }
 
-  const finalModalProps = mergeProps(modalProps, {
-    onKeyDown: (e: RAKeyboardEvent) => {
-      if (e.key !== 'Escape') {
-        modalProps.onKeyDown?.(e);
-      } else {
-        // Consume the event either way: it must not reach a parent modal in the React tree (which
-        // portals bubble through) or a document-level shortcut handler underneath this modal.
-        e.stopPropagation();
-        if (dismissOnEscape) {
-          onEscapeKeyDown?.(e.nativeEvent);
-          // The deprecated handler can veto the close by preventing default (Radix contract).
-          if (!e.nativeEvent.defaultPrevented) {
-            close();
-          }
-        }
+  // Base UI asks before it closes the dialog. We stay open (and play the exit transition
+  // ourselves) unless the dismissal is allowed.
+  const handleOpenChange = (nextOpen: boolean, details: Dialog.Root.ChangeEventDetails) => {
+    if (nextOpen) {
+      return;
+    }
+    if (details.reason === 'escape-key') {
+      if (!dismissOnEscape) {
+        return;
       }
-    },
-  });
+      // The deprecated handler can veto the close by preventing default (Radix contract).
+      onEscapeKeyDown?.(details.event as KeyboardEvent);
+      if (details.event.defaultPrevented) {
+        return;
+      }
+    }
+    if (details.reason === 'outside-press') {
+      onInteractOutside?.(details.event as MouseEvent);
+      if (details.event.defaultPrevented) {
+        return;
+      }
+    }
+    close();
+  };
 
   const containerElement =
-    container ?? (portalSelector ? document.querySelector<HTMLElement>(portalSelector) : undefined);
+    container ??
+    (portalSelector ? document.querySelector<HTMLElement>(portalSelector) : undefined) ??
+    portalContainer;
 
   return (
-    <Overlay disableFocusManagement portalContainer={containerElement || undefined}>
-      {/* Overlay won't place focus within the modal on its own, and so its own FocusScope
-       starts cycling through focusable elements only after we've clicked or tabbed into the modal.
-       So we use our own focus scope and autofocus within on mount. */}
-      {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-      <FocusScope restoreFocus contain autoFocus>
-        <Components.Overlay
-          $status={status}
-          $transitionDuration={transitionDuration}
-          {...underlayProps}
+    <Dialog.Root
+      open
+      onOpenChange={handleOpenChange}
+      disablePointerDismissal={!dismissOnClickOutside}
+    >
+      <Dialog.Portal container={containerElement}>
+        <Dialog.Backdrop
+          forceRender
+          render={<Components.Overlay $status={status} $transitionDuration={transitionDuration} />}
         />
-        <div role="dialog" aria-label={ariaLabel} ref={overlayRef} {...finalModalProps}>
-          <ModalContext.Provider value={{ close }}>
-            {/* This div exists to help the FocusScope, see https://github.com/adobe/react-spectrum/issues/1604. */}
-            <div tabIndex={-1}>
-              {/* We need to set the FocusScope ourselves somehow, Overlay won't set it. */}
-              <Components.Container
-                data-deprecated={deprecated}
-                $variant={variant}
-                $status={status}
-                $transitionDuration={transitionDuration}
-                className={className}
-                width={width}
-                height={height}
-                {...props}
-              >
-                {children}
-              </Components.Container>
-            </div>
-          </ModalContext.Provider>
-        </div>
-      </FocusScope>
-    </Overlay>
+        <Dialog.Popup
+          aria-label={ariaLabel}
+          // Base UI traps focus with focus guards. We also wrap Tab ourselves, so focus does not
+          // stop on the guards.
+          onKeyDown={(event) => trapTabKey(event.nativeEvent, event.currentTarget)}
+          render={
+            <Components.Container
+              data-deprecated={deprecated}
+              $variant={variant}
+              $status={status}
+              $transitionDuration={transitionDuration}
+              className={className}
+              width={width}
+              height={height}
+              {...props}
+            />
+          }
+        >
+          <ModalContext.Provider value={{ close }}>{children}</ModalContext.Provider>
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
 
@@ -266,9 +222,9 @@ export const ModalDecorator: DecoratorFunction = (Story, { args }) => {
 
   return (
     <>
-      <UNSAFE_PortalProvider getContainer={() => container}>
+      <PortalContainerContext.Provider value={container ?? undefined}>
         <Story args={args} />
-      </UNSAFE_PortalProvider>
+      </PortalContainerContext.Provider>
       <div
         ref={(element) => setContainer(element ?? null)}
         style={{

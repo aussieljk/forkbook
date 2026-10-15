@@ -5,8 +5,6 @@ import { deprecate } from 'storybook/internal/client-logger';
 
 import { CrossIcon } from '@storybook/icons';
 
-import { Heading } from 'react-aria-components/Heading';
-import { Text } from 'react-aria-components/Text';
 import type { TransitionStatus } from 'react-transition-state';
 import { keyframes, styled } from 'storybook/theming';
 
@@ -252,15 +250,13 @@ export const Header = ({
   </Row>
 );
 
-export const Title = styled((props: ComponentProps<typeof Heading>) => (
-  <Heading level={2} {...props} />
-))(({ theme }) => ({
+export const Title = styled.h2(({ theme }) => ({
   margin: 0,
   fontSize: theme.typography.size.s3,
   fontWeight: theme.typography.weight.bold,
 }));
 
-export const Description = styled(Text)(({ theme }) => ({
+export const Description = styled.span(({ theme }) => ({
   position: 'relative',
   zIndex: 1,
   margin: 0,

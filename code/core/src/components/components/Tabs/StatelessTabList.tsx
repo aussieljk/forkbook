@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ChevronSmallLeftIcon, ChevronSmallRightIcon } from '@storybook/icons';
 
-import { TabList as TabListUpstream } from 'react-aria-components/Tabs';
+import { Tabs } from '@base-ui/react/tabs';
 import { styled } from 'storybook/theming';
 
 import { Button } from '../Button/Button.tsx';
@@ -30,7 +30,7 @@ const ScrollContainer = styled.div({
   },
 });
 
-const StyledTabList = styled(TabListUpstream)({
+const StyledTabList = styled(Tabs.List)({
   display: 'flex',
   flexShrink: 0,
 });
@@ -167,7 +167,9 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
         </ScrollButtonContainer>
       )}
       <ScrollContainer ref={scrollContainerRef}>
-        <StyledTabList {...rest}>{children}</StyledTabList>
+        <StyledTabList activateOnFocus {...rest}>
+          {children}
+        </StyledTabList>
       </ScrollContainer>
       {showScrollButtons && (
         <ScrollButtonContainer $showStartBorder={canScrollRight}>

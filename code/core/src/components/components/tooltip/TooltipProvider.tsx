@@ -1,12 +1,15 @@
 import type { DOMAttributes, ReactElement, ReactNode } from 'react';
-import React, { useCallback, useState } from 'react';
+import React, { useContext, useId, useState } from 'react';
 
 import { deprecate } from 'storybook/internal/client-logger';
 
-import { Focusable } from 'react-aria-components/Focusable';
-import { TooltipTrigger, Tooltip as TooltipUpstream } from 'react-aria-components/Tooltip';
+import { Tooltip } from '@base-ui/react/tooltip';
 
-import { type PopperPlacement, convertToReactAriaPlacement } from '../shared/overlayHelpers.tsx';
+import {
+  type PopperPlacement,
+  PortalContainerContext,
+  convertToBaseUiPlacement,
+} from '../shared/overlayHelpers.tsx';
 
 export interface TooltipProviderProps {
   /** Tooltips trigger on hover and focus by default. To trigger on focus only, set this to `true`. */
@@ -48,7 +51,7 @@ export interface TooltipProviderProps {
 
 const TooltipProvider = ({
   triggerOnFocusOnly = false,
-  placement: placementProp = 'top',
+  placement = 'top',
   offset = 8,
   tooltip,
   children,
@@ -58,47 +61,41 @@ const TooltipProvider = ({
   delayHide = 200,
   visible,
   onVisibleChange,
-  ...props
 }: TooltipProviderProps) => {
-  const placement = convertToReactAriaPlacement(placementProp);
+  const portalContainer = useContext(PortalContainerContext);
+  // Base UI needs the trigger ID to position a tooltip that is visible before any hover.
   const child = React.Children.only(children);
+  const generatedId = useId();
+  const triggerId = (child.props as { id?: string }).id ?? generatedId;
 
   if (startOpen !== undefined) {
     deprecate('The `startOpen` prop is deprecated. Please use `defaultVisible` instead.');
   }
 
   const [isOpen, setIsOpen] = useState(defaultVisible ?? startOpen ?? false);
-  const onOpenChange = useCallback(
-    (isOpen: boolean) => {
-      setIsOpen(isOpen);
-      onVisibleChange?.(isOpen);
-    },
-    [onVisibleChange]
-  );
+  const onOpenChange = (open: boolean, { reason }: Tooltip.Root.ChangeEventDetails) => {
+    if (open && triggerOnFocusOnly && reason === 'trigger-hover') {
+      return;
+    }
+    setIsOpen(open);
+    onVisibleChange?.(open);
+  };
 
   return (
-    <TooltipTrigger
-      delay={delayShow}
-      closeDelay={delayHide}
-      isOpen={visible ?? isOpen}
-      onOpenChange={onOpenChange}
-      trigger={triggerOnFocusOnly ? 'focus' : undefined}
-      {...props}
-    >
-      {/* We don't let react-aria set an aria-describedby attribute because it clashes with our intention to explicitly set an aria-label that can be different from the tooltip copy. Some screenreaders would announce the label AND description if we also allowed aria-describedby, which would decrease usability. */}
-      {/* @ts-expect-error: We have to nullify aria-describedby and this is the only way we can do it (undefined won't work and an empty string will result in DOM pollution). */}
-      <Focusable>{React.cloneElement(child, { 'aria-describedby': null })}</Focusable>
-      <TooltipUpstream
-        data-testid="tooltip"
-        placement={placement}
-        offset={offset}
-        onOpenChange={onOpenChange}
-        style={{ outline: 'none' }}
-        {...props}
-      >
-        {tooltip}
-      </TooltipUpstream>
-    </TooltipTrigger>
+    <Tooltip.Root open={visible ?? isOpen} onOpenChange={onOpenChange} triggerId={triggerId}>
+      <Tooltip.Trigger id={triggerId} delay={delayShow} closeDelay={delayHide} render={child} />
+      <Tooltip.Portal container={portalContainer}>
+        <Tooltip.Positioner
+          {...convertToBaseUiPlacement(placement)}
+          sideOffset={offset}
+          style={{ zIndex: 100000 }}
+        >
+          <Tooltip.Popup role="tooltip" data-testid="tooltip" style={{ outline: 'none' }}>
+            {tooltip}
+          </Tooltip.Popup>
+        </Tooltip.Positioner>
+      </Tooltip.Portal>
+    </Tooltip.Root>
   );
 };
 

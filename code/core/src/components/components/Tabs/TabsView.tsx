@@ -1,9 +1,6 @@
 import type { ComponentProps, FC, HTMLAttributes, ReactElement, ReactNode } from 'react';
-import React from 'react';
+import React, { useId, useState } from 'react';
 
-import { Item } from 'react-stately/Item';
-import { useTabListState, type TabListState } from 'react-stately/useTabListState';
-import type { Key } from '@react-types/shared';
 import { styled } from 'storybook/theming';
 
 import { Bar } from '../Bar/Bar.tsx';
@@ -26,23 +23,42 @@ export interface useTabsStateProps {
   tabs: TabProps[];
 }
 
+export interface TabsState {
+  tabs: TabProps[];
+  /** ID of the selected tab, or null when no tab can be selected. */
+  selected: string | null;
+  select: (key: string) => void;
+  getTabId: (key: string) => string;
+  getPanelId: (key: string) => string;
+}
+
+/** Shared state for a TabList and a TabPanel that render the same tabs. */
 export const useTabsState = ({
   defaultSelected,
   onSelectionChange,
   selected,
   tabs,
-}: useTabsStateProps): unknown => {
-  return useTabListState({
-    children: tabs.map(({ children: Children, id, 'aria-label': ariaLabel, title: Title }) => (
-      <Item key={id} aria-label={ariaLabel} title={typeof Title === 'function' ? <Title /> : Title}>
-        {typeof Children === 'function' ? <Children /> : Children}
-      </Item>
-    )),
-    disabledKeys: tabs.filter(({ isDisabled }) => isDisabled).map(({ id }) => id),
-    defaultSelectedKey: defaultSelected,
-    onSelectionChange: (key) => onSelectionChange?.(`${key}`),
-    selectedKey: selected,
-  });
+}: useTabsStateProps): TabsState => {
+  const id = useId();
+  const [internalSelected, setInternalSelected] = useState(defaultSelected);
+  const enabledTabs = tabs.filter(({ isDisabled }) => !isDisabled);
+
+  // Like a native tab list, select the first enabled tab when the requested tab cannot be used.
+  const requested = selected ?? internalSelected;
+  const current = enabledTabs.some((tab) => tab.id === requested)
+    ? requested!
+    : (enabledTabs[0]?.id ?? null);
+
+  return {
+    tabs,
+    selected: current,
+    select: (key) => {
+      setInternalSelected(key);
+      onSelectionChange?.(key);
+    },
+    getTabId: (key) => `${id}-tab-${key}`,
+    getPanelId: (key) => `${id}-panel-${key}`,
+  };
 };
 
 export const Container = styled.div({
@@ -53,11 +69,12 @@ export const Container = styled.div({
 
 export const FlexTabPanel = styled(TabPanel)(() => ({
   flex: 1,
+  minHeight: 0,
 }));
 
-const FlexTabList = styled(TabList)<{ $simulatedGap: Key }>(({ $simulatedGap }) => ({
+const FlexTabList = styled(TabList)<{ $simulatedGap: string | number }>(({ $simulatedGap }) => ({
   flex: '1 1 0%',
-  '&[data-show-scroll-buttons="true"]': { marginInlineEnd: $simulatedGap },
+  '&:has(.tablist-has-scroll)': { marginInlineEnd: $simulatedGap },
 }));
 
 export interface TabsViewProps extends HTMLAttributes<HTMLDivElement> {
@@ -120,7 +137,7 @@ export const TabsView: FC<TabsViewProps> = ({
     onSelectionChange,
     selected,
     tabs,
-  }) as TabListState<object>;
+  });
 
   const EmptyContent = emptyState ?? <EmptyTabContent title="Nothing found" />;
   const hasContent = tabs.length > 0;

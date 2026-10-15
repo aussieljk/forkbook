@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
-import React, { Children, useCallback, useContext, useMemo, useState } from 'react';
+import React, { Children, useCallback, useContext, useId, useMemo, useState } from 'react';
 
 import { logger } from 'storybook/internal/client-logger';
 import type { ActionItem } from 'storybook/internal/components';
@@ -7,7 +7,6 @@ import { Bar, Button, ToggleButton, Zoom } from 'storybook/internal/components';
 
 import { CopyIcon, MarkupIcon } from '@storybook/icons';
 
-import { useId } from 'react-aria/useId';
 import { darken } from 'polished';
 import { styled } from 'storybook/theming';
 

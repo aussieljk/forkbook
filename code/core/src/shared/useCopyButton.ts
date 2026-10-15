@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { announce, clearAnnouncer } from '@react-aria/live-announcer';
+import { announce, clearAnnouncer } from './announce.ts';
 
 export interface UseCopyButtonOptions<T> {
   /** Content shown in the button by default. */

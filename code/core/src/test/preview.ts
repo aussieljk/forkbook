@@ -126,7 +126,7 @@ export const enhanceContext: LoaderFunction = async (context) => {
             },
             get() {
               /*
-               * Focus libraries (react-aria, Zag) read `HTMLElement.prototype.focus` to capture
+               * Focus libraries (Base UI, Zag) read `HTMLElement.prototype.focus` to capture
                * and wrap it. That invokes this getter with the prototype as `this`, so DOM
                * brand-checked properties must not be read until the receiver is validated.
                *

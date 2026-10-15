@@ -8,10 +8,10 @@ import { styled } from 'storybook/theming';
 
 import { isChromatic } from '../../../../.storybook/isChromatic.ts';
 import { CallStates } from '../../instrumenter/types.ts';
+import { destroyAnnouncer } from '../../shared/announce.ts';
 import { getCalls, getInteractions } from '../mocks/index.ts';
 import { InteractionsPanel } from './InteractionsPanel.tsx';
 import ToolbarStories from './Toolbar.stories.tsx';
-import { destroyAnnouncer } from '@react-aria/live-announcer';
 
 const StyledWrapper = styled.div(({ theme }) => ({
   backgroundColor: theme.background.content,

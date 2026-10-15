@@ -1,12 +1,11 @@
 import type { ComponentProps, FC } from 'react';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef } from 'react';
 
 import { Button } from 'storybook/internal/components';
 import type { API_IndexHash, API_Refs } from 'storybook/internal/types';
 
 import { BottomBarToggleIcon, MenuIcon } from '@storybook/icons';
 
-import { useId } from 'react-aria/useId';
 import { type API_KeyCollection, useStorybookApi, useStorybookState } from 'storybook/manager-api';
 import { styled } from 'storybook/theming';
 
@@ -94,10 +93,7 @@ interface MobileBottomBarContentProps {
 
 /**
  * The mobile bottom bar is split into its own component so that `useLandmark` is only invoked while
- * the underlying DOM element is mounted. Calling `useLandmark` unconditionally from a parent that
- * conditionally renders the bar leaves a stale landmark with a null `ref.current` in
- * `@react-aria/landmark`'s manager, which crashes the binary-search position comparison the next
- * time another landmark is registered.
+ * the underlying DOM element is mounted, and so its ref always points at the bar.
  */
 const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
   fullStoryAriaLabel,

@@ -36,18 +36,8 @@
       {
         "paths": [
           {
-            "name": "react-aria",
-            "message": "Don't import from the react-aria root, but use the react-aria/HookOrComponent entrypoints which are optimised for tree-shaking",
-            "allowTypeImports": false
-          },
-          {
-            "name": "react-stately",
-            "message": "Don't import from the react-stately root, but use the react-stately/HookOrComponent entrypoints which are optimised for tree-shaking",
-            "allowTypeImports": false
-          },
-          {
-            "name": "react-aria-components",
-            "message": "Don't import from react-aria-components root, but use the react-aria-components/ComponentX entrypoints which are optimised for tree-shaking. See https://github.com/storybookjs/storybook/pull/32594",
+            "name": "@base-ui/react",
+            "message": "Don't import from the @base-ui/react root, but use the @base-ui/react/component entrypoints which are optimised for tree-shaking",
             "allowTypeImports": true
           },
           {

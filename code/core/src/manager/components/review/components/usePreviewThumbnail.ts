@@ -39,10 +39,6 @@ const PREVIEW_EVICT_ROOT_MARGIN = '150% 0px';
 // Percentage rootMargins are relative to the observer root, so anchor the
 // observers to the nearest scroll container rather than the window.
 const getScrollRoot = (element: HTMLElement): HTMLElement | null => {
-  const radixViewport = element.closest<HTMLElement>('[data-radix-scroll-area-viewport]');
-  if (radixViewport) {
-    return radixViewport;
-  }
   let current = element.parentElement;
   while (current) {
     const { overflowY } = window.getComputedStyle(current);

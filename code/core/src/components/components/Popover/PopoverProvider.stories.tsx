@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { expect, fn, screen, userEvent, within } from 'storybook/test';
+import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import { styled } from 'storybook/theming';
 
 import preview from '../../../../../.storybook/preview.tsx';
@@ -213,7 +213,9 @@ export const InteractivePopoverKB = meta.story({
 
     await step('Press Esc to close popover', async () => {
       await userEvent.keyboard('{Escape}');
-      await expect(canvas.queryByText('Lorem ipsum dolor sit amet')).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.queryByText('Lorem ipsum dolor sit amet')).not.toBeInTheDocument()
+      );
     });
   },
 });
@@ -241,7 +243,9 @@ export const InteractivePopoverMouse = meta.story({
     await step('Click outside popover to close it', async () => {
       const sibling = canvas.getByText('Sibling Button');
       await userEvent.click(sibling);
-      await expect(screen.queryByText('Lorem ipsum dolor sit amet')).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(screen.queryByText('Lorem ipsum dolor sit amet')).not.toBeInTheDocument()
+      );
     });
   },
 });

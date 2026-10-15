@@ -1,17 +1,14 @@
 import type { FC, HTMLAttributes } from 'react';
-import React, { useRef } from 'react';
+import React from 'react';
 
-import { useTabPanel } from 'react-aria/useTabList';
-import type { TabListState } from 'react-stately/useTabListState';
-import type { Node } from '@react-types/shared';
-import { styled } from 'storybook/theming';
+import { Tabs } from '@base-ui/react/tabs';
 
-import { ScrollArea } from '../ScrollArea/ScrollArea.tsx';
-import type { useTabsState } from './TabsView.tsx';
+import { StatelessTabPanel } from './StatelessTabPanel.tsx';
+import type { TabsState } from './TabsView.tsx';
 
 export interface TabPanelProps extends HTMLAttributes<HTMLDivElement> {
   /** The state of the tab list. Primary mechanism for using the tabpanel. */
-  state: ReturnType<typeof useTabsState>;
+  state: TabsState;
 
   /**
    * Whether the panel adds a vertical scrollbar. Disable if you want to use fixed or sticky
@@ -26,41 +23,24 @@ export interface TabPanelProps extends HTMLAttributes<HTMLDivElement> {
   renderAllChildren?: boolean;
 }
 
-const Panel = styled.div({
-  overflowY: 'hidden',
-  height: '100%',
-});
-
 export const TabPanel: FC<TabPanelProps> = ({
   hasScrollbar = true,
   renderAllChildren = false,
   state,
-}) => {
-  const ref = useRef(null);
-  const typedState = state as TabListState<object>;
-  const { tabPanelProps } = useTabPanel(typedState.selectedItem ?? {}, typedState, ref);
-
-  const childrenToRender = (
-    renderAllChildren ? [...typedState.collection] : [typedState.selectedItem]
-  ).filter((item): item is Node<object> => !!item);
-
-  return childrenToRender.map((item) => {
-    const isSelected = typedState.selectedKey === item.key;
-
-    return (
-      <Panel
-        key={item.key}
-        ref={isSelected ? ref : undefined}
-        {...(isSelected ? tabPanelProps : {})}
-        id={isSelected ? `${tabPanelProps.id}`.replace(/null$/, `${item.key}`) : undefined}
-        hidden={isSelected ? undefined : true}
+  ...rest
+}) => (
+  <Tabs.Root {...rest} value={state.selected}>
+    {state.tabs.map(({ id, children: Children }) => (
+      <StatelessTabPanel
+        key={id}
+        name={id}
+        id={state.getPanelId(id)}
+        aria-labelledby={state.getTabId(id)}
+        keepMounted={renderAllChildren}
+        hasScrollbar={hasScrollbar}
       >
-        {hasScrollbar ? (
-          <ScrollArea vertical>{item.props.children}</ScrollArea>
-        ) : (
-          item.props.children
-        )}
-      </Panel>
-    );
-  });
-};
+        {typeof Children === 'function' ? <Children /> : Children}
+      </StatelessTabPanel>
+    ))}
+  </Tabs.Root>
+);

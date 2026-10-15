@@ -166,9 +166,5 @@ export const createGlobal = memoize(1)(({
       inset: 0,
       pointerEvents: 'none',
     },
-
-    '.react-aria-Popover:focus-visible': {
-      outline: 'none',
-    },
   };
 });
