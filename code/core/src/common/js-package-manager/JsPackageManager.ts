@@ -8,7 +8,7 @@ import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
 import { type ResultPromise } from 'execa';
 // eslint-disable-next-line depend/ban-dependencies
-import { globSync } from 'glob';
+import { globSync } from 'tinyglobby';
 import picocolors from 'picocolors';
 import { coerce, gt, satisfies, validRange } from 'semver';
 import invariant from 'tiny-invariant';
@@ -871,6 +871,7 @@ export abstract class JsPackageManager {
     const allPackageJsonFiles = globSync('**/package.json', {
       cwd: projectRoot,
       absolute: true,
+      expandDirectories: false,
       ignore: ['**/node_modules/**', '**/dist/**'],
     });
 

@@ -6,7 +6,7 @@ import { normalizeStoriesEntry } from '@aussieljk/forkbook/internal/common';
 import { type StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
 // eslint-disable-next-line depend/ban-dependencies
-import { glob as globOriginal } from 'glob';
+import { glob as globOriginal } from 'tinyglobby';
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
@@ -15,7 +15,7 @@ import { removeMDXEntries } from '../remove-mdx-entries.ts';
 const configDir = '/configDir/';
 const workingDir = '/';
 
-vi.mock('glob', () => ({ glob: vi.fn() }));
+vi.mock('tinyglobby', () => ({ glob: vi.fn() }));
 const glob = vi.mocked(globOriginal);
 
 const createList = (list: { entry: StoriesEntry; result: string[] }[]) => {

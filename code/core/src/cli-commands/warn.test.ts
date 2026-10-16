@@ -12,10 +12,10 @@ const mocks = vi.hoisted(() => {
   };
 });
 
-vi.mock('globby', async (importOriginal) => {
+vi.mock('tinyglobby', async (importOriginal) => {
   return {
-    ...(await importOriginal<typeof import('globby')>()),
-    globby: mocks.globby,
+    ...(await importOriginal<typeof import('tinyglobby')>()),
+    glob: mocks.globby,
   };
 });
 

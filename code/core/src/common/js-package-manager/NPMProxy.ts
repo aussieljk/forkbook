@@ -11,7 +11,7 @@ import * as find from 'empathic/find';
 // eslint-disable-next-line depend/ban-dependencies
 import type { ResultPromise } from 'execa';
 // eslint-disable-next-line depend/ban-dependencies
-import { globSync } from 'glob';
+import { globSync } from 'tinyglobby';
 import sort from 'semver/functions/sort.js';
 import { dedent } from 'ts-dedent';
 
@@ -222,6 +222,7 @@ export class NPMProxy extends JsPackageManager {
           {
             cwd: dirname(ancestorPath),
             absolute: true,
+            expandDirectories: false,
             ignore: patterns
               .filter((pattern: string) => pattern.startsWith('!'))
               .map((pattern: string) => `${pattern.slice(1)}/package.json`),

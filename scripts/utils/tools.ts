@@ -6,7 +6,7 @@ import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
 import { spawn } from 'cross-spawn';
 import * as esbuild from 'esbuild';
 // eslint-disable-next-line depend/ban-dependencies
-import { glob } from 'glob';
+import { glob } from 'tinyglobby';
 import limit from 'p-limit';
 import picocolors from 'picocolors';
 import prettyTime from 'pretty-hrtime';
@@ -91,7 +91,9 @@ export const getWorkspace = async (): Promise<PackageJson[]> => {
   } = codePackage;
 
   const workspaces = await Promise.all(
-    (patterns as string[]).map(async (pattern: string) => glob(pattern, { cwd: ROOT_DIRECTORY }))
+    (patterns as string[]).map(async (pattern: string) =>
+      glob(pattern, { cwd: ROOT_DIRECTORY, expandDirectories: false })
+    )
   );
 
   return Promise.all(

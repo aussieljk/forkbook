@@ -1,6 +1,6 @@
 import { normalizeStories, loadMainConfig } from '@aussieljk/forkbook/internal/common';
 import { readFileSync } from 'node:fs';
-import { sync as globSync } from 'glob';
+import { globSync } from 'tinyglobby';
 import path from 'path';
 import { CsfFile, loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 import { toId } from '@aussieljk/forkbook/internal/csf';
@@ -48,8 +48,9 @@ export async function buildIndex({ configPath }: { configPath: string }): Promis
     return globSync(specifier.files, {
       cwd: path.resolve(process.cwd(), specifier.directory),
       absolute: true,
+      expandDirectories: false,
       // default to always ignore (exclude) anything in node_modules
-      ignore: ['**/node_modules'],
+      ignore: ['**/node_modules/**'],
     }).map((storyPath: string) => {
       const normalizePathForWindows = (str: string) =>
         path.sep === '\\' ? str.replace(/\\/g, '/') : str;

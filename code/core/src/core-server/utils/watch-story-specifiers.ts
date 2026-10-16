@@ -88,10 +88,13 @@ export function watchStorySpecifiers(
 
             // Dynamically import globby because it is a pure ESM module
             // eslint-disable-next-line depend/ban-dependencies
-            const { globby } = await import('globby');
+            const { glob } = await import('tinyglobby');
 
             // glob only supports forward slashes
-            const addedFiles = await globby(slash(dirGlob), commonGlobOptions(dirGlob));
+            const addedFiles = await glob(slash(dirGlob), {
+              ...commonGlobOptions(dirGlob),
+              expandDirectories: false,
+            });
 
             addedFiles.forEach((filePath: Path) => {
               const fileImportPath = toImportPath(filePath);

@@ -4,7 +4,7 @@ import { once } from '@aussieljk/forkbook/internal/node-logger';
 import { MainFileMissingError } from '@aussieljk/forkbook/internal/server-errors';
 
 // eslint-disable-next-line depend/ban-dependencies
-import { glob } from 'glob';
+import { glob } from 'tinyglobby';
 // eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 import { dedent } from 'ts-dedent';
@@ -15,6 +15,7 @@ export async function validateConfigurationFiles(configDir: string, cwd?: string
   const extensionsPattern = `{${Array.from(supportedExtensions).join(',')}}`;
   const mainConfigMatches = await glob(slash(resolve(configDir, `main${extensionsPattern}`)), {
     cwd: cwd ?? process.cwd(),
+    expandDirectories: false,
   });
 
   const [mainConfigPath] = mainConfigMatches;
