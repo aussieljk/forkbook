@@ -565,7 +565,7 @@ export const useHighlights = (channel: Channel) => {
     selected.set(undefined);
   };
 
-  let removeTimeout: NodeJS.Timeout;
+  let removeTimeout: ReturnType<typeof setTimeout> | undefined;
   const scrollIntoView = (target: string, options?: ScrollIntoViewOptions) => {
     const id = 'scrollIntoView-highlight';
     clearTimeout(removeTimeout);

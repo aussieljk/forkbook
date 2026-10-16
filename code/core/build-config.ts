@@ -18,6 +18,7 @@ import addonVitest from './build-config/addon-vitest.ts';
 import mcp from './build-config/mcp.ts';
 import create from './build-config/create.ts';
 import cliCommands from './build-config/cli-commands.ts';
+import reactNative from './build-config/react-native.ts';
 
 const coreConfig: BuildEntries = {
   prebuild: async (cwd) => {
@@ -296,6 +297,7 @@ const areas: BuildEntries[] = [
   mcp,
   create,
   cliCommands,
+  reactNative,
 ];
 
 const config: BuildEntries = {

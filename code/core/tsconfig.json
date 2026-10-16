@@ -13,6 +13,21 @@
     "*.d.ts",
     "templates/runtime-build-code.template"
   ],
-  // Next.js code has its own project (tsconfig.nextjs.json), so the global Next.js types stay there.
-  "exclude": ["dist", "src/nextjs-vite/**", "src/nextjs-vite-plugin/**"]
+  // Next.js and React Native code have their own projects (tsconfig.nextjs.json,
+  // tsconfig.react-native.json), so their global types stay there.
+  "exclude": [
+    "dist",
+    "src/nextjs-vite/**",
+    "src/nextjs-vite-plugin/**",
+    "src/react-native/*.ts",
+    "src/react-native/*.tsx",
+    "src/react-native/*.js",
+    "src/react-native/backgrounds/**",
+    "src/react-native/components/**",
+    "src/react-native-ui/**",
+    "src/react-native-ui-common/**",
+    "src/react-native-theming/**",
+    "src/addon-ondevice-controls/**",
+    "src/addon-ondevice-actions/**"
+  ]
 }
