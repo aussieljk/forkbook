@@ -8,7 +8,7 @@ Run these from the repo root.
 
 | Command | What it does | Time |
 |---|---|---|
-| `bun run verify` | Builds the packages that changed, runs typecheck, runs all tests. Prints a short summary. Full logs are in `node_modules/.cache/verify/`. | about 2 min |
+| `bun run verify` | Builds the packages that changed, then runs typecheck and all tests at the same time. Prints a short summary. Full logs are in `node_modules/.cache/verify/`. A pass on a clean tree is recorded, so `merge-agent` can skip it. | about 2 min (much more when Xcode builds run on the mini) |
 | `bun run verify --changed` | The same, but runs only the tests that the changed files touch. | less than 1 min |
 | `bun run verify --all` | The same, with a full build of every package. | add about 1 min |
 | `bun run build:changed` | Builds only the packages with files newer than their last build (`dist/.build-stamp`). | seconds |
@@ -18,7 +18,7 @@ Run these from the repo root.
 | `bun run test:unit` | All tests except the browser project. | |
 | `bun run test:ui` | Only the browser project (`storybook-ui`, Playwright Chromium). | about 1 min |
 | `bun x vitest run --project core path/to/file.test.ts` | One test file. | |
-| `bun run merge-agent <branch>` | Merges an agent branch into master, fixes a `bun.lock` conflict, runs verify, and removes the worktree and the branch. | |
+| `bun run merge-agent <branch>` | Merges an agent branch into master, fixes a `bun.lock` conflict, and removes the worktree and the branch. A fast-forward to a tree that passed verify skips verify. Other merges run `verify --changed=<old master>`. | seconds to 1 min |
 | `bun run browsers` | Installs the Playwright browsers (`pw-browsers`). | |
 | `bun x oxfmt <files>` | Formats files. | |
 

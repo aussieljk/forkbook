@@ -1,4 +1,5 @@
-import { execFileSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
@@ -29,17 +30,16 @@ const TSC_OPTIONS = [
   ...DTS_ARTIFACTS,
 ];
 
-describe('React declaration contract', () => {
+describe.concurrent('React declaration contract', () => {
   it.runIf(process.env.CI)('is built before this suite runs', () => {
     expect(DTS_BUILT).toBe(true);
   });
 
   it.runIf(DTS_BUILT)(
     'compiles public declarations with the workspace compiler',
-    () => {
-      execFileSync(process.execPath, [TYPESCRIPT, ...TSC_OPTIONS], {
+    async () => {
+      await promisify(execFile)(process.execPath, [TYPESCRIPT, ...TSC_OPTIONS], {
         cwd: REPOSITORY_ROOT,
-        stdio: 'pipe',
       });
     },
     // The classic tsc is slow when the whole test suite runs at the same time.
@@ -48,10 +48,9 @@ describe('React declaration contract', () => {
 
   it.runIf(DTS_BUILT)(
     'compiles public declarations with TypeScript 5.9.3',
-    () => {
-      execFileSync(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
+    async () => {
+      await promisify(execFile)(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
         cwd: REPOSITORY_ROOT,
-        stdio: 'pipe',
       });
     },
     // The classic tsc is slow when the whole test suite runs at the same time.

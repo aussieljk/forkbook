@@ -1,4 +1,5 @@
-import { execFileSync } from 'node:child_process';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { createRequire } from 'node:module';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -27,7 +28,7 @@ const TSC_OPTIONS = [
   CONSUMER_FIXTURE,
 ];
 
-describe('@aussieljk/forkbook/test declaration contract', () => {
+describe.concurrent('@aussieljk/forkbook/test declaration contract', () => {
   it.runIf(process.env.CI)('is built before this suite runs', () => {
     expect(DTS_BUILT).toBe(true);
   });
@@ -44,10 +45,9 @@ describe('@aussieljk/forkbook/test declaration contract', () => {
 
   it.runIf(DTS_BUILT)(
     'compiles the public test API consumer fixture with the workspace compiler',
-    () => {
-      execFileSync(process.execPath, [TYPESCRIPT, ...TSC_OPTIONS], {
+    async () => {
+      await promisify(execFile)(process.execPath, [TYPESCRIPT, ...TSC_OPTIONS], {
         cwd: REPOSITORY_ROOT,
-        stdio: 'pipe',
       });
     },
     // The classic tsc is slow when the whole test suite runs at the same time.
@@ -56,10 +56,9 @@ describe('@aussieljk/forkbook/test declaration contract', () => {
 
   it.runIf(DTS_BUILT)(
     'compiles the public test API consumer fixture with TypeScript 5.9.3',
-    () => {
-      execFileSync(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
+    async () => {
+      await promisify(execFile)(process.execPath, [TYPESCRIPT_5, ...TSC_OPTIONS], {
         cwd: REPOSITORY_ROOT,
-        stdio: 'pipe',
       });
     },
     120_000
