@@ -35,6 +35,6 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
       - name: Install Chromium
-        run: node node_modules/playwright/cli.js install --with-deps chromium-headless-shell
+        run: node node_modules/playwright-core/cli.js install --with-deps chromium-headless-shell
       - name: Unit tests
         run: bun run test:unit
