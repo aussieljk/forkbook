@@ -1,14 +1,15 @@
 /// <reference types="node" />
 import npmLog from 'npmlog';
-import prettyTime from 'pretty-hrtime';
 
 import * as newLogger from './logger/logger.ts';
+import { prettyTime } from './pretty-time.ts';
 
 export { prompt } from './prompts/index.ts';
 export { logTracker } from './logger/log-tracker.ts';
 export type { SpinnerInstance, TaskLogInstance } from './prompts/prompt-provider-base.ts';
 export { protectUrls, createHyperlink } from './wrap-utils.ts';
 export { CLI_COLORS } from './logger/colors.ts';
+export { prettyTime } from './pretty-time.ts';
 export { ConsoleLogger, StyledConsoleLogger } from './logger/console.ts';
 
 export type { BoxOptions, LogLevel } from './logger/logger.ts';

@@ -1,4 +1,5 @@
-export { isWebContainer } from '@webcontainer/env';
+/** StackBlitz WebContainers set `process.versions.webcontainer`. */
+export const isWebContainer = () => process.versions.webcontainer != null;
 
 import { nodePathsToArray } from './paths.ts';
 
