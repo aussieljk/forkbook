@@ -7,7 +7,7 @@ const kebab = (key: string) => key.replace(/[A-Z]/g, (char) => `-${char.toLowerC
 const px = (value: number | string | undefined) =>
   typeof value === 'number' ? `${value}px` : value;
 
-/** Adds `--sb-<prefix>-<key>` for each value of a theme group, for example `--fb-color-primary`. */
+/** Adds `--fb-<prefix>-<key>` for each value of a theme group, for example `--fb-color-primary`. */
 const addGroup = (
   vars: CssVars,
   prefix: string,
@@ -16,13 +16,13 @@ const addGroup = (
 ) => {
   for (const [key, value] of Object.entries(group ?? {})) {
     if (typeof value === 'string' || typeof value === 'number') {
-      vars[`--sb-${prefix}-${kebab(key)}`] = unit(value) as string;
+      vars[`--fb-${prefix}-${kebab(key)}`] = unit(value) as string;
     }
   }
 };
 
 /**
- * Turns a theme into CSS variables. Component styles read the theme with `var(--sb-...)`.
+ * Turns a theme into CSS variables. Component styles read the theme with `var(--fb-...)`.
  *
  * The names follow the theme object: `theme.color.defaultText` is `--fb-color-default-text`,
  * `theme.typography.size.s2` is `--fb-size-s2` and `theme.input.borderRadius` is

@@ -22,7 +22,11 @@ export async function cssToJs(file: string) {
   const { code, exports } = transform({
     filename: name,
     code: await readFile(file),
-    cssModules: file.endsWith('.module.css') ? { pattern: 'fb-[hash]-[local]' } : false,
+    // Grid line and area names stay global: the layout sets `grid-template-areas` inline with the
+    // plain names, the same as Vite's CSS modules do.
+    cssModules: file.endsWith('.module.css')
+      ? { pattern: 'fb-[hash]-[local]', grid: false }
+      : false,
     minify: true,
   });
 
