@@ -1,12 +1,17 @@
 import type { FC, PropsWithChildren } from 'react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { IconContext } from '@phosphor-icons/react';
 
 import type { ThemeVars } from '@aussieljk/forkbook/theming';
-import { ensure as ensureTheme, ThemeProvider } from '@aussieljk/forkbook/theming';
+import {
+  ensure as ensureTheme,
+  getPreferredColorScheme,
+  ThemeProvider,
+  themes,
+} from '@aussieljk/forkbook/theming';
 
 import { DocsPageWrapper } from '../components';
 import { TableOfContents } from '../components/TableOfContents';
@@ -21,6 +26,24 @@ const { document, window: globalWindow } = globalThis;
 // Forkbook icons are 14 px unless a component gives another size.
 const ICONS = { size: 14 };
 
+/**
+ * The light or dark Forkbook theme, from the OS setting. It changes when the OS setting changes. A
+ * `docs.theme` parameter replaces it.
+ */
+const usePreferredTheme = (): ThemeVars => {
+  const [scheme, setScheme] = useState<'light' | 'dark'>(getPreferredColorScheme);
+  useEffect(() => {
+    const query = globalWindow.matchMedia?.('(prefers-color-scheme: dark)');
+    if (!query) {
+      return undefined;
+    }
+    const onChange = () => setScheme(query.matches ? 'dark' : 'light');
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+  return themes[scheme];
+};
+
 export interface DocsContainerProps<TFramework extends Renderer = Renderer> {
   context: DocsContextProps<TFramework>;
   theme?: ThemeVars;
@@ -32,6 +55,7 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
   children,
 }) => {
   const slugger = useMemo(() => createDocsSlugger(), []);
+  const preferredTheme = usePreferredTheme();
   let toc;
   // Language of docs prose (descriptions, ArgTypes description cells, free MDX prose).
   let lang;
@@ -69,7 +93,7 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
     <DocsSluggerContext.Provider value={slugger}>
       <DocsContext.Provider value={context}>
         <SourceContainer channel={context.channel}>
-          <ThemeProvider theme={ensureTheme(theme as ThemeVars)}>
+          <ThemeProvider theme={ensureTheme(theme ?? preferredTheme)}>
             <IconContext.Provider value={ICONS}>
               <DocsPageWrapper
                 lang={lang}
