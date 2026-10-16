@@ -1,7 +1,5 @@
-import type { BuildOptions } from 'esbuild';
-
-// https://esbuild.github.io/api/#target
-export const BROWSER_TARGETS: BuildOptions['target'] = [
+// Targets in the esbuild and oxc format (https://esbuild.github.io/api/#target).
+export const BROWSER_TARGETS: string[] = [
   'chrome147',
   'edge150',
   'firefox152',
@@ -9,11 +7,10 @@ export const BROWSER_TARGETS: BuildOptions['target'] = [
   'ios26.5',
 ];
 
-// https://esbuild.github.io/api/#target
-export const NODE_TARGET: BuildOptions['target'] = 'node22.12';
+export const NODE_TARGET = 'node22.12';
 
 // https://esbuild.github.io/api/#supported
-export const SUPPORTED_FEATURES: BuildOptions['supported'] = {
+export const SUPPORTED_FEATURES: Record<string, boolean> = {
   // React Native does not support class static blocks without a specific babel plugin
   'class-static-blocks': false,
 };

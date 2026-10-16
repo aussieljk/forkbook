@@ -1,17 +1,18 @@
-import type {
-  Builder,
-  BuilderStats,
-  Builder_Unpromise,
-  Builder_WithRequiredProperty,
-} from '@aussieljk/forkbook/internal/types';
+import type { Builder, BuilderStats, Builder_Unpromise } from '@aussieljk/forkbook/internal/types';
 
-import type { BuildOptions, BuildResult } from 'esbuild';
+/** What the manager builder bundles: one self-running file for each manager entry. */
+export type ManagerBuildConfig = {
+  entryPoints: string[];
+  outdir: string;
+  tsconfig: string;
+  minify: boolean;
+  define: Record<string, string>;
+};
 
-export type ManagerBuilder = Builder<
-  Builder_WithRequiredProperty<BuildOptions, 'outdir'> & { entryPoints: string[] },
-  BuilderStats
->;
-export type Compilation = BuildResult;
+export type OutputFile = { path: string; contents: string };
+
+export type ManagerBuilder = Builder<ManagerBuildConfig, BuilderStats>;
+export type Compilation = { outputFiles: OutputFile[] };
 
 export type BuilderStartOptions = Parameters<ManagerBuilder['start']>['0'];
 export type BuilderStartResult = Builder_Unpromise<ReturnType<ManagerBuilder['start']>>;

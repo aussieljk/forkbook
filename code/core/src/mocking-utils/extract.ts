@@ -5,7 +5,7 @@ import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
-import { transformSync } from 'esbuild';
+import { transformSync } from 'rolldown/utils';
 import { walk } from 'estree-walker';
 import { basename, normalize } from 'pathe';
 
@@ -100,7 +100,12 @@ export function extractMockCalls(
 ): MockCall[] {
   try {
     const previewConfigCode = readFileSync(options.previewConfigPath, 'utf-8');
-    const { code: jsCode } = transformSync(previewConfigCode, { loader: 'tsx', format: 'esm' });
+    const { code: jsCode, errors } = transformSync(options.previewConfigPath, previewConfigCode, {
+      lang: 'tsx',
+    });
+    if (errors.length) {
+      throw new Error(errors[0].message);
+    }
     const ast = parse(jsCode);
     const mocks: MockCall[] = [];
 
