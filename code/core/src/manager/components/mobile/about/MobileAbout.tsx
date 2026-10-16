@@ -49,7 +49,7 @@ export const MobileAbout: FC = () => {
       data-status={state.status}
       style={{ animationDuration: `${MOBILE_TRANSITION_DURATION}ms` }}
     >
-      <ScrollArea vertical offset={3} scrollbarSize={6}>
+      <ScrollArea vertical offset={2} scrollbarSize={3}>
         <div className={styles.innerArea}>
           <Button
             className={styles.closeButton}
