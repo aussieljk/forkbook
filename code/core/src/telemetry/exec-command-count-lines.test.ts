@@ -3,14 +3,13 @@ import { PassThrough } from 'node:stream';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// eslint-disable-next-line depend/ban-dependencies
-import { execa as rawExeca } from 'execa';
+import { exec } from '../common/utils/exec.ts';
 
 import { execCommandCountLines } from './exec-command-count-lines.ts';
 
-vi.mock('execa', { spy: true });
+vi.mock('../common/utils/exec.ts', { spy: true });
 
-const execa = vi.mocked(rawExeca);
+const execa = vi.mocked(exec);
 beforeEach(() => {
   execa.mockReset();
 });
@@ -35,7 +34,7 @@ function createExecaStreamer() {
 describe('execCommandCountLines', () => {
   it('counts lines, many', async () => {
     const streamer = createExecaStreamer();
-    execa.mockReturnValue(streamer as unknown as ReturnType<typeof execa>);
+    execa.mockReturnValue(streamer as unknown as ReturnType<typeof exec>);
 
     const promise = execCommandCountLines('some command', []);
 
@@ -48,7 +47,7 @@ describe('execCommandCountLines', () => {
 
   it('counts lines, one', async () => {
     const streamer = createExecaStreamer();
-    execa.mockReturnValue(streamer as unknown as ReturnType<typeof execa>);
+    execa.mockReturnValue(streamer as unknown as ReturnType<typeof exec>);
 
     const promise = execCommandCountLines('some command', []);
 
@@ -60,7 +59,7 @@ describe('execCommandCountLines', () => {
 
   it('counts lines, none', async () => {
     const streamer = createExecaStreamer();
-    execa.mockReturnValue(streamer as unknown as ReturnType<typeof execa>);
+    execa.mockReturnValue(streamer as unknown as ReturnType<typeof exec>);
 
     const promise = execCommandCountLines('some command', []);
 

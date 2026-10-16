@@ -8,8 +8,7 @@ import {
 } from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
-// eslint-disable-next-line depend/ban-dependencies
-import type { ResultPromise } from 'execa';
+import type { ExecProcess } from '../utils/exec.ts';
 import { coerce, gte } from 'semver';
 import { dedent } from 'ts-dedent';
 import { type Document, parseDocument } from 'yaml';
@@ -136,7 +135,7 @@ export class PNPMProxy extends JsPackageManager {
   }: Omit<ExecuteCommandOptions, 'command'> & {
     args: string[];
     useRemotePkg?: boolean;
-  }): ResultPromise {
+  }): ExecProcess {
     // On pnpm 11+, Forkbook-owned `dlx` can hang on approve-builds for esbuild.
     // Pass `--allow-build` only here — not on `add`, which persists `allowBuilds`
     // into the user's project config.

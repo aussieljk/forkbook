@@ -4,14 +4,13 @@ import type { watch } from 'node:fs';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// eslint-disable-next-line depend/ban-dependencies
-import { execa } from 'execa';
+import { exec as execa } from '../../common/utils/exec.ts';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { ChangeDetectionFailureError, ChangeDetectionUnavailableError } from './errors.ts';
 import { GitDiffProvider } from './GitDiffProvider.ts';
 
-vi.mock('execa', { spy: true });
+vi.mock('../../common/utils/exec.ts', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 type ExecaMockResult = { stdout: string } | { error: Error };

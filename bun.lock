@@ -177,7 +177,6 @@
         "es-module-lexer": "^1.5.0",
         "es-toolkit": "^1.43.0",
         "escodegen": "^2.1.0",
-        "execa": "^9.6.1",
         "expect-type": "^0.15.0",
         "expo-symbols": "58.0.4",
         "exsolve": "^1.0.7",
@@ -356,6 +355,7 @@
       },
       "devDependencies": {
         "@types/prompts": "^2.4.9",
+        "execa": "^9.6.1",
       },
       "optionalDependencies": {
         "@verdaccio/types": "^10.8.0",

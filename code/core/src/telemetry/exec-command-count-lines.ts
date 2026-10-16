@@ -1,21 +1,20 @@
 import { createInterface } from 'node:readline';
 
-// eslint-disable-next-line depend/ban-dependencies
-import { execa } from 'execa';
+import { type ExecOptions, exec } from '../common/utils/exec.ts';
 
 /**
  * Execute a command in the local terminal and count the lines in the result
  *
  * @param command The command to execute.
- * @param options Execa options
+ * @param options Options for the command
  * @returns The number of lines the command returned
  */
 export async function execCommandCountLines(
   command: string,
   args: string[],
-  options?: Parameters<typeof execa>[1]
+  options?: ExecOptions
 ) {
-  const process = execa(command, args, { buffer: false, ...options });
+  const process = exec(command, args, options);
   if (!process.stdout) {
     // eslint-disable-next-line local-rules/no-uncategorized-errors
     throw new Error('Unexpected missing stdout');

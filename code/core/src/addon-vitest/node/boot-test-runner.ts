@@ -161,7 +161,6 @@ const bootTestRunner = async ({
             FORKBOOK_CONFIG_LOADER: configLoader,
             FORKBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(previewAnnotations),
           },
-          extendEnv: true,
         },
       });
       sentStoryIndex = undefined;

@@ -1,8 +1,7 @@
 import { existsSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// eslint-disable-next-line depend/ban-dependencies
-import { execa, execaCommandSync } from 'execa';
+import { exec, execSync } from './exec.ts';
 
 import { executeCommand, executeCommandSync } from './command.ts';
 import { ExecaCommandFailedError } from '../../server-errors.ts';
@@ -18,18 +17,18 @@ vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   },
 }));
 
-vi.mock('execa', () => ({
-  execa: vi.fn(),
-  execaCommandSync: vi.fn(),
-  execaNode: vi.fn(),
+vi.mock('./exec.ts', () => ({
+  exec: vi.fn(),
+  execSync: vi.fn(),
+  execNode: vi.fn(),
 }));
 
 vi.mock('node:fs', () => ({
   existsSync: vi.fn(() => false),
 }));
 
-const mockedExeca = vi.mocked(execa);
-const mockedExecaCommandSync = vi.mocked(execaCommandSync);
+const mockedExeca = vi.mocked(exec);
+const mockedExecaCommandSync = vi.mocked(execSync);
 const mockedExistsSync = vi.mocked(existsSync);
 
 describe('command', () => {
@@ -73,8 +72,7 @@ describe('command', () => {
         'pnpm.cmd',
         ['--version'],
         expect.objectContaining({
-          encoding: 'utf8',
-          cleanup: true,
+          env: expect.objectContaining({ NO_UPDATE_NOTIFIER: 'true' }),
         })
       );
     });
@@ -96,8 +94,7 @@ describe('command', () => {
         'pnpm.exe',
         ['--version'],
         expect.objectContaining({
-          encoding: 'utf8',
-          cleanup: true,
+          env: expect.objectContaining({ NO_UPDATE_NOTIFIER: 'true' }),
         })
       );
     });
@@ -119,8 +116,7 @@ describe('command', () => {
         'pnpm.ps1',
         ['--version'],
         expect.objectContaining({
-          encoding: 'utf8',
-          cleanup: true,
+          env: expect.objectContaining({ NO_UPDATE_NOTIFIER: 'true' }),
         })
       );
     });
@@ -177,10 +173,10 @@ describe('command', () => {
       expect(mockedExeca).toHaveBeenCalledTimes(1);
     });
 
-    it('should preserve subprocess methods like on after attaching categorized errors', async () => {
-      const on = vi.fn();
+    it('should preserve subprocess fields like kill after attaching categorized errors', async () => {
+      const kill = vi.fn();
       mockedExeca.mockReturnValueOnce(
-        Object.assign(Promise.resolve({ stdout: 'success', stderr: '' }), { on }) as any
+        Object.assign(Promise.resolve({ stdout: 'success', stderr: '' }), { kill }) as any
       );
 
       const process = executeCommand({
@@ -188,10 +184,10 @@ describe('command', () => {
         args: ['--version'],
       });
 
-      process.on('exit', on);
+      process.kill();
       await process;
 
-      expect(on).toHaveBeenCalledWith('exit', expect.any(Function));
+      expect(kill).toHaveBeenCalled();
     });
 
     it('should propagate categorized errors when resolved command is not found', async () => {
@@ -342,10 +338,10 @@ describe('command', () => {
       expect(result).toBe('10.0.0');
       expect(mockedExecaCommandSync).toHaveBeenCalledTimes(1);
       expect(mockedExecaCommandSync).toHaveBeenCalledWith(
-        'pnpm.cmd --version',
+        'pnpm.cmd',
+        ['--version'],
         expect.objectContaining({
-          encoding: 'utf8',
-          cleanup: true,
+          env: expect.objectContaining({ NO_UPDATE_NOTIFIER: 'true' }),
         })
       );
     });
@@ -374,12 +370,14 @@ describe('command', () => {
       expect(mockedExecaCommandSync).toHaveBeenCalledTimes(2);
       expect(mockedExecaCommandSync).toHaveBeenNthCalledWith(
         1,
-        'pnpm.cmd --version',
+        'pnpm.cmd',
+        ['--version'],
         expect.anything()
       );
       expect(mockedExecaCommandSync).toHaveBeenNthCalledWith(
         2,
-        'pnpm.exe --version',
+        'pnpm.exe',
+        ['--version'],
         expect.anything()
       );
     });
@@ -433,7 +431,7 @@ describe('command', () => {
       });
 
       expect(result).toBe('10.0.0');
-      expect(mockedExecaCommandSync).toHaveBeenCalledWith('pnpm --version', expect.anything());
+      expect(mockedExecaCommandSync).toHaveBeenCalledWith('pnpm', ['--version'], expect.anything());
     });
   });
 

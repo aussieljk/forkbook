@@ -64,6 +64,7 @@
     "includedScripts": []
   },
   "devDependencies": {
-    "@types/prompts": "^2.4.9"
+    "@types/prompts": "^2.4.9",
+    "execa": "^9.6.1"
   }
 }

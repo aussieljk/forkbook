@@ -2,15 +2,7 @@ import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import { existsSync } from 'node:fs';
 import { delimiter, join } from 'node:path';
 
-// eslint-disable-next-line depend/ban-dependencies
-import {
-  type Options,
-  type ResultPromise,
-  type SyncOptions,
-  execa,
-  execaCommandSync,
-  execaNode,
-} from 'execa';
+import { type ExecOptions, type ExecProcess, exec, execNode, execSync } from './exec.ts';
 
 import { categorizeExecaError } from './categorize-execa-error.ts';
 
@@ -20,17 +12,15 @@ const COMMON_ENV_VARS = {
   NO_UPDATE_NOTIFIER: 'true',
 };
 
-export type ExecuteCommandOptions = Omit<Options, 'cancelSignal'> & {
+export type ExecuteCommandOptions = ExecOptions & {
   command: string;
   args?: string[];
-  cwd?: string;
   ignoreError?: boolean;
-  env?: Record<string, string>;
-  signal?: AbortSignal; // Alias for cancelSignal (execa v9 uses cancelSignal)
+  env?: Record<string, string | undefined>;
 };
 
 function attachCategorizedExecaFailureHandler(
-  execaProcess: ResultPromise,
+  execaProcess: ExecProcess,
   context: { command: string; args: string[] }
 ) {
   const categorize = (error: unknown) => categorizeExecaError(error, context);
@@ -45,41 +35,41 @@ function attachCategorizedExecaFailureHandler(
         : (error) => {
             throw categorize(error);
           }
-    )) as ResultPromise['then'];
+    )) as ExecProcess['then'];
 
   execaProcess.catch = ((onRejected) =>
     originalCatch((error) => {
       throw categorize(error);
-    }).catch(typeof onRejected === 'function' ? onRejected : undefined)) as ResultPromise['catch'];
+    }).catch(typeof onRejected === 'function' ? onRejected : undefined)) as ExecProcess['catch'];
 }
 
-function getExecaOptions({
+function getExecOptions({
   stdio,
   cwd,
   env,
   signal,
-  ...execaOptions
-}: ExecuteCommandOptions): Options {
+  timeout,
+  shell,
+}: ExecuteCommandOptions): ExecOptions {
   return {
     cwd,
+    timeout,
+    shell,
     stdio: stdio ?? prompt.getPreferredStdio(),
-    encoding: 'utf8' as const,
-    cleanup: true,
     env: {
       ...COMMON_ENV_VARS,
       ...env,
     },
-    ...(signal && { cancelSignal: signal }), // Map signal to cancelSignal for execa v9
-    ...execaOptions,
+    signal,
   };
 }
 
-export function executeCommand(options: ExecuteCommandOptions): ResultPromise {
+export function executeCommand(options: ExecuteCommandOptions): ExecProcess {
   const { command, args = [], ignoreError = false } = options;
   logger.debug(`Executing command: ${command} ${args.join(' ')}`);
 
   const commandVariations = resolveCommand(command);
-  const execaProcess = tryCommandVariations(commandVariations, args, getExecaOptions(options));
+  const execaProcess = tryCommandVariations(commandVariations, args, getExecOptions(options));
 
   if (ignoreError) {
     execaProcess.catch(() => {
@@ -96,11 +86,7 @@ export function executeCommandSync(options: ExecuteCommandOptions): string {
   const { command, args = [], ignoreError = false } = options;
   try {
     const commandVariations = resolveCommand(command);
-    return tryCommandVariationsSync(
-      commandVariations,
-      args,
-      getExecaOptions(options) as SyncOptions
-    );
+    return tryCommandVariationsSync(commandVariations, args, getExecOptions(options));
   } catch (err) {
     if (!ignoreError) {
       throw categorizeExecaError(err, { command, args });
@@ -116,11 +102,9 @@ export function executeNodeCommand({
 }: {
   scriptPath: string;
   args?: string[];
-  options?: Options;
-}): ResultPromise {
-  return execaNode(scriptPath, args, {
-    ...options,
-  });
+  options?: Omit<ExecOptions, 'stdio'>;
+}) {
+  return execNode(scriptPath, args, options);
 }
 
 /**
@@ -156,22 +140,22 @@ function isExecutableInPath(command: string): boolean {
 function tryCommandVariations(
   commandVariations: string[],
   args: string[],
-  options: Options
-): ResultPromise {
+  options: ExecOptions
+): ExecProcess {
   if (commandVariations.length <= 1) {
-    return execa(commandVariations[0], args, options);
+    return exec(commandVariations[0], args, options);
   }
 
   // Resolve the best variation synchronously via PATH lookup
   for (const cmd of commandVariations.slice(0, -1)) {
     if (isExecutableInPath(cmd)) {
       logger.debug(`Resolved command variation: ${cmd}`);
-      return execa(cmd, args, options);
+      return exec(cmd, args, options);
     }
   }
 
   // Fallback to the last variation (bare command name)
-  return execa(commandVariations[commandVariations.length - 1], args, options);
+  return exec(commandVariations[commandVariations.length - 1], args, options);
 }
 
 /**
@@ -179,21 +163,20 @@ function tryCommandVariations(
  *
  * @param commandVariations - Array of command variations to try
  * @param args - Command arguments
- * @param options - Execa sync options
+ * @param options - Options for the command
  * @returns Stdout from the successful command
  */
 function tryCommandVariationsSync(
   commandVariations: string[],
   args: string[],
-  options: SyncOptions
+  options: ExecOptions
 ): string {
   let lastError: any;
 
   for (let i = 0; i < commandVariations.length; i++) {
     const cmd = commandVariations[i];
     try {
-      const commandResult = execaCommandSync([cmd, ...args].join(' '), options);
-      return typeof commandResult.stdout === 'string' ? commandResult.stdout : '';
+      return execSync(cmd, args, options).stdout ?? '';
     } catch (error: any) {
       lastError = error;
 

@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { dirname, join, resolve as resolvePath } from 'pathe';
 
 // eslint-disable-next-line depend/ban-dependencies
-import { execa, type ExecaError } from 'execa';
+import { type ExecError, exec } from '../../common/utils/exec.ts';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import { ChangeDetectionFailureError, ChangeDetectionUnavailableError } from './errors.ts';
@@ -49,7 +49,7 @@ export class GitDiffProvider {
     }
 
     try {
-      const { stdout } = await execa('git', ['rev-parse', '--show-toplevel'], {
+      const { stdout } = await exec('git', ['rev-parse', '--show-toplevel'], {
         cwd: this.cwd,
         stdio: 'pipe',
         // Prevent git from acquiring .git/index.lock for stat-cache refreshes
@@ -275,7 +275,7 @@ export class GitDiffProvider {
 
   private async runGitCommand(repoRoot: string, args: string[]) {
     try {
-      return await execa('git', args, {
+      return await exec('git', args, {
         cwd: repoRoot,
         stdio: 'pipe',
         // GIT_OPTIONAL_LOCKS=0 disables the stat-cache refresh that
@@ -298,7 +298,7 @@ export class GitDiffProvider {
   }
 
   private toGitError(error: unknown, command: string): Error {
-    const execaError = error as Partial<ExecaError>;
+    const execaError = error as Partial<ExecError>;
     const stderr = [execaError.stderr, execaError.shortMessage, execaError.message]
       .filter(Boolean)
       .join('\n');

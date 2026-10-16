@@ -8,8 +8,7 @@ import {
 } from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
-// eslint-disable-next-line depend/ban-dependencies
-import type { ResultPromise } from 'execa';
+import type { ExecProcess } from '../utils/exec.ts';
 // eslint-disable-next-line depend/ban-dependencies
 import { globSync } from 'tinyglobby';
 import sort from 'semver/functions/sort.js';
@@ -138,7 +137,7 @@ export class NPMProxy extends JsPackageManager {
   }: Omit<ExecuteCommandOptions, 'command'> & {
     args: string[];
     useRemotePkg?: boolean;
-  }): ResultPromise {
+  }): ExecProcess {
     return executeCommand({
       command: 'npx',
       ...options,
