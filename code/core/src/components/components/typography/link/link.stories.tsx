@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { DiscordIcon, SidebarIcon } from '@storybook/icons';
+import { DiscordLogoIcon, SidebarIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -88,7 +88,7 @@ export const StyledLinks = {
       </Link>
       <br />
       <Link href="http://google.com" {...args}>
-        <DiscordIcon />
+        <DiscordLogoIcon />
         With icon in front
       </Link>
       <br />

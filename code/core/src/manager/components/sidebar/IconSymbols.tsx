@@ -1,10 +1,18 @@
 import type { FC } from 'react';
 import React from 'react';
 
+import {
+  BookmarkSimpleIcon,
+  FileTextIcon,
+  FlaskIcon,
+  FolderIcon,
+  SquaresFourIcon,
+} from '@phosphor-icons/react';
+
 import styles from './IconSymbols.module.css';
 
-// We are importing the icons from @storybook/icons as we need to add symbols inside of them.
-// This will allow to set icons once and use them everywhere.
+// The tree icons are defined once as SVG symbols and used everywhere with <use>. Each symbol holds
+// a 14 px Phosphor icon. The status marks are simple shapes.
 
 const GROUP_ID = 'icon--group';
 const COMPONENT_ID = 'icon--component';
@@ -24,53 +32,19 @@ export const IconSymbols: FC = () => {
   return (
     <svg className={styles.svg} data-chromatic="ignore">
       <symbol id={GROUP_ID}>
-        {/* https://github.com/storybookjs/icons/blob/main/src/icons/FolderIcon.tsx */}
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M6.586 3.504l-1.5-1.5H1v9h12v-7.5H6.586zm.414-1L5.793 1.297a1 1 0 00-.707-.293H.5a.5.5 0 00-.5.5v10a.5.5 0 00.5.5h13a.5.5 0 00.5-.5v-8.5a.5.5 0 00-.5-.5H7z"
-          fill="currentColor"
-        />
+        <FolderIcon size={14} />
       </symbol>
       <symbol id={COMPONENT_ID}>
-        {/* https://github.com/storybookjs/icons/blob/main/src/icons/ComponentIcon.tsx */}
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M3.5 1.004a2.5 2.5 0 00-2.5 2.5v7a2.5 2.5 0 002.5 2.5h7a2.5 2.5 0 002.5-2.5v-7a2.5 2.5 0 00-2.5-2.5h-7zm8.5 5.5H7.5v-4.5h3a1.5 1.5 0 011.5 1.5v3zm0 1v3a1.5 1.5 0 01-1.5 1.5h-3v-4.5H12zm-5.5 4.5v-4.5H2v3a1.5 1.5 0 001.5 1.5h3zM2 6.504h4.5v-4.5h-3a1.5 1.5 0 00-1.5 1.5v3z"
-          fill="currentColor"
-        />
+        <SquaresFourIcon size={14} />
       </symbol>
       <symbol id={DOCUMENT_ID}>
-        {/* https://github.com/storybookjs/icons/blob/main/src/icons/DocumentIcon.tsx */}
-        <path
-          d="M4 5.5a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5a.5.5 0 01-.5-.5zM4.5 7.5a.5.5 0 000 1h5a.5.5 0 000-1h-5zM4 10.5a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5a.5.5 0 01-.5-.5z"
-          fill="currentColor"
-        />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M1.5 0a.5.5 0 00-.5.5v13a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V3.207a.5.5 0 00-.146-.353L10.146.146A.5.5 0 009.793 0H1.5zM2 1h7.5v2a.5.5 0 00.5.5h2V13H2V1z"
-          fill="currentColor"
-        />
+        <FileTextIcon size={14} />
       </symbol>
       <symbol id={STORY_ID}>
-        {/* https://github.com/storybookjs/icons/blob/main/src/icons/BookmarkHollowIcon.tsx */}
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M3.5 0h7a.5.5 0 01.5.5v13a.5.5 0 01-.454.498.462.462 0 01-.371-.118L7 11.159l-3.175 2.72a.46.46 0 01-.379.118A.5.5 0 013 13.5V.5a.5.5 0 01.5-.5zM4 12.413l2.664-2.284a.454.454 0 01.377-.128.498.498 0 01.284.12L10 12.412V1H4v11.413z"
-          fill="currentColor"
-        />
+        <BookmarkSimpleIcon size={14} />
       </symbol>
       <symbol id={TEST_ID}>
-        {/* https://github.com/storybookjs/icons/blob/main/src/icons/BeakerIcon.tsx */}
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M4.5 2h.75v3.866l-3.034 5.26A1.25 1.25 0 003.299 13H10.7a1.25 1.25 0 001.083-1.875L8.75 5.866V2h.75a.5.5 0 100-1h-5a.5.5 0 000 1zm1.75 4V2h1.5v4.134l.067.116L8.827 8H5.173l1.01-1.75.067-.116V6zM4.597 9l-1.515 2.625A.25.25 0 003.3 12H10.7a.25.25 0 00.217-.375L9.404 9H4.597z"
-          fill="currentColor"
-        />
+        <FlaskIcon size={14} />
       </symbol>
       <symbol id={SUCCESS_ID}>
         <path

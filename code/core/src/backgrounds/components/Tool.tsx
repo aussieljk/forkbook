@@ -2,7 +2,7 @@ import React, { Fragment, memo, useCallback } from 'react';
 
 import { Select, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { CircleIcon, GridIcon, PhotoIcon } from '@storybook/icons';
+import { CircleIcon, GridFourIcon, ImageIcon } from '@phosphor-icons/react';
 
 import { useGlobals, useParameter } from '@aussieljk/forkbook/manager-api';
 
@@ -94,7 +94,7 @@ const Pure = memo(function PureTool(props: PureProps) {
         tooltip={isLocked ? 'Grid set by story parameters' : 'Toggle grid visibility'}
         onClick={() => update({ value: backgroundName, grid: !isGrid })}
       >
-        <GridIcon />
+        <GridFourIcon />
       </ToggleButton>
 
       {length > 0 ? (
@@ -103,7 +103,7 @@ const Pure = memo(function PureTool(props: PureProps) {
           onReset={() => update(undefined)}
           disabled={isLocked}
           key="background"
-          icon={<PhotoIcon />}
+          icon={<ImageIcon />}
           ariaLabel={isLocked ? 'Background set by story parameters' : 'Preview background'}
           tooltip={isLocked ? 'Background set by story parameters' : 'Change background'}
           defaultOptions={backgroundName}

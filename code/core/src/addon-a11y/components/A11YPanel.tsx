@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Badge, Button } from '@aussieljk/forkbook/internal/components';
 
-import { SyncIcon } from '@storybook/icons';
+import { ArrowsClockwiseIcon } from '@phosphor-icons/react';
 
 import { RuleType } from '../types.ts';
 import { useA11yContext } from './A11yContext.tsx';
@@ -125,7 +125,7 @@ export const A11YPanel: React.FC = () => {
         <span className={styles.centered} style={{ marginTop: discrepancy ? '1em' : 0 }}>
           {status === 'initial' && (
             <div>
-              <SyncIcon size={12} className={styles.rotatingIcon} />
+              <ArrowsClockwiseIcon size={12} className={styles.rotatingIcon} />
               <strong>Preparing accessibility scan</strong>
               <p>Please wait while the addon is initializing...</p>
             </div>
@@ -149,7 +149,7 @@ export const A11YPanel: React.FC = () => {
           )}
           {status === 'running' && (
             <div>
-              <SyncIcon size={12} className={styles.rotatingIcon} />
+              <ArrowsClockwiseIcon size={12} className={styles.rotatingIcon} />
               <strong>Accessibility scan in progress</strong>
               <p>Please wait while the accessibility scan is running...</p>
             </div>

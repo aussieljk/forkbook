@@ -1,7 +1,5 @@
 import type { InputType } from '@aussieljk/forkbook/internal/types';
 
-import type { IconsProps } from '../components/components/icon/icon.tsx';
-
 export type ToolbarShortcutType = 'next' | 'previous' | 'reset';
 
 export type ToolbarItemType = 'item' | 'reset';
@@ -15,7 +13,8 @@ export type ToolbarShortcuts = Record<ToolbarShortcutType, ToolbarShortcutConfig
 
 export interface ToolbarItem {
   value?: string;
-  icon?: IconsProps['icon'];
+  /** The name of an icon, for example `'circlehollow'` (see the `icons` map in icon.tsx) */
+  icon?: string;
   right?: string;
   title?: string;
   hideIcon?: boolean;
@@ -25,8 +24,11 @@ export interface ToolbarItem {
 export interface NormalizedToolbarConfig {
   /** The label to show for this toolbar item */
   title?: string;
-  /** Choose an icon to show for this toolbar item */
-  icon?: IconsProps['icon'];
+  /**
+   * Choose an icon to show for this toolbar item, by name. The type is `string`, not the list of
+   * names, so the public types do not depend on the icon package.
+   */
+  icon?: string;
   /** Set to true to prevent default update of icon to match any present selected items icon */
   preventDynamicIcon?: boolean;
   items: ToolbarItem[];

@@ -4,7 +4,7 @@ import { Button, PopoverProvider } from '@aussieljk/forkbook/internal/components
 import type { StatusesByStoryIdAndTypeId, StoryIndex } from '@aussieljk/forkbook/internal/types';
 import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
-import { FilterIcon } from '@storybook/icons';
+import { FunnelSimpleIcon } from '@phosphor-icons/react';
 
 import {
   type API,
@@ -98,7 +98,7 @@ const FilterInner = ({
         data-highlighted={activeFilterCount > 0 || undefined}
         onClick={handleToggleExpand}
       >
-        <FilterIcon />
+        <FunnelSimpleIcon />
         {activeFilterCount > 0 && <div className={styles.tagSelected} />}
       </Button>
     </PopoverProvider>

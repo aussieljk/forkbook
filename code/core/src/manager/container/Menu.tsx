@@ -3,7 +3,13 @@ import React, { useCallback, useMemo } from 'react';
 import { ActionList } from '@aussieljk/forkbook/internal/components';
 import { STORIES_COLLAPSE_ALL } from '@aussieljk/forkbook/internal/core-events';
 
-import { CheckIcon, CommandIcon, DocumentIcon, InfoIcon, ShareAltIcon } from '@storybook/icons';
+import {
+  CheckIcon,
+  CommandIcon,
+  FileTextIcon,
+  InfoIcon,
+  ShareNetworkIcon,
+} from '@phosphor-icons/react';
 
 import type { API } from '@aussieljk/forkbook/manager-api';
 
@@ -159,10 +165,10 @@ export const useMenu = ({
       href: docsUrl,
       right: (
         <ActionList.Icon>
-          <ShareAltIcon />
+          <ShareNetworkIcon />
         </ActionList.Icon>
       ),
-      icon: <DocumentIcon />,
+      icon: <FileTextIcon />,
     };
   }, [api]);
 

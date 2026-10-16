@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
-import { ChevronDownIcon, ChevronRightIcon } from '@storybook/icons';
+import { CaretDownIcon, CaretRightIcon } from '@phosphor-icons/react';
 
 import styles from './SectionRow.module.css';
 
@@ -45,9 +45,9 @@ export const SectionRow: FC<SectionRowProps> = ({
           </button>
           <span className={styles.flexWrapper}>
             {expanded ? (
-              <ChevronDownIcon className={styles.expanderIcon} />
+              <CaretDownIcon className={styles.expanderIcon} />
             ) : (
-              <ChevronRightIcon className={styles.expanderIcon} />
+              <CaretRightIcon className={styles.expanderIcon} />
             )}
             {label}
           </span>

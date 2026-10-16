@@ -1,4 +1,4 @@
-import { CheckIcon, EllipsisIcon, PlayAllHollowIcon } from '@storybook/icons';
+import { CheckIcon, DotsThreeIcon, PlayCircleIcon } from '@phosphor-icons/react';
 
 import { Badge, Form, ProgressSpinner } from '../../index.ts';
 import preview from '../../../../../.forkbook/preview.tsx';
@@ -18,20 +18,20 @@ export const Default = meta.story({
       <ActionList.Item>
         <ActionList.Text>Text item</ActionList.Text>
         <ActionList.Button ariaLabel="Options">
-          <EllipsisIcon />
+          <DotsThreeIcon />
         </ActionList.Button>
       </ActionList.Item>
       <ActionList.Item>
         <ActionList.Action>Action item</ActionList.Action>
         <ActionList.Button>
-          <PlayAllHollowIcon />
+          <PlayCircleIcon />
           Cool
         </ActionList.Button>
       </ActionList.Item>
       <ActionList.HoverItem targetId="some-action">
         <ActionList.Action>Hover action</ActionList.Action>
         <ActionList.Button data-target-id="some-action">
-          <PlayAllHollowIcon />
+          <PlayCircleIcon />
           Cool
         </ActionList.Button>
       </ActionList.HoverItem>

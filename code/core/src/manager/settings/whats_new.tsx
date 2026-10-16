@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Loader } from '@aussieljk/forkbook/internal/components';
 
 import { global } from '@storybook/global';
-import { AlertIcon, EyeCloseIcon, EyeIcon, HeartIcon } from '@storybook/icons';
+import { EyeIcon, EyeSlashIcon, HeartIcon, WarningIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -38,7 +38,7 @@ export const WhatsNewFooter = ({
       </div>
       {isNotificationsEnabled ? (
         <Button ariaLabel={false} size="small" variant="ghost" onClick={onToggleNotifications}>
-          <EyeCloseIcon />
+          <EyeSlashIcon />
           Hide notifications
         </Button>
       ) : (
@@ -62,7 +62,7 @@ const WhatsNewLoader: FC = () => (
 
 const MaxWaitTimeMessaging: FC = () => (
   <div className={styles.centered}>
-    <AlertIcon className={styles.alertIcon} />
+    <WarningIcon className={styles.alertIcon} />
     <div className={styles.message}>
       The page couldn't be loaded. Check your internet connection and try again.
     </div>

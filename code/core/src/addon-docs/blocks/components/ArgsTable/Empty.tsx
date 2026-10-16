@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
-import { DocumentIcon } from '@storybook/icons';
+import { FileTextIcon } from '@phosphor-icons/react';
 
 import styles from './Empty.module.css';
 
@@ -47,7 +47,7 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
               target="_blank"
               withArrow
             >
-              <DocumentIcon /> Read docs
+              <FileTextIcon /> Read docs
             </Link>
           </div>
         }

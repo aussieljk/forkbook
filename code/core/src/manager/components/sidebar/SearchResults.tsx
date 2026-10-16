@@ -5,7 +5,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '@storybook/global';
-import { TrashIcon } from '@storybook/icons';
+import { TrashIcon } from '@phosphor-icons/react';
 
 import type { ControllerStateAndHelpers } from 'downshift';
 import { clsx } from 'clsx';

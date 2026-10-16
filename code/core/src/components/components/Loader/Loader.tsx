@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import React from 'react';
 
-import { LightningOffIcon } from '@storybook/icons';
+import { LightningSlashIcon } from '@phosphor-icons/react';
 
 import styles from './Loader.module.css';
 
@@ -30,7 +30,7 @@ export const Loader = ({ progress, error, size = 32, ...props }: LoaderProps) =>
         role="status"
         {...props}
       >
-        <LightningOffIcon className={styles.errorIcon} />
+        <LightningSlashIcon className={styles.errorIcon} />
         <div className={styles.progressMessage}>{error.message}</div>
       </div>
     );

@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect } from 'react';
 
 import { ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { OutlineIcon } from '@storybook/icons';
+import { SelectionIcon } from '@phosphor-icons/react';
 
 import { useGlobals, useParameter, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
@@ -52,7 +52,7 @@ export const OutlineSelector = memo(function OutlineSelector() {
       tooltip="Toggle outline"
       onClick={toggleOutline}
     >
-      <OutlineIcon />
+      <SelectionIcon />
     </ToggleButton>
   );
 });

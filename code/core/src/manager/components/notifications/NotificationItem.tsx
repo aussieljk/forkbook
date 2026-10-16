@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import { Link } from '@aussieljk/forkbook/internal/router';
 
-import { CloseAltIcon } from '@storybook/icons';
+import { XCircleIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 import { type State } from '@aussieljk/forkbook/manager-api';
@@ -40,7 +40,7 @@ const DismissNotificationItem: FC<{
       onDismiss();
     }}
   >
-    <CloseAltIcon size={12} />
+    <XCircleIcon size={12} />
   </Button>
 );
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import { Badge, Button, Collapsible } from '@aussieljk/forkbook/internal/components';
 
-import { SyncIcon, UnfoldIcon } from '@storybook/icons';
+import { ArrowsClockwiseIcon, ArrowsOutLineVerticalIcon } from '@phosphor-icons/react';
 
 import styles from './ManagerErrorBoundary.module.css';
 
@@ -28,7 +28,7 @@ const ErrorFallback = ({ error, errorInfo }: ErrorFallbackProps) => {
           </p>
           <Button asChild size="medium">
             <a href={window.location.origin + window.location.pathname.replace('iframe.html', '')}>
-              <SyncIcon size={14} />
+              <ArrowsClockwiseIcon size={14} />
               Reload Forkbook
             </a>
           </Button>
@@ -39,7 +39,7 @@ const ErrorFallback = ({ error, errorInfo }: ErrorFallbackProps) => {
             collapsed={true}
             summary={({ isCollapsed, toggleCollapsed }) => (
               <div className={styles.collapseToggle} onClick={toggleCollapsed}>
-                <UnfoldIcon />
+                <ArrowsOutLineVerticalIcon />
                 {isCollapsed ? 'Expand error' : 'Collapse error'}
               </div>
             )}

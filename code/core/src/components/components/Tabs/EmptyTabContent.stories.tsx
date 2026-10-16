@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from '@aussieljk/forkbook/internal/components';
 
-import { DocumentIcon } from '@storybook/icons';
+import { FileTextIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -37,7 +37,7 @@ export const TitleAndFooter: Story = {
     title: 'Nothing found',
     footer: (
       <Link href="foo" withArrow>
-        <DocumentIcon /> See the docs
+        <FileTextIcon /> See the docs
       </Link>
     ),
   },
@@ -49,7 +49,7 @@ export const TitleDescriptionAndFooter: Story = {
     description: 'Sorry, there is nothing to display here.',
     footer: (
       <Link href="foo" withArrow>
-        <DocumentIcon /> See the docs
+        <FileTextIcon /> See the docs
       </Link>
     ),
   },

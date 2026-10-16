@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button, Form, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
-import { MarkupIcon } from '@storybook/icons';
+import { CodeIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 
@@ -384,7 +384,7 @@ export const ColorControl: FC<ColorControlProps> = ({
           disabled={readOnly}
           onClick={readOnly ? undefined : cycleColorSpace}
         >
-          <MarkupIcon />
+          <CodeIcon />
         </Button>
       ) : null}
     </div>

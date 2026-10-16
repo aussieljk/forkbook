@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ActionList, Form } from '@aussieljk/forkbook/internal/components';
 
-import { DeleteIcon } from '@storybook/icons';
+import { XCircleIcon } from '@phosphor-icons/react';
 
 import type { Link } from '../../../components/components/tooltip/TooltipLinkList.tsx';
 import type { FilterItem } from './FilterPanel.utils.ts';
@@ -44,7 +44,7 @@ export const createFilterLink = ({
       <ActionList.HoverItem targetId={`filter-${type}-${id}`}>
         <ActionList.Action as="label" ariaLabel={false} tabIndex={-1} tooltip={toggleTooltip}>
           <ActionList.Icon>
-            {isExcluded ? <DeleteIcon /> : isIncluded ? null : icon}
+            {isExcluded ? <XCircleIcon /> : isIncluded ? null : icon}
             <Form.Checkbox
               checked={isChecked}
               onChange={onCheckboxChange}

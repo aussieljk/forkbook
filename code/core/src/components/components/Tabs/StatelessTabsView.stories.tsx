@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button, EmptyTabContent } from '@aussieljk/forkbook/internal/components';
 
-import { CrossIcon, ExpandIcon } from '@storybook/icons';
+import { ArrowsOutLineVerticalIcon, XIcon } from '@phosphor-icons/react';
 
 import { fn } from '@aussieljk/forkbook/test';
 
@@ -40,10 +40,10 @@ const RenderEmpty = (args: StatelessTabsViewProps) => (
 const DEFAULT_TOOLS = (
   <div>
     <Button variant="ghost" padding="small" ariaLabel="Go full screen">
-      <ExpandIcon />
+      <ArrowsOutLineVerticalIcon />
     </Button>
     <Button variant="ghost" padding="small" ariaLabel="Close">
-      <CrossIcon />
+      <XIcon />
     </Button>
   </div>
 );

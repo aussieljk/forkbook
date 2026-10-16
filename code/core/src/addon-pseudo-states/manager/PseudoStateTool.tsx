@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Select } from '@aussieljk/forkbook/internal/components';
 
-import { ButtonIcon } from '@storybook/icons';
+import { CursorClickIcon } from '@phosphor-icons/react';
 
 import { useGlobals } from '@aussieljk/forkbook/manager-api';
 
@@ -28,7 +28,7 @@ export const PseudoStateTool = () => {
     <Select
       resetLabel="Reset pseudo states"
       onReset={() => updateGlobals({ [PARAM_KEY]: {} })}
-      icon={<ButtonIcon />}
+      icon={<CursorClickIcon />}
       ariaLabel="CSS pseudo states"
       tooltip="Apply CSS pseudo states"
       defaultOptions={defaultOptions}

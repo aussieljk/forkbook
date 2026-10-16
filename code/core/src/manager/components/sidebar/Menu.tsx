@@ -8,7 +8,7 @@ import {
   ToggleButton,
 } from '@aussieljk/forkbook/internal/components';
 
-import { CloseIcon, CogIcon } from '@storybook/icons';
+import { GearIcon, XIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
@@ -151,7 +151,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
           asChild
         >
           <a href="./?path=/settings/about" rel="canonical">
-            <CogIcon />
+            <GearIcon />
           </a>
         </SidebarButton>
         <SidebarButton
@@ -162,7 +162,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
           onClick={() => api.setMobileNavigation(false)}
           isMobile={true}
         >
-          <CloseIcon />
+          <XIcon />
         </SidebarButton>
       </div>
     );
@@ -185,7 +185,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
         size="medium"
         isMobile={false}
       >
-        <CogIcon />
+        <GearIcon />
       </SidebarToggleButton>
     </PopoverProvider>
   );

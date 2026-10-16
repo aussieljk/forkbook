@@ -5,7 +5,7 @@ import { Badge, Spaced } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType, Addon_Collection } from '@aussieljk/forkbook/internal/types';
 import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
-import { BellIcon } from '@storybook/icons';
+import { BellIcon } from '@phosphor-icons/react';
 
 import { action } from '@aussieljk/forkbook/actions';
 

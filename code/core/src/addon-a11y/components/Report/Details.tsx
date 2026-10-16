@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useState } from 'react';
 
 import { Button, Link, SyntaxHighlighter } from '@aussieljk/forkbook/internal/components';
 
-import { CheckIcon, CopyIcon, LocationIcon } from '@storybook/icons';
+import { CheckIcon, CopyIcon, CrosshairIcon } from '@phosphor-icons/react';
 
 import { Tabs } from '@base-ui/react/tabs';
 
@@ -120,7 +120,7 @@ function getContent(node: EnhancedNodeResult) {
 
       <div className={styles.actions}>
         <Button ariaLabel={false} onClick={() => handleJumpToElement(node.target.toString())}>
-          <LocationIcon /> Jump to element
+          <CrosshairIcon /> Jump to element
         </Button>
         <CopyButton onClick={() => handleCopyLink(node.linkPath)} />
       </div>

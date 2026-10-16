@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 
-import { RefreshIcon } from '@storybook/icons';
+import { ArrowClockwiseIcon } from '@phosphor-icons/react';
 
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import { clsx } from 'clsx';
@@ -275,7 +275,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               type: 'reset',
               value: undefined,
               title: resetLabel ?? 'Reset selection',
-              icon: <RefreshIcon />,
+              icon: <ArrowClockwiseIcon />,
               description: undefined,
               children: undefined,
             }

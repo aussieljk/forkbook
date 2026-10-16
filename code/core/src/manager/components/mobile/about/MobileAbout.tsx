@@ -9,7 +9,7 @@ import {
   ScrollArea,
 } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowLeftIcon, GithubIcon, ShareAltIcon } from '@storybook/icons';
+import { ArrowLeftIcon, GithubLogoIcon, ShareNetworkIcon } from '@phosphor-icons/react';
 
 import { useTransitionState } from 'react-transition-state';
 
@@ -70,13 +70,13 @@ export const MobileAbout: FC = () => {
                 rel="noopener noreferrer"
               >
                 <ActionList.Icon>
-                  <GithubIcon />
+                  <GithubLogoIcon />
                 </ActionList.Icon>
                 <ActionList.Text>
                   <span>GitHub</span>
                 </ActionList.Text>
                 <ActionList.Icon>
-                  <ShareAltIcon />
+                  <ShareNetworkIcon />
                 </ActionList.Icon>
               </ActionList.Link>
             </ActionList.Item>
@@ -94,7 +94,7 @@ export const MobileAbout: FC = () => {
                   <span>Documentation</span>
                 </ActionList.Text>
                 <ActionList.Icon>
-                  <ShareAltIcon />
+                  <ShareNetworkIcon />
                 </ActionList.Icon>
               </ActionList.Link>
             </ActionList.Item>

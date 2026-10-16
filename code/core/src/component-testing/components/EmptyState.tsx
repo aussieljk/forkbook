@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
-import { DocumentIcon } from '@storybook/icons';
+import { FileTextIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import { DOCUMENTATION_PLAY_FUNCTION_LINK } from '../constants.ts';
@@ -45,7 +45,7 @@ export const Empty = () => {
         footer={
           <div className={styles.links}>
             <Link href={docsUrl} target="_blank" withArrow>
-              <DocumentIcon /> Read docs
+              <FileTextIcon /> Read docs
             </Link>
           </div>
         }

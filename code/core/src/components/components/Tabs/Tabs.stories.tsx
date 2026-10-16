@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
 
-import { BottomBarIcon, CloseIcon } from '@storybook/icons';
+import { SquareSplitVerticalIcon, XIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -220,10 +220,10 @@ const AddonTools = () => (
     }}
   >
     <Button padding="small" variant="ghost" ariaLabel="Tool 1">
-      <BottomBarIcon />
+      <SquareSplitVerticalIcon />
     </Button>
     <Button padding="small" variant="ghost" ariaLabel="Tool 2">
-      <CloseIcon />
+      <XIcon />
     </Button>
   </div>
 );

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ActionList } from '@aussieljk/forkbook/internal/components';
 
-import { TransferIcon, UndoIcon } from '@storybook/icons';
+import { ArrowCounterClockwiseIcon, ArrowsLeftRightIcon } from '@phosphor-icons/react';
 
 import {
   VIEWPORT_MIN_HEIGHT,
@@ -141,7 +141,7 @@ export const Viewport = ({
               ariaLabel="Rotate viewport"
               onClick={rotate}
             >
-              <TransferIcon />
+              <ArrowsLeftRightIcon />
             </ActionList.Button>
             <NumericInput
               className={styles.sizeInput}
@@ -166,7 +166,7 @@ export const Viewport = ({
                 ariaLabel="Restore viewport"
                 onClick={() => select(lastSelectedOption)}
               >
-                <UndoIcon />
+                <ArrowCounterClockwiseIcon />
               </ActionList.Button>
             )}
           </div>

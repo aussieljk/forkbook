@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Badge, Button, EmptyTabContent } from '@aussieljk/forkbook/internal/components';
 
-import { ChevronSmallDownIcon } from '@storybook/icons';
+import { CaretDownIcon } from '@phosphor-icons/react';
 
 import type { ImpactValue } from 'axe-core';
 
@@ -75,7 +75,7 @@ export const Report: FC<ReportProps> = ({
                 variant="ghost"
                 padding="small"
               >
-                <ChevronSmallDownIcon
+                <CaretDownIcon
                   className={styles.icon}
                   style={{ transform: `rotate(${selection ? -180 : 0}deg)` }}
                 />

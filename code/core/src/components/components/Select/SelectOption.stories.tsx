@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TabletIcon } from '@storybook/icons';
+import { DeviceTabletIcon } from '@phosphor-icons/react';
 
 import { expect, fn, within } from '@aussieljk/forkbook/test';
 
@@ -15,7 +15,7 @@ const meta = preview.meta({
   args: {
     id: 'tablet',
     title: 'Tablet',
-    icon: <TabletIcon />,
+    icon: <DeviceTabletIcon />,
     isSelected: false,
     isActive: false,
     shouldLookDisabled: false,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LinkIcon, LinuxIcon } from '@storybook/icons';
+import { LinkIcon, LinuxLogoIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -175,7 +175,7 @@ export const WithCustomIcon = {
         id: '1',
         title: 'Link 1',
         active: true,
-        icon: <LinuxIcon />,
+        icon: <LinuxLogoIcon />,
         right: <img src={ellipseUrl} width="16" height="16" alt="ellipse" />,
         center: 'This is an addition description',
         href: 'http://google.com',

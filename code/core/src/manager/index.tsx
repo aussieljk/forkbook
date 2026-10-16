@@ -8,6 +8,7 @@ import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
 
+import { IconContext } from '@phosphor-icons/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ManagerProvider, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -23,6 +24,10 @@ import { settingsPageAddon } from './settings/index.tsx';
 ThemeProvider.displayName = 'ThemeProvider';
 // @ts-expect-error (Converted from ts-ignore)
 HelmetProvider.displayName = 'HelmetProvider';
+
+// Forkbook icons are 14 px unless a component gives another size. The addons get the same
+// IconContext through the '@phosphor-icons/react' manager global.
+const ICONS = { size: 14 };
 
 export interface RootProps {
   provider: Provider;
@@ -68,17 +73,19 @@ export const Main: FC<{ provider: Provider }> = ({ provider }) => {
 
             return (
               <ThemeProvider key="theme.provider" theme={ensureTheme(state.theme)}>
-                <LayoutProvider>
-                  <App
-                    key="app"
-                    pages={pages}
-                    managerLayoutState={{
-                      ...state.layout,
-                      viewMode: state.viewMode,
-                    }}
-                    setManagerLayoutState={setManagerLayoutState}
-                  />
-                </LayoutProvider>
+                <IconContext.Provider value={ICONS}>
+                  <LayoutProvider>
+                    <App
+                      key="app"
+                      pages={pages}
+                      managerLayoutState={{
+                        ...state.layout,
+                        viewMode: state.viewMode,
+                      }}
+                      setManagerLayoutState={setManagerLayoutState}
+                    />
+                  </LayoutProvider>
+                </IconContext.Provider>
               </ThemeProvider>
             );
           }}

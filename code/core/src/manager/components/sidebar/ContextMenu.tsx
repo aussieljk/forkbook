@@ -10,7 +10,7 @@ import {
   type StatusValue,
 } from '@aussieljk/forkbook/internal/types';
 
-import { CopyIcon, EditorIcon, EllipsisIcon } from '@storybook/icons';
+import { CodeIcon, CopyIcon, DotsThreeIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import type { API } from '@aussieljk/forkbook/manager-api';
@@ -52,7 +52,7 @@ export const useContextMenu = (
       defaultLinks.push({
         id: 'open-in-editor',
         title: 'Open in editor',
-        icon: <EditorIcon />,
+        icon: <CodeIcon />,
         right: openInEditorShortcut ? <Shortcut keys={openInEditorShortcut} /> : null,
         onClick: (e: SyntheticEvent) => {
           if (context.importPath) {
@@ -115,7 +115,7 @@ export const useContextMenu = (
     !context.refId && (providerLinks.length > 0 || links.length > 0 || topLinks.length > 0);
 
   const buttonStatus = visibleStatus?.status ?? 'status-value:unknown';
-  const menuIcon = visibleStatus?.icon ?? <EllipsisIcon />;
+  const menuIcon = visibleStatus?.icon ?? <DotsThreeIcon />;
 
   return useMemo(() => {
     // Never show the SidebarContextMenu in production

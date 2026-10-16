@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button, Toolbar } from '@aussieljk/forkbook/internal/components';
 
-import { LinuxIcon } from '@storybook/icons';
+import { LinuxLogoIcon } from '@phosphor-icons/react';
 
 import type { StoryAnnotations } from '@aussieljk/forkbook/internal/types';
 import { expect, fn, screen, userEvent, within } from '@aussieljk/forkbook/test';
@@ -18,7 +18,7 @@ const meta = preview.meta({
   args: {
     ariaLabel: 'Animal',
     children: 'Animal',
-    icon: <LinuxIcon />,
+    icon: <LinuxLogoIcon />,
     onChange: fn(),
     onSelect: fn(),
     onDeselect: fn(),

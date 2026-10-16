@@ -7,7 +7,7 @@ import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
-import { CloseIcon } from '@storybook/icons';
+import { XIcon } from '@phosphor-icons/react';
 
 import { types, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 
@@ -111,7 +111,7 @@ const Pages: FC<{
                   }}
                   ariaLabel="Close settings page"
                 >
-                  <CloseIcon />
+                  <XIcon />
                 </Button>
               </>
             }

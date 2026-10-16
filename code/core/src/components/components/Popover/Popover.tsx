@@ -1,6 +1,6 @@
 import React, { type HTMLAttributes, forwardRef } from 'react';
 
-import { CloseIcon } from '@storybook/icons';
+import { XIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 
@@ -62,7 +62,7 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             variant="ghost"
             size="small"
           >
-            <CloseIcon />
+            <XIcon />
           </Button>
         )}
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, Select } from '@aussieljk/forkbook/internal/components';
 
-import { PaintBrushIcon } from '@storybook/icons';
+import { PaintBrushIcon } from '@phosphor-icons/react';
 
 import {
   addons,

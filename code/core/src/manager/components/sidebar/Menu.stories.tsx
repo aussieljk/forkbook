@@ -3,7 +3,7 @@ import React from 'react';
 
 import { TooltipLinkList } from '@aussieljk/forkbook/internal/components';
 
-import { LinkIcon } from '@storybook/icons';
+import { LinkIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Bar, Button, Form, Modal } from '@aussieljk/forkbook/internal/components';
 
-import { AddIcon, CheckIcon, UndoIcon } from '@storybook/icons';
+import { ArrowCounterClockwiseIcon, CheckIcon, PlusIcon } from '@phosphor-icons/react';
 
 import styles from './SaveStory.module.css';
 
@@ -80,14 +80,14 @@ export const SaveStory = ({ saveStory, createStory, resetArgs }: SaveStoryProps)
           </Button>
 
           <Button ariaLabel={createLabel} tooltip={createLabel} onClick={onShowForm}>
-            <AddIcon />
+            <PlusIcon />
             <div className={styles.label} data-short-label="New">
               Create new story
             </div>
           </Button>
 
           <Button ariaLabel="Reset changes" onClick={() => resetArgs()}>
-            <UndoIcon />
+            <ArrowCounterClockwiseIcon />
             <span>Reset</span>
           </Button>
         </div>

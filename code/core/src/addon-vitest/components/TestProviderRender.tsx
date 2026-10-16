@@ -10,7 +10,7 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 import type { API_HashEntry, TestProviderState } from '@aussieljk/forkbook/internal/types';
 
-import { EyeIcon, InfoIcon, PlayHollowIcon, StopAltIcon } from '@storybook/icons';
+import { EyeIcon, InfoIcon, PlayCircleIcon, StopCircleIcon } from '@phosphor-icons/react';
 
 import { store } from '#manager-store';
 import type { API } from '@aussieljk/forkbook/manager-api';
@@ -249,7 +249,7 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
                     : undefined
                 }
               >
-                <StopAltIcon className={styles.stopIcon} />
+                <StopCircleIcon className={styles.stopIcon} />
               </ProgressSpinner>
             </Button>
           ) : (
@@ -272,7 +272,7 @@ export const TestProviderRender: FC<TestProviderRenderProps> = ({
                 });
               }}
             >
-              <PlayHollowIcon />
+              <PlayCircleIcon />
             </Button>
           )}
         </div>

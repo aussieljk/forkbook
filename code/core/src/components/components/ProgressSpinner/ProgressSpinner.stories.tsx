@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StopAltIcon } from '@storybook/icons';
+import { StopCircleIcon } from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -67,6 +67,6 @@ export const WithContent: Story = {
   ...Colored,
   args: {
     ...Colored.args,
-    children: <StopAltIcon size={10} />,
+    children: <StopCircleIcon size={10} />,
   },
 };
