@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { STORY_CHANGED } from '@aussieljk/forkbook/internal/core-events';
 
-import { dequal as deepEqual } from 'dequal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import type { API } from '@aussieljk/forkbook/manager-api';
 import { useParameter } from '@aussieljk/forkbook/manager-api';
 

@@ -11,7 +11,7 @@ import type { Args } from '@aussieljk/forkbook/internal/csf';
 
 import { CheckCircleIcon, XCircleIcon } from '@phosphor-icons/react';
 
-import { dequal as deepEqual } from 'dequal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import {
   addons,
   experimental_requestResponse,

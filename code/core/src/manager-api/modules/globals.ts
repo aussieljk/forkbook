@@ -11,7 +11,7 @@ import type {
   SetGlobalsPayload,
 } from '@aussieljk/forkbook/internal/types';
 
-import { dequal as deepEqual } from 'dequal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 
 import { getEventMetadata } from '../lib/events.ts';
 import type { ModuleFn } from '../lib/types.tsx';

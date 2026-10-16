@@ -5,7 +5,7 @@ import type { ArgTypes, DocgenPayload, StoryId } from '@aussieljk/forkbook/inter
 
 import { global } from '@storybook/global';
 
-import { dequal as deepEqual } from 'dequal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { mergeServiceArgTypes } from '../../docs-tools/argTypes/docgenServiceArgTypes.ts';
 import {
   useArgTypes,

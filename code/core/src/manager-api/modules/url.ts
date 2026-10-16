@@ -11,7 +11,7 @@ import type { API_Layout, API_UI, API_ViewMode, Args } from '@aussieljk/forkbook
 
 import { global } from '@storybook/global';
 
-import { dequal as deepEqual } from 'dequal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { omit } from 'es-toolkit/object';
 import { stringify } from 'picoquery';
 

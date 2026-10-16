@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import deepEqual from 'fast-deep-equal';
+import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import { SET_CURRENT_STORY } from '@aussieljk/forkbook/internal/core-events';
 import { ActionDisplay, EVENT_ID } from '@aussieljk/forkbook/actions';
