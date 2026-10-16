@@ -13,7 +13,7 @@ let workDir: string;
 let lockPath: string;
 
 beforeEach(() => {
-  workDir = mkdtempSync(join(tmpdir(), 'sb-file-lock-'));
+  workDir = mkdtempSync(join(tmpdir(), 'fb-file-lock-'));
   lockPath = join(workDir, '.work.lock');
 });
 

@@ -2,8 +2,8 @@ import type { GlobalTypes, PartialStoryFn, StoryContext } from '@aussieljk/forkb
 
 declare global {
   interface Window {
-    __STORYBOOK_BEFORE_ALL_CALLS__: number;
-    __STORYBOOK_BEFORE_ALL_CLEANUP_CALLS__: number;
+    __FORKBOOK_BEFORE_ALL_CALLS__: number;
+    __FORKBOOK_BEFORE_ALL_CLEANUP_CALLS__: number;
   }
 }
 
@@ -14,8 +14,8 @@ try {
    * Wrapped in a try-catch, because accessing properties on globalThis.parent may throw if the
    * parent is cross-origin.
    */
-  globalThis.parent.__STORYBOOK_BEFORE_ALL_CALLS__ = 0;
-  globalThis.parent.__STORYBOOK_BEFORE_ALL_CLEANUP_CALLS__ = 0;
+  globalThis.parent.__FORKBOOK_BEFORE_ALL_CALLS__ = 0;
+  globalThis.parent.__FORKBOOK_BEFORE_ALL_CLEANUP_CALLS__ = 0;
 } catch {
   // ignore
 }
@@ -23,9 +23,9 @@ try {
 export const beforeAll = async () => {
   let cleanup: () => void = () => {};
   try {
-    globalThis.parent.__STORYBOOK_BEFORE_ALL_CALLS__ += 1;
+    globalThis.parent.__FORKBOOK_BEFORE_ALL_CALLS__ += 1;
     cleanup = () => {
-      globalThis.parent.__STORYBOOK_BEFORE_ALL_CLEANUP_CALLS__ += 1;
+      globalThis.parent.__FORKBOOK_BEFORE_ALL_CLEANUP_CALLS__ += 1;
     };
   } catch {
     // ignore

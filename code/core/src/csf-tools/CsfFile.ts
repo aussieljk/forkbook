@@ -219,7 +219,7 @@ export class NoMetaError extends Error {
     super(dedent`
       CSF: ${msg} ${formatLocation(ast, fileName)}
       
-      More info: https://storybook.js.org/docs/writing-stories?ref=error#default-export
+      More info: https://forkbook.ljk.dev/docs/writing-stories#default-export
     `);
     this.name = this.constructor.name;
   }
@@ -231,7 +231,7 @@ export class MultipleMetaError extends Error {
     super(dedent`
       CSF: ${message} ${formatLocation(ast, fileName)}
       
-      More info: https://storybook.js.org/docs/writing-stories?ref=error#default-export
+      More info: https://forkbook.ljk.dev/docs/writing-stories#default-export
     `);
     this.name = this.constructor.name;
   }
@@ -243,7 +243,7 @@ export class MixedFactoryError extends Error {
     super(dedent`
       CSF: ${message} ${formatLocation(ast, fileName)}
       
-      More info: https://storybook.js.org/docs/writing-stories?ref=error#default-export
+      More info: https://forkbook.ljk.dev/docs/writing-stories#default-export
     `);
     this.name = this.constructor.name;
   }
@@ -255,7 +255,7 @@ export class BadMetaError extends Error {
     super(dedent`
       CSF: ${message} ${formatLocation(ast, fileName)}
       
-      More info: https://storybook.js.org/docs/writing-stories?ref=error#default-export
+      More info: https://forkbook.ljk.dev/docs/writing-stories#default-export
     `);
     this.name = this.constructor.name;
   }
@@ -420,7 +420,7 @@ export class CsfFile {
     throw new Error(dedent`
       CSF: unexpected dynamic title ${formatLocation(node, this._options.fileName)}
 
-      More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#string-literal-titles
+      More info: https://forkbook.ljk.dev/docs/migration#string-literal-titles
     `);
   }
 

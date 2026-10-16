@@ -172,7 +172,7 @@ command('build')
     await build({
       ...options,
       packageJson,
-      test: !!options.test || optionalEnvToBoolean(process.env.SB_TESTBUILD),
+      test: !!options.test || optionalEnvToBoolean(process.env.FB_TESTBUILD),
     }).catch(() => {
       logger.outro('Forkbook exited with an error');
       process.exit(1);

@@ -66,7 +66,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig({
           plugins: [react()],
@@ -79,7 +79,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -147,7 +147,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default {
           plugins: [react()],
@@ -160,7 +160,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -235,7 +235,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig(({
           mode
@@ -273,7 +273,7 @@ describe('updateConfigFile', () => {
       +         extends: true,
       +         plugins: [
       +         // The plugin will run tests for the stories defined in your Forkbook config
-      +         // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +         // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +         storybookTest({
       +           configDir: path.join(dirname, '.forkbook')
       +         })],
@@ -384,7 +384,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig({
           plugins: [react()],
@@ -401,7 +401,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -467,7 +467,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         const config = defineConfig({
           resolve: {
@@ -485,7 +485,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -553,7 +553,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig({
           plugins: [react()],
@@ -566,7 +566,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -632,7 +632,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig({
           plugins: [react()],
@@ -649,7 +649,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -712,7 +712,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig({
         
@@ -724,7 +724,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -793,7 +793,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           plugins: [react()]
@@ -811,7 +811,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -876,7 +876,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, {
           plugins: [react()],
@@ -893,7 +893,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -957,7 +957,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
         
@@ -969,7 +969,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1037,7 +1037,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1053,7 +1053,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1127,7 +1127,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1142,7 +1142,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1215,7 +1215,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1241,7 +1241,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1314,7 +1314,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1340,7 +1340,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1399,7 +1399,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig(mergeConfig(viteConfig, {
           test: {
@@ -1419,7 +1419,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1482,7 +1482,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineConfig(mergeConfig(viteConfig, {
           test: {
@@ -1502,7 +1502,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1564,7 +1564,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, {
           test: {
@@ -1584,7 +1584,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1644,7 +1644,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         const test = {
           name: 'node',
@@ -1667,7 +1667,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1731,7 +1731,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         const config = mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1751,7 +1751,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1810,7 +1810,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default defineProject({
           test: {
@@ -1830,7 +1830,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1894,7 +1894,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export const config = mergeConfig(viteConfig, defineConfig({
           test: {
@@ -1914,7 +1914,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -1977,7 +1977,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export const vitestConfig = {
           test: {
@@ -1997,7 +1997,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -2060,7 +2060,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         const vitestConfig = {
           test: {
@@ -2080,7 +2080,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -2170,7 +2170,7 @@ describe('updateConfigFile', () => {
       + import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         const viteConfig = defineConfig({
           plugins: [tsconfigPaths(), react()],
@@ -2210,7 +2210,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],
@@ -2281,7 +2281,7 @@ describe('updateConfigFile', () => {
       + import { playwright } from '@vitest/browser-playwright';
       + const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
       + 
-      + // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+      + // More info at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon
       + 
         export default mergeConfig(viteConfig, defineConfig({
           test: {
@@ -2318,7 +2318,7 @@ describe('updateConfigFile', () => {
       +       extends: true,
       +       plugins: [
       +       // The plugin will run tests for the stories defined in your Forkbook config
-      +       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+      +       // See options at: https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest
       +       storybookTest({
       +         configDir: path.join(dirname, '.forkbook')
       +       })],

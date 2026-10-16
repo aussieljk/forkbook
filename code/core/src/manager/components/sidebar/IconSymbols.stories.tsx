@@ -37,7 +37,7 @@ const Item = ({ children }: { children: ReactNode }) => (
 );
 
 const Label = ({ children }: { children: ReactNode }) => (
-  <span style={{ fontSize: 'var(--sb-size-s1)', color: 'var(--sb-color-mediumdark)' }}>
+  <span style={{ fontSize: 'var(--fb-size-s1)', color: 'var(--fb-color-mediumdark)' }}>
     {children}
   </span>
 );
@@ -75,7 +75,7 @@ export const Default: Story = {
         <Item key={type}>
           <svg
             viewBox="0 0 14 14"
-            style={{ width: 14, height: 14, color: 'var(--sb-color-default-text)' }}
+            style={{ width: 14, height: 14, color: 'var(--fb-color-default-text)' }}
           >
             <UseSymbol type={type} />
           </svg>

@@ -97,7 +97,7 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
 
   const context: ContextSpec = {
     include: document?.body,
-    exclude: ['.sb-wrapper', '#storybook-docs', '#storybook-highlights-root'], // Internal Forkbook elements that are always in the document
+    exclude: ['.fb-wrapper', '#storybook-docs', '#storybook-highlights-root'], // Internal Forkbook elements that are always in the document
   };
 
   if (input.context) {

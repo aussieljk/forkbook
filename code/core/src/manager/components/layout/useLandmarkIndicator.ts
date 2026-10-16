@@ -9,7 +9,7 @@ function findActiveLandmarkElement() {
   let landmarkElement: HTMLElement | null = null;
 
   while (currentElement) {
-    if (currentElement instanceof HTMLElement && currentElement.hasAttribute('data-sb-landmark')) {
+    if (currentElement instanceof HTMLElement && currentElement.hasAttribute('data-fb-landmark')) {
       landmarkElement = currentElement;
       break;
     }

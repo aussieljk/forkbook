@@ -16,6 +16,6 @@ export class PreviewWeb<TRenderer extends Renderer> extends PreviewWithSelection
   ) {
     super(importFn, getProjectAnnotations, new UrlStore(), new WebView());
 
-    global.__STORYBOOK_PREVIEW__ = this;
+    global.__FORKBOOK_PREVIEW__ = this;
   }
 }

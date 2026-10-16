@@ -126,8 +126,8 @@ export const AllControls = {
 const AddonPanelLayout = ({ children }: { children: React.ReactNode }) => (
   <div
     style={{
-      fontSize: 'calc(var(--sb-size-s2) - 1px)',
-      background: 'var(--sb-background-content)',
+      fontSize: 'calc(var(--fb-size-s2) - 1px)',
+      background: 'var(--fb-background-content)',
     }}
   >
     {children}
@@ -167,7 +167,7 @@ const expectEmptyState = async (canvasElement: HTMLElement) => {
 
   await expect(await canvas.findByText('This story has no controls')).toBeVisible();
   await expect(
-    await canvas.findByText(/Storybook couldn't find or generate any controls for this story/i)
+    await canvas.findByText(/Forkbook couldn't find or generate any controls for this story/i)
   ).toBeVisible();
   const learnMoreLink = await canvas.findByRole('link', {
     name: /Read docs/i,
@@ -176,7 +176,7 @@ const expectEmptyState = async (canvasElement: HTMLElement) => {
   await expect(learnMoreLink).toBeVisible();
   await expect(learnMoreLink).toHaveAttribute(
     'href',
-    'https://storybook.js.org/docs/essentials/controls?ref=ui'
+    'https://forkbook.ljk.dev/docs/essentials/controls'
   );
 };
 

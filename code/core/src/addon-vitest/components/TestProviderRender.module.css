@@ -23,13 +23,13 @@
 }
 
 .title {
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
   font-weight: normal;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   &[data-crashed] {
     font-weight: bold;
-    color: var(--sb-color-negative-text);
+    color: var(--fb-color-negative-text);
   }
 }
 
@@ -43,7 +43,7 @@
 }
 
 .muted {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }
 
 .progress {

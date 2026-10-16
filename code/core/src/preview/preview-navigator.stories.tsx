@@ -84,7 +84,7 @@ export const Default: Story = {
     teardownPreviewNavigator();
     setupPreviewNavigator(mockIndex, args.currentStoryId);
 
-    document.querySelectorAll('.sb-navigator-story-link').forEach((link) => {
+    document.querySelectorAll('.fb-navigator-story-link').forEach((link) => {
       link.addEventListener(
         'click',
         fn((event) => {
@@ -138,6 +138,6 @@ export const SpecialCharacters: Story = {
 
     expect(body.getByRole('link', { name: '<b>Bold</b>' })).toBeInTheDocument();
     expect(body.getByRole('list', { name: '<Select> & "Co"' })).toBeInTheDocument();
-    expect(document.querySelector('#sb-navigator-container b')).toBeNull();
+    expect(document.querySelector('#fb-navigator-container b')).toBeNull();
   },
 };

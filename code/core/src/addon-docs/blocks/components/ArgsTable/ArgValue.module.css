@@ -37,8 +37,8 @@
 
 .text {
   flex: 0 0 auto;
-  font-family: var(--sb-font-mono);
-  font-size: var(--sb-size-s1);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-size-s1);
   word-break: break-word;
   white-space: normal;
   max-width: 100%;
@@ -57,8 +57,8 @@
 }
 
 .expandButton {
-  font-family: var(--sb-font-mono);
-  color: var(--sb-color-secondary);
+  font-family: var(--fb-font-mono);
+  color: var(--fb-color-secondary);
   cursor: pointer;
   line-height: normal;
   margin: 0 0 4px;
@@ -68,9 +68,9 @@
 }
 
 .expandable {
-  font-family: var(--sb-font-mono);
-  color: var(--sb-color-secondary);
-  font-size: var(--sb-size-s1); /* overrides codeCommon */
+  font-family: var(--fb-font-mono);
+  color: var(--fb-color-secondary);
+  font-size: var(--fb-size-s1); /* overrides codeCommon */
   margin: 0;
   white-space: nowrap;
   display: flex;
@@ -82,12 +82,12 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: 2px;
   }
 }
 
-:where([data-sb-theme='dark']) .expandable:hover {
+:where([data-fb-theme='dark']) .expandable:hover {
   border: 1px solid hsl(0 0 100 / 0.15);
 }
 
@@ -96,8 +96,8 @@
   max-width: 800px;
   padding-right: 16px;
   /* Don't remove the mono font-family here even if it seems useless, this is used by the browser to calculate the length of a "ch" unit. */
-  font-family: var(--sb-font-mono);
-  font-size: var(--sb-size-s1);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-size-s1);
   /* Most custom stylesheet will reset the box-sizing to "border-box" and will break the tooltip. */
   box-sizing: content-box;
 

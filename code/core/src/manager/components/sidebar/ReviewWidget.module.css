@@ -17,14 +17,14 @@
 
 .headerTitle {
   margin: 0;
-  color: var(--sb-color-default-text);
-  font-weight: var(--sb-weight-bold);
-  font-size: var(--sb-size-s1);
-  line-height: var(--sb-size-s3);
+  color: var(--fb-color-default-text);
+  font-weight: var(--fb-weight-bold);
+  font-size: var(--fb-size-s1);
+  line-height: var(--fb-size-s3);
 }
 
 .agenticIcon {
-  color: var(--sb-fg-color-agentic);
+  color: var(--fb-fg-color-agentic);
 }
 
 .dismissButton {

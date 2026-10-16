@@ -162,7 +162,7 @@ const HeaderWithOcticonAnchor: FC<PropsWithChildren<HeaderWithOcticonAnchorProps
 
   return (
     <OcticonHeader id={id} {...rest}>
-      <span className={`${styles.alignmentWrapper} sb-unstyled`}>
+      <span className={`${styles.alignmentWrapper} fb-unstyled`}>
         <span className={styles.anchorWrapper}>
           <Button
             asChild

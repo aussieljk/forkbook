@@ -10,7 +10,7 @@ import {
 } from '@aussieljk/forkbook/internal/types';
 import {
   applyPreviewImportsMap,
-  RN_STORYBOOK_DIR,
+  RN_FORKBOOK_DIR,
 } from '../../../shared/constants/config-folder.ts';
 
 import { dedent } from 'ts-dedent';
@@ -153,9 +153,7 @@ export default defineGeneratorModule({
     // Dual init sets a framework and maps the specifier to `.storybook` itself.
     if (context.framework == null) {
       const { packageJson, operationDir } = packageManager.primaryPackageJson;
-      if (
-        applyPreviewImportsMap(packageJson, join(RN_STORYBOOK_DIR, 'preview.tsx'), operationDir)
-      ) {
+      if (applyPreviewImportsMap(packageJson, join(RN_FORKBOOK_DIR, 'preview.tsx'), operationDir)) {
         packageManager.writePackageJson(packageJson, operationDir);
       }
     }
@@ -165,7 +163,7 @@ export default defineGeneratorModule({
       packageManager: packageManager as any,
       templateLocation: SupportedRenderer.REACT_NATIVE,
       language: SupportedLanguage.TYPESCRIPT,
-      destination: RN_STORYBOOK_DIR,
+      destination: RN_FORKBOOK_DIR,
       features: context.features,
     });
     await generateReactNativeEntrypoint({ language: context.language });
@@ -186,7 +184,7 @@ export default defineGeneratorModule({
     // React Native doesn't use baseGenerator - return special config
     return {
       // Signal to skip baseGenerator by returning minimal config
-      storybookConfigFolder: RN_STORYBOOK_DIR,
+      storybookConfigFolder: RN_FORKBOOK_DIR,
       skipGenerator: true,
       storybookCommand: null,
       shouldRunDev: false, // React Native is started via platform scripts (see postConfigure), not `storybook dev`
@@ -221,7 +219,7 @@ export default defineGeneratorModule({
         return null;
       }
 
-      return `Could not infer ${missing.join(', ')} app scripts from package.json. To launch Storybook manually, set STORYBOOK_ENABLED=true when running your app scripts.`;
+      return `Could not infer ${missing.join(', ')} app scripts from package.json. To launch Forkbook manually, set FORKBOOK_ENABLED=true when running your app scripts.`;
     })();
 
     const metroCodemodSummary = (() => {
@@ -234,11 +232,11 @@ export default defineGeneratorModule({
       }
 
       if (lastMetroCodemodResult.status === 'already-configured') {
-        return 'Metro config already appears to be configured for Storybook.';
+        return 'Metro config already appears to be configured for Forkbook.';
       }
 
       if (lastMetroCodemodResult.status === 'skipped-existing-storybook-import') {
-        return 'Metro config already contains Storybook imports, so auto-modification was skipped.';
+        return 'Metro config already contains Forkbook imports, so auto-modification was skipped.';
       }
 
       if (lastMetroCodemodResult.status === 'fallback-commented') {
@@ -257,10 +255,10 @@ export default defineGeneratorModule({
     const mayNeedFollowUp = !!scriptWarningSummary || showWithStorybookManualSnippet;
 
     logger.log(dedent`
-      ${CLI_COLORS.success('Storybook for React Native has been configured.')}
+      ${CLI_COLORS.success('Forkbook for React Native is set up.')}
 
       ${mayNeedFollowUp ? `${CLI_COLORS.info('If anything below could not be applied automatically, follow the guidance or the docs link.')}\n` : ''}
-      Storybook run scripts:
+      Forkbook run scripts:
 
       ${CLI_COLORS.cta(' ' + platformRunGuidance + ' ')}
 

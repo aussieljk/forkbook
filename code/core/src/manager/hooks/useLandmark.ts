@@ -35,7 +35,7 @@ function onKeyDown(event: KeyboardEvent) {
   ) {
     return;
   }
-  const landmarks = Array.from(document.querySelectorAll<HTMLElement>('[data-sb-landmark]')).filter(
+  const landmarks = Array.from(document.querySelectorAll<HTMLElement>('[data-fb-landmark]')).filter(
     isNavigable
   );
   if (landmarks.length === 0) {
@@ -59,7 +59,7 @@ let isInstalled = false;
 
 /**
  * Makes an element a landmark: it gets its ARIA role and label, and users can move between
- * landmarks with F6 and Shift+F6. The `data-sb-landmark` attribute lets us highlight the landmark
+ * landmarks with F6 and Shift+F6. The `data-fb-landmark` attribute lets us highlight the landmark
  * that receives focus (see useLandmarkIndicator).
  */
 export function useLandmark(props: LandmarkProps, ref: RefObject<HTMLElement | null>) {
@@ -83,9 +83,9 @@ export function useLandmark(props: LandmarkProps, ref: RefObject<HTMLElement | n
     return () => element.removeEventListener('focusin', remember);
   }, [ref]);
 
-  const landmarkProps: HTMLAttributes<HTMLElement> & { 'data-sb-landmark': true } = {
+  const landmarkProps: HTMLAttributes<HTMLElement> & { 'data-fb-landmark': true } = {
     ...props,
-    'data-sb-landmark': true,
+    'data-fb-landmark': true,
   };
   return { landmarkProps };
 }

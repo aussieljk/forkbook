@@ -224,8 +224,8 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
   }
 
   // To be accessed by the global setup file
-  process.env.__STORYBOOK_URL__ = finalOptions.storybookUrl;
-  process.env.__STORYBOOK_SCRIPT__ = finalOptions.storybookScript;
+  process.env.__FORKBOOK_URL__ = finalOptions.storybookUrl;
+  process.env.__FORKBOOK_SCRIPT__ = finalOptions.storybookScript;
 
   // We signal the test runner that we are not running it via Forkbook
   // We are overriding the environment variable to 'true' if vitest runs via @aussieljk/forkbook/addon-vitest's backend
@@ -365,7 +365,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
       userApiPermissions = getUserApiPermissions(testConfig);
 
       const baseConfig: Omit<ViteUserConfig, 'plugins'> = {
-        cacheDir: resolvePathInStorybookCache('sb-vitest', projectId),
+        cacheDir: resolvePathInStorybookCache('fb-vitest', projectId),
         test: {
           expect: { requireAssertions: false },
 
@@ -406,7 +406,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
              */
             ...(await presets.apply('env', {})),
             // To be accessed by the setup file
-            __STORYBOOK_URL__: finalOptions.storybookUrl,
+            __FORKBOOK_URL__: finalOptions.storybookUrl,
 
             VITEST_STORYBOOK: isVitestStorybook ? 'true' : 'false',
             __VITEST_INCLUDE_TAGS__: finalOptions.tags.include.join(','),
@@ -486,7 +486,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
             The values you passed to "test.include" will be ignored, please remove them from your Vitest configuration where the Forkbook plugin is applied.
 
-            More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#addon-test-indexing-behavior-of-storybookaddon-test-is-changed
+            More info: https://forkbook.ljk.dev/docs/migration#addon-test-indexing-behavior-of-storybookaddon-test-is-changed
           `)
         );
       }

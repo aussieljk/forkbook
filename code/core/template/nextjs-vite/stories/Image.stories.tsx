@@ -36,7 +36,7 @@ export const BlurredPlaceholder: Story = {
 
 export const BlurredAbsolutePlaceholder: Story = {
   args: {
-    src: 'https://storybook.js.org/images/placeholders/50x50.png',
+    src: 'https://forkbook.ljk.dev/images/placeholders/50x50.png',
     width: 50,
     height: 50,
     blurDataURL:
@@ -79,7 +79,7 @@ export const Sized: Story = {
 
 export const Lazy: Story = {
   args: {
-    src: 'https://storybook.js.org/images/placeholders/50x50.png',
+    src: 'https://forkbook.ljk.dev/images/placeholders/50x50.png',
     width: 50,
     height: 50,
   },

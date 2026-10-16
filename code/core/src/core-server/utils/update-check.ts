@@ -6,7 +6,7 @@ import picocolors from 'picocolors';
 import semver from 'semver';
 import { dedent } from 'ts-dedent';
 
-const { FORKBOOK_VERSION_BASE = 'https://storybook.js.org', CI } = process.env;
+const { FORKBOOK_VERSION_BASE = 'https://forkbook.ljk.dev', CI } = process.env;
 
 export const updateCheck = async (version: string): Promise<VersionCheck> => {
   let result;
@@ -49,7 +49,7 @@ export function createUpdateMessage(updateInfo: VersionCheck, version: string): 
           ${picocolors.gray('Upgrade now:')} ${colors.green(upgradeCommand)}
 
           ${picocolors.gray('Read full changelog:')} ${picocolors.gray(
-            picocolors.underline('https://github.com/storybookjs/storybook/blob/main/CHANGELOG.md')
+            picocolors.underline('https://github.com/aussieljk/forkbook/commits/master')
           )}
         `
         : '';

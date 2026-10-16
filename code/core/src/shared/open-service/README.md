@@ -190,7 +190,7 @@ unrelated tools. When this process is already in the project, local mode loads i
 `process.cwd()`. Attached mode never `chdir`s the host; a cwd or version mismatch spawns a
 project-local child host instead.
 
-Methods marked `requiresDevServer` intercept only in **local** mode (start-your-Storybook
+Methods marked `requiresDevServer` intercept only in **local** mode (start-your-Forkbook
 guidance). In attached mode they run caller-side. `stories.preview` reads the recorded origin from
 the instance record. See [cli/tools/README.md](../../cli/tools/README.md).
 

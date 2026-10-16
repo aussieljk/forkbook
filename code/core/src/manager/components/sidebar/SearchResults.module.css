@@ -13,7 +13,7 @@
   justify-content: space-between;
   text-align: left;
   color: inherit;
-  font-size: var(--sb-size-s2);
+  font-size: var(--fb-size-s2);
   background: transparent;
   min-height: 28px;
   border-radius: 4px;
@@ -24,12 +24,12 @@
   padding-right: 8px;
 
   &[data-highlighted] {
-    background: var(--sb-background-hoverable);
+    background: var(--fb-background-hoverable);
   }
 
   &:hover,
   &:focus {
-    background: rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.93));
+    background: rgb(from var(--fb-color-secondary) r g b / calc(alpha - 0.93));
     outline: none;
   }
 }
@@ -46,7 +46,7 @@
 
 .mark {
   background: transparent;
-  color: var(--sb-color-secondary);
+  color: var(--fb-color-secondary);
 
   @media (forced-colors: active) {
     color: HighlightText;
@@ -61,12 +61,12 @@
 .recentlyOpenedTitle {
   display: flex;
   justify-content: space-between;
-  font-size: calc(var(--sb-size-s1) - 1px);
-  font-weight: var(--sb-weight-bold);
+  font-size: calc(var(--fb-size-s1) - 1px);
+  font-weight: var(--fb-weight-bold);
   min-height: 28px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   margin-bottom: 4px;
   align-items: center;
 
@@ -95,7 +95,7 @@
 }
 
 .path {
-  font-size: calc(var(--sb-size-s1) - 1px);
+  font-size: calc(var(--fb-size-s1) - 1px);
 
   & > span + span:before {
     content: ' / ';

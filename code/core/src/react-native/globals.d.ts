@@ -16,13 +16,13 @@ declare global {
   var global: typeof globalThis | undefined;
   var CHANNEL_OPTIONS: { maxDepth: number } | undefined;
   var FEATURES: (Features & sbCoreGlobalFeatures) | undefined;
-  var STORYBOOK_WEBSOCKET:
+  var FORKBOOK_WEBSOCKET:
     | {
         host?: string;
         port?: number;
         secured?: boolean;
       }
     | undefined;
-  var __STORYBOOK_ADDONS_CHANNEL__: Channel | undefined;
-  var __STORYBOOK_PREVIEW__: PreviewWithSelection<ReactRenderer> | undefined;
+  var __FORKBOOK_ADDONS_CHANNEL__: Channel | undefined;
+  var __FORKBOOK_PREVIEW__: PreviewWithSelection<ReactRenderer> | undefined;
 }

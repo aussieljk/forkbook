@@ -46,8 +46,8 @@ declare global {
   var globalProjectAnnotations: NormalizedProjectAnnotations<any>;
   var defaultProjectAnnotations: ProjectAnnotations<any>;
   // Set by @aussieljk/forkbook/addon-vitest once its setup file has applied the project annotations.
-  var __STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__: boolean | undefined;
-  var __STORYBOOK_SET_PROJECT_ANNOTATIONS_CALLED__: boolean | undefined;
+  var __FORKBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__: boolean | undefined;
+  var __FORKBOOK_SET_PROJECT_ANNOTATIONS_CALLED__: boolean | undefined;
 }
 
 export function setDefaultProjectAnnotations<TRenderer extends Renderer = Renderer>(
@@ -65,10 +65,10 @@ export function setProjectAnnotations<TRenderer extends Renderer = Renderer>(
     | NamedOrDefaultProjectAnnotations<TRenderer>
     | NamedOrDefaultProjectAnnotations<TRenderer>[]
 ): NormalizedProjectAnnotations<TRenderer> {
-  if (globalThis.__STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__) {
+  if (globalThis.__FORKBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__) {
     throw new ProjectAnnotationsAlreadyAppliedError();
   }
-  globalThis.__STORYBOOK_SET_PROJECT_ANNOTATIONS_CALLED__ = true;
+  globalThis.__FORKBOOK_SET_PROJECT_ANNOTATIONS_CALLED__ = true;
 
   const annotations = Array.isArray(projectAnnotations) ? projectAnnotations : [projectAnnotations];
   // Pass the raw annotation modules (which may use `default` and/or named exports, e.g. from

@@ -48,7 +48,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     >
       <div
         className={styles.badge}
-        style={{ backgroundColor: `var(--sb-color-${StatusColorMapping[status]})` }}
+        style={{ backgroundColor: `var(--fb-color-${StatusColorMapping[status]})` }}
         aria-label={`Story status: ${badgeText}`}
       >
         {badgeText}

@@ -1,25 +1,9 @@
 function parseErrorCode({
   code,
   category,
-}: Pick<StorybookError, 'code' | 'category'>): `SB_${typeof category}_${string}` {
+}: Pick<StorybookError, 'code' | 'category'>): `FB_${typeof category}_${string}` {
   const paddedCode = String(code).padStart(4, '0');
-  return `SB_${category}_${paddedCode}`;
-}
-
-export function appendErrorRef(url: string): string {
-  // Skip if not storybook.js.org OR already has ref=error
-  if (/^(?!.*storybook\.js\.org)|[?&]ref=error\b/.test(url)) {
-    return url;
-  }
-
-  try {
-    const urlObj = new URL(url);
-    urlObj.searchParams.set('ref', 'error');
-    return urlObj.toString();
-  } catch {
-    // Fallback for invalid URLs - return as-is
-    return url;
-  }
+  return `FB_${category}_${paddedCode}`;
 }
 
 export abstract class StorybookError extends Error {
@@ -68,7 +52,7 @@ export abstract class StorybookError extends Error {
     return parseErrorCode({ code: this.code, category: this.category });
   }
 
-  /** Overrides the default `Error.name` property in the format: SB_<CATEGORY>_<CODE>. */
+  /** Overrides the default `Error.name` property in the format: FB_<CATEGORY>_<CODE>. */
   get name() {
     const errorName = this._name || this.constructor.name;
 
@@ -138,11 +122,11 @@ export abstract class StorybookError extends Error {
     let page: string | undefined;
 
     if (documentation === true) {
-      page = `https://storybook.js.org/error/${parseErrorCode({ code, category })}?ref=error`;
+      page = `https://forkbook.ljk.dev/error/${parseErrorCode({ code, category })}`;
     } else if (typeof documentation === 'string') {
-      page = appendErrorRef(documentation);
+      page = documentation;
     } else if (Array.isArray(documentation)) {
-      page = `\n${documentation.map((doc) => `\t- ${appendErrorRef(doc)}`).join('\n')}`;
+      page = `\n${documentation.map((doc) => `\t- ${doc}`).join('\n')}`;
     }
 
     return `${message}${page != null ? `\n\nMore info: ${page}\n` : ''}`;

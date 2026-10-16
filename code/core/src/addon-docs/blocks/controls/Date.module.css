@@ -1,6 +1,6 @@
 .input {
   &[readonly] {
-    background: var(--sb-color-lighter);
+    background: var(--fb-color-lighter);
   }
 
   &::-webkit-calendar-picker-indicator {
@@ -9,7 +9,7 @@
   }
 }
 
-:where([data-sb-theme='dark']) .input {
+:where([data-fb-theme='dark']) .input {
   &[readonly] {
     background: transparent;
   }

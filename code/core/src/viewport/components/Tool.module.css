@@ -2,8 +2,8 @@
   display: flex;
   gap: 2px;
   margin-left: 20px;
-  font-family: var(--sb-font-mono);
-  font-size: calc(var(--sb-size-s1) - 1px);
-  font-weight: var(--sb-weight-regular);
-  color: var(--sb-text-muted-color);
+  font-family: var(--fb-font-mono);
+  font-size: calc(var(--fb-size-s1) - 1px);
+  font-weight: var(--fb-weight-regular);
+  color: var(--fb-text-muted-color);
 }

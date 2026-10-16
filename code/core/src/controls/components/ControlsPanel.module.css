@@ -6,13 +6,13 @@
 .wrapper {
   min-height: 100%;
   padding-bottom: 0;
-  background-color: var(--sb-background-content);
+  background-color: var(--fb-background-content);
 
   &[data-save-from-ui] {
     padding-bottom: 41px;
   }
 
   & table {
-    background-color: var(--sb-background-app);
+    background-color: var(--fb-background-app);
   }
 }

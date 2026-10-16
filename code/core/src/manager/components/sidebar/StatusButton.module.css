@@ -4,7 +4,7 @@
 
 .statusLabel:where([data-status-color]),
 .statusButton:where([data-status-color]) {
-  color: var(--sb-status-color);
+  color: var(--fb-status-color);
 }
 
 .statusButton {
@@ -16,13 +16,13 @@
   height: 28px;
 
   &:hover {
-    color: var(--sb-color-secondary);
-    background: hsl(from var(--sb-color-secondary) h s calc(l + 40));
+    color: var(--fb-color-secondary);
+    background: hsl(from var(--fb-color-secondary) h s calc(l + 40));
   }
 
   &:focus {
-    color: var(--sb-color-secondary);
-    border-color: var(--sb-color-secondary);
+    color: var(--fb-color-secondary);
+    border-color: var(--fb-color-secondary);
     outline-offset: -2px;
 
     &:not(:focus-visible) {
@@ -31,29 +31,29 @@
   }
 }
 
-:where([data-sb-theme='dark']) .statusButton:hover {
-  background: hsl(from var(--sb-color-secondary) h s calc(l - 30));
+:where([data-fb-theme='dark']) .statusButton:hover {
+  background: hsl(from var(--fb-color-secondary) h s calc(l - 30));
 }
 
 .statusButton:where([data-selected-item]):hover {
-  box-shadow: inset 0 0 0 2px var(--sb-color-secondary);
+  box-shadow: inset 0 0 0 2px var(--fb-color-secondary);
   background: rgba(255, 255, 255, 0.2);
 }
 
 [data-selected='true'] .statusButton {
-  background: var(--sb-color-secondary);
-  box-shadow: 0 0 5px 5px var(--sb-color-secondary);
+  background: var(--fb-color-secondary);
+  box-shadow: 0 0 5px 5px var(--fb-color-secondary);
 
   &:hover {
-    background: var(--sb-color-secondary);
+    background: var(--fb-color-secondary);
   }
 }
 
-:where([data-sb-theme='dark']) [data-selected='true'] .statusButton {
-  background: hsl(from var(--sb-color-secondary) h s calc(l - 18));
-  box-shadow: 0 0 5px 5px hsl(from var(--sb-color-secondary) h s calc(l - 18));
+:where([data-fb-theme='dark']) [data-selected='true'] .statusButton {
+  background: hsl(from var(--fb-color-secondary) h s calc(l - 18));
+  box-shadow: 0 0 5px 5px hsl(from var(--fb-color-secondary) h s calc(l - 18));
 
   &:hover {
-    background: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+    background: hsl(from var(--fb-color-secondary) h s calc(l - 10));
   }
 }

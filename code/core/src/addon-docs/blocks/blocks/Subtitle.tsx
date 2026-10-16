@@ -37,7 +37,7 @@ const SubtitleImpl: FunctionComponent<SubtitleProps> = (props) => {
   const content = children || preparedMeta?.parameters?.docs?.subtitle;
 
   return content ? (
-    <PureSubtitle className="sbdocs-subtitle sb-unstyled">{content}</PureSubtitle>
+    <PureSubtitle className="sbdocs-subtitle fb-unstyled">{content}</PureSubtitle>
   ) : null;
 };
 

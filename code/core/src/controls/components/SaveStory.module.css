@@ -14,9 +14,9 @@
   animation:
     slideIn 300ms,
     highlight 2s;
-  background: var(--sb-background-bar);
-  border-top: 1px solid var(--sb-app-border-color);
-  font-size: var(--sb-size-s2);
+  background: var(--fb-background-bar);
+  border-top: 1px solid var(--fb-app-border-color);
+  font-size: var(--fb-size-s2);
 
   @container (max-width: 799px) {
     flex-direction: row;
@@ -24,7 +24,7 @@
   }
 }
 
-:where([data-sb-theme='dark']) .bar {
+:where([data-fb-theme='dark']) .bar {
   --highlight-bg-color: #153b5b;
 }
 
@@ -46,8 +46,8 @@
   flex: 1 0 0;
   align-items: center;
   gap: 2px;
-  color: var(--sb-text-muted-color);
-  font-size: var(--sb-size-s2);
+  color: var(--fb-text-muted-color);
+  font-size: var(--fb-size-s2);
 }
 
 .label {
@@ -66,11 +66,11 @@
 
 .modalInput {
   &::placeholder {
-    color: var(--sb-color-mediumdark);
+    color: var(--fb-color-mediumdark);
   }
 
   &:invalid:not(:placeholder-shown) {
-    box-shadow: var(--sb-color-negative) 0 0 0 1px inset;
+    box-shadow: var(--fb-color-negative) 0 0 0 1px inset;
   }
 }
 

@@ -22,9 +22,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--sb-color-dark);
-  font-weight: var(--sb-weight-regular);
-  font-size: var(--sb-size-s2);
+  color: var(--fb-color-dark);
+  font-weight: var(--fb-weight-regular);
+  font-size: var(--fb-size-s2);
 }
 
 .actions {
@@ -37,24 +37,24 @@
 }
 
 .link.link {
-  font-weight: var(--sb-weight-bold);
-  color: var(--sb-color-dark);
+  font-weight: var(--fb-weight-bold);
+  color: var(--fb-color-dark);
 }
 
 .link:hover {
-  color: var(--sb-color-darkest);
+  color: var(--fb-color-darkest);
 }
 
-:where([data-sb-theme='dark']) {
+:where([data-fb-theme='dark']) {
   & .footer {
-    color: var(--sb-color-lightest);
+    color: var(--fb-color-lightest);
   }
 
   & .link.link {
-    color: var(--sb-color-light);
+    color: var(--fb-color-light);
   }
 
   & .link:hover {
-    color: var(--sb-color-lightest);
+    color: var(--fb-color-lightest);
   }
 }

@@ -7,7 +7,7 @@
   &::after {
     content: '';
     display: block;
-    background-color: var(--sb-color-secondary);
+    background-color: var(--fb-color-secondary);
   }
 
   &:hover {
@@ -87,7 +87,7 @@
 .drag:focus-visible {
   opacity: 1;
   outline: 2px solid transparent;
-  box-shadow: inset 0 0 0 4px var(--sb-color-secondary);
+  box-shadow: inset 0 0 0 4px var(--fb-color-secondary);
 
   &[aria-orientation='vertical'] {
     width: 7px;

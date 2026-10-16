@@ -14,7 +14,7 @@ import { getInterpretedFile } from '@aussieljk/forkbook/internal/common';
 import { readConfig } from '@aussieljk/forkbook/internal/csf-tools';
 import type { PackageJson, StorybookConfig } from '@aussieljk/forkbook/internal/types';
 
-import { RN_STORYBOOK_DIR } from '../shared/constants/config-folder.ts';
+import { RN_FORKBOOK_DIR } from '../shared/constants/config-folder.ts';
 
 import * as pkg from 'empathic/package';
 
@@ -349,8 +349,8 @@ function resolveDefaultConfigDir(packageJson: PackageJson): string {
     return fromScript;
   }
 
-  if (existsSync(resolve(RN_STORYBOOK_DIR))) {
-    return RN_STORYBOOK_DIR;
+  if (existsSync(resolve(RN_FORKBOOK_DIR))) {
+    return RN_FORKBOOK_DIR;
   }
 
   return '.forkbook';

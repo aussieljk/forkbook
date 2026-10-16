@@ -2,7 +2,7 @@ export interface ActionsParameters {
   /**
    * Actions configuration
    *
-   * @see https://storybook.js.org/docs/essentials/actions#parameters
+   * @see https://forkbook.ljk.dev/docs/essentials/actions#parameters
    */
   actions?: {
     /**
@@ -24,7 +24,7 @@ export interface ActionsParameters {
      * feature for the entire Forkbook, you can set the option in your `main.js|ts` configuration
      * file.
      *
-     * @see https://storybook.js.org/docs/essentials/actions#disable
+     * @see https://forkbook.ljk.dev/docs/essentials/actions#disable
      */
     disable?: boolean;
 

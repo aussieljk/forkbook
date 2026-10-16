@@ -323,8 +323,8 @@ const injectEmbedUiStyles = (documentRef: Document): void => {
   const style = documentRef.createElement('style');
   style.id = EMBED_UI_STYLE_ID;
   style.textContent = `
-    .sb-preparing-story,
-    .sb-preparing-docs {
+    .fb-preparing-story,
+    .fb-preparing-docs {
       display: none !important;
     }
   `;

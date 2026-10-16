@@ -4,13 +4,13 @@
   margin-top: -2px; /* optical alignment */
   height: 12px;
   width: 12px;
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.25));
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.25));
   border: none;
   display: inline-block;
 }
 
-:where([data-sb-theme='dark']) .expanderIcon {
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.3));
+:where([data-fb-theme='dark']) .expanderIcon {
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.3));
 }
 
 .flexWrapper {
@@ -23,25 +23,25 @@
   position: relative;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  font-weight: var(--sb-weight-bold);
-  font-size: calc(var(--sb-size-s1) - 1px);
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.4));
-  background: var(--sb-background-app) !important;
+  font-weight: var(--fb-weight-bold);
+  font-size: calc(var(--fb-size-s1) - 1px);
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.4));
+  background: var(--fb-background-app) !important;
 
   & ~ td {
-    background: var(--sb-background-app) !important;
+    background: var(--fb-background-app) !important;
   }
 }
 
-:where([data-sb-theme='dark']) .section {
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.6));
+:where([data-fb-theme='dark']) .section {
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.6));
 }
 
 .subsection {
   position: relative;
-  font-weight: var(--sb-weight-bold);
-  font-size: calc(var(--sb-size-s2) - 1px);
-  background: var(--sb-background-app);
+  font-weight: var(--fb-weight-bold);
+  font-size: calc(var(--fb-size-s2) - 1px);
+  background: var(--fb-background-app);
 }
 
 .cell {
@@ -49,7 +49,7 @@
 }
 
 .row:hover > td {
-  background-color: hsl(from var(--sb-background-app) h s calc(l + 0.5)) !important;
+  background-color: hsl(from var(--fb-background-app) h s calc(l + 0.5)) !important;
   cursor: row-resize;
 }
 

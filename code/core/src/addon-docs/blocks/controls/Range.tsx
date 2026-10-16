@@ -51,14 +51,14 @@ export const RangeControl: FC<RangeProps> = ({
 
   return (
     <div className={styles.wrapper} data-readonly={readonly || undefined}>
-      <label htmlFor={controlId} className="sb-sr-only">
+      <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>
       <span className={styles.label}>{min}</span>
       <input
         className={styles.input}
         style={
-          { '--sb-range-progress': `${((current - min) / (max - min)) * 100}%` } as CSSProperties
+          { '--fb-range-progress': `${((current - min) / (max - min)) * 100}%` } as CSSProperties
         }
         id={controlId}
         type="range"

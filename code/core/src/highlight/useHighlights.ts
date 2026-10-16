@@ -34,11 +34,11 @@ const rootId = 'storybook-highlights-root';
 const storybookRootId = 'storybook-root';
 
 export const useHighlights = (channel: Channel) => {
-  if (globalThis.__STORYBOOK_HIGHLIGHT_INITIALIZED) {
+  if (globalThis.__FORKBOOK_HIGHLIGHT_INITIALIZED) {
     return;
   }
 
-  globalThis.__STORYBOOK_HIGHLIGHT_INITIALIZED = true;
+  globalThis.__FORKBOOK_HIGHLIGHT_INITIALIZED = true;
 
   const { document } = globalThis;
 

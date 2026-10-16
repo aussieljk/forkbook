@@ -63,14 +63,14 @@ export type QueuedEvent = {
 // already-resolved state back to uninitialized, silently queueing all subsequent events forever.
 // The `in` check (rather than `=== undefined`) is load-bearing: the uninitialized state is
 // literally `undefined`, so only key presence distinguishes "seeded" from "never loaded".
-if (!('SB_TELEMETRY_STATE' in globalThis)) {
+if (!('FB_TELEMETRY_STATE' in globalThis)) {
   // Start in uninitialized state until we know whether telemetry is enabled or disabled based on
   // presets and CLI options. In the meantime, events are queued.
-  globalThis.SB_TELEMETRY_STATE = undefined as TelemetryState;
+  globalThis.FB_TELEMETRY_STATE = undefined as TelemetryState;
 }
 
-if (!('SB_TELEMETRY_QUEUE' in globalThis)) {
-  globalThis.SB_TELEMETRY_QUEUE = [];
+if (!('FB_TELEMETRY_QUEUE' in globalThis)) {
+  globalThis.FB_TELEMETRY_QUEUE = [];
 }
 
 const isPayloadFactory = (payload: PayloadInput): payload is PayloadFactory =>
@@ -84,13 +84,13 @@ const resolvePayload = async (payload: PayloadInput): Promise<Payload> =>
  * This should be called once presets have been evaluated and the disableTelemetry config is known.
  */
 export async function setTelemetryEnabled(enabled: boolean) {
-  const previousState = globalThis.SB_TELEMETRY_STATE;
-  globalThis.SB_TELEMETRY_STATE = enabled ? 'enabled' : 'disabled';
+  const previousState = globalThis.FB_TELEMETRY_STATE;
+  globalThis.FB_TELEMETRY_STATE = enabled ? 'enabled' : 'disabled';
 
   if (enabled && previousState === undefined) {
     // Flush the queue
-    const pending = globalThis.SB_TELEMETRY_QUEUE;
-    globalThis.SB_TELEMETRY_QUEUE = [];
+    const pending = globalThis.FB_TELEMETRY_QUEUE;
+    globalThis.FB_TELEMETRY_QUEUE = [];
     for (const event of pending) {
       try {
         await _processAndSend(event.eventType, event.payload, {
@@ -104,18 +104,18 @@ export async function setTelemetryEnabled(enabled: boolean) {
     }
   } else {
     // Clear the queue (disabled, or already resolved)
-    globalThis.SB_TELEMETRY_QUEUE = [];
+    globalThis.FB_TELEMETRY_QUEUE = [];
   }
 }
 
 /** Check whether telemetry is currently enabled. */
 export function isTelemetryModuleEnabled() {
-  return globalThis.SB_TELEMETRY_STATE === 'enabled';
+  return globalThis.FB_TELEMETRY_STATE === 'enabled';
 }
 
 /** Check whether the telemetry state has been resolved (is no longer uninitialized). */
 export function isTelemetryStateResolved() {
-  return globalThis.SB_TELEMETRY_STATE !== undefined;
+  return globalThis.FB_TELEMETRY_STATE !== undefined;
 }
 
 // --- Payload error handler ---
@@ -127,7 +127,7 @@ export function isTelemetryStateResolved() {
  */
 export type PayloadErrorHandler = (error: Error, eventType: EventType) => Promise<void>;
 
-// Guarded for the same reason as SB_TELEMETRY_STATE above: a second load of this module must not
+// Guarded for the same reason as FB_TELEMETRY_STATE above: a second load of this module must not
 // clear a handler registered through the first one.
 if (!('PAYLOAD_ERROR_HANDLER' in globalThis)) {
   globalThis.PAYLOAD_ERROR_HANDLER = undefined as PayloadErrorHandler | undefined;
@@ -219,12 +219,12 @@ export const telemetry = async (
   options: Partial<Options> = {}
 ) => {
   // force:true bypasses the disabled state (used for error telemetry with enableCrashReports)
-  if (globalThis.SB_TELEMETRY_STATE === 'disabled' && !options.force) {
+  if (globalThis.FB_TELEMETRY_STATE === 'disabled' && !options.force) {
     return;
   }
 
-  if (globalThis.SB_TELEMETRY_STATE === undefined && !options.force) {
-    globalThis.SB_TELEMETRY_QUEUE.push({ eventType, payload, options, timestamp: Date.now() });
+  if (globalThis.FB_TELEMETRY_STATE === undefined && !options.force) {
+    globalThis.FB_TELEMETRY_QUEUE.push({ eventType, payload, options, timestamp: Date.now() });
     return;
   }
 

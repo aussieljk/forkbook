@@ -106,7 +106,7 @@ See [Load](../../shared/open-service/README.md#load).
 
 ## requiresDevServer and telemetry
 
-In local mode, `requiresDevServer` intercepts with start-your-Storybook guidance. In attached mode
+In local mode, `requiresDevServer` intercepts with start-your-Forkbook guidance. In attached mode
 those methods run in the caller. `stories.preview` reads origin from the instance record.
 
 The CLI and the SDK fire one `tools-command` record per invocation after a run; help lookups are

@@ -3,7 +3,7 @@ import path, { join } from 'node:path';
 
 import { SupportedLanguage } from '@aussieljk/forkbook/internal/types';
 
-import { RN_STORYBOOK_DIR } from '../../../shared/constants/config-folder.ts';
+import { RN_FORKBOOK_DIR } from '../../../shared/constants/config-folder.ts';
 import { resolvePackageDir } from '../../../shared/utils/module.ts';
 
 const ENTRYPOINT_TEMPLATE_DIR = join(
@@ -35,7 +35,7 @@ export const generateReactNativeEntrypoint = async ({
 }) => {
   const extension = getEntrypointExtension(language);
   const templatePath = getEntrypointTemplatePath(templateVariant);
-  const targetDir = path.join(cwd, RN_STORYBOOK_DIR);
+  const targetDir = path.join(cwd, RN_FORKBOOK_DIR);
   const targetPath = path.join(targetDir, `index.${extension}`);
 
   const templateContents = await readFile(templatePath, 'utf-8');

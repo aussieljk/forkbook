@@ -10,7 +10,7 @@
   overflow: auto;
   width: 100%;
   z-index: 3;
-  background: var(--sb-background-app);
+  background: var(--fb-background-app);
   flex: 1;
 }
 
@@ -34,6 +34,6 @@
   left: 0;
   bottom: 0;
   right: 0;
-  background: var(--sb-background-preview);
+  background: var(--fb-background-preview);
   z-index: 1;
 }

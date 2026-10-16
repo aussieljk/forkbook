@@ -13,8 +13,8 @@ import { generateAddonSetupCode } from '../codegen-set-addon-channel.ts';
 import { transformIframeHtml } from '../transform-iframe-html.ts';
 import { applyChunkedPreviewRuntime, ensureStrictExecutionOrder } from '../utils/vite-features.ts';
 import {
-  SB_VIRTUAL_FILES,
-  SB_VIRTUAL_FILE_IDS,
+  FB_VIRTUAL_FILES,
+  FB_VIRTUAL_FILE_IDS,
   getResolvedVirtualModuleId,
 } from '../virtual-file-names.ts';
 
@@ -35,7 +35,7 @@ export function codeGeneratorPlugin(options: Options) {
         // Changes and removals are already watched and handled by Vite, so they actually trigger a double HMR event right now.
         server.watcher.emit(
           'change',
-          getResolvedVirtualModuleId(SB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE)
+          getResolvedVirtualModuleId(FB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE)
         );
       });
     },
@@ -57,7 +57,7 @@ export function codeGeneratorPlugin(options: Options) {
       iframeId = `${config.root}/iframe.html`;
     },
     resolveId(source) {
-      if (SB_VIRTUAL_FILE_IDS.includes(source)) {
+      if (FB_VIRTUAL_FILE_IDS.includes(source)) {
         return getResolvedVirtualModuleId(source);
       }
       if (source === iframePath) {
@@ -68,16 +68,16 @@ export function codeGeneratorPlugin(options: Options) {
     },
     async load(id) {
       switch (id) {
-        case getResolvedVirtualModuleId(SB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE): {
+        case getResolvedVirtualModuleId(FB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE): {
           const storyIndexGenerator = await storyIndexGeneratorPromise;
           const index = await storyIndexGenerator?.getIndex();
           return generateImportFnScriptCode(index);
         }
 
-        case getResolvedVirtualModuleId(SB_VIRTUAL_FILES.VIRTUAL_ADDON_SETUP_FILE): {
+        case getResolvedVirtualModuleId(FB_VIRTUAL_FILES.VIRTUAL_ADDON_SETUP_FILE): {
           return generateAddonSetupCode();
         }
-        case getResolvedVirtualModuleId(SB_VIRTUAL_FILES.VIRTUAL_APP_FILE): {
+        case getResolvedVirtualModuleId(FB_VIRTUAL_FILES.VIRTUAL_APP_FILE): {
           return generateModernIframeScriptCode();
         }
         case iframeId: {

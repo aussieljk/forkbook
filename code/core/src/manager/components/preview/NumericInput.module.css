@@ -5,11 +5,11 @@
   width: 100%;
   height: 32px;
   padding-inline: 9px;
-  font-size: var(--sb-size-s1);
-  color: var(--sb-text-muted-color);
-  background: var(--sb-input-background);
-  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
-  border-radius: var(--sb-input-border-radius);
+  font-size: var(--fb-size-s1);
+  color: var(--fb-text-muted-color);
+  background: var(--fb-input-background);
+  box-shadow: var(--fb-input-border) 0 0 0 1px inset;
+  border-radius: var(--fb-input-border-radius);
 
   & svg {
     display: block;
@@ -25,7 +25,7 @@
     background: transparent;
     border: none;
     box-shadow: none;
-    color: var(--sb-input-color);
+    color: var(--fb-input-color);
 
     &:focus,
     &:focus-visible {
@@ -44,12 +44,12 @@
   }
 
   &:has(input:focus-visible) {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: -2px;
   }
 
   &:has(input:disabled) {
-    background: var(--sb-color-lighter);
+    background: var(--fb-color-lighter);
     cursor: not-allowed;
   }
 
@@ -62,6 +62,6 @@
   }
 }
 
-:where([data-sb-theme='dark']) .wrapper:has(input:disabled) {
-  background: var(--sb-input-background);
+:where([data-fb-theme='dark']) .wrapper:has(input:disabled) {
+  background: var(--fb-input-background);
 }

@@ -101,7 +101,7 @@ export async function commonConfig(
     // Allow storybook deployed as subfolder. See https://github.com/storybookjs/builder-vite/issues/238
     base: './',
     ...(options.cacheKey
-      ? { cacheDir: resolvePathInStorybookCache('sb-vite', options.cacheKey) }
+      ? { cacheDir: resolvePathInStorybookCache('fb-vite', options.cacheKey) }
       : {}),
     // Pass build.target option from user's vite config
     build: {

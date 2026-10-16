@@ -604,6 +604,6 @@ export class VitestManager {
   }
 
   isStorybookProject(project: TestProject) {
-    return !!project.config.env?.__STORYBOOK_URL__;
+    return !!project.config.env?.__FORKBOOK_URL__;
   }
 }

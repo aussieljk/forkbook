@@ -4,7 +4,7 @@
   vertical-align: inherit;
 
   & > * {
-    margin-left: calc(var(--spaced-col) * var(--sb-layout-margin));
+    margin-left: calc(var(--spaced-col) * var(--fb-layout-margin));
     vertical-align: inherit;
   }
 
@@ -15,7 +15,7 @@
 
 .row {
   & > * {
-    margin-top: calc(var(--spaced-row) * var(--sb-layout-margin));
+    margin-top: calc(var(--spaced-row) * var(--fb-layout-margin));
   }
 
   & > *:first-child {
@@ -24,11 +24,11 @@
 }
 
 .outerCol {
-  margin-left: calc(var(--spaced-outer) * var(--sb-layout-margin));
-  margin-right: calc(var(--spaced-outer) * var(--sb-layout-margin));
+  margin-left: calc(var(--spaced-outer) * var(--fb-layout-margin));
+  margin-right: calc(var(--spaced-outer) * var(--fb-layout-margin));
 }
 
 .outerRow {
-  margin-top: calc(var(--spaced-outer) * var(--sb-layout-margin));
-  margin-bottom: calc(var(--spaced-outer) * var(--sb-layout-margin));
+  margin-top: calc(var(--spaced-outer) * var(--fb-layout-margin));
+  margin-bottom: calc(var(--spaced-outer) * var(--fb-layout-margin));
 }

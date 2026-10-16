@@ -8,7 +8,7 @@ export interface A11yParameters {
   /**
    * Accessibility configuration
    *
-   * @see https://storybook.js.org/docs/writing-tests/accessibility-testing
+   * @see https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing
    */
   a11y?: A11yParams;
 }
@@ -17,14 +17,14 @@ export interface A11yGlobals {
   /**
    * Accessibility configuration
    *
-   * @see https://storybook.js.org/docs/writing-tests/accessibility-testing
+   * @see https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing
    */
   a11y?: {
     /**
      * Prevent the addon from executing automated accessibility checks upon visiting a story. You
      * can still trigger the checks from the addon panel.
      *
-     * @see https://storybook.js.org/docs/writing-tests/accessibility-testing#disable-automated-checks
+     * @see https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing#disable-automated-checks
      */
     manual?: boolean;
   };

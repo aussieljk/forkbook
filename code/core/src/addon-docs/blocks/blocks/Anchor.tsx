@@ -10,7 +10,7 @@ export interface AnchorProps {
 }
 
 export const Anchor: FC<PropsWithChildren<AnchorProps>> = ({ storyId, children }) => (
-  <div id={anchorBlockIdFromId(storyId)} className="sb-anchor">
+  <div id={anchorBlockIdFromId(storyId)} className="fb-anchor">
     {children}
   </div>
 );

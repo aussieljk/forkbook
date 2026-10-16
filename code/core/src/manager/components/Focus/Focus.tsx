@@ -29,7 +29,7 @@ const FocusProxy = ({ targetId, ...props }: FocusOutlineProps & { targetId: stri
   return (
     <>
       <style>
-        {`[data-focus-proxy="${id}"]:has([data-target-id="${targetId}"]:focus-visible) { outline-color: var(--sb-color-secondary); }`}
+        {`[data-focus-proxy="${id}"]:has([data-target-id="${targetId}"]:focus-visible) { outline-color: var(--fb-color-secondary); }`}
       </style>
       <FocusOutline data-focus-proxy={id} {...props} />
     </>

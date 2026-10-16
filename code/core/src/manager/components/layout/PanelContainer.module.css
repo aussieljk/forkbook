@@ -3,11 +3,11 @@
   position: relative;
 
   &[data-position='bottom'] {
-    border-top: 1px solid var(--sb-app-border-color);
+    border-top: 1px solid var(--fb-app-border-color);
   }
 
   &[data-position='right'] {
-    border-left: 1px solid var(--sb-app-border-color);
+    border-left: 1px solid var(--fb-app-border-color);
   }
 }
 

@@ -34,7 +34,7 @@ export async function readOrderedFiles(
 export function sanitizePath(file: OutputFile, addonsDir: string) {
   const filePath = relative(addonsDir, file.path);
   const location = normalize(join(addonsDir, filePath));
-  const url = `./sb-addons/${slash(filePath).split('/').map(encodeURIComponent).join('/')}`;
+  const url = `./fb-addons/${slash(filePath).split('/').map(encodeURIComponent).join('/')}`;
 
   return { location, url };
 }

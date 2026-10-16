@@ -52,12 +52,12 @@ describe('remove-mdx-stories', () => {
 
     await expect(() => removeMDXEntries(Object.keys(list), { configDir })).rejects
       .toThrowErrorMatchingInlineSnapshot(`
-    [SB_CORE-COMMON_0004 (InvalidStoriesEntryError): Forkbook could not index your stories.
+    [FB_CORE-COMMON_0004 (InvalidStoriesEntryError): Forkbook could not index your stories.
 Your main configuration does not contain a 'stories' field, or it resolved to an empty array.
 
 Please check your main configuration file and make sure it exports a 'stories' field that is not an empty array.
 
-More info: https://storybook.js.org/docs/faq?ref=error#can-i-have-a-storybook-with-no-local-stories
+More info: https://forkbook.ljk.dev/docs/faq#can-i-have-a-storybook-with-no-local-stories
 ]
 `);
   });

@@ -5,26 +5,23 @@ export interface StorybookPlatformScriptDerivationResult {
   missingBaseScripts: PlatformScriptName[];
 }
 
-const STORYBOOK_ENV_ASSIGNMENT = 'STORYBOOK_ENABLED=true';
-const STORYBOOK_ENV_PREFIX = `cross-env ${STORYBOOK_ENV_ASSIGNMENT}`;
-const STORYBOOK_ENV_PATTERN = /(?:^|\s)STORYBOOK_ENABLED=/;
+const FORKBOOK_ENV_ASSIGNMENT = 'FORKBOOK_ENABLED=true';
+const FORKBOOK_ENV_PREFIX = `cross-env ${FORKBOOK_ENV_ASSIGNMENT}`;
+const FORKBOOK_ENV_PATTERN = /(?:^|\s)FORKBOOK_ENABLED=/;
 const CROSS_ENV_PREFIX_PATTERN = /^(cross-env(?:-shell)?\s+)/;
 
 const withStorybookEnv = (scriptValue: string) => {
   const normalizedScriptValue = scriptValue.trim();
 
-  if (STORYBOOK_ENV_PATTERN.test(normalizedScriptValue)) {
+  if (FORKBOOK_ENV_PATTERN.test(normalizedScriptValue)) {
     return normalizedScriptValue;
   }
 
   if (CROSS_ENV_PREFIX_PATTERN.test(normalizedScriptValue)) {
-    return normalizedScriptValue.replace(
-      CROSS_ENV_PREFIX_PATTERN,
-      `$1${STORYBOOK_ENV_ASSIGNMENT} `
-    );
+    return normalizedScriptValue.replace(CROSS_ENV_PREFIX_PATTERN, `$1${FORKBOOK_ENV_ASSIGNMENT} `);
   }
 
-  return `${STORYBOOK_ENV_PREFIX} ${normalizedScriptValue}`.trim();
+  return `${FORKBOOK_ENV_PREFIX} ${normalizedScriptValue}`.trim();
 };
 
 export const deriveStorybookPlatformScripts = (

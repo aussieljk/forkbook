@@ -1,6 +1,6 @@
 import * as _NextLegacyImageNamespace from 'next/legacy/image';
-import { defaultLoader } from 'sb-original/default-loader';
-import { ImageContext } from 'sb-original/image-context';
+import { defaultLoader } from 'fb-original/default-loader';
+import { ImageContext } from 'fb-original/image-context';
 
 import React from 'next/dist/compiled/react';
 import type * as _NextLegacyImage from 'next/legacy/image';

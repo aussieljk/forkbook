@@ -98,7 +98,7 @@ export const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(
         className={clsx(styles.tabButton, className)}
         data-active={active || undefined}
         style={
-          textColor ? ({ '--sb-tab-text-color': textColor, ...style } as CSSProperties) : style
+          textColor ? ({ '--fb-tab-text-color': textColor, ...style } as CSSProperties) : style
         }
         {...props}
       />

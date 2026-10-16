@@ -58,7 +58,7 @@ export function toMcpToolName(method: ToolsetMethodId): string {
 /**
  * Renders how a toolset method is spelled for the active transport.
  *
- * Not a composed-Storybook "ref" (`refs` in `main.js`) — the name is the invokable tool/command
+ * Not a composed-Forkbook "ref" (`refs` in `main.js`) — the name is the invokable tool/command
  * string agents see. Descriptions that tell an agent to call another tool must use this rather
  * than hardcoding either spelling.
  */

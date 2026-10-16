@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import type { Addon_StoryContext } from '@aussieljk/forkbook/internal/types';
 
-import { ImageContext } from 'sb-original/image-context';
+import { ImageContext } from 'fb-original/image-context';
 
 export const ImageDecorator = (
   Story: React.FC,

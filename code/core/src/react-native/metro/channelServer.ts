@@ -29,7 +29,7 @@ interface ChannelServerOptions {
   host?: string;
 
   /**
-   * The path to the Storybook config folder.
+   * The path to the Forkbook config folder.
    */
   configPath: string;
 
@@ -69,7 +69,7 @@ interface ChannelServerOptions {
  * @param options - Configuration options for the channel server.
  * @param options.port - The port to listen on.
  * @param options.host - The host to bind to.
- * @param options.configPath - The path to the Storybook config folder.
+ * @param options.configPath - The path to the Forkbook config folder.
  * @param options.websockets - Whether to enable WebSocket server support.
  * @param options.secured - Whether to use HTTPS/WSS for the channel server.
  * @param options.ssl - TLS credentials used when `secured` is true.
@@ -86,7 +86,7 @@ export function createChannelServer({
   keepNodeProcessAlive = false,
 }: ChannelServerOptions): WebSocketServer | null {
   if (secured && (!ssl?.key || !ssl?.cert)) {
-    throw new Error('[Storybook] Secure channel server requires both `ssl.key` and `ssl.cert`.');
+    throw new Error('[Forkbook] Secure channel server requires both `ssl.key` and `ssl.cert`.');
   }
 
   const httpServer = secured ? createHttpsServer(ssl!) : createHttpServer();
@@ -212,11 +212,11 @@ export function createChannelServer({
   httpServer.on('error', (error: NodeJS.ErrnoException) => {
     if (error.code === 'EADDRINUSE') {
       console.warn(
-        `[Storybook] Port ${port} is already in use. The channel server will not start. ` +
+        `[Forkbook] Port ${port} is already in use. The channel server will not start. ` +
           `Another instance may already be running.`
       );
     } else {
-      console.error(`[Storybook] Channel server error:`, error);
+      console.error(`[Forkbook] Channel server error:`, error);
     }
   });
 

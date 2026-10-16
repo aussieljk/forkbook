@@ -12,8 +12,8 @@
 }
 
 .title {
-  font-size: var(--sb-size-s2);
-  font-weight: var(--sb-weight-bold);
+  font-size: var(--fb-size-s2);
+  font-weight: var(--fb-weight-bold);
 }
 
 .stackTrace {
@@ -24,12 +24,12 @@
   max-height: 60vh;
   margin: 0;
   padding: 20px;
-  font-family: var(--sb-font-mono);
+  font-family: var(--fb-font-mono);
   font-size: 12px;
-  border-top: 1px solid var(--sb-app-border-color);
+  border-top: 1px solid var(--fb-app-border-color);
   border-radius: 0;
 }
 
 .troubleshootLink {
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }

@@ -36,8 +36,8 @@ const checkStorybookRunning = async (storybookUrl: string): Promise<boolean> => 
 };
 
 const startStorybookIfNotRunning = async () => {
-  const storybookScript = process.env.__STORYBOOK_SCRIPT__ as string;
-  const storybookUrl = process.env.__STORYBOOK_URL__ as string;
+  const storybookScript = process.env.__FORKBOOK_SCRIPT__ as string;
+  const storybookUrl = process.env.__FORKBOOK_URL__ as string;
 
   const isRunning = await checkStorybookRunning(storybookUrl);
 

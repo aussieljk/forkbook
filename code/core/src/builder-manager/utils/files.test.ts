@@ -30,6 +30,6 @@ it('sanitizePath', () => {
       : '/Users/username/Projects/projectname/storybook/node_modules/@storybook/addon-x+y/dist/manager.js'
   );
   expect(url).toMatchInlineSnapshot(
-    `"./sb-addons/node_modules/%40storybook/addon-x%2By/dist/manager.js"`
+    `"./fb-addons/node_modules/%40storybook/addon-x%2By/dist/manager.js"`
   );
 });

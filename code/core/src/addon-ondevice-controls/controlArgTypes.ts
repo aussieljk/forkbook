@@ -14,7 +14,7 @@ export interface ArgTypes {
 /**
  * Whether an argType has a control that should be shown in the panel.
  *
- * Storybook core supports three per-argType ways of hiding a control, which all need to be honored
+ * Forkbook supports three per-argType ways of hiding a control, which all need to be honored
  * here because core leaves the argType in place and only sets a flag on it:
  *
  * - `argTypes.foo.control = false`, which core normalizes to `control: { disable: true }`

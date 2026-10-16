@@ -4,18 +4,18 @@ import { dedent } from 'ts-dedent';
 
 import { VIRTUAL_ID as PROJECT_ANNOTATIONS_VIRTUAL_ID } from './plugins/storybook-project-annotations-plugin.ts';
 import { previewRuntimePath } from './utils/preview-runtime-path.ts';
-import { SB_VIRTUAL_FILES } from './virtual-file-names.ts';
+import { FB_VIRTUAL_FILES } from './virtual-file-names.ts';
 
 export async function generateModernIframeScriptCode() {
   const hmrHandler = dedent`
     if (import.meta.hot) {
       import.meta.hot.on('vite:afterUpdate', () => {
-        window.__STORYBOOK_PREVIEW__.channel.emit('${STORY_HOT_UPDATED}');
+        window.__FORKBOOK_PREVIEW__.channel.emit('${STORY_HOT_UPDATED}');
       });
 
-      import.meta.hot.accept('${SB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE}', (newModule) => {
+      import.meta.hot.accept('${FB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE}', (newModule) => {
         // importFn has changed so we need to patch the new one in
-        window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
+        window.__FORKBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
       });
     }`.trim();
 
@@ -30,17 +30,17 @@ export async function generateModernIframeScriptCode() {
   const code = dedent`
   import { setup } from '${previewRuntimePath}';
   
-  import '${SB_VIRTUAL_FILES.VIRTUAL_ADDON_SETUP_FILE}';
+  import '${FB_VIRTUAL_FILES.VIRTUAL_ADDON_SETUP_FILE}';
   
   setup();
   
   import { PreviewWeb } from '@aussieljk/forkbook/preview-api';
-  import { importFn } from '${SB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE}';
+  import { importFn } from '${FB_VIRTUAL_FILES.VIRTUAL_STORIES_FILE}';
   import { getProjectAnnotations } from '${PROJECT_ANNOTATIONS_VIRTUAL_ID}';
     
-  window.__STORYBOOK_PREVIEW__ = window.__STORYBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
+  window.__FORKBOOK_PREVIEW__ = window.__FORKBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
   
-  window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
+  window.__FORKBOOK_STORY_STORE__ = window.__FORKBOOK_STORY_STORE__ || window.__FORKBOOK_PREVIEW__.storyStore;
   
   ${hmrHandler};
   

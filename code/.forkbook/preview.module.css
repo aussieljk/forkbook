@@ -6,8 +6,8 @@
   height: 100vh;
   overflow: auto;
   padding: 1rem;
-  background: var(--sb-background-content);
-  color: var(--sb-color-default-text);
+  background: var(--fb-background-content);
+  color: var(--fb-color-default-text);
 
   &[data-side='left'] {
     left: 0;
@@ -24,8 +24,8 @@
   position: relative;
   flex: 1;
   padding: 1rem;
-  background: var(--sb-background-content);
-  color: var(--sb-color-default-text);
+  background: var(--fb-background-content);
+  color: var(--fb-color-default-text);
 }
 
 .themeBlock,
@@ -46,7 +46,7 @@
   font-weight: bold;
   z-index: 99;
   background: #fffbd9;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   & > * {
     display: block;

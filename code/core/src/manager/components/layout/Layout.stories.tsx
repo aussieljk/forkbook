@@ -48,7 +48,7 @@ const PlaceholderClock: FC<{ id: string } & PropsWithChildren> = ({ children, id
   return (
     <PlaceholderBlock>
       <h2 data-chromatic="ignore">{count}</h2>
-      <button data-testid={id} className="sb-sr-only">
+      <button data-testid={id} className="fb-sr-only">
         Focusable
       </button>
       {children}

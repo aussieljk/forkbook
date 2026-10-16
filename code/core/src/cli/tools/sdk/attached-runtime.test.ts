@@ -12,7 +12,7 @@ import { AttachUnavailableError, EnvironmentMismatchError, ToolsRuntimeError } f
 vi.mock('node:fs', { spy: true });
 
 const FORKBOOK_PATH = '/repo/node_modules/storybook';
-const FOREIGN_STORYBOOK_PATH = '/npx-cache/node_modules/storybook';
+const FOREIGN_FORKBOOK_PATH = '/npx-cache/node_modules/storybook';
 
 const RECORD: StorybookInstanceRecord = {
   schemaVersion: 1,
@@ -90,7 +90,7 @@ beforeEach(async () => {
   vol.reset();
   vol.fromNestedJSON({
     [`${FORKBOOK_PATH}/package.json`]: '{"name":"storybook"}',
-    [`${FOREIGN_STORYBOOK_PATH}/package.json`]: '{"name":"storybook"}',
+    [`${FOREIGN_FORKBOOK_PATH}/package.json`]: '{"name":"storybook"}',
   });
   const memfs = await vi.importActual<typeof import('memfs')>('memfs');
   vi.mocked(realpathSync).mockImplementation(
@@ -303,7 +303,7 @@ describe('bootstrapAttachedRuntime', () => {
   });
 
   it('returns spawn when autoSpawn is on and the instance runs a different installation', async () => {
-    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_STORYBOOK_PATH };
+    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_FORKBOOK_PATH };
     const { deps } = makeRuntimeDeps([foreign]);
 
     const result = await bootstrapAttachedRuntime({ cwd: '/repo', autoSpawn: true }, deps);
@@ -311,21 +311,21 @@ describe('bootstrapAttachedRuntime', () => {
     expect(result).toEqual({
       kind: 'spawn',
       record: foreign,
-      storybookPath: FOREIGN_STORYBOOK_PATH,
+      storybookPath: FOREIGN_FORKBOOK_PATH,
       siblings: [],
     });
     expect(deps.createNodeChannel).not.toHaveBeenCalled();
   });
 
   it('refuses a different installation when auto-spawn is declined, naming both installations', async () => {
-    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_STORYBOOK_PATH };
+    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_FORKBOOK_PATH };
     const { deps } = makeRuntimeDeps([foreign]);
 
     const failure = bootstrapAttachedRuntime({ cwd: '/repo', autoSpawn: false }, deps);
 
     await expect(failure).rejects.toThrow(EnvironmentMismatchError);
     await expect(failure).rejects.toThrow('different `storybook` installations');
-    await expect(failure).rejects.toThrow(FOREIGN_STORYBOOK_PATH);
+    await expect(failure).rejects.toThrow(FOREIGN_FORKBOOK_PATH);
     await expect(failure).rejects.toThrow(FORKBOOK_PATH);
     await expect(failure).rejects.toThrow('10.2.0');
     await expect(failure).rejects.toThrow(RECORD.configDir!);
@@ -333,7 +333,7 @@ describe('bootstrapAttachedRuntime', () => {
   });
 
   it('refuses rather than spawning when this process is already a child host', async () => {
-    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_STORYBOOK_PATH };
+    const foreign: StorybookInstanceRecord = { ...RECORD, storybookPath: FOREIGN_FORKBOOK_PATH };
     const { deps } = makeRuntimeDeps([foreign], { isChildHost: true });
 
     const failure = bootstrapAttachedRuntime({ cwd: '/repo', autoSpawn: true }, deps);

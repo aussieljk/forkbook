@@ -43,7 +43,7 @@ describe('categorize-render-errors', () => {
         it('should categorize dynamic module import errors', () => {
           expect(
             categorizeError(
-              'TypeError: Failed to fetch dynamically imported module: http://localhost:63315/node_modules/.cache/storybook/2523d14eb1a348695c30002850a8852e9305e60b397e9b529978c17a0d2cd524/sb-vitest/deps/react-18-PYSEDAWB-3KPRILU2.js?v=6f767e0c'
+              'TypeError: Failed to fetch dynamically imported module: http://localhost:63315/node_modules/.cache/storybook/2523d14eb1a348695c30002850a8852e9305e60b397e9b529978c17a0d2cd524/fb-vitest/deps/react-18-PYSEDAWB-3KPRILU2.js?v=6f767e0c'
             ).category
           ).toBe(ERROR_CATEGORIES.DYNAMIC_MODULE_IMPORT_ERROR);
 
@@ -91,7 +91,7 @@ describe('categorize-render-errors', () => {
       describe('MISSING_STATE_PROVIDER', () => {
         it('should categorize state management errors from stack context messages', () => {
           const stack = `
-          at useSelector2 (http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/redux.js:1015:26)
+          at useSelector2 (http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/redux.js:1015:26)
           at Component (http://localhost/Component.tsx:10:5)
         `;
 
@@ -112,7 +112,7 @@ describe('categorize-render-errors', () => {
       describe('MISSING_ROUTER_PROVIDER', () => {
         it('should categorize router context errors', () => {
           const stack = `
-          at useLocation (http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/react-router-dom.js:5431:3)
+          at useLocation (http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/react-router-dom.js:5431:3)
           at Component (http://localhost/Component.tsx:15:20)
         `;
 
@@ -157,7 +157,7 @@ describe('categorize-render-errors', () => {
 
         it('should categorize theme context errors with hint from stack', () => {
           const stack = `
-          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/styled-components.js:1168:14
+          at http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/styled-components.js:1168:14
           at Component (http://localhost/Component.tsx:13:25)
         `;
 
@@ -180,7 +180,7 @@ describe('categorize-render-errors', () => {
 
         it('should categorize i18n context errors with hint from stack', () => {
           const stack = `
-          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/react-i18next.js:5431:3
+          at http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/react-i18next.js:5431:3
           at Component (http://localhost/Component.tsx:15:20)
         `;
 
@@ -324,8 +324,8 @@ describe('categorize-render-errors', () => {
     describe('stack trace dependency extraction', () => {
       it('should extract dependencies from stack traces with /deps/ pattern', () => {
         const stack = `
-          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/styled-components.js:1168:14
-          at http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/@stylexjs/stylex.js:500:10
+          at http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/styled-components.js:1168:14
+          at http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/@stylexjs/stylex.js:500:10
           at Component.tsx:13:25
         `;
 

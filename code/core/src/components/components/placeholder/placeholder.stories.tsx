@@ -15,7 +15,7 @@ export const TwoChildren = () => (
     <Fragment key="title">This has two children, the first bold</Fragment>
     <Fragment key="desc">
       The second normal weight. Here's a&nbsp;
-      <Link href="https://storybook.js.org" secondary cancel={false}>
+      <Link href="https://forkbook.ljk.dev" secondary cancel={false}>
         link
       </Link>
     </Fragment>

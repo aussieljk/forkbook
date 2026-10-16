@@ -95,7 +95,7 @@ export const AddonPanel = React.memo<{
         <>Integrate your tools with Forkbook to connect workflows and unlock advanced features.</>
       }
       footer={
-        <Link href={'https://storybook.js.org/addons?ref=ui'} target="_blank" withArrow>
+        <Link href={'https://forkbook.ljk.dev/addons'} target="_blank" withArrow>
           <DocumentIcon /> Explore integrations catalog
         </Link>
       }
@@ -161,7 +161,7 @@ export const AddonPanel = React.memo<{
       id={focusableUIElements.addonPanel}
       {...landmarkProps}
     >
-      <h2 id="storybook-panel-heading" className="sb-sr-only">
+      <h2 id="storybook-panel-heading" className="fb-sr-only">
         Addon panel
       </h2>
       <StatelessTabsView

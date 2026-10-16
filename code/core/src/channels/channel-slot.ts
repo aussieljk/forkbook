@@ -3,7 +3,7 @@
  * Canonical install/read surface for Forkbook's shared addons channel.
  *
  * Each runtime (manager, preview, dev server) installs one channel instance here. The module slot
- * is the source of truth; {@link setChannel} also mirrors to `__STORYBOOK_ADDONS_CHANNEL__`
+ * is the source of truth; {@link setChannel} also mirrors to `__FORKBOOK_ADDONS_CHANNEL__`
  * so legacy code and builder preamble that read the global slot stay in sync.
  */
 
@@ -13,7 +13,7 @@ import type { ChannelLike } from './types.ts';
 let channel: ChannelLike | undefined;
 
 function syncGlobalSlot(next: ChannelLike | undefined): void {
-  globalThis.__STORYBOOK_ADDONS_CHANNEL__ = next;
+  globalThis.__FORKBOOK_ADDONS_CHANNEL__ = next;
 }
 
 /**
@@ -24,7 +24,7 @@ function syncGlobalSlot(next: ChannelLike | undefined): void {
  * `setChannel` from whichever copy installed the live websocket channel.
  */
 export function getChannel(): ChannelLike | null {
-  const fromGlobal = globalThis.__STORYBOOK_ADDONS_CHANNEL__ as ChannelLike | undefined;
+  const fromGlobal = globalThis.__FORKBOOK_ADDONS_CHANNEL__ as ChannelLike | undefined;
   if (fromGlobal) {
     channel = fromGlobal;
   }

@@ -28,7 +28,7 @@ export const Loader: FC<LoaderProps> = ({ size }) => {
       {sequence.map((depth, index) => (
         <div
           className={styles.loadingItem}
-          style={{ '--sb-depth': depth } as CSSProperties}
+          style={{ '--fb-depth': depth } as CSSProperties}
           key={index}
         />
       ))}

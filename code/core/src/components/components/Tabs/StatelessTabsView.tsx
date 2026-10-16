@@ -53,7 +53,7 @@ export const StatelessTabsView: FC<StatelessTabsViewProps> = ({
     <Tabs.Root
       {...props}
       className={clsx(styles.statelessContainer, className)}
-      style={{ '--sb-tabs-gap': toLength(barInnerStyle?.gap ?? 6), ...style } as CSSProperties}
+      style={{ '--fb-tabs-gap': toLength(barInnerStyle?.gap ?? 6), ...style } as CSSProperties}
       value={value}
       onValueChange={(key: string) => {
         setInternalSelected(key);

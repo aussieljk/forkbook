@@ -15,7 +15,7 @@ import { getControlId } from './helpers';
 import type { ColorConfig, ColorValue, ControlProps, PresetColor } from './types';
 import styles from './Color.module.css';
 
-const swatchStyle = (color: string) => ({ '--sb-swatch-color': color }) as CSSProperties;
+const swatchStyle = (color: string) => ({ '--fb-swatch-color': color }) as CSSProperties;
 
 enum ColorSpace {
   RGB = 'rgb',
@@ -313,7 +313,7 @@ export const ColorControl: FC<ColorControlProps> = ({
 
   return (
     <div className={styles.wrapper}>
-      <label htmlFor={controlId} className="sb-sr-only">
+      <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>
       <Form.Input

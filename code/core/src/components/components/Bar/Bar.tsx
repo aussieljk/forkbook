@@ -87,7 +87,7 @@ export const FlexBar = ({ children, backgroundColor, className = '', ...rest }: 
     <Bar
       data-deprecated="FlexBar"
       backgroundColor={backgroundColor}
-      className={clsx('sb-bar', styles.barWithoutPadding, className)}
+      className={clsx('fb-bar', styles.barWithoutPadding, className)}
       {...rest}
     >
       <div className={styles.barInner} style={{ backgroundColor: backgroundColor || undefined }}>

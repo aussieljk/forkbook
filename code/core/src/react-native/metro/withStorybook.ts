@@ -55,7 +55,7 @@ const stubPath = () => createRequire(import.meta.url).resolve(`${PACKAGE}/react-
  * const { withStorybook } = require('@aussieljk/forkbook/react-native/metro/withStorybook');
  *
  * module.exports = withStorybook(getDefaultConfig(__dirname), {
- *   enabled: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true',
+ *   enabled: process.env.EXPO_PUBLIC_FORKBOOK_ENABLED === 'true',
  * });
  * ```
  */
@@ -72,7 +72,7 @@ export function withStorybook(
     liteMode = false,
   } = options;
 
-  const server = envVariableToBoolean(process.env.STORYBOOK_SERVER, true);
+  const server = envVariableToBoolean(process.env.FORKBOOK_SERVER, true);
 
   if (!enabled) {
     return {
@@ -110,9 +110,9 @@ export function withStorybook(
     };
   }
 
-  if (websockets != null || process.env.STORYBOOK_WS_HOST) {
+  if (websockets != null || process.env.FORKBOOK_WS_HOST) {
     const resolvedWs = loadWebsocketEnvOverrides(websockets);
-    const auto = websockets === 'auto' && !process.env.STORYBOOK_WS_HOST;
+    const auto = websockets === 'auto' && !process.env.FORKBOOK_WS_HOST;
     const port = resolvedWs.port ?? 7007;
     const secured = resolvedWs.secured;
 

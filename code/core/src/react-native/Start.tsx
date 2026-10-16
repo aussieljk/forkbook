@@ -73,7 +73,7 @@ globalThis.FEATURES = Object.assign(globalThis.FEATURES ?? {}, {
 type TeardownRenderArgs = Parameters<PreviewWithSelection<ReactRenderer>['teardownRender']>;
 
 /**
- * Storybook's renderSelection is not safe to run concurrently: when Fast Refresh updates, story selection or
+ * Forkbook's renderSelection is not safe to run concurrently: when Fast Refresh updates, story selection or
  * remote control overlap, a torn-down render can be left in `storyRenders`, which then breaks args updates.
  * This runs them one at a time.
  */
@@ -86,7 +86,7 @@ class ReactNativePreview extends PreviewWithSelection<ReactRenderer> {
     return run;
   }
 
-  // Storybook tears down a story that is still rendering (e.g. its loaders are running) by waiting briefly and then
+  // Forkbook tears down a story that is still rendering (e.g. its loaders are running) by waiting briefly and then
   // reloading the page, which restarts the app in Expo and never resolves elsewhere in React Native. Abort the render
   // instead: once its loaders finish it sees the abort and doesn't draw.
   async teardownRender(...[render, options]: TeardownRenderArgs) {
@@ -180,12 +180,12 @@ export function start({
 
   if (global) {
     const storybookGlobal = global as typeof globalThis & {
-      __STORYBOOK_ADDONS_CHANNEL__?: Channel;
-      __STORYBOOK_PREVIEW__?: PreviewWithSelection<ReactRenderer>;
+      __FORKBOOK_ADDONS_CHANNEL__?: Channel;
+      __FORKBOOK_PREVIEW__?: PreviewWithSelection<ReactRenderer>;
     };
 
-    storybookGlobal.__STORYBOOK_ADDONS_CHANNEL__ = channel;
-    storybookGlobal.__STORYBOOK_PREVIEW__ = preview;
+    storybookGlobal.__FORKBOOK_ADDONS_CHANNEL__ = channel;
+    storybookGlobal.__FORKBOOK_PREVIEW__ = preview;
   }
 
   view._storyIndex = index;
@@ -211,7 +211,7 @@ export function updateView(
     storySort,
   });
 
-  // Like Storybook's web builders on HMR, stop any running play function so the story can re-render
+  // Like Forkbook's web builders on HMR, stop any running play function so the story can re-render
   viewInstance._preview.onStoryHotUpdated();
 
   viewInstance._preview.onStoriesChanged({

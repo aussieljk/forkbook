@@ -1,8 +1,8 @@
 import * as NextImageNamespace from 'next/image';
 import type * as _NextImage from 'next/image';
 
-import { defaultLoader } from 'sb-original/default-loader';
-import { ImageContext } from 'sb-original/image-context';
+import { defaultLoader } from 'fb-original/default-loader';
+import { ImageContext } from 'fb-original/image-context';
 
 import React from 'next/dist/compiled/react';
 

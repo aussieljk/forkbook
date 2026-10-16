@@ -55,7 +55,7 @@ export const Default: StoryObj<typeof meta> = {
     const title = canvas.getByRole('heading', { name: 'Table of contents' });
     await step('Verify title is present but invisible', async () => {
       expect(title).toBeInTheDocument();
-      expect(title).toHaveClass('sb-sr-only');
+      expect(title).toHaveClass('fb-sr-only');
     });
 
     await step('Verify nav aria-labelledby', async () => {

@@ -90,7 +90,7 @@ export function resolveWithExtension(importPath: string, currentFilePath: string
   deprecate(dedent`
     One or more extensionless imports detected: "${importPath}" in file "${currentFilePath}".
     For more information on how to resolve the issue: 
-    https://storybook.js.org/docs/faq#extensionless-imports-in-storybookmaints-and-required-ts-extensions
+    https://forkbook.ljk.dev/docs/faq#extensionless-imports-in-storybookmaints-and-required-ts-extensions
   `);
 
   const absolutePath = path.resolve(currentDir, importPath);

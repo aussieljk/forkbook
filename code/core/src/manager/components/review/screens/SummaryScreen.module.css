@@ -1,5 +1,5 @@
 .markdownWrapper {
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   & p {
     margin: 0;
@@ -17,8 +17,8 @@
     padding: 0 4px;
     background: transparent;
     border: none;
-    box-shadow: inset 0 0 0 1px var(--sb-app-border-color);
-    border-radius: var(--sb-app-border-radius);
+    box-shadow: inset 0 0 0 1px var(--fb-app-border-color);
+    border-radius: var(--fb-app-border-radius);
   }
 }
 
@@ -32,10 +32,10 @@
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
-  background: var(--sb-background-app);
-  color: var(--sb-color-default-text);
-  font-family: var(--sb-font-base);
-  font-size: var(--sb-size-s2);
+  background: var(--fb-background-app);
+  color: var(--fb-color-default-text);
+  font-family: var(--fb-font-base);
+  font-size: var(--fb-size-s2);
 }
 
 .empty {
@@ -45,7 +45,7 @@
   align-items: center;
   justify-content: center;
   height: 100dvh;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   & > div {
     display: flex;
@@ -109,7 +109,7 @@
     margin: 0;
     padding: 0;
     font-size: inherit;
-    font-weight: var(--sb-weight-bold);
+    font-weight: var(--fb-weight-bold);
     line-height: inherit;
     color: inherit;
     border: none;
@@ -138,9 +138,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: inherit;
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
   line-height: 20px;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }
 
 .cardControls {
@@ -153,11 +153,11 @@
 
 .cardCount {
   min-width: 28px;
-  font-family: var(--sb-font-mono);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-family: var(--fb-font-mono);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 20px;
   text-align: center;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }
 
 .toggleChevronIcon {
@@ -165,23 +165,23 @@
 }
 
 .cardRationale {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   margin: 0 12px;
 }
 
 .footer {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   padding: 10px 22px 42px;
-  font-size: var(--sb-size-s2);
+  font-size: var(--fb-size-s2);
   text-align: center;
   text-wrap: balance;
 }
 
 .emptyMessage {
   margin: 0;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   padding: 10px 10px 30px;
-  font-size: var(--sb-size-s2);
+  font-size: var(--fb-size-s2);
   text-align: center;
   text-wrap: balance;
 }

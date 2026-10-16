@@ -28,7 +28,7 @@ export const Typeset: FC<TypesetProps> = ({
 }) => (
   <div
     {...props}
-    className={clsx(withReset, blockBackground, styles.wrapper, 'docblock-typeset sb-unstyled')}
+    className={clsx(withReset, blockBackground, styles.wrapper, 'docblock-typeset fb-unstyled')}
   >
     {fontSizes.map((size) => (
       <div key={size} className={styles.typeSpecimen}>

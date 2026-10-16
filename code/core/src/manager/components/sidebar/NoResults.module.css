@@ -6,12 +6,12 @@
   gap: 4px;
   padding: 20px 0;
   line-height: 18px;
-  font-size: var(--sb-size-s2);
-  color: var(--sb-color-default-text);
+  font-size: var(--fb-size-s2);
+  color: var(--fb-color-default-text);
 
   & small {
-    color: var(--sb-text-muted-color);
-    font-size: var(--sb-size-s1);
+    color: var(--fb-text-muted-color);
+    font-size: var(--fb-size-s1);
   }
 
   & button {

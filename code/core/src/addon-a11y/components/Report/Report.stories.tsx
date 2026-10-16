@@ -9,9 +9,9 @@ import { RuleType } from '../../types.ts';
 import { Report } from './Report.tsx';
 
 const wrapperStyle: React.CSSProperties = {
-  backgroundColor: 'var(--sb-background-content)',
-  fontSize: 'calc(var(--sb-size-s2) - 1px)',
-  color: 'var(--sb-color-default-text)',
+  backgroundColor: 'var(--fb-background-content)',
+  fontSize: 'calc(var(--fb-size-s2) - 1px)',
+  color: 'var(--fb-color-default-text)',
   display: 'block',
   height: '100%',
   position: 'absolute',

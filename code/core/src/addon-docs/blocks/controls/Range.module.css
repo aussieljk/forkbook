@@ -1,6 +1,6 @@
 /* Restyled using http://danielstern.ca/range.css/#/ */
 .input {
-  --track-bg: hsl(from var(--sb-input-background) h s calc(l - 2));
+  --track-bg: hsl(from var(--fb-input-background) h s calc(l - 2));
   --track-border: hsl(0 0 0 / 0.44);
 
   appearance: none;
@@ -10,9 +10,9 @@
   &::-webkit-slider-runnable-track {
     background: linear-gradient(
       to right,
-      var(--sb-color-green) 0%,
-      var(--sb-color-green) var(--sb-range-progress),
-      var(--track-bg) var(--sb-range-progress),
+      var(--fb-color-green) 0%,
+      var(--fb-color-green) var(--fb-range-progress),
+      var(--track-bg) var(--fb-range-progress),
       var(--track-bg) 100%
     );
     border-radius: 6px;
@@ -25,9 +25,9 @@
   &::-moz-range-track {
     background: linear-gradient(
       to right,
-      var(--sb-color-green) 0%,
-      var(--sb-color-green) var(--sb-range-progress),
-      var(--track-bg) var(--sb-range-progress),
+      var(--fb-color-green) 0%,
+      var(--fb-color-green) var(--fb-range-progress),
+      var(--track-bg) var(--fb-range-progress),
       var(--track-bg) 100%
     );
     border-radius: 6px;
@@ -42,21 +42,21 @@
     height: 16px;
     border-radius: 50px;
     cursor: grab;
-    background: var(--sb-input-background);
+    background: var(--fb-input-background);
     border: 1px solid var(--track-border);
-    box-shadow: 0 1px 3px 0px rgb(from var(--sb-app-border-color) r g b / 0.2);
+    box-shadow: 0 1px 3px 0px rgb(from var(--fb-app-border-color) r g b / 0.2);
     transition: all 150ms ease-out;
     margin-top: -6px;
     appearance: none;
 
     &:hover {
-      background: hsl(from var(--sb-input-background) h s calc(l - 5));
+      background: hsl(from var(--fb-input-background) h s calc(l - 5));
       transform: scale3d(1.1, 1.1, 1.1) translateY(-1px);
       transition: all 50ms ease-out;
     }
 
     &:active {
-      background: var(--sb-input-background);
+      background: var(--fb-input-background);
       transform: scale3d(1, 1, 1) translateY(0px);
     }
   }
@@ -66,19 +66,19 @@
     height: 16px;
     border-radius: 50px;
     cursor: grab;
-    background: var(--sb-input-background);
+    background: var(--fb-input-background);
     border: 1px solid var(--track-border);
-    box-shadow: 0 1px 3px 0px rgb(from var(--sb-app-border-color) r g b / 0.2);
+    box-shadow: 0 1px 3px 0px rgb(from var(--fb-app-border-color) r g b / 0.2);
     transition: all 150ms ease-out;
 
     &:hover {
-      background: hsl(from var(--sb-input-background) h s calc(l - 5));
+      background: hsl(from var(--fb-input-background) h s calc(l - 5));
       transform: scale3d(1.1, 1.1, 1.1) translateY(-1px);
       transition: all 50ms ease-out;
     }
 
     &:active {
-      background: var(--sb-input-background);
+      background: var(--fb-input-background);
       transform: scale3d(1, 1, 1) translateY(0px);
     }
   }
@@ -87,21 +87,21 @@
     outline: none;
 
     &::-webkit-slider-runnable-track {
-      border-color: rgb(from var(--sb-color-secondary) r g b / 0.4);
+      border-color: rgb(from var(--fb-color-secondary) r g b / 0.4);
     }
 
     &::-moz-range-track {
-      border-color: rgb(from var(--sb-color-secondary) r g b / 0.4);
+      border-color: rgb(from var(--fb-color-secondary) r g b / 0.4);
     }
 
     &::-webkit-slider-thumb {
-      border-color: var(--sb-color-secondary);
-      box-shadow: 0 0px 5px 0px var(--sb-color-secondary);
+      border-color: var(--fb-color-secondary);
+      box-shadow: 0 0px 5px 0px var(--fb-color-secondary);
     }
 
     &::-moz-range-thumb {
-      border-color: var(--sb-color-secondary);
-      box-shadow: 0 0px 5px 0px var(--sb-color-secondary);
+      border-color: var(--fb-color-secondary);
+      box-shadow: 0 0px 5px 0px var(--fb-color-secondary);
     }
   }
 
@@ -124,8 +124,8 @@
   }
 }
 
-:where([data-sb-theme='dark']) .input {
-  --track-bg: hsl(from var(--sb-input-background) h s calc(l + 2));
+:where([data-fb-theme='dark']) .input {
+  --track-bg: hsl(from var(--fb-input-background) h s calc(l + 2));
   --track-border: hsl(0 0 100 / 0.4);
 
   &::-webkit-slider-thumb {

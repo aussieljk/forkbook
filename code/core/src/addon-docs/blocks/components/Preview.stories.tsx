@@ -16,7 +16,7 @@ export default {
   },
 };
 
-const preview = (window as any).__STORYBOOK_PREVIEW__;
+const preview = (window as any).__FORKBOOK_PREVIEW__;
 const renderStoryToElement = preview.renderStoryToElement.bind(preview);
 
 const getPreparedStory = (docsContext: DocsContextProps, moduleExport: ModuleExport) => {

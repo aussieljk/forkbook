@@ -31,11 +31,11 @@
   padding: 6px;
 
   &[data-border='start'] {
-    box-shadow: inset 1px 0 0 var(--sb-app-border-color);
+    box-shadow: inset 1px 0 0 var(--fb-app-border-color);
   }
 
   &[data-border='end'] {
-    box-shadow: inset -1px 0 0 var(--sb-app-border-color);
+    box-shadow: inset -1px 0 0 var(--fb-app-border-color);
   }
 }
 

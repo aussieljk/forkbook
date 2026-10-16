@@ -2,11 +2,11 @@
   width: auto;
   height: 22px !important;
   display: block;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }
 
-:where([data-sb-theme='dark']) .logo {
-  color: var(--sb-color-lightest);
+:where([data-fb-theme='dark']) .logo {
+  color: var(--fb-color-lightest);
 }
 
 .img {
@@ -27,7 +27,7 @@
   text-decoration: none;
 
   &:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: 2px;
   }
 }

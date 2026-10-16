@@ -1,20 +1,12 @@
 import type { ProjectInfo } from '../../project-info.ts';
 
 /**
- * Builds a markdown-format docs URL with renderer and language query parameters.
- * Appending .md to any Forkbook docs URL returns clean markdown with code examples.
+ * The markdown URL of a Forkbook docs page. Each docs page also has a `.md` copy for agents. The
+ * docs have one version, for React only, so the project info changes nothing.
  */
 export function getDocsMarkdownUrl(
   path: string,
-  projectInfo?: Pick<ProjectInfo, 'majorVersion' | 'renderer' | 'language'>
+  _projectInfo?: Pick<ProjectInfo, 'majorVersion' | 'renderer' | 'language'>
 ): string {
-  const { majorVersion, renderer, language = 'ts' } = projectInfo ?? {};
-  const versionSegment = majorVersion ? `/${majorVersion}` : '';
-  const params = new URLSearchParams();
-  if (renderer) {
-    params.set('renderer', renderer);
-  }
-  params.set('language', language);
-  const query = params.toString();
-  return `https://storybook.js.org/docs${versionSegment}/${path}.md${query ? `?${query}` : ''}`;
+  return `https://forkbook.ljk.dev/docs/${path}.md`;
 }

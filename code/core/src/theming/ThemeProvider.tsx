@@ -15,7 +15,7 @@ const defaultTheme = () => (fallbackTheme ??= convert());
 
 /**
  * Gives the theme to `useTheme` and writes it as CSS variables on a wrapper element, so the CSS
- * below can use `var(--sb-...)`. The `data-sb-theme` attribute holds the theme base (`light` or
+ * below can use `var(--sb-...)`. The `data-fb-theme` attribute holds the theme base (`light` or
  * `dark`).
  */
 export const ThemeProvider = ({
@@ -32,7 +32,7 @@ export const ThemeProvider = ({
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div data-sb-theme={theme.base} style={style}>
+      <div data-fb-theme={theme.base} style={style}>
         {children}
       </div>
     </ThemeContext.Provider>

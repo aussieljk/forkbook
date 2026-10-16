@@ -14,7 +14,7 @@ import {
 
 import invariant from 'tiny-invariant';
 
-import { RN_STORYBOOK_DIR } from '../../shared/constants/config-folder.ts';
+import { RN_FORKBOOK_DIR } from '../../shared/constants/config-folder.ts';
 import { storybookConfigExtensions } from '../../shared/constants/extensions.ts';
 import { JsPackageManager } from '../js-package-manager/JsPackageManager.ts';
 import { frameworkToBuilder } from './framework.ts';
@@ -132,7 +132,7 @@ export const getStorybookInfo = async (
       `metadata.framework.name` is populated for existing projects (scoped to the
       RN config dir to avoid mis-attributing web Storybooks in the same monorepo).
     */
-    if (basename(configInfo.configDir) === RN_STORYBOOK_DIR) {
+    if (basename(configInfo.configDir) === RN_FORKBOOK_DIR) {
       return {
         ...configInfo,
         versionSpecifier,

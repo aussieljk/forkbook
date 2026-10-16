@@ -81,24 +81,24 @@ export const globalCss = /* css */ `
 ${resetCss}
 
 body {
-  font-family: var(--sb-font-base);
+  font-family: var(--fb-font-base);
   position: fixed;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  color: var(--sb-color-default-text);
-  background: var(--sb-background-app);
+  color: var(--fb-color-default-text);
+  background: var(--fb-background-app);
 }
 
 code, pre {
-  font-family: var(--sb-font-mono);
+  font-family: var(--fb-font-mono);
 }
 
 hr {
-  border-top: 1px solid var(--sb-color-border);
+  border-top: 1px solid var(--fb-color-border);
 }
 
-.sb-sr-only, .sb-hidden-until-focus:not(:focus) {
+.fb-sr-only, .fb-hidden-until-focus:not(:focus) {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -111,29 +111,29 @@ hr {
   border: 0;
 }
 
-.sb-hidden-until-focus {
+.fb-hidden-until-focus {
   opacity: 0;
   transition: opacity 150ms ease-out;
 }
 
-.sb-hidden-until-focus:focus {
+.fb-hidden-until-focus:focus {
   opacity: 1;
 }
 
-[data-sb-landmark] {
+[data-fb-landmark] {
   position: relative;
 }
 
-[data-sb-landmark]:focus-visible {
+[data-fb-landmark]:focus-visible {
   outline: none;
 }
 
-[data-sb-landmark]:focus-visible::after {
-  outline: 2px solid var(--sb-color-primary);
+[data-fb-landmark]:focus-visible::after {
+  outline: 2px solid var(--fb-color-primary);
   outline-offset: -2px;
 }
 
-[data-sb-landmark]::after {
+[data-fb-landmark]::after {
   content: '';
   position: absolute;
   inset: 0;

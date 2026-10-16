@@ -37,7 +37,7 @@ export const Icons = ({
     deprecate(
       `Use of the deprecated Icons ${
         `(${icon})` || ''
-      } component detected. Please use the @storybook/icons component directly. For more informations, see the migration notes at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#icons-is-deprecated`
+      } component detected. Please use the @storybook/icons component directly. For more informations, see the migration notes at https://forkbook.ljk.dev/docs/migration#icons-is-deprecated`
     );
   }
 
@@ -46,7 +46,7 @@ export const Icons = ({
     logger.warn(
       `Use of an unknown prop ${
         `(${icon})` || ''
-      } in the Icons component. The Icons component is deprecated. Please use the @storybook/icons component directly. For more informations, see the migration notes at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#icons-is-deprecated`
+      } in the Icons component. The Icons component is deprecated. Please use the @storybook/icons component directly. For more informations, see the migration notes at https://forkbook.ljk.dev/docs/migration#icons-is-deprecated`
     );
     return null;
   }

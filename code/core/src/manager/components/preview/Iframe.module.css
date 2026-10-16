@@ -1,5 +1,5 @@
 .iframe {
-  background-color: var(--sb-background-preview);
+  background-color: var(--fb-background-preview);
   display: block;
   box-sizing: content-box;
   height: 100%;

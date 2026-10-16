@@ -1,17 +1,17 @@
 .expected {
-  color: var(--sb-color-positive-text);
+  color: var(--fb-color-positive-text);
 }
 
 .received {
-  color: var(--sb-color-negative-text);
+  color: var(--fb-color-negative-text);
 }
 
-:where([data-sb-theme='dark']) {
+:where([data-fb-theme='dark']) {
   & .expected {
-    color: var(--sb-color-positive);
+    color: var(--fb-color-positive);
   }
 
   & .received {
-    color: var(--sb-color-negative);
+    color: var(--fb-color-negative);
   }
 }

@@ -3,8 +3,8 @@
   left: 0;
   width: 100%;
   z-index: 10;
-  background: var(--sb-bar-bg);
-  border-top: 1px solid var(--sb-app-border-color);
+  background: var(--fb-bar-bg);
+  border-top: 1px solid var(--fb-app-border-color);
 }
 
 .bottomBar {

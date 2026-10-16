@@ -23,7 +23,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
       {
         maxWidth: 250,
         '--card-box-shadow':
-          '0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--sb-background-app)',
+          '0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--fb-background-app)',
       } as CSSProperties
     }
   >

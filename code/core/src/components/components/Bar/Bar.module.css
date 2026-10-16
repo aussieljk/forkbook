@@ -3,12 +3,12 @@
  * add a class to a Bar can then override these styles.
  */
 .bar {
-  color: var(--sb-bar-text-color);
+  color: var(--fb-bar-text-color);
   width: 100%;
   min-height: 40px;
   flex-shrink: 0;
   /* TODO in Forkbook 11: Apply background regardless of border. */
-  scrollbar-color: var(--sb-bar-text-color) transparent;
+  scrollbar-color: var(--fb-bar-text-color) transparent;
   scrollbar-width: thin;
   overflow: hidden;
   overflow-y: hidden;
@@ -26,9 +26,9 @@
 }
 
 .bar:where([data-border]) {
-  scrollbar-color: var(--sb-bar-text-color) var(--bar-bg, var(--sb-bar-bg));
-  box-shadow: var(--sb-app-border-color) 0 -1px 0 0 inset;
-  background: var(--bar-bg, var(--sb-bar-bg));
+  scrollbar-color: var(--fb-bar-text-color) var(--bar-bg, var(--fb-bar-bg));
+  box-shadow: var(--fb-app-border-color) 0 -1px 0 0 inset;
+  background: var(--bar-bg, var(--fb-bar-bg));
 }
 
 .heightPreserver {

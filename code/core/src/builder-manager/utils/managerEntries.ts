@@ -45,7 +45,7 @@ export async function wrapManagerEntries(entrypoints: string[], uniqueId?: strin
   return Promise.all(
     entrypoints.map(async (entry, i) => {
       const { name, dir } = parse(entry);
-      const cacheLocation = resolvePathInStorybookCache('sb-manager', uniqueId);
+      const cacheLocation = resolvePathInStorybookCache('fb-manager', uniqueId);
 
       if (!cacheLocation) {
         throw new Error('Could not create/find cache directory');

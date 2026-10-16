@@ -17,7 +17,7 @@ describe('authoredSource', () => {
   it('follows local names through every level of the source path', () => {
     expect(
       authoredSourceOf(dedent`
-        const CODE = '<sb-button local></sb-button>';
+        const CODE = '<fb-button local></fb-button>';
         const source = { code: CODE };
         const docs = { source };
         export default { title: 'Example/Button' };
@@ -25,7 +25,7 @@ describe('authoredSource', () => {
       `)
     ).toMatchInlineSnapshot(`
       {
-        "code": "<sb-button local></sb-button>",
+        "code": "<fb-button local></fb-button>",
         "kind": "code",
       }
     `);
@@ -38,7 +38,7 @@ describe('authoredSource', () => {
         export default { title: 'Example/Button' };
         export const Default = {
           parameters: {
-            docs: { source: { code: '<sb-button></sb-button>', ...overrides() } },
+            docs: { source: { code: '<fb-button></fb-button>', ...overrides() } },
           },
         };
       `)
@@ -56,13 +56,13 @@ describe('authoredSource', () => {
         declare const key: string;
         export default { title: 'Example/Button' };
         export const Default = {
-          parameters: { docs: { source: { [key]: '<sb-button></sb-button>' } } },
+          parameters: { docs: { source: { [key]: '<fb-button></fb-button>' } } },
         };
       `)
     ).toMatchInlineSnapshot(`
       {
         "kind": "unresolvable",
-        "source": "[key]: '<sb-button></sb-button>'",
+        "source": "[key]: '<fb-button></fb-button>'",
       }
     `);
   });
@@ -75,7 +75,7 @@ describe('authoredSource', () => {
           const meta = preview.meta({ title: 'Example/Button' });
           const Base = meta.story({
             parameters: {
-              docs: { source: { code: '<sb-button inherited></sb-button>' } },
+              docs: { source: { code: '<fb-button inherited></fb-button>' } },
             },
           });
           export const Default = Base.extend({ parameters: { layout: 'centered' } });
@@ -83,7 +83,7 @@ describe('authoredSource', () => {
       )
     ).toMatchInlineSnapshot(`
       {
-        "code": "<sb-button inherited></sb-button>",
+        "code": "<fb-button inherited></fb-button>",
         "kind": "code",
       }
     `);
@@ -94,7 +94,7 @@ describe('authoredSource', () => {
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = {
           parameters: { docs: { source: { code: null } } },
@@ -112,7 +112,7 @@ describe('authoredSource', () => {
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = {
           parameters: { docs: { source: { code: undefined } } },
@@ -120,7 +120,7 @@ describe('authoredSource', () => {
       `)
     ).toMatchInlineSnapshot(`
       {
-        "code": "<sb-button meta></sb-button>",
+        "code": "<fb-button meta></fb-button>",
         "kind": "code",
       }
     `);
@@ -131,21 +131,21 @@ describe('authoredSource', () => {
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = { parameters: { docs: null } };
       `),
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = { parameters: { docs: false } };
       `),
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = { parameters: { docs: { source: [] } } };
       `),
@@ -169,13 +169,13 @@ describe('authoredSource', () => {
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = { parameters: { docs: void 0 } };
       `)
     ).toMatchInlineSnapshot(`
       {
-        "code": "<sb-button meta></sb-button>",
+        "code": "<fb-button meta></fb-button>",
         "kind": "code",
       }
     `);
@@ -186,13 +186,13 @@ describe('authoredSource', () => {
       authoredSourceOf(dedent`
         export default {
           title: 'Example/Button',
-          parameters: { docs: { source: { code: '<sb-button meta></sb-button>' } } },
+          parameters: { docs: { source: { code: '<fb-button meta></fb-button>' } } },
         };
         export const Default = { parameters: null };
       `)
     ).toMatchInlineSnapshot(`
       {
-        "code": "<sb-button meta></sb-button>",
+        "code": "<fb-button meta></fb-button>",
         "kind": "code",
       }
     `);

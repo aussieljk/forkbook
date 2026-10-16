@@ -25,10 +25,10 @@ const varChain = (names: (string | false | undefined)[], fallback = '') =>
 
 const colorVars = (color?: ThemeColor) => ({
   '--card-color':
-    color && varChain([`--sb-fg-color-${kebab(color)}`, `--sb-color-${kebab(color)}`]),
+    color && varChain([`--fb-fg-color-${kebab(color)}`, `--fb-color-${kebab(color)}`]),
   '--card-background': varChain(
-    [color && `--sb-bg-color-${kebab(color)}`],
-    'var(--sb-background-content)'
+    [color && `--fb-bg-color-${kebab(color)}`],
+    'var(--fb-background-content)'
   ),
 });
 
@@ -64,8 +64,8 @@ const CardOutline = forwardRef<HTMLDivElement, CardOutlineProps>(function CardOu
   const borderColor =
     animation === 'none'
       ? varChain([
-          color && `--sb-border-color-${kebab(color)}`,
-          outlineColor && `--sb-color-${kebab(outlineColor)}`,
+          color && `--fb-border-color-${kebab(color)}`,
+          outlineColor && `--fb-color-${kebab(outlineColor)}`,
         ])
       : undefined;
 

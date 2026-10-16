@@ -10,15 +10,15 @@
   position: relative;
   padding: 6px 10px;
   width: 100%;
-  color: var(--sb-input-color, inherit);
-  background: var(--sb-input-background);
-  border-radius: var(--sb-input-border-radius);
-  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
-  font-size: calc(var(--sb-size-s2) - 1px);
+  color: var(--fb-input-color, inherit);
+  background: var(--fb-input-background);
+  border-radius: var(--fb-input-border-radius);
+  box-shadow: var(--fb-input-border) 0 0 0 1px inset;
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 20px;
 
   &:focus {
-    box-shadow: var(--sb-color-secondary) 0 0 0 1px inset;
+    box-shadow: var(--fb-color-secondary) 0 0 0 1px inset;
     outline: none;
   }
 
@@ -28,7 +28,7 @@
   }
 
   &::placeholder {
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
   }
 
   &[multiple] {
@@ -42,13 +42,13 @@
       margin-right: 1px;
 
       &:hover {
-        background: var(--sb-background-hoverable);
+        background: var(--fb-background-hoverable);
       }
 
       &:checked {
         background: transparent;
-        color: var(--sb-color-secondary);
-        font-weight: var(--sb-weight-bold);
+        color: var(--fb-color-secondary);
+        font-weight: var(--fb-weight-bold);
       }
     }
   }
@@ -70,10 +70,10 @@
     margin-top: -6px;
     right: 12px;
     top: 50%;
-    fill: var(--sb-text-muted-color);
+    fill: var(--fb-text-muted-color);
 
     & path {
-      fill: var(--sb-text-muted-color);
+      fill: var(--fb-text-muted-color);
     }
   }
 }

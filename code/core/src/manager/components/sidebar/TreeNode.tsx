@@ -31,7 +31,7 @@ interface LeafNodeProps extends ComponentProps<'a'> {
 /** The indentation comes from the depth, through a CSS variable. */
 const nodeProps = (depth = 0, className?: string, style?: CSSProperties) => ({
   className: clsx(styles.node, className),
-  style: { '--sb-depth': depth, ...style } as CSSProperties,
+  style: { '--fb-depth': depth, ...style } as CSSProperties,
 });
 
 const BranchNode = ({

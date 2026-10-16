@@ -66,7 +66,7 @@ const managerContext: any = (
     selectStory: fn().mockName('api::selectStory'),
     setFilter: fn().mockName('api::setFilter'),
     setFilters: fn().mockName('api::setFilters'),
-    getDocsUrl: () => 'https://storybook.js.org/docs/',
+    getDocsUrl: () => 'https://forkbook.ljk.dev/docs',
     getIsNavShown: () => true,
     getUrlState: () => ({
       queryParams: {},

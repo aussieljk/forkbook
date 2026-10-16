@@ -1,6 +1,6 @@
 .checkbox {
   appearance: none;
-  background-color: var(--sb-input-background);
+  background-color: var(--fb-input-background);
   border: 1px solid hsl(0 0 0 / 0.44);
   border-radius: 2px;
   display: grid;
@@ -17,12 +17,12 @@
 
   &:disabled {
     background-color: transparent;
-    border-color: var(--sb-input-border);
+    border-color: var(--fb-input-border);
   }
 
   &:disabled:checked,
   &:disabled:indeterminate {
-    background-color: var(--sb-color-mediumdark);
+    background-color: var(--fb-color-mediumdark);
   }
 
   &:checked,
@@ -47,12 +47,12 @@
   }
 
   &:enabled:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: 2px;
   }
 }
 
-:where([data-sb-theme='dark']) .checkbox {
+:where([data-fb-theme='dark']) .checkbox {
   border-color: hsl(0 0 100 / 0.4);
 
   &:disabled:checked,

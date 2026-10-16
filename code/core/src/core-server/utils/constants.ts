@@ -7,7 +7,7 @@ export const DEBOUNCE = 100;
 export const defaultStaticDirs = [
   {
     from: join(resolvePackageDir('@aussieljk/forkbook'), 'assets/browser'),
-    to: '/sb-common-assets',
+    to: '/fb-common-assets',
   },
 ];
 

@@ -583,11 +583,11 @@ describe('PreviewWeb', () => {
 
         expect(preview.view.showErrorDisplay).toHaveBeenCalled();
         expect(vi.mocked(preview.view.showErrorDisplay).mock.calls[0][0]).toMatchInlineSnapshot(`
-          [SB_PREVIEW_API_0004 (MissingRenderToCanvasError): Expected your framework's preset to export a \`renderToCanvas\` field.
+          [FB_PREVIEW_API_0004 (MissingRenderToCanvasError): Expected your framework's preset to export a \`renderToCanvas\` field.
 
           Perhaps it needs to be upgraded for Forkbook 7.0?
 
-          More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field
+          More info: https://forkbook.ljk.dev/docs/migration#mainjs-framework-field
           ]
         `);
       });

@@ -59,7 +59,7 @@ export const MobileAbout: FC = () => {
             <ActionList.Item>
               <ActionList.Link
                 ariaLabel={false}
-                href="https://github.com/storybookjs/storybook"
+                href="https://github.com/aussieljk/forkbook"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -77,7 +77,7 @@ export const MobileAbout: FC = () => {
             <ActionList.Item>
               <ActionList.Link
                 ariaLabel={false}
-                href="https://storybook.js.org/docs/get-started/install?ref=ui"
+                href="https://forkbook.ljk.dev/docs/get-started/install"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -101,7 +101,7 @@ export const MobileAbout: FC = () => {
             </Link>{' '}
             and the{' '}
             <Link
-              href="https://github.com/storybookjs/storybook/graphs/contributors"
+              href="https://github.com/aussieljk/forkbook/graphs/contributors"
               target="_blank"
               rel="noopener noreferrer"
             >

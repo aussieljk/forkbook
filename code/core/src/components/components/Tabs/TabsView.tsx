@@ -176,7 +176,7 @@ export const TabsView: FC<TabsViewProps> = ({
         {hasContent ? (
           <TabList
             className={styles.flexTabList}
-            style={{ '--sb-tabs-gap': toLength(barInnerStyle?.gap ?? 6) } as CSSProperties}
+            style={{ '--fb-tabs-gap': toLength(barInnerStyle?.gap ?? 6) } as CSSProperties}
             state={state}
           />
         ) : (

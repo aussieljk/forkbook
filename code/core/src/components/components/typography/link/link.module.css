@@ -6,30 +6,30 @@
   display: inline-block;
   transition: all 150ms ease-out;
   text-decoration: none;
-  color: var(--sb-color-secondary);
+  color: var(--fb-color-secondary);
 
   &:hover,
   &:focus {
     cursor: pointer;
-    color: hsl(from var(--sb-color-secondary) h s calc(l - 7));
+    color: hsl(from var(--fb-color-secondary) h s calc(l - 7));
 
     & svg path:not([fill]) {
-      fill: hsl(from var(--sb-color-secondary) h s calc(l - 7));
+      fill: hsl(from var(--fb-color-secondary) h s calc(l - 7));
     }
   }
 
   &:active {
-    color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+    color: hsl(from var(--fb-color-secondary) h s calc(l - 10));
 
     & svg path:not([fill]) {
-      fill: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+      fill: hsl(from var(--fb-color-secondary) h s calc(l - 10));
     }
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: 2px;
-    border-radius: var(--sb-input-border-radius);
+    border-radius: var(--fb-input-border-radius);
     /* Should ensure focus outline gets drawn above next sibling */
     z-index: 1;
   }
@@ -44,13 +44,13 @@
     margin-right: 0.4em;
 
     & path {
-      fill: var(--sb-color-secondary);
+      fill: var(--fb-color-secondary);
     }
   }
 }
 
 .link:where([data-secondary], [data-tertiary]) {
-  --link-color: var(--sb-text-muted-color);
+  --link-color: var(--fb-text-muted-color);
   color: var(--link-color);
 
   & svg path:not([fill]) {
@@ -59,16 +59,16 @@
 
   &:hover,
   &:active {
-    color: var(--sb-color-secondary);
+    color: var(--fb-color-secondary);
 
     & svg path:not([fill]) {
-      fill: var(--sb-color-secondary);
+      fill: var(--fb-color-secondary);
     }
   }
 }
 
 .link:where([data-tertiary]) {
-  --link-color: var(--sb-color-dark);
+  --link-color: var(--fb-color-dark);
 }
 
 .link:where([data-nochrome]) {
@@ -82,32 +82,32 @@
 }
 
 .link:where([data-inverse]) {
-  color: var(--sb-color-lightest);
+  color: var(--fb-color-lightest);
 
   &:not([fill]) {
-    fill: var(--sb-color-lightest);
+    fill: var(--fb-color-lightest);
   }
 
   &:hover {
-    color: var(--sb-color-lighter);
+    color: var(--fb-color-lighter);
 
     & svg path:not([fill]) {
-      fill: var(--sb-color-lighter);
+      fill: var(--fb-color-lighter);
     }
   }
 
   &:active {
-    color: var(--sb-color-light);
+    color: var(--fb-color-light);
 
     & svg path:not([fill]) {
-      fill: var(--sb-color-light);
+      fill: var(--fb-color-light);
     }
   }
 }
 
 .link:where([data-button]) {
   border: 0;
-  border-radius: var(--sb-input-border-radius);
+  border-radius: var(--fb-input-border-radius);
   background: none;
   padding: 0;
   font-size: inherit;

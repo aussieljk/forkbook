@@ -2,7 +2,7 @@ import { once } from '@aussieljk/forkbook/internal/node-logger';
 
 import { getPrettyPackageManagerName, PackageManagerName } from './JsPackageManager.ts';
 
-const PACKAGE_MANAGER_INSTALL_DOCS_URL = 'https://storybook.js.org/docs/get-started/install';
+const PACKAGE_MANAGER_INSTALL_DOCS_URL = 'https://forkbook.ljk.dev/docs/get-started/install';
 
 /**
  * Warns (once per process) when a project uses Yarn 1 (Classic), which Forkbook only supports on

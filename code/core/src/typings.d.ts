@@ -14,8 +14,8 @@ declare var FORKBOOK_FRAMEWORK: import('./types/modules/frameworks').SupportedFr
 declare var FORKBOOK_RENDERER: import('./types/modules/renderers').SupportedRenderer | undefined;
 declare var FORKBOOK_HOOKS_CONTEXT: any;
 declare var FORKBOOK_CURRENT_TASK_LOG: undefined | null | Array<any>;
-declare var SB_TELEMETRY_STATE: 'enabled' | 'disabled' | undefined;
-declare var SB_TELEMETRY_QUEUE: Array<import('./telemetry').QueuedEvent>;
+declare var FB_TELEMETRY_STATE: 'enabled' | 'disabled' | undefined;
+declare var FB_TELEMETRY_QUEUE: Array<import('./telemetry').QueuedEvent>;
 declare var PAYLOAD_ERROR_HANDLER: import('./telemetry').PayloadErrorHandler | undefined;
 
 declare var FORKBOOK_LAST_EVENTS: Record<
@@ -25,17 +25,17 @@ declare var FORKBOOK_LAST_EVENTS: Record<
 declare var FORKBOOK_SESSION_ID: string | undefined;
 declare var FORKBOOK_NETWORK_ADDRESS: string | undefined;
 
-declare var __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__: any;
-declare var __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__: any;
-declare var __STORYBOOK_ADDONS_CHANNEL__: any;
-declare var __STORYBOOK_ADDONS_MANAGER: any;
-declare var __STORYBOOK_ADDONS_PREVIEW: import('./preview-api/modules/addons/main').AddonStore;
-declare var __STORYBOOK_PREVIEW__: import('./preview-api/modules/preview-web/PreviewWeb').PreviewWeb<any>;
-declare var __STORYBOOK_STORY_STORE__: any;
-declare var __STORYBOOK_TEST__: any;
-declare var __STORYBOOK_TEST_SPY_LISTENERS__: Set<any>;
-declare var __STORYBOOK_ACTIONS__: any;
-declare var __STORYBOOK_VITEST_MOCKER__: any;
+declare var __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__: any;
+declare var __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__: any;
+declare var __FORKBOOK_ADDONS_CHANNEL__: any;
+declare var __FORKBOOK_ADDONS_MANAGER: any;
+declare var __FORKBOOK_ADDONS_PREVIEW: import('./preview-api/modules/addons/main').AddonStore;
+declare var __FORKBOOK_PREVIEW__: import('./preview-api/modules/preview-web/PreviewWeb').PreviewWeb<any>;
+declare var __FORKBOOK_STORY_STORE__: any;
+declare var __FORKBOOK_TEST__: any;
+declare var __FORKBOOK_TEST_SPY_LISTENERS__: Set<any>;
+declare var __FORKBOOK_ACTIONS__: any;
+declare var __FORKBOOK_VITEST_MOCKER__: any;
 
 declare module '@aw-web-design/x-default-browser';
 declare module 'ansi-to-html';

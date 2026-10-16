@@ -152,7 +152,7 @@ export class AddonStore {
 }
 
 // Enforce addons store to be a singleton
-const KEY = '__STORYBOOK_ADDONS_MANAGER';
+const KEY = '__FORKBOOK_ADDONS_MANAGER';
 
 function getAddonsStore(): AddonStore {
   if (!globalThis[KEY]) {

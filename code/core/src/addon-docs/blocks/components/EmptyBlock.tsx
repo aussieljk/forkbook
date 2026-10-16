@@ -10,5 +10,5 @@ import styles from './EmptyBlock.module.css';
 export const EmptyBlock: FC<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 > = (props) => (
-  <div {...props} className={clsx(withReset, styles.wrapper, 'docblock-emptyblock sb-unstyled')} />
+  <div {...props} className={clsx(withReset, styles.wrapper, 'docblock-emptyblock fb-unstyled')} />
 );

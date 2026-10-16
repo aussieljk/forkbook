@@ -4,7 +4,7 @@
     overflow: hidden;
 
     & > span {
-      border: 1px solid var(--sb-color-medium);
+      border: 1px solid var(--fb-color-medium);
       display: block;
       float: left;
       overflow: hidden;
@@ -20,7 +20,7 @@
 
     & span span {
       clear: both;
-      color: var(--sb-color-darkest);
+      color: var(--fb-color-darkest);
       display: block;
       padding: 5px 0 0;
     }

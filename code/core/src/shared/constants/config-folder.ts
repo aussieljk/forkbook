@@ -3,7 +3,7 @@ import { dirname, join, normalize, relative, resolve } from 'pathe';
 import { storybookConfigExtensions } from './extensions.ts';
 
 /** Default React Native on-device Forkbook config directory name. */
-export const RN_STORYBOOK_DIR = '.rnstorybook';
+export const RN_FORKBOOK_DIR = '.rnstorybook';
 
 // The import name that the React Native Storybook docs use.
 export const DOCUMENTED_PREVIEW_IMPORT = '#.storybook/preview';
@@ -15,16 +15,16 @@ export function isReactNativeStorybookPath(fileOrDir?: string): boolean {
 
   const normalized = normalize(fileOrDir);
   return (
-    normalized === RN_STORYBOOK_DIR ||
-    normalized.startsWith(`${RN_STORYBOOK_DIR}/`) ||
-    normalized.endsWith(`/${RN_STORYBOOK_DIR}`) ||
-    normalized.includes(`/${RN_STORYBOOK_DIR}/`)
+    normalized === RN_FORKBOOK_DIR ||
+    normalized.startsWith(`${RN_FORKBOOK_DIR}/`) ||
+    normalized.endsWith(`/${RN_FORKBOOK_DIR}`) ||
+    normalized.includes(`/${RN_FORKBOOK_DIR}/`)
   );
 }
 
 export function webPreviewCandidates(nativeConfigPath: string): string[] {
   const parts = resolve(nativeConfigPath).split('/');
-  const index = parts.lastIndexOf(RN_STORYBOOK_DIR);
+  const index = parts.lastIndexOf(RN_FORKBOOK_DIR);
   if (index <= 0) {
     return [];
   }
@@ -43,7 +43,7 @@ export function hasSiblingReactNativeConfig(
     return false;
   }
 
-  return exists(join(dirname(resolve(configDir)), RN_STORYBOOK_DIR));
+  return exists(join(dirname(resolve(configDir)), RN_FORKBOOK_DIR));
 }
 
 export function previewFileForImports(

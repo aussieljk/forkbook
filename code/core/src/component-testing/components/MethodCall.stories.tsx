@@ -4,12 +4,12 @@ import type { Call } from '../../instrumenter/types.ts';
 import { MethodCall, Node } from './MethodCall.tsx';
 
 const wrapperStyle: React.CSSProperties = {
-  backgroundColor: 'var(--sb-background-content)',
+  backgroundColor: 'var(--fb-background-content)',
   padding: '20px',
-  boxShadow: '0 0 0 1px var(--sb-app-border-color)',
-  color: 'var(--sb-color-default-text)',
-  fontFamily: 'var(--sb-font-mono)',
-  fontSize: 'var(--sb-size-s1)',
+  boxShadow: '0 0 0 1px var(--fb-app-border-color)',
+  color: 'var(--fb-color-default-text)',
+  fontFamily: 'var(--fb-font-mono)',
+  fontSize: 'var(--fb-size-s1)',
 };
 
 export default {

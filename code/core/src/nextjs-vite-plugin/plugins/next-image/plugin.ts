@@ -117,7 +117,7 @@ export function vitePluginNextImage(
         warnOnce(
           dedent`Detected vite-plugin-svgr but you are not passing image include or exclude patterns to the nextjs-vite plugin. This may cause a conflict between the two plugins and issues with SVG files.
           
-          For more info and recommended configuration, see: https://github.com/storybookjs/storybook/blob/next/code/lib/vite-plugin-storybook-nextjs/README.md#faq-includingexcluding-images`
+          For more info and recommended configuration, see: https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite#faq-includingexcluding-images`
         );
       }
 

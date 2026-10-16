@@ -3,16 +3,16 @@
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
   color-scheme: light;
 
   &[data-bordered] {
-    border: 1px solid var(--sb-app-border-color);
-    background: var(--sb-background-content);
+    border: 1px solid var(--fb-app-border-color);
+    background: var(--fb-background-content);
   }
 }
 
-:where([data-sb-theme='dark']) .wrapper {
+:where([data-fb-theme='dark']) .wrapper {
   color-scheme: dark;
 }
 
@@ -27,13 +27,13 @@
 .pre {
   margin: 0;
   padding: 0;
-  padding-right: var(--sb-layout-margin);
-  font-family: var(--sb-font-mono);
+  padding-right: var(--fb-layout-margin);
+  font-family: var(--fb-font-mono);
   white-space: pre;
   counter-reset: sh-line;
 
   &[data-padded] {
-    padding: var(--sb-layout-margin);
+    padding: var(--fb-layout-margin);
   }
 
   &[data-wrap] {

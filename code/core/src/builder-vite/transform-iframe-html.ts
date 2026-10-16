@@ -6,7 +6,7 @@ import type {
   TagsOptions,
 } from '@aussieljk/forkbook/internal/types';
 
-import { SB_VIRTUAL_FILES } from './virtual-file-names.ts';
+import { FB_VIRTUAL_FILES } from './virtual-file-names.ts';
 
 export type PreviewHtml = string | undefined;
 
@@ -31,7 +31,7 @@ export async function transformIframeHtml(html: string, options: Options) {
   }));
 
   const otherGlobals = {
-    ...(build?.test?.disableBlocks ? { __STORYBOOK_BLOCKS_EMPTY_MODULE__: {} } : {}),
+    ...(build?.test?.disableBlocks ? { __FORKBOOK_BLOCKS_EMPTY_MODULE__: {} } : {}),
     ...(security?.insecureIframeMessaging ? { INSECURE_IFRAME_MESSAGING: true } : {}),
   };
 
@@ -59,7 +59,7 @@ export async function transformIframeHtml(html: string, options: Options) {
   if (configType === 'DEVELOPMENT') {
     return transformedHtml.replace(
       'virtual:/@storybook/builder-vite/vite-app.js',
-      `/@id/__x00__${SB_VIRTUAL_FILES.VIRTUAL_APP_FILE}`
+      `/@id/__x00__${FB_VIRTUAL_FILES.VIRTUAL_APP_FILE}`
     );
   }
 

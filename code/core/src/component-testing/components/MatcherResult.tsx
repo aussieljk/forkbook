@@ -58,7 +58,7 @@ export const MatcherResult = ({
       style={{
         margin: 0,
         padding: '8px 10px 8px 36px',
-        fontSize: 'var(--sb-size-s1)',
+        fontSize: 'var(--fb-size-s1)',
         ...style,
       }}
     >

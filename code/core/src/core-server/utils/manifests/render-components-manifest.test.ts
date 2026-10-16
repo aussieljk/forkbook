@@ -169,7 +169,7 @@ describe('renderComponentsManifest snippet warnings', () => {
   const storyWithWarning = {
     id: 'storydocs-local-component--primary',
     name: 'Primary',
-    snippet: '<sb-local-component [heading]="\'Declared here\'"></sb-local-component>',
+    snippet: '<fb-local-component [heading]="\'Declared here\'"></fb-local-component>',
     warning:
       'LocalComponent is declared in the story file, so the snippet references it without importing it.',
   };
@@ -193,7 +193,7 @@ describe('renderComponentsManifest snippet warnings', () => {
         'local-component': component({ stories: [storyWithWarning] }),
         clean: component({
           id: 'clean',
-          stories: [{ id: 'clean--primary', name: 'Primary', snippet: '<sb-clean></sb-clean>' }],
+          stories: [{ id: 'clean--primary', name: 'Primary', snippet: '<fb-clean></fb-clean>' }],
         }),
       },
     });
@@ -207,7 +207,7 @@ describe('renderComponentsManifest snippet warnings', () => {
       v: 1,
       components: {
         clean: component({
-          stories: [{ id: 'clean--primary', name: 'Primary', snippet: '<sb-clean></sb-clean>' }],
+          stories: [{ id: 'clean--primary', name: 'Primary', snippet: '<fb-clean></fb-clean>' }],
         }),
       },
     });

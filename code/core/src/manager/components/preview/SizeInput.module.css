@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
 
   & input {
     width: 70px;
@@ -12,7 +12,7 @@
 
     &:focus {
       box-shadow: none;
-      outline: 2px solid var(--sb-color-secondary);
+      outline: 2px solid var(--fb-color-secondary);
       outline-offset: -2px;
     }
   }
@@ -28,6 +28,6 @@
     bottom: 0;
     width: 20px;
     z-index: 1;
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
   }
 }

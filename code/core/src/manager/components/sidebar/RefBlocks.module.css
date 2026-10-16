@@ -1,16 +1,16 @@
 .textStyle {
-  font-size: var(--sb-size-s2);
+  font-size: var(--fb-size-s2);
   line-height: 20px;
   margin: 0;
 }
 
 .text {
-  font-size: var(--sb-size-s2);
+  font-size: var(--fb-size-s2);
   line-height: 20px;
   margin: 0;
 
   & code {
-    font-size: var(--sb-size-s1);
+    font-size: var(--fb-size-s1);
   }
 
   & ul {
@@ -27,7 +27,7 @@
   white-space: pre;
   min-width: 420px;
   max-width: 640px;
-  color: var(--sb-color-dark);
+  color: var(--fb-color-dark);
 
   &[data-mobile] {
     min-width: 0;

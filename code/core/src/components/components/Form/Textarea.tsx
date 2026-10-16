@@ -59,7 +59,7 @@ export const Textarea = forwardRef<any, TextareaProps>(function Textarea(
       data-size={size}
       data-align={align}
       data-valid={valid}
-      style={{ ...style, '--sb-textarea-max-height': `${height}px` } as Style}
+      style={{ ...style, '--fb-textarea-max-height': `${height}px` } as Style}
     />
   );
 });

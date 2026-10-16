@@ -21,17 +21,17 @@ enum Mode {
   ERROR = 'ERROR',
 }
 const classes: Record<Mode, string> = {
-  PREPARING_STORY: 'sb-show-preparing-story',
-  PREPARING_DOCS: 'sb-show-preparing-docs',
-  MAIN: 'sb-show-main',
-  NOPREVIEW: 'sb-show-nopreview',
-  ERROR: 'sb-show-errordisplay',
+  PREPARING_STORY: 'fb-show-preparing-story',
+  PREPARING_DOCS: 'fb-show-preparing-docs',
+  MAIN: 'fb-show-main',
+  NOPREVIEW: 'fb-show-nopreview',
+  ERROR: 'fb-show-errordisplay',
 };
 
 const layoutClassMap = {
-  centered: 'sb-main-centered',
-  fullscreen: 'sb-main-fullscreen',
-  padded: 'sb-main-padded',
+  centered: 'fb-main-centered',
+  fullscreen: 'fb-main-fullscreen',
+  padded: 'fb-main-padded',
 } as const;
 type Layout = keyof typeof layoutClassMap | 'none';
 

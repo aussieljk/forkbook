@@ -27,12 +27,12 @@ export { isMockFunction, mocks };
  * stories.
  */
 interface StorybookMockGlobals {
-  __STORYBOOK_MODULE_MOCK_SPIES__?: Set<MockInstance>;
+  __FORKBOOK_MODULE_MOCK_SPIES__?: Set<MockInstance>;
 }
 
 const moduleMockSpies: Set<MockInstance> = ((
   globalThis as typeof globalThis & StorybookMockGlobals
-).__STORYBOOK_MODULE_MOCK_SPIES__ ??= new Set<MockInstance>());
+).__FORKBOOK_MODULE_MOCK_SPIES__ ??= new Set<MockInstance>());
 
 type Listener = (mock: MockInstance, args: unknown[]) => void;
 const listeners = new Set<Listener>();

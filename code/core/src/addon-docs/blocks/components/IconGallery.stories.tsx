@@ -30,7 +30,7 @@ export const DefaultStyle = () => (
       <FaceHappyIcon />
     </IconItem>
     <IconItem name="bar">
-      <img src="https://storybook.js.org/images/placeholders/50x50.png" alt="example" />
+      <img src="https://forkbook.ljk.dev/images/placeholders/50x50.png" alt="example" />
     </IconItem>
     <IconItem name="very-long-icon-name">
       <AlertIcon />

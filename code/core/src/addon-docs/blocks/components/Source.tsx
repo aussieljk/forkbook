@@ -81,7 +81,7 @@ const Source: FunctionComponent<SourceProps> = ({
       copyable={copyable}
       format={format}
       language={language ?? 'jsx'}
-      className="docblock-source sb-unstyled"
+      className="docblock-source fb-unstyled"
       {...rest}
     >
       {code}

@@ -1,12 +1,12 @@
 .name {
-  color: var(--sb-color-orange);
+  color: var(--fb-color-orange);
 }
 
 .important {
-  color: var(--sb-color-ancillary);
+  color: var(--fb-color-ancillary);
   text-decoration: underline;
 }
 
 .detail {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }

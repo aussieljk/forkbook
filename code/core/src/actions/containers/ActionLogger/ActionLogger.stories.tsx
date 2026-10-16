@@ -10,8 +10,8 @@ import { EVENT_ID } from '../../constants.ts';
 import ActionLogger from './index.tsx';
 
 const wrapperStyle: React.CSSProperties = {
-  backgroundColor: 'var(--sb-background-content)',
-  color: 'var(--sb-color-default-text)',
+  backgroundColor: 'var(--fb-background-content)',
+  color: 'var(--fb-color-default-text)',
   display: 'block',
   height: '400px',
   position: 'relative',

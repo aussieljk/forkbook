@@ -7,10 +7,10 @@
   transition:
     box-shadow 200ms ease-out,
     opacity 200ms ease-out;
-  color: var(--sb-input-color, inherit);
-  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
-  border-radius: var(--sb-input-border-radius);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  color: var(--fb-input-color, inherit);
+  box-shadow: var(--fb-input-border) 0 0 0 1px inset;
+  border-radius: var(--fb-input-border-radius);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 20px;
   box-sizing: border-box;
   border: none;
@@ -18,7 +18,7 @@
 
   @supports (appearance: base-select) {
     appearance: base-select;
-    background: var(--sb-input-background);
+    background: var(--fb-input-background);
     padding: 6px 10px;
   }
 
@@ -32,18 +32,18 @@
     & > svg {
       width: 14px;
       height: 14px;
-      color: var(--sb-text-muted-color);
+      color: var(--fb-text-muted-color);
     }
   }
 
   &:has(option:not([hidden]):checked) {
-    color: var(--sb-color-default-text);
+    color: var(--fb-color-default-text);
   }
 
   &:focus-visible,
   &:focus-within {
     outline: none;
-    box-shadow: var(--sb-color-secondary) 0 0 0 1px inset;
+    box-shadow: var(--fb-color-secondary) 0 0 0 1px inset;
   }
 
   &::picker-icon {
@@ -52,13 +52,13 @@
 
   &::picker(select) {
     appearance: base-select;
-    border: 1px solid var(--sb-input-border);
+    border: 1px solid var(--fb-input-border);
     padding: 4px;
     margin-top: 4px;
     background: rgba(255, 255, 255, 0.95);
     filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 0 3px rgba(0, 0, 0, 0.1));
-    border-radius: calc(var(--sb-app-border-radius) + 2px);
-    font-size: var(--sb-size-s1);
+    border-radius: calc(var(--fb-app-border-radius) + 2px);
+    font-size: var(--fb-size-s1);
     cursor: default;
     transition:
       opacity 100ms ease-in-out,
@@ -84,7 +84,7 @@
     border-radius: 4px;
     outline: none;
     cursor: pointer;
-    color: var(--sb-color-default-text);
+    color: var(--fb-color-default-text);
 
     &::checkmark {
       display: none;
@@ -92,22 +92,22 @@
 
     &:hover,
     &:focus-visible {
-      background-color: var(--sb-background-hoverable);
+      background-color: var(--fb-background-hoverable);
     }
 
     &:checked {
-      color: var(--sb-color-secondary);
-      font-weight: var(--sb-weight-bold);
+      color: var(--fb-color-secondary);
+      font-weight: var(--fb-weight-bold);
     }
 
     &:disabled {
       background-color: transparent;
       cursor: default;
-      color: var(--sb-color-default-text);
+      color: var(--fb-color-default-text);
     }
   }
 }
 
-:where([data-sb-theme='dark']) .select::picker(select) {
-  background: var(--sb-background-app);
+:where([data-fb-theme='dark']) .select::picker(select) {
+  background: var(--fb-background-app);
 }

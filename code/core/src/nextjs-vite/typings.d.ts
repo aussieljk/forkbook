@@ -1,4 +1,4 @@
-declare module 'sb-original/image-context' {
+declare module 'fb-original/image-context' {
   import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
   import type { Context } from 'next/dist/compiled/react';
   import type { ImageProps } from 'next/image';
@@ -14,7 +14,7 @@ declare module 'sb-original/image-context' {
   >;
 }
 
-declare module 'sb-original/default-loader' {
+declare module 'fb-original/default-loader' {
   import type { ImageLoaderProps } from 'next/image';
 
   export const defaultLoader: (props: ImageLoaderProps) => string;

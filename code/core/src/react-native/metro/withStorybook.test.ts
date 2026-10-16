@@ -21,10 +21,10 @@ describe('withStorybook', () => {
   });
 
   afterEach(() => {
-    delete process.env.STORYBOOK_WS_HOST;
-    delete process.env.STORYBOOK_WS_PORT;
-    delete process.env.STORYBOOK_WS_SECURED;
-    delete process.env.STORYBOOK_SERVER;
+    delete process.env.FORKBOOK_WS_HOST;
+    delete process.env.FORKBOOK_WS_PORT;
+    delete process.env.FORKBOOK_WS_SECURED;
+    delete process.env.FORKBOOK_SERVER;
   });
 
   test('generates the requires file and starts no channel server by default', () => {
@@ -51,8 +51,8 @@ describe('withStorybook', () => {
     expect(generate).toHaveBeenCalledWith(expect.objectContaining({ host: 'auto', port: 7007 }));
   });
 
-  test('does not start the channel server when STORYBOOK_SERVER is false', () => {
-    process.env.STORYBOOK_SERVER = 'false';
+  test('does not start the channel server when FORKBOOK_SERVER is false', () => {
+    process.env.FORKBOOK_SERVER = 'false';
 
     withStorybook(config, {
       configPath: '/tmp/.rnstorybook',
@@ -106,9 +106,9 @@ describe('withStorybook', () => {
     expect(generate).not.toHaveBeenCalled();
   });
 
-  test('applies STORYBOOK_WS_* env when websockets option is omitted', () => {
-    process.env.STORYBOOK_WS_HOST = '192.168.1.10';
-    process.env.STORYBOOK_WS_PORT = '8123';
+  test('applies FORKBOOK_WS_* env when websockets option is omitted', () => {
+    process.env.FORKBOOK_WS_HOST = '192.168.1.10';
+    process.env.FORKBOOK_WS_PORT = '8123';
 
     withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
 

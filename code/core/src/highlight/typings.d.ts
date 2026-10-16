@@ -1,1 +1,1 @@
-declare var __STORYBOOK_HIGHLIGHT_INITIALIZED: boolean;
+declare var __FORKBOOK_HIGHLIGHT_INITIALIZED: boolean;

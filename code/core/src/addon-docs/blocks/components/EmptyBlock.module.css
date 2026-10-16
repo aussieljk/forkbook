@@ -1,16 +1,16 @@
 .wrapper {
   background-color: rgba(0, 0, 0, 0.01);
-  border-radius: var(--sb-app-border-radius);
-  border: 1px dashed var(--sb-app-border-color);
+  border-radius: var(--fb-app-border-radius);
+  border: 1px dashed var(--fb-app-border-color);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   margin: 25px 0 40px;
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.3));
-  font-size: var(--sb-size-s2);
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.3));
+  font-size: var(--fb-size-s2);
 }
 
-:where([data-sb-theme='dark']) .wrapper {
+:where([data-fb-theme='dark']) .wrapper {
   background-color: rgba(255, 255, 255, 0.01);
 }

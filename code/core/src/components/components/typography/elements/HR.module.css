@@ -1,6 +1,6 @@
 .hr {
   border: 0 none;
-  border-top: 1px solid var(--sb-app-border-color);
+  border-top: 1px solid var(--fb-app-border-color);
   height: 4px;
   padding: 0;
 }

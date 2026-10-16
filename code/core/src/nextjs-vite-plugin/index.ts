@@ -44,7 +44,7 @@ export type PluginOptions = {
   dir?: string;
   /**
    * Control which image files are handled by the next-image plugin.
-   * @see https://github.com/storybookjs/storybook/blob/next/code/lib/vite-plugin-storybook-nextjs/README.md#faq-includingexcluding-images
+   * @see https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite#faq-includingexcluding-images
    */
   image?: NextImagePluginOptions;
 };
@@ -150,8 +150,8 @@ function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginO
               'next/dist/shared/lib/segment.js',
               'styled-jsx',
               'styled-jsx/style',
-              'sb-original/image-context',
-              'sb-original/default-loader',
+              'fb-original/image-context',
+              'fb-original/default-loader',
               'next/dist/compiled/react',
               'next/image',
               'next/legacy/image',

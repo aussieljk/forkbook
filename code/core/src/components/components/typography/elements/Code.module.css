@@ -1,6 +1,6 @@
 /* Used with the codeCommon class, which sets the padding and colour. */
 .inlineCode {
-  font-family: var(--sb-font-mono);
+  font-family: var(--fb-font-mono);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
@@ -9,11 +9,11 @@
 
 /* DocBlocks-specific styling and overrides */
 .codeBlock {
-  font-family: var(--sb-font-mono);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-family: var(--fb-font-mono);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 19px;
   margin: 25px 0 40px;
-  border-radius: var(--sb-app-border-radius);
+  border-radius: var(--fb-app-border-radius);
   box-shadow: rgba(0, 0, 0, 0.1) 0 1px 3px 0;
 
   & pre:global(.prismjs) {
@@ -22,6 +22,6 @@
   }
 }
 
-:where([data-sb-theme='dark']) .codeBlock {
+:where([data-fb-theme='dark']) .codeBlock {
   box-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px 0;
 }

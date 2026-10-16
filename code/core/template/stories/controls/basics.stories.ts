@@ -52,7 +52,7 @@ export const Defined = {
     colorWithPresets: 'pink',
     colorStartOpen: 'orange',
     date: new Date(2010, 1, 1),
-    file: ['https://storybook.js.org/images/placeholders/350x150.png'],
+    file: ['https://forkbook.ljk.dev/images/placeholders/350x150.png'],
     number: 10,
     object: DEFAULT_NESTED_OBJECT,
     radio: 'a',

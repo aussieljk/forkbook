@@ -104,7 +104,7 @@ export class ChangeDetectionResolverFactory {
       extensions: DEFAULT_EXTENSIONS,
     });
 
-    this.projectRootEntry = join(config.projectRoot, '__sb_resolver_root__.ts');
+    this.projectRootEntry = join(config.projectRoot, '__fb_resolver_root__.ts');
   }
 
   /**

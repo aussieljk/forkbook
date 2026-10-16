@@ -75,7 +75,7 @@ type ArgTypesBlockParameters = {
   /**
    * Controls arg types order
    *
-   * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-argtypes#sort
+   * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes#sort
    */
   sort?: 'none' | 'alpha' | 'requiredFirst';
 };
@@ -97,7 +97,7 @@ type CanvasBlockParameters = {
   /**
    * Specify how the canvas should layout the story.
    *
-   * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-canvas#layout
+   * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#layout
    */
   layout?: 'centered' | 'fullscreen' | 'padded';
   /** Specifies which story is rendered */
@@ -107,7 +107,7 @@ type CanvasBlockParameters = {
   /**
    * Story configuration
    *
-   * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-canvas#story
+   * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#story
    */
   story?: StoryBlockParameters;
   /** Disable story source code */
@@ -161,7 +161,7 @@ type SourceBlockParameters = {
    * Specifies how the source code is rendered.
    *
    * @default 'auto'
-   * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-source#type
+   * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source#type
    */
   type?: 'auto' | 'code' | 'dynamic';
 };
@@ -170,48 +170,48 @@ export interface DocsParameters {
   /**
    * Docs configuration
    *
-   * @see https://storybook.js.org/docs/writing-docs
+   * @see https://forkbook.ljk.dev/docs/writing-docs
    */
   docs?: {
     /**
      * The subtitle displayed when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-argtypes
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes
      */
     argTypes?: ArgTypesBlockParameters;
 
     /**
      * Canvas configuration when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-canvas
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas
      */
     canvas?: Partial<CanvasBlockParameters>;
 
     /**
      * Show the Code panel by default. Set to `false` to hide it.
      *
-     * @see https://storybook.js.org/docs/writing-docs/code-panel
+     * @see https://forkbook.ljk.dev/docs/writing-docs/code-panel
      */
     codePanel?: boolean;
 
     /**
      * Controls block configuration
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-controls
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-controls
      */
     controls?: ControlsBlockParameters;
 
     /**
      * Customize the Docs Container
      *
-     * @see https://storybook.js.org/docs/writing-docs/autodocs#customize-the-docs-container
+     * @see https://forkbook.ljk.dev/docs/writing-docs/autodocs#customize-the-docs-container
      */
     container?: ComponentType<DocsContainerProps>;
 
     /**
      * Component/story description when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-description#writing-descriptions
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-description#writing-descriptions
      */
     description?: DescriptionBlockParameters;
 
@@ -221,35 +221,35 @@ export interface DocsParameters {
     /**
      * Replace the default documentation template used by Forkbook with your own
      *
-     * @see https://storybook.js.org/docs/writing-docs/autodocs#write-a-custom-template
+     * @see https://forkbook.ljk.dev/docs/writing-docs/autodocs#write-a-custom-template
      */
     page?: ComponentType;
 
     /**
      * Source code configuration when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-source
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source
      */
     source?: Partial<SourceBlockParameters>;
 
     /**
      * Story block configuration
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-story
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story
      */
     story?: Partial<StoryBlockParameters>;
 
     /**
      * Stories block configuration
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-stories
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-stories
      */
     stories?: Partial<StoriesBlockParameters>;
 
     /**
      * The subtitle displayed when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-subtitle
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-subtitle
      */
     subtitle?: string;
 
@@ -267,21 +267,21 @@ export interface DocsParameters {
     /**
      * Override the default theme
      *
-     * @see https://storybook.js.org/docs/writing-docs/autodocs#override-the-default-theme
+     * @see https://forkbook.ljk.dev/docs/writing-docs/autodocs#override-the-default-theme
      */
     theme?: ThemeVars;
 
     /**
      * The title displayed when shown in docs page
      *
-     * @see https://storybook.js.org/docs/api/doc-blocks/doc-block-title
+     * @see https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-title
      */
     title?: string;
 
     /**
      * Configure the table of contents
      *
-     * @see https://storybook.js.org/docs/writing-docs/autodocs#configure-the-table-of-contents
+     * @see https://forkbook.ljk.dev/docs/writing-docs/autodocs#configure-the-table-of-contents
      */
     toc?: true | TocParameters;
   };

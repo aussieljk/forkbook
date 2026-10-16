@@ -9,14 +9,14 @@
   &[data-chrome] {
     background: var(--tooltip-bg);
     filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1));
-    border-radius: calc(var(--sb-app-border-radius) + 2px);
-    font-family: var(--sb-font-base);
-    font-size: var(--sb-size-s1);
+    border-radius: calc(var(--fb-app-border-radius) + 2px);
+    font-family: var(--fb-font-base);
+    font-size: var(--fb-size-s1);
   }
 }
 
-:where([data-sb-theme='dark']) .wrapper:not([data-color]) {
-  --tooltip-bg: var(--sb-background-app);
+:where([data-fb-theme='dark']) .wrapper:not([data-color]) {
+  --tooltip-bg: var(--fb-background-app);
 }
 
 .arrow {

@@ -1,7 +1,7 @@
 .blockquote {
-  border-left: 4px solid var(--sb-color-medium);
+  border-left: 4px solid var(--fb-color-medium);
   padding: 0 15px;
-  color: var(--sb-color-dark);
+  color: var(--fb-color-dark);
 
   & > :first-of-type {
     margin-top: 0;

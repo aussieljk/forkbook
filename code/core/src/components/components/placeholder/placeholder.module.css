@@ -1,10 +1,10 @@
 .title {
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
 }
 
 .message {
   padding: 30px;
   text-align: center;
-  color: var(--sb-color-default-text);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  color: var(--fb-color-default-text);
+  font-size: calc(var(--fb-size-s2) - 1px);
 }

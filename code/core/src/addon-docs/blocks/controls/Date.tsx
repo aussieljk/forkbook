@@ -100,8 +100,8 @@ export const DateControl: FC<DateProps> = ({
 
   return (
     <fieldset className={styles.fieldset}>
-      <legend className="sb-sr-only">{name}</legend>
-      <label htmlFor={`${controlId}-date`} className="sb-sr-only">
+      <legend className="fb-sr-only">{name}</legend>
+      <label htmlFor={`${controlId}-date`} className="fb-sr-only">
         Date
       </label>
       <Form.Input
@@ -116,7 +116,7 @@ export const DateControl: FC<DateProps> = ({
         onChange={onDateChange}
         {...{ onFocus, onBlur }}
       />
-      <label htmlFor={`${controlId}-time`} className="sb-sr-only">
+      <label htmlFor={`${controlId}-time`} className="fb-sr-only">
         Time
       </label>
       <Form.Input

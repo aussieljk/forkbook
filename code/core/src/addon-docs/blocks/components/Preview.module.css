@@ -88,8 +88,8 @@
   }
 }
 
-:where([data-sb-theme='dark']) .previewContainer {
-  --preview-source-background: hsl(from var(--sb-background-content) h s calc(l - 5));
+:where([data-fb-theme='dark']) .previewContainer {
+  --preview-source-background: hsl(from var(--fb-background-content) h s calc(l - 5));
 }
 
 .previewContainer:where([data-with-toolbar]) {
@@ -100,11 +100,11 @@
   margin: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-bottom-left-radius: var(--sb-app-border-radius);
-  border-bottom-right-radius: var(--sb-app-border-radius);
+  border-bottom-left-radius: var(--fb-app-border-radius);
+  border-bottom-right-radius: var(--fb-app-border-radius);
   border: none;
   background: var(--preview-source-background);
-  color: var(--sb-color-lightest);
+  color: var(--fb-color-lightest);
 
   & button {
     background: var(--preview-source-background);

@@ -3,9 +3,9 @@
  * that add a class to a Button can then override these styles.
  */
 .button {
-  --fg: var(--sb-color-secondary);
-  --bg: var(--sb-button-background);
-  --outline: var(--sb-button-border);
+  --fg: var(--fb-color-secondary);
+  --bg: var(--fb-button-background);
+  --outline: var(--fb-button-border);
 
   border: 0;
   cursor: pointer;
@@ -26,13 +26,13 @@
   white-space: nowrap;
   user-select: none;
   margin: 0;
-  font-size: var(--sb-size-s1);
-  font-weight: var(--sb-weight-bold);
+  font-size: var(--fb-size-s1);
+  font-weight: var(--fb-weight-bold);
   line-height: 1;
   background: transparent;
-  color: var(--sb-input-color);
+  color: var(--fb-input-color);
   box-shadow: none;
-  border-radius: var(--sb-input-border-radius);
+  border-radius: var(--fb-input-border-radius);
   /* Making sure that the button never shrinks below its minimum size */
   flex-shrink: 0;
 
@@ -42,9 +42,9 @@
 }
 
 .button:where([data-appearance='agentic']) {
-  --fg: var(--sb-fg-color-agentic);
-  --bg: var(--sb-bg-color-agentic);
-  --outline: var(--sb-border-color-agentic);
+  --fg: var(--fb-fg-color-agentic);
+  --bg: var(--fb-bg-color-agentic);
+  --outline: var(--fb-border-color-agentic);
 }
 
 /* Size and padding */
@@ -82,30 +82,30 @@
 
 .button:where([data-variant='solid']) {
   background: var(--fg);
-  color: var(--sb-color-lightest);
+  color: var(--fb-color-lightest);
 }
 
 .button:where([data-variant='outline']) {
   background: var(--bg);
-  color: var(--sb-input-color);
+  color: var(--fb-input-color);
   box-shadow: var(--outline) 0 0 0 1px inset;
 }
 
 .button:where([data-variant='outline'][data-appearance='agentic']) {
-  color: var(--sb-fg-color-agentic);
+  color: var(--fb-fg-color-agentic);
 }
 
 .button:where([data-variant='ghost']) {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }
 
 .button:where([data-variant='ghost'][data-active]) {
-  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.93));
+  background: rgb(from var(--fb-bar-selected-color) r g b / calc(alpha - 0.93));
   color: hsl(from var(--fg) h s calc(l - 10));
 }
 
 .button:where([data-variant='ghost'][data-active][data-appearance='agentic']) {
-  background: rgb(from var(--sb-bg-color-agentic) r g b / calc(alpha - 0.93));
+  background: rgb(from var(--fb-bg-color-agentic) r g b / calc(alpha - 0.93));
 }
 
 /* Hover, active and focus. Read-only buttons have no interactive states. */
@@ -138,11 +138,11 @@
 
   &:where([data-variant='ghost']):active {
     color: var(--fg);
-    background: var(--sb-background-hoverable);
+    background: var(--fb-background-hoverable);
   }
 
   &:where([data-variant='ghost'][data-appearance='agentic']):active {
-    background: var(--sb-bg-color-agentic);
+    background: var(--fb-bg-color-agentic);
   }
 
   &:focus-visible {
@@ -152,14 +152,14 @@
     z-index: 1;
   }
 
-  &:where(:global(.sb-bar) *, :global(.sb-list) *):focus-visible {
+  &:where(:global(.fb-bar) *, :global(.fb-list) *):focus-visible {
     outline-offset: 0;
   }
 }
 
 /* Dark theme */
 
-:where([data-sb-theme='dark']) .button {
+:where([data-fb-theme='dark']) .button {
   &:where([data-variant='solid']) {
     background: hsl(from var(--fg) h s calc(l - 18));
   }
@@ -194,11 +194,11 @@
     }
 
     &:where([data-variant='ghost']):active {
-      background: var(--sb-background-hoverable);
+      background: var(--fb-background-hoverable);
     }
 
     &:where([data-variant='ghost'][data-appearance='agentic']):active {
-      background: var(--sb-bg-color-agentic);
+      background: var(--fb-bg-color-agentic);
     }
   }
 }

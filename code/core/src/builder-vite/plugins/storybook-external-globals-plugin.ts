@@ -37,7 +37,7 @@ const replacementMap = new Map([
  * Becomes
  *
  * ```js
- * const { useMemo: useMemo2, useEffect: useEffect2 } = __STORYBOOK_MODULE_PREVIEW_API__;
+ * const { useMemo: useMemo2, useEffect: useEffect2 } = __FORKBOOK_MODULE_PREVIEW_API__;
  * ```
  *
  * It is based on existing plugins like https://github.com/crcong/vite-plugin-externals and
@@ -52,7 +52,7 @@ export async function storybookExternalGlobalsPlugin(options: Options): Promise<
     globalsNameReferenceMap;
 
   if (build?.test?.disableBlocks) {
-    externals['@aussieljk/forkbook/addon-docs/blocks'] = '__STORYBOOK_BLOCKS_EMPTY_MODULE__';
+    externals['@aussieljk/forkbook/addon-docs/blocks'] = '__FORKBOOK_BLOCKS_EMPTY_MODULE__';
   }
 
   await init;
@@ -72,8 +72,8 @@ export async function storybookExternalGlobalsPlugin(options: Options): Promise<
       const newAlias = mergeAlias([], config.resolve?.alias) as Alias[];
 
       const cachePath =
-        pkg.cache('sb-vite-plugin-externals', { create: true }) ??
-        join(process.cwd(), 'node_modules', '.cache', 'sb-vite-plugin-externals');
+        pkg.cache('fb-vite-plugin-externals', { create: true }) ??
+        join(process.cwd(), 'node_modules', '.cache', 'fb-vite-plugin-externals');
 
       await Promise.all(
         (Object.keys(externals) as Array<keyof typeof externals>).map(async (externalKey) => {
@@ -132,7 +132,7 @@ export function ensurePreviewRuntimePrecedesGlobals(code: string, id: string) {
     return code;
   }
 
-  return `import { setup as __sbInitializePreviewGlobals } from ${JSON.stringify(previewRuntimePath)};\n__sbInitializePreviewGlobals();\n${code}`;
+  return `import { setup as __fbInitializePreviewGlobals } from ${JSON.stringify(previewRuntimePath)};\n__fbInitializePreviewGlobals();\n${code}`;
 }
 
 function getDefaultImportReplacement(match: string) {

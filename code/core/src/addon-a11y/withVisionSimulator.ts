@@ -14,7 +14,7 @@ export const withVisionSimulator: DecoratorFunction = (StoryFn, { globals }) => 
     const existingFilters = document.body.style.filter.replaceAll(knownFiltersRegExp, '').trim();
 
     const visionFilter = filters[vision as keyof typeof filters]?.filter;
-    if (visionFilter && document.body.classList.contains('sb-show-main')) {
+    if (visionFilter && document.body.classList.contains('fb-show-main')) {
       if (!existingFilters || existingFilters === 'none') {
         document.body.style.filter = visionFilter;
       } else {

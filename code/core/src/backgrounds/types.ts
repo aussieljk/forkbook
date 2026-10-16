@@ -22,7 +22,7 @@ export interface BackgroundsParameters {
   /**
    * Backgrounds configuration
    *
-   * @see https://storybook.js.org/docs/essentials/backgrounds#parameters
+   * @see https://forkbook.ljk.dev/docs/essentials/backgrounds#parameters
    */
   backgrounds?: {
     /** Default background color */
@@ -32,7 +32,7 @@ export interface BackgroundsParameters {
      * Removes the tool and disables the feature's behavior. If you wish to turn off this feature
      * for the entire Forkbook, you can set the option in your `main.js|ts` configuration file.
      *
-     * @see https://storybook.js.org/docs/essentials/backgrounds#disable
+     * @see https://forkbook.ljk.dev/docs/essentials/backgrounds#disable
      */
     disable?: boolean;
 
@@ -48,7 +48,7 @@ export interface BackgroundsGlobals {
   /**
    * Backgrounds configuration
    *
-   * @see https://storybook.js.org/docs/essentials/backgrounds#globals
+   * @see https://forkbook.ljk.dev/docs/essentials/backgrounds#globals
    */
   [PARAM_KEY]?: GlobalState | GlobalState['value'];
 }

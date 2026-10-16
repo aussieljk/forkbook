@@ -104,7 +104,7 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
               View error <ChevronDownIcon />
             </Link>
           </PopoverProvider>{' '}
-          <Link href="https://storybook.js.org/docs?ref=ui" cancel={false} target="_blank">
+          <Link href="https://forkbook.ljk.dev/docs" cancel={false} target="_blank">
             View docs
           </Link>
         </div>
@@ -158,7 +158,7 @@ export const EmptyBlock = ({
                 <li>
                   Your{' '}
                   <Link
-                    href="https://storybook.js.org/docs/api/main-config/main-config-stories?ref=ui"
+                    href="https://forkbook.ljk.dev/docs/api/main-config/main-config-stories"
                     cancel={false}
                     target="_blank"
                   >
@@ -169,7 +169,7 @@ export const EmptyBlock = ({
                 <li>
                   You have{' '}
                   <Link
-                    href="https://storybook.js.org/docs/writing-stories?ref=ui"
+                    href="https://forkbook.ljk.dev/docs/writing-stories"
                     cancel={false}
                     target="_blank"
                   >

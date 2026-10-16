@@ -66,7 +66,7 @@ const Title: FC<{
     return (
       <h2
         id={headingId}
-        className={clsx(styles.heading, !title && 'sb-sr-only')}
+        className={clsx(styles.heading, !title && 'fb-sr-only')}
         lang={title ? undefined : 'en'}
       >
         {title || 'Table of contents'}

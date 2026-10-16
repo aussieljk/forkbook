@@ -87,7 +87,7 @@ export const Events = {
   },
   parameters: { argNames: ['test'] },
   play: async ({ canvasElement, id }: PlayFunctionContext<any>) => {
-    const channel = globalThis.__STORYBOOK_ADDONS_CHANNEL__;
+    const channel = globalThis.__FORKBOOK_ADDONS_CHANNEL__;
     await channel.emit(RESET_STORY_ARGS, { storyId: id });
     await new Promise((resolve) => channel.once(STORY_ARGS_UPDATED, resolve));
 

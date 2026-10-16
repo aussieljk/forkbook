@@ -119,8 +119,8 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
   );
 
   return (
-    <header className={clsx('sb-bar', styles.bottomBar)} {...landmarkProps} ref={sectionRef}>
-      <h2 id={headingId} className="sb-sr-only">
+    <header className={clsx('fb-bar', styles.bottomBar)} {...landmarkProps} ref={sectionRef}>
+      <h2 id={headingId} className="fb-sr-only">
         Navigation controls
       </h2>
       {showMenu && (
@@ -138,7 +138,7 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
           <p className={styles.text}>{fullStoryName}</p>
         </Button>
       )}
-      <span className="sb-sr-only" aria-current="page">
+      <span className="fb-sr-only" aria-current="page">
         Current page: {fullStoryAriaLabel}
       </span>
       {showPanel && (

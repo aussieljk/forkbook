@@ -8,7 +8,7 @@ import slash from 'slash';
 import type { Plugin } from 'vite';
 
 import {
-  SB_VIRTUAL_FILES,
+  FB_VIRTUAL_FILES,
   getOriginalVirtualModuleId,
   getResolvedVirtualModuleId,
 } from '../virtual-file-names.ts';
@@ -46,7 +46,7 @@ function isUserCode(moduleName: string) {
   }
 
   // keep Forkbook's virtual files because they import the story files, so they are essential to the module graph
-  if (Object.values(SB_VIRTUAL_FILES).includes(getOriginalVirtualModuleId(moduleName))) {
+  if (Object.values(FB_VIRTUAL_FILES).includes(getOriginalVirtualModuleId(moduleName))) {
     return true;
   }
 
@@ -74,7 +74,7 @@ export function pluginWebpackStats({ workingDir }: WebpackStatsPluginOptions): W
     // ! to ensure that the stats file doesn't change between the versions
     // ! Turbosnap is also only compatible with the old virtual file names
     // ! the old virtual file names did not start with the obligatory \0 character
-    if (Object.values(SB_VIRTUAL_FILES).includes(getOriginalVirtualModuleId(filename))) {
+    if (Object.values(FB_VIRTUAL_FILES).includes(getOriginalVirtualModuleId(filename))) {
       // We have to append a forward slash because otherwise we break turbosnap.
       // As soon as the chromatic-cli supports `virtual:` id's without a starting forward slash,
       // we can remove adding the forward slash here

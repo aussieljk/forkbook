@@ -27,7 +27,7 @@ export const Violations = {
       </div>
       <div>
         <p>missing alt</p>
-        <img src="https://storybook.js.org/images/placeholders/350x150.png" />
+        <img src="https://forkbook.ljk.dev/images/placeholders/350x150.png" />
       </div>
       <div>
         <p>Checkbox with contrast toggle</p>
@@ -73,7 +73,7 @@ export const Passes = {
       </div>
       <div>
         <p>alt</p>
-        <img src="https://storybook.js.org/images/placeholders/350x150.png" alt="placeholder" />
+        <img src="https://forkbook.ljk.dev/images/placeholders/350x150.png" alt="placeholder" />
       </div>
     `,
   },

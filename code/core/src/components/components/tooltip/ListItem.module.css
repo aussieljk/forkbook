@@ -1,10 +1,10 @@
 .title {
-  color: var(--sb-color-default-text);
-  font-weight: var(--sb-weight-regular);
+  color: var(--fb-color-default-text);
+  font-weight: var(--fb-weight-regular);
 
   &[data-active] {
-    color: var(--sb-color-secondary);
-    font-weight: var(--sb-weight-bold);
+    color: var(--fb-color-secondary);
+    font-weight: var(--fb-weight-bold);
   }
 
   &[data-loading] {
@@ -16,7 +16,7 @@
   }
 
   &[data-disabled] {
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
   }
 }
 
@@ -59,11 +59,11 @@
   line-height: 14px;
 
   &[data-active] {
-    color: var(--sb-color-secondary);
+    color: var(--fb-color-secondary);
   }
 
   &[data-disabled] {
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
   }
 }
 
@@ -72,7 +72,7 @@
   max-width: 14px;
 
   &[data-active] {
-    color: var(--sb-color-secondary);
+    color: var(--fb-color-secondary);
   }
 }
 
@@ -81,11 +81,11 @@
   /* required for overflow */
   min-width: 0;
   border: none;
-  border-radius: var(--sb-app-border-radius);
+  border-radius: var(--fb-app-border-radius);
   background: none;
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
   transition: background 150ms ease-out;
-  color: var(--sb-color-dark);
+  color: var(--fb-color-dark);
   text-decoration: none;
   justify-content: space-between;
   line-height: 18px;
@@ -98,7 +98,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: 0;
   }
 
@@ -106,7 +106,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--sb-background-hoverable);
+      background: var(--fb-background-hoverable);
     }
 
     &:hover svg {
@@ -118,7 +118,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--sb-background-hoverable);
+      background: var(--fb-background-hoverable);
     }
   }
 

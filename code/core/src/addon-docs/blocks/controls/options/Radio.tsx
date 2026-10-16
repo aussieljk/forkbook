@@ -32,7 +32,7 @@ export const RadioControl: FC<RadioProps> = ({
 
   return (
     <fieldset className={styles.wrapper} data-inline={isInline || undefined}>
-      <legend className="sb-sr-only">
+      <legend className="fb-sr-only">
         {name}
         {required ? ' (required)' : ''}
       </legend>

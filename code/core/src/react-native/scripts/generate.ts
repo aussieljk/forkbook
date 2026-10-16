@@ -47,7 +47,7 @@ function warnDeprecatedMainAddonsField(main: StorybookConfig, configPath: string
     .filter((name) => typeof name === 'string');
   const list = [...new Set(names)].join(', ');
   console.warn(
-    `[Storybook React Native] The \`addons\` field in your main config (${configPath}) is deprecated and will be removed in a future major version.\n` +
+    `[Forkbook React Native] The \`addons\` field in your main config (${configPath}) is deprecated and will be removed in a future major version.\n` +
       `Move every entry to \`deviceAddons\` instead.\n` +
       (list ? `Still listed under \`addons\`: ${list}.\n` : '')
   );
@@ -184,7 +184,7 @@ export async function generate({
 declare global {
   var view: View;
   var STORIES: typeof normalizedStories;
-  var STORYBOOK_WEBSOCKET:
+  var FORKBOOK_WEBSOCKET:
     | { host?: string; port?: number; secured?: boolean }
     | undefined;
   var FEATURES: Features;
@@ -208,7 +208,7 @@ const annotations = ${annotations};
 globalThis.STORIES = normalizedStories;
 ${
   hasWebsocketConfig
-    ? `globalThis.STORYBOOK_WEBSOCKET = {
+    ? `globalThis.FORKBOOK_WEBSOCKET = {
   ${websocketAssignmentLines.join('\n  ')}
 };`
     : ''

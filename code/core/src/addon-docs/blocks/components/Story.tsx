@@ -121,18 +121,16 @@ const Story: FunctionComponent<StoryProps> = (props) => {
 
   if (inline && !props.autoplay && story.usesMount) {
     return (
-      <strong style={{ color: 'var(--sb-color-orange)' }}>
+      <strong style={{ color: 'var(--fb-color-orange)' }}>
         This story mounts inside of play. Set{' '}
-        <a href="https://storybook.js.org/docs/api/doc-blocks/doc-block-story?ref=ui#autoplay">
-          autoplay
-        </a>{' '}
+        <a href="https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story#autoplay">autoplay</a>{' '}
         to true to view this story.
       </strong>
     );
   }
 
   return (
-    <div id={storyBlockIdFromId(props)} className="sb-story sb-unstyled" data-story-block="true">
+    <div id={storyBlockIdFromId(props)} className="fb-story fb-unstyled" data-story-block="true">
       {inline ? (
         <InlineStory {...(props as InlineStoryProps)} />
       ) : (

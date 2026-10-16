@@ -1,12 +1,12 @@
 .tableWrapper {
   width: 100%;
   border-spacing: 0;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }
 
 .row {
   display: flex;
-  border-bottom: 1px solid var(--sb-app-border-color);
+  border-bottom: 1px solid var(--fb-app-border-color);
 
   &:last-child {
     border-bottom: 0;
@@ -42,7 +42,7 @@
 
 .skeletonText {
   animation: glow 1.5s ease-in-out infinite;
-  background: var(--sb-app-border-color);
+  background: var(--fb-app-border-color);
   width: 100%;
   height: 16px;
   border-radius: 3px;

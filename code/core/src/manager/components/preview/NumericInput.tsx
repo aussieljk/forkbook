@@ -137,7 +137,7 @@ export const NumericInput = forwardRef<HTMLInputElement, NumericInputProps>(func
     >
       {before && <div>{before}</div>}
       {label && (
-        <label htmlFor={id} className="sb-sr-only">
+        <label htmlFor={id} className="fb-sr-only">
           {label}
         </label>
       )}

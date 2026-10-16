@@ -20,7 +20,7 @@ export const importMetaResolve = (...args: Parameters<ImportMeta['resolve']>) =>
     // This should only ever happen in our internal Vitest unit tests. This specific warning is silenced globally in vitest-setup.ts.
     // If anyone sees this warning, it means that this function was used in Vitest, but not our Vitest.
     console.warn(
-      "importMetaResolve from within Forkbook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/storybookjs/storybook/issues/new?template=bug_report.yml"
+      "importMetaResolve from within Forkbook is being used in a Vitest test, but it shouldn't be. Please report this at https://github.com/aussieljk/forkbook/issues/new"
     );
     return pathToFileURL(args[0]).href;
   }

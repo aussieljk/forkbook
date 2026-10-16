@@ -51,7 +51,7 @@ function buildErrorContext(message: string, stack?: string): ErrorContext {
 
   for (const line of stackLines) {
     // Extracts any module name between '/deps/' and '.js'
-    // e.g. http://localhost:63315/node_modules/.cache/storybook/490ab5/sb-vitest/deps/@stylexjs/stylex.js:500:10
+    // e.g. http://localhost:63315/node_modules/.cache/storybook/490ab5/fb-vitest/deps/@stylexjs/stylex.js:500:10
     // would become '@stylexjs/stylex'
     // NOTE this is Vite dependent for now.
     const depMatch = line.match(/\/deps\/([^:]+)\.js/);

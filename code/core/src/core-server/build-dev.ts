@@ -187,7 +187,7 @@ export async function buildDevStandalone(
   if (resolvedPreviewBuilder.includes('builder-vite')) {
     const deprecationMessage =
       dedent(`Using CommonJS in your main configuration file is deprecated with Vite.
-              - Refer to the migration guide at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#commonjs-with-vite-is-deprecated`);
+              - Refer to the migration guide at https://forkbook.ljk.dev/docs/migration#commonjs-with-vite-is-deprecated`);
 
     const mainJsPath = getInterpretedFile(
       resolve(options.configDir || defaultConfigDir(), 'main')

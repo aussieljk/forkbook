@@ -55,8 +55,7 @@ export class MissingFrameworkFieldError extends StorybookError {
       name: 'MissingFrameworkFieldError',
       category: Category.CORE_COMMON,
       code: 1,
-      documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-framework-api',
+      documentation: 'https://forkbook.ljk.dev/docs/migration#new-framework-api',
       message: dedent`
         Could not find a 'framework' field in Forkbook config.
         
@@ -71,8 +70,7 @@ export class InvalidFrameworkNameError extends StorybookError {
       name: 'InvalidFrameworkNameError',
       category: Category.CORE_COMMON,
       code: 2,
-      documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#new-framework-api',
+      documentation: 'https://forkbook.ljk.dev/docs/migration#new-framework-api',
       message: dedent`
         Invalid value of '${data.frameworkName}' in the 'framework' field of Forkbook config.
         
@@ -106,7 +104,7 @@ export class ConflictingStaticDirConfigError extends StorybookError {
       category: Category.CORE_SERVER,
       code: 1,
       documentation:
-        'https://storybook.js.org/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration',
+        'https://forkbook.ljk.dev/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration',
       message: dedent`
         Forkbook encountered a conflict when trying to serve statics. You have configured both:
         * Forkbook's option in the config file: 'staticDirs'
@@ -124,7 +122,7 @@ export class InvalidStoriesEntryError extends StorybookError {
       category: Category.CORE_COMMON,
       code: 4,
       documentation:
-        'https://storybook.js.org/docs/faq#can-i-have-a-storybook-with-no-local-stories',
+        'https://forkbook.ljk.dev/docs/faq#can-i-have-a-storybook-with-no-local-stories',
       message: dedent`
         Forkbook could not index your stories.
         Your main configuration does not contain a 'stories' field, or it resolved to an empty array.
@@ -541,7 +539,7 @@ export class GoogleFontsDownloadError extends StorybookError {
       category: Category.FRAMEWORK_NEXTJS,
       code: 1,
       documentation:
-        'https://storybook.js.org/docs/get-started/frameworks/nextjs#nextjs-font-optimization',
+        'https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#nextjs-font-optimization',
       message: dedent`
         Failed to fetch \`${data.fontFamily}\` from Google Fonts with URL: \`${data.url}\``,
     });
@@ -555,7 +553,7 @@ export class GoogleFontsLoadingError extends StorybookError {
       category: Category.FRAMEWORK_NEXTJS,
       code: 2,
       documentation:
-        'https://storybook.js.org/docs/get-started/frameworks/nextjs#nextjs-font-optimization',
+        'https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#nextjs-font-optimization',
       message: dedent`
         An error occurred when trying to load Google Fonts with URL \`${data.url}\`.
         
@@ -590,13 +588,13 @@ export class MainFileMissingError extends StorybookError {
       storybook: {
         helperMessage:
           'You can pass a --config-dir flag to tell Forkbook, where your main.js|ts file is located at.',
-        documentation: 'https://storybook.js.org/docs/configure?ref=error',
+        documentation: 'https://forkbook.ljk.dev/docs/configure',
       },
       vitest: {
         helperMessage:
           'You can pass a configDir plugin option to tell where your main.js|ts file is located at.',
         // TODO: add proper docs once available
-        documentation: 'https://storybook.js.org/docs/configure?ref=error',
+        documentation: 'https://forkbook.ljk.dev/docs/configure',
       },
     };
     const { documentation, helperMessage } = map[data.source || 'storybook'];
@@ -765,7 +763,7 @@ export class AddonVitestPostinstallWorkspaceUpdateError extends StorybookError {
       category: Category.CLI_INIT,
       isHandledError: true,
       code: 8,
-      documentation: `https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced`,
+      documentation: `https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced`,
       message: dedent`
         Could not update existing Vitest workspace file: ${data.filePath}
         Please refer to the documentation to complete the setup manually.
@@ -781,7 +779,7 @@ export class AddonVitestPostinstallConfigUpdateError extends StorybookError {
       category: Category.CLI_INIT,
       isHandledError: true,
       code: 9,
-      documentation: `https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced`,
+      documentation: `https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced`,
       message: dedent`
         Unable to update existing Vitest config file: ${data.filePath}
         Please refer to the documentation to complete the setup manually.

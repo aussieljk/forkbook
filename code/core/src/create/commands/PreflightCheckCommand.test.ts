@@ -133,7 +133,7 @@ describe('PreflightCheckCommand', () => {
         expect.stringContaining('Yarn Classic (v1) is supported on a best-effort basis')
       );
       expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
-        expect.stringContaining('https://storybook.js.org/docs/get-started/install')
+        expect.stringContaining('https://forkbook.ljk.dev/docs/get-started/install')
       );
       // Init continues past the preflight instead of blocking.
       expect(result.packageManager).toBe(mockPackageManager);

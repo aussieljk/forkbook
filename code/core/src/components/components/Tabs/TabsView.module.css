@@ -24,7 +24,7 @@
   flex: 1 1 0%;
 
   &:has(:global(.tablist-has-scroll)) {
-    margin-inline-end: var(--sb-tabs-gap);
+    margin-inline-end: var(--fb-tabs-gap);
   }
 }
 
@@ -38,7 +38,7 @@
   }
 
   & :global(.tablist.tablist-has-scroll) {
-    margin-inline-end: var(--sb-tabs-gap);
+    margin-inline-end: var(--fb-tabs-gap);
   }
 
   & > :not(:first-child) {

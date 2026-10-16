@@ -21,7 +21,7 @@
   border-bottom: 3px solid transparent;
   font-weight: bold;
   font-size: 13px;
-  color: var(--sb-bar-text-color);
+  color: var(--fb-bar-text-color);
   border-bottom-color: transparent;
 
   &:empty {
@@ -34,15 +34,15 @@
 
   &:focus-visible {
     outline: 0 none;
-    box-shadow: inset 0 0 0 2px var(--sb-bar-selected-color);
+    box-shadow: inset 0 0 0 2px var(--fb-bar-selected-color);
   }
 
   &:hover {
-    color: var(--sb-bar-hover-color);
+    color: var(--fb-bar-hover-color);
   }
 
   &[data-active] {
-    color: var(--sb-bar-selected-color);
-    border-bottom-color: var(--sb-bar-selected-color);
+    color: var(--fb-bar-selected-color);
+    border-bottom-color: var(--fb-bar-selected-color);
   }
 }

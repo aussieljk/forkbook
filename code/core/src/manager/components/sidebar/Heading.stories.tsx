@@ -158,7 +158,7 @@ export const CustomBrandImage: Story = () => {
         brand: {
           title: 'My Title',
           url: 'https://example.com',
-          image: 'https://storybook.js.org/images/placeholders/150x22.png',
+          image: 'https://forkbook.ljk.dev/images/placeholders/150x22.png',
           target: undefined,
         },
       }}
@@ -177,7 +177,7 @@ export const CustomBrandImageTall: Story = () => {
         brand: {
           title: 'My Title',
           url: 'https://example.com',
-          image: 'https://storybook.js.org/images/placeholders/100x150.png',
+          image: 'https://forkbook.ljk.dev/images/placeholders/100x150.png',
           target: undefined,
         },
       }}

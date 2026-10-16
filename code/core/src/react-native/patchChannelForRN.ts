@@ -1,8 +1,9 @@
+import { EVENT_ID } from '@aussieljk/forkbook/actions';
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 
 /**
  * React Native still pools synthetic events (unlike React DOM 17+).
- * Storybook's serializeArg only recognises web SyntheticBaseEvent, so RN
+ * Forkbook's serializeArg only recognises web SyntheticBaseEvent, so RN
  * events pass through raw. When anything reads their properties after the
  * current call-stack (render, transport stringify), the event has already
  * been returned to the pool and every getter throws the "reused for
@@ -70,7 +71,7 @@ export function patchChannelForRN(channel: Channel): void {
   const originalEmit = channel.emit.bind(channel);
 
   channel.emit = (eventName: string, ...args: any[]) => {
-    if (eventName === 'storybook/actions/action-event') {
+    if (eventName === EVENT_ID) {
       const actionDisplay = args[0];
       if (actionDisplay?.data?.args != null) {
         actionDisplay.data.args = sanitizeActionArgs(actionDisplay.data.args);

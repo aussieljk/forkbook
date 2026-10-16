@@ -55,7 +55,7 @@ export const getConfig: ManagerBuilder['getConfig'] = async (options) => {
 
   return {
     entryPoints: await wrapManagerEntries(entryPoints, options.cacheKey),
-    outdir: join(options.outputDir || './', 'sb-addons'),
+    outdir: join(options.outputDir || './', 'fb-addons'),
     format: 'iife',
     write: false,
     ignoreAnnotations: true,
@@ -172,7 +172,7 @@ const starter: StarterFunction = async function* starterGeneratorFn({
   yield;
 
   router.use(
-    '/sb-addons',
+    '/fb-addons',
     sirv(addonsDir, {
       maxAge: 300000,
       dev: true,
@@ -180,7 +180,7 @@ const starter: StarterFunction = async function* starterGeneratorFn({
     })
   );
   router.use(
-    '/sb-manager',
+    '/fb-manager',
     sirv(CORE_DIR_ORIGIN, {
       maxAge: 300000,
       dev: true,
@@ -273,7 +273,7 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
   yield;
 
   const addonsDir = config.outdir;
-  const coreDirTarget = join(options.outputDir, `sb-manager`);
+  const coreDirTarget = join(options.outputDir, `fb-manager`);
 
   // TODO: this doesn't watch, we should change this to use the esbuild watch API: https://esbuild.github.io/api/#watch
   compilation = await instance({

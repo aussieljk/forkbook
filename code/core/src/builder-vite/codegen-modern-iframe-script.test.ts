@@ -19,18 +19,18 @@ describe('generateModernIframeScriptCode', () => {
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
-      window.__STORYBOOK_PREVIEW__ = window.__STORYBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
+      window.__FORKBOOK_PREVIEW__ = window.__FORKBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
 
-      window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
+      window.__FORKBOOK_STORY_STORE__ = window.__FORKBOOK_STORY_STORE__ || window.__FORKBOOK_PREVIEW__.storyStore;
 
       if (import.meta.hot) {
         import.meta.hot.on('vite:afterUpdate', () => {
-          window.__STORYBOOK_PREVIEW__.channel.emit('storyHotUpdated');
+          window.__FORKBOOK_PREVIEW__.channel.emit('storyHotUpdated');
         });
 
         import.meta.hot.accept('virtual:/@storybook/builder-vite/storybook-stories.js', (newModule) => {
           // importFn has changed so we need to patch the new one in
-          window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
+          window.__FORKBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
         });
       };"
     `);
@@ -49,18 +49,18 @@ describe('generateModernIframeScriptCode', () => {
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
-      window.__STORYBOOK_PREVIEW__ = window.__STORYBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
+      window.__FORKBOOK_PREVIEW__ = window.__FORKBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
 
-      window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
+      window.__FORKBOOK_STORY_STORE__ = window.__FORKBOOK_STORY_STORE__ || window.__FORKBOOK_PREVIEW__.storyStore;
 
       if (import.meta.hot) {
         import.meta.hot.on('vite:afterUpdate', () => {
-          window.__STORYBOOK_PREVIEW__.channel.emit('storyHotUpdated');
+          window.__FORKBOOK_PREVIEW__.channel.emit('storyHotUpdated');
         });
 
         import.meta.hot.accept('virtual:/@storybook/builder-vite/storybook-stories.js', (newModule) => {
           // importFn has changed so we need to patch the new one in
-          window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
+          window.__FORKBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
         });
       };"
     `);
@@ -79,18 +79,18 @@ describe('generateModernIframeScriptCode', () => {
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
-      window.__STORYBOOK_PREVIEW__ = window.__STORYBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
+      window.__FORKBOOK_PREVIEW__ = window.__FORKBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
 
-      window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
+      window.__FORKBOOK_STORY_STORE__ = window.__FORKBOOK_STORY_STORE__ || window.__FORKBOOK_PREVIEW__.storyStore;
 
       if (import.meta.hot) {
         import.meta.hot.on('vite:afterUpdate', () => {
-          window.__STORYBOOK_PREVIEW__.channel.emit('storyHotUpdated');
+          window.__FORKBOOK_PREVIEW__.channel.emit('storyHotUpdated');
         });
 
         import.meta.hot.accept('virtual:/@storybook/builder-vite/storybook-stories.js', (newModule) => {
           // importFn has changed so we need to patch the new one in
-          window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
+          window.__FORKBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
         });
       };"
     `);
@@ -109,18 +109,18 @@ describe('generateModernIframeScriptCode', () => {
       import { importFn } from 'virtual:/@storybook/builder-vite/storybook-stories.js';
       import { getProjectAnnotations } from 'virtual:/@storybook/builder-vite/project-annotations.js';
         
-      window.__STORYBOOK_PREVIEW__ = window.__STORYBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
+      window.__FORKBOOK_PREVIEW__ = window.__FORKBOOK_PREVIEW__ || new PreviewWeb(importFn, getProjectAnnotations);
 
-      window.__STORYBOOK_STORY_STORE__ = window.__STORYBOOK_STORY_STORE__ || window.__STORYBOOK_PREVIEW__.storyStore;
+      window.__FORKBOOK_STORY_STORE__ = window.__FORKBOOK_STORY_STORE__ || window.__FORKBOOK_PREVIEW__.storyStore;
 
       if (import.meta.hot) {
         import.meta.hot.on('vite:afterUpdate', () => {
-          window.__STORYBOOK_PREVIEW__.channel.emit('storyHotUpdated');
+          window.__FORKBOOK_PREVIEW__.channel.emit('storyHotUpdated');
         });
 
         import.meta.hot.accept('virtual:/@storybook/builder-vite/storybook-stories.js', (newModule) => {
           // importFn has changed so we need to patch the new one in
-          window.__STORYBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
+          window.__FORKBOOK_PREVIEW__.onStoriesChanged({ importFn: newModule.importFn });
         });
       };"
     `);

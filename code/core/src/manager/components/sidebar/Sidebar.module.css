@@ -9,11 +9,11 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
 
   /* MEDIA_DESKTOP_BREAKPOINT */
   @media (min-width: 600px) {
-    background: var(--sb-background-app);
+    background: var(--fb-background-app);
   }
 }
 

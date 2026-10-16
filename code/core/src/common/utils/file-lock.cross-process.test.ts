@@ -57,7 +57,7 @@ appendFileSync(journalPath, \`outcome \${process.pid} \${outcome}\\n\`);
 let workDir: string;
 
 beforeEach(() => {
-  workDir = mkdtempSync(join(tmpdir(), 'sb-file-lock-'));
+  workDir = mkdtempSync(join(tmpdir(), 'fb-file-lock-'));
 });
 
 afterEach(() => {

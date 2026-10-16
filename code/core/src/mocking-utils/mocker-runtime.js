@@ -72,7 +72,7 @@ function registerModuleMocker(interceptor) {
       },
     },
     (...args) => {
-      return globalThis.__STORYBOOK_MODULE_TEST__.spyOn(...args);
+      return globalThis.__FORKBOOK_MODULE_TEST__.spyOn(...args);
     },
     {
       root: '',
@@ -86,4 +86,4 @@ function registerModuleMocker(interceptor) {
   });
 }
 
-globalThis.__STORYBOOK_MOCKER__ = registerModuleMocker(() => new ModuleMockerInterceptor());
+globalThis.__FORKBOOK_MOCKER__ = registerModuleMocker(() => new ModuleMockerInterceptor());

@@ -36,7 +36,7 @@ const SingleSelect: FC<SelectProps> = ({
   return (
     <span className={styles.wrapper}>
       <ChevronSmallDownIcon />
-      <label htmlFor={controlId} className="sb-sr-only">
+      <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>
       <select
@@ -83,7 +83,7 @@ const MultiSelect: FC<SelectProps> = ({
 
   return (
     <span className={styles.wrapper}>
-      <label htmlFor={controlId} className="sb-sr-only">
+      <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>
       <select

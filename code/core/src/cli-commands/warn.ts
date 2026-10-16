@@ -20,7 +20,7 @@ export const warn = async ({ hasTSDependency }: Options) => {
       );
       logger.warn('Forkbook will continue as though this is a JavaScript project.');
       logger.info(
-        'For more information, see: https://storybook.js.org/docs/configure/integration/typescript'
+        'For more information, see: https://forkbook.ljk.dev/docs/configure/integration/typescript'
       );
     }
   }

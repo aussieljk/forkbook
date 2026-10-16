@@ -155,7 +155,7 @@ const meta = {
             }));
           },
           getDocsUrl: ({ subpath }: { subpath: string }) =>
-            `https://storybook.js.org/docs/${subpath}`,
+            `https://forkbook.ljk.dev/docs/${subpath}`,
         }),
         []
       );

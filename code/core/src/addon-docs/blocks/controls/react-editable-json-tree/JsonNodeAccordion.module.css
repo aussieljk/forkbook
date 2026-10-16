@@ -3,7 +3,7 @@
 
   &:hover {
     & > :global(.rejt-accordion-button)::after {
-      background: var(--sb-color-secondary);
+      background: var(--fb-color-secondary);
     }
 
     & > :global(.rejt-accordion-region) > :is(:global(.rejt-plus-menu), :global(.rejt-minus-menu)) {
@@ -18,7 +18,7 @@
   border: none;
   margin-right: 3px;
   line-height: 22px;
-  color: var(--sb-color-secondary);
+  color: var(--fb-color-secondary);
 
   &::after {
     content: '';

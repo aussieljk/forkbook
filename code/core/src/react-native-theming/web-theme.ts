@@ -91,7 +91,7 @@ interface ThemeVarsBase {
 export const light: ThemeVars = {
   base: 'light',
 
-  // Storybook-specific color palette
+  // Forkbook-specific color palette
   colorPrimary: '#FF4785', // coral
   colorSecondary: '#029CFD', // ocean
 
@@ -228,7 +228,7 @@ export interface StorybookThemeWeb {
 export const dark: ThemeVars = {
   base: 'dark',
 
-  // Storybook-specific color palette
+  // Forkbook-specific color palette
   colorPrimary: '#FF4785', // coral
   colorSecondary: '#029CFD', // ocean
 

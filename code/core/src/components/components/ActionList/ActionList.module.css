@@ -9,7 +9,7 @@
   cursor: default;
 
   & + * {
-    border-top: 1px solid var(--sb-app-border-color);
+    border-top: 1px solid var(--fb-app-border-color);
   }
 }
 
@@ -18,8 +18,8 @@
 }
 
 .item {
-  --listbox-item-active-color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
-  --listbox-item-muted-color: var(--sb-color-mediumdark);
+  --listbox-item-active-color: hsl(from var(--fb-color-secondary) h s calc(l - 10));
+  --listbox-item-muted-color: var(--fb-color-mediumdark);
 
   display: flex;
   align-items: center;
@@ -28,9 +28,9 @@
   overflow: hidden;
   min-height: 32px;
   gap: 4px;
-  font-size: var(--sb-size-s1);
-  font-weight: var(--sb-weight-regular);
-  color: var(--sb-color-default-text);
+  font-size: var(--fb-size-s1);
+  font-weight: var(--fb-weight-regular);
+  color: var(--fb-color-default-text);
   opacity: 1;
   block-size: auto;
   content-visibility: visible;
@@ -52,12 +52,12 @@
   }
 }
 
-:where([data-sb-theme='dark']) .item {
-  --listbox-item-active-color: var(--sb-color-secondary);
+:where([data-fb-theme='dark']) .item {
+  --listbox-item-active-color: var(--fb-color-secondary);
 }
 
 .item:where([data-active]) {
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
   color: var(--listbox-item-active-color);
   --listbox-item-muted-color: var(--listbox-item-active-color);
 }
@@ -69,23 +69,23 @@
 
 .item:where([aria-selected='true']) {
   color: var(--listbox-item-active-color);
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
   --listbox-item-muted-color: var(--listbox-item-active-color);
 }
 
 .item:where([role='option']) {
   cursor: pointer;
-  border-radius: var(--sb-input-border-radius);
+  border-radius: var(--fb-input-border-radius);
   outline-offset: -2px;
   padding: 0 9px;
   gap: 8px;
 
   &:hover {
-    background: rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.86));
+    background: rgb(from var(--fb-color-secondary) r g b / calc(alpha - 0.86));
   }
 
   &:focus-visible {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
   }
 }
 
@@ -154,7 +154,7 @@
   }
 
   &:has(input:focus-visible) {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: -2px;
   }
 }
@@ -181,7 +181,7 @@
 
   & small {
     font-size: inherit;
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
   }
 
   &:first-child {

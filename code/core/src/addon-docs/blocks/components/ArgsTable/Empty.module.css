@@ -1,14 +1,14 @@
 .wrapper {
   height: auto;
   display: flex;
-  border: 1px solid var(--sb-app-border-color);
-  border-radius: var(--sb-app-border-radius);
+  border: 1px solid var(--fb-app-border-color);
+  border-radius: var(--fb-app-border-radius);
   padding: 40px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 15px;
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
 
   &[data-in-addon-panel] {
     height: 100%;
@@ -20,6 +20,6 @@
 
 .links {
   display: flex;
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
   gap: 25px;
 }

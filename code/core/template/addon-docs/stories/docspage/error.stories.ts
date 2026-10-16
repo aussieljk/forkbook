@@ -12,12 +12,12 @@ export const ErrorStory = {
     () => {
       const err = new Error('Story did something wrong');
       err.stack = `
-        at errorStory (/sb-preview/file.js:000:0001)
-        at hookified (/sb-preview/file.js:000:0001)
-        at defaultDecorateStory (/sb-preview/file.js:000:0001)
+        at errorStory (/fb-preview/file.js:000:0001)
+        at hookified (/fb-preview/file.js:000:0001)
+        at defaultDecorateStory (/fb-preview/file.js:000:0001)
         at jsxDecorator (/assets/file.js:000:0001)
-        at hookified (/sb-preview/file.js:000:0001)
-        at decorateStory (/sb-preview/file.js:000:0001)
+        at hookified (/fb-preview/file.js:000:0001)
+        at decorateStory (/fb-preview/file.js:000:0001)
       `;
       throw err;
     },

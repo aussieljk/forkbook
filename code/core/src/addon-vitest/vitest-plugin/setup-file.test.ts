@@ -42,7 +42,7 @@ describe('initTransport', () => {
     const transport = { setHandler: vi.fn(), send: vi.fn() };
     const existingChannel = new Channel({ transport });
     clearChannel();
-    (globalThis as { __STORYBOOK_ADDONS_CHANNEL__?: Channel }).__STORYBOOK_ADDONS_CHANNEL__ =
+    (globalThis as { __FORKBOOK_ADDONS_CHANNEL__?: Channel }).__FORKBOOK_ADDONS_CHANNEL__ =
       existingChannel;
 
     initTransport();
@@ -52,13 +52,13 @@ describe('initTransport', () => {
 });
 
 describe('modifyErrorMessage', () => {
-  const originalUrl = import.meta.env.__STORYBOOK_URL__;
+  const originalUrl = import.meta.env.__FORKBOOK_URL__;
   beforeEach(() => {
-    import.meta.env.__STORYBOOK_URL__ = 'http://localhost:6006';
+    import.meta.env.__FORKBOOK_URL__ = 'http://localhost:6006';
   });
 
   afterEach(() => {
-    import.meta.env.__STORYBOOK_URL__ = originalUrl;
+    import.meta.env.__FORKBOOK_URL__ = originalUrl;
   });
 
   it('should modify the error message if the test is failing and there is a storyId in the task meta', () => {

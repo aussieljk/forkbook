@@ -8,8 +8,8 @@
   left: 0;
   z-index: 11;
   overflow: auto;
-  color: var(--sb-color-default-text);
-  background: var(--sb-background-content);
+  color: var(--fb-color-default-text);
+  background: var(--fb-background-content);
   animation-name: slideFromRight;
 
   &[data-status='exiting'] {
@@ -29,7 +29,7 @@
 }
 
 .bottomText {
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
   margin-top: 30px;
 }
 

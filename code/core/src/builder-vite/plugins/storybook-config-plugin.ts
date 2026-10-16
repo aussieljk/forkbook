@@ -25,8 +25,8 @@ export function storybookConfigPlugin(options: StorybookConfigPluginOptions): Pl
         const { defaultClientConditions = [] } = await import('vite');
 
         const existingEnvPrefix = config.envPrefix;
-        // If an envPrefix is specified in the user's vite config, add STORYBOOK_ to it.
-        // Otherwise, add both VITE_ and STORYBOOK_ so that Vite doesn't lose its default.
+        // If an envPrefix is specified in the user's vite config, add FORKBOOK_ to it.
+        // Otherwise, add both VITE_ and FORKBOOK_ so that Vite doesn't lose its default.
         const mergedEnvPrefix = existingEnvPrefix
           ? Array.from(
               new Set([

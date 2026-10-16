@@ -99,7 +99,7 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     ## Reference (only fetch if stuck)
 
-    - Docs index: https://storybook.js.org/llms.txt
+    - Docs index: https://forkbook.ljk.dev/llms.txt
     - Writing stories: ${docsUrl('writing-stories')}
     - Decorators: ${docsUrl('writing-stories/decorators')}
     - Play functions: ${docsUrl('writing-stories/play-function')}

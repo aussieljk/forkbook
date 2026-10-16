@@ -1,4 +1,4 @@
-// https://storybook.js.org/docs/react/addons/writing-presets
+// https://forkbook.ljk.dev/docs/react/addons/writing-presets
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

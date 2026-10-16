@@ -220,7 +220,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     return (
       <EmptyBlock>
         {error}&nbsp;
-        <Link href="http://storybook.js.org/docs/?ref=ui" target="_blank" withArrow>
+        <Link href="https://forkbook.ljk.dev/docs" target="_blank" withArrow>
           <DocumentIcon /> Read the docs
         </Link>
       </EmptyBlock>
@@ -293,7 +293,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
 
         <TableWrapper
           {...{ compact, inAddonPanel, inTabPanel }}
-          className="docblock-argstable sb-unstyled"
+          className="docblock-argstable fb-unstyled"
           lang="en"
         >
           <thead className="docblock-argstable-head">

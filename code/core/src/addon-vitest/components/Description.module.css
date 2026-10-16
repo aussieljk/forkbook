@@ -2,10 +2,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: var(--sb-size-s1);
-  color: var(--sb-text-muted-color);
+  font-size: var(--fb-size-s1);
+  color: var(--fb-text-muted-color);
 }
 
 .positiveText {
-  color: var(--sb-color-positive-text);
+  color: var(--fb-color-positive-text);
 }

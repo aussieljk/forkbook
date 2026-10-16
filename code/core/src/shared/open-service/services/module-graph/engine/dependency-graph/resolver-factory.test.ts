@@ -17,7 +17,7 @@ let dir: string;
 
 beforeEach(() => {
   // realpathSync resolves macOS /var → /private/var symlink so path comparisons work
-  dir = realpathSync(mkdtempSync(join(tmpdir(), 'sb-resolver-test-')));
+  dir = realpathSync(mkdtempSync(join(tmpdir(), 'fb-resolver-test-')));
 });
 
 afterEach(() => {

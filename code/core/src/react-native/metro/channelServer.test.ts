@@ -378,6 +378,6 @@ describe('secure channel server', () => {
         websockets: true,
         secured: true,
       })
-    ).toThrow('[Storybook] Secure channel server requires both `ssl.key` and `ssl.cert`.');
+    ).toThrow('[Forkbook] Secure channel server requires both `ssl.key` and `ssl.cert`.');
   });
 });

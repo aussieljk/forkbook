@@ -87,11 +87,7 @@ export const ArgControl: FC<ArgControlProps> = ({
     return (
       <>
         <span className="sbdocs sbdocs-argcontrol-setup">
-          <Link
-            href="https://storybook.js.org/docs/essentials/controls?ref=ui"
-            target="_blank"
-            withArrow
-          >
+          <Link href="https://forkbook.ljk.dev/docs/essentials/controls" target="_blank" withArrow>
             Setup controls
           </Link>
         </span>

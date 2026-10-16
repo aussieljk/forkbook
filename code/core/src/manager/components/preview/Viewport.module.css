@@ -18,13 +18,13 @@
   }
 
   &:has([data-size-input='width']:focus-visible) [data-dragging] {
-    border-right-color: var(--sb-color-secondary);
-    box-shadow: 4px 0 5px -2px var(--sb-background-hoverable);
+    border-right-color: var(--fb-color-secondary);
+    box-shadow: 4px 0 5px -2px var(--fb-background-hoverable);
   }
 
   &:has([data-size-input='height']:focus-visible) [data-dragging] {
-    border-bottom-color: var(--sb-color-secondary);
-    box-shadow: 0 4px 5px -2px var(--sb-background-hoverable);
+    border-bottom-color: var(--fb-color-secondary);
+    box-shadow: 0 4px 5px -2px var(--fb-background-hoverable);
   }
 }
 
@@ -47,7 +47,7 @@
 .frameWrapper {
   position: relative;
   box-sizing: content-box; /* we're sizing the contents, not the box itself */
-  border: 1px solid var(--sb-button-border);
+  border: 1px solid var(--fb-button-border);
   border-radius: 4px;
   transition:
     border-color 0.2s,
@@ -60,8 +60,8 @@
 
   &:has([data-side='right']:hover),
   &[data-dragging='right'] {
-    border-right-color: var(--sb-color-secondary);
-    box-shadow: 4px 0 5px -2px var(--sb-background-hoverable);
+    border-right-color: var(--fb-color-secondary);
+    box-shadow: 4px 0 5px -2px var(--fb-background-hoverable);
 
     & [data-side='right']::after {
       opacity: 1;
@@ -70,8 +70,8 @@
 
   &:has([data-side='bottom']:hover),
   &[data-dragging='bottom'] {
-    border-bottom-color: var(--sb-color-secondary);
-    box-shadow: 0 4px 5px -2px var(--sb-background-hoverable);
+    border-bottom-color: var(--fb-color-secondary);
+    box-shadow: 0 4px 5px -2px var(--fb-background-hoverable);
 
     & [data-side='bottom']::after {
       opacity: 1;
@@ -80,7 +80,7 @@
 
   &:has([data-side='both']:hover),
   &[data-dragging='both'] {
-    box-shadow: 3px 3px 5px -2px var(--sb-background-hoverable);
+    box-shadow: 3px 3px 5px -2px var(--fb-background-hoverable);
 
     &::after,
     & [data-side]::after {
@@ -103,10 +103,10 @@
       to top left,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 0) calc(25% - 1px),
-      var(--sb-color-secondary) 25%,
+      var(--fb-color-secondary) 25%,
       rgba(0, 0, 0, 0) calc(25% + 1px),
       rgba(0, 0, 0, 0) calc(45% - 1px),
-      var(--sb-color-secondary) 45%,
+      var(--fb-color-secondary) 45%,
       rgba(0, 0, 0, 0) calc(45% + 1px),
       rgba(0, 0, 0, 0) 100%
     );
@@ -162,7 +162,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 4px;
-    background-color: var(--sb-background-hoverable);
+    background-color: var(--fb-background-hoverable);
     padding: 2px 4px;
     opacity: 0;
     transition: opacity 0.2s;

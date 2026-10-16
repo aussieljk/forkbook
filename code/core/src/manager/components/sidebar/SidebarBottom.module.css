@@ -12,19 +12,19 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  color: var(--sb-color-default-text);
-  font-size: var(--sb-size-s1);
+  color: var(--fb-color-default-text);
+  font-size: var(--fb-size-s1);
 
   &:empty {
     display: none;
   }
 
-  --card-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--sb-background-app);
+  --card-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--fb-background-app);
 
   /* Integrators can use these to style their custom additions */
-  --sb-sidebar-bottom-card-background: var(--sb-background-content);
-  --sb-sidebar-bottom-card-border: 1px solid var(--sb-app-border-color);
-  --sb-sidebar-bottom-card-border-radius: calc(var(--sb-app-border-radius) + 1px);
-  --sb-sidebar-bottom-card-box-shadow:
-    0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--sb-background-app);
+  --fb-sidebar-bottom-card-background: var(--fb-background-content);
+  --fb-sidebar-bottom-card-border: 1px solid var(--fb-app-border-color);
+  --fb-sidebar-bottom-card-border-radius: calc(var(--fb-app-border-radius) + 1px);
+  --fb-sidebar-bottom-card-box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.05), 0px -5px 20px 10px var(--fb-background-app);
 }

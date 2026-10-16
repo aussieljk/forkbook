@@ -7,8 +7,8 @@
 }
 
 .refHead {
-  font-weight: var(--sb-weight-bold);
-  font-size: var(--sb-size-s2);
+  font-weight: var(--fb-weight-bold);
+  font-size: var(--fb-size-s2);
 
   /* Similar to ListItem.tsx */
   text-decoration: none;
@@ -22,9 +22,9 @@
   margin-top: 20px;
   padding-top: 16px;
   padding-bottom: 12px;
-  border-top: 1px solid var(--sb-app-border-color);
+  border-top: 1px solid var(--fb-app-border-color);
 
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }
 
 .refTitle {
@@ -45,10 +45,10 @@
   overflow: hidden;
 
   &:focus {
-    border-color: var(--sb-color-secondary);
+    border-color: var(--fb-color-secondary);
 
     & span:first-of-type {
-      border-left-color: var(--sb-color-secondary);
+      border-left-color: var(--fb-color-secondary);
     }
   }
 }

@@ -29,13 +29,13 @@ class Transport {
 }
 ```
 
-For more information visit: [storybook.js.org](https://storybook.js.org)
+For more information visit: [forkbook.ljk.dev](https://forkbook.ljk.dev)
 
 ## Channel access (internal)
 
 Forkbook installs one shared addons channel per runtime (manager, preview iframe, dev server).
 Use the channel-slot API from `@aussieljk/forkbook/internal/channels` in TypeScript — not direct reads of
-`__STORYBOOK_ADDONS_CHANNEL__`.
+`__FORKBOOK_ADDONS_CHANNEL__`.
 
 | Operation | API |
 | --------- | --- |
@@ -44,7 +44,7 @@ Use the channel-slot API from `@aussieljk/forkbook/internal/channels` in TypeScr
 | Install / replace | `setChannel(channel)` or `addons.setChannel(channel)` |
 | Clear | `clearChannel()` / `setChannel(null)` |
 
-The global `__STORYBOOK_ADDONS_CHANNEL__` is mirrored when `setChannel` runs so builder preamble and
+The global `__FORKBOOK_ADDONS_CHANNEL__` is mirrored when `setChannel` runs so builder preamble and
 legacy snippets stay in sync. `getChannel()` reads the global slot first so duplicate bundles still
 see the live channel.
 

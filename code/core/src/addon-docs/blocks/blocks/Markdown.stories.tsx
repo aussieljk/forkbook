@@ -18,7 +18,7 @@ export const Markdown = {
 
     The group looked like tall, exotic grazing animals, swaying gracefully and unconsciously with the movement of the train, their high heels like polished hooves against the gray metal of the Flatline as a construct, a hardwired ROM cassette replicating a dead man’s skills, obsessions, kneejerk responses.
     
-    ![An image](https://storybook.js.org/images/placeholders/350x150.png)
+    ![An image](https://forkbook.ljk.dev/images/placeholders/350x150.png)
     
     He stared at the clinic, Molly took him to the Tank War, mouth touched with hot gold as a gliding cursor struck sparks from the wall of a skyscraper canyon.
     
@@ -40,20 +40,20 @@ export const Markdown = {
 
     <h3>Native h3 element</h3>
 
-    # [Link](https://storybook.js.org/) in heading
-    ## [Link](https://storybook.js.org/) in heading
-    ### [Link](https://storybook.js.org/) in heading
-    #### [Link](https://storybook.js.org/) in heading
-    ##### [Link](https://storybook.js.org/) in heading
-    ###### [Link](https://storybook.js.org/) in heading
+    # [Link](https://forkbook.ljk.dev) in heading
+    ## [Link](https://forkbook.ljk.dev) in heading
+    ### [Link](https://forkbook.ljk.dev) in heading
+    #### [Link](https://forkbook.ljk.dev) in heading
+    ##### [Link](https://forkbook.ljk.dev) in heading
+    ###### [Link](https://forkbook.ljk.dev) in heading
     
-    He stared at the clinic, [Molly](https://storybook.js.org/) took him to the *[Tank War](https://storybook.js.org/)*, mouth touched with hot gold as a gliding cursor struck sparks from the wall of a **[skyscraper](https://storybook.js.org/)** canyon.
+    He stared at the clinic, [Molly](https://forkbook.ljk.dev) took him to the *[Tank War](https://forkbook.ljk.dev)*, mouth touched with hot gold as a gliding cursor struck sparks from the wall of a **[skyscraper](https://forkbook.ljk.dev)** canyon.
 
-    Check out [\`inline-code\`](https://storybook.js.org/) inside a link.
+    Check out [\`inline-code\`](https://forkbook.ljk.dev) inside a link.
 
-    Visit the [\`@storybook/addon-essentials\`](https://storybook.js.org/) package for more details.
+    Visit the [\`@storybook/addon-essentials\`](https://forkbook.ljk.dev) package for more details.
 
-    Mixed: [regular text and \`code text\` together](https://storybook.js.org/).
+    Mixed: [regular text and \`code text\` together](https://forkbook.ljk.dev).
 
     For comparison, regular \`inline-code\` outside a link.
 

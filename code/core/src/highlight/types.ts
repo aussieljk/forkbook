@@ -8,14 +8,14 @@ export interface HighlightParameters {
   /**
    * Highlight configuration
    *
-   * @see https://storybook.js.org/docs/essentials/highlight#parameters
+   * @see https://forkbook.ljk.dev/docs/essentials/highlight#parameters
    */
   highlight?: {
     /**
      * Removes the tool and disables the feature's behavior. If you wish to turn off this feature
      * for the entire Forkbook, you can set the option in your `main.js|ts` configuration file.
      *
-     * @see https://storybook.js.org/docs/essentials/highlight#disable
+     * @see https://forkbook.ljk.dev/docs/essentials/highlight#disable
      */
     disable?: boolean;
   };

@@ -550,9 +550,9 @@ describe('composeStories', () => {
 describe('setProjectAnnotations', () => {
   it('throws once addon-vitest has applied the project annotations', () => {
     onTestFinished(() => {
-      delete globalThis.__STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__;
+      delete globalThis.__FORKBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__;
     });
-    globalThis.__STORYBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__ = true;
+    globalThis.__FORKBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__ = true;
 
     expect(() => setProjectAnnotations({})).toThrow(
       'setProjectAnnotations() was called from a Vitest setup file'

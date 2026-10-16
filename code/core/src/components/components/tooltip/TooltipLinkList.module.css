@@ -4,17 +4,17 @@
   overflow-y: auto;
   /* 15.5 items at 32px each + 8px padding */
   max-height: calc(15.5 * 32px + 8px);
-  border-radius: calc(var(--sb-app-border-radius) + 2px);
+  border-radius: calc(var(--fb-app-border-radius) + 2px);
 }
 
-:where([data-sb-theme='dark']) .list {
-  background: var(--sb-background-content);
+:where([data-fb-theme='dark']) .list {
+  background: var(--fb-background-content);
 }
 
 .group {
   padding: 4px;
 
   & + & {
-    border-top: 1px solid var(--sb-app-border-color);
+    border-top: 1px solid var(--fb-app-border-color);
   }
 }

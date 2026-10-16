@@ -13,8 +13,8 @@ import { InteractionsPanel } from './InteractionsPanel.tsx';
 import ToolbarStories from './Toolbar.stories.tsx';
 
 const wrapperStyle: React.CSSProperties = {
-  backgroundColor: 'var(--sb-background-content)',
-  color: 'var(--sb-color-default-text)',
+  backgroundColor: 'var(--fb-background-content)',
+  color: 'var(--fb-color-default-text)',
   display: 'block',
   height: '100%',
   position: 'absolute',

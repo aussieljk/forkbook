@@ -327,7 +327,7 @@ describe('setupContentResizeBroadcast', () => {
     );
     installBroadcast();
     const style = document.getElementById('storybook-embed-ui');
-    expect(style?.textContent).toContain('.sb-preparing-story');
+    expect(style?.textContent).toContain('.fb-preparing-story');
     expect(style?.textContent).toContain('display: none');
   });
 

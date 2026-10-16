@@ -16,7 +16,7 @@ describe('getActualPackageJson', () => {
   };
 
   beforeEach(() => {
-    projectDir = mkdtempSync(join(tmpdir(), 'sb-telemetry-package-json-'));
+    projectDir = mkdtempSync(join(tmpdir(), 'fb-telemetry-package-json-'));
     vi.spyOn(process, 'cwd').mockReturnValue(projectDir);
   });
 

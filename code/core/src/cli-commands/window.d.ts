@@ -4,6 +4,6 @@ import type { StoryStore } from '@aussieljk/forkbook/preview-api';
 
 declare global {
   interface Window {
-    __STORYBOOK_STORY_STORE__: StoryStore<Renderer>;
+    __FORKBOOK_STORY_STORE__: StoryStore<Renderer>;
   }
 }

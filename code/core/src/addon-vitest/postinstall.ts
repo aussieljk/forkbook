@@ -85,7 +85,7 @@ export default async function postInstall(options: PostinstallOptions) {
         in your main Forkbook config file and remove the dependency from your package.json file.
 
         Please check the documentation for more information about its requirements and installation:
-        https://storybook.js.org/docs/next/${DOCUMENTATION_LINK}
+        https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}
       `
     );
 
@@ -211,7 +211,7 @@ export default async function postInstall(options: PostinstallOptions) {
         We were unable to update your existing ${vitestConfigFile ? 'Vitest' : 'Vite'} config file.
 
         Please refer to the documentation to complete the setup manually:
-        https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced
+        https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced
       `);
       errors.push(new AddonVitestPostinstallConfigUpdateError({ filePath: rootConfig }));
     }
@@ -246,14 +246,14 @@ export default async function postInstall(options: PostinstallOptions) {
         • Vitest IDE extension shows all stories as tests in your editor!
 
         Check the documentation for more information about its features and options at:
-        https://storybook.js.org/docs/next/${DOCUMENTATION_LINK}
+        https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}
       `);
   } else {
     logger.warn(
       dedent`
         Done, but with errors!
         @aussieljk/forkbook/addon-vitest was installed successfully, but there were some errors during the setup process. Please refer to the documentation to complete the setup manually and check the errors above:
-        https://storybook.js.org/docs/next/${DOCUMENTATION_LINK}#manual-setup-advanced
+        https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}#manual-setup-advanced
       `
     );
     throw new AddonVitestPostinstallError({ errors });

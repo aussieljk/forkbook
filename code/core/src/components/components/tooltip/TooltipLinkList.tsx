@@ -56,7 +56,7 @@ export const TooltipLinkList = ({ links, LinkWrapper, ...props }: TooltipLinkLis
     group.some((link) => ('icon' in link && link.icon) || ('input' in link && link.input))
   );
   return (
-    <div data-deprecated="TooltipLinkList" {...props} className={`sb-list ${styles.list}`}>
+    <div data-deprecated="TooltipLinkList" {...props} className={`fb-list ${styles.list}`}>
       {groups
         .filter((group) => group.length)
         .map((group, index) => {

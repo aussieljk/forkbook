@@ -15,7 +15,7 @@ export const REVIEW_CHANGES_URL = '/review/';
 export const REVIEW_MODE_SESSION_KEY = `${REVIEW_NAMESPACE}/review-mode`;
 
 // sessionStorage key for the canvas search to return to when leaving review
-// mode (both summary back-to-Storybook and dismiss). Captured while browsing
+// mode (both summary back-to-Forkbook and dismiss). Captured while browsing
 // stories/docs outside review mode, so it points at the pre-review canvas.
 export const PRE_REVIEW_RETURN_KEY = `${REVIEW_NAMESPACE}/pre-review-return`;
 

@@ -1,5 +1,5 @@
 .h2 {
-  font-size: var(--sb-size-m2);
+  font-size: var(--fb-size-m2);
   padding-bottom: 4px;
-  border-bottom: 1px solid var(--sb-app-border-color);
+  border-bottom: 1px solid var(--fb-app-border-color);
 }

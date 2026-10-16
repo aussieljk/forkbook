@@ -1,4 +1,4 @@
-declare var __STORYBOOK_ADDONS_MANAGER: any;
+declare var __FORKBOOK_ADDONS_MANAGER: any;
 
 declare var CONFIG_TYPE: string;
 declare var FEATURES: import('@aussieljk/forkbook/internal/types').StorybookConfigRaw['features'];

@@ -174,7 +174,7 @@ export interface Addon_BaseAnnotations<
   /**
    * Dynamic data that are provided (and possibly updated by) Forkbook and its addons.
    *
-   * @see [Arg story inputs](https://storybook.js.org/docs/api/csf#args-story-inputs)
+   * @see [Arg story inputs](https://forkbook.ljk.dev/docs/api/csf#args-story-inputs)
    */
   args?: Partial<TArgs>;
 
@@ -182,14 +182,14 @@ export interface Addon_BaseAnnotations<
    * ArgTypes encode basic metadata for args, such as `name` and `description`. These get
    * automatically filled in by Forkbook Docs.
    *
-   * @see [Arg types](https://storybook.js.org/docs/api/arg-types)
+   * @see [Arg types](https://forkbook.ljk.dev/docs/api/arg-types)
    */
   argTypes?: Addons_ArgTypes<TArgs>;
 
   /**
    * Custom metadata for a story.
    *
-   * @see [Parameters](https://storybook.js.org/docs/writing-stories/parameters)
+   * @see [Parameters](https://forkbook.ljk.dev/docs/writing-stories/parameters)
    */
   parameters?: Parameters;
 
@@ -198,7 +198,7 @@ export interface Addon_BaseAnnotations<
    *
    * Decorators defined in Meta will be applied to every story variation.
    *
-   * @see [Decorators](https://storybook.js.org/docs/writing-stories/decorators)
+   * @see [Decorators](https://forkbook.ljk.dev/docs/writing-stories/decorators)
    */
   decorators?: Addon_BaseDecorators<StoryFnReturnType>;
 
@@ -227,7 +227,7 @@ export interface Addon_Annotations<TArgs, StoryFnReturnType> extends Addon_BaseA
    * includeStories: /.*Story$/;
    * ```
    *
-   * @see [Non-story exports](https://storybook.js.org/docs/api/csf#non-story-exports)
+   * @see [Non-story exports](https://forkbook.ljk.dev/docs/api/csf#non-story-exports)
    */
   includeStories?: string[] | RegExp;
 
@@ -242,7 +242,7 @@ export interface Addon_Annotations<TArgs, StoryFnReturnType> extends Addon_BaseA
    * excludeStories: /.*Data$/;
    * ```
    *
-   * @see [Non-story exports](https://storybook.js.org/docs/api/csf#non-story-exports)
+   * @see [Non-story exports](https://forkbook.ljk.dev/docs/api/csf#non-story-exports)
    */
   excludeStories?: string[] | RegExp;
 }
@@ -261,7 +261,7 @@ export interface Addon_BaseMeta<ComponentType> {
    * export default { title: 'Design System/Atoms/Button' };
    * ```
    *
-   * @see [Story Hierarchy](https://storybook.js.org/docs/writing-stories/naming-components-and-hierarchy)
+   * @see [Story Hierarchy](https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy)
    */
   title?: string;
 
@@ -272,7 +272,7 @@ export interface Addon_BaseMeta<ComponentType> {
    * Forkbook will prioritize the id over the title for ID generation, if provided, and will
    * prioritize the story.storyName over the export key for display.
    *
-   * @see [Sidebar and URLs](https://storybook.js.org/docs/configure/user-interface/sidebar-and-urls#permalink-to-stories)
+   * @see [Sidebar and URLs](https://forkbook.ljk.dev/docs/configure/user-interface/sidebar-and-urls#permalink-to-stories)
    */
   id?: string;
 

@@ -1,11 +1,11 @@
 .label {
   margin-right: 30px;
-  font-size: var(--sb-size-s1);
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.4));
+  font-size: var(--fb-size-s1);
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.4));
 }
 
-:where([data-sb-theme='dark']) .label {
-  color: rgb(from var(--sb-color-default-text) r g b / calc(alpha - 0.6));
+:where([data-fb-theme='dark']) .label {
+  color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.6));
 }
 
 .sample {

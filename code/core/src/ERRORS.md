@@ -86,10 +86,10 @@ import {
 } from '@storybook/core-events/server-errors';
 
 throw StorybookIndexGenerationError();
-// "SB_Generic_0001: Forkbook failed when generating an index for your stories. Check the stories field in your main.js.
+// "FB_Generic_0001: Forkbook failed when generating an index for your stories. Check the stories field in your main.js.
 
 throw InvalidFileExtensionError({ extension: 'mtsx' });
-// "SB_Validation_0002: Invalid file extension found: mtsx. More info: https://some-custom-documentation.com/validation-errors"
+// "FB_Validation_0002: Invalid file extension found: mtsx. More info: https://some-custom-documentation.com/validation-errors"
 ```
 
 ## How to write a proper error message
@@ -123,7 +123,7 @@ Addon-docs no longer uses configureJsx or mdxBabelOptions in 7.0.
 
 To update your configuration, please see migration instructions here:
 
-https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#dropped-addon-docs-manual-babel-configuration
+https://forkbook.ljk.dev/docs/migration#dropped-addon-docs-manual-babel-configuration
 ```
 
 Short:

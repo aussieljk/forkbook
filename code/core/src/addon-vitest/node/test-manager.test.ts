@@ -172,13 +172,13 @@ const mockTestProviderStore: TestProviderStoreById = {
 const tests = [
   {
     project: {
-      config: { env: { __STORYBOOK_URL__: 'http://localhost:6006' } },
+      config: { env: { __FORKBOOK_URL__: 'http://localhost:6006' } },
     },
     moduleId: path.join(process.cwd(), 'path/to/file'),
   },
   {
     project: {
-      config: { env: { __STORYBOOK_URL__: 'http://localhost:6006' } },
+      config: { env: { __FORKBOOK_URL__: 'http://localhost:6006' } },
     },
     moduleId: path.join(process.cwd(), 'path/to/another/file'),
   },
@@ -290,7 +290,7 @@ describe('TestManager', () => {
     vitest.projects = [
       {
         config: {
-          env: { __STORYBOOK_URL__: 'http://localhost:6006' },
+          env: { __FORKBOOK_URL__: 'http://localhost:6006' },
           root: process.cwd(),
           setupFiles: [],
         },

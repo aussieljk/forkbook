@@ -12,5 +12,5 @@
   flex-shrink: 0;
   height: 14px;
   width: 14px;
-  box-shadow: var(--sb-app-border-color) 0 0 0 1px inset;
+  box-shadow: var(--fb-app-border-color) 0 0 0 1px inset;
 }

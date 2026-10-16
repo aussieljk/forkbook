@@ -13,11 +13,11 @@
   transition:
     box-shadow 200ms ease-out,
     opacity 200ms ease-out;
-  color: var(--sb-input-color, inherit);
-  background: var(--sb-input-background);
-  box-shadow: var(--sb-input-border) 0 0 0 1px inset;
-  border-radius: var(--sb-input-border-radius);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  color: var(--fb-input-color, inherit);
+  background: var(--fb-input-background);
+  box-shadow: var(--fb-input-border) 0 0 0 1px inset;
+  border-radius: var(--fb-input-border-radius);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 20px;
   padding: 6px 10px;
   box-sizing: border-box;
@@ -28,7 +28,7 @@
   }
 
   &:focus {
-    box-shadow: var(--sb-color-secondary) 0 0 0 1px inset;
+    box-shadow: var(--fb-color-secondary) 0 0 0 1px inset;
     outline: none;
 
     @media (forced-colors: active) {
@@ -37,21 +37,21 @@
   }
 
   &:where([disabled], [aria-disabled='true']) {
-    background: var(--sb-color-lighter);
+    background: var(--fb-color-lighter);
     cursor: not-allowed;
   }
 
   &:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 3em var(--sb-color-lightest) inset;
+    -webkit-box-shadow: 0 0 0 3em var(--fb-color-lightest) inset;
   }
 
   &::placeholder {
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
     opacity: 1;
   }
 }
 
-:where([data-sb-theme='dark']) .control:where([disabled], [aria-disabled='true']) {
+:where([data-fb-theme='dark']) .control:where([disabled], [aria-disabled='true']) {
   background: transparent;
 }
 
@@ -86,13 +86,13 @@
 /* Validation */
 
 .control:where([data-valid='valid']) {
-  box-shadow: var(--sb-color-positive) 0 0 0 1px inset !important;
+  box-shadow: var(--fb-color-positive) 0 0 0 1px inset !important;
 }
 
 .control:where([data-valid='error']) {
-  box-shadow: var(--sb-color-negative) 0 0 0 1px inset !important;
+  box-shadow: var(--fb-color-negative) 0 0 0 1px inset !important;
 }
 
 .control:where([data-valid='warn']) {
-  box-shadow: var(--sb-color-warning) 0 0 0 1px inset;
+  box-shadow: var(--fb-color-warning) 0 0 0 1px inset;
 }

@@ -88,7 +88,7 @@ export const getExternal = async (cwd: string) => {
      *
      * @see `code/frameworks/nextjs/src/images/next-image.tsx`
      */
-    'sb-original',
+    'fb-original',
     packageJson.name,
     ...Object.keys(packageJson.dependencies || {}),
     ...Object.keys(packageJson.peerDependencies || {}),

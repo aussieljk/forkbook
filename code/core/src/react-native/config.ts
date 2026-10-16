@@ -18,7 +18,7 @@ export interface StorybookConfig {
   addons?: Addon[];
   /**
    * Addons loaded only at runtime on the device and merged into
-   * `storybook.requires`. Not evaluated as presets by Storybook Core, which
+   * `storybook.requires`. Not evaluated as presets by Forkbook, which
    * avoids failures during server-side operations like `extract`.
    */
   deviceAddons?: Addon[];

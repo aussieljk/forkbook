@@ -62,7 +62,7 @@ export type Conditional = ConditionalValue & ConditionalTest;
 
 interface ControlBase {
   [key: string]: any;
-  /** @see https://storybook.js.org/docs/api/arg-types#controltype */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#controltype */
   type?: ControlType;
   disable?: boolean;
 }
@@ -87,58 +87,58 @@ type Control =
         | ControlBase
         | {
             type: 'color';
-            /** @see https://storybook.js.org/docs/api/arg-types#controlpresetcolors */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controlpresetcolors */
             presetColors?: string[];
           }
         | {
             type: 'file';
-            /** @see https://storybook.js.org/docs/api/arg-types#controlaccept */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controlaccept */
             accept?: string;
           }
         | {
             type: 'inline-check' | 'radio' | 'inline-radio' | 'select' | 'multi-select';
-            /** @see https://storybook.js.org/docs/api/arg-types#controllabels */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controllabels */
             labels?: { [options: string]: string };
           }
         | {
             type: 'number' | 'range';
-            /** @see https://storybook.js.org/docs/api/arg-types#controlmax */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controlmax */
             max?: number;
-            /** @see https://storybook.js.org/docs/api/arg-types#controlmin */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controlmin */
             min?: number;
-            /** @see https://storybook.js.org/docs/api/arg-types#controlstep */
+            /** @see https://forkbook.ljk.dev/docs/api/arg-types#controlstep */
             step?: number;
           }
       ));
 
 export interface InputType {
-  /** @see https://storybook.js.org/docs/api/arg-types#control */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#control */
   control?: Control;
-  /** @see https://storybook.js.org/docs/api/arg-types#description */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#description */
   description?: string;
-  /** @see https://storybook.js.org/docs/api/arg-types#if */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#if */
   if?: Conditional;
-  /** @see https://storybook.js.org/docs/api/arg-types#mapping */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#mapping */
   mapping?: { [key: string]: any };
-  /** @see https://storybook.js.org/docs/api/arg-types#name */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#name */
   name?: string;
-  /** @see https://storybook.js.org/docs/api/arg-types#options */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#options */
   options?: readonly any[];
-  /** @see https://storybook.js.org/docs/api/arg-types#table */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#table */
   table?: {
     [key: string]: unknown;
-    /** @see https://storybook.js.org/docs/api/arg-types#tablecategory */
+    /** @see https://forkbook.ljk.dev/docs/api/arg-types#tablecategory */
     category?: string;
-    /** @see https://storybook.js.org/docs/api/arg-types#tabledefaultvalue */
+    /** @see https://forkbook.ljk.dev/docs/api/arg-types#tabledefaultvalue */
     defaultValue?: { summary?: string | undefined; detail?: string | undefined };
-    /** @see https://storybook.js.org/docs/api/arg-types#tabledisable */
+    /** @see https://forkbook.ljk.dev/docs/api/arg-types#tabledisable */
     disable?: boolean;
-    /** @see https://storybook.js.org/docs/api/arg-types#tablesubcategory */
+    /** @see https://forkbook.ljk.dev/docs/api/arg-types#tablesubcategory */
     subcategory?: string;
-    /** @see https://storybook.js.org/docs/api/arg-types#tabletype */
+    /** @see https://forkbook.ljk.dev/docs/api/arg-types#tabletype */
     type?: { summary?: string | undefined; detail?: string | undefined };
   };
-  /** @see https://storybook.js.org/docs/api/arg-types#type */
+  /** @see https://forkbook.ljk.dev/docs/api/arg-types#type */
   type?: SBType | SBScalarType['name'];
   /**
    * Removed. Set the story value with `args`, or the docs-table text with `table.defaultValue`.
@@ -161,7 +161,7 @@ export interface StrictArgs {
   [name: string]: unknown;
 }
 
-/** @see https://storybook.js.org/docs/api/arg-types#argtypes */
+/** @see https://forkbook.ljk.dev/docs/api/arg-types#argtypes */
 export type ArgTypes<TArgs = Args> = { [name in keyof TArgs]: InputType };
 export type StrictArgTypes<TArgs = Args> = { [name in keyof TArgs]: StrictInputType };
 
@@ -376,7 +376,7 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
    *
    * Decorators defined in Meta will be applied to every story variation.
    *
-   * @see [Decorators](https://storybook.js.org/docs/writing-stories/decorators)
+   * @see [Decorators](https://forkbook.ljk.dev/docs/writing-stories/decorators)
    */
   decorators?:
     | DecoratorFunction<TRenderer, Simplify<TArgs>>[]
@@ -385,7 +385,7 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
   /**
    * Custom metadata for a story.
    *
-   * @see [Parameters](https://storybook.js.org/docs/writing-stories/parameters)
+   * @see [Parameters](https://forkbook.ljk.dev/docs/writing-stories/parameters)
    */
   parameters?: Parameters &
     (TRenderer['csf4'] extends true ? CoreTypes['parameters'] & TRenderer['parameters'] : unknown);
@@ -393,7 +393,7 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
   /**
    * Dynamic data that are provided (and possibly updated by) Forkbook and its addons.
    *
-   * @see [Args](https://storybook.js.org/docs/writing-stories/args)
+   * @see [Args](https://forkbook.ljk.dev/docs/writing-stories/args)
    */
   args?: Partial<TArgs>;
 
@@ -401,14 +401,14 @@ export interface BaseAnnotations<TRenderer extends Renderer = Renderer, TArgs = 
    * ArgTypes encode basic metadata for args, such as `name` and `description`. These get
    * automatically filled in by Forkbook Docs.
    *
-   * @see [ArgTypes](https://storybook.js.org/docs/api/arg-types)
+   * @see [ArgTypes](https://forkbook.ljk.dev/docs/api/arg-types)
    */
   argTypes?: Partial<ArgTypes<TArgs>>;
 
   /**
    * Asynchronous functions which provide data for a story.
    *
-   * @see [Loaders](https://storybook.js.org/docs/writing-stories/loaders)
+   * @see [Loaders](https://forkbook.ljk.dev/docs/writing-stories/loaders)
    */
   loaders?: LoaderFunction<TRenderer, TArgs>[] | LoaderFunction<TRenderer, TArgs>;
 
@@ -488,7 +488,7 @@ export interface ComponentAnnotations<
    *
    * @example Export default { ... title: 'Design System/Atoms/Button' }
    *
-   * @see [Story Hierarchy](https://storybook.js.org/docs/writing-stories/naming-components-and-hierarchy#structure-and-hierarchy)
+   * @see [Story Hierarchy](https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy#structure-and-hierarchy)
    */
   title?: ComponentTitle;
 
@@ -497,7 +497,7 @@ export interface ComponentAnnotations<
    *
    * By default is inferred from sanitizing the title
    *
-   * @see [Permalink to stories](https://storybook.js.org/docs/configure/sidebar-and-urls#permalink-to-stories)
+   * @see [Permalink to stories](https://forkbook.ljk.dev/docs/configure/sidebar-and-urls#permalink-to-stories)
    */
   id?: ComponentId;
 
@@ -507,7 +507,7 @@ export interface ComponentAnnotations<
    *
    * @example IncludeStories: ['SimpleStory', 'ComplexStory'] includeStories: /.*Story$/
    *
-   * @see [Non-story exports](https://storybook.js.org/docs/api/csf#non-story-exports)
+   * @see [Non-story exports](https://forkbook.ljk.dev/docs/api/csf#non-story-exports)
    */
   includeStories?: StoryDescriptor;
 
@@ -517,7 +517,7 @@ export interface ComponentAnnotations<
    *
    * @example ExcludeStories: ['simpleData', 'complexData'] excludeStories: /.*Data$/
    *
-   * @see [Non-story exports](https://storybook.js.org/docs/api/csf#non-story-exports)
+   * @see [Non-story exports](https://forkbook.ljk.dev/docs/api/csf#non-story-exports)
    */
   excludeStories?: StoryDescriptor;
 

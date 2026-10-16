@@ -9,7 +9,7 @@
   height: 100%;
 
   &[data-focusable]:focus {
-    outline: 2px solid var(--sb-color-secondary);
+    outline: 2px solid var(--fb-color-secondary);
     outline-offset: -2px;
   }
 }
@@ -63,7 +63,7 @@
 
 .thumb {
   flex: 1;
-  background: var(--sb-text-muted-color);
+  background: var(--fb-text-muted-color);
   opacity: 0.5;
   border-radius: var(--scrollbar-size);
   position: relative;

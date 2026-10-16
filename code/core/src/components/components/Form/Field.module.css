@@ -1,6 +1,6 @@
 .field {
   display: flex;
-  border-bottom: 1px solid var(--sb-app-border-color);
+  border-bottom: 1px solid var(--fb-app-border-color);
   margin: 0 15px;
   padding: 8px 0;
 
@@ -11,7 +11,7 @@
 
 .label {
   min-width: 100px;
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
   margin-right: 15px;
   display: flex;
   justify-content: flex-start;

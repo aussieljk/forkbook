@@ -13,7 +13,7 @@ export async function getFrameworkName(options: Options) {
     throw new Error(dedent`
       You must specify a framework in '.forkbook/main.js' config.
 
-      https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#framework-field-mandatory
+      https://forkbook.ljk.dev/docs/migration#framework-field-mandatory
     `);
   }
 

@@ -1,5 +1,5 @@
 .syntaxHighlighter {
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
 }
 
 .info {
@@ -9,9 +9,9 @@
 
 .ruleId {
   display: block;
-  color: var(--sb-text-muted-color);
-  font-family: var(--sb-font-mono);
-  font-size: var(--sb-size-s1);
+  color: var(--fb-text-muted-color);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-size-s1);
   margin-top: -8px;
   margin-bottom: 12px;
 
@@ -53,13 +53,13 @@
     display: flex;
     margin: 15px 0;
     padding: 0 15px;
-    border-left: 1px solid var(--sb-color-border);
+    border-left: 1px solid var(--fb-color-border);
   }
 
   &:focus-visible {
     outline: none;
     border-radius: 4px;
-    box-shadow: 0 0 0 1px inset var(--sb-color-secondary);
+    box-shadow: 0 0 0 1px inset var(--fb-color-secondary);
   }
 
   @container (min-width: 800px) {
@@ -72,9 +72,9 @@
 }
 
 .item {
-  font-family: var(--sb-font-mono);
-  font-weight: var(--sb-weight-regular);
-  color: var(--sb-text-muted-color);
+  font-family: var(--fb-font-mono);
+  font-weight: var(--fb-weight-regular);
+  color: var(--fb-text-muted-color);
   height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -85,8 +85,8 @@
   padding: 0 12px;
 
   &[data-active] {
-    color: var(--sb-color-secondary);
-    background-color: var(--sb-background-hoverable);
+    color: var(--fb-color-secondary);
+    background-color: var(--fb-background-hoverable);
   }
 }
 

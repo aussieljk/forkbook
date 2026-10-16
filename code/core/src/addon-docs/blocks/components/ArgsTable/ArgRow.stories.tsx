@@ -437,7 +437,7 @@ export const Markdown = {
       key: 'someString',
       name: 'Some String',
       description:
-        'A `prop` can *support* __markdown__ syntax. This was ship in ~~5.2~~ 5.3. [Find more info in the storybook docs.](https://storybook.js.org/)',
+        'A `prop` can *support* __markdown__ syntax. This was ship in ~~5.2~~ 5.3. [Find more info in the storybook docs.](https://forkbook.ljk.dev)',
       table: {
         type: {
           summary: 'string',
@@ -525,7 +525,7 @@ export const JsDocMarkdownParagraphs = {
             {
               name: 'a',
               description:
-                'First **paragraph**.\n\nSecond paragraph with a [link](https://storybook.js.org/).',
+                'First **paragraph**.\n\nSecond paragraph with a [link](https://forkbook.ljk.dev).',
             },
           ],
           returns: {
@@ -541,7 +541,7 @@ export const JsDocMarkdownParagraphs = {
     await expect(parameter.getByText('paragraph', { selector: 'strong' })).toBeVisible();
     await expect(parameter.getByRole('link', { name: 'link' })).toHaveAttribute(
       'href',
-      'https://storybook.js.org/'
+      'https://forkbook.ljk.dev'
     );
 
     const returns = within(canvas.getByRole('row', { name: /^Returns Returns/ }));

@@ -1,7 +1,7 @@
 .a {
   font-size: inherit;
   line-height: 24px;
-  color: var(--sb-color-secondary);
+  color: var(--fb-color-secondary);
   /* Ensure WCAG Level A compliance (SC 1.4.1), see https://www.w3.org/WAI/WCAG22/Techniques/failures/F73 */
   text-decoration: underline;
   text-decoration-thickness: 0.03125rem;

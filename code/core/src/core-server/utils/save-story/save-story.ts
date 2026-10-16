@@ -27,7 +27,7 @@ import { SaveStoryError } from './utils.ts';
 
 const parseArgs = (args: string): Record<string, any> =>
   JSON.parse(args, (_, value) => {
-    if (value === '__sb_empty_function_arg__') {
+    if (value === '__fb_empty_function_arg__') {
       return () => {};
     }
     return value;

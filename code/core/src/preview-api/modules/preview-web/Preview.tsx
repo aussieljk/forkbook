@@ -100,9 +100,9 @@ export class Preview<TRenderer extends Renderer> {
     }
   }
 
-  // Create a proxy object for `__STORYBOOK_STORY_STORE__` and `__STORYBOOK_PREVIEW__.storyStore`
+  // Create a proxy object for `__FORKBOOK_STORY_STORE__` and `__FORKBOOK_PREVIEW__.storyStore`
   // That proxies through to the store once ready, and errors beforehand. This means we can set
-  // `__STORYBOOK_STORY_STORE__ = __STORYBOOK_PREVIEW__.storyStore` without having to wait, and
+  // `__FORKBOOK_STORY_STORE__ = __FORKBOOK_PREVIEW__.storyStore` without having to wait, and
   // similarly integrators can access the `storyStore` on the preview at any time, although
   // it is considered deprecated and we will no longer allow access in 9.0
   get storyStore() {

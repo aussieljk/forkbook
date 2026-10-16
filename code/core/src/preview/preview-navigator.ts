@@ -17,11 +17,11 @@ export async function maybeSetupPreviewNavigator() {
   const url = new URL(window.location.href);
   if (
     url.searchParams.get('navigator') !== 'true' ||
-    (globalThis as any).__STORYBOOK_PREVIEW_NAVIGATOR__
+    (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__
   ) {
     return;
   }
-  (globalThis as any).__STORYBOOK_PREVIEW_NAVIGATOR__ = true;
+  (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__ = true;
 
   // TODO: custom story sort is not respected
   const index = (await (await fetch('./index.json')).json()) as StoryIndex;
@@ -50,17 +50,17 @@ const createElementForNode = (node: BranchNode | LeafNode): HTMLElement => {
 
   if ('entries' in node && 'title' in node) {
     const branchNode = node as BranchNode;
-    li.className = 'sb-navigator-branch';
+    li.className = 'fb-navigator-branch';
 
     const details = document.createElement('details');
     if (branchNode.isActive) details.open = true;
 
     const summary = document.createElement('summary');
-    summary.className = 'sb-navigator-title';
+    summary.className = 'fb-navigator-title';
     summary.textContent = branchNode.title;
 
     const ul = document.createElement('ul');
-    ul.className = 'sb-navigator-entries';
+    ul.className = 'fb-navigator-entries';
     ul.setAttribute('aria-label', branchNode.title);
 
     for (const child of Object.values(branchNode.entries)) {
@@ -72,11 +72,11 @@ const createElementForNode = (node: BranchNode | LeafNode): HTMLElement => {
     li.appendChild(details);
   } else {
     const leafNode = node as LeafNode;
-    li.className = 'sb-navigator-story-item';
+    li.className = 'fb-navigator-story-item';
 
     const a = document.createElement('a');
     a.href = leafNode.href;
-    a.className = `sb-navigator-story-link${leafNode.isActive ? ' active' : ''}`;
+    a.className = `fb-navigator-story-link${leafNode.isActive ? ' active' : ''}`;
     if (leafNode.isActive) {
       a.setAttribute('aria-current', 'location');
     }
@@ -121,13 +121,13 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
   }
 
   const navList = document.createElement('ul');
-  navList.className = 'sb-navigator-list';
+  navList.className = 'fb-navigator-list';
   for (const entry of Object.values(tree.entries)) {
     navList.appendChild(createElementForNode(entry));
   }
 
   const nav = document.createElement('nav');
-  nav.id = 'sb-navigator-container';
+  nav.id = 'fb-navigator-container';
   nav.setAttribute('role', 'navigation');
   nav.setAttribute('aria-label', 'Story navigation');
   nav.appendChild(navList);
@@ -135,7 +135,7 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
   document.body.insertBefore(nav, document.body.firstChild);
 
   const style = document.createElement('style');
-  style.id = 'sb-navigator-style';
+  style.id = 'fb-navigator-style';
   style.textContent = `
     body {
       display: grid !important;
@@ -157,10 +157,10 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
       max-height: 100vh;
       max-width: 100%;
     }
-    #sb-navigator-container, #sb-navigator-container * {
+    #fb-navigator-container, #fb-navigator-container * {
       box-sizing: border-box;
     }
-    #sb-navigator-container {
+    #fb-navigator-container {
         height: 100vh;
         overflow-y: auto;
         border-right: 1px solid #eee;
@@ -171,37 +171,37 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
         align-self: start;
         z-index: 1000;
     }
-    .sb-main-padded #sb-navigator-container {
+    .fb-main-padded #fb-navigator-container {
       margin: -1rem 1rem -1rem -1rem;
     }
-    .sb-navigator-list {
+    .fb-navigator-list {
       list-style-type: none;
       padding: 0;
       margin: 0;
     }
-    .sb-navigator-branch {
+    .fb-navigator-branch {
       list-style-type: none;
     }
-    .sb-navigator-item {
+    .fb-navigator-item {
       margin-bottom: 15px;
     }
-    .sb-navigator-title {
+    .fb-navigator-title {
       color: var(--text-color);
       text-decoration: none;
       padding-block: 5px;
       cursor: pointer;
     }
-    .sb-navigator-entries {
+    .fb-navigator-entries {
       padding-left: 15px;
     }
-    .sb-navigator-story-item {
+    .fb-navigator-story-item {
       margin-bottom: 8px;
       margin-left: 8px;
     }
-    .sb-navigator-story-link {
+    .fb-navigator-story-link {
       color: var(--text-color);
     }
-    .sb-navigator-story-link.active {
+    .fb-navigator-story-link.active {
       font-weight: bold;
       color: hsl(212 100 46);
     }
@@ -210,13 +210,13 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
 
   // scroll to the active component
   nav
-    .querySelector('.sb-navigator-story-link.active')
+    .querySelector('.fb-navigator-story-link.active')
     ?.closest('details')
     ?.scrollIntoView({ block: 'center' });
 };
 
 export const teardownPreviewNavigator = () => {
-  document.querySelector('#sb-navigator-container')?.remove();
-  document.querySelector('#sb-navigator-style')?.remove();
-  (globalThis as any).__STORYBOOK_PREVIEW_NAVIGATOR__ = false;
+  document.querySelector('#fb-navigator-container')?.remove();
+  document.querySelector('#fb-navigator-style')?.remove();
+  (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__ = false;
 };

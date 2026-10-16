@@ -45,7 +45,7 @@ export const Explorer: FC<ExplorerProps> = React.memo(function Explorer({
     <nav
       hidden={isHidden || undefined}
       aria-hidden={isHidden || undefined}
-      className={isBrowsing ? undefined : 'sb-sr-only'}
+      className={isBrowsing ? undefined : 'fb-sr-only'}
       ref={containerRef}
       id="storybook-explorer-tree"
       data-highlighted-ref-id={highlighted?.refId}
@@ -53,7 +53,7 @@ export const Explorer: FC<ExplorerProps> = React.memo(function Explorer({
       {...landmarkProps}
       {...restProps}
     >
-      <h2 id="storybook-explorer-tree-heading" className="sb-sr-only">
+      <h2 id="storybook-explorer-tree-heading" className="fb-sr-only">
         Stories
       </h2>
       {highlighted && <HighlightStyles {...highlighted} />}

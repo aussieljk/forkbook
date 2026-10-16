@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isNotificationsEnabled: false,
-    copyContent: 'https://storybook.js.org/blog',
+    copyContent: 'https://forkbook.ljk.dev/blog',
   },
   parameters: {
     design: {

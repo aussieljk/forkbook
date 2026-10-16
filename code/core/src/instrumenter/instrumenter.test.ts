@@ -68,7 +68,7 @@ global.location = { reload: vi.fn() };
 global.HTMLElement = HTMLElement;
 
 const storyId = 'kind--story';
-global.window.__STORYBOOK_PREVIEW__ = {
+global.window.__FORKBOOK_PREVIEW__ = {
   selectionStore: { selection: { storyId, viewMode: 'story' } },
 } as any;
 
@@ -83,7 +83,7 @@ const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 beforeEach(async () => {
   vi.useRealTimers();
-  global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = {};
+  global.window.parent.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = {};
   mocks.callSpy.mockClear();
   mocks.syncSpy.mockClear();
   mocks.forceRemountSpy.mockClear();
@@ -797,10 +797,10 @@ describe('Instrumenter', () => {
     beforeEach(() => {
       global.window.parent = {
         ...global.window.parent,
-        get __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__() {
+        get __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__() {
           throw new Error('Blocked');
         },
-        set __STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__(_: unknown) {},
+        set __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__(_: unknown) {},
       };
       instrumenter = new Instrumenter();
     });

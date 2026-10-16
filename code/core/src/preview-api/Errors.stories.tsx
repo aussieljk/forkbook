@@ -44,7 +44,7 @@ const Component = ({ id, header, detail }: any) => {
 
   return (
     <div
-      className="sb-show-nopreview sb-show-errordisplay"
+      className="fb-show-nopreview fb-show-errordisplay"
       dangerouslySetInnerHTML={{ __html: content }}
     />
   );
@@ -58,7 +58,7 @@ export default {
   globals: { sb_theme: 'light' },
   title: 'Errors',
   args: {
-    id: 'sb-errordisplay',
+    id: 'fb-errordisplay',
   },
   // This story cannot be properly tested in portable stories as it depends on an element that only exists in Forkbook's preview HTML
   tags: ['!vitest'],
@@ -89,7 +89,7 @@ export const MyErrorWithCustomCSS = {
 
 export const Missing = {
   args: {
-    id: 'sb-nopreview',
+    id: 'fb-nopreview',
   },
 };
 

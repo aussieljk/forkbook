@@ -287,7 +287,7 @@ export class Instrumenter {
 
   loadParentWindowState = () => {
     try {
-      this.state = global.window?.parent?.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || {};
+      this.state = global.window?.parent?.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || {};
     } catch {
       // This happens when window.parent is not on the same origin (e.g. for a composed storybook)
       this.detached = true;
@@ -296,7 +296,7 @@ export class Instrumenter {
 
   updateParentWindowState = () => {
     try {
-      global.window.parent.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
+      global.window.parent.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
     } catch {
       // This happens when window.parent is not on the same origin (e.g. for a composed storybook)
       this.detached = true;
@@ -448,7 +448,7 @@ export class Instrumenter {
     options: Options
   ) {
     const storyId: StoryId =
-      args?.[0]?.__storyId__ || global.__STORYBOOK_PREVIEW__?.selectionStore?.selection?.storyId;
+      args?.[0]?.__storyId__ || global.__FORKBOOK_PREVIEW__?.selectionStore?.selection?.storyId;
     const { cursor, ancestors } = this.getState(storyId);
     this.setState(storyId, { cursor: cursor + 1 });
     const id = `${ancestors.slice(-1)[0] || storyId} [${cursor}] ${method}`;
@@ -766,11 +766,11 @@ export function instrument<TObj extends Record<string, any>>(
     }
 
     // Only create an instance if we don't have one (singleton) yet.
-    if (global.window && !global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__) {
-      global.window.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
+    if (global.window && !global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__) {
+      global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
     }
 
-    const instrumenter: Instrumenter = global.window?.__STORYBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
+    const instrumenter: Instrumenter = global.window?.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
     return instrumenter.instrument(obj, options);
   } catch (e) {
     // Access to the parent window might fail due to CORS restrictions.

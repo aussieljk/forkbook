@@ -236,7 +236,7 @@ export function instructions(projectInfo: ProjectInfo): string {
     - If a component needs per-story decorators (beyond the global ones), add them in the meta.
     - Do NOT use \`any\` types. Use the component's prop types for type safety.
 
-    Reference: https://storybook.js.org/docs/writing-stories
+    Reference: https://forkbook.ljk.dev/docs/writing-stories
 
     ### Step 4: Verify each story with Vitest
 

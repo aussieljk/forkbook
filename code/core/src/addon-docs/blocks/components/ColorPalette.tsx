@@ -95,7 +95,7 @@ interface ColorPaletteProps {
  */
 export const ColorPalette: FunctionComponent<ColorPaletteProps> = ({ children, ...props }) => (
   <ResetWrapper>
-    <div {...props} className={clsx(styles.list, 'docblock-colorpalette sb-unstyled')}>
+    <div {...props} className={clsx(styles.list, 'docblock-colorpalette fb-unstyled')}>
       <div className={styles.listHeading}>
         <div className={styles.listName}>Name</div>
         <div className={styles.listSwatches}>Swatches</div>

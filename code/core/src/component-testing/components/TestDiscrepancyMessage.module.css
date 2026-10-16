@@ -1,18 +1,18 @@
 .message {
   text-align: start;
   padding: 11px 15px;
-  font-size: calc(var(--sb-size-s2) - 1px);
-  font-weight: var(--sb-weight-regular);
+  font-size: calc(var(--fb-size-s2) - 1px);
+  font-weight: var(--fb-weight-regular);
   line-height: 1rem;
-  background: var(--sb-background-app);
-  border-bottom: 1px solid var(--sb-color-border);
-  color: var(--sb-color-default-text);
+  background: var(--fb-background-app);
+  border-bottom: 1px solid var(--fb-color-border);
+  color: var(--fb-color-default-text);
   background-clip: padding-box;
   position: relative;
 }
 
 .message code {
-  font-size: calc(var(--sb-size-s1) - 1px);
+  font-size: calc(var(--fb-size-s1) - 1px);
   color: inherit;
   margin: 0 0.2em;
   padding: 0 0.2em;

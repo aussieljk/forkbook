@@ -1,9 +1,9 @@
 .collapseButton {
-  font-size: calc(var(--sb-size-s1) - 1px);
-  font-weight: var(--sb-weight-bold);
+  font-size: calc(var(--fb-size-s1) - 1px);
+  font-weight: var(--fb-weight-bold);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   padding: 0 8px;
 }
 
@@ -12,21 +12,21 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
   background: transparent;
   min-height: 28px;
   border-radius: 4px;
   overflow: hidden;
-  --tree-node-background-hover: var(--sb-background-content);
+  --tree-node-background-hover: var(--fb-background-content);
 
   /* MEDIA_DESKTOP_BREAKPOINT */
   @media (min-width: 600px) {
-    --tree-node-background-hover: var(--sb-background-app);
+    --tree-node-background-hover: var(--fb-background-app);
   }
 
   &:hover,
   &:focus {
-    --tree-node-background-hover: var(--sb-background-hoverable);
+    --tree-node-background-hover: var(--fb-background-hoverable);
     background: var(--tree-node-background-hover);
     outline: none;
   }
@@ -48,10 +48,10 @@
   }
 
   &[data-selected='true'] {
-    --selected-background: var(--sb-color-secondary);
-    color: var(--sb-color-lightest);
+    --selected-background: var(--fb-color-secondary);
+    color: var(--fb-color-lightest);
     background: var(--selected-background);
-    font-weight: var(--sb-weight-bold);
+    font-weight: var(--fb-weight-bold);
 
     &:hover,
     &:focus {
@@ -59,7 +59,7 @@
     }
 
     & svg {
-      color: var(--sb-color-lightest);
+      color: var(--fb-color-lightest);
     }
   }
 
@@ -68,8 +68,8 @@
   }
 }
 
-:where([data-sb-theme='dark']) .leafNodeStyleWrapper[data-selected='true'] {
-  --selected-background: hsl(from var(--sb-color-secondary) h s calc(l - 18));
+:where([data-fb-theme='dark']) .leafNodeStyleWrapper[data-selected='true'] {
+  --selected-background: hsl(from var(--fb-color-secondary) h s calc(l - 18));
 }
 
 .skipToContentLink {
@@ -89,7 +89,7 @@
       opacity: 1;
       padding: 5px 10px;
       background: white;
-      color: var(--sb-color-secondary);
+      color: var(--fb-color-secondary);
       width: auto;
     }
   }

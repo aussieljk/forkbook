@@ -237,7 +237,7 @@ const ReadDocsMessage: FC = () => {
   const theme = useTheme();
 
   return (
-    <Message href="https://storybook.js.org/docs/sharing/storybook-composition?ref=ui">
+    <Message href="https://forkbook.ljk.dev/docs/sharing/storybook-composition">
       <DocumentIcon color={theme.color.green} />
       <div>
         <MessageTitle>Read Composition docs</MessageTitle>
@@ -275,12 +275,12 @@ const LoadingMessage: FC<{ url: string }> = ({ url }) => {
   );
 };
 
-// TODO: This is a temporary fix as the documentation link is not available with the 8.0 release, since the features it referenced were removed. See https://storybook.js.org/docs/7/sharing/storybook-composition#improve-your-storybook-composition for context.
+// TODO: This is a temporary fix as the documentation link is not available with the 8.0 release, since the features it referenced were removed. See https://forkbook.ljk.dev/docs/sharing/storybook-composition#improve-your-storybook-composition for context.
 const PerformanceDegradedMessage: FC = () => {
   const theme = useTheme();
 
   return (
-    <Message href="https://storybook.js.org/docs/sharing/storybook-composition?ref=ui">
+    <Message href="https://forkbook.ljk.dev/docs/sharing/storybook-composition">
       <LightningIcon color={theme.color.gold} />
       <div>
         <MessageTitle>Reduce lag</MessageTitle>

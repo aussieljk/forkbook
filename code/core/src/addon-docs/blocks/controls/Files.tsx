@@ -65,7 +65,7 @@ export const FilesControl: FC<FilesControlProps> = ({
 
   return (
     <>
-      <label htmlFor={controlId} className="sb-sr-only">
+      <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>
       <Form.Input

@@ -43,7 +43,7 @@ export const Empty: FC<EmptyProps> = ({ inAddonPanel }) => {
         footer={
           <div className={styles.links}>
             <Link
-              href="https://storybook.js.org/docs/essentials/controls?ref=ui"
+              href="https://forkbook.ljk.dev/docs/essentials/controls"
               target="_blank"
               withArrow
             >

@@ -29,7 +29,7 @@ function getDocsReferenceSection(projectInfo: ProjectInfo): string {
 
     Use the following references to look up Forkbook APIs, concepts, or examples:
 
-    - Full docs index: https://storybook.js.org/llms.txt
+    - Full docs index: https://forkbook.ljk.dev/llms.txt
     - See code snippets only with codeOnly=true param e.g. ${docsUrl('writing-stories')}&codeOnly=true
 
     Key documentation pages for this task:

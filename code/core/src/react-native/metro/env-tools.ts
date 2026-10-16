@@ -33,14 +33,14 @@ export function loadWebsocketEnvOverrides(
   websockets: WebsocketsOptions | 'auto' | undefined
 ): WebsocketsOptions {
   const envHost = envVariableToString(
-    process.env.STORYBOOK_WS_HOST,
+    process.env.FORKBOOK_WS_HOST,
     websockets === 'auto' ? undefined : (websockets?.host ?? undefined)
   );
   const envPort = envVariableToNumber(
-    process.env.STORYBOOK_WS_PORT,
+    process.env.FORKBOOK_WS_PORT,
     websockets === 'auto' ? 7007 : (websockets?.port ?? 7007)
   );
-  const envSecured = envVariableToBoolean(process.env.STORYBOOK_WS_SECURED);
+  const envSecured = envVariableToBoolean(process.env.FORKBOOK_WS_SECURED);
 
   if (websockets === undefined && !envHost) {
     return {

@@ -37,11 +37,11 @@ export const withBackgroundAndGrid: DecoratorFunction = (StoryFn, context) => {
   const backgroundSelector =
     viewMode === 'docs'
       ? `#anchor--${id} .docs-story, #anchor--primary--${id} .docs-story`
-      : '.sb-show-main';
+      : '.fb-show-main';
   const gridSelector =
     viewMode === 'docs'
       ? `#anchor--${id} .docs-story, #anchor--primary--${id} .docs-story`
-      : '.sb-show-main';
+      : '.fb-show-main';
 
   const isLayoutPadded = parameters.layout === undefined || parameters.layout === 'padded';
   const defaultOffset = viewMode === 'docs' ? 20 : isLayoutPadded ? 16 : 0;

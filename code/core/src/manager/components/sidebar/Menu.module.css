@@ -20,20 +20,20 @@
       height: 5px;
       z-index: 2;
       border-radius: 50%;
-      background: var(--sb-background-app);
-      border: 1px solid var(--sb-background-app);
-      box-shadow: 0 0 0 2px var(--sb-background-app);
+      background: var(--fb-background-app);
+      border: 1px solid var(--fb-background-app);
+      box-shadow: 0 0 0 2px var(--fb-background-app);
     }
 
     &:after {
-      background: var(--sb-color-positive);
+      background: var(--fb-color-positive);
       border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 0 0 2px var(--sb-background-app);
+      box-shadow: 0 0 0 2px var(--fb-background-app);
     }
 
     &:hover:after,
     &:focus-visible:after {
-      box-shadow: 0 0 0 2px rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.88));
+      box-shadow: 0 0 0 2px rgb(from var(--fb-color-secondary) r g b / calc(alpha - 0.88));
     }
   }
 }

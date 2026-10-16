@@ -37,9 +37,9 @@ import {
 } from 'react-native';
 import StoryView from './components/StoryView/index.tsx';
 import {
-  RN_STORYBOOK_EVENTS,
-  RN_STORYBOOK_STORAGE_KEY,
-  STORYBOOK_STORY_ID_PARAM,
+  RN_FORKBOOK_EVENTS,
+  RN_FORKBOOK_STORAGE_KEY,
+  FORKBOOK_STORY_ID_PARAM,
 } from './constants.ts';
 import { useSetStoryContext, useStoryContext } from './hooks.tsx';
 
@@ -104,7 +104,7 @@ export type Params = {
   hasStoryWrapper?: boolean;
   /**
    * Enable websockets for the storybook server to remotely control the storybook
-   * default: automatically enabled when a websocket config is injected via storybook.requires (i.e. when STORYBOOK_WS_HOST is set), otherwise false
+   * default: automatically enabled when a websocket config is injected via storybook.requires (i.e. when FORKBOOK_WS_HOST is set), otherwise false
    */
   enableWebsockets?: boolean;
   query?: string;
@@ -158,7 +158,7 @@ export class View {
       ? { storySpecifier: storyIdFromUrl, viewMode: 'story' }
       : selectionSpecifier;
 
-    // The preview can survive Metro refreshes through globalThis.view. Storybook's
+    // The preview can survive Metro refreshes through globalThis.view. Forkbook's
     // selectSpecifiedStory returns early when a selection already exists, so clear
     // the stale selection before applying the specifier from storage or a deep link.
     this._preview.selectionStore.selection = undefined;
@@ -186,13 +186,13 @@ export class View {
         let value = this._asyncStorageStoryId;
 
         if (!value && this._storage != null) {
-          value = await this._storage.getItem(RN_STORYBOOK_STORAGE_KEY);
+          value = await this._storage.getItem(RN_FORKBOOK_STORAGE_KEY);
 
           if (!value) {
             // Native storage can report null during process startup before its
             // persisted state is fully available.
             await new Promise((resolve) => setTimeout(resolve, 100));
-            value = await this._storage.getItem(RN_STORYBOOK_STORAGE_KEY);
+            value = await this._storage.getItem(RN_FORKBOOK_STORAGE_KEY);
           }
 
           this._asyncStorageStoryId = value;
@@ -214,8 +214,8 @@ export class View {
       return params.host;
     }
 
-    if (globalThis.STORYBOOK_WEBSOCKET?.host) {
-      return globalThis.STORYBOOK_WEBSOCKET.host;
+    if (globalThis.FORKBOOK_WEBSOCKET?.host) {
+      return globalThis.FORKBOOK_WEBSOCKET.host;
     }
 
     return Platform.OS === 'android' ? '10.0.2.2' : 'localhost';
@@ -226,8 +226,8 @@ export class View {
       return params.port;
     }
 
-    if (globalThis.STORYBOOK_WEBSOCKET?.port) {
-      return globalThis.STORYBOOK_WEBSOCKET.port;
+    if (globalThis.FORKBOOK_WEBSOCKET?.port) {
+      return globalThis.FORKBOOK_WEBSOCKET.port;
     }
 
     return 7007;
@@ -238,7 +238,7 @@ export class View {
       return params.secured;
     }
 
-    return globalThis.STORYBOOK_WEBSOCKET?.secured ?? false;
+    return globalThis.FORKBOOK_WEBSOCKET?.secured ?? false;
   };
 
   _getServerChannel = (params: Partial<Params> = {}) => {
@@ -274,7 +274,7 @@ export class View {
 
   getStorybookUI = (params: Partial<Params> = {}) => {
     const {
-      enableWebsockets = !!globalThis.STORYBOOK_WEBSOCKET,
+      enableWebsockets = !!globalThis.FORKBOOK_WEBSOCKET,
       CustomUIComponent,
       hasStoryWrapper: storyViewWrapper = true,
     } = params;
@@ -320,16 +320,16 @@ export class View {
       this._preview.ready().then(() => this._preview.onStoryIndexChanged());
     }
 
-    this._channel.on(RN_STORYBOOK_EVENTS.RN_GET_INDEX, () => {
+    this._channel.on(RN_FORKBOOK_EVENTS.RN_GET_INDEX, () => {
       // TODO: define response payload
-      this._channel.emit(RN_STORYBOOK_EVENTS.RN_GET_INDEX_RESPONSE, { index: this._storyIndex });
+      this._channel.emit(RN_FORKBOOK_EVENTS.RN_GET_INDEX_RESPONSE, { index: this._storyIndex });
     });
 
     managerAddons.loadAddons({
       store: () => ({
         fromId: (id: string) => {
           if (!this._ready) {
-            throw new Error('Storybook is not ready yet');
+            throw new Error('Forkbook is not ready yet');
           }
           return this._preview.getStoryContext(this._idToPrepared[id]);
         },
@@ -360,7 +360,7 @@ export class View {
         const listener = Linking.addEventListener('url', ({ url }) => {
           if (typeof url === 'string') {
             const urlObj = new URL(url);
-            const storyId = urlObj.searchParams.get(STORYBOOK_STORY_ID_PARAM);
+            const storyId = urlObj.searchParams.get(FORKBOOK_STORY_ID_PARAM);
 
             const hasStoryId = storyId && typeof storyId === 'string';
             const storyExists = hasStoryId && self._storyIdExists(storyId);
@@ -390,7 +390,7 @@ export class View {
             Linking.getInitialURL().then((url) => {
               if (url && typeof url === 'string') {
                 const urlObj = new URL(url);
-                const storyId = urlObj.searchParams.get(STORYBOOK_STORY_ID_PARAM);
+                const storyId = urlObj.searchParams.get(FORKBOOK_STORY_ID_PARAM);
 
                 const hasStoryId = typeof storyId === 'string';
                 const storyExists = hasStoryId && self._storyIdExists(storyId);
@@ -457,7 +457,7 @@ export class View {
           if (shouldPersistSelection && !!self._storage && self._ready) {
             try {
               self._asyncStorageStoryId = newStory.id;
-              const ret = self._storage.setItem(RN_STORYBOOK_STORAGE_KEY, newStory.id);
+              const ret = self._storage.setItem(RN_FORKBOOK_STORAGE_KEY, newStory.id);
               if (ret && typeof (ret as Promise<void>).then === 'function') {
                 (ret as Promise<void>).catch((e) => {
                   console.warn('storybook-log: error writing to async storage', e);

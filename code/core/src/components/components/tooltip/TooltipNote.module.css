@@ -4,9 +4,9 @@
   gap: 6px;
   line-height: 16px;
   font-size: 10px;
-  font-family: var(--sb-font-base);
-  font-weight: var(--sb-weight-bold);
-  color: var(--sb-color-lightest);
+  font-family: var(--fb-font-base);
+  font-weight: var(--fb-weight-bold);
+  color: var(--fb-color-lightest);
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   pointer-events: none;
@@ -20,6 +20,6 @@
   }
 }
 
-:where([data-sb-theme='dark']) .note {
+:where([data-fb-theme='dark']) .note {
   background: rgba(0, 0, 0, 0.95);
 }

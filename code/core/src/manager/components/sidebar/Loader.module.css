@@ -6,11 +6,11 @@
   margin-bottom: 4px;
   align-items: center;
   overflow: hidden;
-  margin-left: calc(var(--sb-depth) * 15px);
-  max-width: calc(85px - var(--sb-depth) * 5px);
+  margin-left: calc(var(--fb-depth) * 15px);
+  max-width: calc(85px - var(--fb-depth) * 5px);
   animation: glow 1.5s ease-in-out infinite;
   color: transparent;
-  background: var(--sb-app-border-color);
+  background: var(--fb-app-border-color);
 }
 
 .contained {

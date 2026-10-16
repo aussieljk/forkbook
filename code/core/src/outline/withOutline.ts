@@ -13,7 +13,7 @@ export const withOutline: DecoratorFunction = (StoryFn, context) => {
   const isInDocs = context.viewMode === 'docs';
 
   const outlineStyles = useMemo(() => {
-    const selector = isInDocs ? `[data-story-block="true"]` : '.sb-show-main';
+    const selector = isInDocs ? `[data-story-block="true"]` : '.fb-show-main';
 
     return outlineCSS(selector);
   }, [context]);

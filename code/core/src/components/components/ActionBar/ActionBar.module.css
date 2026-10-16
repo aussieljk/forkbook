@@ -1,5 +1,5 @@
 .container {
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
   position: absolute;
   bottom: 0;
   right: 0;
@@ -25,28 +25,28 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: var(--sb-color-default-text);
-  background: var(--sb-background-content);
+  color: var(--fb-color-default-text);
+  background: var(--fb-background-content);
   font-size: 12px;
   line-height: 16px;
-  font-family: var(--sb-font-base);
-  font-weight: var(--sb-weight-bold);
-  border-top: 1px solid var(--sb-app-border-color);
-  border-left: 1px solid var(--sb-app-border-color);
+  font-family: var(--fb-font-base);
+  font-weight: var(--fb-weight-bold);
+  border-top: 1px solid var(--fb-app-border-color);
+  border-left: 1px solid var(--fb-app-border-color);
   margin-left: -1px;
   border-radius: 4px 0 0 0;
 
   &:not(:last-child) {
-    border-right: 1px solid var(--sb-app-border-color);
+    border-right: 1px solid var(--fb-app-border-color);
   }
 
   & + * {
-    border-left: 1px solid var(--sb-app-border-color);
+    border-left: 1px solid var(--fb-app-border-color);
     border-radius: 0;
   }
 
   &:focus {
-    box-shadow: var(--sb-color-secondary) 0 -3px 0 0 inset;
+    box-shadow: var(--fb-color-secondary) 0 -3px 0 0 inset;
     outline: 0 none;
 
     @media (forced-colors: active) {

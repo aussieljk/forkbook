@@ -3,11 +3,11 @@
   padding: 4px 6px 4px 8px;
   border-radius: 4px;
   color: white;
-  font-family: var(--sb-font-base);
+  font-family: var(--fb-font-base);
   text-transform: uppercase;
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
   letter-spacing: 3px;
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
   min-width: 65px;
   text-align: center;
 }

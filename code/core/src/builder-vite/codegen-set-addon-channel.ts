@@ -7,7 +7,7 @@ export async function generateAddonSetupCode() {
     addons.setChannel(channel);
     
     if (window.CONFIG_TYPE === 'DEVELOPMENT'){
-      window.__STORYBOOK_SERVER_CHANNEL__ = channel;
+      window.__FORKBOOK_SERVER_CHANNEL__ = channel;
     }
   `.trim();
 }

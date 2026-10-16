@@ -117,7 +117,7 @@ export const Sidebar = React.memo(function Sidebar({
       ref={headerRef}
       {...landmarkProps}
     >
-      <h1 id="global-site-h1" className="sb-sr-only">
+      <h1 id="global-site-h1" className="fb-sr-only">
         Forkbook
       </h1>
       <IconSymbols />

@@ -1,5 +1,5 @@
 .content {
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
 }
 
 /* Extra specificity is necessary here */

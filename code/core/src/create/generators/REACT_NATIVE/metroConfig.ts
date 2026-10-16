@@ -36,7 +36,10 @@ type TransformResult =
 // Quote-anchored patterns used as a last-resort fallback when the AST parse fails.
 // They are intentionally specific so that unrelated identifiers like
 // `storybookEnabled` or `isStorybookMode` don't produce false positives.
-const STORYBOOK_PACKAGE_PATTERNS = [
+// They find Forkbook and the Storybook packages that a project can have before it moves to Forkbook.
+const FORKBOOK_PACKAGE_PATTERNS = [
+  "'@aussieljk/forkbook", // Forkbook and its sub-paths (single-quoted)
+  '"@aussieljk/forkbook', // Forkbook and its sub-paths (double-quoted)
   "'@storybook/", // @storybook/* scoped packages (single-quoted)
   '"@storybook/', // @storybook/* scoped packages (double-quoted)
   "'storybook'", // bare 'storybook' package specifier
@@ -46,7 +49,13 @@ const STORYBOOK_PACKAGE_PATTERNS = [
 ];
 
 const hasStorybookPackage = (value: string) => {
-  return value === 'storybook' || value.startsWith('@storybook/') || value.startsWith('storybook/');
+  return (
+    value === '@aussieljk/forkbook' ||
+    value.startsWith('@aussieljk/forkbook/') ||
+    value === 'storybook' ||
+    value.startsWith('@storybook/') ||
+    value.startsWith('storybook/')
+  );
 };
 
 const isAstNode = (value: unknown): value is t.Node => {
@@ -166,7 +175,7 @@ export const containsStorybookImport = (source: string) => {
       }
     }
   } catch {
-    return STORYBOOK_PACKAGE_PATTERNS.some((pattern) => source.includes(pattern));
+    return FORKBOOK_PACKAGE_PATTERNS.some((pattern) => source.includes(pattern));
   }
 
   return false;
@@ -340,7 +349,7 @@ export const prependMetroFallbackComment = (source: string) => {
     return source;
   }
 
-  return `/**\n * ${METRO_FALLBACK_COMMENT_MARKER}\n * Storybook could not automatically update this Metro config file.\n * Please follow the manual setup instructions:\n * ${METRO_SETUP_DOCS_LINK}\n */\n${source}`;
+  return `/**\n * ${METRO_FALLBACK_COMMENT_MARKER}\n * Forkbook could not automatically update this Metro config file.\n * Please follow the manual setup instructions:\n * ${METRO_SETUP_DOCS_LINK}\n */\n${source}`;
 };
 
 export const transformMetroConfigSource = (source: string, filePath: string): TransformResult => {
@@ -496,7 +505,7 @@ const resolveMetroConfigPath = async ({
     }
 
     const selected = await prompt.select({
-      message: 'Multiple Metro config files found. Which one should Storybook update?',
+      message: 'Multiple Metro config files found. Which one should Forkbook update?',
       options: candidates.map((candidate) => ({
         label: path.relative(process.cwd(), candidate),
         value: candidate,
@@ -552,7 +561,7 @@ export const runMetroCodemodOrFallback = async ({
     return {
       status: 'skipped-existing-storybook-import',
       filePath,
-      notes: ['Storybook import detected in Metro config; leaving file unchanged.'],
+      notes: ['Forkbook import detected in Metro config; leaving file unchanged.'],
     };
   }
 

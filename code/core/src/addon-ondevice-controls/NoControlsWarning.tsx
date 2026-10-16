@@ -17,19 +17,9 @@ const NoControlsWarning = () => {
       <Paragraph>This story is not configured to handle controls.</Paragraph>
       <Paragraph>
         <LinkText
-          onPress={() => Linking.openURL('https://storybook.js.org/docs/react/essentials/controls')}
+          onPress={() => Linking.openURL('https://forkbook.ljk.dev/docs/react/essentials/controls')}
         >
-          Learn how to add controls
-        </LinkText>{' '}
-        and see{' '}
-        <LinkText
-          onPress={() =>
-            Linking.openURL(
-              'https://github.com/storybookjs/react-native/tree/next-6.0/examples/expo-example/components/ControlExamples'
-            )
-          }
-        >
-          examples in the Storybook React Native repository.
+          Learn how to add controls.
         </LinkText>
       </Paragraph>
     </View>

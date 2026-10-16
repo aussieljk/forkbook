@@ -189,7 +189,7 @@ function BaseModal({
             <Components.Overlay
               $status={status}
               $transitionDuration={transitionDuration}
-              data-sb-theme={theme.base}
+              data-fb-theme={theme.base}
               style={themeToCssVars(theme)}
             />
           }
@@ -208,7 +208,7 @@ function BaseModal({
               className={className}
               width={width}
               height={height}
-              data-sb-theme={theme.base}
+              data-fb-theme={theme.base}
               {...props}
               style={{ ...themeToCssVars(theme), ...props.style }}
             />

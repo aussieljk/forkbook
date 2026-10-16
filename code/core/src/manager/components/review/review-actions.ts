@@ -63,7 +63,7 @@ export const navigateToReviewSummary = (
 
 /**
  * Leave review mode and return to the pre-review canvas. Shared by the summary
- * back-to-Storybook link and the per-tab dismissal reaction; restores filters via
+ * back-to-Forkbook link and the per-tab dismissal reaction; restores filters via
  * {@link exitReviewMode} and navigates to the captured return search.
  */
 export const navigateOutOfReview = async (

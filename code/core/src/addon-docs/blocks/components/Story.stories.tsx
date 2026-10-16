@@ -19,8 +19,8 @@ import * as ButtonStories from '../examples/Button.stories';
 import type { StoryProps } from './Story';
 import { Story as StoryComponent, StorySkeleton } from './Story';
 
-const preview = (window as any).__STORYBOOK_PREVIEW__ as PreviewWeb<ReactRenderer>;
-const channel = (window as any).__STORYBOOK_ADDONS_CHANNEL__ as Channel;
+const preview = (window as any).__FORKBOOK_PREVIEW__ as PreviewWeb<ReactRenderer>;
+const channel = (window as any).__FORKBOOK_ADDONS_CHANNEL__ as Channel;
 const renderStoryToElement = preview.renderStoryToElement.bind(preview);
 
 type ExtendedStoryProps = Omit<StoryProps, 'story'> & {

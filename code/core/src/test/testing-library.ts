@@ -29,7 +29,7 @@ testingLibrary.screen = new Proxy(testingLibrary.screen, {
       once.warn(dedent`
         You are using Testing Library's \`screen\` object while the story is rendered in docs mode. This will likely lead to issues, as multiple stories are rendered in the same page and therefore screen will potentially find multiple elements. Use the \`canvas\` utility from the story context instead, which will scope the queries to each story's canvas.
 
-        More info: https://storybook.js.org/docs/writing-tests/interaction-testing?ref=error#querying-the-canvas
+        More info: https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#querying-the-canvas
       `);
     }
     return Reflect.get(target, prop, receiver);

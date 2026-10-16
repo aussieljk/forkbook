@@ -2,7 +2,7 @@ export { isWebContainer } from '@webcontainer/env';
 
 import { nodePathsToArray } from './paths.ts';
 
-// Load environment variables starts with STORYBOOK_ to the client side.
+// Load environment variables starts with FORKBOOK_ to the client side.
 
 export async function loadEnvs(options: { production?: boolean } = {}): Promise<{
   stringified: Record<string, string>;
@@ -29,7 +29,7 @@ export async function loadEnvs(options: { production?: boolean } = {}): Promise<
       // TODO: it seems wrong that dotenv overrides process.env, but that's how it has always worked
       ...process.env,
       ...dotenv.raw,
-    }).filter(([name]) => /^STORYBOOK_/.test(name))
+    }).filter(([name]) => /^FORKBOOK_/.test(name))
   );
 
   const raw: Record<string, string> = { ...baseEnv, ...envEntries };

@@ -7,7 +7,7 @@ const kebab = (key: string) => key.replace(/[A-Z]/g, (char) => `-${char.toLowerC
 const px = (value: number | string | undefined) =>
   typeof value === 'number' ? `${value}px` : value;
 
-/** Adds `--sb-<prefix>-<key>` for each value of a theme group, for example `--sb-color-primary`. */
+/** Adds `--sb-<prefix>-<key>` for each value of a theme group, for example `--fb-color-primary`. */
 const addGroup = (
   vars: CssVars,
   prefix: string,
@@ -24,9 +24,9 @@ const addGroup = (
 /**
  * Turns a theme into CSS variables. Component styles read the theme with `var(--sb-...)`.
  *
- * The names follow the theme object: `theme.color.defaultText` is `--sb-color-default-text`,
- * `theme.typography.size.s2` is `--sb-size-s2` and `theme.input.borderRadius` is
- * `--sb-input-border-radius`. Sizes are in pixels.
+ * The names follow the theme object: `theme.color.defaultText` is `--fb-color-default-text`,
+ * `theme.typography.size.s2` is `--fb-size-s2` and `theme.input.borderRadius` is
+ * `--fb-input-border-radius`. Sizes are in pixels.
  */
 export const themeToCssVars = (theme: StorybookTheme): CssVars => {
   const vars: CssVars = {};

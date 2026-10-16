@@ -115,7 +115,7 @@ export const IFrameProps: Story = {
       async () => {
         const iframeEl = canvasElement.querySelector('iframe');
         await expect(
-          iframeEl!.contentDocument!.querySelector('[data-testid="sb-iframe-text"]')
+          iframeEl!.contentDocument!.querySelector('[data-testid="fb-iframe-text"]')
         ).toBeVisible();
       },
       { timeout: 10000 }

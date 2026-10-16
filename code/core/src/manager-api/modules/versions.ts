@@ -28,14 +28,6 @@ const getVersionCheckData = memoize(1)((): API_Versions => {
   }
 });
 
-const normalizeRendererName = (renderer: string) => {
-  if (renderer.includes('vue')) {
-    return 'vue';
-  }
-
-  return renderer;
-};
-
 export interface SubAPI {
   /**
    * Returns the current version of the Forkbook Manager.
@@ -104,43 +96,13 @@ export const init: ModuleFn = ({ store }) => {
       }
       return latest as API_Version;
     },
-    // TODO: Move this to it's own "info" module later
-    getDocsUrl: ({ asset, subpath = asset, versioned, renderer, ref = 'ui' }) => {
-      const { versions } = store.getState();
-      const latestVersion = versions.latest?.version;
-      const currentVersion = versions.current?.version;
-      const activeVersion =
-        (currentVersion?.startsWith('0.0.0') && latestVersion) || currentVersion;
+    // The Forkbook docs have one version, so `versioned`, `renderer` and `ref` change nothing.
+    getDocsUrl: ({ asset, subpath = asset }) => {
+      const [path, hash] = subpath?.split('#') || [];
+      let url = `https://forkbook.ljk.dev/${asset ? 'docs-assets' : 'docs'}`;
 
-      let url = `https://storybook.js.org/${asset ? 'docs-assets' : 'docs'}/`;
-
-      if (asset && activeVersion) {
-        url += `${semver.major(activeVersion)}.${semver.minor(activeVersion)}/`;
-      } else if (versioned && activeVersion && latestVersion) {
-        const versionDiff = semver.diff(latestVersion, activeVersion);
-        const isLatestDocs = versionDiff === 'patch' || versionDiff === null;
-
-        if (!isLatestDocs) {
-          url += `${semver.major(activeVersion)}.${semver.minor(activeVersion)}/`;
-        }
-      }
-
-      const [cleanedSubpath, hash] = subpath?.split('#') || [];
-
-      if (cleanedSubpath) {
-        url += asset ? cleanedSubpath : `${cleanedSubpath}/`;
-      }
-
-      if (renderer && typeof global.FORKBOOK_RENDERER !== 'undefined') {
-        const rendererName = global.FORKBOOK_RENDERER as string;
-
-        if (rendererName) {
-          url += `?renderer=${normalizeRendererName(rendererName)}`;
-        }
-      }
-
-      if (ref) {
-        url += `${url.includes('?') ? '&' : '?'}ref=${ref}`;
+      if (path) {
+        url += `/${path}`;
       }
 
       if (hash) {

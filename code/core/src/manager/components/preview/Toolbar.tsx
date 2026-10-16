@@ -84,19 +84,19 @@ export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { landmarkProps } = useLandmark(
-    { 'aria-labelledby': 'sb-preview-toolbar-title', role: 'region' },
+    { 'aria-labelledby': 'fb-preview-toolbar-title', role: 'region' },
     sectionRef
   );
 
   return isShown && (tools.length > 0 || toolsExtra.length > 0) ? (
     <section
-      className={clsx('sb-bar', styles.section)}
+      className={clsx('fb-bar', styles.section)}
       key="toolbar"
-      data-testid="sb-preview-toolbar"
+      data-testid="fb-preview-toolbar"
       ref={sectionRef}
       {...landmarkProps}
     >
-      <h2 id="sb-preview-toolbar-title" className="sb-sr-only">
+      <h2 id="fb-preview-toolbar-title" className="fb-sr-only">
         Toolbar
       </h2>
       <AbstractToolbar className={styles.toolbar}>

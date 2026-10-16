@@ -4,7 +4,7 @@ declare var FORKBOOK_BUILDER:
   | undefined;
 
 interface ImportMetaEnv {
-  __STORYBOOK_URL__?: string;
+  __FORKBOOK_URL__?: string;
 }
 
 interface ImportMeta {

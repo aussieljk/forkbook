@@ -104,7 +104,7 @@ const Preview = React.memo<PreviewProps>(function Preview(props) {
             toolsExtra={toolsExtra}
           />
           <main className={styles.frameWrap} ref={mainRef} {...landmarkProps}>
-            <h2 id="main-preview-heading" className="sb-sr-only">
+            <h2 id="main-preview-heading" className="fb-sr-only">
               Main preview area
             </h2>
             <div className={styles.canvasWrap}>

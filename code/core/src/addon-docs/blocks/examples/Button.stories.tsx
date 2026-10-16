@@ -120,16 +120,16 @@ export const ErrorStory: Story = {
     const err = new Error('Rendering problem');
     // force stack for consistency in capture
     err.stack = `
-      at undecoratedStoryFn (/sb-preview/file.js:000:0001)
-      at hookified (/sb-preview/file.js:000:0001)
-      at defaultDecorateStory (/sb-preview/file.js:000:0001)
+      at undecoratedStoryFn (/fb-preview/file.js:000:0001)
+      at hookified (/fb-preview/file.js:000:0001)
+      at defaultDecorateStory (/fb-preview/file.js:000:0001)
       at jsxDecorator (/assets/file.js:000:0001)
-      at hookified (/sb-preview/file.js:000:0001)
-      at decorateStory (/sb-preview/file.js:000:0001)
-      at renderWithHooks (/sb-preview/file.js:000:0001)
+      at hookified (/fb-preview/file.js:000:0001)
+      at decorateStory (/fb-preview/file.js:000:0001)
+      at renderWithHooks (/fb-preview/file.js:000:0001)
       at mountIndeterminateComponent (/assets/file.js:000:0001)
       at beginWork (/assets/file.js:000:0001)
-      at longMockedPath (/node_modules/.cache/storybook/da6a511058d185c3c92ed7790fc88078d8a947a8d0ac75815e8fd5704bcd4baa/sb-vite/deps/file.js?v=00000000:000:0001)
+      at longMockedPath (/node_modules/.cache/storybook/da6a511058d185c3c92ed7790fc88078d8a947a8d0ac75815e8fd5704bcd4baa/fb-vite/deps/file.js?v=00000000:000:0001)
     `;
     throw err;
   },

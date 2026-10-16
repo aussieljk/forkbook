@@ -1,8 +1,8 @@
-const PKG_PR_NEW_STORYBOOK_SPECIFIER_RE =
+const PKG_PR_NEW_FORKBOOK_SPECIFIER_RE =
   /^(https?:\/\/[^/\s]*pkg\.pr\.new\/(?:[^@\s/]+\/[^@\s/]+\/)?)(?:create-storybook|storybook|@storybook\/[^@\s]+)(@[^\s]+)$/;
 
 export const isPkgPrNewVersionSpecifier = (storybookVersionSpecifier?: string) =>
-  !!storybookVersionSpecifier?.match(PKG_PR_NEW_STORYBOOK_SPECIFIER_RE);
+  !!storybookVersionSpecifier?.match(PKG_PR_NEW_FORKBOOK_SPECIFIER_RE);
 
 export const getPkgPrNewPackageSpecifier = (
   packageName: string,
@@ -12,7 +12,7 @@ export const getPkgPrNewPackageSpecifier = (
     return undefined;
   }
 
-  const match = storybookVersionSpecifier.match(PKG_PR_NEW_STORYBOOK_SPECIFIER_RE);
+  const match = storybookVersionSpecifier.match(PKG_PR_NEW_FORKBOOK_SPECIFIER_RE);
 
   if (!match) {
     return undefined;

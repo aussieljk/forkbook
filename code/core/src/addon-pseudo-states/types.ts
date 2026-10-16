@@ -14,7 +14,7 @@ export interface PseudoParameters {
   /**
    * Pseudo state configuration
    *
-   * @see https://storybook.js.org/addons/storybook-addon-pseudo-states
+   * @see https://forkbook.ljk.dev/addons/storybook-addon-pseudo-states
    */
   pseudo?: PseudoParameter;
 }

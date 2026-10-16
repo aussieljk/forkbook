@@ -57,7 +57,7 @@ export const SizeInput = ({
   return (
     <span className={styles.wrapper} data-prefix={prefix || undefined}>
       {label && (
-        <label htmlFor={id} className="sb-sr-only">
+        <label htmlFor={id} className="fb-sr-only">
           {label}
         </label>
       )}

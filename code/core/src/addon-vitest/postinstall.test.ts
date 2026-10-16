@@ -23,7 +23,7 @@ describe('getTemplateConfigDir', () => {
   });
 
   it('supports a custom config dir name', () => {
-    expect(getTemplateConfigDir('apps/x/vitest.config.ts', 'apps/x/sb-config')).toBe('sb-config');
+    expect(getTemplateConfigDir('apps/x/vitest.config.ts', 'apps/x/fb-config')).toBe('fb-config');
   });
 });
 

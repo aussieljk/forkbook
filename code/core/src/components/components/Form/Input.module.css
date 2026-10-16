@@ -18,8 +18,8 @@
   align-items: center;
   pointer-events: none;
   overflow: hidden;
-  color: var(--sb-text-muted-color);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  color: var(--fb-text-muted-color);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 20px;
   padding: 6px 10px;
 

@@ -117,7 +117,7 @@ export async function useStatics(app: Polka, options: Options): Promise<void> {
       const { staticDir, staticPath, targetEndpoint } = mapStaticDir(dir, options.configDir);
 
       // Don't log for internal static dirs
-      if (!targetEndpoint.startsWith('/sb-') && !staticDir.startsWith(cacheDir)) {
+      if (!targetEndpoint.startsWith('/fb-') && !staticDir.startsWith(cacheDir)) {
         const relativeStaticDir = relative(getProjectRoot(), staticDir);
         logger.debug(
           `Serving static files from ${CLI_COLORS.info(relativeStaticDir)} at ${CLI_COLORS.info(targetEndpoint)}`

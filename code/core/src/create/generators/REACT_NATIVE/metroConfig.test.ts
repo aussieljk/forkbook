@@ -36,7 +36,7 @@ describe('metroConfig codemod', () => {
 
   beforeEach(async () => {
     originalCwd = process.cwd();
-    tempDir = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-metro-'));
+    tempDir = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-metro-'));
     process.chdir(tempDir);
 
     packageManager = {

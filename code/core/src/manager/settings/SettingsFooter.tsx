@@ -9,15 +9,15 @@ import styles from './SettingsFooter.module.css';
 
 const SettingsFooter: FC<any> = ({ className, ...props }) => (
   <div className={clsx(styles.footer, className)} {...props}>
-    <Link secondary href="https://storybook.js.org?ref=ui" cancel={false} target="_blank">
+    <Link secondary href="https://forkbook.ljk.dev" cancel={false} target="_blank">
       Docs
     </Link>
-    <Link secondary href="https://github.com/storybookjs/storybook" cancel={false} target="_blank">
+    <Link secondary href="https://github.com/aussieljk/forkbook" cancel={false} target="_blank">
       GitHub
     </Link>
     <Link
       secondary
-      href="https://storybook.js.org/community?ref=ui#support"
+      href="https://forkbook.ljk.dev/community#support"
       cancel={false}
       target="_blank"
     >

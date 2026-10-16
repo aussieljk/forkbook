@@ -111,11 +111,11 @@ export class FinalizationCommand {
     // We don't want to tell agents about Discord, and we want to customise their docs URL.
     if (this.options.showAiInstructions) {
       logger.log(dedent`
-      Official documentation reference: ${CLI_COLORS.cta('https://storybook.js.org/llms.txt')}
+      Official documentation reference: ${CLI_COLORS.cta('https://forkbook.ljk.dev/llms.txt')}
     `);
     } else {
       logger.log(dedent`
-      Want to learn more about Forkbook? ${CLI_COLORS.cta('https://storybook.js.org/')}
+      Want to learn more about Forkbook? ${CLI_COLORS.cta('https://forkbook.ljk.dev')}
       Having trouble or want to chat? ${CLI_COLORS.cta('https://discord.gg/storybook/')}
     `);
     }

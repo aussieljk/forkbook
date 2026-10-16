@@ -7,7 +7,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { resolveImport } from './interpret-files.ts';
 
 // oxc-resolver is a native binding that reads the real filesystem, so memfs cannot intercept it.
-const fixtureRoot = realpathSync(mkdtempSync(join(tmpdir(), 'sb-module-resolver-')));
+const fixtureRoot = realpathSync(mkdtempSync(join(tmpdir(), 'fb-module-resolver-')));
 
 afterAll(() => {
   rmSync(fixtureRoot, { recursive: true, force: true });

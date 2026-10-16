@@ -18,13 +18,13 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
       <div className={styles.footer}>
         <div className={styles.actions}>
           <Button ariaLabel={false} asChild>
-            <a href="https://github.com/storybookjs/storybook">
+            <a href="https://github.com/aussieljk/forkbook">
               <GithubIcon />
               GitHub
             </a>
           </Button>
           <Button ariaLabel={false} asChild>
-            <a href="https://storybook.js.org/docs?ref=ui">
+            <a href="https://forkbook.ljk.dev/docs">
               <DocumentIcon style={{ display: 'inline', marginRight: 5 }} />
               Documentation
             </a>
@@ -38,7 +38,7 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
           and the{' '}
           <Link
             className={styles.link}
-            href="https://github.com/storybookjs/storybook/graphs/contributors"
+            href="https://github.com/aussieljk/forkbook/graphs/contributors"
           >
             Forkbook Community
           </Link>

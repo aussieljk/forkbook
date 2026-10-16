@@ -96,7 +96,7 @@ export interface SelectProps extends Omit<
 }
 
 function valueToId(parentId: string, { value }: InternalOption | ResetOption): string {
-  return `${parentId}-opt-${String(value) ?? 'sb-reset'}`;
+  return `${parentId}-opt-${String(value) ?? 'fb-reset'}`;
 }
 
 function setSelectedFromDefault(
@@ -158,7 +158,7 @@ const MinimalistPopover: FC<{
                   style={{
                     maxHeight: 'min(504px, var(--available-height))',
                     overflow: 'hidden auto',
-                    scrollbarColor: 'var(--sb-bar-text-color) transparent',
+                    scrollbarColor: 'var(--fb-bar-text-color) transparent',
                     scrollbarWidth: 'thin',
                   }}
                 >
@@ -551,7 +551,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
 
                   return (
                     <SelectOption
-                      key={option.value === undefined ? 'sb-reset' : String(option.value)}
+                      key={option.value === undefined ? 'fb-reset' : String(option.value)}
                       title={option.title}
                       description={option.description}
                       aside={option.aside}

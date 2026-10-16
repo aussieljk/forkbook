@@ -1,16 +1,16 @@
 .notification {
   position: relative;
   display: flex;
-  border: 1px solid var(--sb-app-border-color);
+  border: 1px solid var(--fb-app-border-color);
   padding: 12px 6px 12px 12px;
-  border-radius: calc(var(--sb-app-border-radius) + 1px);
+  border-radius: calc(var(--fb-app-border-radius) + 1px);
   align-items: center;
   animation: slideIn 500ms;
   background: hsla(203, 50%, 20%, 0.97);
   box-shadow:
     0 2px 5px 0 rgba(0, 0, 0, 0.05),
     0 5px 15px 0 rgba(0, 0, 0, 0.1);
-  color: var(--sb-color-inverse-text);
+  color: var(--fb-color-inverse-text);
   text-decoration: none;
   overflow: hidden;
 
@@ -18,7 +18,7 @@
   @media (min-width: 600px) {
     box-shadow:
       0 1px 2px 0 rgba(0, 0, 0, 0.05),
-      0px -5px 20px 10px var(--sb-background-app);
+      0px -5px 20px 10px var(--fb-background-app);
   }
 
   /* A bar that shrinks while the notification times out */
@@ -29,12 +29,12 @@
     bottom: 0;
     left: 0;
     height: 3px;
-    background: var(--sb-color-secondary);
+    background: var(--fb-color-secondary);
     animation: grow var(--duration) linear forwards reverse;
   }
 }
 
-:where([data-sb-theme='dark']) .notification {
+:where([data-fb-theme='dark']) .notification {
   background: hsla(203, 30%, 95%, 0.97);
 }
 
@@ -86,7 +86,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--sb-color-inverse-text);
+  color: var(--fb-color-inverse-text);
 }
 
 .headline {
@@ -95,14 +95,14 @@
   white-space: balance;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: var(--sb-size-s1);
+  font-size: var(--fb-size-s1);
   line-height: 16px;
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
 }
 
 .subHeadline {
-  color: rgb(from var(--sb-color-inverse-text) r g b / calc(alpha - 0.25));
-  font-size: calc(var(--sb-size-s1) - 1px);
+  color: rgb(from var(--fb-color-inverse-text) r g b / calc(alpha - 0.25));
+  font-size: calc(var(--fb-size-s1) - 1px);
   line-height: 14px;
   margin-top: 2px;
   white-space: balance;
@@ -115,7 +115,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-:where([data-sb-theme='dark']) .dismissButton {
+:where([data-fb-theme='dark']) .dismissButton {
   color: #999999;
 }
 

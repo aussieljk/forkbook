@@ -28,7 +28,7 @@ interface IconGalleryProps {
 /** Show a grid of icons, as specified by `IconItem`. */
 export const IconGallery: FunctionComponent<IconGalleryProps> = ({ children, ...props }) => (
   <ResetWrapper>
-    <div {...props} className={clsx(styles.list, 'docblock-icongallery sb-unstyled')}>
+    <div {...props} className={clsx(styles.list, 'docblock-icongallery fb-unstyled')}>
       {children}
     </div>
   </ResetWrapper>

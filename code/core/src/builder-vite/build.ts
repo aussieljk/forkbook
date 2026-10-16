@@ -28,7 +28,7 @@ export async function build(options: Options) {
       // output files and user `staticDirs` take precedence over public assets.
       copyPublicDir: false,
       rolldownOptions: {
-        external: [/\.\/sb-common-assets\/.*\.woff2/],
+        external: [/\.\/fb-common-assets\/.*\.woff2/],
       },
       ...(options.test
         ? {
@@ -88,7 +88,7 @@ export async function build(options: Options) {
     logger.warn(dedent`Found '${turbosnapPluginName}' which is now included by default in Forkbook 8.
       Removing from your plugins list. Ensure you pass \`--stats-json\` to generate stats.
 
-      For more information, see https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#turbosnap-vite-plugin-is-no-longer-needed`);
+      For more information, see https://forkbook.ljk.dev/docs/migration#turbosnap-vite-plugin-is-no-longer-needed`);
 
     finalConfig.plugins = await withoutVitePlugins(finalConfig.plugins, [turbosnapPluginName]);
   }

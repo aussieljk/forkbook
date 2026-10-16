@@ -5,10 +5,10 @@ import { dedent } from 'ts-dedent';
 import { MatcherResult } from './MatcherResult.tsx';
 
 const wrapperStyle: React.CSSProperties = {
-  backgroundColor: 'var(--sb-background-content)',
+  backgroundColor: 'var(--fb-background-content)',
   padding: '12px 0',
-  boxShadow: '0 0 0 1px var(--sb-app-border-color)',
-  color: 'var(--sb-color-default-text)',
+  boxShadow: '0 0 0 1px var(--fb-app-border-color)',
+  color: 'var(--fb-color-default-text)',
   fontSize: 13,
 };
 

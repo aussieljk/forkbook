@@ -639,7 +639,7 @@ export class StoryIndexGenerator {
       if (err && (err as { source: any }).source?.match(/mdast-util-mdx-jsx/g)) {
         logger.warn(
           `💡 This seems to be an MDX2 syntax error. Please refer to the MDX section in the following resource for assistance on how to fix this: ${picocolors.yellow(
-            'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mdx2-upgrade'
+            'https://forkbook.ljk.dev/docs/migration#mdx2-upgrade'
           )}`
         );
       }

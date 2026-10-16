@@ -112,7 +112,7 @@ export const Preview: FC<PreviewProps> = ({
           blockBackground,
           styles.previewContainer,
           className,
-          'sbdocs sbdocs-preview sb-unstyled'
+          'sbdocs sbdocs-preview fb-unstyled'
         )}
       >
         {withToolbar && (

@@ -107,7 +107,7 @@ export const ObjectControl: FC<ObjectProps> = ({
   const rawInputId = getControlId(name, storyId, controlsId);
   const rawJSONForm = (
     <>
-      <label htmlFor={rawInputId} className="sb-sr-only">
+      <label htmlFor={rawInputId} className="fb-sr-only">
         Edit {name} as JSON
       </label>
       <Form.Textarea

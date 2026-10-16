@@ -2,7 +2,7 @@
 .tableWrapper.tableWrapper {
   /* Resets for cascading/system styles */
   border-spacing: 0;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   & td,
   & th {
@@ -13,7 +13,7 @@
   }
   /* End Resets */
 
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 19px;
   text-align: left;
   width: 100%;
@@ -62,7 +62,7 @@
   }
 
   & th {
-    color: var(--sb-text-muted-color);
+    color: var(--fb-text-muted-color);
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 15px;
@@ -85,8 +85,8 @@
 
   & tbody > tr > * {
     /* For filter to work properly, the table cells all need to be opaque. */
-    background: var(--sb-background-content);
-    border-top: 1px solid var(--sb-app-border-color);
+    background: var(--fb-background-content);
+    border-top: 1px solid var(--fb-app-border-color);
   }
 
   /*
@@ -100,36 +100,36 @@
 
     /* This works and I don't know why. :) */
     & > tr:first-of-type > * {
-      border-block-start: 1px solid var(--sb-app-border-color);
+      border-block-start: 1px solid var(--fb-app-border-color);
     }
 
     & > tr:last-of-type > * {
-      border-block-end: 1px solid var(--sb-app-border-color);
+      border-block-end: 1px solid var(--fb-app-border-color);
     }
 
     & > tr > *:first-of-type {
-      border-inline-start: 1px solid var(--sb-app-border-color);
+      border-inline-start: 1px solid var(--fb-app-border-color);
     }
 
     & > tr > *:last-of-type {
-      border-inline-end: 1px solid var(--sb-app-border-color);
+      border-inline-end: 1px solid var(--fb-app-border-color);
     }
 
     /* Thank you, Safari, for making me write code like this. */
     & > tr:first-of-type > td:first-of-type {
-      border-top-left-radius: var(--sb-app-border-radius);
+      border-top-left-radius: var(--fb-app-border-radius);
     }
 
     & > tr:first-of-type > td:last-of-type {
-      border-top-right-radius: var(--sb-app-border-radius);
+      border-top-right-radius: var(--fb-app-border-radius);
     }
 
     & > tr:last-of-type > td:first-of-type {
-      border-bottom-left-radius: var(--sb-app-border-radius);
+      border-bottom-left-radius: var(--fb-app-border-radius);
     }
 
     & > tr:last-of-type > td:last-of-type {
-      border-bottom-right-radius: var(--sb-app-border-radius);
+      border-bottom-right-radius: var(--fb-app-border-radius);
     }
   }
 
@@ -145,7 +145,7 @@
   }
 }
 
-:where([data-sb-theme='dark']) .tableWrapper.tableWrapper:not([data-in-addon-panel]) tbody {
+:where([data-fb-theme='dark']) .tableWrapper.tableWrapper:not([data-in-addon-panel]) tbody {
   filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.2));
 }
 

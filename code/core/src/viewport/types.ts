@@ -34,14 +34,14 @@ export interface ViewportParameters {
   /**
    * Viewport configuration
    *
-   * @see https://storybook.js.org/docs/essentials/viewport#parameters
+   * @see https://forkbook.ljk.dev/docs/essentials/viewport#parameters
    */
   viewport?: {
     /**
      * Removes the tool and disables the feature's behavior. If you wish to turn off this feature
      * for the entire Forkbook, you can set the option in your `main.js|ts` configuration file.
      *
-     * @see https://storybook.js.org/docs/essentials/viewport#disable
+     * @see https://forkbook.ljk.dev/docs/essentials/viewport#disable
      */
     disable?: boolean;
 
@@ -57,7 +57,7 @@ export interface ViewportGlobals {
   /**
    * Viewport configuration
    *
-   * @see https://storybook.js.org/docs/essentials/viewport#globals
+   * @see https://forkbook.ljk.dev/docs/essentials/viewport#globals
    */
   viewport?: GlobalState | GlobalState['value'];
 }

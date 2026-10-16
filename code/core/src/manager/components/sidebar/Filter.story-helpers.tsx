@@ -107,7 +107,7 @@ export class MockAPIWrapper<SubAPI, SubState> extends React.Component<{
             ...args,
             api: {
               ...this.api,
-              getDocsUrl: () => 'https://storybook.js.org/docs/',
+              getDocsUrl: () => 'https://forkbook.ljk.dev/docs',
               getUrlState: () => ({
                 queryParams: {},
                 path: '',

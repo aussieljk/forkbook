@@ -28,7 +28,7 @@ export const ForceRemount = {
    */
   parameters: { chromatic: { disableSnapshot: true } },
   play: async ({ canvasElement, id }: PlayFunctionContext<any>) => {
-    const channel = globalThis.__STORYBOOK_ADDONS_CHANNEL__;
+    const channel = globalThis.__FORKBOOK_ADDONS_CHANNEL__;
     const button = await within(canvasElement).findByRole('button');
 
     await waitFor(() => expect(button).not.toHaveFocus());
@@ -77,7 +77,7 @@ export const SlowLoader = {
 
 export const ChangeArgs = {
   play: async ({ canvasElement, id }: PlayFunctionContext<any>) => {
-    const channel = globalThis.__STORYBOOK_ADDONS_CHANNEL__;
+    const channel = globalThis.__FORKBOOK_ADDONS_CHANNEL__;
 
     await channel.emit(RESET_STORY_ARGS, { storyId: id });
     await new Promise((resolve) => {

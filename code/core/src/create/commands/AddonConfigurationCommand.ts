@@ -11,7 +11,7 @@ import { TelemetryService } from '../services/index.ts';
 
 const ADDON_INSTALLATION_INSTRUCTIONS = {
   '@aussieljk/forkbook/addon-vitest':
-    'https://storybook.js.org/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced',
+    'https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced',
 } as { [key: string]: string };
 
 type ExecuteAddonConfigurationParams = {

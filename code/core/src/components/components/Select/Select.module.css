@@ -1,18 +1,18 @@
 .selectedOptionCount {
   appearance: none;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   font-size: 12px;
 }
 
 /* The trigger while the listbox is open or an option is selected. */
 .highlightedButton {
   box-shadow: none;
-  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.93));
-  color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+  background: rgb(from var(--fb-bar-selected-color) r g b / calc(alpha - 0.93));
+  color: hsl(from var(--fb-color-secondary) h s calc(l - 10));
 }
 
-:where([data-sb-theme='dark']) .highlightedButton {
-  color: var(--sb-color-secondary);
+:where([data-fb-theme='dark']) .highlightedButton {
+  color: var(--fb-color-secondary);
 }
 
 .underlay {

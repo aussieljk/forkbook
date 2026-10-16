@@ -49,7 +49,7 @@ describe('FinalizationCommand', () => {
       );
       expect(logger.step).toHaveBeenCalledWith(expect.stringContaining('successfully installed'));
       expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run storybook'));
-      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('storybook.js.org'));
+      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('forkbook.ljk.dev'));
     });
 
     it('should not update gitignore if file not found', async () => {
@@ -132,7 +132,7 @@ describe('FinalizationCommand', () => {
         expect.stringContaining('pnpm exec forkbook skills setup')
       );
       const logCalls = vi.mocked(logger.log).mock.calls.map((c) => String(c[0]));
-      expect(logCalls.some((msg) => msg.includes('https://storybook.js.org/llms.txt'))).toBe(true);
+      expect(logCalls.some((msg) => msg.includes('https://forkbook.ljk.dev/llms.txt'))).toBe(true);
       expect(logCalls.some((msg) => msg.includes('https://discord.gg/storybook/'))).toBe(false);
     });
 
@@ -173,9 +173,9 @@ describe('FinalizationCommand', () => {
       const stepCalls = vi.mocked(logger.step).mock.calls.map((c) => String(c[0]));
       expect(stepCalls.some((msg) => msg.includes('is not entirely set up yet'))).toBe(false);
       const logCalls = vi.mocked(logger.log).mock.calls.map((c) => String(c[0]));
-      expect(logCalls.some((msg) => msg.includes('https://storybook.js.org/'))).toBe(true);
+      expect(logCalls.some((msg) => msg.includes('https://forkbook.ljk.dev'))).toBe(true);
       expect(logCalls.some((msg) => msg.includes('https://discord.gg/storybook/'))).toBe(true);
-      expect(logCalls.some((msg) => msg.includes('https://storybook.js.org/llms.txt'))).toBe(false);
+      expect(logCalls.some((msg) => msg.includes('https://forkbook.ljk.dev/llms.txt'))).toBe(false);
     });
   });
 

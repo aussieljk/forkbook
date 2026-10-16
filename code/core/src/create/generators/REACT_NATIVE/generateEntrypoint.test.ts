@@ -21,7 +21,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('generates .rnstorybook/index.ts for TypeScript projects', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-ts-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-ts-'));
 
     try {
       const result = await generateReactNativeEntrypoint({
@@ -68,7 +68,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('generates .rnstorybook/index.js for JavaScript projects', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-js-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-js-'));
 
     try {
       const result = await generateReactNativeEntrypoint({
@@ -115,7 +115,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('generates Expo-specific entrypoint contents for expo projects', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-expo-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-expo-'));
 
     try {
       const result = await generateReactNativeEntrypoint({
@@ -158,7 +158,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('overwrites existing target index file on rerun', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-overwrite-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-overwrite-'));
     const targetPath = path.join(cwd, '.rnstorybook', 'index.js');
 
     try {
@@ -205,7 +205,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('keeps sibling extension file when generating target extension', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-sibling-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-sibling-'));
     const tsPath = path.join(cwd, '.rnstorybook', 'index.ts');
 
     try {
@@ -259,7 +259,7 @@ describe('generateReactNativeEntrypoint', () => {
   });
 
   it('does not modify existing storybook.requires file', async () => {
-    const cwd = await mkdtemp(path.join(os.tmpdir(), 'sb-rn-entry-requires-'));
+    const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-requires-'));
     const requiresPath = path.join(cwd, '.rnstorybook', 'storybook.requires.ts');
     const originalRequires = 'export const view = {};\n';
 

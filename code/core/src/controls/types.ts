@@ -2,7 +2,7 @@ export interface ControlsParameters {
   /**
    * Controls configuration
    *
-   * @see https://storybook.js.org/docs/essentials/controls#parameters-1
+   * @see https://forkbook.ljk.dev/docs/essentials/controls#parameters-1
    */
   controls?: {
     /**
@@ -10,7 +10,7 @@ export interface ControlsParameters {
      * feature for the entire Forkbook, you can set the option in your `main.js|ts` configuration
      * file.
      *
-     * @see https://storybook.js.org/docs/essentials/controls#disable
+     * @see https://forkbook.ljk.dev/docs/essentials/controls#disable
      */
     disable?: boolean;
 
@@ -32,7 +32,7 @@ export interface ControlsParameters {
     /**
      * Custom control type matchers
      *
-     * @see https://storybook.js.org/docs/essentials/controls#custom-control-type-matchers
+     * @see https://forkbook.ljk.dev/docs/essentials/controls#custom-control-type-matchers
      */
     matchers?: {
       date?: RegExp;

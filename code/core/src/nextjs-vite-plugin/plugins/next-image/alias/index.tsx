@@ -9,6 +9,6 @@ const getEntryPoint = (subPath: string, env: Env) =>
   require.resolve(`${VITEST_PLUGIN_NAME}/${env}/mocks/${subPath}`);
 
 export const getAlias = (env: Env) => ({
-  'sb-original/default-loader': getEntryPoint('image-default-loader', env),
-  'sb-original/image-context': getEntryPoint('image-context', env),
+  'fb-original/default-loader': getEntryPoint('image-default-loader', env),
+  'fb-original/image-context': getEntryPoint('image-context', env),
 });

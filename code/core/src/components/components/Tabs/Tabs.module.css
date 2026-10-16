@@ -3,8 +3,8 @@
 
   &[data-bordered] {
     background-clip: padding-box;
-    border: 1px solid var(--sb-app-border-color);
-    border-radius: var(--sb-app-border-radius);
+    border: 1px solid var(--fb-app-border-color);
+    border-radius: var(--fb-app-border-radius);
     overflow: hidden;
     box-sizing: border-box;
   }
@@ -34,14 +34,14 @@
   display: block;
   position: relative;
   container: tab-content / inline-size;
-  font-size: calc(var(--sb-size-s2) - 1px);
-  background: var(--sb-background-content);
+  font-size: calc(var(--fb-size-s2) - 1px);
+  background: var(--fb-background-content);
 
   &[data-bordered] {
     --inset: 1px;
 
-    border-radius: 0 0 calc(var(--sb-app-border-radius) - 1px)
-      calc(var(--sb-app-border-radius) - 1px);
+    border-radius: 0 0 calc(var(--fb-app-border-radius) - 1px)
+      calc(var(--fb-app-border-radius) - 1px);
   }
 
   &[data-absolute] {

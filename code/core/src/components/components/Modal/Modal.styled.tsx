@@ -31,7 +31,7 @@ interface TransitionProps {
 
 const transitionAttributes = ({ $status, $transitionDuration }: TransitionProps) => ({
   'data-exiting': $status === 'exiting' || $status === 'preExit' || undefined,
-  style: { '--sb-modal-duration': `${$transitionDuration}ms` } as CSSProperties,
+  style: { '--fb-modal-duration': `${$transitionDuration}ms` } as CSSProperties,
 });
 
 export const Overlay = forwardRef<HTMLDivElement, ComponentProps<'div'> & TransitionProps>(

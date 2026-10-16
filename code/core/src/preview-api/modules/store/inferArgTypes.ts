@@ -46,8 +46,8 @@ const inferType = (
         We've detected a cycle in arg '${name}'. Args should be JSON-serializable.
 
         Consider using the mapping feature or fully custom args:
-        - Mapping: https://storybook.js.org/docs/writing-stories/args#mapping-to-complex-arg-values
-        - Custom args: https://storybook.js.org/docs/essentials/controls#fully-custom-args
+        - Mapping: https://forkbook.ljk.dev/docs/writing-stories/args#mapping-to-complex-arg-values
+        - Custom args: https://forkbook.ljk.dev/docs/essentials/controls#fully-custom-args
       `);
       return { name: 'other', value: 'cyclic object' };
     }

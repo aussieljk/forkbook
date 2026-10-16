@@ -4,12 +4,12 @@
   align-items: center;
 
   & > * + * {
-    margin-left: var(--sb-layout-margin);
+    margin-left: var(--fb-layout-margin);
   }
 }
 
 .indicatorClickTarget {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 
   & svg {
     height: 14px;
@@ -21,7 +21,7 @@
 }
 
 .messageTitle {
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
 }
 
 .message {
@@ -31,27 +31,27 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--sb-app-border-color);
+    border-bottom: 1px solid var(--fb-app-border-color);
   }
 
   &:hover {
-    background: var(--sb-background-hoverable);
-    color: var(--sb-color-default-text);
+    background: var(--fb-background-hoverable);
+    color: var(--fb-color-default-text);
   }
 
   &:link,
   &:active,
   &:focus {
-    color: var(--sb-color-default-text);
+    color: var(--fb-color-default-text);
   }
 
   &:focus-visible {
-    background: var(--sb-background-hoverable);
+    background: var(--fb-background-hoverable);
     border-radius: 8px;
-    box-shadow: inset 0 0 0 2px var(--sb-color-secondary);
+    box-shadow: inset 0 0 0 2px var(--fb-color-secondary);
     outline: none;
   }
 
@@ -73,7 +73,7 @@
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;
-  color: var(--sb-color-dark);
+  color: var(--fb-color-dark);
 
   &[data-mobile] {
     width: calc(100vw - 20px);
@@ -82,7 +82,7 @@
 
 .subtleSelect {
   background: transparent;
-  color: var(--sb-color-default-text);
-  font-size: var(--sb-size-s1);
-  font-weight: var(--sb-weight-regular);
+  color: var(--fb-color-default-text);
+  font-size: var(--fb-size-s1);
+  font-weight: var(--fb-weight-regular);
 }

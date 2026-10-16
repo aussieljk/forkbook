@@ -192,7 +192,7 @@ export const TestingWidget = ({
       ref={cardRef}
       outlineAttrs={landmarkProps}
     >
-      <h2 id="storybook-testing-widget-heading" className="sb-sr-only">
+      <h2 id="storybook-testing-widget-heading" className="fb-sr-only">
         Component tests
       </h2>
       <div

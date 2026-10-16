@@ -1,6 +1,6 @@
 .wrapper {
-  box-shadow: var(--sb-app-border-color) 0 -1px 0 0 inset;
-  background: var(--sb-background-app);
+  box-shadow: var(--fb-app-border-color) 0 -1px 0 0 inset;
+  background: var(--fb-background-app);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -14,7 +14,7 @@
 }
 
 .iconButton {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }
 
 .rewindButton {
@@ -25,19 +25,19 @@
 .jumpToEndButton {
   border-radius: 4px;
   padding: 6px;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   margin-inline: 3px;
   line-height: 12px;
 
   &:not(:disabled):hover,
   &:not(:disabled):focus-visible {
-    color: var(--sb-color-secondary);
+    color: var(--fb-color-secondary);
   }
 }
 
 .openInEditorButton {
-  color: var(--sb-color-secondary);
-  font-weight: var(--sb-weight-bold);
+  color: var(--fb-color-secondary);
+  font-weight: var(--fb-weight-bold);
   justify-content: flex-end;
   text-align: right;
   white-space: nowrap;
@@ -46,9 +46,9 @@
 }
 
 .location {
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
   cursor: default;
-  font-weight: var(--sb-weight-regular);
+  font-weight: var(--fb-weight-regular);
   justify-content: flex-end;
   text-align: right;
   white-space: nowrap;

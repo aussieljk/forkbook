@@ -1,4 +1,4 @@
 .textarea {
   overflow: visible;
-  max-height: var(--sb-textarea-max-height);
+  max-height: var(--fb-textarea-max-height);
 }

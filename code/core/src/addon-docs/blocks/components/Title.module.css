@@ -1,11 +1,11 @@
 .title {
-  color: var(--sb-color-default-text);
-  font-size: var(--sb-size-m3);
-  font-weight: var(--sb-weight-bold);
+  color: var(--fb-color-default-text);
+  font-size: var(--fb-size-m3);
+  font-weight: var(--fb-weight-bold);
   line-height: 32px;
 
   @media (min-width: 600px) {
-    font-size: var(--sb-size-l1);
+    font-size: var(--fb-size-l1);
     line-height: 36px;
     margin-bottom: 16px;
   }

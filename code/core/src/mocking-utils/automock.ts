@@ -12,11 +12,11 @@ import { type Positioned, getArbitraryModuleIdentifier } from './esmWalker.ts';
 
 type ParseFn = (code: string) => Program;
 
-export const __STORYBOOK_GLOBAL_THIS_ACCESSOR__ = '__vitest_mocker__';
+export const __FORKBOOK_GLOBAL_THIS_ACCESSOR__ = '__vitest_mocker__';
 
 export function getAutomockCode(originalCode: string, isSpy: boolean, parse: ParseFn) {
   const mocked = automockModule(originalCode, isSpy ? 'autospy' : 'automock', parse, {
-    globalThisAccessor: JSON.stringify(__STORYBOOK_GLOBAL_THIS_ACCESSOR__),
+    globalThisAccessor: JSON.stringify(__FORKBOOK_GLOBAL_THIS_ACCESSOR__),
   });
   return mocked;
 }
@@ -51,7 +51,7 @@ export function automockModule(
   options: any = {}
 ): MagicString {
   const globalThisAccessor =
-    options.globalThisAccessor || JSON.stringify(__STORYBOOK_GLOBAL_THIS_ACCESSOR__);
+    options.globalThisAccessor || JSON.stringify(__FORKBOOK_GLOBAL_THIS_ACCESSOR__);
   const ast = parse(code) as Program;
 
   const m = new MagicString(code);
@@ -176,11 +176,11 @@ const __vitest_mocked_module__ = globalThis[${globalThisAccessor}].mockObject(__
   // restoreAllMocks from @aussieljk/forkbook/test can find and clear them. This is needed because the
   // module mocker may use a different @vitest/spy instance than the one bundled with @aussieljk/forkbook/test.
   const spyRegistration = `
-if (!globalThis.__STORYBOOK_MODULE_MOCK_SPIES__) { globalThis.__STORYBOOK_MODULE_MOCK_SPIES__ = new Set(); }
+if (!globalThis.__FORKBOOK_MODULE_MOCK_SPIES__) { globalThis.__FORKBOOK_MODULE_MOCK_SPIES__ = new Set(); }
 for (const __vitest_key__ of Object.keys(__vitest_mocked_module__)) {
   const __vitest_val__ = __vitest_mocked_module__[__vitest_key__];
   if (__vitest_val__ && typeof __vitest_val__ === "function" && __vitest_val__._isMockFunction === true) {
-    globalThis.__STORYBOOK_MODULE_MOCK_SPIES__.add(__vitest_val__);
+    globalThis.__FORKBOOK_MODULE_MOCK_SPIES__.add(__vitest_val__);
   }
 }
 `;

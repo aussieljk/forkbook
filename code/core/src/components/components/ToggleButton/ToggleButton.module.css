@@ -1,19 +1,19 @@
 /* Pressed styles. Each rule has the specificity of one class, like the Button styles. */
 .toggle:where([aria-checked='true'][data-variant='solid']) {
-  background: hsl(from var(--sb-color-secondary) h s calc(l - 20));
+  background: hsl(from var(--fb-color-secondary) h s calc(l - 20));
 }
 
 .toggle:where([aria-checked='true'][data-variant='outline']) {
-  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.94));
-  box-shadow: var(--sb-bar-selected-color) 0 0 0 1px inset;
-  color: var(--sb-bar-selected-color);
+  background: rgb(from var(--fb-bar-selected-color) r g b / calc(alpha - 0.94));
+  box-shadow: var(--fb-bar-selected-color) 0 0 0 1px inset;
+  color: var(--fb-bar-selected-color);
 }
 
 .toggle:where([aria-checked='true'][data-variant='ghost']) {
-  background: rgb(from var(--sb-bar-selected-color) r g b / calc(alpha - 0.93));
-  color: hsl(from var(--sb-color-secondary) h s calc(l - 10));
+  background: rgb(from var(--fb-bar-selected-color) r g b / calc(alpha - 0.93));
+  color: hsl(from var(--fb-color-secondary) h s calc(l - 10));
 }
 
-:where([data-sb-theme='dark']) .toggle:where([aria-checked='true'][data-variant='ghost']) {
-  color: var(--sb-color-secondary);
+:where([data-fb-theme='dark']) .toggle:where([aria-checked='true'][data-variant='ghost']) {
+  color: var(--fb-color-secondary);
 }

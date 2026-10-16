@@ -6,7 +6,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 15px;
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
 }
 
 .content {
@@ -17,19 +17,19 @@
 }
 
 .title {
-  font-weight: var(--sb-weight-bold);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-weight: var(--fb-weight-bold);
+  font-size: calc(var(--fb-size-s2) - 1px);
   text-align: center;
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
 }
 
 .footer {
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
 }
 
 .description {
-  font-weight: var(--sb-weight-regular);
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-weight: var(--fb-weight-regular);
+  font-size: calc(var(--fb-size-s2) - 1px);
   text-align: center;
-  color: var(--sb-text-muted-color);
+  color: var(--fb-text-muted-color);
 }

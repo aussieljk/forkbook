@@ -297,7 +297,7 @@ export const configureFlatConfig = async (code: string, configFile: string) => {
       findConfigTarget(commonJsExport.exportedConfig, programScope, helpers);
     if (!target) {
       logger.warn(
-        `Could not automatically add eslint-plugin-storybook to ${configFile}. Please add it manually: const storybook = require('eslint-plugin-storybook'); then add ...storybook.configs['flat/recommended'] to the exported config. See https://storybook.js.org/docs/configure/integration/eslint-plugin`
+        `Could not automatically add eslint-plugin-storybook to ${configFile}. Please add it manually: const storybook = require('eslint-plugin-storybook'); then add ...storybook.configs['flat/recommended'] to the exported config. See https://forkbook.ljk.dev/docs/configure/integration/eslint-plugin`
       );
       return code;
     }
@@ -466,7 +466,7 @@ export const suggestESLintPlugin = async (): Promise<boolean> => {
   const shouldInstall = await prompt.confirm({
     message: dedent`
         We have detected that you're using ESLint. Forkbook provides a plugin that gives the best experience with Forkbook and helps follow best practices: ${picocolors.yellow(
-          'https://storybook.js.org/docs/configure/integration/eslint-plugin'
+          'https://forkbook.ljk.dev/docs/configure/integration/eslint-plugin'
         )}
 
         Would you like to install it?

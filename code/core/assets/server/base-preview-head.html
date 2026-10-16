@@ -2,30 +2,30 @@
 
 <style>
   /* While we aren't showing the main block yet, but still preparing, we want everything the user has rendered, which may or may not be in #storybook-root, to be display none */
-  .sb-show-preparing-story:not(.sb-show-main) > :not(.sb-preparing-story) {
+  .fb-show-preparing-story:not(.fb-show-main) > :not(.fb-preparing-story) {
     display: none;
   }
 
-  .sb-show-preparing-docs:not(.sb-show-main) > :not(.sb-preparing-docs) {
+  .fb-show-preparing-docs:not(.fb-show-main) > :not(.fb-preparing-docs) {
     display: none;
   }
 
   /* Hide our own blocks when we aren't supposed to be showing them */
-  :not(.sb-show-preparing-story) > .sb-preparing-story,
-  :not(.sb-show-preparing-docs) > .sb-preparing-docs,
-  :not(.sb-show-nopreview) > .sb-nopreview,
-  :not(.sb-show-errordisplay) > .sb-errordisplay {
+  :not(.fb-show-preparing-story) > .fb-preparing-story,
+  :not(.fb-show-preparing-docs) > .fb-preparing-docs,
+  :not(.fb-show-nopreview) > .fb-nopreview,
+  :not(.fb-show-errordisplay) > .fb-errordisplay {
     display: none;
   }
 
-  .sb-show-main.sb-main-centered {
+  .fb-show-main.fb-main-centered {
     margin: 0;
     display: flex;
     align-items: center;
     min-height: 100vh;
   }
 
-  .sb-show-main.sb-main-centered #storybook-root {
+  .fb-show-main.fb-main-centered #storybook-root {
     box-sizing: border-box;
     margin: auto;
     padding: 1rem;
@@ -35,27 +35,27 @@
 
   /* Vertical centering fix for IE11 */
   @media screen and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    .sb-show-main.sb-main-centered:after {
+    .fb-show-main.fb-main-centered:after {
       content: '';
       min-height: inherit;
       font-size: 0;
     }
   }
 
-  .sb-show-main.sb-main-fullscreen {
+  .fb-show-main.fb-main-fullscreen {
     margin: 0;
     padding: 0;
     display: block;
   }
 
-  .sb-show-main.sb-main-padded {
+  .fb-show-main.fb-main-padded {
     margin: 0;
     padding: 1rem;
     display: block;
     box-sizing: border-box;
   }
 
-  .sb-wrapper {
+  .fb-wrapper {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -80,18 +80,18 @@
   }
 
   @media (max-width: 700px) {
-    .sb-wrapper {
+    .fb-wrapper {
       padding: 20px;
     }
   }
 
   @media (max-width: 500px) {
-    .sb-wrapper {
+    .fb-wrapper {
       padding: 10px;
     }
   }
 
-  .sb-heading {
+  .fb-heading {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.2px;
@@ -99,14 +99,14 @@
     padding-right: 25px;
   }
 
-  .sb-nopreview {
+  .fb-nopreview {
     display: flex;
     align-content: center;
     justify-content: center;
     box-sizing: border-box;
   }
 
-  .sb-nopreview_main {
+  .fb-nopreview_main {
     margin: auto;
     padding: 30px;
     border-radius: 10px;
@@ -114,16 +114,16 @@
     color: rgb(46, 52, 56);
   }
 
-  .sb-nopreview_main * {
+  .fb-nopreview_main * {
     background: rgb(247, 247, 247);
     color: rgb(46, 52, 56);
   }
 
-  .sb-nopreview_heading {
+  .fb-nopreview_heading {
     text-align: center;
   }
 
-  .sb-errordisplay {
+  .fb-errordisplay {
     background: #f6f9fc;
     color: black;
     z-index: 999999;
@@ -132,7 +132,7 @@
     box-sizing: border-box;
   }
 
-  .sb-errordisplay_main {
+  .fb-errordisplay_main {
     margin: auto;
     padding: 24px;
     display: flex;
@@ -149,25 +149,25 @@
     gap: 24px;
   }
 
-  .sb-errordisplay_main ol {
+  .fb-errordisplay_main ol {
     padding-left: 18px;
     margin: 0;
   }
 
   /* Redefine colors to ensure readability regardless of user-provided * selectors. */
-  .sb-errordisplay_main * {
+  .fb-errordisplay_main * {
     background: white;
     color: black;
   }
 
   /* Exclude error code block from the universal reset to preserve ANSI colors and dark theme */
-  .sb-errordisplay_main .sb-errordisplay_code,
-  .sb-errordisplay_main .sb-errordisplay_code * {
+  .fb-errordisplay_main .fb-errordisplay_code,
+  .fb-errordisplay_main .fb-errordisplay_code * {
     background: #242424;
     color: #c6c6c6;
   }
 
-  .sb-errordisplay_main h1 {
+  .fb-errordisplay_main h1 {
     font-family: inherit;
     font-size: 22px;
     font-weight: 400;
@@ -175,7 +175,7 @@
     margin: 0;
   }
 
-  .sb-errordisplay_main h1::before {
+  .fb-errordisplay_main h1::before {
     content: '';
     display: inline-block;
     width: 12px;
@@ -185,8 +185,8 @@
     margin-right: 8px;
   }
 
-  .sb-errordisplay_main p,
-  .sb-errordisplay_main ol {
+  .fb-errordisplay_main p,
+  .fb-errordisplay_main ol {
     font-family: inherit;
     font-size: 14px;
     font-weight: 400;
@@ -194,17 +194,17 @@
     margin: 0;
   }
 
-  .sb-errordisplay_main li + li {
+  .fb-errordisplay_main li + li {
     margin: 0;
     padding: 0;
     padding-top: 12px;
   }
 
-  .sb-errordisplay_main a {
+  .fb-errordisplay_main a {
     color: currentColor;
   }
 
-  .sb-errordisplay_main .sb-errordisplay_code {
+  .fb-errordisplay_main .fb-errordisplay_code {
     padding: 10px;
     flex: 1;
     background: #242424;
@@ -223,16 +223,16 @@
     overflow: auto;
   }
 
-  .sb-errordisplay_main .sb-errordisplay_code code {
+  .fb-errordisplay_main .fb-errordisplay_code code {
     background-color: inherit;
     color: inherit;
   }
 
-  .sb-errordisplay_main .sb-errordisplay_code {
+  .fb-errordisplay_main .fb-errordisplay_code {
     white-space: pre-wrap;
   }
 
-  @-webkit-keyframes sb-rotate360 {
+  @-webkit-keyframes fb-rotate360 {
     from {
       transform: rotate(0deg);
     }
@@ -242,7 +242,7 @@
     }
   }
 
-  @keyframes sb-rotate360 {
+  @keyframes fb-rotate360 {
     from {
       transform: rotate(0deg);
     }
@@ -252,7 +252,7 @@
     }
   }
 
-  @-webkit-keyframes sb-glow {
+  @-webkit-keyframes fb-glow {
     0%,
     100% {
       opacity: 1;
@@ -263,7 +263,7 @@
     }
   }
 
-  @keyframes sb-glow {
+  @keyframes fb-glow {
     0%,
     100% {
       opacity: 1;
@@ -275,17 +275,17 @@
   }
 
   /* We display the preparing loaders *over* the rendering story */
-  .sb-preparing-story,
-  .sb-preparing-docs {
+  .fb-preparing-story,
+  .fb-preparing-docs {
     background-color: white;
     /* Maximum possible z-index. It would be better to use stacking contexts to ensure it's always
     on top, but this isn't possible as it would require making CSS changes that could affect user code */
     z-index: 2147483647;
   }
 
-  .sb-loader {
-    -webkit-animation: sb-rotate360 0.7s linear infinite;
-    animation: sb-rotate360 0.7s linear infinite;
+  .fb-loader {
+    -webkit-animation: fb-rotate360 0.7s linear infinite;
+    animation: fb-rotate360 0.7s linear infinite;
     border-color: rgba(97, 97, 97, 0.29);
     border-radius: 50%;
     border-style: solid;
@@ -306,7 +306,7 @@
     z-index: 4;
   }
 
-  .sb-previewBlock {
+  .fb-previewBlock {
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -315,7 +315,7 @@
     max-width: 600px;
   }
 
-  .sb-previewBlock_header {
+  .fb-previewBlock_header {
     align-items: center;
     box-shadow: rgba(0, 0, 0, 0.1) 0 -1px 0 0 inset;
     display: flex;
@@ -324,26 +324,26 @@
     padding: 0 12px;
   }
 
-  .sb-previewBlock_icon {
-    -webkit-animation: sb-glow 1.5s ease-in-out infinite;
-    animation: sb-glow 1.5s ease-in-out infinite;
+  .fb-previewBlock_icon {
+    -webkit-animation: fb-glow 1.5s ease-in-out infinite;
+    animation: fb-glow 1.5s ease-in-out infinite;
     background: #e6e6e6;
     height: 14px;
     width: 14px;
   }
 
-  .sb-previewBlock_icon:last-child {
+  .fb-previewBlock_icon:last-child {
     margin-left: auto;
   }
 
-  .sb-previewBlock_body {
-    -webkit-animation: sb-glow 1.5s ease-in-out infinite;
-    animation: sb-glow 1.5s ease-in-out infinite;
+  .fb-previewBlock_body {
+    -webkit-animation: fb-glow 1.5s ease-in-out infinite;
+    animation: fb-glow 1.5s ease-in-out infinite;
     height: 182px;
     position: relative;
   }
 
-  .sb-argstableBlock {
+  .fb-argstableBlock {
     border-collapse: collapse;
     border-spacing: 0;
     font-size: 13px;
@@ -354,88 +354,88 @@
     width: 100%;
   }
 
-  .sb-argstableBlock th:first-of-type,
-  .sb-argstableBlock td:first-of-type {
+  .fb-argstableBlock th:first-of-type,
+  .fb-argstableBlock td:first-of-type {
     padding-left: 20px;
   }
 
-  .sb-argstableBlock th:nth-of-type(2),
-  .sb-argstableBlock td:nth-of-type(2) {
+  .fb-argstableBlock th:nth-of-type(2),
+  .fb-argstableBlock td:nth-of-type(2) {
     width: 35%;
   }
 
-  .sb-argstableBlock th:nth-of-type(3),
-  .sb-argstableBlock td:nth-of-type(3) {
+  .fb-argstableBlock th:nth-of-type(3),
+  .fb-argstableBlock td:nth-of-type(3) {
     width: 15%;
   }
 
-  .sb-argstableBlock th:last-of-type,
-  .sb-argstableBlock td:last-of-type {
+  .fb-argstableBlock th:last-of-type,
+  .fb-argstableBlock td:last-of-type {
     width: 25%;
     padding-right: 20px;
   }
 
-  .sb-argstableBlock th span,
-  .sb-argstableBlock td span {
-    -webkit-animation: sb-glow 1.5s ease-in-out infinite;
-    animation: sb-glow 1.5s ease-in-out infinite;
+  .fb-argstableBlock th span,
+  .fb-argstableBlock td span {
+    -webkit-animation: fb-glow 1.5s ease-in-out infinite;
+    animation: fb-glow 1.5s ease-in-out infinite;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 0;
     box-shadow: none;
     color: transparent;
   }
 
-  .sb-argstableBlock th {
+  .fb-argstableBlock th {
     padding: 10px 15px;
   }
 
-  .sb-argstableBlock-body {
+  .fb-argstableBlock-body {
     border-radius: 4px;
     box-shadow:
       rgba(0, 0, 0, 0.1) 0 1px 3px 1px,
       rgba(0, 0, 0, 0.065) 0 0 0 1px;
   }
 
-  .sb-argstableBlock-body tr {
+  .fb-argstableBlock-body tr {
     background: transparent;
     overflow: hidden;
   }
 
-  .sb-argstableBlock-body tr:not(:first-child) {
+  .fb-argstableBlock-body tr:not(:first-child) {
     border-top: 1px solid #e6e6e6;
   }
 
-  .sb-argstableBlock-body tr:first-child td:first-child {
+  .fb-argstableBlock-body tr:first-child td:first-child {
     border-top-left-radius: 4px;
   }
 
-  .sb-argstableBlock-body tr:first-child td:last-child {
+  .fb-argstableBlock-body tr:first-child td:last-child {
     border-top-right-radius: 4px;
   }
 
-  .sb-argstableBlock-body tr:last-child td:first-child {
+  .fb-argstableBlock-body tr:last-child td:first-child {
     border-bottom-left-radius: 4px;
   }
 
-  .sb-argstableBlock-body tr:last-child td:last-child {
+  .fb-argstableBlock-body tr:last-child td:last-child {
     border-bottom-right-radius: 4px;
   }
 
-  .sb-argstableBlock-body td {
+  .fb-argstableBlock-body td {
     background: #fff;
     padding-bottom: 10px;
     padding-top: 10px;
     vertical-align: top;
   }
 
-  .sb-argstableBlock-body td:not(:first-of-type) {
+  .fb-argstableBlock-body td:not(:first-of-type) {
     padding-left: 15px;
     padding-right: 15px;
   }
 
-  .sb-argstableBlock-body button {
-    -webkit-animation: sb-glow 1.5s ease-in-out infinite;
-    animation: sb-glow 1.5s ease-in-out infinite;
+  .fb-argstableBlock-body button {
+    -webkit-animation: fb-glow 1.5s ease-in-out infinite;
+    animation: fb-glow 1.5s ease-in-out infinite;
     background-color: rgba(0, 0, 0, 0.1);
     border: 0;
     border-radius: 0;
@@ -447,18 +447,18 @@
     padding: 10px 16px;
   }
 
-  .sb-argstableBlock-summary {
+  .fb-argstableBlock-summary {
     margin-top: 4px;
   }
 
-  .sb-argstableBlock-code {
+  .fb-argstableBlock-code {
     margin-right: 4px;
     margin-bottom: 4px;
     padding: 2px 5px;
   }
 
-  .sb-sr-only,
-  .sb-hidden-until-focus:not(:focus) {
+  .fb-sr-only,
+  .fb-hidden-until-focus:not(:focus) {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -469,12 +469,12 @@
     border: none;
   }
 
-  .sb-hidden-until-focus {
+  .fb-hidden-until-focus {
     opacity: 0;
     transition: opacity 150ms ease-out;
   }
 
-  .sb-hidden-until-focus:focus {
+  .fb-hidden-until-focus:focus {
     opacity: 1;
   }
 </style>

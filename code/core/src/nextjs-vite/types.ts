@@ -43,7 +43,7 @@ export interface NextJsParameters {
   /**
    * Next.js framework configuration
    *
-   * @see https://storybook.js.org/docs/get-started/frameworks/nextjs-vite
+   * @see https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite
    */
   nextjs?: {
     /**

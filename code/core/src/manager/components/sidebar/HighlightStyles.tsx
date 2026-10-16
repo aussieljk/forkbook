@@ -5,7 +5,7 @@ import type { Highlight } from './types.ts';
 
 export const HighlightStyles: FC<NonNullable<Highlight>> = ({ refId, itemId }) => {
   const item = `[data-ref-id="${refId}"][data-item-id="${itemId}"]:not([data-selected="true"])`;
-  const background = 'rgb(from var(--sb-color-secondary) r g b / calc(alpha - 0.85))';
+  const background = 'rgb(from var(--fb-color-secondary) r g b / calc(alpha - 0.85))';
 
   return (
     <style>{`
@@ -16,7 +16,7 @@ export const HighlightStyles: FC<NonNullable<Highlight>> = ({ refId, itemId }) =
 
       ${item}:is([data-nodetype="story"], [data-nodetype="document"], [data-nodetype="test"]),
       ${item}:is([data-nodetype="story"], [data-nodetype="document"], [data-nodetype="test"]):is(:hover, :focus) {
-        color: var(--sb-color-default-text);
+        color: var(--fb-color-default-text);
         background: ${background};
       }
     `}</style>

@@ -1,7 +1,7 @@
 .itemLabel {
-  font-family: var(--sb-font-base);
-  font-size: var(--sb-size-s1);
-  color: var(--sb-color-default-text);
+  font-family: var(--fb-font-base);
+  font-size: var(--fb-size-s1);
+  color: var(--fb-color-default-text);
   margin-left: 10px;
   line-height: 1.2;
   display: -webkit-box;

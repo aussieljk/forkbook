@@ -1,0 +1,1571 @@
+{
+  "about": "Every forkbook.ljk.dev URL that Forkbook links to. The docs site must have a page (or file) for each url. Made by the rename from storybook.js.org: same path, no query string, hash kept, no version segment, no trailing slash.",
+  "rules": {
+    "docsPage": "https://forkbook.ljk.dev/docs/<path>",
+    "markdownCopy": "https://forkbook.ljk.dev/docs/<path>.md (getDocsMarkdownUrl, for agents)",
+    "errorPage": "https://forkbook.ljk.dev/error/FB_<CATEGORY>_<CODE> (StorybookError with documentation: true; no error uses it now)",
+    "migration": "https://forkbook.ljk.dev/docs/migration#<anchor> (was MIGRATION.md in the Storybook repo)",
+    "docsAsset": "https://forkbook.ljk.dev/docs-assets/<path> (getDocsUrl with asset)"
+  },
+  "targets": [
+    {
+      "url": "https://forkbook.ljk.dev",
+      "note": "Home page of the Forkbook site",
+      "uses": [
+        "code/core/README.md:4",
+        "code/core/README.md:9",
+        "code/core/package.json:18",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:43",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:44",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:45",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:46",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:47",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:48",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:50",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:52",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:54",
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:56",
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgRow.stories.tsx:440",
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgRow.stories.tsx:528",
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgRow.stories.tsx:544",
+        "code/core/src/addon-docs/blocks/components/DocsPageExampleCaption.md:31",
+        "code/core/src/addon-docs/blocks/components/DocsPageExampleCaption.mdx:31",
+        "code/core/src/channels/README.md:32",
+        "code/core/src/client-logger/README.md:15",
+        "code/core/src/components/components/Button/Button.stories.tsx:378",
+        "code/core/src/components/components/Button/Docs.mdx:36",
+        "code/core/src/components/components/Button/Docs.mdx:107",
+        "code/core/src/components/components/placeholder/placeholder.stories.tsx:18",
+        "code/core/src/core-server/utils/update-check.ts:9",
+        "code/core/src/create/commands/FinalizationCommand.test.ts:176",
+        "code/core/src/create/commands/FinalizationCommand.ts:118",
+        "code/core/src/manager-api/tests/refs.test.ts:31",
+        "code/core/src/manager-api/tests/refs.test.ts:34",
+        "code/core/src/manager/README.md:3",
+        "code/core/src/manager/settings/SettingsFooter.tsx:12",
+        "code/core/src/node-logger/README.md:15",
+        "code/core/src/outline/README.md:3",
+        "code/core/src/preview-api/README-addons.md:9",
+        "code/core/src/viewport/README.md:3",
+        "code/package.json:6"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/addons",
+      "note": "Site page: addons",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:166",
+        "code/core/src/manager/components/panel/Panel.tsx:98",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:215",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:205"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/addons/@storybook/addon-interactions",
+      "note": "Site page: addons > @storybook > addon interactions",
+      "uses": [
+        "code/core/src/test/README.md:8"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/addons/storybook-addon-pseudo-states",
+      "note": "Site page: addons > storybook addon pseudo states",
+      "uses": [
+        "code/core/src/addon-pseudo-states/types.ts:17"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/blog",
+      "note": "Site page: blog",
+      "uses": [
+        "code/core/src/manager/settings/whats_new_footer.stories.tsx:16"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/community#support",
+      "note": "Site page: community, section \"support\"",
+      "uses": [
+        "code/core/src/manager/settings/SettingsFooter.tsx:20"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs",
+      "note": "Docs home page",
+      "uses": [
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgsTable.tsx:223",
+        "code/core/src/manager-api/tests/versions.test.js:166",
+        "code/core/src/manager-api/tests/versions.test.js:177",
+        "code/core/src/manager-api/tests/versions.test.js:188",
+        "code/core/src/manager-api/tests/versions.test.js:199",
+        "code/core/src/manager-api/tests/versions.test.js:210",
+        "code/core/src/manager-api/tests/versions.test.js:223",
+        "code/core/src/manager-api/tests/versions.test.js:234",
+        "code/core/src/manager-api/tests/versions.test.js:245",
+        "code/core/src/manager/components/sidebar/Filter.story-helpers.tsx:110",
+        "code/core/src/manager/components/sidebar/Menu.stories.tsx:33",
+        "code/core/src/manager/components/sidebar/Menu.stories.tsx:108",
+        "code/core/src/manager/components/sidebar/Menu.stories.tsx:172",
+        "code/core/src/manager/components/sidebar/Menu.stories.tsx:212",
+        "code/core/src/manager/components/sidebar/RefBlocks.tsx:107",
+        "code/core/src/manager/components/sidebar/Sidebar.stories.tsx:69",
+        "code/core/src/manager/settings/About.tsx:27",
+        "code/core/template/nextjs-vite/cli/js/Page.jsx:47",
+        "code/core/template/nextjs-vite/cli/ts/Page.tsx:52",
+        "code/core/template/react-vite/cli/js/Page.jsx:48",
+        "code/core/template/react-vite/cli/ts/Page.tsx:52",
+        "code/core/template/react/cli/js/Page.jsx:48",
+        "code/core/template/react/cli/ts/Page.tsx:52"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs-assets/api/doc-block-controls.png",
+      "note": "Docs image asset: api/doc-block-controls.png",
+      "uses": [
+        "code/core/src/manager-api/tests/versions.test.js:256",
+        "code/core/src/manager-api/tests/versions.test.js:257",
+        "code/core/src/manager-api/tests/versions.test.js:269",
+        "code/core/src/manager-api/tests/versions.test.js:270"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/addons/writing-presets",
+      "note": "Docs page: addons > writing presets",
+      "uses": [
+        "code/core/src/common/presets.ts:146"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview",
+      "note": "Docs page: ai > mcp > overview",
+      "uses": [
+        "code/core/src/addon-mcp/preset.ts:225"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview#3-add-the-mcp-server-to-your-agent",
+      "note": "Docs page: ai > mcp > overview, section \"3 add the mcp server to your agent\"",
+      "uses": [
+        "code/core/src/addon-mcp/template.html:192"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview#framework-support",
+      "note": "Docs page: ai > mcp > overview, section \"framework support\"",
+      "uses": [
+        "code/core/src/addon-mcp/preset.ts:216",
+        "code/core/src/addon-mcp/preset.ts:220"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types",
+      "note": "Docs page: api > arg types",
+      "uses": [
+        "code/core/src/csf/story.ts:404",
+        "code/core/src/preview-api/modules/store/args.ts:136",
+        "code/core/src/types/modules/addons.ts:185",
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:15",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:17",
+        "code/core/template/react-vite/cli/js/Button.stories.js:15",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:17",
+        "code/core/template/react/cli/js/Button.stories.js:15",
+        "code/core/template/react/cli/ts/Button.stories.ts:17"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#argtypes",
+      "note": "Docs page: api > arg types, section \"argtypes\"",
+      "uses": [
+        "code/core/src/csf/story.ts:164"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#control",
+      "note": "Docs page: api > arg types, section \"control\"",
+      "uses": [
+        "code/core/src/csf/story.ts:115"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlaccept",
+      "note": "Docs page: api > arg types, section \"controlaccept\"",
+      "uses": [
+        "code/core/src/csf/story.ts:95"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controllabels",
+      "note": "Docs page: api > arg types, section \"controllabels\"",
+      "uses": [
+        "code/core/src/csf/story.ts:100"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlmax",
+      "note": "Docs page: api > arg types, section \"controlmax\"",
+      "uses": [
+        "code/core/src/csf/story.ts:105"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlmin",
+      "note": "Docs page: api > arg types, section \"controlmin\"",
+      "uses": [
+        "code/core/src/csf/story.ts:107"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlpresetcolors",
+      "note": "Docs page: api > arg types, section \"controlpresetcolors\"",
+      "uses": [
+        "code/core/src/csf/story.ts:90"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlstep",
+      "note": "Docs page: api > arg types, section \"controlstep\"",
+      "uses": [
+        "code/core/src/csf/story.ts:109"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#controltype",
+      "note": "Docs page: api > arg types, section \"controltype\"",
+      "uses": [
+        "code/core/src/csf/story.ts:65"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#description",
+      "note": "Docs page: api > arg types, section \"description\"",
+      "uses": [
+        "code/core/src/csf/story.ts:117"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#if",
+      "note": "Docs page: api > arg types, section \"if\"",
+      "uses": [
+        "code/core/src/csf/story.ts:119"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#mapping",
+      "note": "Docs page: api > arg types, section \"mapping\"",
+      "uses": [
+        "code/core/src/csf/story.ts:121"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#name",
+      "note": "Docs page: api > arg types, section \"name\"",
+      "uses": [
+        "code/core/src/csf/story.ts:123"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#options",
+      "note": "Docs page: api > arg types, section \"options\"",
+      "uses": [
+        "code/core/src/csf/story.ts:125"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#table",
+      "note": "Docs page: api > arg types, section \"table\"",
+      "uses": [
+        "code/core/src/csf/story.ts:127"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#tablecategory",
+      "note": "Docs page: api > arg types, section \"tablecategory\"",
+      "uses": [
+        "code/core/src/csf/story.ts:130"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabledefaultvalue",
+      "note": "Docs page: api > arg types, section \"tabledefaultvalue\"",
+      "uses": [
+        "code/core/src/csf/story.ts:132"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabledisable",
+      "note": "Docs page: api > arg types, section \"tabledisable\"",
+      "uses": [
+        "code/core/src/csf/story.ts:134"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#tablesubcategory",
+      "note": "Docs page: api > arg types, section \"tablesubcategory\"",
+      "uses": [
+        "code/core/src/csf/story.ts:136"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabletype",
+      "note": "Docs page: api > arg types, section \"tabletype\"",
+      "uses": [
+        "code/core/src/csf/story.ts:138"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/arg-types#type",
+      "note": "Docs page: api > arg types, section \"type\"",
+      "uses": [
+        "code/core/src/csf/story.ts:141"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/cli-options#dev",
+      "note": "Docs page: api > cli options, section \"dev\"",
+      "uses": [
+        "code/core/assets/builder-vite/iframe.html:78"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/csf#args-story-inputs",
+      "note": "Docs page: api > csf, section \"args story inputs\"",
+      "uses": [
+        "code/core/src/types/modules/addons.ts:177"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/csf#default-export",
+      "note": "Docs page: api > csf, section \"default export\"",
+      "uses": [
+        "code/core/src/react/public-types.ts:27"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/csf#named-story-exports",
+      "note": "Docs page: api > csf, section \"named story exports\"",
+      "uses": [
+        "code/core/src/react/public-types.ts:36",
+        "code/core/src/react/public-types.ts:45"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/csf#non-story-exports",
+      "note": "Docs page: api > csf, section \"non story exports\"",
+      "uses": [
+        "code/core/src/csf/story.ts:510",
+        "code/core/src/csf/story.ts:520",
+        "code/core/src/types/modules/addons.ts:230",
+        "code/core/src/types/modules/addons.ts:245"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes",
+      "note": "Docs page: api > doc blocks > doc block argtypes",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:179"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes#sort",
+      "note": "Docs page: api > doc blocks > doc block argtypes, section \"sort\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:78"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas",
+      "note": "Docs page: api > doc blocks > doc block canvas",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:186"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#layout",
+      "note": "Docs page: api > doc blocks > doc block canvas, section \"layout\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:100"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#story",
+      "note": "Docs page: api > doc blocks > doc block canvas, section \"story\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:110"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-controls",
+      "note": "Docs page: api > doc blocks > doc block controls",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:200"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-description#writing-descriptions",
+      "note": "Docs page: api > doc blocks > doc block description, section \"writing descriptions\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:214"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source",
+      "note": "Docs page: api > doc blocks > doc block source",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:231"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source#type",
+      "note": "Docs page: api > doc blocks > doc block source, section \"type\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:164"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-stories",
+      "note": "Docs page: api > doc blocks > doc block stories",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:245"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story",
+      "note": "Docs page: api > doc blocks > doc block story",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:238"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story#autoplay",
+      "note": "Docs page: api > doc blocks > doc block story, section \"autoplay\"",
+      "uses": [
+        "code/core/src/addon-docs/blocks/components/Story.tsx:126"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-subtitle",
+      "note": "Docs page: api > doc blocks > doc block subtitle",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:252"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-title",
+      "note": "Docs page: api > doc blocks > doc block title",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:277"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-core#allowedhosts",
+      "note": "Docs page: api > main config > main config core, section \"allowedhosts\"",
+      "uses": [
+        "code/core/src/core-server/utils/host-validation-warning.ts:7"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-features#experimentaltestsyntax",
+      "note": "Docs page: api > main config > main config features, section \"experimentaltestsyntax\"",
+      "uses": [
+        "code/core/src/react-vite/types.ts:35",
+        "code/core/src/react/entry-preview.tsx:38"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-stories",
+      "note": "Docs page: api > main config > main config stories",
+      "uses": [
+        "code/core/src/manager/components/sidebar/RefBlocks.tsx:161"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-vite-final",
+      "note": "Docs page: api > main config > main config vite final",
+      "uses": [
+        "code/core/assets/builder-vite/iframe.html:79"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/builders/vite",
+      "note": "Docs page: builders > vite",
+      "uses": [
+        "code/core/assets/server/base-preview-body.html:103"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure",
+      "note": "Docs page: configure",
+      "uses": [
+        "code/core/src/server-errors.ts:591",
+        "code/core/src/server-errors.ts:597"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/environment-variables",
+      "note": "Docs page: configure > environment variables",
+      "uses": [
+        "code/core/assets/server/base-preview-body.html:109"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/images-and-assets",
+      "note": "Docs page: configure > images and assets",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:78",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:91",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:88"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/integration/eslint-plugin",
+      "note": "Docs page: configure > integration > eslint plugin",
+      "uses": [
+        "code/core/src/cli/eslintPlugin.test.ts:384",
+        "code/core/src/cli/eslintPlugin.ts:300",
+        "code/core/src/cli/eslintPlugin.ts:469"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/integration/frameworks-feature-support",
+      "note": "Docs page: configure > integration > frameworks feature support",
+      "uses": [
+        "code/core/src/viewport/README.md:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration",
+      "note": "Docs page: configure > integration > images and assets, section \"serving static files via storybook configuration\"",
+      "uses": [
+        "code/core/src/server-errors.ts:107"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/integration/typescript",
+      "note": "Docs page: configure > integration > typescript",
+      "uses": [
+        "code/core/src/cli-commands/warn.ts:23"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/sidebar-and-urls#permalink-to-stories",
+      "note": "Docs page: configure > sidebar and urls, section \"permalink to stories\"",
+      "uses": [
+        "code/core/src/csf/story.ts:500"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/story-layout",
+      "note": "Docs page: configure > story layout",
+      "uses": [
+        "code/core/src/components/components/syntaxhighlighter/syntaxhighlighter.stories.tsx:187",
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:10",
+        "code/core/template/nextjs-vite/cli/js/Header.stories.js:11",
+        "code/core/template/nextjs-vite/cli/js/Page.stories.js:9",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:12",
+        "code/core/template/nextjs-vite/cli/ts/Header.stories.ts:13",
+        "code/core/template/nextjs-vite/cli/ts/Page.stories.ts:11",
+        "code/core/template/react-vite/cli/js/Button.stories.js:10",
+        "code/core/template/react-vite/cli/js/Header.stories.js:11",
+        "code/core/template/react-vite/cli/js/Page.stories.js:9",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:12",
+        "code/core/template/react-vite/cli/ts/Header.stories.ts:13",
+        "code/core/template/react-vite/cli/ts/Page.stories.ts:11",
+        "code/core/template/react/cli/js/Button.stories.js:10",
+        "code/core/template/react/cli/js/Header.stories.js:11",
+        "code/core/template/react/cli/js/Page.stories.js:9",
+        "code/core/template/react/cli/ts/Button.stories.ts:12",
+        "code/core/template/react/cli/ts/Header.stories.ts:13",
+        "code/core/template/react/cli/ts/Page.stories.ts:11"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/styling-and-css",
+      "note": "Docs page: configure > styling and css",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:52",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:56",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:55"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/telemetry",
+      "note": "Docs page: configure > telemetry",
+      "uses": [
+        "code/core/src/telemetry/README.md:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/theming",
+      "note": "Docs page: configure > theming",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:153",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:202",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:193"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure/user-interface/sidebar-and-urls#permalink-to-stories",
+      "note": "Docs page: configure > user interface > sidebar and urls, section \"permalink to stories\"",
+      "uses": [
+        "code/core/src/types/modules/addons.ts:275"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/configure#configure-your-storybook-project",
+      "note": "Docs page: configure, section \"configure your storybook project\"",
+      "uses": [
+        "code/core/src/outline/README.md:15",
+        "code/core/src/viewport/README.md:17"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials",
+      "note": "Docs page: essentials",
+      "uses": [
+        "code/core/src/measure/README.md:15",
+        "code/core/src/outline/README.md:9",
+        "code/core/src/viewport/README.md:11"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/actions",
+      "note": "Docs page: essentials > actions",
+      "uses": [
+        "code/core/src/actions/README.md:3"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/actions#disable",
+      "note": "Docs page: essentials > actions, section \"disable\"",
+      "uses": [
+        "code/core/src/actions/types.ts:27"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/actions#parameters",
+      "note": "Docs page: essentials > actions, section \"parameters\"",
+      "uses": [
+        "code/core/src/actions/types.ts:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/actions#story-args",
+      "note": "Docs page: essentials > actions, section \"story args\"",
+      "uses": [
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:19",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:21",
+        "code/core/template/react-vite/cli/js/Button.stories.js:19",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:21",
+        "code/core/template/react/cli/js/Button.stories.js:19",
+        "code/core/template/react/cli/ts/Button.stories.ts:21"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#disable",
+      "note": "Docs page: essentials > backgrounds, section \"disable\"",
+      "uses": [
+        "code/core/src/backgrounds/types.ts:35"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#globals",
+      "note": "Docs page: essentials > backgrounds, section \"globals\"",
+      "uses": [
+        "code/core/src/backgrounds/types.ts:51"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#parameters",
+      "note": "Docs page: essentials > backgrounds, section \"parameters\"",
+      "uses": [
+        "code/core/src/backgrounds/types.ts:25"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls",
+      "note": "Docs page: essentials > controls",
+      "uses": [
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgControl.tsx:90",
+        "code/core/src/addon-docs/blocks/components/ArgsTable/ArgsTable.stories.tsx:179",
+        "code/core/src/addon-docs/blocks/components/ArgsTable/Empty.tsx:46"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls#annotation",
+      "note": "Docs page: essentials > controls, section \"annotation\"",
+      "uses": [
+        "code/core/src/addon-docs/blocks/blocks/Canvas.stories.tsx:95",
+        "code/core/src/addon-docs/blocks/examples/CanvasParameters.stories.tsx:33"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls#custom-control-type-matchers",
+      "note": "Docs page: essentials > controls, section \"custom control type matchers\"",
+      "uses": [
+        "code/core/src/controls/types.ts:35"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls#disable",
+      "note": "Docs page: essentials > controls, section \"disable\"",
+      "uses": [
+        "code/core/src/controls/types.ts:13"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls#fully-custom-args",
+      "note": "Docs page: essentials > controls, section \"fully custom args\"",
+      "uses": [
+        "code/core/src/preview-api/modules/store/inferArgTypes.ts:50"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/controls#parameters-1",
+      "note": "Docs page: essentials > controls, section \"parameters 1\"",
+      "uses": [
+        "code/core/src/controls/types.ts:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/highlight#disable",
+      "note": "Docs page: essentials > highlight, section \"disable\"",
+      "uses": [
+        "code/core/src/highlight/types.ts:18"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/highlight#parameters",
+      "note": "Docs page: essentials > highlight, section \"parameters\"",
+      "uses": [
+        "code/core/src/highlight/types.ts:11"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/measure-and-outline#disable",
+      "note": "Docs page: essentials > measure and outline, section \"disable\"",
+      "uses": [
+        "code/core/src/measure/types.ts:12",
+        "code/core/src/outline/types.ts:12"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/measure-and-outline#parameters",
+      "note": "Docs page: essentials > measure and outline, section \"parameters\"",
+      "uses": [
+        "code/core/src/measure/types.ts:5",
+        "code/core/src/outline/types.ts:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/themes",
+      "note": "Docs page: essentials > themes",
+      "uses": [
+        "code/core/src/addon-themes/types.ts:10"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/viewport",
+      "note": "Docs page: essentials > viewport",
+      "uses": [
+        "code/core/src/viewport/README.md:29"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/viewport#disable",
+      "note": "Docs page: essentials > viewport, section \"disable\"",
+      "uses": [
+        "code/core/src/viewport/types.ts:44"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/viewport#globals",
+      "note": "Docs page: essentials > viewport, section \"globals\"",
+      "uses": [
+        "code/core/src/viewport/types.ts:60"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/essentials/viewport#parameters",
+      "note": "Docs page: essentials > viewport, section \"parameters\"",
+      "uses": [
+        "code/core/src/viewport/types.ts:37"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/faq#can-i-have-a-storybook-with-no-local-stories",
+      "note": "Docs page: faq, section \"can i have a storybook with no local stories\"",
+      "uses": [
+        "code/core/src/core-server/utils/__tests__/remove-mdx-stories.test.ts:60",
+        "code/core/src/server-errors.ts:125"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/faq#extensionless-imports-in-storybookmaints-and-required-ts-extensions",
+      "note": "Docs page: faq, section \"extensionless imports in storybookmaints and required ts extensions\"",
+      "uses": [
+        "code/core/src/bin/loader.ts:93"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite",
+      "note": "Docs page: get started > frameworks > nextjs vite",
+      "uses": [
+        "code/core/src/nextjs-vite/types.ts:46"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite#faq-includingexcluding-images",
+      "note": "Docs page: get started > frameworks > nextjs vite, section \"faq includingexcluding images\"",
+      "uses": [
+        "code/core/src/nextjs-vite-plugin/index.ts:47",
+        "code/core/src/nextjs-vite-plugin/plugins/next-image/plugin.ts:120"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#error-you-are-importing-avif-images-but-you-dont-have-sharp-installed-you-have-to-install-sharp-in-order-to-use-image-optimization-features-in-nextjs",
+      "note": "Docs page: get started > frameworks > nextjs, section \"error you are importing avif images but you dont have sharp installed you have to install sharp in order to use image optimization features in nextjs\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:343"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#nextjs-font-optimization",
+      "note": "Docs page: get started > frameworks > nextjs, section \"nextjs font optimization\"",
+      "uses": [
+        "code/core/src/server-errors.ts:542",
+        "code/core/src/server-errors.ts:556"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#react-server-components-rsc",
+      "note": "Docs page: get started > frameworks > nextjs, section \"react server components rsc\"",
+      "uses": [
+        "code/core/src/react/types.ts:25"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/get-started/install",
+      "note": "Docs page: get started > install",
+      "uses": [
+        "code/core/src/cli/getStorybookData.test.ts:83",
+        "code/core/src/common/js-package-manager/warnOnYarn1.ts:5",
+        "code/core/src/create/commands/PreflightCheckCommand.test.ts:136",
+        "code/core/src/manager/components/mobile/about/MobileAbout.tsx:80"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#a11y-addon-replace-element-parameter-with-context-parameter",
+      "note": "Migration note: what changed and how to update, section \"a11y addon replace element parameter with context parameter\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:444"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#addon-test-indexing-behavior-of-storybookaddon-test-is-changed",
+      "note": "Migration note: what changed and how to update, section \"addon test indexing behavior of storybookaddon test is changed\"",
+      "uses": [
+        "code/core/src/addon-vitest/vitest-plugin/index.ts:489"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#argtypes-removed-from-loaders-beforeeach-play-and-aftereach",
+      "note": "Migration note: what changed and how to update, section \"argtypes removed from loaders beforeeach play and aftereach\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:323"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#commonjs-with-vite-is-deprecated",
+      "note": "Migration note: what changed and how to update, section \"commonjs with vite is deprecated\"",
+      "uses": [
+        "code/core/src/core-server/build-dev.ts:190"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#dropped-addon-docs-manual-babel-configuration",
+      "note": "Migration note: what changed and how to update, section \"dropped addon docs manual babel configuration\"",
+      "uses": [
+        "code/core/src/ERRORS.md:126"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#framework-field-mandatory",
+      "note": "Migration note: what changed and how to update, section \"framework field mandatory\"",
+      "uses": [
+        "code/core/src/common/utils/get-framework-name.ts:16"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#icons-is-deprecated",
+      "note": "Migration note: what changed and how to update, section \"icons is deprecated\"",
+      "uses": [
+        "code/core/src/components/components/icon/icon.tsx:40",
+        "code/core/src/components/components/icon/icon.tsx:49"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#mainjs-framework-field",
+      "note": "Migration note: what changed and how to update, section \"mainjs framework field\"",
+      "uses": [
+        "code/core/src/preview-api/modules/preview-web/PreviewWeb.test.ts:590",
+        "code/core/src/preview-errors.ts:105"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#mdx2-upgrade",
+      "note": "Migration note: what changed and how to update, section \"mdx2 upgrade\"",
+      "uses": [
+        "code/core/src/core-server/utils/StoryIndexGenerator.ts:642"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#new-framework-api",
+      "note": "Migration note: what changed and how to update, section \"new framework api\"",
+      "uses": [
+        "code/core/src/server-errors.ts:58",
+        "code/core/src/server-errors.ts:73"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#string-literal-titles",
+      "note": "Migration note: what changed and how to update, section \"string literal titles\"",
+      "uses": [
+        "code/core/src/csf-tools/CsfFile.ts:423"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#turbosnap-vite-plugin-is-no-longer-needed",
+      "note": "Migration note: what changed and how to update, section \"turbosnap vite plugin is no longer needed\"",
+      "uses": [
+        "code/core/src/builder-vite/build.ts:91"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#using-implicit-actions-during-rendering-is-deprecated-for-example-in-the-play-function",
+      "note": "Migration note: what changed and how to update, section \"using implicit actions during rendering is deprecated for example in the play function\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:67"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#v7-style-story-sort",
+      "note": "Migration note: what changed and how to update, section \"v7 style story sort\"",
+      "uses": [
+        "code/core/src/shared/story-index/sortStories.ts:76"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/migration#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files",
+      "note": "Migration note: what changed and how to update, section \"vitest addon setprojectannotations must not be called in setup files\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:424"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/react/addons/writing-presets",
+      "note": "Docs page: react > addons > writing presets",
+      "uses": [
+        "code/core/src/nextjs-vite/preset.ts:1"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/react/configure/features-and-behavior",
+      "note": "Docs page: react > configure > features and behavior",
+      "uses": [
+        "code/core/src/manager/README.md:79"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/react/essentials/controls",
+      "note": "Docs page: react > essentials > controls",
+      "uses": [
+        "code/core/src/addon-ondevice-controls/NoControlsWarning.tsx:20"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/second-error",
+      "note": "Docs page: second error",
+      "uses": [
+        "code/core/src/__tests/storybook-error.test.ts:49",
+        "code/core/src/__tests/storybook-error.test.ts:56"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/sharing/design-integrations#embed-storybook-in-figma-with-the-plugin",
+      "note": "Docs page: sharing > design integrations, section \"embed storybook in figma with the plugin\"",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:122",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:153",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:147"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/sharing/publish-storybook#publish-storybook-with-chromatic",
+      "note": "Docs page: sharing > publish storybook, section \"publish storybook with chromatic\"",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:111",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:136",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:131"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/sharing/storybook-composition",
+      "note": "Docs page: sharing > storybook composition",
+      "uses": [
+        "code/core/src/manager/components/sidebar/RefIndicator.tsx:240",
+        "code/core/src/manager/components/sidebar/RefIndicator.tsx:283"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/sharing/storybook-composition#improve-your-storybook-composition",
+      "note": "Docs page: sharing > storybook composition, section \"improve your storybook composition\"",
+      "uses": [
+        "code/core/src/manager/components/sidebar/RefIndicator.tsx:278"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs",
+      "note": "Docs page: writing docs",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:173"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs",
+      "note": "Docs page: writing docs > autodocs",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:101",
+        "code/core/src/components/components/syntaxhighlighter/syntaxhighlighter.stories.tsx:184",
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:13",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:120",
+        "code/core/template/nextjs-vite/cli/js/Header.stories.js:8",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:15",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:116",
+        "code/core/template/nextjs-vite/cli/ts/Header.stories.ts:10",
+        "code/core/template/react-vite/cli/js/Button.stories.js:13",
+        "code/core/template/react-vite/cli/js/Header.stories.js:8",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:15",
+        "code/core/template/react-vite/cli/ts/Header.stories.ts:10",
+        "code/core/template/react/cli/js/Button.stories.js:13",
+        "code/core/template/react/cli/js/Header.stories.js:8",
+        "code/core/template/react/cli/ts/Button.stories.ts:15",
+        "code/core/template/react/cli/ts/Header.stories.ts:10"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#configure-the-table-of-contents",
+      "note": "Docs page: writing docs > autodocs, section \"configure the table of contents\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:284"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#customize-the-docs-container",
+      "note": "Docs page: writing docs > autodocs, section \"customize the docs container\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:207"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#override-the-default-theme",
+      "note": "Docs page: writing docs > autodocs, section \"override the default theme\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:270"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#write-a-custom-template",
+      "note": "Docs page: writing docs > autodocs, section \"write a custom template\"",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:224"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-docs/code-panel",
+      "note": "Docs page: writing docs > code panel",
+      "uses": [
+        "code/core/src/addon-docs/types.ts:193"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories",
+      "note": "Docs page: writing stories",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/setup.ts:239",
+        "code/core/src/manager/components/sidebar/RefBlocks.tsx:172"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories.md",
+      "note": "Markdown copy (for agents) of docs page: writing stories",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/monorepo-optimized-tests-relaxed-limits-no-story-deletion.ts:107",
+        "code/core/src/cli/skills/content/setup-prompts/monorepo.ts:107",
+        "code/core/src/cli/skills/content/setup-prompts/optimized-tests.ts:103",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:33",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:36",
+        "code/core/src/cli/skills/content/setup-prompts/relaxed-limits.ts:103"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/args",
+      "note": "Docs page: writing stories > args",
+      "uses": [
+        "code/core/src/csf/story.ts:396",
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:23",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:28",
+        "code/core/template/react-vite/cli/js/Button.stories.js:23",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:28",
+        "code/core/template/react/cli/js/Button.stories.js:23",
+        "code/core/template/react/cli/ts/Button.stories.ts:28"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/args.md",
+      "note": "Markdown copy (for agents) of docs page: writing stories > args",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:38"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/args#mapping-to-complex-arg-values",
+      "note": "Docs page: writing stories > args, section \"mapping to complex arg values\"",
+      "uses": [
+        "code/core/src/preview-api/modules/store/args.ts:145",
+        "code/core/src/preview-api/modules/store/inferArgTypes.ts:49"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/args#setting-args-through-the-url",
+      "note": "Docs page: writing stories > args, section \"setting args through the url\"",
+      "uses": [
+        "code/core/src/preview-api/modules/preview-web/parseArgsParam.ts:117",
+        "code/core/src/router/utils.ts:203"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/decorators",
+      "note": "Docs page: writing stories > decorators",
+      "uses": [
+        "code/core/assets/server/base-preview-body.html:96",
+        "code/core/src/csf/story.ts:379",
+        "code/core/src/types/modules/addons.ts:201"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/decorators.md",
+      "note": "Markdown copy (for agents) of docs page: writing stories > decorators",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/monorepo-optimized-tests-relaxed-limits-no-story-deletion.ts:108",
+        "code/core/src/cli/skills/content/setup-prompts/monorepo.ts:108",
+        "code/core/src/cli/skills/content/setup-prompts/optimized-tests.ts:104",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:37",
+        "code/core/src/cli/skills/content/setup-prompts/relaxed-limits.ts:104"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/decorators#context-for-mocking",
+      "note": "Docs page: writing stories > decorators, section \"context for mocking\"",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:65",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:72",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:70"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/loaders",
+      "note": "Docs page: writing stories > loaders",
+      "uses": [
+        "code/core/src/csf/story.ts:411"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy",
+      "note": "Docs page: writing stories > naming components and hierarchy",
+      "uses": [
+        "code/core/src/types/modules/addons.ts:264"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy#structure-and-hierarchy",
+      "note": "Docs page: writing stories > naming components and hierarchy, section \"structure and hierarchy\"",
+      "uses": [
+        "code/core/src/csf/story.ts:491"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/parameters",
+      "note": "Docs page: writing stories > parameters",
+      "uses": [
+        "code/core/src/csf/story.ts:388",
+        "code/core/src/types/modules/addons.ts:192"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/play-function.md",
+      "note": "Markdown copy (for agents) of docs page: writing stories > play function",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/monorepo-optimized-tests-relaxed-limits-no-story-deletion.ts:109",
+        "code/core/src/cli/skills/content/setup-prompts/monorepo.ts:109",
+        "code/core/src/cli/skills/content/setup-prompts/optimized-tests.ts:105",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:39",
+        "code/core/src/cli/skills/content/setup-prompts/relaxed-limits.ts:105"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/tags",
+      "note": "Docs page: writing stories > tags",
+      "uses": [
+        "code/core/src/addon-vitest/vitest-plugin/viewports.test.ts:186",
+        "code/core/src/preview-errors.ts:411"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories/tags#custom-tags",
+      "note": "Docs page: writing stories > tags, section \"custom tags\"",
+      "uses": [
+        "code/core/src/manager/components/sidebar/FilterPanel.tsx:258"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-stories#default-export",
+      "note": "Docs page: writing stories, section \"default export\"",
+      "uses": [
+        "code/core/src/csf-tools/CsfFile.test.ts:2988",
+        "code/core/src/csf-tools/CsfFile.test.ts:3006",
+        "code/core/src/csf-tools/CsfFile.test.ts:3024",
+        "code/core/src/csf-tools/CsfFile.test.ts:3042",
+        "code/core/src/csf-tools/CsfFile.test.ts:3059",
+        "code/core/src/csf-tools/CsfFile.test.ts:3105",
+        "code/core/src/csf-tools/CsfFile.ts:222",
+        "code/core/src/csf-tools/CsfFile.ts:234",
+        "code/core/src/csf-tools/CsfFile.ts:246",
+        "code/core/src/csf-tools/CsfFile.ts:258",
+        "code/core/template/nextjs-vite/cli/js/Button.stories.js:5",
+        "code/core/template/nextjs-vite/cli/ts/Button.stories.ts:7",
+        "code/core/template/react-vite/cli/js/Button.stories.js:5",
+        "code/core/template/react-vite/cli/ts/Button.stories.ts:7",
+        "code/core/template/react/cli/js/Button.stories.js:5",
+        "code/core/template/react/cli/ts/Button.stories.ts:7"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests",
+      "note": "Docs page: writing tests",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:133",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:170",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:163"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing",
+      "note": "Docs page: writing tests > accessibility testing",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:143",
+        "code/core/src/addon-a11y/types.ts:11",
+        "code/core/src/addon-a11y/types.ts:20",
+        "code/core/src/addon-mcp/preset.ts:233",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:186",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:178",
+        "code/core/src/addon-a11y/constants.ts:12"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing#disable-automated-checks",
+      "note": "Docs page: writing tests > accessibility testing, section \"disable automated checks\"",
+      "uses": [
+        "code/core/src/addon-a11y/types.ts:27"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon",
+      "note": "Docs page: writing tests > integrations > vitest addon",
+      "uses": [
+        "code/core/assets/addon-vitest/templates/vitest.config.4.template.ts:13",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:69",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:150",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:238",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:387",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:470",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:556",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:635",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:715",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:796",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:879",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:960",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1040",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1130",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1218",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1317",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1402",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1485",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1567",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1647",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1734",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1813",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1897",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1980",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2063",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2173",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2284",
+        "code/core/src/addon-vitest/constants.ts:13",
+        "code/core/src/component-testing/constants.ts:5"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon.md",
+      "note": "Markdown copy (for agents) of docs page: writing tests > integrations > vitest addon",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/monorepo-optimized-tests-relaxed-limits-no-story-deletion.ts:110",
+        "code/core/src/cli/skills/content/setup-prompts/monorepo.ts:110",
+        "code/core/src/cli/skills/content/setup-prompts/optimized-tests.ts:106",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:40",
+        "code/core/src/cli/skills/content/setup-prompts/relaxed-limits.ts:106"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#install-and-set-up",
+      "note": "Docs page: writing tests > integrations > vitest addon, section \"install and set up\"",
+      "uses": [
+        "code/core/src/addon-mcp/preset.ts:231"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced",
+      "note": "Docs page: writing tests > integrations > vitest addon, section \"manual setup advanced\"",
+      "uses": [
+        "code/core/src/addon-vitest/postinstall.ts:214",
+        "code/core/src/create/commands/AddonConfigurationCommand.ts:14",
+        "code/core/src/server-errors.ts:766",
+        "code/core/src/server-errors.ts:782",
+        "code/core/src/addon-vitest/postinstall.ts (DOCUMENTATION_LINK)"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#storybooktest",
+      "note": "Docs page: writing tests > integrations > vitest addon, section \"storybooktest\"",
+      "uses": [
+        "code/core/assets/addon-vitest/templates/vitest.config.4.template.ts:21",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:82",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:163",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:276",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:404",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:488",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:569",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:652",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:727",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:814",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:896",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:972",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1056",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1145",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1244",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1343",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1422",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1505",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1587",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1670",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1754",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1833",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:1917",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2000",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2083",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2213",
+        "code/core/src/addon-vitest/updateVitestFile.config.4.test.ts:2321"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing",
+      "note": "Docs page: writing tests > interaction testing",
+      "uses": [
+        "code/core/src/component-testing/types.ts:5",
+        "code/core/template/nextjs-vite/cli/js/Page.stories.js:16",
+        "code/core/template/nextjs-vite/cli/ts/Page.stories.ts:21",
+        "code/core/template/react-vite/cli/js/Page.stories.js:16",
+        "code/core/template/react-vite/cli/ts/Page.stories.ts:21",
+        "code/core/template/react/cli/js/Page.stories.js:16",
+        "code/core/template/react/cli/ts/Page.stories.ts:21"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#disable",
+      "note": "Docs page: writing tests > interaction testing, section \"disable\"",
+      "uses": [
+        "code/core/src/component-testing/types.ts:13"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#querying-the-canvas",
+      "note": "Docs page: writing tests > interaction testing, section \"querying the canvas\"",
+      "uses": [
+        "code/core/src/test/testing-library.ts:32"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#run-code-before-each-story-in-a-file",
+      "note": "Docs page: writing tests > interaction testing, section \"run code before each story in a file\"",
+      "uses": [
+        "code/core/src/core-server/presets/common-preset.ts:167"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#run-code-before-the-component-gets-rendered",
+      "note": "Docs page: writing tests > interaction testing, section \"run code before the component gets rendered\"",
+      "uses": [
+        "code/core/src/preview-errors.ts:249"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/error/FB_TEST_CATEGORY_0123",
+      "note": "Error page for code FB_TEST_CATEGORY_0123",
+      "uses": [
+        "code/core/src/__tests/storybook-error.test.ts:32"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/images/placeholders/100x150.png",
+      "note": "Image file used in stories and tests: placeholders/100x150.png",
+      "uses": [
+        "code/core/src/manager/components/sidebar/Heading.stories.tsx:180"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/images/placeholders/150x22.png",
+      "note": "Image file used in stories and tests: placeholders/150x22.png",
+      "uses": [
+        "code/core/src/manager/components/sidebar/Heading.stories.tsx:161"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/images/placeholders/350x150.png",
+      "note": "Image file used in stories and tests: placeholders/350x150.png",
+      "uses": [
+        "code/core/src/addon-docs/blocks/blocks/Markdown.stories.tsx:21",
+        "code/core/src/addon-docs/blocks/components/DocsPageExampleCaption.md:5",
+        "code/core/src/addon-docs/blocks/components/DocsPageExampleCaption.mdx:5",
+        "code/core/src/theming/tests/create.test.js:84",
+        "code/core/src/theming/tests/create.test.js:91",
+        "code/core/template/addon-a11y/stories/tests.stories.ts:30",
+        "code/core/template/addon-a11y/stories/tests.stories.ts:76",
+        "code/core/template/stories/controls/basics.stories.ts:55"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/images/placeholders/50x50.png",
+      "note": "Image file used in stories and tests: placeholders/50x50.png",
+      "uses": [
+        "code/core/src/addon-docs/blocks/components/IconGallery.stories.tsx:33",
+        "code/core/template/nextjs-vite/stories/Image.stories.tsx:39",
+        "code/core/template/nextjs-vite/stories/Image.stories.tsx:82",
+        "code/core/template/nextjs-vite/stories/ImageLegacy.stories.tsx:29"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/llms.txt",
+      "note": "Index of the docs for agents (llms.txt)",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-prompts/monorepo-optimized-tests-relaxed-limits-no-story-deletion.ts:106",
+        "code/core/src/cli/skills/content/setup-prompts/monorepo.ts:106",
+        "code/core/src/cli/skills/content/setup-prompts/optimized-tests.ts:102",
+        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:32",
+        "code/core/src/cli/skills/content/setup-prompts/relaxed-limits.ts:102",
+        "code/core/src/create/commands/FinalizationCommand.test.ts:135",
+        "code/core/src/create/commands/FinalizationCommand.test.ts:178",
+        "code/core/src/create/commands/FinalizationCommand.ts:114"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/storybook",
+      "note": "Site page: storybook",
+      "uses": [
+        "code/core/src/manager-api/tests/refs.test.ts:151",
+        "code/core/src/manager-api/tests/refs.test.ts:165"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/storybook/iframe.html",
+      "note": "Site page: storybook > iframe.html",
+      "uses": [
+        "code/core/src/manager-api/tests/refs.test.ts:149",
+        "code/core/src/manager-api/tests/refs.test.ts:163"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/telemetry",
+      "note": "Site page: telemetry",
+      "uses": [
+        "code/core/src/types/modules/core-common.ts:61",
+        "code/core/src/types/modules/core-common.ts:70"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/tutorials",
+      "note": "Site page: tutorials",
+      "uses": [
+        "code/core/assets/create/rendererAssets/common/Configure.mdx:216",
+        "code/core/template/nextjs-vite/cli/js/Configure.mdx:298",
+        "code/core/template/nextjs-vite/cli/js/Page.jsx:43",
+        "code/core/template/nextjs-vite/cli/ts/Configure.mdx:284",
+        "code/core/template/nextjs-vite/cli/ts/Page.tsx:48",
+        "code/core/template/react-vite/cli/js/Page.jsx:44",
+        "code/core/template/react-vite/cli/ts/Page.tsx:48",
+        "code/core/template/react/cli/js/Page.jsx:44",
+        "code/core/template/react/cli/ts/Page.tsx:48"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/whats-new/v1",
+      "note": "Site page: whats new > v1",
+      "uses": [
+        "code/core/src/core-server/utils/whats-new.ts:32"
+      ]
+    }
+  ],
+  "dynamic": [
+    {
+      "url": "https://forkbook.ljk.dev/${asset ? 'docs-assets' : 'docs'}",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/manager-api/modules/versions.ts:102"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/addon-vitest/postinstall.ts:88",
+        "code/core/src/addon-vitest/postinstall.ts:249"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}#manual-setup-advanced",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/addon-vitest/postinstall.ts:256"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/${path}.md",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/cli/skills/content/setup-utils/docs-markdown-url.ts:11"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/docs/${subpath}",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/addon-vitest/components/GlobalErrorModal.stories.tsx:17",
+        "code/core/src/addon-vitest/components/TestProviderRender.stories.tsx:18",
+        "code/core/src/manager/components/sidebar/Filter.stories.tsx:158"
+      ]
+    },
+    {
+      "url": "https://forkbook.ljk.dev/error/${parseErrorCode({ code, category }",
+      "note": "Built at run time; see the expanded targets with the same base",
+      "uses": [
+        "code/core/src/storybook-error.ts:125"
+      ]
+    }
+  ]
+}

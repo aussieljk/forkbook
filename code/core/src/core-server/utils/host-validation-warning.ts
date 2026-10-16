@@ -4,7 +4,7 @@ import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
-const DOCS_URL = 'https://storybook.js.org/docs/api/main-config/main-config-core#allowedhosts';
+const DOCS_URL = 'https://forkbook.ljk.dev/docs/api/main-config/main-config-core#allowedhosts';
 
 export type HostValidationWarningOptions = {
   host?: string;

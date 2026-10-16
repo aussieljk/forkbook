@@ -16,7 +16,7 @@ export default {
 
 export const KeydownDuringPlay = {
   play: async ({ canvasElement }: PlayFunctionContext<any>) => {
-    const channel = globalThis.__STORYBOOK_ADDONS_CHANNEL__;
+    const channel = globalThis.__FORKBOOK_ADDONS_CHANNEL__;
 
     const previewKeydown = fn();
     channel.on(PREVIEW_KEYDOWN, previewKeydown);

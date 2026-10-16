@@ -19,7 +19,7 @@
   height: 14px;
   border-radius: 2px;
   margin: 0 7px;
-  background-color: var(--sb-app-border-color);
+  background-color: var(--fb-app-border-color);
   animation: glow 1.5s ease-in-out infinite;
 }
 

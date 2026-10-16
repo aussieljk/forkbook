@@ -5,4 +5,4 @@ import type { AddonStore } from '../preview-api/modules/addons/main.ts';
  * than it is to mock a globalThis property.
  */
 
-export const addons: AddonStore = globalThis.__STORYBOOK_ADDONS_PREVIEW;
+export const addons: AddonStore = globalThis.__FORKBOOK_ADDONS_PREVIEW;

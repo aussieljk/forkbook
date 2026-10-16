@@ -10,10 +10,10 @@
   gap: 8px;
   flex-shrink: 0;
   padding: 4px 16px;
-  background: var(--sb-background-hoverable);
-  color: var(--sb-color-default-text);
-  border-bottom: 1px solid var(--sb-app-border-color);
-  font-size: var(--sb-size-s2);
+  background: var(--fb-background-hoverable);
+  color: var(--fb-color-default-text);
+  border-bottom: 1px solid var(--fb-app-border-color);
+  font-size: var(--fb-size-s2);
   min-height: 40px;
 }
 
@@ -24,11 +24,11 @@
 }
 
 .title {
-  font-weight: var(--sb-weight-bold);
+  font-weight: var(--fb-weight-bold);
 }
 
 .message {
-  color: var(--sb-color-default-text);
+  color: var(--fb-color-default-text);
   line-height: 18px;
   display: flex;
   flex-direction: column;
@@ -38,10 +38,10 @@
 
 .prompt {
   margin: 0;
-  font-family: var(--sb-font-mono);
-  font-size: calc(var(--sb-size-s1) - 1px);
+  font-family: var(--fb-font-mono);
+  font-size: calc(var(--fb-size-s1) - 1px);
   padding: 6px 10px;
-  background: var(--sb-background-app);
-  box-shadow: inset 0 0 0 1px var(--sb-app-border-color);
-  border-radius: var(--sb-app-border-radius);
+  background: var(--fb-background-app);
+  box-shadow: inset 0 0 0 1px var(--fb-app-border-color);
+  border-radius: var(--fb-app-border-radius);
 }

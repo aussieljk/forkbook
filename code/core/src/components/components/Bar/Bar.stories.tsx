@@ -6,8 +6,8 @@ import { Bar } from './Bar.tsx';
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div
     style={{
-      background: 'var(--sb-background-app)',
-      border: '1px solid var(--sb-app-border-color)',
+      background: 'var(--fb-background-app)',
+      border: '1px solid var(--fb-app-border-color)',
       maxWidth: 500,
       height: 200,
     }}

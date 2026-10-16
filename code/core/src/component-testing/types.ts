@@ -2,7 +2,7 @@ export interface InteractionsParameters {
   /**
    * Interactions configuration
    *
-   * @see https://storybook.js.org/docs/writing-tests/interaction-testing
+   * @see https://forkbook.ljk.dev/docs/writing-tests/interaction-testing
    */
   interactions?: {
     /**
@@ -10,7 +10,7 @@ export interface InteractionsParameters {
      * feature for the entire Forkbook, you can set the option in your `main.js|ts` configuration
      * file.
      *
-     * @see https://storybook.js.org/docs/writing-tests/interaction-testing#disable
+     * @see https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#disable
      */
     disable?: boolean;
   };

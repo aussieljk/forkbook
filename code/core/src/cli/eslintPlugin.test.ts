@@ -381,7 +381,7 @@ describe('configureEslintPlugin', () => {
 
       expect(vi.mocked(writeFile)).not.toHaveBeenCalled();
       expect(logger.warn).toHaveBeenCalledWith(
-        "Could not automatically add eslint-plugin-storybook to eslint.config.js. Please add it manually: const storybook = require('eslint-plugin-storybook'); then add ...storybook.configs['flat/recommended'] to the exported config. See https://storybook.js.org/docs/configure/integration/eslint-plugin"
+        "Could not automatically add eslint-plugin-storybook to eslint.config.js. Please add it manually: const storybook = require('eslint-plugin-storybook'); then add ...storybook.configs['flat/recommended'] to the exported config. See https://forkbook.ljk.dev/docs/configure/integration/eslint-plugin"
       );
     });
 

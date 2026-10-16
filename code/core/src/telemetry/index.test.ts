@@ -24,8 +24,8 @@ vi.mock('./telemetry.ts', () => ({
 beforeEach(async () => {
   vi.resetModules();
   // The state machine globals deliberately survive module re-loads, so reset them explicitly
-  delete (globalThis as any).SB_TELEMETRY_STATE;
-  delete (globalThis as any).SB_TELEMETRY_QUEUE;
+  delete (globalThis as any).FB_TELEMETRY_STATE;
+  delete (globalThis as any).FB_TELEMETRY_QUEUE;
   delete (globalThis as any).PAYLOAD_ERROR_HANDLER;
   telemetryModule = await import('./index.ts');
 }, 30_000);

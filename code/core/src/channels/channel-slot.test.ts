@@ -20,7 +20,7 @@ describe('channel slot', () => {
     clearChannel();
 
     expect(getChannel()).toBeNull();
-    expect(globalThis.__STORYBOOK_ADDONS_CHANNEL__).toBeUndefined();
+    expect(globalThis.__FORKBOOK_ADDONS_CHANNEL__).toBeUndefined();
   });
 
   it('mirrors setChannel to the global slot', () => {
@@ -29,13 +29,13 @@ describe('channel slot', () => {
     setChannel(channel);
 
     expect(getChannel()).toBe(channel);
-    expect(globalThis.__STORYBOOK_ADDONS_CHANNEL__).toBe(channel);
+    expect(globalThis.__FORKBOOK_ADDONS_CHANNEL__).toBe(channel);
   });
 
   it('hydrates the module slot from a pre-existing global assignment', () => {
     const channel = new Channel({});
     clearChannel();
-    vi.stubGlobal('__STORYBOOK_ADDONS_CHANNEL__', channel);
+    vi.stubGlobal('__FORKBOOK_ADDONS_CHANNEL__', channel);
 
     expect(getChannel()).toBe(channel);
   });
@@ -45,7 +45,7 @@ describe('channel slot', () => {
     installNoopChannel();
 
     const real = new Channel({ transport: { setHandler: vi.fn(), send: vi.fn() } });
-    vi.stubGlobal('__STORYBOOK_ADDONS_CHANNEL__', real);
+    vi.stubGlobal('__FORKBOOK_ADDONS_CHANNEL__', real);
 
     expect(getChannel()).toBe(real);
   });
@@ -82,7 +82,7 @@ describe('channel slot', () => {
     setChannel(null);
 
     expect(getChannel()).toBeNull();
-    expect(globalThis.__STORYBOOK_ADDONS_CHANNEL__).toBeUndefined();
+    expect(globalThis.__FORKBOOK_ADDONS_CHANNEL__).toBeUndefined();
   });
 
   it('replaces an existing channel on setChannel', () => {
@@ -93,7 +93,7 @@ describe('channel slot', () => {
     setChannel(second);
 
     expect(getChannel()).toBe(second);
-    expect(globalThis.__STORYBOOK_ADDONS_CHANNEL__).toBe(second);
+    expect(globalThis.__FORKBOOK_ADDONS_CHANNEL__).toBe(second);
   });
 });
 

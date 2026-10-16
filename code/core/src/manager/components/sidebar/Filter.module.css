@@ -4,8 +4,8 @@
   }
 
   &:where([data-highlighted]) {
-    background: var(--sb-background-hoverable);
-    color: var(--sb-color-secondary);
+    background: var(--fb-background-hoverable);
+    color: var(--fb-color-secondary);
   }
 }
 
@@ -21,7 +21,7 @@
   height: 6px;
   min-width: 6px;
   border-radius: 20px;
-  box-shadow: var(--sb-bar-selected-color) 0 0 0 1px inset;
-  background: var(--sb-bar-selected-color);
-  color: var(--sb-color-inverse-text);
+  box-shadow: var(--fb-bar-selected-color) 0 0 0 1px inset;
+  background: var(--fb-bar-selected-color);
+  color: var(--fb-color-inverse-text);
 }

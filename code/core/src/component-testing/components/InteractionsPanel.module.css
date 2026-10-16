@@ -1,6 +1,6 @@
 .container {
   height: 100%;
-  background: var(--sb-background-content);
+  background: var(--fb-background-content);
 }
 
 .section {
@@ -26,25 +26,25 @@
 }
 
 .caughtException {
-  border-bottom: 1px solid var(--sb-app-border-color);
-  background-color: var(--sb-background-warning);
+  border-bottom: 1px solid var(--fb-app-border-color);
+  background-color: var(--fb-background-warning);
   padding: 15px;
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
   line-height: 19px;
 }
 
-:where([data-sb-theme='dark']) .caughtException {
-  background-color: rgb(from var(--sb-color-negative) r g b / calc(alpha - 0.93));
+:where([data-fb-theme='dark']) .caughtException {
+  background-color: rgb(from var(--fb-color-negative) r g b / calc(alpha - 0.93));
 }
 
 .caughtExceptionCode {
   margin: 0 1px;
   padding: 3px;
-  font-size: calc(var(--sb-size-s1) - 1px);
+  font-size: calc(var(--fb-size-s1) - 1px);
   line-height: 1;
   vertical-align: top;
   background: rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--sb-app-border-color);
+  border: 1px solid var(--fb-app-border-color);
   border-radius: 3px;
 }
 
@@ -61,7 +61,7 @@
 .caughtExceptionStack {
   margin: 0;
   padding: 0;
-  font-size: calc(var(--sb-size-s1) - 1px);
+  font-size: calc(var(--fb-size-s1) - 1px);
 
   &:not(:last-child) {
     padding-bottom: 16px;

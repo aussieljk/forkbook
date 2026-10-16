@@ -18,7 +18,7 @@ describe('getStorybookInfo React Native framework inference', () => {
   });
 
   it('infers @storybook/react-native when framework is missing in .rnstorybook', async () => {
-    dir = join(tmpdir(), `sb-rn-info-${Date.now()}`);
+    dir = join(tmpdir(), `fb-rn-info-${Date.now()}`);
     mkdirSync(join(dir, '.rnstorybook'), { recursive: true });
     writeFileSync(
       join(dir, 'package.json'),
@@ -41,7 +41,7 @@ describe('getStorybookInfo React Native framework inference', () => {
   });
 
   it('does not infer RN framework for a plain .forkbook without framework', async () => {
-    dir = join(tmpdir(), `sb-web-info-${Date.now()}`);
+    dir = join(tmpdir(), `fb-web-info-${Date.now()}`);
     mkdirSync(join(dir, '.forkbook'), { recursive: true });
     writeFileSync(
       join(dir, 'package.json'),

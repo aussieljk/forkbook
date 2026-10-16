@@ -69,7 +69,7 @@ export function generateProjectAnnotationsCodeFromPreviews(options: {
       if (import.meta.hot) {
         import.meta.hot.accept([${JSON.stringify(previewFileURL)}], (previewAnnotationModules) => {
           // getProjectAnnotations has changed so we need to patch the new one in
-          window?.__STORYBOOK_PREVIEW__?.onGetProjectAnnotationsChanged({
+          window?.__FORKBOOK_PREVIEW__?.onGetProjectAnnotationsChanged({
             getProjectAnnotations: () => getProjectAnnotations(previewAnnotationModules),
           });
         });
@@ -97,7 +97,7 @@ export function generateProjectAnnotationsCodeFromPreviews(options: {
     if (import.meta.hot) {
       import.meta.hot.accept(${JSON.stringify(previewAnnotationURLs)}, (previewAnnotationModules) => {
         // getProjectAnnotations has changed so we need to patch the new one in
-        window?.__STORYBOOK_PREVIEW__?.onGetProjectAnnotationsChanged({
+        window?.__FORKBOOK_PREVIEW__?.onGetProjectAnnotationsChanged({
           getProjectAnnotations: () => getProjectAnnotations(previewAnnotationModules),
         });
       });

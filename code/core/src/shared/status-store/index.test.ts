@@ -435,7 +435,7 @@ describe('statusStore', () => {
         // Act & Assert - get a status store for type-1 and try to set a status with type-2, expect it to throw
         const type1StatusStore = getStatusStoreByTypeId('type-1');
         expect(() => type1StatusStore.set([story1Type2Status])).toThrowErrorMatchingInlineSnapshot(`
-          [SB_MANAGER_API_0001 (StatusTypeIdMismatchError): Status has typeId "type-2" but was added to store with typeId "type-1". Full status: {
+          [FB_MANAGER_API_0001 (StatusTypeIdMismatchError): Status has typeId "type-2" but was added to store with typeId "type-1". Full status: {
             "storyId": "story-1",
             "typeId": "type-2",
             "value": "status-value:error",

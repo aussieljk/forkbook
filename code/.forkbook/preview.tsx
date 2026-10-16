@@ -122,9 +122,9 @@ const loaders = [
    * The DocsContext will then be added via the decorator below.
    */
   async ({ parameters: { relativeCsfPaths, attached = true } }) => {
-    const preview = (window as any).__STORYBOOK_PREVIEW__ as PreviewWeb<ReactRenderer> | undefined;
-    const channel = (window as any).__STORYBOOK_ADDONS_CHANNEL__ as Channel | undefined;
-    // __STORYBOOK_PREVIEW__ and __STORYBOOK_ADDONS_CHANNEL__ is set in the PreviewWeb constructor
+    const preview = (window as any).__FORKBOOK_PREVIEW__ as PreviewWeb<ReactRenderer> | undefined;
+    const channel = (window as any).__FORKBOOK_ADDONS_CHANNEL__ as Channel | undefined;
+    // __FORKBOOK_PREVIEW__ and __FORKBOOK_ADDONS_CHANNEL__ is set in the PreviewWeb constructor
     // which isn't loaded in portable stories/vitest
     if (!relativeCsfPaths || !preview || !channel) {
       return {};

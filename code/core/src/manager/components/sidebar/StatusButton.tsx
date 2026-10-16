@@ -15,7 +15,7 @@ const useStatusColor = (status: StatusValue, style?: CSSProperties) => {
   const iconColor = getStatus(useTheme(), status).iconColor;
   return {
     'data-status-color': iconColor ? true : undefined,
-    style: iconColor ? ({ '--sb-status-color': iconColor, ...style } as CSSProperties) : style,
+    style: iconColor ? ({ '--fb-status-color': iconColor, ...style } as CSSProperties) : style,
   };
 };
 

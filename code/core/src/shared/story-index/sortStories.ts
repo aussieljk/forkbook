@@ -73,7 +73,7 @@ export const sortStoriesV7 = (
 
     Are you using a V6-style sort function in V7 mode?
 
-    More info: https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#v7-style-story-sort
+    More info: https://forkbook.ljk.dev/docs/migration#v7-style-story-sort
   `);
   }
 };

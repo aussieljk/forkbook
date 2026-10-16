@@ -163,7 +163,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, latest);
 
-      expect(api.getDocsUrl({ versioned: true })).toEqual('https://storybook.js.org/docs/?ref=ui');
+      expect(api.getDocsUrl({ versioned: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns the latest url when version has patch diff with latest', async () => {
@@ -174,7 +174,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, patchDiff);
 
-      expect(api.getDocsUrl({ versioned: true })).toEqual('https://storybook.js.org/docs/?ref=ui');
+      expect(api.getDocsUrl({ versioned: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns the versioned url when current has different docs to latest', async () => {
@@ -185,9 +185,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, minorDiff);
 
-      expect(api.getDocsUrl({ versioned: true })).toEqual(
-        'https://storybook.js.org/docs/7.2/?ref=ui'
-      );
+      expect(api.getDocsUrl({ versioned: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns the latest versioned url when current is a canary', async () => {
@@ -198,7 +196,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, canary);
 
-      expect(api.getDocsUrl({ versioned: true })).toEqual('https://storybook.js.org/docs/?ref=ui');
+      expect(api.getDocsUrl({ versioned: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns the versioned url when current is a prerelease', async () => {
@@ -209,9 +207,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, newerPrerelease);
 
-      expect(api.getDocsUrl({ versioned: true })).toEqual(
-        'https://storybook.js.org/docs/8.0/?ref=ui'
-      );
+      expect(api.getDocsUrl({ versioned: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns a url with a renderer query param when "renderer" is true', async () => {
@@ -224,9 +220,7 @@ describe('versions API', () => {
 
       global.FORKBOOK_RENDERER = 'vue';
 
-      expect(api.getDocsUrl({ renderer: true })).toEqual(
-        'https://storybook.js.org/docs/?renderer=vue&ref=ui'
-      );
+      expect(api.getDocsUrl({ renderer: true })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns a url with a custom ref query param when provided', async () => {
@@ -237,9 +231,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, latest);
 
-      expect(api.getDocsUrl({ ref: 'custom' })).toEqual(
-        'https://storybook.js.org/docs/?ref=custom'
-      );
+      expect(api.getDocsUrl({ ref: 'custom' })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns a url without ref query param when empty', async () => {
@@ -250,7 +242,7 @@ describe('versions API', () => {
 
       setVersions(store, initialState, latest);
 
-      expect(api.getDocsUrl({ ref: '' })).toEqual('https://storybook.js.org/docs/');
+      expect(api.getDocsUrl({ ref: '' })).toEqual('https://forkbook.ljk.dev/docs');
     });
 
     it('returns a versioned url with assets path when provided', async () => {
@@ -262,7 +254,7 @@ describe('versions API', () => {
       setVersions(store, initialState, latest);
 
       expect(api.getDocsUrl({ asset: 'api/doc-block-controls.png' })).toEqual(
-        'https://storybook.js.org/docs-assets/7.6/api/doc-block-controls.png?ref=ui'
+        'https://forkbook.ljk.dev/docs-assets/api/doc-block-controls.png'
       );
     });
 
@@ -275,7 +267,7 @@ describe('versions API', () => {
       setVersions(store, initialState, canary);
 
       expect(api.getDocsUrl({ asset: 'api/doc-block-controls.png' })).toEqual(
-        'https://storybook.js.org/docs-assets/7.6/api/doc-block-controls.png?ref=ui'
+        'https://forkbook.ljk.dev/docs-assets/api/doc-block-controls.png'
       );
     });
   });

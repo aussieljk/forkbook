@@ -1,4 +1,4 @@
 .panel {
-  font-size: calc(var(--sb-size-s2) - 1px);
+  font-size: calc(var(--fb-size-s2) - 1px);
   height: 100%;
 }

@@ -1,6 +1,6 @@
 <h1>Forkbook manager's UI</h1>
 
-Forkbook manager is the core UI of [Forkbook](https://storybook.js.org).
+Forkbook manager is the core UI of [Forkbook](https://forkbook.ljk.dev).
 It's a React based UI which you can initialize with a function.
 You can configure it by providing a provider API.
 
@@ -76,7 +76,7 @@ class ReactProvider extends Provider {
   handleAPI(api) {
     api.setOptions({
       // see available options in
-      // https://storybook.js.org/docs/react/configure/features-and-behavior
+      // https://forkbook.ljk.dev/docs/react/configure/features-and-behavior
     });
   }
 }

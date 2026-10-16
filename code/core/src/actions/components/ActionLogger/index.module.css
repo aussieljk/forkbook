@@ -14,10 +14,10 @@
 }
 
 .counter {
-  background-color: rgb(from var(--sb-app-border-color) r g b / calc(alpha + 0.5));
-  color: var(--sb-color-inverse-text);
-  font-size: var(--sb-size-s1);
-  font-weight: var(--sb-weight-bold);
+  background-color: rgb(from var(--fb-app-border-color) r g b / calc(alpha + 0.5));
+  color: var(--fb-color-inverse-text);
+  font-size: var(--fb-size-s1);
+  font-weight: var(--fb-weight-bold);
   line-height: 1;
   padding: 1px 5px;
   border-radius: 20px;

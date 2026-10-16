@@ -64,7 +64,7 @@ export class ImplicitActionsDuringRendering extends StorybookError {
       category: Category.PREVIEW_API,
       code: 2,
       documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#using-implicit-actions-during-rendering-is-deprecated-for-example-in-the-play-function',
+        'https://forkbook.ljk.dev/docs/migration#using-implicit-actions-during-rendering-is-deprecated-for-example-in-the-play-function',
       message: dedent`
         We detected that you use an implicit action arg while ${data.phase} of your story.  
         ${data.deprecated ? `\nThis is deprecated and won't work in Forkbook 8 anymore.\n` : ``}
@@ -102,8 +102,7 @@ export class MissingRenderToCanvasError extends StorybookError {
         Expected your framework's preset to export a \`renderToCanvas\` field.
 
         Perhaps it needs to be upgraded for Forkbook 7.0?`,
-      documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#mainjs-framework-field',
+      documentation: 'https://forkbook.ljk.dev/docs/migration#mainjs-framework-field',
     });
   }
 }
@@ -247,7 +246,7 @@ export class MountMustBeDestructuredError extends StorybookError {
          This is because destructuring statements and async/await usages are otherwise transpiled away, 
          which prevents Forkbook from recognizing your usage of \`mount\`.
       
-      More info: https://storybook.js.org/docs/writing-tests/interaction-testing?ref=error#run-code-before-the-component-gets-rendered
+      More info: https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#run-code-before-the-component-gets-rendered
       
       Received the following play function:
       ${data.playFunction}`,
@@ -321,7 +320,7 @@ export class ArgTypesRemovedFromStoryContextError extends StorybookError {
       category: Category.PREVIEW_API,
       code: 17,
       documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#argtypes-removed-from-loaders-beforeeach-play-and-aftereach',
+        'https://forkbook.ljk.dev/docs/migration#argtypes-removed-from-loaders-beforeeach-play-and-aftereach',
       message: dedent`
         \`argTypes\` is no longer part of the story context passed to loaders, beforeEach, play and afterEach.
 
@@ -341,7 +340,7 @@ export class NextJsSharpError extends StorybookError {
       category: Category.FRAMEWORK_NEXTJS,
       code: 1,
       documentation:
-        'https://storybook.js.org/docs/get-started/frameworks/nextjs#error-you-are-importing-avif-images-but-you-dont-have-sharp-installed-you-have-to-install-sharp-in-order-to-use-image-optimization-features-in-nextjs',
+        'https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#error-you-are-importing-avif-images-but-you-dont-have-sharp-installed-you-have-to-install-sharp-in-order-to-use-image-optimization-features-in-nextjs',
       message: dedent`
       You are importing avif images, but you don't have sharp installed.
 
@@ -409,7 +408,7 @@ export class UnsupportedViewportDimensionError extends StorybookError {
         The Forkbook plugin only supports values in the following units:
         - px, vh, vw, em, rem and %.
         
-        You can either change the viewport for this story to use one of the supported units or skip the test by adding '!test' to the story's tags per https://storybook.js.org/docs/writing-stories/tags
+        You can either change the viewport for this story to use one of the supported units or skip the test by adding '!test' to the story's tags per https://forkbook.ljk.dev/docs/writing-stories/tags
       `,
     });
   }
@@ -422,7 +421,7 @@ export class ProjectAnnotationsAlreadyAppliedError extends StorybookError {
       category: Category.ADDON_VITEST,
       code: 2,
       documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files',
+        'https://forkbook.ljk.dev/docs/migration#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files',
       message: dedent`
         setProjectAnnotations() was called from a Vitest setup file, but @aussieljk/forkbook/addon-vitest applies your project annotations itself: your .forkbook/preview file and the previews of the addons registered in .forkbook/main. Calling it again replaces those annotations, so the call has to go:
 
@@ -442,7 +441,7 @@ export class ElementA11yParameterError extends StorybookError {
       category: Category.ADDON_A11Y,
       code: 1,
       documentation:
-        'https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#a11y-addon-replace-element-parameter-with-context-parameter',
+        'https://forkbook.ljk.dev/docs/migration#a11y-addon-replace-element-parameter-with-context-parameter',
       message:
         'The "element" parameter in parameters.a11y has been removed. Use "context" instead.',
     });

@@ -3,9 +3,9 @@
 }
 
 .input {
-  background: var(--sb-color-lighter);
+  background: var(--fb-color-lighter);
 }
 
-:where([data-sb-theme='dark']) .input {
+:where([data-fb-theme='dark']) .input {
   background: transparent;
 }

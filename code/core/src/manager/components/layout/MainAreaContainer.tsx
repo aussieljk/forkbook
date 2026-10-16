@@ -25,7 +25,7 @@ const PagesContainer = React.memo<PagesContainerProps>(function PagesContainer(p
 
   return (
     <main className={styles.pages} id="main-content-wrapper" ref={mainRef} {...landmarkProps}>
-      <h2 id="main-content-heading" className="sb-sr-only">
+      <h2 id="main-content-heading" className="fb-sr-only">
         Main content
       </h2>
       {children}

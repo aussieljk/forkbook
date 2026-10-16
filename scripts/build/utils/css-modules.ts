@@ -22,7 +22,7 @@ export async function cssToJs(file: string) {
   const { code, exports } = transform({
     filename: name,
     code: await readFile(file),
-    cssModules: file.endsWith('.module.css') ? { pattern: 'sb-[hash]-[local]' } : false,
+    cssModules: file.endsWith('.module.css') ? { pattern: 'fb-[hash]-[local]' } : false,
     minify: true,
   });
 
@@ -35,9 +35,9 @@ export async function cssToJs(file: string) {
 
   return [
     `const id = ${JSON.stringify(name)};`,
-    `if (typeof document !== 'undefined' && !document.querySelector(\`style[data-sb-css="\${id}"]\`)) {`,
+    `if (typeof document !== 'undefined' && !document.querySelector(\`style[data-fb-css="\${id}"]\`)) {`,
     `  const style = document.createElement('style');`,
-    `  style.setAttribute('data-sb-css', id);`,
+    `  style.setAttribute('data-fb-css', id);`,
     `  style.textContent = ${JSON.stringify(code.toString())};`,
     `  document.head.appendChild(style);`,
     `}`,

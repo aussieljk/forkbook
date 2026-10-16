@@ -22,7 +22,7 @@ export interface ReactParameters {
     /**
      * Whether to enable React Server Components
      *
-     * @see https://storybook.js.org/docs/get-started/frameworks/nextjs#react-server-components-rsc
+     * @see https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#react-server-components-rsc
      */
     rsc?: boolean;
     /** Options passed to React root creation */

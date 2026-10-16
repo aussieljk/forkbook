@@ -5,6 +5,6 @@
   outline: 2px solid transparent;
 
   &[data-active] {
-    outline-color: var(--sb-color-secondary);
+    outline-color: var(--fb-color-secondary);
   }
 }
