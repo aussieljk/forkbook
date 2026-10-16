@@ -1,14 +1,11 @@
 import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildDevStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
-import { logger, instance as npmLog } from '@aussieljk/forkbook/internal/node-logger';
+import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type { CLIOptions, PackageJson } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
 function printError(error: any) {
-  // this is a weird bugfix, somehow 'node-pre-gyp' is polluting the npmLog header
-  npmLog.heading = '';
-
   if (error instanceof Error) {
     if ((error as any).error) {
       logger.error((error as any).error);
