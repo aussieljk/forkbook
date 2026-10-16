@@ -1,17 +1,95 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
-    { "source": "/docs/react/:path*", "destination": "/docs/:path*", "permanent": true },
-    { "source": "/docs/:path*/", "destination": "/docs/:path*", "permanent": true }
+    {
+      "source": "/docs/migration",
+      "destination": "/docs/migrate/from-storybook",
+      "permanent": false
+    },
+    {
+      "source": "/docs/essentials/themes",
+      "destination": "/docs/addons/themes",
+      "permanent": false
+    },
+    {
+      "source": "/error/:code",
+      "destination": "/docs/faq",
+      "permanent": false
+    },
+    {
+      "source": "/addons",
+      "destination": "/docs/addons",
+      "permanent": false
+    },
+    {
+      "source": "/addons/:path*",
+      "destination": "/docs/addons",
+      "permanent": false
+    },
+    {
+      "source": "/telemetry",
+      "destination": "/docs/configure/telemetry",
+      "permanent": false
+    },
+    {
+      "source": "/blog",
+      "destination": "/docs",
+      "permanent": false
+    },
+    {
+      "source": "/community",
+      "destination": "/docs",
+      "permanent": false
+    },
+    {
+      "source": "/tutorials",
+      "destination": "/docs",
+      "permanent": false
+    },
+    {
+      "source": "/whats-new/:path*",
+      "destination": "/docs",
+      "permanent": false
+    },
+    {
+      "source": "/storybook",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/storybook/:path*",
+      "destination": "/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/docs/react/:path*",
+      "destination": "/docs/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/docs/:path*/",
+      "destination": "/docs/:path*",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.md",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/(llms|llms-full)\\.txt",
-      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     }
   ]
 }

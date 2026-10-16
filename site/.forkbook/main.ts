@@ -5,6 +5,8 @@ const config: StorybookConfig = {
   framework: '@aussieljk/forkbook/nextjs-vite',
   stories: ['../docs/**/*.mdx'],
   addons: ['@aussieljk/forkbook/addon-docs'],
+  // Images that code and stories link to (placeholders, doc assets).
+  staticDirs: ['../public'],
   core: { disableTelemetry: true },
 };
 
