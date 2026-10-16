@@ -1,0 +1,48 @@
+# GENERATED FILE. DO NOT EDIT.
+# Source: ci/workflows.ts. Run `bun run workflows` to regenerate.
+# CI fails if this file is different from the source (`bun run workflows:check`).
+
+name: Lint workflows
+"on":
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/**
+      - ci/**
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - .github/workflows/**
+      - ci/**
+concurrency:
+  group: "lint-workflows-${{ github.head_ref || github.run_id }}"
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: actionlint
+        uses: raven-actions/actionlint@205b530c5d9fa8f44ae9ed59f341a0db994aa6f8
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+      - name: zizmor
+        uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d

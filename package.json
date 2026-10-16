@@ -28,7 +28,9 @@
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch",
     "typecheck": "bun check -b -p code/tsconfig.packages.json",
     "verify": "bun scripts/verify.ts",
-    "site:deploy": "bun run site:build && cp -R site/.vercel site/dist/ && cd site/dist && vercel deploy --prod --yes --scope coinsurgers-projects"
+    "site:deploy": "bun run site:build && cp -R site/.vercel site/dist/ && cd site/dist && vercel deploy --prod --yes --scope coinsurgers-projects",
+    "workflows": "bun ci/generate.ts",
+    "workflows:check": "bun ci/generate.ts --check"
   },
   "devDependencies": {
     "@types/kill-port": "^2.0.3",
