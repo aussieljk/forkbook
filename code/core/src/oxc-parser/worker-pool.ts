@@ -18,7 +18,7 @@ interface Pending {
   resolve: (edges: ImportEdge[]) => void;
   reject: (error: unknown) => void;
   /** Optional inactivity timer that rejects the entry if a worker hangs. */
-  timer?: NodeJS.Timeout;
+  timer?: ReturnType<typeof setTimeout>;
 }
 
 interface WorkerSlot {
@@ -125,12 +125,14 @@ export class OxcWorkerPool implements OxcParsePool {
         reject: task.reject,
       };
       if (this.taskTimeoutMs > 0) {
-        pending.timer = setTimeout(() => {
+        const timer = setTimeout(() => {
           this.handleWorkerFailure(
             new Error(`oxc-worker task ${id} timed out after ${this.taskTimeoutMs}ms`)
           );
         }, this.taskTimeoutMs);
-        pending.timer.unref?.();
+        // React Native types setTimeout as a number, without `unref`.
+        (timer as { unref?: () => void }).unref?.();
+        pending.timer = timer;
       }
       this.pending.set(id, pending);
       slot.worker.postMessage({ id, filePath: task.filePath, source: task.source });

@@ -148,7 +148,8 @@ const holdLock = (lockPath: string, token: string, staleAfterMs: number) => {
     },
     Math.max(10, staleAfterMs / 3)
   );
-  heartbeat.unref?.();
+  // React Native types setInterval as a number, without `unref`.
+  (heartbeat as { unref?: () => void }).unref?.();
 
   return () => {
     clearInterval(heartbeat);

@@ -1,0 +1,229 @@
+import {
+  composeConfigs,
+  addons as previewAddons,
+  View as PreviewView,
+  PreviewWithSelection,
+  SelectionStore,
+} from '@aussieljk/forkbook/internal/preview-api';
+import { addons as managerAddons } from '@aussieljk/forkbook/manager-api';
+import './polyfill.ts';
+
+import type { ReactRenderer } from '@aussieljk/forkbook/react';
+import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type {
+  Args,
+  ModuleExports,
+  NormalizedProjectAnnotations,
+  NormalizedStoriesSpecifier,
+  ProjectAnnotations,
+} from '@aussieljk/forkbook/internal/types';
+import { View } from './View.tsx';
+import { prepareStories, type ReactNativeOptions } from './prepareStories.ts';
+import { registerBackgroundsAddon } from './backgrounds/register.tsx';
+import type { Features } from './config.ts';
+export { prepareStories, type ReactNativeOptions } from './prepareStories.ts';
+
+type StoryEntry = NormalizedStoriesSpecifier & {
+  req: {
+    keys(): string[];
+    (id: string): unknown;
+  };
+};
+
+const createPreviewRoot = (): ReactRenderer['canvasElement'] =>
+  ({
+    component: () => <></>,
+    canvasElement: null,
+    mount: () => Promise.resolve({}),
+    storyResult: null,
+    T: null,
+  }) as unknown as ReactRenderer['canvasElement'];
+
+const getReactNativeProjectAnnotations = (getView: () => View | undefined) =>
+  ({
+    renderToCanvas: (context) => {
+      getView()?._setStory(context.storyContext);
+    },
+    render: (args, context) => {
+      const { id, component: Component } = context;
+
+      if (!Component) {
+        throw new Error(
+          `Unable to render story ${id} as the component annotation is missing from the default export`
+        );
+      }
+
+      return <Component {...args} />;
+    },
+  }) satisfies ProjectAnnotations<ReactRenderer>;
+
+/**
+ * Since we aren't supporting  these web addons yet in react native (or reimplement them) then we should disable them
+ * to avoid running code for addons that are not supported.
+ */
+globalThis.FEATURES = Object.assign(globalThis.FEATURES ?? {}, {
+  measure: false,
+  outline: false,
+  interactions: false,
+  viewport: false,
+  highlight: false,
+  backgrounds: false,
+});
+
+type TeardownRenderArgs = Parameters<PreviewWithSelection<ReactRenderer>['teardownRender']>;
+
+/**
+ * Storybook's renderSelection is not safe to run concurrently: when Fast Refresh updates, story selection or
+ * remote control overlap, a torn-down render can be left in `storyRenders`, which then breaks args updates.
+ * This runs them one at a time.
+ */
+class ReactNativePreview extends PreviewWithSelection<ReactRenderer> {
+  private renderSelectionQueue: Promise<unknown> = Promise.resolve();
+
+  protected renderSelection(options?: { persistedArgs?: Args }): Promise<void> {
+    const run = this.renderSelectionQueue.then(() => super.renderSelection(options));
+    this.renderSelectionQueue = run.catch(() => {});
+    return run;
+  }
+
+  // Storybook tears down a story that is still rendering (e.g. its loaders are running) by waiting briefly and then
+  // reloading the page, which restarts the app in Expo and never resolves elsewhere in React Native. Abort the render
+  // instead: once its loaders finish it sees the abort and doesn't draw.
+  async teardownRender(...[render, options]: TeardownRenderArgs) {
+    if (render && 'isPending' in render && render.isPending()) {
+      this.storyRenders = this.storyRenders.filter((r) => r !== render);
+      render.torndown = true;
+      render.cancelRender();
+      if (render.story) await this.storyStoreValue?.cleanupStory(render.story);
+      return;
+    }
+
+    await super.teardownRender(render, options);
+  }
+}
+
+export const getProjectAnnotations =
+  (view: View, annotations: ModuleExports[]) =>
+  async (): Promise<NormalizedProjectAnnotations<ReactRenderer>> =>
+    composeConfigs<ReactRenderer>([getReactNativeProjectAnnotations(() => view), ...annotations]);
+
+export function start({
+  annotations,
+  storyEntries,
+  options,
+}: {
+  storyEntries: StoryEntry[];
+  annotations: ModuleExports[];
+  options?: ReactNativeOptions;
+}) {
+  const composedAnnotations = composeConfigs<ReactRenderer>(annotations);
+
+  const { index, importMap } = prepareStories({
+    storyEntries,
+    options,
+    storySort: composedAnnotations.parameters?.options?.storySort,
+  });
+
+  // const channel = createBrowserChannel({ page: 'preview' });
+  const channel = new Channel({});
+
+  managerAddons.setChannel(channel);
+  previewAddons.setChannel(channel);
+
+  if ((globalThis.FEATURES as Features | undefined)?.ondeviceBackgrounds) {
+    registerBackgroundsAddon();
+  }
+
+  const previewView = {
+    prepareForStory: () => {
+      return createPreviewRoot();
+    },
+    prepareForDocs: () => {
+      return createPreviewRoot();
+    },
+    showErrorDisplay: (e: { message?: string; stack?: string }) => {
+      console.log(e);
+    },
+    showDocs: () => {},
+    showMain: () => {},
+    showNoPreview: () => {},
+    showPreparingDocs: () => {},
+    showPreparingStory: () => {},
+    showStory: () => {},
+    showStoryDuringRender: () => {},
+  } satisfies PreviewView<ReactRenderer['canvasElement']>;
+
+  const selectionStore = {
+    selection: null as unknown as SelectionStore['selection'],
+    selectionSpecifier: null,
+    setQueryParams: () => {},
+    setSelection: (selection: NonNullable<SelectionStore['selection']>) => {
+      preview.selectionStore.selection = selection;
+    },
+  } satisfies SelectionStore;
+
+  let view: View;
+
+  const getProjectAnnotationsInitial = async (): Promise<
+    NormalizedProjectAnnotations<ReactRenderer>
+  > =>
+    composeConfigs<ReactRenderer>([getReactNativeProjectAnnotations(() => view), ...annotations]);
+
+  const preview: PreviewWithSelection<ReactRenderer> = new ReactNativePreview(
+    async (importPath: string) => importMap[importPath],
+    getProjectAnnotationsInitial,
+    selectionStore,
+    previewView
+  );
+
+  view = new View(preview, channel, options);
+
+  if (global) {
+    const storybookGlobal = global as typeof globalThis & {
+      __STORYBOOK_ADDONS_CHANNEL__?: Channel;
+      __STORYBOOK_PREVIEW__?: PreviewWithSelection<ReactRenderer>;
+    };
+
+    storybookGlobal.__STORYBOOK_ADDONS_CHANNEL__ = channel;
+    storybookGlobal.__STORYBOOK_PREVIEW__ = preview;
+  }
+
+  view._storyIndex = index;
+
+  preview.getStoryIndexFromServer = async () => view._storyIndex;
+
+  return view;
+}
+
+export function updateView(
+  viewInstance: View,
+  annotations: ModuleExports[],
+  normalizedStories: StoryEntry[],
+  options?: ReactNativeOptions
+) {
+  const composedAnnotations = composeConfigs<ReactRenderer>(annotations);
+
+  const storySort = composedAnnotations.parameters?.options?.storySort;
+
+  const { importMap, index } = prepareStories({
+    storyEntries: normalizedStories,
+    options,
+    storySort,
+  });
+
+  // Like Storybook's web builders on HMR, stop any running play function so the story can re-render
+  viewInstance._preview.onStoryHotUpdated();
+
+  viewInstance._preview.onStoriesChanged({
+    importFn: async (importPath: string) => importMap[importPath],
+  });
+
+  viewInstance._preview.onGetProjectAnnotationsChanged({
+    getProjectAnnotations: getProjectAnnotations(viewInstance, annotations),
+  });
+
+  viewInstance._storyIndex = index;
+  viewInstance._preview.onStoryIndexChanged().then(() => {
+    viewInstance.createPreparedStoryMapping().then(() => viewInstance._forceRerender());
+  });
+}
