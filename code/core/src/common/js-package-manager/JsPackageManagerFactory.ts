@@ -5,6 +5,7 @@ import * as find from 'empathic/find';
 import * as walk from 'empathic/walk';
 
 import { executeCommandSync } from '../utils/command.ts';
+import { defaultConfigDir } from '../utils/default-config-dir.ts';
 import { getProjectRoot } from '../utils/paths.ts';
 import { BUNProxy } from './BUNProxy.ts';
 import type { JsPackageManager } from './JsPackageManager.ts';
@@ -35,7 +36,7 @@ export class JsPackageManagerFactory {
   /** Generate a cache key based on the parameters */
   private static getCacheKey(
     force?: PackageManagerName,
-    configDir = '.forkbook',
+    configDir = defaultConfigDir(),
     cwd = process.cwd(),
     storiesPaths?: string[]
   ): string {
@@ -127,7 +128,7 @@ export class JsPackageManagerFactory {
   public static getPackageManager(
     {
       force,
-      configDir = '.forkbook',
+      configDir = defaultConfigDir(),
       storiesPaths,
       ignoreCache = false,
     }: {

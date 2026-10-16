@@ -1,5 +1,5 @@
 import { Channel } from '@aussieljk/forkbook/internal/channels';
-import { cache } from '@aussieljk/forkbook/internal/common';
+import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildIndexStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
 import type { BuilderOptions, CLIBaseOptions } from '@aussieljk/forkbook/internal/types';
 
@@ -13,7 +13,7 @@ export const buildIndex = async (
 ) => {
   const options = {
     ...cliOptions,
-    configDir: cliOptions.configDir || '.forkbook',
+    configDir: cliOptions.configDir || defaultConfigDir(),
     outputFile: cliOptions.outputFile || 'index.json',
     configType: 'PRODUCTION' as BuilderOptions['configType'],
     cache,

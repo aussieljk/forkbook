@@ -8,11 +8,13 @@ import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
 import { dedent } from 'ts-dedent';
 
 import { importModule } from '../../shared/utils/module.ts';
+import { defaultConfigDir } from './default-config-dir.ts';
+import { withForkbookFramework } from './get-framework-name.ts';
 import { getInterpretedFile } from './interpret-files.ts';
 import { validateConfigurationFiles } from './validate-configuration-files.ts';
 
 export async function loadMainConfig({
-  configDir = '.forkbook',
+  configDir = defaultConfigDir(),
   cwd,
   skipCache,
 }: {
@@ -26,7 +28,7 @@ export async function loadMainConfig({
 
   try {
     const out = await importModule(mainPath, { skipCache });
-    return out;
+    return withForkbookFramework(out);
   } catch (e) {
     if (!(e instanceof Error)) {
       throw e;
@@ -59,7 +61,7 @@ export async function loadMainConfig({
         } finally {
           await rm(modifiedMainPath);
         }
-        return out;
+        return withForkbookFramework(out);
       }
     }
 

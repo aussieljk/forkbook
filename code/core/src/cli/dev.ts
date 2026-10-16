@@ -1,4 +1,4 @@
-import { cache } from '@aussieljk/forkbook/internal/common';
+import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildDevStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
 import { logger, instance as npmLog } from '@aussieljk/forkbook/internal/node-logger';
 import type { CLIOptions, PackageJson } from '@aussieljk/forkbook/internal/types';
@@ -45,7 +45,7 @@ export const dev = async (cliOptions: CLIOptions) => {
 
   const options = {
     ...cliOptions,
-    configDir: cliOptions.configDir || './.forkbook',
+    configDir: cliOptions.configDir || defaultConfigDir(),
     configType: 'DEVELOPMENT',
     cache: cache as any,
     packageJson: packageJson,

@@ -19,6 +19,7 @@ import { dedent } from 'ts-dedent';
 
 import type { ChannelLike } from '../channels/index.ts';
 import { importModule, safeResolveModule } from '../shared/utils/module.ts';
+import { withForkbookFramework } from './utils/get-framework-name.ts';
 import { getInterpretedFile } from './utils/interpret-files.ts';
 import { stripAbsNodeModulesPath } from './utils/strip-abs-node-modules-path.ts';
 import { validateConfigurationFiles } from './utils/validate-configuration-files.ts';
@@ -202,7 +203,11 @@ export async function loadPreset(
     }
 
     if (isObject(contents)) {
-      const { addons: addonsInput = [], presets: presetsInput = [], ...rest } = contents;
+      const {
+        addons: addonsInput = [],
+        presets: presetsInput = [],
+        ...rest
+      } = withForkbookFramework(contents);
 
       let filter = (i: PresetConfig) => {
         return true;

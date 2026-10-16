@@ -1,9 +1,11 @@
 import { isAbsolute, resolve } from 'node:path';
 
+import { defaultConfigDir } from '@aussieljk/forkbook/internal/common';
+
 /**
  * Resolve the config directory of the Forkbook a CLI invocation targets: `--config-dir` when
- * given (relative paths resolve from the target project directory), `.forkbook` under it
- * otherwise.
+ * given (relative paths resolve from the target project directory), `.forkbook` (or `.storybook`)
+ * under it otherwise.
  */
 export function resolveStorybookConfigDir({
   cwd,
@@ -13,5 +15,5 @@ export function resolveStorybookConfigDir({
   if (configDir) {
     return isAbsolute(configDir) ? configDir : resolve(projectCwd, configDir);
   }
-  return resolve(projectCwd, '.forkbook');
+  return resolve(projectCwd, defaultConfigDir(projectCwd));
 }

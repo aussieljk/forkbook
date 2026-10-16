@@ -1,6 +1,10 @@
 import { resolve } from 'node:path';
 
-import { findStorybookPackageRoot, versions } from '@aussieljk/forkbook/internal/common';
+import {
+  defaultConfigDir,
+  findStorybookPackageRoot,
+  versions,
+} from '@aussieljk/forkbook/internal/common';
 
 import { StorybookDevServerDisconnectedError } from '../../../server-errors.ts';
 import {
@@ -149,7 +153,7 @@ export async function bootstrapAttachedRuntime(
   const enableDelegatedMode = deps.setDelegatedMode ?? setDelegatedMode;
   enableDelegatedMode(true);
 
-  const configDir = record.configDir ?? resolve(record.cwd, '.forkbook');
+  const configDir = record.configDir ?? resolve(record.cwd, defaultConfigDir(record.cwd));
   const { loadStorybook, getService } = await resolveLoaders(deps);
   try {
     await loadStorybook({ configDir, channel: connection.channel });

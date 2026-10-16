@@ -1,6 +1,7 @@
 import { relative } from 'node:path';
 
 import type { Options } from '../../types/index.ts';
+import { defaultConfigDir } from '../../common/utils/default-config-dir.ts';
 import { extractFrameworkPackageName } from '../../common/utils/get-framework-name.ts';
 import { findConfigFile } from '../../common/utils/get-storybook-info.ts';
 import { isCsfFactoryPreview, readConfig } from '../../csf-tools/ConfigFile.ts';
@@ -21,7 +22,7 @@ export type SkillInputs = ToolAvailability & {
 
 const isTypeScriptFile = (path: string) => /\.[cm]?tsx?$/.test(path);
 
-async function resolvePreview(configDir = '.forkbook') {
+async function resolvePreview(configDir = defaultConfigDir()) {
   const previewPath = findConfigFile('preview', configDir);
   const typescript = isTypeScriptFile(previewPath ?? findConfigFile('main', configDir) ?? '');
   const path = previewPath ?? `${configDir}/preview.${typescript ? 'ts' : 'js'}`;

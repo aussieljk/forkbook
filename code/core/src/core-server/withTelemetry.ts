@@ -1,6 +1,7 @@
 import {
   HandledError,
   cache,
+  defaultConfigDir,
   loadMainConfig,
   isCI,
   loadAllPresets,
@@ -173,7 +174,8 @@ async function resolveTelemetryState(options: TelemetryOptions) {
   }
 
   let mainConfig;
-  const configDir = options.cliOptions.configDir ?? options.presetOptions?.configDir ?? '.forkbook';
+  const configDir =
+    options.cliOptions.configDir ?? options.presetOptions?.configDir ?? defaultConfigDir();
   try {
     mainConfig = (await loadMainConfig({ configDir })) as StorybookConfigRaw;
   } catch {}

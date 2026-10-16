@@ -5,6 +5,7 @@ import {
   getInterpretedFile,
   getProjectRoot,
   isWebContainer,
+  defaultConfigDir,
   loadAllPresets,
   loadMainConfig,
   resolveAddonName,
@@ -189,7 +190,7 @@ export async function buildDevStandalone(
               - Refer to the migration guide at https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#commonjs-with-vite-is-deprecated`);
 
     const mainJsPath = getInterpretedFile(
-      resolve(options.configDir || '.forkbook', 'main')
+      resolve(options.configDir || defaultConfigDir(), 'main')
     ) as string;
     if (/\.c[jt]s$/.test(mainJsPath)) {
       deprecate(deprecationMessage);

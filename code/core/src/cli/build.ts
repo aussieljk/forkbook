@@ -1,4 +1,4 @@
-import { cache } from '@aussieljk/forkbook/internal/common';
+import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildStaticStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
 
 export const build = async (cliOptions: any) => {
@@ -7,7 +7,7 @@ export const build = async (cliOptions: any) => {
   });
   const options = {
     ...cliOptions,
-    configDir: cliOptions.configDir || './.forkbook',
+    configDir: cliOptions.configDir || defaultConfigDir(),
     outputDir: cliOptions.outputDir || './storybook-static',
     configType: 'PRODUCTION',
     cache,
