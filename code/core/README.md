@@ -1,21 +1,13 @@
-# Forkbook
+# 🪩 Forkbook
 
-[![npm](https://img.shields.io/npm/v/@aussieljk/forkbook?label=npm)](https://www.npmjs.com/package/@aussieljk/forkbook)
-[![Docs](https://img.shields.io/badge/docs-forkbook.ljk.dev-0F766E)](https://forkbook.ljk.dev)
+[![npm](https://img.shields.io/npm/v/@aussieljk/forkbook?style=flat-square&color=555&labelColor=333&label=npm)](https://www.npmjs.com/package/@aussieljk/forkbook)
+[![licence](https://img.shields.io/npm/l/@aussieljk/forkbook?style=flat-square&color=555&labelColor=333&label=licence)](https://www.npmjs.com/package/@aussieljk/forkbook)
 
-Forkbook is a small, fast fork of [Storybook](https://github.com/storybookjs/storybook). Use it to develop, document and test UI components in isolation.
+Forkbook is a small, fast workshop for UI components. Use it to develop, document and test components in isolation. It reads Storybook stories (CSF) and MDX docs.
 
-- npm: [`@aussieljk/forkbook`](https://www.npmjs.com/package/@aussieljk/forkbook)
-- Docs: [forkbook.ljk.dev](https://forkbook.ljk.dev)
+It supports React with Vite, Next.js with Vite, and React Native (iOS, Expo).
 
-## What is different
-
-- It is one package. The renderer, the frameworks, the Vite builder, the addons and the CLI are subpaths of `@aussieljk/forkbook`.
-- It supports only React with Vite and Next.js with Vite.
-- The CLI is `forkbook`, and the config folder is `.forkbook`.
-- It sends no telemetry, unless you set an OpenTelemetry endpoint.
-
-## Start
+## Install
 
 ```sh
 bun add -d @aussieljk/forkbook
@@ -23,56 +15,46 @@ bunx forkbook init
 bunx forkbook dev
 ```
 
-`.forkbook/main.ts`:
-
 ```ts
-import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
-
-const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.tsx'],
-  framework: '@aussieljk/forkbook/react-vite',
-  addons: ['@aussieljk/forkbook/addon-docs', '@aussieljk/forkbook/addon-a11y'],
-};
-
-export default config;
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 ```
 
-## Subpaths
+## Quick start
 
-| Subpath | Use |
-|---|---|
-| `@aussieljk/forkbook/react-vite` | React with Vite (framework) |
-| `@aussieljk/forkbook/nextjs-vite` | Next.js with Vite (framework) |
-| `@aussieljk/forkbook/react` | React renderer and types |
-| `@aussieljk/forkbook/addon-docs` | Docs pages and MDX |
-| `@aussieljk/forkbook/addon-a11y` | Accessibility checks |
-| `@aussieljk/forkbook/addon-vitest` | Run stories as Vitest tests |
-| `@aussieljk/forkbook/addon-themes` | Theme switcher |
-| `@aussieljk/forkbook/addon-links` | Links between stories |
-| `@aussieljk/forkbook/addon-pseudo-states` | Hover, focus and active states |
-| `@aussieljk/forkbook/addon-mcp` | MCP server for agents |
-| `@aussieljk/forkbook/test` | `fn`, `expect` and `userEvent` |
+- React with Vite: [forkbook.ljk.dev/docs/get-started/frameworks/react-vite](https://forkbook.ljk.dev/docs/get-started/frameworks/react-vite)
+- Next.js with Vite: [forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite](https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite)
+- React Native (iOS): [forkbook.ljk.dev/docs/get-started/frameworks/react-native](https://forkbook.ljk.dev/docs/get-started/frameworks/react-native)
 
-## Telemetry with OpenTelemetry (for example SigNoz)
+## Forkbook and Storybook
 
-Forkbook sends nothing by default. To send data to your own OpenTelemetry backend:
+| | Forkbook | Storybook 10.6 |
+|---|---|---|
+| Packages | One: `@aussieljk/forkbook` | One for the core, plus one for each framework, renderer and addon |
+| Frameworks | React (Vite), Next.js (Vite), React Native (iOS) | React, Vue, Angular, Svelte, Preact, Web Components and more |
+| Bundler | Vite 8 only | Vite and webpack |
+| UI styles | CSS variables and CSS modules | Emotion |
+| Syntax highlight | sugar-high | react-syntax-highlighter (Prism) |
+| Component docs | tsgo (TypeScript native) | react-docgen |
+| Source formatter | oxfmt | Prettier |
+| File watcher | @parcel/watcher | watchpack |
+| React Native UI | Expo UI (SwiftUI sheets, slider, date picker) and SF Symbols | @gorhom/bottom-sheet, react-native-svg, community slider and date picker |
+| Unpacked size (web and React Native packages) | 25.8 MB | 28.9 MB (`storybook`, `@storybook/react-vite`, `react`, `builder-vite`, `react-dom-shim`, `addon-docs`, `addon-a11y`, `addon-vitest`, `nextjs-vite` and the six React Native packages) |
+| Telemetry | Off | On (you can turn it off) |
 
-```sh
-bun add -d @opentelemetry/api @opentelemetry/context-async-hooks @opentelemetry/sdk-trace-base \
-  @opentelemetry/sdk-logs @opentelemetry/exporter-trace-otlp-http \
-  @opentelemetry/exporter-logs-otlp-http @opentelemetry/resources
-OTEL_EXPORTER_OTLP_ENDPOINT=https://signoz.example.com bunx forkbook dev
-```
+## Moving from Storybook
 
-- Traces: one span for each command (`forkbook dev`, `forkbook build`, `forkbook init`), with child spans for the story index, the manager start and the preview start.
-- Logs: one record for each Forkbook event (`forkbook.dev`, `forkbook.build`, `forkbook.save-story`, and more). The data is anonymous and has no file paths.
-- The standard variables apply: `OTEL_SERVICE_NAME` (default `forkbook`), `OTEL_EXPORTER_OTLP_HEADERS` (for example an ingestion key).
-- `core.disableTelemetry: true` in `main.ts` stops the event logs.
+Replace the packages with `@aussieljk/forkbook` and change the imports. See [forkbook.ljk.dev/docs/migrate/from-storybook](https://forkbook.ljk.dev/docs/migrate/from-storybook).
 
-## Develop
+## Notes
 
-See [CLAUDE.md](./CLAUDE.md) for the commands. `bun run verify` builds, type-checks and tests the repo.
+- Telemetry: Forkbook sends nothing. To send traces and logs to your own OpenTelemetry server, set `OTEL_EXPORTER_OTLP_ENDPOINT` ([telemetry](https://forkbook.ljk.dev/docs/configure/telemetry)).
+
+## Links
+
+- Docs: [forkbook.ljk.dev](https://forkbook.ljk.dev)
+- Docs for agents: [forkbook.ljk.dev/llms.txt](https://forkbook.ljk.dev/llms.txt) (add `.md` to any docs page URL for markdown)
+- Source: [github.com/aussieljk/forkbook](https://github.com/aussieljk/forkbook). To work on it, see [CLAUDE.md](https://github.com/aussieljk/forkbook/blob/master/CLAUDE.md). `bun run verify` builds, type-checks and tests the repo.
 
 ## Licence
 
-MIT. Forkbook is a fork of Storybook. See [LICENSE](./LICENSE).
+MIT.
