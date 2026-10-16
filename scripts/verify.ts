@@ -7,48 +7,46 @@
  *   bun run verify --changed        only the tests that the changed files touch
  *   bun run verify --project core   any other argument goes to vitest
  */
-import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { spawn, spawnSync } from 'node:child_process';
+import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { ROOT_DIRECTORY } from './utils/constants.ts';
-import {
-  flushOtel,
-  initOtel,
-  markFailed,
-  otelEnabled,
-  withSpan,
-  withSyncSpan,
-} from './utils/otel.ts';
+import { flushOtel, initOtel, markFailed, otelEnabled, withSpan } from './utils/otel.ts';
+import { treeIfClean, VERIFIED_TREES } from './utils/verified-trees.ts';
 
 const args = process.argv.slice(2);
 const fullBuild = args.includes('--all');
 const vitestArgs = args.filter((arg) => arg !== '--all');
+const changedOnly = args.some((arg) => arg.startsWith('--changed'));
+// Only a full run with a clean tree proves the tree. merge-agent then skips verify for it.
+const tree = vitestArgs.length === 0 ? treeIfClean() : undefined;
 
 const logDir = join(ROOT_DIRECTORY, 'node_modules', '.cache', 'verify');
 mkdirSync(logDir, { recursive: true });
 
 function step(name: string, command: string[], cwd = ROOT_DIRECTORY) {
-  return withSyncSpan(`verify.${name}`, { 'verify.step': name }, (setAttributes) => {
-    const result = runStep(name, command, cwd);
+  return withSpan(`verify.${name}`, { 'verify.step': name }, async (setAttributes) => {
+    const result = await runStep(name, command, cwd);
     setAttributes({ 'verify.ok': result.ok });
     return result;
   });
 }
 
-function runStep(name: string, command: string[], cwd: string) {
+async function runStep(name: string, command: string[], cwd: string) {
   const start = Date.now();
-  const result = spawnSync(command[0], command.slice(1), {
+  const child = spawn(command[0], command.slice(1), {
     cwd,
-    encoding: 'utf8',
     env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
-    maxBuffer: 512 * 1024 * 1024,
   });
-  const output = `${result.stdout}\n${result.stderr}`;
+  let output = '';
+  child.stdout.on('data', (chunk) => (output += chunk));
+  child.stderr.on('data', (chunk) => (output += chunk));
+  const status = await new Promise<number | null>((resolve) => child.on('close', resolve));
   const logFile = join(logDir, `${name}.log`);
   writeFileSync(logFile, output);
   const seconds = Math.round((Date.now() - start) / 1000);
-  const ok = result.status === 0;
+  const ok = status === 0;
   console.log(
     `${ok ? 'PASS' : 'FAIL'}  ${name.padEnd(9)} ${String(seconds).padStart(4)} s   ${logFile}`
   );
@@ -59,9 +57,9 @@ function runStep(name: string, command: string[], cwd: string) {
 initOtel('forkbook-verify');
 const ok = await withSpan(
   'verify',
-  { 'verify.mode': fullBuild ? 'all' : args.includes('--changed') ? 'changed' : 'default' },
+  { 'verify.mode': fullBuild ? 'all' : changedOnly ? 'changed' : 'default' },
   async (setAttributes) => {
-    const build = step(
+    const build = await step(
       'build',
       ['bun', './build-package.ts', fullBuild ? '--all' : '--changed', '--no-watch', '--prod'],
       join(ROOT_DIRECTORY, 'scripts')
@@ -84,7 +82,8 @@ const ok = await withSpan(
     );
     setAttributes({ 'build.dist_kb': distKb });
 
-    const typecheck = step('typecheck', [
+    // The type check and the tests do not depend on each other, so they run at the same time.
+    const typecheckRun = step('typecheck', [
       'bun',
       'check',
       '-b',
@@ -92,6 +91,17 @@ const ok = await withSpan(
       'code/tsconfig.packages.json',
       '--no-pretty',
     ]);
+    // Only the dot reporter: the JSON reporter added about 45 s to a full run, for the same memory.
+    const testsRun = step('tests', [
+      'bun',
+      'x',
+      'vitest',
+      'run',
+      '--reporter=dot',
+      ...(otelEnabled ? ['--reporter=./scripts/vitest-otel-reporter.ts'] : []),
+      ...vitestArgs,
+    ]);
+    const [typecheck, tests] = await Promise.all([typecheckRun, testsRun]);
     if (!typecheck.ok) {
       console.log(
         typecheck.output
@@ -101,17 +111,6 @@ const ok = await withSpan(
           .join('\n')
       );
     }
-
-    // Only the dot reporter: the JSON reporter added about 45 s to a full run, for the same memory.
-    const tests = step('tests', [
-      'bun',
-      'x',
-      'vitest',
-      'run',
-      '--reporter=dot',
-      ...(otelEnabled ? ['--reporter=./scripts/vitest-otel-reporter.ts'] : []),
-      ...vitestArgs,
-    ]);
 
     // The totals, and each failed test with the first line of its error.
     const lines = tests.output.split('\n');
@@ -138,6 +137,8 @@ const ok = await withSpan(
     });
     if (!(typecheck.ok && tests.ok)) {
       markFailed('verify failed');
+    } else if (tree) {
+      appendFileSync(VERIFIED_TREES, `${tree}\n`);
     }
     return typecheck.ok && tests.ok;
   }

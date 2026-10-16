@@ -5,6 +5,10 @@
  *   bun run merge-agent worktree-agent-abc123          merge, verify, clean up
  *   bun run merge-agent worktree-agent-abc123 --all    verify with a full build
  *
+ * A fast-forward to a tree that already passed a full verify (in the agent's worktree) skips
+ * verify. Other merges run only the tests that the merge changed. The main session runs the full
+ * verify before it pushes.
+ *
  * A conflict in bun.lock is fixed by running `bun install`. Other conflicts stop the merge, so a
  * person or agent can fix them, commit, and run this again.
  */
@@ -12,6 +16,7 @@ import { spawnSync } from 'node:child_process';
 
 import { ROOT_DIRECTORY } from './utils/constants.ts';
 import { emitEvent, flushOtel, initOtel } from './utils/otel.ts';
+import { isVerified } from './utils/verified-trees.ts';
 
 const [branch, ...verifyArgs] = process.argv.slice(2);
 if (!branch) {
@@ -65,6 +70,7 @@ stats['agent.files_changed'] = git('diff', '--name-only', `master...${branch}`)
   .out.split('\n')
   .filter(Boolean).length;
 
+const base = git('rev-parse', 'HEAD').out;
 const merged = git('branch', '--merged', 'master', '--format=%(refname:short)')
   .out.split('\n')
   .includes(branch);
@@ -86,10 +92,19 @@ if (!merged) {
 }
 
 if (!run('bun', ['install'])) await fail('bun install failed.');
-if (!run('bun', ['scripts/verify.ts', ...verifyArgs])) {
-  await fail(
-    `The merge is on master, but verify failed. Fix master. The branch ${branch} is still there.`
-  );
+const fastForward = git('rev-parse', 'HEAD').out === git('rev-parse', branch).out;
+const clean = git('status', '--porcelain').out === '';
+const tree = git('rev-parse', 'HEAD^{tree}').out;
+if (fastForward && clean && verifyArgs.length === 0 && isVerified(tree)) {
+  stats['merge.verify'] = 'skipped';
+  console.log('Fast-forward to a tree that already passed verify. Verify is skipped.');
+} else {
+  stats['merge.verify'] = 'changed';
+  if (!run('bun', ['scripts/verify.ts', `--changed=${base}`, ...verifyArgs])) {
+    await fail(
+      `The merge is on master, but verify failed. Fix master. The branch ${branch} is still there.`
+    );
+  }
 }
 
 const worktree = git('worktree', 'list', '--porcelain')
