@@ -1,0 +1,68 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing tests/Interaction tests" />
+
+# Interaction tests
+
+An interaction test is a play function. It renders the story, does what a user does, and checks the result.
+
+```tsx
+import { expect, fn } from '@aussieljk/forkbook/test';
+
+const meta = {
+  component: LoginForm,
+  args: { onSubmit: fn() },
+} satisfies Meta<typeof LoginForm>;
+export default meta;
+
+export const Filled: Story = {
+  play: async ({ args, canvas, userEvent }) => {
+    await userEvent.type(canvas.getByLabelText('Email'), 'me@example.com');
+    await userEvent.click(canvas.getByRole('button', { name: 'Sign in' }));
+    await expect(args.onSubmit).toHaveBeenCalledWith({ email: 'me@example.com' });
+  },
+};
+```
+
+`@aussieljk/forkbook/test` has `expect`, `fn`, `spyOn`, `userEvent`, `within`, `screen` and `waitFor`. The Interactions panel shows each step.
+
+## Querying the canvas
+
+`canvas` has the Testing Library queries for the story root. Prefer queries that a user can see: `getByRole`, `getByLabelText` and `getByText`. For an element outside the story root (for example a dialog in a portal), use `screen`.
+
+## Run code before the component gets rendered
+
+Use `mount` to do work before the render:
+
+```tsx
+export const WithData: Story = {
+  play: async ({ mount }) => {
+    const data = await seedDatabase();
+    const canvas = await mount(<Profile data={data} />);
+    await expect(canvas.getByText(data.name)).toBeVisible();
+  },
+};
+```
+
+## Run code before each story in a file
+
+`beforeEach` runs before each story. It can return a clean-up function:
+
+```tsx
+const meta = {
+  component: Clock,
+  async beforeEach() {
+    const original = Date.now;
+    Date.now = () => 0;
+    return () => {
+      Date.now = original;
+    };
+  },
+} satisfies Meta<typeof Clock>;
+```
+
+You can also set `beforeEach` in `.forkbook/preview.ts` for all stories.
+
+## Disable
+
+Set `features: { interactions: false }` in `.forkbook/main.ts` to remove the Interactions panel. The play functions still run.

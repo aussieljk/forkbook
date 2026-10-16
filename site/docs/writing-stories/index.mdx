@@ -1,0 +1,61 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Overview" />
+
+# Writing stories
+
+A story shows one state of a component. You write stories in a `*.stories.tsx` file next to the component, in the Component Story Format (CSF).
+
+## Default export
+
+The default export (the meta) tells Forkbook about the component. It applies to all stories in the file.
+
+```tsx
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
+
+import { Button } from './button';
+
+const meta = {
+  component: Button,
+  args: { label: 'Save' },
+} satisfies Meta<typeof Button>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+```
+
+A file without a default export is not a stories file. Forkbook shows an error for it.
+
+## Named story exports
+
+Each named export is a story. Its name in the sidebar comes from the export name: `PrimaryLarge` shows as "Primary Large".
+
+```tsx
+export const Primary: Story = {
+  args: { primary: true },
+};
+
+export const Disabled: Story = {
+  args: { disabled: true },
+};
+```
+
+To set another name, use `name`:
+
+```tsx
+export const Primary: Story = { name: 'Main button', args: { primary: true } };
+```
+
+## Where Forkbook finds stories
+
+The `stories` field in `.forkbook/main.ts` has globs. See [stories](/docs/api/main-config/main-config-stories).
+
+## More
+
+- [Args](/docs/writing-stories/args)
+- [Parameters](/docs/writing-stories/parameters)
+- [Decorators](/docs/writing-stories/decorators)
+- [Loaders](/docs/writing-stories/loaders)
+- [Play functions](/docs/writing-stories/play-function)
+- [Tags](/docs/writing-stories/tags)
+- [Names and hierarchy](/docs/writing-stories/naming-components-and-hierarchy)

@@ -1,0 +1,32 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Sidebar and URLs" />
+
+# Sidebar and URLs
+
+## Permalink to stories
+
+Each story has a URL: `/?path=/story/<story id>`. A docs page has `/?path=/docs/<page id>`. The story ID comes from the title and the export name, for example `forms-text-field--primary`.
+
+To open only the story, with no Forkbook UI, use `/iframe.html?id=<story id>&viewMode=story`.
+
+## The sidebar
+
+- The title of each meta sets the groups. See [Names and hierarchy](/docs/writing-stories/naming-components-and-hierarchy).
+- `parameters.options.storySort` sets the order.
+- The tag filter shows or hides stories by tag.
+
+## Options of the sidebar
+
+Set them in `.forkbook/manager.ts`:
+
+```ts
+import { addons } from '@aussieljk/forkbook/manager-api';
+
+addons.setConfig({
+  sidebar: {
+    showRoots: true,
+    collapsedRoots: ['other'],
+  },
+});
+```

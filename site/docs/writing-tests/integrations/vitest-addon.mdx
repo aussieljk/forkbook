@@ -1,0 +1,75 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing tests/Vitest addon" />
+
+# Vitest addon
+
+The Vitest addon runs each story as a test in a real browser. It runs the play function and the accessibility checks. You can run the tests from the Forkbook sidebar or from the command line.
+
+## Install and set up
+
+```sh
+bunx forkbook add @aussieljk/forkbook/addon-vitest
+```
+
+The command adds the addon to `.forkbook/main.ts`, adds a Vitest project and installs Vitest browser mode with Playwright. To install the browsers, run `bunx playwright install chromium`.
+
+Then run the tests:
+
+```sh
+bunx vitest --project storybook
+```
+
+## Manual setup (advanced)
+
+Add the plugin to `vitest.config.ts` yourself:
+
+```ts
+import path from 'node:path';
+
+import { storybookTest } from '@aussieljk/forkbook/addon-vitest/vitest-plugin';
+import { playwright } from '@vitest/browser-playwright';
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    projects: [
+      {
+        extends: true,
+        plugins: [storybookTest({ configDir: path.join(import.meta.dirname, '.forkbook') })],
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [{ browser: 'chromium' }],
+          },
+        },
+      },
+    ],
+  },
+});
+```
+
+The plugin applies your `.forkbook/preview.ts` to each test. You do not need a setup file.
+
+Requirements: Vitest 4 or 5, and Vite 8.
+
+## storybookTest
+
+The options of the plugin:
+
+| Option | What it does |
+| --- | --- |
+| `configDir` | The configuration folder. The default is `.forkbook`. |
+| `storybookScript` | The script that starts Forkbook, for links from test failures to the story. |
+| `storybookUrl` | The URL of Forkbook, for those links. |
+| `tags.include` | Run only stories with these tags. The default is `['test']`. |
+| `tags.exclude` | Do not run stories with these tags. |
+| `tags.skip` | Mark stories with these tags as skipped. |
+| `disableAddonDocs` | Does not load the docs addon in tests. The default is `true`. |
+
+## In the Forkbook UI
+
+The sidebar has a test widget. Click the run button to run all tests, or run the tests of one story from its menu. With watch mode on, the tests run again when you save a file. Coverage is also available.

@@ -1,0 +1,31 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing tests/Overview" />
+
+# Writing tests
+
+Each story is a test case. Forkbook can test stories in these ways:
+
+- [Render tests](/docs/writing-tests/integrations/vitest-addon): a story that throws an error fails.
+- [Interaction tests](/docs/writing-tests/interaction-testing): a play function clicks, types and checks.
+- [Accessibility tests](/docs/writing-tests/accessibility-testing): axe-core checks each story.
+
+The [Vitest addon](/docs/writing-tests/integrations/vitest-addon) runs all of them in a real browser, from the Forkbook UI or from the command line.
+
+## Use stories in other tests
+
+`composeStories` from your framework (or `@aussieljk/forkbook/react`) gives you each story as a React component, with its args, decorators and loaders:
+
+```tsx
+import { composeStories } from '@aussieljk/forkbook/react';
+import { render, screen } from '@testing-library/react';
+
+import * as stories from './button.stories';
+
+const { Primary } = composeStories(stories);
+
+test('renders the label', () => {
+  render(<Primary />);
+  expect(screen.getByText('Save')).toBeTruthy();
+});
+```

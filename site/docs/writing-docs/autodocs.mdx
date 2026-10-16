@@ -1,0 +1,61 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing docs/Autodocs" />
+
+# Autodocs
+
+Autodocs makes a docs page for a component. The page has the title, the description, the first story, the props table and all stories.
+
+Add the `autodocs` tag to the meta, or to all stories in `.forkbook/preview.ts`:
+
+```ts
+const preview: Preview = { tags: ['autodocs'] };
+```
+
+The description comes from the JSDoc comment of the component.
+
+## Configure the table of contents
+
+```ts
+parameters: {
+  docs: { toc: true },
+}
+```
+
+The `toc` parameter also takes an object: `{ headingSelector: 'h2, h3', title: 'On this page', disable: false }`.
+
+## Write a custom template
+
+Give your own page as `docs.page`:
+
+```tsx
+import { Title, Description, Primary, Controls, Stories } from '@aussieljk/forkbook/addon-docs/blocks';
+
+parameters: {
+  docs: {
+    page: () => (
+      <>
+        <Title />
+        <Description />
+        <Primary />
+        <Controls />
+        <Stories />
+      </>
+    ),
+  },
+}
+```
+
+## Customize the docs container
+
+`docs.container` is the React component around the page. Use it to add a provider.
+
+## Override the default theme
+
+`docs.theme` sets the theme of the docs page:
+
+```ts
+import { themes } from '@aussieljk/forkbook/theming';
+
+parameters: { docs: { theme: themes.dark } }
+```

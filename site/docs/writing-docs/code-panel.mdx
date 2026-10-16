@@ -1,0 +1,17 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing docs/Code panel" />
+
+# Code panel
+
+The code panel shows the source code of the selected story, in a panel next to the canvas. It is a part of the docs addon.
+
+Turn it on in `.forkbook/preview.ts`:
+
+```ts
+parameters: {
+  docs: { codePanel: true },
+}
+```
+
+The code is the same as in the [Source](/docs/api/doc-blocks/doc-block-source) block. Forkbook highlights it with sugar-high.

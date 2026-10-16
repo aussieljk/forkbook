@@ -1,0 +1,29 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Overview" />
+
+# Essentials
+
+Forkbook has these tools built in. You do not install them.
+
+- [Actions](/docs/essentials/actions): shows calls to event handlers.
+- [Backgrounds](/docs/essentials/backgrounds): changes the background of the canvas.
+- [Controls](/docs/essentials/controls): changes args in a panel.
+- [Highlight](/docs/essentials/highlight): highlights elements in the story.
+- [Measure and outline](/docs/essentials/measure-and-outline): shows the sizes and the boxes of elements.
+- [Viewport](/docs/essentials/viewport): changes the size of the canvas.
+- [Toolbars](/docs/essentials/toolbars): adds menus to the toolbar.
+
+## Disable a tool
+
+Set the feature to `false` in `.forkbook/main.ts`:
+
+```ts
+const config = {
+  framework: '@aussieljk/forkbook/react-vite',
+  stories: ['../src/**/*.stories.tsx'],
+  features: { backgrounds: false, measure: false, outline: false },
+};
+```
+
+The features are `actions`, `backgrounds`, `controls`, `highlight`, `interactions`, `measure`, `outline` and `viewport`.

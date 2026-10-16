@@ -1,0 +1,25 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Highlight" />
+
+# Highlight
+
+Highlight draws a box on elements in the story. Addons use it, for example the accessibility addon. You can also use it from your own code.
+
+```ts
+import { addons } from '@aussieljk/forkbook/preview-api';
+import { HIGHLIGHT, RESET_HIGHLIGHT } from '@aussieljk/forkbook/highlight';
+
+addons.getChannel().emit(HIGHLIGHT, { selectors: ['h2', 'button'] });
+addons.getChannel().emit(RESET_HIGHLIGHT);
+```
+
+## Parameters
+
+| Parameter | What it does |
+| --- | --- |
+| `highlight.disable` | Set to `true` to turn off highlight for a story. |
+
+## Disable
+
+Set `features: { highlight: false }` in `.forkbook/main.ts`, or `parameters: { highlight: { disable: true } }` for one story.

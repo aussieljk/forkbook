@@ -1,0 +1,23 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Images and assets" />
+
+# Images and assets
+
+## Import an asset
+
+Import an image in a story or a component. Vite gives a URL:
+
+```tsx
+import logo from './logo.png';
+
+export const WithLogo: Story = { args: { src: logo } };
+```
+
+## Static files
+
+To serve a folder, add it to `staticDirs` in `.forkbook/main.ts`. See [Serving static files](/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration).
+
+## Fonts
+
+Load fonts in `.forkbook/preview-head.html`, or import the CSS in `.forkbook/preview.ts`.

@@ -1,0 +1,43 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Addons/Pseudo states" />
+
+# Pseudo states
+
+The pseudo states addon shows a component in a CSS state, for example `:hover` or `:focus`, with no mouse or keyboard.
+
+```ts
+// .forkbook/main.ts
+addons: ['@aussieljk/forkbook/addon-pseudo-states'],
+```
+
+The toolbar has a button to select the states.
+
+## Parameters
+
+```tsx
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const Mixed: Story = {
+  parameters: { pseudo: { hover: ['.first'], focusVisible: ['.second'] } },
+};
+```
+
+| Key | State |
+| --- | --- |
+| `hover` | `:hover` |
+| `active` | `:active` |
+| `focus` | `:focus` |
+| `focusVisible` | `:focus-visible` |
+| `focusWithin` | `:focus-within` |
+| `visited` | `:visited` |
+| `link` | `:link` |
+| `target` | `:target` |
+
+A value can be `true` (all elements), a selector or a list of selectors. `rootSelector` sets the element where the addon starts.
+
+## How it works
+
+The addon changes your CSS rules. It adds a class for each state, for example `.pseudo-hover`, next to each pseudo class. Styles in a shadow root also work.

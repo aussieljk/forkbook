@@ -6,7 +6,8 @@
     "packages": [
       "code",
       "code/core",
-      "scripts"
+      "scripts",
+      "site"
     ]
   },
   "scripts": {
@@ -17,6 +18,8 @@
     "fmt:write": "oxfmt .",
     "lint": "cd code && bun run lint",
     "merge-agent": "bun scripts/merge-agent.ts",
+    "site:build": "bun --cwd=site run build",
+    "site:dev": "bun --cwd=site run dev",
     "storybook:vitest": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch --project storybook-ui",
     "test": "NODE_OPTIONS=--max_old_space_size=4096 vitest run",
     "test:changed": "NODE_OPTIONS=--max_old_space_size=4096 vitest run --changed",

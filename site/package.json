@@ -1,0 +1,16 @@
+{
+  "name": "@aussieljk/forkbook-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "forkbook dev -p 6020 --no-open",
+    "build": "forkbook build --docs -o dist --quiet && bun scripts/postbuild.ts"
+  },
+  "dependencies": {
+    "@aussieljk/forkbook": "workspace:*",
+    "next": "^15.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

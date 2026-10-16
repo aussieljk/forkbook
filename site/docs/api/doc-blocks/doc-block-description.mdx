@@ -1,0 +1,24 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/Description" />
+
+# Description block
+
+`Description` shows the description of a component or a story.
+
+```mdx
+<Description of={ButtonStories.Primary} />
+```
+
+## Writing descriptions
+
+The description comes from these places, in this order:
+
+1. `parameters.docs.description.story` or `parameters.docs.description.component`.
+2. The JSDoc comment above the story export or above the meta.
+3. The JSDoc comment of the component.
+
+```tsx
+/** The main action of a page. Use one primary button on each page. */
+export const Primary: Story = { args: { primary: true } };
+```

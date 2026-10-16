@@ -1,0 +1,28 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/Canvas" />
+
+# Canvas block
+
+`Canvas` shows a story in a frame, with a toolbar and a button to show the source code.
+
+```mdx
+<Canvas of={ButtonStories.Primary} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `of` | The story. |
+| `layout` | The layout of the frame. |
+| `story` | Props for the story inside the frame. |
+| `sourceState` | `'hidden'`, `'shown'` or `'none'`. |
+| `withToolbar` | Shows the toolbar. |
+| `additionalActions` | More buttons, for example a link to a design. |
+
+## layout
+
+`'padded'` (the default), `'centered'` or `'fullscreen'`. The default comes from `parameters.layout` of the story.
+
+## story
+
+An object with the props of the [Story](/docs/api/doc-blocks/doc-block-story) block, for example `{ height: '400px' }`.

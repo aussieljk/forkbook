@@ -1,0 +1,38 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Features and behaviour" />
+
+# Features and behaviour
+
+Set the options of the Forkbook UI in `.forkbook/manager.ts`:
+
+```ts
+import { addons } from '@aussieljk/forkbook/manager-api';
+
+addons.setConfig({
+  navSize: 300,
+  bottomPanelHeight: 300,
+  rightPanelWidth: 300,
+  panelPosition: 'bottom',
+  enableShortcuts: true,
+  showToolbar: true,
+  theme: undefined,
+  selectedPanel: undefined,
+  initialActive: 'sidebar',
+  sidebar: { showRoots: false, collapsedRoots: ['other'] },
+  toolbar: { zoom: { hidden: false } },
+});
+```
+
+| Option | What it does |
+| --- | --- |
+| `navSize` | The width of the sidebar. |
+| `bottomPanelHeight`, `rightPanelWidth` | The size of the addon panel. |
+| `panelPosition` | `'bottom'` or `'right'`. |
+| `enableShortcuts` | Turns the keyboard shortcuts on or off. |
+| `showToolbar` | Shows the toolbar. |
+| `theme` | See [Theming](/docs/configure/theming). |
+| `selectedPanel` | The ID of the panel to open first. |
+| `initialActive` | On a phone: `'sidebar'`, `'canvas'` or `'addons'`. |
+| `sidebar` | Options of the sidebar. |
+| `toolbar` | Hides tools: `{ <tool id>: { hidden: true } }`. |

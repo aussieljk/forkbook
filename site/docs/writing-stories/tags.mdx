@@ -1,0 +1,35 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Tags" />
+
+# Tags
+
+Tags are labels on a story. Forkbook and addons use them to filter stories.
+
+```tsx
+const meta = {
+  component: Button,
+  tags: ['autodocs'],
+} satisfies Meta<typeof Button>;
+
+export const Experimental: Story = { tags: ['!dev'] };
+```
+
+## Built-in tags
+
+| Tag | What it does |
+| --- | --- |
+| `dev` | The story shows in the sidebar. On by default. |
+| `test` | The Vitest addon runs the story. On by default. |
+| `autodocs` | Forkbook makes a docs page for the component. |
+| `manifest` | The story is in the component manifest for agents. On by default. |
+
+A tag with `!` removes the tag. For example, `!dev` hides the story in the sidebar, and `!test` skips it in tests.
+
+## Levels
+
+You can set tags in `.forkbook/preview.ts`, in the meta and in a story. A story gets the tags of all levels.
+
+## Filter the sidebar
+
+The sidebar has a tag filter. Click the filter button and select the tags to show or hide.

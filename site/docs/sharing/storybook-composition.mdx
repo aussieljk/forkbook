@@ -1,0 +1,17 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Sharing/Composition" />
+
+# Composition
+
+Composition shows the stories of another published Forkbook (or Storybook) in your sidebar. Add `refs` to `.forkbook/main.ts`:
+
+```ts
+refs: {
+  ui: { title: 'UI kit', url: 'https://ui.example.dev' },
+},
+```
+
+The other site must be a static build that is open to your browser. Forkbook reads its `index.json`.
+
+To turn off a ref, set it to `{ disable: true }`.

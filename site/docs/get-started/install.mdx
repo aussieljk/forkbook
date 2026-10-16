@@ -1,0 +1,61 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Get started/Install" />
+
+# Install Forkbook
+
+Install the package, then run `init`. `init` finds your framework and writes the configuration.
+
+## Install
+
+```sh
+bun add -d @aussieljk/forkbook
+bunx forkbook init
+```
+
+You can use npm, pnpm or yarn. Forkbook finds your package manager from your lockfile. To set it, use `--package-manager`.
+
+`init` does these steps:
+
+1. It finds the project type: React with Vite, Next.js with Vite or React Native.
+2. It writes `.forkbook/main.ts` and `.forkbook/preview.ts`.
+3. It adds example stories.
+4. It adds the `storybook` and `build-storybook` scripts to `package.json`.
+5. It starts the dev server. To stop this, use `--no-dev`.
+
+## Options of init
+
+| Option | What it does |
+| --- | --- |
+| `--type <type>` | Sets the project type: `nextjs`, `react` or `react_native`. |
+| `--features <list...>` | Adds features: `docs`, `test`, `a11y`, `ai`. |
+| `--no-features` | Adds no features. |
+| `--package-manager <type>` | Sets the package manager. |
+| `-s`, `--skip-install` | Does not install packages. |
+| `-y`, `--yes` | Answers yes to all prompts. |
+| `-f`, `--force` | Adds Forkbook when a configuration is already there. |
+| `--no-dev` | Does not start the dev server at the end. |
+| `--agent` | Agent mode: no prompts, and it writes setup instructions for an AI agent. |
+| `--no-agent` | Turns agent mode off, also when Forkbook finds an AI agent. |
+
+## Start Forkbook
+
+```sh
+bun run storybook
+```
+
+The scripts run `forkbook dev` and `forkbook build`. The package has three bins: `forkbook`, `storybook` (the same program) and `sb-rn-get-stories` (React Native).
+
+## The configuration folder
+
+Forkbook reads its configuration from `.forkbook`. If there is no `.forkbook` folder but there is a `.storybook` folder, Forkbook uses `.storybook`. To use a different folder, give `-c` or `--config-dir`.
+
+## Package manager notes
+
+Yarn 1 is old. Forkbook shows a warning when it finds Yarn 1. Use Bun, pnpm, npm or a newer Yarn.
+
+## Next steps
+
+- [React with Vite](/docs/get-started/frameworks/react-vite)
+- [Next.js with Vite](/docs/get-started/frameworks/nextjs-vite)
+- [React Native](/docs/get-started/frameworks/react-native)

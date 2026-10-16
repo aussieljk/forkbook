@@ -1,0 +1,25 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/main.ts/viteFinal" />
+
+# viteFinal
+
+`viteFinal` changes the Vite configuration of Forkbook. It gets the configuration and returns a new one.
+
+```ts
+import { mergeConfig } from 'vite';
+
+const config = {
+  framework: '@aussieljk/forkbook/react-vite',
+  stories: ['../src/**/*.stories.tsx'],
+  viteFinal: (vite, { configType }) =>
+    mergeConfig(vite, {
+      resolve: { alias: { 'convex/react': new URL('./convex-mock.tsx', import.meta.url).pathname } },
+      server: { allowedHosts: ['my-mac.local'] },
+    }),
+};
+```
+
+`configType` is `'DEVELOPMENT'` or `'PRODUCTION'`.
+
+Use it to add aliases (for example to mock a module), plugins or server options.

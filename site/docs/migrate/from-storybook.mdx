@@ -1,0 +1,96 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Moving from Storybook" />
+
+# Moving from Storybook
+
+Forkbook is one package. To move a project, change the packages, change the imports, and rename a small number of names.
+
+## 1. Change the packages
+
+Remove `storybook` and each `@storybook/*` package. Add Forkbook:
+
+```sh
+bun remove storybook @storybook/react-vite @storybook/addon-docs
+bun add -d @aussieljk/forkbook
+```
+
+Do not install Forkbook as `"storybook": "npm:@aussieljk/forkbook"`. Then the package is in your project with two names, and the app gets two copies of the channel and of the addon state.
+
+Remove patches of `@storybook/*` packages. For example, Forkbook already has the Next.js 16.4 router fix.
+
+## 2. Change the imports
+
+Change each import as this table shows.
+
+| Storybook | Forkbook |
+| --- | --- |
+| `storybook/test` | `@aussieljk/forkbook/test` |
+| `storybook/actions` | `@aussieljk/forkbook/actions` |
+| `storybook/preview-api` | `@aussieljk/forkbook/preview-api` |
+| `storybook/manager-api` | `@aussieljk/forkbook/manager-api` |
+| `storybook/theming` | `@aussieljk/forkbook/theming` |
+| `storybook/internal/<x>` | `@aussieljk/forkbook/internal/<x>` |
+| `@storybook/react` | `@aussieljk/forkbook/react` |
+| `@storybook/react-vite` | `@aussieljk/forkbook/react-vite` |
+| `@storybook/nextjs-vite` | `@aussieljk/forkbook/nextjs-vite` |
+| `@storybook/addon-<name>` | `@aussieljk/forkbook/addon-<name>` |
+| `@storybook/react-native` | `@aussieljk/forkbook/react-native` |
+| `@storybook/react-native-ui` | `@aussieljk/forkbook/react-native-ui` |
+| `@storybook/addon-ondevice-controls` | `@aussieljk/forkbook/addon-ondevice-controls` |
+| `@storybook/addon-ondevice-actions` | `@aussieljk/forkbook/addon-ondevice-actions` |
+
+A codemod with `sed` does most of the work:
+
+```sh
+grep -rlE "['\"](@storybook/|storybook/)" src .storybook \
+  | xargs sed -i '' -E \
+    -e "s#(['\"])@storybook/([a-z-]+)#\1@aussieljk/forkbook/\2#g" \
+    -e "s#(['\"])storybook/#\1@aussieljk/forkbook/#g"
+```
+
+Read the diff before you commit it.
+
+## 3. What stays the same
+
+- The `storybook` bin. Your `storybook dev` and `storybook build` scripts work.
+- The `.storybook` folder. Forkbook reads it when there is no `.forkbook` folder.
+- The framework names `@storybook/react-vite` and `@storybook/nextjs-vite` in `main.ts`.
+- CSF, `Meta`, `StoryObj`, args, parameters, decorators, loaders and play functions.
+
+## 4. Renamed names
+
+| Storybook | Forkbook |
+| --- | --- |
+| Environment variables `STORYBOOK_*` | `FORKBOOK_*` |
+| Globals `__STORYBOOK_*` | `__FORKBOOK_*` |
+| CSS classes `sb-*` (for example `sb-show-main`) | `fb-*` (for example `fb-show-main`) |
+| CSS variables `--sb-*` | `--fb-*` |
+
+Change each of these names in your code, your tests and your scripts. Forkbook does not read the old names.
+
+## What was removed
+
+- webpack and every builder except Vite 8.
+- Every renderer except React. Vue, Svelte, Angular, Web Components, HTML and Preact are not there.
+- Every framework except `react-vite`, `nextjs-vite` and `react-native`.
+- The onboarding addon, the onboarding checklist and the guided tour.
+- `storybook automigrate`, `storybook upgrade` and `storybook doctor`.
+- The ESLint plugin.
+- On React Native: Android, React Native Web and Re.Pack.
+
+## What is different
+
+| Area | Storybook | Forkbook |
+| --- | --- | --- |
+| Styles of the UI | Emotion | CSS variables and CSS modules |
+| Code highlight | Prism | sugar-high |
+| Component docs | react-docgen | tsgo (native TypeScript) |
+| Formatter | Prettier | oxfmt |
+| File watcher | watchpack | @parcel/watcher |
+| UI parts | Radix and others | Base UI |
+| React Native UI | gorhom bottom sheet, SVG, community slider and date picker | Expo UI (SwiftUI) and SF Symbols |
+
+## Addons from other people
+
+An addon from npm imports `storybook/*` or `@storybook/*`. It does not work with Forkbook without changes. Copy the addon into your project and change its imports.

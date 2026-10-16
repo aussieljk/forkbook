@@ -1,0 +1,57 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="AI/MCP server" />
+
+# MCP server
+
+The MCP addon adds an MCP server to the Forkbook dev server. An AI agent can then read your components, write stories and run tests.
+
+```ts
+// .forkbook/main.ts
+addons: [
+  {
+    name: '@aussieljk/forkbook/addon-mcp',
+    options: { toolsets: { dev: true, docs: true, test: true } },
+  },
+],
+```
+
+## 1. Start Forkbook
+
+```sh
+bun run storybook
+```
+
+The server is at `/mcp`, for example `http://localhost:6006/mcp`. To change the path, use the `endpoint` option.
+
+## 2. Choose the toolsets
+
+| Toolset | What the agent can do |
+| --- | --- |
+| `dev` | Preview stories, find the stories of a component, find changed stories, and get instructions to write stories. |
+| `docs` | Read the component docs: props, descriptions and examples. |
+| `test` | Run the story tests (with the Vitest addon). |
+
+All three are on by default.
+
+## 3. Add the MCP server to your agent
+
+For Claude Code:
+
+```sh
+claude mcp add --transport http forkbook http://localhost:6006/mcp
+```
+
+For other agents, add an HTTP MCP server with the same URL.
+
+## Framework support
+
+The MCP server works with React (Vite) and Next.js (Vite). It does not work with React Native.
+
+## Without a dev server
+
+`forkbook tools` runs the same tools from the command line, without the dev server. `forkbook skills` shows instructions for agents.
+
+## Security
+
+The server checks the `Origin` header. Only the hosts in [allowedHosts](/docs/api/main-config/main-config-core#allowedhosts) can reach it.

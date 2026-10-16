@@ -1,0 +1,33 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Addons/Presets" />
+
+# Presets
+
+A preset changes the configuration of Forkbook. An addon is a preset with optional UI.
+
+A preset is a file that exports functions. Each function gets the current value and returns a new value:
+
+```ts
+// my-addon/preset.ts
+export const viteFinal = async (config) => ({
+  ...config,
+  define: { ...config.define, MY_FLAG: 'true' },
+});
+
+export const previewAnnotations = (entries = []) => [...entries, import.meta.resolve('./preview.ts')];
+
+export const managerEntries = (entries = []) => [...entries, import.meta.resolve('./manager.tsx')];
+```
+
+Add the preset to `addons` in `.forkbook/main.ts` with its path.
+
+| Export | What it changes |
+| --- | --- |
+| `viteFinal` | The Vite configuration. |
+| `previewAnnotations` | Files that the preview loads, with decorators, parameters and other annotations. |
+| `managerEntries` | Files that the Forkbook UI loads, for panels and tools. |
+| `staticDirs`, `features`, `core`, `tags` | The same fields as `main.ts`. |
+| `experimental_serverChannel` | Code on the server that uses the channel. |
+
+The manager code uses `@aussieljk/forkbook/manager-api`. The preview code uses `@aussieljk/forkbook/preview-api`.

@@ -1,0 +1,34 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Get started/Frameworks/Next.js notes" />
+
+# Next.js notes
+
+This page has notes about some Next.js features in Forkbook. For the setup, see [Next.js with Vite](/docs/get-started/frameworks/nextjs-vite).
+
+## Next.js font optimization
+
+`next/font/google` and `next/font/local` work. Forkbook loads the fonts in the preview. For `next/font/google`, the build must reach Google Fonts on the network.
+
+## React Server Components (RSC)
+
+To render async server components in a story, set the `experimentalRSC` feature:
+
+```ts
+// .forkbook/main.ts
+const config = {
+  framework: '@aussieljk/forkbook/nextjs-vite',
+  stories: ['../src/**/*.stories.tsx'],
+  features: { experimentalRSC: true },
+};
+```
+
+Forkbook renders the component on the client. Server-only code (for example a database call) does not run. Mock it.
+
+## Error: you are importing avif images but you don't have sharp installed
+
+`next/image` needs the `sharp` package to optimise AVIF images. Install it:
+
+```sh
+bun add -d sharp
+```

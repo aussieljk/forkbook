@@ -1,0 +1,35 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Play functions" />
+
+# Play functions
+
+A play function runs after the story renders. Use it to click, type and check the result. It is an interaction test.
+
+```tsx
+import { expect } from '@aussieljk/forkbook/test';
+
+export const Submitted: Story = {
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.type(canvas.getByLabelText('Email'), 'me@example.com');
+    await userEvent.click(canvas.getByRole('button', { name: 'Sign in' }));
+    await expect(canvas.getByText('Check your email')).toBeVisible();
+  },
+};
+```
+
+## The context
+
+| Field | What it is |
+| --- | --- |
+| `canvas` | Testing Library queries bound to the story root. |
+| `userEvent` | Testing Library user events, recorded in the Interactions panel. |
+| `args` | The args of the story. Functions are spies. |
+| `step` | Groups actions: `await step('Fill the form', async () => { ... })`. |
+| `mount` | Renders the story yourself. See [Interaction tests](/docs/writing-tests/interaction-testing#run-code-before-the-component-gets-rendered). |
+
+The Interactions panel shows each step. You can go back and forward through the steps.
+
+## Run play functions as tests
+
+The [Vitest addon](/docs/writing-tests/integrations/vitest-addon) runs each story and its play function as a test.

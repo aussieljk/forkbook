@@ -1,0 +1,21 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing docs/Overview" />
+
+# Writing docs
+
+Forkbook can make a docs page for each component, and you can write your own pages in MDX.
+
+- [Autodocs](/docs/writing-docs/autodocs): a page made from the stories and the types.
+- [MDX](/docs/writing-docs/mdx): pages that you write.
+- [Doc blocks](/docs/api/doc-blocks/doc-block-canvas): parts that you use in a page.
+- [Code panel](/docs/writing-docs/code-panel): the source code of a story, next to the story.
+
+Add the docs addon:
+
+```ts
+// .forkbook/main.ts
+addons: ['@aussieljk/forkbook/addon-docs'],
+```
+
+To build a site with only docs pages, run `forkbook build --docs`. This site is built that way.

@@ -1,0 +1,36 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Addons/Links" />
+
+# Links
+
+The links addon lets a story open another story. Use it to make a clickable prototype.
+
+```ts
+// .forkbook/main.ts
+addons: ['@aussieljk/forkbook/addon-links'],
+```
+
+## linkTo
+
+```tsx
+import { linkTo } from '@aussieljk/forkbook/addon-links';
+
+export const First: Story = {
+  args: { onNext: linkTo('Flows/Sign in', 'Second step') },
+};
+```
+
+`linkTo(title, name)` returns a handler. The name is optional.
+
+## The LinkTo component
+
+```tsx
+import LinkTo from '@aussieljk/forkbook/addon-links/react';
+
+<LinkTo title="Flows/Sign in" name="Second step">Next</LinkTo>
+```
+
+## hrefTo
+
+`await hrefTo(title, name)` gives the URL of a story.

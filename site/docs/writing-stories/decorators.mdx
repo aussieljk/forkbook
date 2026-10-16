@@ -1,0 +1,47 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Decorators" />
+
+# Decorators
+
+A decorator wraps a story. Use it to add a provider, a theme or extra markup.
+
+```tsx
+const meta = {
+  component: Button,
+  decorators: [
+    (Story) => (
+      <div style={{ padding: 24 }}>
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof Button>;
+```
+
+## Levels
+
+You can add decorators in `.forkbook/preview.tsx`, in the meta and in a story. The story decorators are the nearest to the story. The preview decorators are the outermost.
+
+## Context for mocking
+
+A decorator gets the story context as its second argument. Use `parameters`, `args` or `globals` to set up a provider:
+
+```tsx
+// .forkbook/preview.tsx
+const preview: Preview = {
+  decorators: [
+    (Story, { parameters }) => (
+      <MockDataProvider data={parameters.data ?? {}}>
+        <Story />
+      </MockDataProvider>
+    ),
+  ],
+};
+```
+
+Then a story sets its own data:
+
+```tsx
+export const Empty: Story = { parameters: { data: { items: [] } } };
+```

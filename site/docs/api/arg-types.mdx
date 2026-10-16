@@ -1,0 +1,119 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/ArgTypes" />
+
+# ArgTypes
+
+ArgTypes describe the args of a story. Forkbook makes them from your TypeScript types. You can add to them or change them.
+
+## argTypes
+
+Set `argTypes` in the meta, in a story or in `.forkbook/preview.ts`:
+
+```tsx
+const meta = {
+  component: Button,
+  argTypes: {
+    size: { control: 'select', options: ['small', 'medium', 'large'] },
+    onClick: { action: 'clicked' },
+  },
+} satisfies Meta<typeof Button>;
+```
+
+Each key is the name of an arg. Each value can have the fields below.
+
+### control
+
+The control in the Controls panel. Give a type as a string, an object, or `false` to hide the control.
+
+### control.type
+
+| Type | For |
+| --- | --- |
+| `boolean` | A switch. |
+| `number`, `range` | A number field or a slider. |
+| `text` | A text field. |
+| `object` | A JSON editor. |
+| `color` | A colour picker. |
+| `date` | A date picker. |
+| `select`, `multi-select` | A drop-down menu. |
+| `radio`, `inline-radio`, `check`, `inline-check` | A list of options. |
+| `file` | A file input. |
+
+### control.accept
+
+For `file`: the file types, for example `'.png,.jpg'`.
+
+### control.labels
+
+For options: labels to show in place of the option values.
+
+### control.max
+
+For `number` and `range`: the largest value.
+
+### control.min
+
+For `number` and `range`: the smallest value.
+
+### control.presetColors
+
+For `color`: a list of colours to show as buttons.
+
+### control.step
+
+For `number` and `range`: the step between values.
+
+### description
+
+A description of the arg. The docs table and the Controls panel show it.
+
+### if
+
+Shows the control only when another arg or a global has a value:
+
+```tsx
+argTypes: {
+  label: { if: { arg: 'showLabel', truthy: true } },
+}
+```
+
+### mapping
+
+Changes a simple value to a complex value. See [Args](/docs/writing-stories/args#mapping-to-complex-arg-values).
+
+### name
+
+The name to show. The default is the key.
+
+### options
+
+The values for `select`, `radio` and `check` controls.
+
+### table
+
+Settings for the docs table.
+
+### table.category
+
+A group in the docs table.
+
+### table.defaultValue
+
+The default value to show: `{ summary: 'medium' }`.
+
+### table.disable
+
+Set to `true` to hide the row in the docs table.
+
+### table.subcategory
+
+A group inside a category.
+
+### table.type
+
+The type to show: `{ summary: 'string' }`.
+
+### type
+
+The type of the arg, for example `{ name: 'string', required: true }`. Forkbook usually finds it from TypeScript.

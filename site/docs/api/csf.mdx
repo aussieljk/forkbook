@@ -1,0 +1,61 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Component Story Format" />
+
+# Component Story Format (CSF)
+
+CSF is the format of a stories file. It is an ES module with a default export and named exports.
+
+## Default export
+
+The default export is the meta. It has these fields:
+
+| Field | What it is |
+| --- | --- |
+| `component` | The component. Forkbook uses it for the docs and the controls. |
+| `title` | The place in the sidebar. Optional. |
+| `args`, `argTypes` | Args and arg types for all stories. |
+| `parameters` | Parameters for all stories. |
+| `decorators`, `loaders` | For all stories. |
+| `beforeEach` | Runs before each story. It can return a clean-up function. |
+| `tags` | Tags for all stories. |
+| `render` | The default render function. |
+| `excludeStories`, `includeStories` | Which exports are not stories, or are stories. |
+
+## Named story exports
+
+Each named export is a story object:
+
+| Field | What it is |
+| --- | --- |
+| `args`, `argTypes`, `parameters`, `decorators`, `loaders`, `tags`, `beforeEach` | For this story. |
+| `render` | How to render the story. |
+| `play` | The play function. |
+| `name` | The name in the sidebar. |
+
+## Args story inputs
+
+`render` gets the args and the context:
+
+```tsx
+export const Group: Story = {
+  render: (args) => (
+    <div>
+      <Button {...args} />
+      <Button {...args} label="Second" />
+    </div>
+  ),
+};
+```
+
+## Non-story exports
+
+To export something that is not a story, use `excludeStories` in the meta:
+
+```tsx
+export const fixtures = { label: 'Save' };
+
+const meta = { component: Button, excludeStories: ['fixtures'] } satisfies Meta<typeof Button>;
+```
+
+A regular expression also works: `excludeStories: /.*Data$/`.

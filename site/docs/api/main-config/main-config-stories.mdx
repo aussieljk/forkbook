@@ -1,0 +1,27 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/main.ts/stories" />
+
+# stories
+
+The `stories` field of `.forkbook/main.ts` tells Forkbook where the stories and the MDX pages are. The paths are relative to the configuration folder.
+
+```ts
+stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
+```
+
+An entry can also be an object:
+
+```ts
+stories: [
+  { directory: '../packages/ui', files: '**/*.stories.tsx', titlePrefix: 'UI' },
+],
+```
+
+| Field | What it does |
+| --- | --- |
+| `directory` | The folder. |
+| `files` | A glob inside the folder. The default finds all stories and MDX files. |
+| `titlePrefix` | A group to put in front of each title. |
+
+Forkbook shows an error when no file matches. See the [FAQ](/docs/faq#can-i-have-a-storybook-with-no-local-stories).

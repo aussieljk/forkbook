@@ -1,0 +1,21 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/ArgTypes" />
+
+# ArgTypes block
+
+`ArgTypes` shows a table of the args of a component. The values cannot change. For a table where you can change the values, use [Controls](/docs/api/doc-blocks/doc-block-controls).
+
+```mdx
+<ArgTypes of={ButtonStories} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `of` | A stories file, a story or a component. |
+| `include`, `exclude` | Which args to show. Names or a regular expression. |
+| `sort` | The order of the rows. |
+
+## sort
+
+`'none'` (the order of the source), `'alpha'` or `'requiredFirst'`.

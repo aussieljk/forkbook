@@ -1,0 +1,17 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/Controls" />
+
+# Controls block
+
+`Controls` shows a table of the args of a story, and you can change the values. The story on the page changes.
+
+```mdx
+<Controls of={ButtonStories.Primary} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `of` | The story. Without it, the primary story of the page. |
+| `include`, `exclude` | Which args to show. |
+| `sort` | `'none'`, `'alpha'` or `'requiredFirst'`. |
