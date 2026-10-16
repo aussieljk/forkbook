@@ -90,6 +90,15 @@
           "value": "text/plain; charset=utf-8"
         }
       ]
+    },
+    {
+      "source": "/(fb-manager/[^/]+\\.js|fb-addons/(.*)|index\\.html|iframe\\.html|index\\.json)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     }
   ]
 }
