@@ -42,7 +42,7 @@ export interface ControlsParameters {
     /**
      * Preset color swatches for the color picker control
      *
-     * @example PresetColors: [{ color: '#ff4785', title: 'Coral' }, 'rgba(0, 159, 183, 1)',
+     * @example PresetColors: [{ color: '#007aff', title: 'System blue' }, 'rgba(0, 159, 183, 1)',
      * '#fe4a49']
      */
     presetColors?: Array<string | { color: string; title?: string }>;

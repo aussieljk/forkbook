@@ -5,7 +5,7 @@ import { Image, Linking, StyleProp, Text, TextStyle, TouchableOpacity } from 're
 const WIDTH = 125;
 const HEIGHT = 25;
 
-/** The mark of Forkbook, when the theme has no brand. */
+/** The mark of Forkbook, when the theme has no brand: the mirror ball and the text mark. */
 const NoBrandLogo: FC<{ theme: Theme }> = ({ theme }) => (
   <Text
     style={{
@@ -15,7 +15,7 @@ const NoBrandLogo: FC<{ theme: Theme }> = ({ theme }) => (
       fontWeight: 'bold',
     }}
   >
-    Forkbook
+    {'\u{1FAA9} Forkbook'}
   </Text>
 );
 
@@ -35,7 +35,7 @@ const BrandLogo: FC<{ theme: Theme }> = ({ theme }) => {
   useEffect(() => {
     if (imageHasNoWidthOrHeight) {
       console.warn(
-        "STORYBOOK: When using a remote image as the brand logo, you must also set the width and height.\nFor example:  brand: { image: { uri: 'https://sb.com/img.png', height: 25, width: 25}}"
+        "Forkbook: When using a remote image as the brand logo, you must also set the width and height.\nFor example:  brand: { image: { uri: 'https://sb.com/img.png', height: 25, width: 25}}"
       );
     }
   }, [imageHasNoWidthOrHeight]);
@@ -102,7 +102,7 @@ const BrandTitle: FC<{ theme: Theme }> = ({ theme }) => {
   }
 };
 
-export const StorybookLogo: FC<{ theme: Theme }> = ({ theme }) => {
+export const ForkbookLogo: FC<{ theme: Theme }> = ({ theme }) => {
   const image = useMemo(() => theme.brand?.image, [theme.brand?.image]);
   const title = useMemo(() => theme.brand?.title, [theme.brand?.title]);
 

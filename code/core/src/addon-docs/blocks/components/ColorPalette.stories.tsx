@@ -13,8 +13,8 @@ export const DefaultStyle = () => (
       subtitle="Some of the greys"
       colors={['#FFFFFF', '#F8F8F8', '#F3F3F3']}
     />
-    <ColorItem title="theme.color.primary" subtitle="Coral" colors={['#FF4785']} />
-    <ColorItem title="theme.color.secondary" subtitle="Ocean" colors={['#1EA7FD']} />
+    <ColorItem title="theme.color.primary" subtitle="System blue" colors={['#007AFF']} />
+    <ColorItem title="theme.color.secondary" subtitle="System blue (dark)" colors={['#0A84FF']} />
     <ColorItem
       title="theme.color.positive"
       subtitle="Green"
@@ -46,16 +46,16 @@ export const NamedColors = () => (
     />
     <ColorItem
       title="theme.color.primary"
-      subtitle="Coral"
+      subtitle="System blue"
       colors={{
-        WildWatermelon: '#FF4785',
+        SystemBlue: '#007AFF',
       }}
     />
     <ColorItem
       title="theme.color.secondary"
       subtitle="Ocean"
       colors={{
-        DodgerBlue: '#1EA7FD',
+        SystemBlueDark: '#0A84FF',
       }}
     />
     <ColorItem

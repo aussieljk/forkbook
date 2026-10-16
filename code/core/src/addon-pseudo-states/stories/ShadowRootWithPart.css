@@ -9,7 +9,7 @@
   font-weight: 700;
   font-size: 14px;
   line-height: 1;
-  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 ::part(foo):hover {
   text-decoration: underline;

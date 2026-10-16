@@ -3,67 +3,68 @@ export const easing = {
 };
 
 export const color = {
-  // Official color palette
-  primary: '#FF4785', // coral
-  secondary: '#006DEB', // ocean
-  tertiary: '#FAFBFC',
-  ancillary: '#22a699',
+  // Forkbook palette: the iOS system colours (light appearance)
+  primary: '#007AFF', // systemBlue
+  secondary: '#007AFF', // systemBlue
+  tertiary: '#F2F2F7', // systemGray6
+  ancillary: '#30B0C7', // systemTeal
 
   // Complimentary
-  orange: '#FC521F',
-  gold: '#FFAE00',
-  green: '#66BF3C',
-  seafoam: '#37D5D3',
-  purple: '#6F2CAC',
-  ultraviolet: '#2A0481',
+  orange: '#FF9500', // systemOrange
+  gold: '#FFCC00', // systemYellow
+  green: '#34C759', // systemGreen
+  seafoam: '#32ADE6', // systemCyan
+  purple: '#AF52DE', // systemPurple
+  ultraviolet: '#5856D6', // systemIndigo
 
-  // Monochrome
+  // Monochrome (iOS system greys)
   lightest: '#FFFFFF',
-  lighter: '#F6F9FC',
-  light: '#EEF2F6',
-  mediumlight: '#ECF2F9',
-  medium: '#D9E5F2',
-  mediumdark: '#737F8C',
-  dark: '#5C6570',
-  darker: '#454C54',
-  darkest: '#2E3338',
+  lighter: '#F2F2F7', // systemGray6
+  light: '#E5E5EA', // systemGray5
+  mediumlight: '#E5E5EA', // systemGray5
+  medium: '#D1D1D6', // systemGray4
+  mediumdark: '#8E8E93', // systemGray
+  dark: '#636366', // systemGray2 (dark)
+  darker: '#48484A', // systemGray3 (dark)
+  darkest: '#1C1C1E', // systemGray6 (dark)
 
-  // For borders
-  border: 'hsl(212 50% 30% / 0.15)',
+  // For borders (iOS separator)
+  border: 'rgba(60, 60, 67, 0.18)',
 
   // Status
-  positive: '#66BF3C',
-  warning: '#E69D00',
-  negative: '#FF4400',
+  positive: '#34C759',
+  warning: '#FF9500',
+  negative: '#FF3B30',
   critical: '#FFFFFF',
 
-  // Text
-  defaultText: '#2E3338',
+  // Text (iOS accessible colours)
+  defaultText: '#1C1C1E',
   inverseText: '#FFFFFF',
-  positiveText: '#427C27',
-  warningText: '#955B1E',
-  negativeText: '#C23400',
+  positiveText: '#248A3D',
+  warningText: '#C93400',
+  negativeText: '#D70015',
 };
 
 export const background = {
-  app: '#F6F9FC',
+  app: '#F2F2F7',
   bar: color.lightest,
   content: color.lightest,
   preview: color.lightest,
   gridCellSize: 10,
-  hoverable: '#DBECFF',
+  hoverable: '#E5F1FF',
 
   // Notification, error, and warning backgrounds
-  positive: '#F1FFEB',
-  warning: '#FFF9EB',
-  negative: '#FFF0EB',
-  critical: '#D13800',
+  positive: '#EAF9EE',
+  warning: '#FFF4E5',
+  negative: '#FFEBEA',
+  critical: '#D70015',
 };
 
 export const typography = {
   fonts: {
     base: [
-      '"Nunito Sans"',
+      '"Inter Variable"',
+      'Inter',
       '-apple-system',
       '".SFNSText-Regular"',
       '"San Francisco"',
@@ -113,65 +114,65 @@ export const tokens = {
       accent: color.secondary,
       inverse: color.lightest,
       // TODO: add 'disabled'
-      positive: '#427C27',
-      warning: '#7A4100',
-      negative: '#C23400',
+      positive: '#248A3D',
+      warning: '#C93400',
+      negative: '#D70015',
       critical: '#FFFFFF',
-      agentic: '#723aa6',
+      agentic: '#8944AB',
     },
     bgColor: {
       default: color.lightest,
       muted: background.app,
       // TODO: add 'accent'? white or blue?
-      positive: '#F1FFEB',
-      warning: '#FFF7EB',
-      negative: '#FFF0EB',
-      critical: '#D13800',
-      agentic: '#f5f0fa',
+      positive: '#EAF9EE',
+      warning: '#FFF4E5',
+      negative: '#FFEBEA',
+      critical: '#D70015',
+      agentic: '#F7EEFC',
     },
     borderColor: {
       default: color.border,
-      muted: 'hsl(0 0% 0% / 0.1)',
-      inverse: 'hsl(0 0% 100% / 0.1)',
-      positive: '#BFE7AC',
-      warning: '#FFCE85',
-      negative: '#FFC3AD',
-      critical: 'hsl(16 100% 100% / 0)',
-      agentic: '#e1d2ef',
+      muted: 'rgba(0, 0, 0, 0.1)',
+      inverse: 'rgba(255, 255, 255, 0.1)',
+      positive: '#B4E9C1',
+      warning: '#FFD9A3',
+      negative: '#FFC2BE',
+      critical: 'rgba(255, 255, 255, 0)',
+      agentic: '#E5CCF4',
     },
   },
   dark: {
     fgColor: {
-      default: '#C9CCCF',
-      muted: '#95999D',
-      accent: '#479DFF',
-      inverse: '#1B1C1D',
+      default: '#F2F2F7',
+      muted: '#98989F',
+      accent: '#0A84FF',
+      inverse: '#1C1C1E',
       // TODO: add 'disabled'
-      positive: '#86CE64',
-      warning: '#FFAD33',
-      negative: '#FF6933',
-      critical: '#FF6933',
-      agentic: '#b07fdc',
+      positive: '#30D158',
+      warning: '#FF9F0A',
+      negative: '#FF453A',
+      critical: '#FF453A',
+      agentic: '#BF5AF2',
     },
     bgColor: {
-      default: '#222325',
-      muted: '#1B1C1D',
+      default: '#1C1C1E',
+      muted: '#000000',
       // TODO: add 'accent'? white or blue?
-      positive: 'hsl(101 100% 100% / 0)',
-      warning: 'hsl(101 100% 100% / 0)',
-      negative: 'hsl(101 100% 100% / 0)',
-      critical: 'hsl(101 100% 100% / 0)',
-      agentic: 'rgba(114,58,166,0.15)',
+      positive: 'rgba(48, 209, 88, 0)',
+      warning: 'rgba(255, 159, 10, 0)',
+      negative: 'rgba(255, 69, 58, 0)',
+      critical: 'rgba(255, 69, 58, 0)',
+      agentic: 'rgba(191, 90, 242, 0.15)',
     },
     borderColor: {
-      default: 'hsl(0 0% 100% / 0.1)',
-      muted: 'hsl(0 0% 100% / 0.5)',
-      inverse: 'hsl(0 0% 0% / 0.1)',
-      positive: 'hsl(101 52% 64% / 0.15)',
-      warning: 'hsl(36 100% 64% / 0.15)',
-      negative: 'hsl(16 100% 64% / 0.15)',
-      critical: '#FF6933',
-      agentic: 'rgba(114,58,166,0.35)',
+      default: 'rgba(84, 84, 88, 0.6)',
+      muted: 'rgba(255, 255, 255, 0.5)',
+      inverse: 'rgba(0, 0, 0, 0.1)',
+      positive: 'rgba(48, 209, 88, 0.2)',
+      warning: 'rgba(255, 159, 10, 0.2)',
+      negative: 'rgba(255, 69, 58, 0.2)',
+      critical: '#FF453A',
+      agentic: 'rgba(191, 90, 242, 0.35)',
     },
   },
 };

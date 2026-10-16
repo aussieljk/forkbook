@@ -58,7 +58,7 @@ describe('normalizeOptions', () => {
       priority: 0,
       selectors: ['#button'],
       styles: {
-        outline: '2px dashed #029cfd',
+        outline: '2px dashed #007aff',
       },
       menu: undefined,
     });

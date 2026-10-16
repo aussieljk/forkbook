@@ -393,10 +393,10 @@ export class PostMessageTransport implements ChannelTransport {
         const pageString =
           this.config.page === 'manager'
             ? `<span style="color: #37D5D3; background: black"> manager </span>`
-            : `<span style="color: #1EA7FD; background: black"> preview </span>`;
+            : `<span style="color: #007AFF; background: black"> preview </span>`;
 
         const eventString = Object.values(EVENTS).includes(event.type)
-          ? `<span style="color: #FF4785">${event.type}</span>`
+          ? `<span style="color: #007AFF">${event.type}</span>`
           : `<span style="color: #FFAE00">${event.type}</span>`;
 
         if (refId) {

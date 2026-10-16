@@ -66,7 +66,7 @@ export const normalizeOptions = (options: HighlightOptions): Highlight => {
   return {
     priority: 0,
     styles: {
-      outline: '2px dashed #029cfd',
+      outline: '2px dashed #007aff',
     },
     ...rest,
     menu: Array.isArray(menu) ? (menu.every(Array.isArray) ? menu : [menu]) : undefined,

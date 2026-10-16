@@ -27,9 +27,9 @@ const OverrideShell = ({ name, children }: { name: string; children?: ReactNode 
   <div
     data-testid={`override-${name}`}
     style={{
-      border: '2px solid #ff4785',
+      border: '2px solid #007aff',
       borderRadius: 6,
-      color: '#ff4785',
+      color: '#007aff',
       fontFamily: 'monospace',
       margin: '8px 0',
       padding: '8px 12px',

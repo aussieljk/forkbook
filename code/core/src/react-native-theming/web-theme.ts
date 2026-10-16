@@ -3,51 +3,51 @@ import { transparentize } from 'polished';
 import { ReactElement } from 'react';
 
 export const color = {
-  // Official color palette
-  primary: '#FF4785', // coral
-  secondary: '#029CFD', // ocean
-  secondaryLighter: 'rgba(2, 157, 253, 0.9)', // ocean
-  tertiary: '#FAFBFC',
-  ancillary: '#22a699',
+  // Forkbook palette: the iOS system colours
+  primary: '#007AFF', // systemBlue
+  secondary: '#007AFF', // systemBlue
+  secondaryLighter: 'rgba(0, 122, 255, 0.9)',
+  tertiary: '#F2F2F7',
+  ancillary: '#30B0C7',
 
   // Complimentary
-  orange: '#FC521F',
-  gold: '#FFAE00',
-  green: '#66BF3C',
-  seafoam: '#37D5D3',
-  purple: '#6F2CAC',
-  ultraviolet: '#2A0481',
+  orange: '#FF9500',
+  gold: '#FFCC00',
+  green: '#34C759',
+  seafoam: '#32ADE6',
+  purple: '#AF52DE',
+  ultraviolet: '#5856D6',
 
   // Monochrome
   lightest: '#FFFFFF',
-  lighter: '#F7FAFC',
-  light: '#EEF3F6',
-  mediumlight: '#ECF4F9',
-  medium: '#D9E8F2',
-  mediumdark: '#73828C',
-  dark: '#5C6870',
-  darker: '#454E54',
-  darkest: '#2E3438',
+  lighter: '#F2F2F7',
+  light: '#E5E5EA',
+  mediumlight: '#E5E5EA',
+  medium: '#D1D1D6',
+  mediumdark: '#8E8E93',
+  dark: '#636366',
+  darker: '#48484A',
+  darkest: '#1C1C1E',
 
   // For borders
-  border: 'hsla(203, 50%, 30%, 0.15)',
+  border: 'rgba(60, 60, 67, 0.18)',
 
   // Status
-  positive: '#66BF3C',
-  negative: '#FF4400',
-  warning: '#E69D00',
+  positive: '#34C759',
+  negative: '#FF3B30',
+  warning: '#FF9500',
   critical: '#FFFFFF',
 
   // Text
-  defaultText: '#2E3438',
+  defaultText: '#1C1C1E',
   inverseText: '#FFFFFF',
-  positiveText: '#448028',
-  negativeText: '#D43900',
-  warningText: '#A15C20',
+  positiveText: '#248A3D',
+  negativeText: '#D70015',
+  warningText: '#C93400',
 };
 
 export const background = {
-  app: '#F6F9FC',
+  app: '#F2F2F7',
   bar: color.lightest,
   content: color.lightest,
   preview: color.lightest,
@@ -55,10 +55,10 @@ export const background = {
   hoverable: transparentize(0.9, color.secondary), // hover state for items in a list
 
   // Notification, error, and warning backgrounds
-  positive: '#E1FFD4',
-  negative: '#FEDED2',
-  warning: '#FFF5CF',
-  critical: '#FF4400',
+  positive: '#EAF9EE',
+  negative: '#FFEBEA',
+  warning: '#FFF4E5',
+  critical: '#D70015',
 };
 
 export const typography = {
@@ -92,8 +92,8 @@ export const light: ThemeVars = {
   base: 'light',
 
   // Forkbook-specific color palette
-  colorPrimary: '#FF4785', // coral
-  colorSecondary: '#029CFD', // ocean
+  colorPrimary: color.primary,
+  colorSecondary: color.secondary,
 
   // UI
   appBg: background.app,
@@ -228,35 +228,35 @@ export interface StorybookThemeWeb {
 export const dark: ThemeVars = {
   base: 'dark',
 
-  // Forkbook-specific color palette
-  colorPrimary: '#FF4785', // coral
-  colorSecondary: '#029CFD', // ocean
+  // Forkbook palette: the iOS system colours (dark appearance)
+  colorPrimary: '#0A84FF',
+  colorSecondary: '#0A84FF',
 
   // UI
-  appBg: '#222425',
-  appContentBg: '#1B1C1D',
+  appBg: '#000000',
+  appContentBg: '#1C1C1E',
   appPreviewBg: color.lightest,
-  appBorderColor: 'rgba(255,255,255,.1)',
+  appBorderColor: 'rgba(84, 84, 88, 0.6)',
   appBorderRadius: 4,
 
   // Text colors
-  textColor: '#C9CDCF',
-  textInverseColor: '#222425',
-  textMutedColor: '#798186',
+  textColor: '#F2F2F7',
+  textInverseColor: '#1C1C1E',
+  textMutedColor: '#98989F',
 
   // Toolbar default and active colors
-  barTextColor: color.mediumdark,
-  barHoverColor: color.secondary,
-  barSelectedColor: color.secondary,
-  barBg: '#292C2E',
+  barTextColor: '#98989F',
+  barHoverColor: '#0A84FF',
+  barSelectedColor: '#0A84FF',
+  barBg: '#1C1C1E',
 
   // Form colors
-  buttonBg: '#222425',
-  buttonBorder: 'rgba(255,255,255,.1)',
-  booleanBg: '#222425',
-  booleanSelectedBg: '#2E3438',
-  inputBg: '#1B1C1D',
-  inputBorder: 'rgba(255,255,255,.1)',
+  buttonBg: '#2C2C2E',
+  buttonBorder: 'rgba(84, 84, 88, 0.6)',
+  booleanBg: '#2C2C2E',
+  booleanSelectedBg: '#3A3A3C',
+  inputBg: '#2C2C2E',
+  inputBorder: 'rgba(84, 84, 88, 0.6)',
   inputTextColor: color.lightest,
   inputBorderRadius: 4,
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StorybookLogo } from '@aussieljk/forkbook/internal/components';
+import { ForkbookLogo } from '@aussieljk/forkbook/internal/components';
 
 import { useTheme } from '@aussieljk/forkbook/theming';
 
@@ -32,7 +32,7 @@ export const Brand = () => {
   const logo = image ? (
     <img className={styles.img} src={image} alt={title} />
   ) : (
-    <StorybookLogo className={styles.logo} alt={title} />
+    <ForkbookLogo className={styles.logo} alt={title} />
   );
 
   if (url) {

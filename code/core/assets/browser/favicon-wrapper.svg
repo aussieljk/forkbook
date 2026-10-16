@@ -27,15 +27,15 @@
         d="M23.8,14.8 C25.6808284,14.8 27.5616567,15.7284418 28.6412402,17.5853254 L28.6412402,17.5853254 L33.6412402,26.1853254 C34.1656792,27.0873604 34.4068747,28.0446245 34.409009,28.9780654 C34.4112621,29.9762222 34.1406828,30.9466974 33.6539766,31.7926531 C33.1672704,32.6386087 32.4642862,33.3603071 31.600233,33.8600412 C30.7922009,34.3273748 29.8434094,34.6 28.8,34.6 L28.8,34.6 L18.8,34.6 C17.7565906,34.6 16.8077991,34.3273748 15.999767,33.8600412 C15.1357138,33.3603071 14.4327296,32.6386087 13.9460234,31.7926531 C13.4593172,30.9466974 13.1887379,29.9762222 13.190991,28.9780654 C13.1931253,28.0446245 13.4343208,27.0873604 13.9587598,26.1853254 L13.9587598,26.1853254 L18.9587598,17.5853254 C20.0383433,15.7284418 21.9191716,14.8 23.8,14.8 Z" />
     </mask>
 
-    <polygon id="active" fill="none" stroke="#029CFD" stroke-linejoin="round" stroke-width="2.8"
+    <polygon id="active" fill="none" stroke="#007AFF" stroke-linejoin="round" stroke-width="2.8"
       points="25 21 30 29.6 20 29.6" transform="rotate(90 25 25.3)" />
     <circle id="critical" fill="none" cx="23.9" cy="24.9" r="4.7" stroke="#000" stroke-linejoin="round"
       stroke-width="2.8" />
-    <path id="negative" fill="none" stroke="#F40" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"
+    <path id="negative" fill="none" stroke="#FF3B30" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8"
       d="M19.4,20.4 L28.2,29.2 M28.2,20.4 L19.4,29.2" />
-    <polyline id="positive" fill="none" stroke="#66BF3C" stroke-linecap="round" stroke-linejoin="round"
+    <polyline id="positive" fill="none" stroke="#34C759" stroke-linecap="round" stroke-linejoin="round"
       stroke-width="2.8" points="19.752 25.712 23.204 29.192 29.752 22.592" />
-    <polygon id="warning" fill="none" stroke="#FFAE00" stroke-linejoin="round" stroke-width="2.8"
+    <polygon id="warning" fill="none" stroke="#FF9500" stroke-linejoin="round" stroke-width="2.8"
       points="23.8 20.4 28.8 29 18.8 29" />
   </defs>
 

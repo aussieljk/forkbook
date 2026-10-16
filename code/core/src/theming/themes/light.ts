@@ -11,7 +11,7 @@ const theme: ThemeVars = {
   // UI
   appBg: background.app,
   appContentBg: color.lightest,
-  appHoverBg: '#DBECFF',
+  appHoverBg: background.hoverable,
   appPreviewBg: color.lightest,
   appBorderColor: color.border,
   appBorderRadius: 4,
@@ -27,8 +27,8 @@ const theme: ThemeVars = {
 
   // Toolbar default and active colors
   barTextColor: color.dark,
-  barHoverColor: '#005CC7',
-  barSelectedColor: '#0063D6',
+  barHoverColor: '#0062CC',
+  barSelectedColor: color.secondary,
   barBg: color.lightest,
 
   // Form colors

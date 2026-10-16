@@ -328,7 +328,7 @@ export const useHighlights = (channel: Channel) => {
               padding: 0px;
               margin: 15px 0 0 0;
               transform: translateX(-50%);
-              font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+              font-family: "Inter Variable", -apple-system, ".SFNSText-Regular", "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
               font-size: 12px;
               background: white;
               border: none;
@@ -368,11 +368,11 @@ export const useHighlights = (channel: Channel) => {
               font-size: inherit;
             }
             #${menuId} button:focus-visible {
-              outline-color: #029CFD;
+              outline-color: #007AFF;
             }
             #${menuId} button:hover {
-              background: rgba(2, 156, 253, 0.07);
-              color: #029CFD;
+              background: rgba(0, 122, 255, 0.07);
+              color: #007AFF;
               cursor: pointer;
             }
             #${menuId} li code {
@@ -388,7 +388,7 @@ export const useHighlights = (channel: Channel) => {
               color: #73828C;
             }
             #${menuId} li > button:hover svg, #${menuId} li > button:focus-visible svg {
-              color: #029CFD;
+              color: #007AFF;
             }
             #${menuId} .element-list li svg {
               display: none;
@@ -586,17 +586,17 @@ export const useHighlights = (channel: Channel) => {
         priority: 1000,
         selectors: [target],
         styles: {
-          outline: '2px solid #1EA7FD',
+          outline: '2px solid #007AFF',
           outlineOffset: '-1px',
           animation: `${keyframeName} 3s linear forwards`,
         },
         keyframes: `@keyframes ${keyframeName} {
-          0% { outline: 2px solid #1EA7FD; }
-          20% { outline: 2px solid #1EA7FD00; }
-          40% { outline: 2px solid #1EA7FD; }
-          60% { outline: 2px solid #1EA7FD00; }
-          80% { outline: 2px solid #1EA7FD; }
-          100% { outline: 2px solid #1EA7FD00; }
+          0% { outline: 2px solid #007AFF; }
+          20% { outline: 2px solid #007AFF00; }
+          40% { outline: 2px solid #007AFF; }
+          60% { outline: 2px solid #007AFF00; }
+          80% { outline: 2px solid #007AFF; }
+          100% { outline: 2px solid #007AFF00; }
         }`,
       },
     ]);

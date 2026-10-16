@@ -1,19 +1,22 @@
 import { color, typography } from '../base.ts';
 import type { ThemeVars } from '../types.ts';
 
+// The iOS system colours (dark appearance)
+const border = 'rgba(84, 84, 88, 0.6)';
+
 const theme: ThemeVars = {
   base: 'dark',
 
   // Forkbook-specific color palette
-  colorPrimary: '#FF4785', // coral
-  colorSecondary: '#479DFF',
+  colorPrimary: '#0A84FF', // systemBlue
+  colorSecondary: '#0A84FF',
 
   // UI
-  appBg: '#1B1C1D',
-  appContentBg: '#222325',
-  appHoverBg: '#233952',
+  appBg: '#000000',
+  appContentBg: '#1C1C1E', // systemGray6
+  appHoverBg: '#0B2D52',
   appPreviewBg: color.lightest,
-  appBorderColor: 'hsl(0 0% 100% / 0.1)',
+  appBorderColor: border,
   appBorderRadius: 4,
 
   // Fonts
@@ -21,24 +24,24 @@ const theme: ThemeVars = {
   fontCode: typography.fonts.mono,
 
   // Text colors
-  textColor: '#C9CCCF',
-  textInverseColor: '#1B1C1D',
-  textMutedColor: '#95999D',
+  textColor: '#F2F2F7',
+  textInverseColor: '#1C1C1E',
+  textMutedColor: '#98989F',
 
   // Toolbar default and active colors
-  barTextColor: '#95999D',
-  barHoverColor: '#70B3FF',
-  barSelectedColor: '#479DFF',
-  barBg: '#222325',
+  barTextColor: '#98989F',
+  barHoverColor: '#409CFF',
+  barSelectedColor: '#0A84FF',
+  barBg: '#1C1C1E',
 
   // Form colors
-  buttonBg: '#1B1C1D',
-  buttonBorder: 'hsl(0 0% 100% / 0.1)',
-  booleanBg: '#1B1C1D',
-  booleanSelectedBg: '#292B2E',
-  inputBg: '#1B1C1D',
-  inputBorder: 'hsl(0 0% 100% / 0.1)',
-  inputTextColor: '#C9CCCF',
+  buttonBg: '#2C2C2E', // systemGray5
+  buttonBorder: border,
+  booleanBg: '#2C2C2E',
+  booleanSelectedBg: '#3A3A3C', // systemGray4
+  inputBg: '#2C2C2E',
+  inputBorder: border,
+  inputTextColor: '#F2F2F7',
   inputBorderRadius: 4,
 };
 

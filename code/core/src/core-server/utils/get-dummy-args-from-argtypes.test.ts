@@ -31,7 +31,7 @@ describe('new-story-docgen', () => {
     });
 
     it('generates string values using token heuristics', () => {
-      expect(generateDummyValueFromSBType({ name: 'string' }, 'backgroundColor')).toBe('#ff4785');
+      expect(generateDummyValueFromSBType({ name: 'string' }, 'backgroundColor')).toBe('#007aff');
       expect(generateDummyValueFromSBType({ name: 'string' }, 'createdAt')).toBe(
         MOCK_DATE.toLocaleDateString()
       );
