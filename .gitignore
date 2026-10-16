@@ -99,3 +99,5 @@ scripts/eval/results
 
 # Perf suite results written by the docgen perf jobs
 code/lib/docgen-harness/perf-results
+!/LICENSE
+!/code/core/LICENSE
