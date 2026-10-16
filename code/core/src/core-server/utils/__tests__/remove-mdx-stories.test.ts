@@ -16,7 +16,8 @@ const configDir = '/configDir/';
 const workingDir = '/';
 
 vi.mock('tinyglobby', () => ({ glob: vi.fn() }));
-const glob = vi.mocked(globOriginal);
+// tinyglobby has an overload that takes only options; the tests call it with a pattern.
+const glob = vi.mocked(globOriginal as (pattern: string | string[]) => Promise<string[]>);
 
 const createList = (list: { entry: StoriesEntry; result: string[] }[]) => {
   return list.reduce<Record<string, { result: string[]; entry: StoriesEntry }>>(
