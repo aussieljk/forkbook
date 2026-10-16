@@ -112,6 +112,9 @@ export default defineGeneratorModule({
       '@react-native-async-storage/async-storage',
       '@expo/ui',
       'expo-symbols',
+      // The theme of the on-device UI. Forkbook does not install it for web apps.
+      '@emotion/react',
+      '@emotion/native',
     ].filter((dep) => !packageManager.getDependencyVersion(dep));
 
     const existingScripts = packageManager.primaryPackageJson.packageJson.scripts;

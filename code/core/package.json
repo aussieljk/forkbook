@@ -747,8 +747,6 @@
     "!src/**/*"
   ],
   "dependencies": {
-    "@emotion/native": "^11.11.0",
-    "@emotion/react": "^11.14.0",
     "@mdx-js/react": "^3.0.0",
     "@next/env": "^15.0.0 || ^16.0.0",
     "@nozbe/microfuzz": "^1.0.0",
@@ -795,6 +793,8 @@
     "@clack/prompts": "1.8.1",
     "@devtools-ds/object-inspector": "^1.1.2",
     "@discoveryjs/json-ext": "^0.5.3",
+    "@emotion/native": "^11.11.0",
+    "@emotion/react": "^11.14.0",
     "@expo/ui": "58.0.13",
     "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
     "@gorhom/portal": "1.0.14",
@@ -941,6 +941,8 @@
     "zod": "^3.25.76"
   },
   "peerDependencies": {
+    "@emotion/native": "^11.11.0",
+    "@emotion/react": "^11.14.0",
     "@expo/ui": ">=55",
     "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/context-async-hooks": "^2.12.0",
@@ -964,6 +966,12 @@
     "vitest": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
+    "@emotion/native": {
+      "optional": true
+    },
+    "@emotion/react": {
+      "optional": true
+    },
     "@expo/ui": {
       "optional": true
     },
