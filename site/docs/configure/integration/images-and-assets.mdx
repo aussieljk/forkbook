@@ -1,0 +1,17 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Integration/Images and assets" />
+
+# Images and assets in integrations
+
+For imports, see [Images and assets](/docs/configure/images-and-assets).
+
+## Serving static files via Storybook configuration
+
+`staticDirs` in `.forkbook/main.ts` serves folders at the root of Forkbook:
+
+```ts
+staticDirs: ['../public', { from: '../assets/fonts', to: '/fonts' }],
+```
+
+A file `public/logo.png` is then at `/logo.png`. `forkbook build` copies the folders into the output.

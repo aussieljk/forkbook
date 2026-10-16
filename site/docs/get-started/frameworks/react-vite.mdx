@@ -1,0 +1,43 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Get started/Frameworks/React (Vite)" />
+
+# React with Vite
+
+Use `@aussieljk/forkbook/react-vite` for a React app that uses Vite.
+
+## Configuration
+
+```ts
+// .forkbook/main.ts
+import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+
+const config: StorybookConfig = {
+  framework: '@aussieljk/forkbook/react-vite',
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
+  addons: ['@aussieljk/forkbook/addon-docs'],
+};
+
+export default config;
+```
+
+Forkbook reads your `vite.config.ts`. To change the Vite configuration for Forkbook only, use [`viteFinal`](/docs/api/main-config/main-config-vite-final).
+
+The old name `@storybook/react-vite` also works as the framework name.
+
+## Requirements
+
+- React 18 or 19.
+- Vite 8.
+
+## Component docs
+
+Forkbook makes the props table from your TypeScript types. It uses tsgo (the native TypeScript compiler). It does not use `react-docgen`.
+
+## Types
+
+Import the story types from the framework:
+
+```ts
+import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
+```

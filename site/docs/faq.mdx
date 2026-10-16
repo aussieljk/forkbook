@@ -1,0 +1,33 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="FAQ" />
+
+# FAQ
+
+## Can I have a Storybook with no local stories?
+
+Yes. If you only use [composition](/docs/sharing/storybook-composition), set `stories` to an empty list:
+
+```ts
+stories: [],
+```
+
+Forkbook shows an error when a glob in `stories` finds no files. Fix the glob, or remove it.
+
+## Extensionless imports in storybook/main.ts and required .ts extensions
+
+`.forkbook/main.ts` runs in Node as an ES module. Node does not add file extensions. Give the extension in each relative import:
+
+```ts
+import { shared } from './shared.ts';
+```
+
+An import without an extension (`'./shared'`) fails.
+
+## Is Forkbook the same as Storybook?
+
+No. Forkbook is a fork with fewer parts: React only, Vite 8 only and one package. See [Moving from Storybook](/docs/migrate/from-storybook).
+
+## Where are the docs as markdown?
+
+Add `.md` to the URL of a page. `/llms.txt` lists all pages, and `/llms-full.txt` has all of them in one file.

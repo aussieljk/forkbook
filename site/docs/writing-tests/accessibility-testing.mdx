@@ -1,0 +1,55 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing tests/Accessibility tests" />
+
+# Accessibility tests
+
+The accessibility addon checks each story with axe-core. It shows the problems in the Accessibility panel and highlights the elements.
+
+## Install
+
+```sh
+bunx forkbook add @aussieljk/forkbook/addon-a11y
+```
+
+Or add it to `.forkbook/main.ts` yourself:
+
+```ts
+addons: ['@aussieljk/forkbook/addon-a11y'],
+```
+
+## Parameters
+
+```ts
+// .forkbook/preview.ts
+const preview: Preview = {
+  parameters: {
+    a11y: {
+      // 'todo' shows problems. 'error' fails the test. 'off' does not check.
+      test: 'error',
+      options: { runOnly: ['wcag2a', 'wcag2aa'] },
+    },
+  },
+};
+```
+
+| Parameter | What it does |
+| --- | --- |
+| `a11y.test` | `'error'`, `'todo'` or `'off'`. |
+| `a11y.context` | Which elements to check. The default is the story root. |
+| `a11y.config` | axe-core rules to change, for example `{ rules: [{ id: 'color-contrast', enabled: false }] }`. |
+| `a11y.options` | axe-core run options. |
+
+## Disable automated checks
+
+For one story, set the global:
+
+```tsx
+export const Draft: Story = { globals: { a11y: { manual: true } } };
+```
+
+Then the check runs only when you click the button in the panel. To skip the check, set `parameters: { a11y: { test: 'off' } }`.
+
+## In tests
+
+With the [Vitest addon](/docs/writing-tests/integrations/vitest-addon), the check runs in each story test. `test: 'error'` makes a problem fail the test.

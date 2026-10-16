@@ -1,0 +1,35 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Toolbars and globals" />
+
+# Toolbars and globals
+
+A global is a value for all stories, for example a theme or a locale. A toolbar menu changes a global.
+
+```ts
+// .forkbook/preview.ts
+const preview: Preview = {
+  globalTypes: {
+    locale: {
+      description: 'The locale',
+      toolbar: {
+        icon: 'globe',
+        items: [
+          { value: 'en-AU', title: 'English (Australia)' },
+          { value: 'fr', title: 'French' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { locale: 'en-AU' },
+};
+```
+
+Read the global in a decorator:
+
+```tsx
+decorators: [(Story, { globals }) => <IntlProvider locale={globals.locale}><Story /></IntlProvider>],
+```
+
+A story can set a global with `globals: { locale: 'fr' }`.

@@ -1,0 +1,21 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Styling and CSS" />
+
+# Styling and CSS
+
+Import your global CSS in `.forkbook/preview.ts`:
+
+```ts
+import '../src/app/globals.css';
+```
+
+Vite handles CSS, CSS modules, PostCSS and Tailwind CSS, as in your app.
+
+## Classes on the body
+
+The preview adds classes to `body`. For example, `fb-show-main` is on the body when a story renders, and `fb-show-errordisplay` when a story has an error. In Storybook these classes started with `sb-`.
+
+## Fonts
+
+Load fonts in `.forkbook/preview-head.html` or import them in `.forkbook/preview.ts`.

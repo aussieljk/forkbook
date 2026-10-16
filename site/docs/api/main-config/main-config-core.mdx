@@ -1,0 +1,41 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/main.ts/core" />
+
+# core
+
+The `core` field of `.forkbook/main.ts` has the options of the server.
+
+```ts
+const config = {
+  framework: '@aussieljk/forkbook/react-vite',
+  stories: ['../src/**/*.stories.tsx'],
+  core: {
+    disableTelemetry: true,
+    allowedHosts: ['my-mac.local'],
+  },
+};
+```
+
+| Option | What it does |
+| --- | --- |
+| `allowedHosts` | Host names that can reach the dev server. |
+| `disableTelemetry` | Sends no telemetry. |
+| `enableCrashReports` | Sends crash reports. |
+| `disableWhatsNewNotifications` | Shows no update notices. |
+| `disableProjectJson` | Does not write `project.json`. |
+| `crossOriginIsolated` | Adds the headers for a secure context in development. |
+| `channelOptions` | Options of the channel between the manager and the preview. |
+
+## allowedHosts
+
+The dev server checks the `Host` header of each request. It also checks the `Origin` header of WebSocket and MCP requests. `localhost` and the `--host` name are always allowed.
+
+If you open Forkbook with another name (for example a Tailscale name or a tunnel), add the name:
+
+```ts
+core: { allowedHosts: ['my-mac.local'] },
+```
+
+
+Set `allowedHosts` to `true` to turn the check off. This is not safe.

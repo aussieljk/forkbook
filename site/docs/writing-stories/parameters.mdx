@@ -1,0 +1,31 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Parameters" />
+
+# Parameters
+
+Parameters are static data about a story. Addons read them. For example, `layout` sets the layout of the canvas, and `backgrounds` sets the background options.
+
+```tsx
+export const Wide: Story = {
+  parameters: { layout: 'fullscreen' },
+};
+```
+
+## Levels
+
+You can set parameters in `.forkbook/preview.ts`, in the meta and in a story. Forkbook merges objects. A lower level replaces the same key of a higher level.
+
+## Common parameters
+
+| Parameter | What it does |
+| --- | --- |
+| `layout` | `centered`, `padded` (the default) or `fullscreen`. See [Story layout](/docs/configure/story-layout). |
+| `backgrounds` | See [Backgrounds](/docs/essentials/backgrounds). |
+| `viewport` | See [Viewport](/docs/essentials/viewport). |
+| `actions` | See [Actions](/docs/essentials/actions). |
+| `controls` | See [Controls](/docs/essentials/controls). |
+| `docs` | See [Autodocs](/docs/writing-docs/autodocs). |
+| `a11y` | See [Accessibility tests](/docs/writing-tests/accessibility-testing). |
+| `pseudo` | See [Pseudo states](/docs/addons/pseudo-states). |
+| `nextjs` | See [Next.js with Vite](/docs/get-started/frameworks/nextjs-vite). |

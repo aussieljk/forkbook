@@ -1,0 +1,29 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/Source" />
+
+# Source block
+
+`Source` shows the source code of a story. Forkbook highlights it with sugar-high.
+
+```mdx
+<Source of={ButtonStories.Primary} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `of` | The story. |
+| `code` | Code to show in place of the story code. |
+| `language` | The language, for example `'tsx'` or `'css'`. |
+| `type` | How to get the code. |
+| `dark` | Uses the dark theme. |
+
+## type
+
+| Value | What it shows |
+| --- | --- |
+| `'auto'` | The default. The JSX of the rendered story when the args are simple, else the story code. |
+| `'code'` | The code of the story in the stories file. |
+| `'dynamic'` | The JSX of the rendered story. It changes when the args change. |
+
+You can also set it with `parameters.docs.source.type`.

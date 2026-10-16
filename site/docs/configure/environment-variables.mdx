@@ -1,0 +1,30 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Environment variables" />
+
+# Environment variables
+
+## In the preview
+
+Variables that start with `FORKBOOK_` or `VITE_` are available in the preview as `import.meta.env.FORKBOOK_X`. Forkbook reads `.env` files as Vite does.
+
+```sh
+FORKBOOK_API_URL=https://api.example.dev bun run storybook
+```
+
+```ts
+const url = import.meta.env.FORKBOOK_API_URL;
+```
+
+Other variables are not in the browser. This keeps secrets out of the build.
+
+## Variables that Forkbook reads
+
+| Variable | What it does |
+| --- | --- |
+| `FORKBOOK_DISABLE_TELEMETRY` | Sends no telemetry. |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | Sends telemetry with OpenTelemetry to this address. Without it, Forkbook sends no telemetry. See [Telemetry](/docs/configure/telemetry). |
+| `SBCONFIG_PORT`, `SBCONFIG_HOSTNAME`, `SBCONFIG_CONFIG_DIR`, `SBCONFIG_STATIC_DIR`, `SBCONFIG_OUTPUT_DIR` | The same as the CLI options. See [CLI options](/docs/api/cli-options). |
+| `FORKBOOK_ENABLED` | (React Native) Shows Forkbook in the app. See [React Native](/docs/get-started/frameworks/react-native). |
+
+In Storybook these names started with `STORYBOOK_`. Forkbook does not read the old names.

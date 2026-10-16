@@ -1,0 +1,38 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Overview" />
+
+# Configure
+
+Forkbook reads its configuration from the `.forkbook` folder. If there is no `.forkbook` folder but there is a `.storybook` folder, it uses `.storybook`.
+
+## Configure your Storybook project
+
+| File | What it has |
+| --- | --- |
+| `main.ts` | The framework, the stories, the addons and the server options. It runs in Node. |
+| `preview.ts` (or `.tsx`) | Parameters, decorators, args, globals and tags for all stories. It runs in the browser. |
+| `manager.ts` | Options of the Forkbook UI, for example the theme. |
+| `preview-head.html`, `preview-body.html` | HTML to add to the preview. |
+| `manager-head.html` | HTML to add to the Forkbook UI. |
+
+## main.ts
+
+```ts
+import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+
+const config: StorybookConfig = {
+  framework: '@aussieljk/forkbook/react-vite',
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
+  addons: ['@aussieljk/forkbook/addon-docs', '@aussieljk/forkbook/addon-a11y'],
+  staticDirs: ['../public'],
+};
+
+export default config;
+```
+
+The fields: `framework`, [`stories`](/docs/api/main-config/main-config-stories), `addons`, `staticDirs`, [`core`](/docs/api/main-config/main-config-core), [`features`](/docs/api/main-config/main-config-features), [`viteFinal`](/docs/api/main-config/main-config-vite-final), `refs`, `tags` and `docs`.
+
+## Relative imports in main.ts
+
+`main.ts` runs in Node as an ES module. Give the file extension in a relative import: `import { x } from './x.ts'`. See the [FAQ](/docs/faq#extensionless-imports-in-storybookmaints-and-required-ts-extensions).

@@ -1,0 +1,39 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Viewport" />
+
+# Viewport
+
+The Viewport tool changes the size of the canvas, so that you can see a story on a phone or a tablet.
+
+## Parameters
+
+```ts
+// .forkbook/preview.ts
+import { INITIAL_VIEWPORTS } from '@aussieljk/forkbook/viewport';
+
+const preview: Preview = {
+  parameters: {
+    viewport: { options: INITIAL_VIEWPORTS },
+  },
+};
+```
+
+| Parameter | What it does |
+| --- | --- |
+| `viewport.options` | The viewports, by key: `{ name, styles: { width, height }, type }`. |
+| `viewport.disable` | Set to `true` to remove the tool for a story. |
+
+## Globals
+
+The selected viewport is the `viewport` global:
+
+```tsx
+export const OnPhone: Story = {
+  globals: { viewport: { value: 'iphone14', isRotated: false } },
+};
+```
+
+## Disable
+
+Set `features: { viewport: false }` in `.forkbook/main.ts`, or `parameters: { viewport: { disable: true } }` for one story.

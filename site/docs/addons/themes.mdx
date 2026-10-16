@@ -1,0 +1,54 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Addons/Themes" />
+
+# Themes
+
+The themes addon adds a theme menu to the toolbar. A decorator applies the selected theme to the story.
+
+```ts
+// .forkbook/main.ts
+addons: ['@aussieljk/forkbook/addon-themes'],
+```
+
+## A class on the root
+
+```ts
+// .forkbook/preview.ts
+import { withThemeByClassName } from '@aussieljk/forkbook/addon-themes';
+
+const preview: Preview = {
+  decorators: [
+    withThemeByClassName({
+      themes: { light: '', dark: 'dark' },
+      defaultTheme: 'light',
+    }),
+  ],
+};
+```
+
+## A data attribute
+
+```ts
+import { withThemeByDataAttribute } from '@aussieljk/forkbook/addon-themes';
+
+withThemeByDataAttribute({
+  themes: { light: 'light', dark: 'dark' },
+  defaultTheme: 'light',
+  attributeName: 'data-theme',
+});
+```
+
+## A provider
+
+```tsx
+import { withThemeFromJSXProvider } from '@aussieljk/forkbook/addon-themes';
+
+withThemeFromJSXProvider({
+  themes: { light: lightTheme, dark: darkTheme },
+  defaultTheme: 'light',
+  Provider: ThemeProvider,
+});
+```
+
+A story can set the theme: `globals: { theme: 'dark' }`.

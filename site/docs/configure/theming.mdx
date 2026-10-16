@@ -1,0 +1,55 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Theming" />
+
+# Theming
+
+You can change the look of the Forkbook UI: the colours, the fonts, the brand title and the brand image.
+
+## Make a theme
+
+```ts
+// .forkbook/theme.ts
+import { create } from '@aussieljk/forkbook/theming/create';
+
+export default create({
+  base: 'light',
+  brandTitle: 'My app',
+  brandUrl: 'https://example.dev',
+  brandImage: '/logo.svg',
+  colorPrimary: '#007AFF',
+  colorSecondary: '#007AFF',
+});
+```
+
+## Use the theme
+
+```ts
+// .forkbook/manager.ts
+import { addons } from '@aussieljk/forkbook/manager-api';
+
+import theme from './theme';
+
+addons.setConfig({ theme });
+```
+
+For the docs pages, set `parameters.docs.theme` in `.forkbook/preview.ts`.
+
+## Fields of create
+
+| Field | What it does |
+| --- | --- |
+| `base` | `'light'` or `'dark'`. Required. |
+| `brandTitle`, `brandUrl`, `brandImage`, `brandTarget` | The brand at the top of the sidebar. |
+| `colorPrimary`, `colorSecondary` | The main colours. |
+| `appBg`, `appContentBg`, `appPreviewBg`, `appBorderColor`, `appBorderRadius` | The UI. |
+| `fontBase`, `fontCode` | The fonts. |
+| `textColor`, `textInverseColor`, `textMutedColor` | The text. |
+| `barTextColor`, `barSelectedColor`, `barHoverColor`, `barBg` | The toolbar. |
+| `inputBg`, `inputBorder`, `inputTextColor`, `inputBorderRadius` | The form controls. |
+
+The built-in themes are in `themes` from `@aussieljk/forkbook/theming`: `themes.light` and `themes.dark`.
+
+## CSS variables
+
+The Forkbook UI uses CSS variables that start with `--fb-`. In Storybook they started with `--sb-`.

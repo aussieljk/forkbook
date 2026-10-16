@@ -1,0 +1,31 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/main.ts/features" />
+
+# features
+
+The `features` field of `.forkbook/main.ts` turns features on or off.
+
+| Feature | Default | What it does |
+| --- | --- | --- |
+| `actions`, `backgrounds`, `controls`, `highlight`, `interactions`, `measure`, `outline`, `viewport` | `true` | The [essentials](/docs/essentials). Set to `false` to remove one. |
+| `experimentalRSC` | `false` | Renders React Server Components. |
+| `experimentalSearchDocsHeadings` | `false` | The sidebar search also finds headings in docs pages. |
+| `experimentalCodeExamples` | `false` | Adds code examples to the component manifest. |
+| `componentsManifest` | `true` | Writes the component manifest for agents. |
+| `developmentModeForBuild` | `false` | Builds with React in development mode. |
+| `experimentalTestSyntax` | `false` | (React) Turns on the `.test` function on stories. |
+
+## experimentalTestSyntax
+
+With this feature, a story can have tests of its own:
+
+```tsx
+export const Primary = meta.story({ args: { label: 'Save' } });
+
+Primary.test('shows the label', async ({ canvas }) => {
+  await expect(canvas.getByText('Save')).toBeVisible();
+});
+```
+
+This syntax uses the factory format (`definePreview` and `meta.story`). It is experimental.

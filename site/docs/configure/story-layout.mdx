@@ -1,0 +1,20 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Story layout" />
+
+# Story layout
+
+The `layout` parameter sets how the story sits in the canvas.
+
+| Value | What it does |
+| --- | --- |
+| `'padded'` | Adds padding. The default. |
+| `'centered'` | Puts the story in the centre. |
+| `'fullscreen'` | No padding. The story fills the canvas. |
+
+```ts
+// .forkbook/preview.ts
+const preview: Preview = { parameters: { layout: 'centered' } };
+```
+
+A story or a meta can set its own `layout`.

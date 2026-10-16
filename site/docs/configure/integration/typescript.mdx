@@ -1,0 +1,27 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Integration/TypeScript" />
+
+# TypeScript
+
+Forkbook supports TypeScript with no setup. Vite compiles the stories. Forkbook does not check the types. Run your own type check.
+
+## Types
+
+Import the types from your framework:
+
+```ts
+import type { Meta, StoryObj, Preview, StorybookConfig } from '@aussieljk/forkbook/react-vite';
+```
+
+Use `satisfies` for the meta. Then `StoryObj<typeof meta>` knows the args:
+
+```tsx
+const meta = { component: Button } satisfies Meta<typeof Button>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+```
+
+## Component docs
+
+Forkbook reads the props of each component with tsgo (the native TypeScript compiler). It uses your `tsconfig.json`.

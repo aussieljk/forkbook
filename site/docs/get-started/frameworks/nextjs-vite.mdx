@@ -1,0 +1,84 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Get started/Frameworks/Next.js (Vite)" />
+
+# Next.js with Vite
+
+Use `@aussieljk/forkbook/nextjs-vite` for a Next.js app. Forkbook builds the stories with Vite, not with webpack or Turbopack.
+
+## Configuration
+
+```ts
+// .forkbook/main.ts
+import type { StorybookConfig } from '@aussieljk/forkbook/nextjs-vite';
+
+const config: StorybookConfig = {
+  framework: '@aussieljk/forkbook/nextjs-vite',
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
+};
+
+export default config;
+```
+
+The old name `@storybook/nextjs-vite` also works as the framework name.
+
+## Requirements
+
+- Next.js 15 or 16.
+- React 18 or 19.
+
+## What works
+
+- `next/image`, `next/link`, `next/font` and `next/dynamic`.
+- The App Router and the Pages Router. For the App Router, set `parameters.nextjs.appDirectory` to `true`.
+- `next/navigation` and `next/router`, with mocks that you can change in a story.
+- `next/headers` and `next/cache`, with mocks.
+- Next.js 16.4 and later: the router context has the full root tree that `useRouter` and the layout router read.
+
+## The App Router
+
+```ts
+// .forkbook/preview.ts
+import type { Preview } from '@aussieljk/forkbook/nextjs-vite';
+
+const preview: Preview = {
+  parameters: {
+    nextjs: { appDirectory: true },
+  },
+};
+
+export default preview;
+```
+
+## Navigation in a story
+
+```ts
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
+
+import { Page } from './page';
+
+const meta = { component: Page } satisfies Meta<typeof Page>;
+export default meta;
+
+export const OnSettings: StoryObj<typeof meta> = {
+  parameters: {
+    nextjs: {
+      navigation: { pathname: '/settings', query: { tab: 'profile' } },
+    },
+  },
+};
+```
+
+## Mocks
+
+Import mocks from these subpaths:
+
+| Subpath | Mock of |
+| --- | --- |
+| `@aussieljk/forkbook/nextjs-vite/navigation.mock` | `next/navigation` |
+| `@aussieljk/forkbook/nextjs-vite/router.mock` | `next/router` |
+| `@aussieljk/forkbook/nextjs-vite/headers.mock` | `next/headers` |
+| `@aussieljk/forkbook/nextjs-vite/cache.mock` | `next/cache` |
+| `@aussieljk/forkbook/nextjs-vite/link.mock` | `next/link` |
+
+For more about Next.js features, see [Next.js notes](/docs/get-started/frameworks/nextjs).

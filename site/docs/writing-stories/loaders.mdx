@@ -1,0 +1,18 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Loaders" />
+
+# Loaders
+
+A loader is an async function. It runs before the story renders. Its result is in `loaded` in the story context.
+
+```tsx
+export const WithUser: Story = {
+  loaders: [async () => ({ user: await fetchUser(1) })],
+  render: (args, { loaded: { user } }) => <Profile {...args} user={user} />,
+};
+```
+
+Loaders run in parallel. You can add loaders in `.forkbook/preview.ts`, in the meta and in a story.
+
+Use loaders only for data that a story needs. For mocks, a `beforeEach` function is often simpler. See [Interaction tests](/docs/writing-tests/interaction-testing).

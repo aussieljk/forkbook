@@ -1,0 +1,30 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing docs/MDX" />
+
+# MDX
+
+An MDX file is markdown with JSX. Use it for pages that you write yourself.
+
+```mdx
+import { Meta, Canvas, Controls } from '@aussieljk/forkbook/addon-docs/blocks';
+
+import * as ButtonStories from './button.stories';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Use a button for the main action of a page.
+
+<Canvas of={ButtonStories.Primary} />
+
+<Controls />
+```
+
+- `<Meta of={...} />` attaches the page to a stories file.
+- `<Meta title="Guides/Colours" />` makes a page that is not attached.
+
+Add MDX files to `stories` in `.forkbook/main.ts`, for example `'../src/**/*.mdx'`.
+
+Each page of this site is an MDX file.

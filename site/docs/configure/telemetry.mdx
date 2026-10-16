@@ -1,0 +1,32 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Telemetry" />
+
+# Telemetry
+
+Forkbook sends no telemetry to anyone by default. It does not send data to Storybook.
+
+## Send telemetry to your own server
+
+Forkbook can send its events and traces with OpenTelemetry (OTLP over HTTP), for example to SigNoz. Set `OTEL_EXPORTER_OTLP_ENDPOINT`:
+
+```sh
+OTEL_EXPORTER_OTLP_ENDPOINT=https://otel.example.dev bun run storybook
+```
+
+- Each telemetry event becomes a log record.
+- The dev server, the build and other tasks record trace spans.
+- The exporters read the standard `OTEL_EXPORTER_OTLP_*` variables, for example `OTEL_EXPORTER_OTLP_HEADERS` for a key.
+- `OTEL_SERVICE_NAME` sets the service name.
+
+Install the OpenTelemetry packages in your project. They are optional peer dependencies of Forkbook: `@opentelemetry/api`, `@opentelemetry/context-async-hooks`, `@opentelemetry/sdk-trace-base`, `@opentelemetry/sdk-logs`, `@opentelemetry/exporter-trace-otlp-http`, `@opentelemetry/exporter-logs-otlp-http` and `@opentelemetry/resources`.
+
+## Turn telemetry off
+
+When the endpoint is set, you can still turn telemetry off:
+
+- Set `core.disableTelemetry` to `true` in `.forkbook/main.ts`.
+- Or set `FORKBOOK_DISABLE_TELEMETRY=true`.
+- Or give `--disable-telemetry` to the CLI.
+
+Crash reports are off unless you set `core.enableCrashReports` or give `--enable-crash-reports`.

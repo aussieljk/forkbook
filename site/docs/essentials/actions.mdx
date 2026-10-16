@@ -1,0 +1,44 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Actions" />
+
+# Actions
+
+The Actions panel shows each call to an event handler, with its arguments.
+
+## Story args
+
+Give the story a spy with `fn()`. Forkbook logs each call:
+
+```tsx
+import { fn } from '@aussieljk/forkbook/test';
+
+const meta = {
+  component: Button,
+  args: { onClick: fn() },
+} satisfies Meta<typeof Button>;
+```
+
+A play function can check the spy: `await expect(args.onClick).toHaveBeenCalled()`.
+
+## The action function
+
+`action` from `@aussieljk/forkbook/actions` makes a named handler that logs to the panel:
+
+```tsx
+import { action } from '@aussieljk/forkbook/actions';
+
+export const Basic: Story = { args: { onSelect: action('selected') } };
+```
+
+## Parameters
+
+| Parameter | What it does |
+| --- | --- |
+| `actions.argTypesRegex` | Gives a logged handler to each arg whose name matches, for example `'^on.*'`. Prefer `fn()` in `args`: only `fn()` spies work in a play function. |
+| `actions.handles` | DOM events to log, for example `['click', 'mouseover .btn']`. |
+| `actions.disable` | Set to `true` to turn off the panel for a story. |
+
+## Disable
+
+To remove actions from all stories, set `features: { actions: false }` in `.forkbook/main.ts`. For one story, set `parameters: { actions: { disable: true } }`.

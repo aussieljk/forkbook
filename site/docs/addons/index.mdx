@@ -1,0 +1,35 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Addons/Overview" />
+
+# Addons
+
+An addon adds a feature to Forkbook. The Forkbook addons are subpaths of the package, so you do not install other packages.
+
+| Addon | What it does |
+| --- | --- |
+| `@aussieljk/forkbook/addon-docs` | [Autodocs and MDX pages](/docs/writing-docs). |
+| `@aussieljk/forkbook/addon-a11y` | [Accessibility tests](/docs/writing-tests/accessibility-testing). |
+| `@aussieljk/forkbook/addon-vitest` | [Runs stories as tests](/docs/writing-tests/integrations/vitest-addon). |
+| `@aussieljk/forkbook/addon-links` | [Links between stories](/docs/addons/links). |
+| `@aussieljk/forkbook/addon-pseudo-states` | [Hover, focus and other states](/docs/addons/pseudo-states). |
+| `@aussieljk/forkbook/addon-themes` | [A theme switcher](/docs/addons/themes). |
+| `@aussieljk/forkbook/addon-mcp` | [An MCP server for AI agents](/docs/ai/mcp/overview). |
+
+The [essentials](/docs/essentials) (actions, backgrounds, controls, viewport and others) are built in.
+
+## Add an addon
+
+```sh
+bunx forkbook add @aussieljk/forkbook/addon-a11y
+```
+
+Or add it to `addons` in `.forkbook/main.ts`.
+
+## Addons from npm
+
+An addon for Storybook imports `storybook/*` and `@storybook/*`. It does not work in Forkbook without changes. To use one, copy it into your project and change its imports to `@aussieljk/forkbook/*`. See [Moving from Storybook](/docs/migrate/from-storybook).
+
+## Write an addon
+
+See [Presets](/docs/addons/writing-presets).

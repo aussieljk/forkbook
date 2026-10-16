@@ -1,0 +1,20 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Measure and outline" />
+
+# Measure and outline
+
+Measure shows the size, the margin and the padding of the element under the pointer. Outline draws a line around each element.
+
+Use the two buttons in the toolbar. The keyboard shortcut for measure is `M`.
+
+## Parameters
+
+| Parameter | What it does |
+| --- | --- |
+| `measure.disable` | Set to `true` to remove measure for a story. |
+| `outline.disable` | Set to `true` to remove outline for a story. |
+
+## Disable
+
+Set `features: { measure: false, outline: false }` in `.forkbook/main.ts`, or the parameters above for one story.

@@ -1,0 +1,105 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/CLI options" />
+
+# CLI options
+
+The `forkbook` bin runs these commands. The `storybook` bin is the same program.
+
+| Command | What it does |
+| --- | --- |
+| `forkbook dev` | Starts the dev server. |
+| `forkbook build` | Builds a static Forkbook. |
+| `forkbook index` | Writes the story index as JSON. |
+| `forkbook init` | Adds Forkbook to a project. See [Install](/docs/get-started/install). |
+| `forkbook add <addon>` | Adds an addon. |
+| `forkbook remove <addon>` | Removes an addon. |
+| `forkbook tools` | Runs the agent tools of the configuration. |
+| `forkbook skills` | Shows the agent skills of the configuration. |
+
+## Options of all commands
+
+| Option | What it does |
+| --- | --- |
+| `--disable-telemetry` | Sends no telemetry. Also `FORKBOOK_DISABLE_TELEMETRY=true`. |
+| `--debug` | Shows more logs. |
+| `--loglevel <level>` | `trace`, `debug`, `info`, `warn`, `error` or `silent`. |
+| `--logfile [path]` | Writes all logs to a file at the end. |
+
+## dev
+
+```sh
+forkbook dev -p 6006
+```
+
+| Option | What it does |
+| --- | --- |
+| `-p`, `--port <number>` | The port. |
+| `-h`, `--host <string>` | The host. |
+| `-c`, `--config-dir <dir>` | The configuration folder. The default is `.forkbook`, or `.storybook` when only that folder is there. |
+| `--https` | Uses HTTPS. Give `--ssl-cert` and `--ssl-key`. |
+| `--ssl-ca <ca>`, `--ssl-cert <cert>`, `--ssl-key <key>` | The certificate files for HTTPS. |
+| `--smoke-test` | Starts, then stops. Use it in CI. |
+| `--ci` | No prompts. Does not open the browser. |
+| `--open` | Opens the browser. |
+| `--no-open` | Does not open the browser. This is the default. |
+| `--quiet` | Shows less output. |
+| `--no-version-updates` | Does not look for updates. |
+| `--stats-json [dir]` | Writes Vite stats as JSON. |
+| `--docs` | Shows only the docs pages. |
+| `--exact-port` | Stops if the port is not free. |
+| `--initial-path [path]` | The path to open first. |
+| `--preview-only` | Shows the preview without the manager UI. |
+
+## build
+
+```sh
+forkbook build -o storybook-static
+```
+
+| Option | What it does |
+| --- | --- |
+| `-o`, `--output-dir <dir>` | The output folder. The default is `storybook-static`. |
+| `-c`, `--config-dir <dir>` | The configuration folder. |
+| `--quiet` | Shows less output. |
+| `--stats-json [dir]` | Writes Vite stats as JSON. |
+| `--docs` | Builds only the docs pages. |
+| `--test` | Makes a smaller build for tests. |
+| `--preview-only` | Builds the preview without the manager UI. |
+
+## index
+
+```sh
+forkbook index -o index.json
+```
+
+| Option | What it does |
+| --- | --- |
+| `-o`, `--output-file <file>` | The JSON file. |
+| `-c`, `--config-dir <dir>` | The configuration folder. |
+
+## add and remove
+
+```sh
+forkbook add @aussieljk/forkbook/addon-a11y
+forkbook remove @aussieljk/forkbook/addon-a11y
+```
+
+| Option | What it does |
+| --- | --- |
+| `-c`, `--config-dir <dir>` | The configuration folder. |
+| `--package-manager <type>` | Sets the package manager. |
+| `--skip-install` | Does not install packages. |
+| `-s`, `--skip-postinstall` | (add) Does not run the setup of the addon. |
+| `-y`, `--yes` | (add) No prompts. |
+
+## Environment variables
+
+| Variable | Same as |
+| --- | --- |
+| `SBCONFIG_PORT` | `--port` |
+| `SBCONFIG_HOSTNAME` | `--host` |
+| `SBCONFIG_CONFIG_DIR` | `--config-dir` |
+| `SBCONFIG_STATIC_DIR` | The static folder |
+| `SBCONFIG_OUTPUT_DIR` | `--output-dir` |
+| `PORT` | `--port`, when there is no other port |

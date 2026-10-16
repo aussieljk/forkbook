@@ -1,0 +1,23 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Sharing/Publish" />
+
+# Publish Forkbook
+
+Build a static Forkbook and put the folder on any static host:
+
+```sh
+forkbook build -o storybook-static
+```
+
+The folder has an `index.html`, the story index (`index.json`) and the assets.
+
+## Vercel
+
+```sh
+vercel deploy storybook-static --prod
+```
+
+## Publish Storybook with Chromatic
+
+Chromatic is a service for Storybook. Forkbook does not test with Chromatic, and the Chromatic CLI looks for Storybook packages. Use a static host.

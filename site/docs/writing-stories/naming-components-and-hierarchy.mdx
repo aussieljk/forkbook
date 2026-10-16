@@ -1,0 +1,40 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Names and hierarchy" />
+
+# Names and hierarchy
+
+The sidebar groups stories by their title.
+
+## Structure and hierarchy
+
+The `title` of the meta sets the place in the sidebar. Use `/` to make groups:
+
+```tsx
+const meta = {
+  title: 'Forms/Inputs/Text field',
+  component: TextField,
+} satisfies Meta<typeof TextField>;
+```
+
+Without a `title`, Forkbook makes the title from the file path. For example, `src/forms/text-field.stories.tsx` gets the title `Forms/Text Field`.
+
+## Sort the stories
+
+Set `parameters.options.storySort` in `.forkbook/preview.ts`:
+
+```ts
+const preview: Preview = {
+  parameters: {
+    options: {
+      storySort: { order: ['Introduction', 'Forms', ['Inputs', 'Buttons'], '*'] },
+    },
+  },
+};
+```
+
+`*` is for all other titles.
+
+## Story IDs
+
+The ID of a story comes from its title and its export name: `forms-inputs-text-field--primary`. The URL uses the ID. See [Permalink to stories](/docs/configure/sidebar-and-urls#permalink-to-stories).

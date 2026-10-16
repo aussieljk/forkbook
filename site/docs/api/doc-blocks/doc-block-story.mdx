@@ -1,0 +1,22 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/Story" />
+
+# Story block
+
+`Story` shows one story, without a frame or a toolbar. Use [Canvas](/docs/api/doc-blocks/doc-block-canvas) to get a frame.
+
+```mdx
+<Story of={ButtonStories.Primary} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `of` | The story. |
+| `inline` | Renders in the page (`true`) or in an iframe (`false`). |
+| `height` | The height. Use it with `inline={false}` or for a fixed size. |
+| `autoplay` | Runs the play function. |
+
+## autoplay
+
+Inline stories do not run their play function on a docs page. Set `autoplay` to `true` to run it. You can also set `parameters.docs.story.autoplay`.

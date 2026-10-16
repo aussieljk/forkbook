@@ -1,0 +1,18 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Builders/Vite" />
+
+# Vite
+
+Forkbook builds the preview with Vite 8. It is the only builder.
+
+Forkbook reads your `vite.config.ts` and adds its own plugins. To change the Vite configuration for Forkbook only, use [viteFinal](/docs/api/main-config/main-config-vite-final).
+
+## Environment variables
+
+Variables that start with `FORKBOOK_` or `VITE_` are in `import.meta.env` in the preview. See [Environment variables](/docs/configure/environment-variables).
+
+## Notes
+
+- Forkbook clears its Vite cache when the Forkbook version changes.
+- To see the Vite stats, run `forkbook build --stats-json`.

@@ -1,0 +1,45 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Essentials/Backgrounds" />
+
+# Backgrounds
+
+The Backgrounds tool changes the background colour of the canvas.
+
+## Parameters
+
+Set the options in `.forkbook/preview.ts`:
+
+```ts
+const preview: Preview = {
+  parameters: {
+    backgrounds: {
+      options: {
+        light: { name: 'Light', value: '#ffffff' },
+        dark: { name: 'Dark', value: '#1c1c1e' },
+      },
+    },
+  },
+  initialGlobals: { backgrounds: { value: 'light' } },
+};
+```
+
+| Parameter | What it does |
+| --- | --- |
+| `backgrounds.options` | The backgrounds, by key. |
+| `backgrounds.grid` | Settings for the grid: `cellSize`, `opacity`, `offsetX`, `offsetY`. |
+| `backgrounds.disable` | Set to `true` to remove the tool for a story. |
+
+## Globals
+
+The selected background is the `backgrounds` global. A story can set it:
+
+```tsx
+export const OnDark: Story = {
+  globals: { backgrounds: { value: 'dark' } },
+};
+```
+
+## Disable
+
+Set `features: { backgrounds: false }` in `.forkbook/main.ts`, or `parameters: { backgrounds: { disable: true } }` for one story.

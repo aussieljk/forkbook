@@ -1,0 +1,62 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Args" />
+
+# Args
+
+Args are the inputs of a story. For a React component, args are its props.
+
+```tsx
+export const Primary: Story = {
+  args: { label: 'Save', primary: true },
+};
+```
+
+## Levels
+
+You can set args at three levels. A lower level replaces a higher level.
+
+1. In `.forkbook/preview.ts`, for all stories.
+2. In the meta, for all stories in the file.
+3. In the story.
+
+## Controls
+
+The Controls panel shows each arg. You can change an arg there and see the story change. See [Controls](/docs/essentials/controls).
+
+## Setting args through the URL
+
+You can set args in the URL:
+
+```text
+?path=/story/button--primary&args=label:Hello;primary:!true
+```
+
+Use `!true`, `!false`, `!null` and `!undefined` for those values. Use `!hex(f00)` for a colour. For safety, the URL can only set args that have a control.
+
+## Mapping to complex arg values
+
+An arg in the URL or in a control is a simple value. To give a story a complex value (for example a React element), use `mapping` in `argTypes`:
+
+```tsx
+const meta = {
+  component: Button,
+  argTypes: {
+    icon: {
+      options: ['none', 'arrow'],
+      mapping: { none: null, arrow: <ArrowIcon /> },
+    },
+  },
+} satisfies Meta<typeof Button>;
+```
+
+## Read args in a play function
+
+```tsx
+export const Clicked: Story = {
+  play: async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+```
