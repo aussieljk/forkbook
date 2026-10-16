@@ -1,15 +1,15 @@
-import type { BottomSheetScrollViewMethods } from '@gorhom/bottom-sheet';
 import type { ComponentRef, FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useContext, useRef } from 'react';
-import type { View } from 'react-native';
+import type { ScrollView, View } from 'react-native';
 
 type ViewInstance = ComponentRef<typeof View>;
+type ScrollViewInstance = ComponentRef<typeof ScrollView>;
 
 type SelectedNodeContextType = {
   nodeRef: React.RefObject<ViewInstance | null>;
   setNodeRef: (node: ViewInstance | null) => void;
   scrollToSelectedNode: () => void;
-  scrollRef: React.RefObject<BottomSheetScrollViewMethods | null>;
+  scrollRef: React.RefObject<ScrollViewInstance>;
 };
 
 const SelectedNodeContext = createContext<SelectedNodeContextType>({
@@ -26,7 +26,7 @@ export const SelectedNodeProvider: FC<PropsWithChildren> = ({ children }) => {
     nodeRef.current = node;
   }, []);
 
-  const scrollRef = useRef<BottomSheetScrollViewMethods>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
 
   const scrollToSelectedNode = useCallback(() => {
     // maybe later we can improve on this to not use setTimeout but right now it seems like the simplest solution

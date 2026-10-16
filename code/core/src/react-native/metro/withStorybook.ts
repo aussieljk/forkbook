@@ -30,7 +30,7 @@ export interface WithStorybookOptions {
 
   /**
    * Whether to leave out the full on-device UI (`@aussieljk/forkbook/react-native-ui`), so the
-   * app does not need its dependencies (reanimated, bottom sheet, svg). Defaults to false.
+   * bundle has no sheets and no icons. Defaults to false.
    */
   liteMode?: boolean;
 }

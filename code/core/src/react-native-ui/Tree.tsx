@@ -20,11 +20,9 @@ import {
   startCase,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { ComponentNode, GroupNode, StoryNode } from './TreeNode.tsx';
-import { CollapseAllIcon } from './icon/CollapseAllIcon.tsx';
-import { CollapseIcon } from './icon/CollapseIcon.tsx';
-import { ExpandAllIcon } from './icon/ExpandAllIcon.tsx';
 import type { Item } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { useSelectedNode } from './SelectedNodeProvider.tsx';
+import { CollapseAllIcon, CollapseIcon, ExpandAllIcon } from './icon/index.tsx';
 
 interface NodeProps {
   item: Item;

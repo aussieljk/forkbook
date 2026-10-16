@@ -1,4 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@expo/ui/community/bottom-sheet';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
 import type { Parameters } from '@aussieljk/forkbook/internal/csf';
@@ -8,45 +8,24 @@ import {
   type Addon_Collection,
 } from '@aussieljk/forkbook/internal/types';
 import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Platform, StyleProp, Text, View, ViewStyle, useWindowDimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedKeyboard,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-} from 'react-native-reanimated';
+import { ScrollView, StyleProp, Text, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconButton, useStyle } from '@aussieljk/forkbook/internal/react-native-ui-common';
-import { CloseIcon } from './icon/CloseIcon.tsx';
+import { CloseIcon } from './icon/index.tsx';
 
 export interface MobileAddonsPanelRef {
   setAddonsPanelOpen: (isOpen: boolean) => void;
 }
 
-const bottomSheetStyle = {
-  paddingTop: 8,
-} satisfies StyleProp<ViewStyle>;
-
-const contentStyle = {
-  flex: 1,
-} satisfies StyleProp<ViewStyle>;
+const snapPoints = ['25%', '50%', '75%'];
 
 type MobileAddonsPanelProps = { storyId?: string; parameters?: Parameters };
 
+/** The addons panel of the phone: a native iOS sheet (SwiftUI, through @expo/ui). */
 export const MobileAddonsPanel = forwardRef<MobileAddonsPanelRef, MobileAddonsPanelProps>(
   ({ storyId, parameters }, ref) => {
     const theme = useTheme();
-    const reducedMotion = useReducedMotion();
-
     const addonsPanelBottomSheetRef = useRef<BottomSheetModal>(null);
-    const insets = useSafeAreaInsets();
-
-    const animatedPosition = useSharedValue(0);
-
-    // bringing in animated keyboard disables android resizing
-    // TODO replicate functionality without this
-    useAnimatedKeyboard();
 
     useImperativeHandle(ref, () => ({
       setAddonsPanelOpen: (open: boolean) => {
@@ -58,60 +37,25 @@ export const MobileAddonsPanel = forwardRef<MobileAddonsPanelRef, MobileAddonsPa
       },
     }));
 
-    const { height } = useWindowDimensions();
-
-    const adjustedBottomSheetSize = useAnimatedStyle(() => {
-      const extraPadding = Platform.OS === 'android' ? 32 : 16 + insets.bottom;
-      return {
-        maxHeight: height - animatedPosition.value - extraPadding,
-      };
-    }, [animatedPosition, height, insets.bottom]);
-
     const backgroundStyle = useStyle(() => {
-      return {
-        borderRadius: 0,
-        borderTopColor: theme.appBorderColor,
-        borderTopWidth: 1,
-        backgroundColor: theme.background.content,
-      };
-    });
-
-    const handleIndicatorStyle = useStyle(() => {
-      return {
-        backgroundColor: theme.textMutedColor,
-      };
+      return { backgroundColor: theme.background.content };
     });
 
     return (
       <BottomSheetModal
         ref={addonsPanelBottomSheetRef}
         index={1}
-        animateOnMount={!reducedMotion}
-        snapPoints={['25%', '50%', '75%']}
-        style={bottomSheetStyle}
-        animatedPosition={animatedPosition}
+        snapPoints={snapPoints}
+        enablePanDownToClose
         backgroundStyle={backgroundStyle}
-        handleIndicatorStyle={handleIndicatorStyle}
-        keyboardBehavior="extend"
-        // keyboardBlurBehavior="restore"
-        enableDismissOnClose
-        enableHandlePanningGesture={true}
-        // enableContentPanningGesture={true}
-        stackBehavior="replace"
-        enableDynamicSizing={false}
-        accessible={false}
-        accessibilityLabel={null}
-        accessibilityRole={null}
       >
-        <Animated.View style={[contentStyle, adjustedBottomSheetSize]}>
-          <AddonsTabs
-            onClose={() => {
-              addonsPanelBottomSheetRef.current?.dismiss();
-            }}
-            storyId={storyId}
-            parameters={parameters}
-          />
-        </Animated.View>
+        <AddonsTabs
+          onClose={() => {
+            addonsPanelBottomSheetRef.current?.dismiss();
+          }}
+          storyId={storyId}
+          parameters={parameters}
+        />
       </BottomSheetModal>
     );
   }
@@ -215,11 +159,7 @@ export const AddonsTabs = ({
           accessibilityLabel="Close addons panel"
         />
       </View>
-      <ScrollView
-        style={addonsScrollStyle}
-        // keyboardShouldPersistTaps="handled"
-        contentContainerStyle={scrollContentContainerStyle}
-      >
+      <ScrollView style={addonsScrollStyle} contentContainerStyle={scrollContentContainerStyle}>
         {!storyId ? (
           <View style={centeredStyle}>
             <Text>No Story Selected</Text>

@@ -1,8 +1,6 @@
 import { styled, Theme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { useLayout } from '@aussieljk/forkbook/internal/react-native-ui-common';
-import { type ComponentRef, type ComponentType, forwardRef } from 'react';
+import type { ComponentType } from 'react';
 import { Platform, TextInput, TextInputProps, TextStyle } from 'react-native';
-import { BottomSheetTextInput, useBottomSheetInternal } from '@gorhom/bottom-sheet';
 
 export function inputStyle({
   theme,
@@ -47,28 +45,9 @@ export function inputStyle({
   };
 }
 
-const IsNative = Platform.OS === 'ios' || Platform.OS === 'android';
-
-const TextInputWithSwitcher = forwardRef<ComponentRef<typeof TextInput>, TextInputProps>(
-  (props, ref) => {
-    const { isMobile } = useLayout();
-    const context = useBottomSheetInternal(true);
-    const isBottomSheet = context !== null;
-
-    return isMobile && IsNative && isBottomSheet ? (
-      // @ts-ignore
-      <BottomSheetTextInput ref={ref} {...props} />
-    ) : (
-      <TextInput ref={ref} {...props} />
-    );
-  }
-);
-
-TextInputWithSwitcher.displayName = 'TextInputWithSwitcher';
-
 export const Input: ComponentType<
   TextInputProps & { focused?: boolean; hasError?: boolean; ref?: any }
-> = styled(TextInputWithSwitcher)<{
+> = styled(TextInput)<{
   focused?: boolean;
   hasError?: boolean;
 }>(({ theme, focused, hasError }) => ({

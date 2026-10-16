@@ -1,4 +1,3 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { PortalHost } from '@gorhom/portal';
 import type { ReactRenderer } from '@aussieljk/forkbook/react';
 import { styled, ThemeProvider, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
@@ -14,7 +13,6 @@ import {
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SET_CURRENT_STORY } from '@aussieljk/forkbook/internal/core-events';
 import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
@@ -26,15 +24,17 @@ import {
 } from '@aussieljk/forkbook/internal/types';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import { DEFAULT_REF_ID } from './constants.ts';
-import { BottomBarToggleIcon } from './icon/BottomBarToggleIcon.tsx';
-import { CloseFullscreenIcon } from './icon/CloseFullscreenIcon.tsx';
-import { FullscreenIcon } from './icon/FullscreenIcon.tsx';
-import { MenuIcon } from './icon/MenuIcon.tsx';
 import { AddonsTabs, MobileAddonsPanel, MobileAddonsPanelRef } from './MobileAddonsPanel.tsx';
 import { MobileMenuDrawer, MobileMenuDrawerRef } from './MobileMenuDrawer.tsx';
 import { SelectedNodeProvider } from './SelectedNodeProvider.tsx';
 import { Sidebar } from './Sidebar.tsx';
 import { StorybookLogo } from './StorybookLogo.tsx';
+import {
+  BottomBarToggleIcon,
+  CloseFullscreenIcon,
+  FullscreenIcon,
+  MenuIcon,
+} from './icon/index.tsx';
 
 const desktopLogoContainer = {
   flexDirection: 'row',
@@ -75,22 +75,20 @@ export const FullUI: SBUI = ({
   return (
     <ThemeProvider theme={theme}>
       <SafeAreaProvider>
-        <GestureHandlerRootView style={flex1}>
-          <BottomSheetModalProvider>
-            <StorageProvider storage={storage}>
-              <LayoutProvider>
-                <Layout
-                  storyHash={storyHash}
-                  story={story}
-                  storyBackgroundColor={storyBackgroundColor}
-                >
-                  {children}
-                </Layout>
-                <PortalHost name="storybook-lite-ui-root" />
-              </LayoutProvider>
-            </StorageProvider>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
+        <View style={flex1}>
+          <StorageProvider storage={storage}>
+            <LayoutProvider>
+              <Layout
+                storyHash={storyHash}
+                story={story}
+                storyBackgroundColor={storyBackgroundColor}
+              >
+                {children}
+              </Layout>
+              <PortalHost name="storybook-lite-ui-root" />
+            </LayoutProvider>
+          </StorageProvider>
+        </View>
       </SafeAreaProvider>
     </ThemeProvider>
   );

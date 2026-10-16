@@ -1,11 +1,8 @@
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { ComponentIcon } from './icon/ComponentIcon.tsx';
-import { GroupIcon } from './icon/GroupIcon.tsx';
-import { StoryIcon } from './icon/StoryIcon.tsx';
-import { CollapseIcon } from './icon/CollapseIcon.tsx';
 import React, { FC, forwardRef, type Ref, useMemo } from 'react';
 import { transparentize } from 'polished';
 import type { TouchableOpacityProps } from 'react-native';
+import { CollapseIcon, ComponentIcon, GroupIcon, StoryIcon } from './icon/index.tsx';
 
 type BranchNodeProps = TouchableOpacityProps & {
   depth?: number;

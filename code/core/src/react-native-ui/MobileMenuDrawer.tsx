@@ -1,22 +1,15 @@
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetScrollView,
-  type BottomSheetScrollViewMethods,
-} from '@gorhom/bottom-sheet';
+import BottomSheet from '@expo/ui/community/bottom-sheet';
 import { useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
 import {
   forwardRef,
   memo,
   ReactNode,
-  type RefObject,
   useCallback,
   useImperativeHandle,
   useMemo,
   useRef,
 } from 'react';
-import { Keyboard, Platform, type ViewStyle } from 'react-native';
-import { useAnimatedStyle, useReducedMotion } from 'react-native-reanimated';
+import { Keyboard, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelectedNode } from './SelectedNodeProvider.tsx';
 
@@ -28,39 +21,11 @@ export interface MobileMenuDrawerRef {
   setMobileMenuOpen: (isOpen: boolean) => void;
 }
 
-export const BottomSheetBackdropComponent = (backdropComponentProps: BottomSheetBackdropProps) => {
-  const androidTouchEventFix = useAnimatedStyle(() => {
-    if (Platform.OS === 'android') {
-      return {
-        zIndex: backdropComponentProps.animatedIndex.value >= 0 ? 0 : -1,
-      };
-    }
-    return {};
-  });
-
-  return (
-    <BottomSheetBackdrop
-      {...backdropComponentProps}
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
-      pressBehavior={'close'}
-      style={[
-        backdropComponentProps.style,
-        androidTouchEventFix as unknown as ViewStyle,
-        {
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          paddingTop: Platform.OS === 'android' ? 1 : undefined,
-        },
-      ]}
-    />
-  );
-};
-
 const snapPoints = ['50%', '75%'];
 
+/** The sidebar of the phone: a native iOS sheet (SwiftUI, through @expo/ui). */
 export const MobileMenuDrawer = memo(
   forwardRef<MobileMenuDrawerRef, MobileMenuDrawerProps>(({ children }, ref) => {
-    const reducedMotion = useReducedMotion();
     const insets = useSafeAreaInsets();
     const theme = useTheme();
     const menuBottomSheetRef = useRef<BottomSheet>(null);
@@ -84,7 +49,6 @@ export const MobileMenuDrawer = memo(
           menuBottomSheetRef.current?.snapToIndex(1);
         } else {
           Keyboard.dismiss();
-
           menuBottomSheetRef.current?.close();
         }
       },
@@ -94,10 +58,6 @@ export const MobileMenuDrawer = memo(
       return { backgroundColor: theme.background.content };
     }, [theme.background.content]);
 
-    const handleIndicatorStyle = useMemo(() => {
-      return { backgroundColor: theme.textMutedColor };
-    }, [theme.textMutedColor]);
-
     const contentContainerStyle = useMemo(() => {
       return { paddingBottom: insets.bottom };
     }, [insets.bottom]);
@@ -106,28 +66,18 @@ export const MobileMenuDrawer = memo(
       <BottomSheet
         ref={menuBottomSheetRef}
         index={-1}
-        animateOnMount={!reducedMotion}
         snapPoints={snapPoints}
-        // enableDismissOnClose
-        enableHandlePanningGesture
-        enableContentPanningGesture
-        enableDynamicSizing={false}
-        keyboardBehavior="extend"
-        keyboardBlurBehavior="restore"
         enablePanDownToClose
-        // stackBehavior="replace"
-        backdropComponent={BottomSheetBackdropComponent}
         backgroundStyle={bgColorStyle}
-        handleIndicatorStyle={handleIndicatorStyle}
         onChange={handleSheetChange}
       >
-        <BottomSheetScrollView
-          ref={scrollRef as RefObject<BottomSheetScrollViewMethods>}
+        <ScrollView
+          ref={scrollRef}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={contentContainerStyle}
         >
           {children}
-        </BottomSheetScrollView>
+        </ScrollView>
       </BottomSheet>
     );
   })

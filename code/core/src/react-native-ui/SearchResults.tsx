@@ -12,9 +12,7 @@ import {
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 
 import { PressableProps, View } from 'react-native';
-
-import { ComponentIcon } from './icon/ComponentIcon.tsx';
-import { StoryIcon } from './icon/StoryIcon.tsx';
+import { ComponentIcon, StoryIcon } from './icon/index.tsx';
 
 // Microfuzz highlight types
 type HighlightRange = [number, number];

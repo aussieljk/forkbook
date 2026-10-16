@@ -1,9 +1,5 @@
-import { useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { DatePicker, Host } from '@expo/ui/swift-ui';
 import { useMemo } from 'react';
-import { Platform, View } from 'react-native';
-
-import { inputStyle } from './common.tsx';
 
 export interface DateProps {
   arg: {
@@ -13,58 +9,21 @@ export interface DateProps {
   onChange: (value: Date) => void;
 }
 
+/** The compact date and time picker of the system (SwiftUI, through @expo/ui). */
 const DateType = ({ onChange, arg: { name, value } }: DateProps) => {
-  const theme = useTheme();
-
   const date = useMemo(() => {
     const dateValue = new Date(value);
-    if (isNaN(dateValue.valueOf())) {
-      return new Date();
-    }
-
-    return dateValue;
+    return isNaN(dateValue.valueOf()) ? new Date() : dateValue;
   }, [value]);
 
-  const webDateString = useMemo(
-    () =>
-      `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, '0')}-${`${date.getDate()}`.padStart(
-        2,
-        '0'
-      )}T${`${date.getHours()}`.padStart(2, '0')}:${`${date.getMinutes()}`.padStart(2, '0')}`,
-
-    [date]
-  );
-
-  if (Platform.OS === 'web') {
-    return (
-      <View testID={name}>
-        <input
-          type="datetime-local"
-          defaultValue={webDateString}
-          onChange={(e) => {
-            const target = e.currentTarget as EventTarget & { value: string };
-            const newDate = new Date(target.value);
-            onChange(newDate);
-          }}
-          // @ts-ignore
-          style={inputStyle({ theme })}
-        />
-      </View>
-    );
-  }
-
-  // iOS: the compact picker of the system, which opens the date and the time in a popover.
   return (
-    <View testID={name}>
-      <DateTimePicker
-        value={date}
-        mode="datetime"
-        display="compact"
-        onChange={(_event, picked) => {
-          if (picked) onChange(picked);
-        }}
+    <Host matchContents testID={name}>
+      <DatePicker
+        selection={date}
+        displayedComponents={['date', 'hourAndMinute']}
+        onDateChange={onChange}
       />
-    </View>
+    </Host>
   );
 };
 

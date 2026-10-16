@@ -1,4 +1,3 @@
-import { BottomSheetTextInput, useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import type { FuzzyResult } from '@nozbe/microfuzz';
 import { useFuzzySearchList } from '@nozbe/microfuzz/react';
@@ -11,8 +10,6 @@ import React, {
   useState,
 } from 'react';
 import { Platform, TextInput, View } from 'react-native';
-import { CloseIcon } from './icon/CloseIcon.tsx';
-import { SearchIcon } from './icon/SearchIcon.tsx';
 import { useSelectedNode } from './SelectedNodeProvider.tsx';
 import {
   type CombinedDataset,
@@ -24,6 +21,7 @@ import {
   type Selection,
   searchItem,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
+import { CloseIcon, SearchIcon } from './icon/index.tsx';
 
 // Microfuzz highlight types
 type HighlightRange = [number, number];
@@ -48,21 +46,6 @@ const SearchField = styled.View({
   flexDirection: 'column',
   position: 'relative',
 });
-
-const BottomSheetInput = styled(BottomSheetTextInput)(({ theme }) => ({
-  height: 32,
-  paddingLeft: 28,
-  paddingRight: 28,
-  paddingTop: Platform.OS === 'android' ? 0 : undefined,
-  paddingBottom: Platform.OS === 'android' ? 0 : undefined,
-  borderWidth: 1,
-  borderColor: theme.appBorderColor,
-  backgroundColor: 'transparent',
-  borderRadius: 4,
-  fontSize: theme.typography.size.s1 + 1,
-  color: theme.color.defaultText,
-  width: '100%',
-}));
 
 const Input = styled(TextInput)(({ theme }) => ({
   height: 32,
@@ -98,9 +81,6 @@ export const Search = React.memo<{
   getLastViewed: () => Selection[];
   initialQuery?: string;
 }>(function Search({ children, dataset, setSelection, getLastViewed, initialQuery = '' }) {
-  const context = useBottomSheetInternal(true);
-  const isBottomSheet = context !== null;
-
   const inputRef = useRef<ComponentRef<typeof TextInput>>(null);
   const [inputValue, setInputValue] = useState(initialQuery);
   const [isOpen, setIsOpen] = useState(false);
@@ -241,16 +221,12 @@ export const Search = React.memo<{
           <SearchIcon />
         </SearchIconWrapper>
 
-        {isBottomSheet && (Platform.OS === 'ios' || Platform.OS === 'android') ? (
-          <BottomSheetInput
-            ref={inputRef as any} // TODO find solution for this
-            onChangeText={setInputValue}
-            onFocus={() => setIsOpen(true)}
-            onBlur={() => setIsOpen(false)}
-          />
-        ) : (
-          <Input ref={inputRef} onChangeText={setInputValue} onFocus={() => setIsOpen(true)} />
-        )}
+        <Input
+          ref={inputRef}
+          onChangeText={setInputValue}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setIsOpen(false)}
+        />
 
         {isOpen && (
           <ClearIcon

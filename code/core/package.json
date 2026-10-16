@@ -800,8 +800,8 @@
     "@discoveryjs/json-ext": "^0.5.3",
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
+    "@expo/ui": "58.0.13",
     "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
-    "@gorhom/bottom-sheet": "5.2.14",
     "@gorhom/portal": "1.0.14",
     "@happy-dom/global-registrator": "^20.0.11",
     "@mdx-js/mdx": "^3.0.0",
@@ -817,8 +817,6 @@
     "@opentelemetry/sdk-trace-base": "2.12.0",
     "@polka/compression": "^1.0.0-next.28",
     "@preact/signals-core": "^1.14.2",
-    "@react-native-community/datetimepicker": "9.2.1",
-    "@react-native-community/slider": "5.2.1",
     "@rolldown/pluginutils": "1.0.0-beta.18",
     "@standard-schema/spec": "^1.1.0",
     "@testing-library/react": "^14.0.0",
@@ -879,6 +877,7 @@
     "escodegen": "^2.1.0",
     "execa": "^9.6.1",
     "expect-type": "^0.15.0",
+    "expo-symbols": "58.0.4",
     "exsolve": "^1.0.7",
     "extend-to-be-announced": "^2.0.0",
     "fast-deep-equal": "^3.1.3",
@@ -932,11 +931,7 @@
     "react-helmet-async": "^1.3.0",
     "react-inspector": "^6.0.0",
     "react-native": "0.88.0-rc.3",
-    "react-native-gesture-handler": "3.2.1",
-    "react-native-reanimated": "4.7.0",
     "react-native-safe-area-context": "5.9.1",
-    "react-native-svg": "15.15.5",
-    "react-native-worklets": "0.13.0",
     "react-resize-detector": "^7.1.2",
     "react-router-dom": "6.15.0",
     "react-textarea-autosize": "^8.3.0",
@@ -976,7 +971,7 @@
     "zod": "^3.25.76"
   },
   "peerDependencies": {
-    "@gorhom/bottom-sheet": ">=5",
+    "@expo/ui": ">=55",
     "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/context-async-hooks": "^2.12.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.223.0",
@@ -984,26 +979,22 @@
     "@opentelemetry/resources": "^2.12.0",
     "@opentelemetry/sdk-logs": "^0.223.0",
     "@opentelemetry/sdk-trace-base": "^2.12.0",
-    "@react-native-community/datetimepicker": "*",
-    "@react-native-community/slider": "*",
     "@types/react": "^18.0.0 || ^19.0.0",
     "@types/react-dom": "^18.0.0 || ^19.0.0",
     "@vitest/browser": "^4.0.0 || ^5.0.0",
     "@vitest/browser-playwright": "^4.0.0 || ^5.0.0",
+    "expo-symbols": ">=55",
     "next": "^15.0.0 || ^16.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "react-native": ">=0.79.0",
-    "react-native-gesture-handler": ">=2",
-    "react-native-reanimated": ">=4",
     "react-native-safe-area-context": ">=5",
-    "react-native-svg": ">=14",
     "vite": "^8.0.0",
     "vite-plus": "^0.1.15 || ^0.2.0 || ^0.3.0",
     "vitest": "^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
-    "@gorhom/bottom-sheet": {
+    "@expo/ui": {
       "optional": true
     },
     "@opentelemetry/api": {
@@ -1027,12 +1018,6 @@
     "@opentelemetry/sdk-trace-base": {
       "optional": true
     },
-    "@react-native-community/datetimepicker": {
-      "optional": true
-    },
-    "@react-native-community/slider": {
-      "optional": true
-    },
     "@types/react": {
       "optional": true
     },
@@ -1045,22 +1030,16 @@
     "@vitest/browser-playwright": {
       "optional": true
     },
+    "expo-symbols": {
+      "optional": true
+    },
     "next": {
       "optional": true
     },
     "react-native": {
       "optional": true
     },
-    "react-native-gesture-handler": {
-      "optional": true
-    },
-    "react-native-reanimated": {
-      "optional": true
-    },
     "react-native-safe-area-context": {
-      "optional": true
-    },
-    "react-native-svg": {
       "optional": true
     },
     "vite-plus": {

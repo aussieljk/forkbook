@@ -47,7 +47,7 @@ export const detectReactNativeEntrypointTemplateVariant = (
  * Expo Go bundles specific native module versions for a given Expo SDK. When dependencies are
  * installed with the user's package manager (npm/yarn/pnpm/bun) instead of `expo install`, the
  * latest versions of packages like `@react-native-async-storage/async-storage`,
- * `react-native-svg`, `@react-native-community/slider`, etc. get pinned in `package.json` — and
+ * `@expo/ui`, `expo-symbols`, etc. get pinned in `package.json`, and
  * those typically don't match what Expo Go has linked natively.
  *
  * The symptoms are runtime warnings such as:
@@ -110,13 +110,8 @@ export default defineGeneratorModule({
     const peerDependencies = [
       'react-native-safe-area-context',
       '@react-native-async-storage/async-storage',
-      '@react-native-community/datetimepicker',
-      '@react-native-community/slider',
-      'react-native-reanimated',
-      'react-native-worklets',
-      'react-native-gesture-handler',
-      '@gorhom/bottom-sheet',
-      'react-native-svg',
+      '@expo/ui',
+      'expo-symbols',
     ].filter((dep) => !packageManager.getDependencyVersion(dep));
 
     const existingScripts = packageManager.primaryPackageJson.packageJson.scripts;

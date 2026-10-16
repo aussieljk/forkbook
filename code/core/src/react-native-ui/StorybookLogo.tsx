@@ -1,18 +1,23 @@
 import { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
 import { FC, isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import { Image, Linking, StyleProp, Text, TextStyle, TouchableOpacity } from 'react-native';
-import { DarkLogo } from './icon/DarkLogo.tsx';
-import { Logo } from './icon/Logo.tsx';
 
 const WIDTH = 125;
 const HEIGHT = 25;
 
-const NoBrandLogo: FC<{ theme: Theme }> = ({ theme }) =>
-  theme.base === 'light' ? (
-    <Logo height={HEIGHT} width={WIDTH} />
-  ) : (
-    <DarkLogo height={HEIGHT} width={WIDTH} />
-  );
+/** The mark of Forkbook, when the theme has no brand. */
+const NoBrandLogo: FC<{ theme: Theme }> = ({ theme }) => (
+  <Text
+    style={{
+      height: HEIGHT,
+      color: theme.color.defaultText,
+      fontSize: theme.typography.size.m1,
+      fontWeight: 'bold',
+    }}
+  >
+    Forkbook
+  </Text>
+);
 
 function isElement(value: unknown): value is ReactElement {
   return isValidElement(value);
