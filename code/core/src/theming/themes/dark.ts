@@ -14,7 +14,7 @@ const theme: ThemeVars = {
   // UI
   appBg: '#000000',
   appContentBg: '#1C1C1E', // systemGray6
-  appHoverBg: '#0B2D52',
+  appHoverBg: '#2C2C2E',
   appPreviewBg: color.lightest,
   appBorderColor: border,
   appBorderRadius: 4,
@@ -30,7 +30,7 @@ const theme: ThemeVars = {
 
   // Toolbar default and active colors
   barTextColor: '#98989F',
-  barHoverColor: '#409CFF',
+  barHoverColor: '#F2F2F7',
   barSelectedColor: '#0A84FF',
   barBg: '#1C1C1E',
 

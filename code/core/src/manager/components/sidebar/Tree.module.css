@@ -48,18 +48,14 @@
   }
 
   &[data-selected='true'] {
-    --selected-background: var(--fb-color-secondary);
-    color: var(--fb-color-lightest);
+    --selected-background: rgb(120 120 128 / 0.2);
+    color: var(--fb-color-default-text);
     background: var(--selected-background);
     font-weight: var(--fb-weight-bold);
 
     &:hover,
     &:focus {
       background: var(--selected-background);
-    }
-
-    & svg {
-      color: var(--fb-color-lightest);
     }
   }
 
@@ -69,7 +65,7 @@
 }
 
 :where([data-fb-theme='dark']) .leafNodeStyleWrapper[data-selected='true'] {
-  --selected-background: hsl(from var(--fb-color-secondary) h s calc(l - 18));
+  --selected-background: rgb(120 120 128 / 0.36);
 }
 
 .skipToContentLink {

@@ -110,6 +110,10 @@ export type API_ActiveTabsType = 'sidebar' | 'canvas' | 'addons';
 
 export interface API_SidebarOptions<API = any> {
   showRoots?: boolean;
+  /** Show the type icon (group, component, docs, story) before each sidebar item. Default: false. */
+  showIcons?: boolean;
+  /** Expand every group and component in the sidebar when Forkbook opens. Default: true. */
+  expandAll?: boolean;
   filters?: Record<string, API_FilterFunction>;
   collapsedRoots?: string[];
   renderAriaLabel?: (

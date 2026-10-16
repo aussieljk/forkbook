@@ -51,7 +51,7 @@ export const background = {
   content: color.lightest,
   preview: color.lightest,
   gridCellSize: 10,
-  hoverable: '#E5F1FF',
+  hoverable: '#E5E5EA',
 
   // Notification, error, and warning backgrounds
   positive: '#EAF9EE',
