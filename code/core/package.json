@@ -880,7 +880,6 @@
     "jsdoc-type-pratt-parser": "^4.0.0",
     "knitwork": "^1.1.0",
     "launch-editor": "^2.13.2",
-    "lazy-universal-dotenv": "^4.0.0",
     "leven": "^4.0.0",
     "lilconfig": "^3.0.0",
     "markdown-to-jsx": "^7.7.2",
