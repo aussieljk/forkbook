@@ -41,8 +41,8 @@ export const WithPresetColors: Story = {
   args: {
     value: '#00ffff',
     presetColors: [
-      { color: '#ff4785', title: 'Coral' },
-      { color: '#1EA7FD', title: 'Ocean' },
+      { color: '#007aff', title: 'System blue' },
+      { color: '#0A84FF', title: 'System blue (dark)' },
       { color: 'rgb(252, 82, 31)', title: 'Orange' },
       { color: 'rgba(255, 174, 0, 0.5)', title: 'Gold' },
       { color: 'hsl(101, 52%, 49%)', title: 'Green' },
@@ -75,8 +75,8 @@ export const WithMaxPresetColors: Story = {
     startOpen: true,
     maxPresetColors: 5,
     presetColors: [
-      { color: '#ff4785', title: 'Coral' },
-      { color: '#1EA7FD', title: 'Ocean' },
+      { color: '#007aff', title: 'System blue' },
+      { color: '#0A84FF', title: 'System blue (dark)' },
       { color: 'rgb(252, 82, 31)', title: 'Orange' },
       { color: 'rgba(255, 174, 0, 0.5)', title: 'Gold' },
       { color: 'hsl(101, 52%, 49%)', title: 'Green' },

@@ -28,7 +28,7 @@ import { AddonsTabs, MobileAddonsPanel, MobileAddonsPanelRef } from './MobileAdd
 import { MobileMenuDrawer, MobileMenuDrawerRef } from './MobileMenuDrawer.tsx';
 import { SelectedNodeProvider } from './SelectedNodeProvider.tsx';
 import { Sidebar } from './Sidebar.tsx';
-import { StorybookLogo } from './StorybookLogo.tsx';
+import { ForkbookLogo } from './ForkbookLogo.tsx';
 import {
   BottomBarToggleIcon,
   CloseFullscreenIcon,
@@ -247,7 +247,7 @@ export const Layout = ({
               contentContainerStyle={desktopScrollViewContentContainerStyle}
             >
               <View style={desktopLogoContainer}>
-                <StorybookLogo theme={theme} />
+                <ForkbookLogo theme={theme} />
 
                 <IconButton onPress={() => setDesktopSidebarOpen(false)} Icon={MenuIcon} />
               </View>
@@ -335,7 +335,7 @@ export const Layout = ({
         <SelectedNodeProvider>
           <MobileMenuDrawer ref={mobileMenuDrawerRef}>
             <View style={mobileMenuDrawerContentStyle}>
-              <StorybookLogo theme={theme} />
+              <ForkbookLogo theme={theme} />
             </View>
 
             <Sidebar

@@ -13,6 +13,7 @@ import {
   Card,
   Collapsible,
   DocumentWrapper,
+  ForkbookIcon,
   IconButton,
   ScrollArea,
   ToggleButton,
@@ -26,7 +27,6 @@ import {
   ChevronSmallLeftIcon,
   CloseIcon,
   CopyIcon,
-  StorybookIcon,
   WandIcon,
 } from '@storybook/icons';
 
@@ -228,7 +228,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
           <Button variant="ghost" size="small" padding="small" ariaLabel="Exit review" asChild>
             <a href={buildSummaryBackHref(returnSearch)} {...{ [REVIEW_SUMMARY_BACK_ATTR]: '' }}>
               <ChevronSmallLeftIcon />
-              <StorybookIcon />
+              <ForkbookIcon width={14} height={14} aria-hidden="true" />
             </a>
           </Button>
         }

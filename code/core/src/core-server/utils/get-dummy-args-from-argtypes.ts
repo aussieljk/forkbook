@@ -159,7 +159,7 @@ export function generateDummyValueFromSBType(
       const name = propName ?? '';
       const tokens = tokenize(name);
       if (hasAny(tokens, COLOR_TOKENS)) {
-        return '#ff4785';
+        return '#007aff';
       }
 
       if (hasAny(tokens, DATE_TOKENS)) {

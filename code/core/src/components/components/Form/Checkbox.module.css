@@ -28,7 +28,7 @@
   &:checked,
   &:indeterminate {
     border: none;
-    background-color: #006deb;
+    background-color: #007aff;
   }
 
   &:checked::before {
@@ -57,6 +57,6 @@
 
   &:disabled:checked,
   &:disabled:indeterminate {
-    background-color: #5c6570;
+    background-color: #636366;
   }
 }

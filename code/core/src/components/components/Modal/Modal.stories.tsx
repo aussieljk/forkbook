@@ -995,8 +995,8 @@ export const WithContainer = meta.story({
           Open Modal in Custom Container
         </Button>
         <MockContainer
-          bgColor="rgba(255, 71, 133, 0.05"
-          borderColor="#ff4785"
+          bgColor="rgba(0, 122, 255, 0.05"
+          borderColor="#007aff"
           text="Custom Container. Modal will appear within this bordered area."
           ref={container}
         />
@@ -1026,8 +1026,8 @@ export const WithPortalSelector = meta.story({
         </Button>
         <MockContainer
           id="custom-modal-portal-target"
-          bgColor="rgba(30, 167, 253, 0.05)"
-          borderColor="#1EA7FD"
+          bgColor="rgba(0, 122, 255, 0.05)"
+          borderColor="#007AFF"
           text="Portal Selector Target. Modal will appear within this bordered area."
         />
         <Modal {...args} open={isOpen} onOpenChange={setOpen} />

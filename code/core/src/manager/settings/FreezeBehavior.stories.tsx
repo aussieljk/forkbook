@@ -31,7 +31,7 @@ const FreezeHarness = () => {
           height: 40,
           borderRadius: '50%',
           border: '4px solid #ddd',
-          borderTopColor: '#1ea7fd',
+          borderTopColor: '#007aff',
           animation: 'freeze-spin 1s linear infinite',
         }}
       />

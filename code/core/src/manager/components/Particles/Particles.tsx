@@ -21,7 +21,7 @@ const L = (props: ComponentProps<typeof Shape>) => (
 );
 
 const Slice = (props: ComponentProps<typeof Shape>) => (
-  <Shape viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" color="#FF4785" {...props}>
+  <Shape viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" color="#007AFF" {...props}>
     <path d="M92 89V3c0-3-2.056-3-3-3C39.294 0 0 39.294 0 89c0 0 0 3 3 3h86a3 3 0 003-3z" />
   </Shape>
 );
@@ -30,7 +30,7 @@ const Square = ({ style, ...props }: ComponentProps<typeof Shape>) => (
   <Shape
     viewBox="0 0 90 90"
     xmlns="http://www.w3.org/2000/svg"
-    color="#1EA7FD"
+    color="#007AFF"
     {...props}
     style={{ borderRadius: 5, ...style }}
   >
@@ -79,7 +79,7 @@ export const Particles = memo(function Particles({
     '#FF0000',
     '#FF4787',
     '#66BF3C',
-    '#1EA7FD',
+    '#007AFF',
     '#FC521F',
     '#6F2CAC',
     '#FFAE00',

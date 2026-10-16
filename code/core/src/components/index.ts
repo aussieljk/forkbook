@@ -112,8 +112,8 @@ export { StatelessTab } from './components/Tabs/StatelessTab.tsx';
 export type { StatelessTabProps } from './components/Tabs/StatelessTab.tsx';
 
 // Graphics
-export { StorybookLogo } from './brand/StorybookLogo.tsx';
-export { StorybookIcon } from './brand/StorybookIcon.tsx';
+export { ForkbookLogo } from './brand/ForkbookLogo.tsx';
+export { ForkbookIcon } from './brand/ForkbookIcon.tsx';
 
 // Loader
 export { Loader } from './components/Loader/Loader.tsx';

@@ -6,7 +6,7 @@ const Component = () => (
   <div>
     <style jsx>{`
       .main p {
-        color: #ff4785;
+        color: #007aff;
       }
     `}</style>
     <main className="main">

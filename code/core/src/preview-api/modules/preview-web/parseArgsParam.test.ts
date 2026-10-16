@@ -38,13 +38,13 @@ describe('parseArgsParam', () => {
   });
 
   it('parses hex color values', () => {
-    const args = parseArgsParam('key:!hex(ff4785)');
-    expect(args).toStrictEqual({ key: '#ff4785' });
+    const args = parseArgsParam('key:!hex(007aff)');
+    expect(args).toStrictEqual({ key: '#007aff' });
   });
 
   it('parses rgba color values', () => {
-    const args = parseArgsParam('rgb:!rgb(255,71,133);rgba:!rgba(255,71,133,0.5)');
-    expect(args).toStrictEqual({ rgb: 'rgb(255, 71, 133)', rgba: 'rgba(255, 71, 133, 0.5)' });
+    const args = parseArgsParam('rgb:!rgb(0,122,255);rgba:!rgba(0,122,255,0.5)');
+    expect(args).toStrictEqual({ rgb: 'rgb(0, 122, 255)', rgba: 'rgba(0, 122, 255, 0.5)' });
   });
 
   it('parses hsla color values', () => {

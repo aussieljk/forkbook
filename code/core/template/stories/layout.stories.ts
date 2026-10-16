@@ -2,7 +2,7 @@ import { global as globalThis } from '@storybook/global';
 
 const style = {
   display: 'block',
-  border: '2px solid #FF4785',
+  border: '2px solid #007AFF',
   padding: '10px',
 };
 

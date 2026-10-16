@@ -140,7 +140,7 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
     body {
       display: grid !important;
       grid-template-columns: 300px 1fr;
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Inter Variable', sans-serif;
       height: 100vh;
       margin: 0;
 
@@ -203,7 +203,7 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
     }
     .fb-navigator-story-link.active {
       font-weight: bold;
-      color: hsl(212 100 46);
+      color: #007aff;
     }
   `;
   document.head.appendChild(style);

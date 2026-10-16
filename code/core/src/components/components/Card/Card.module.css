@@ -68,13 +68,13 @@
     rgb(255, 157, 0),
     rgb(255, 208, 0),
     rgb(0, 172, 0),
-    rgb(0, 166, 255),
+    rgb(0, 122, 255),
     rgb(181, 0, 181),
     rgb(234, 0, 0),
     rgb(255, 157, 0),
     rgb(255, 208, 0),
     rgb(0, 172, 0),
-    rgb(0, 166, 255),
+    rgb(0, 122, 255),
     rgb(181, 0, 181),
     rgb(234, 0, 0)
   );
@@ -101,7 +101,7 @@
   animation: spin 5s linear infinite;
   background-image: conic-gradient(
     transparent 90deg,
-    #029cfd 150deg,
+    #007aff 150deg,
     #37d5d3 210deg,
     transparent 270deg
   );

@@ -1,9 +1,15 @@
 import type { FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 
-import { ActionList, Button, Link, ScrollArea } from '@aussieljk/forkbook/internal/components';
+import {
+  ActionList,
+  Button,
+  ForkbookIcon,
+  Link,
+  ScrollArea,
+} from '@aussieljk/forkbook/internal/components';
 
-import { ArrowLeftIcon, GithubIcon, ShareAltIcon, StorybookIcon } from '@storybook/icons';
+import { ArrowLeftIcon, GithubIcon, ShareAltIcon } from '@storybook/icons';
 
 import { useTransitionState } from 'react-transition-state';
 
@@ -82,7 +88,7 @@ export const MobileAbout: FC = () => {
                 rel="noopener noreferrer"
               >
                 <ActionList.Icon>
-                  <StorybookIcon />
+                  <ForkbookIcon width={14} height={14} aria-hidden="true" />
                 </ActionList.Icon>
                 <ActionList.Text>
                   <span>Documentation</span>

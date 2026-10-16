@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Button, Link, StorybookLogo } from '@aussieljk/forkbook/internal/components';
+import { Button, Link, ForkbookLogo } from '@aussieljk/forkbook/internal/components';
 
 import { DocumentIcon, GithubIcon } from '@storybook/icons';
 
@@ -12,7 +12,7 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <StorybookLogo alt="Forkbook" />
+        <ForkbookLogo alt="Forkbook" />
       </header>
       <UpgradeBlock onNavigateToWhatsNew={onNavigateToWhatsNew} />
       <div className={styles.footer}>

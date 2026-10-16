@@ -197,13 +197,13 @@ describe('buildArgsParam', () => {
   });
 
   it('encodes hex color values as !hex(value)', () => {
-    const param = buildArgsParam({}, { key: '#ff4785' });
-    expect(param).toEqual('key:!hex(ff4785)');
+    const param = buildArgsParam({}, { key: '#007aff' });
+    expect(param).toEqual('key:!hex(007aff)');
   });
 
   it('encodes rgba color values by prefixing and compacting', () => {
-    const param = buildArgsParam({}, { rgb: 'rgb(255, 71, 133)', rgba: 'rgba(255, 71, 133, 0.5)' });
-    expect(param).toEqual('rgb:!rgb(255,71,133);rgba:!rgba(255,71,133,0.5)');
+    const param = buildArgsParam({}, { rgb: 'rgb(0, 122, 255)', rgba: 'rgba(0, 122, 255, 0.5)' });
+    expect(param).toEqual('rgb:!rgb(0,122,255);rgba:!rgba(0,122,255,0.5)');
   });
 
   it('encodes hsla color values by prefixing and compacting', () => {

@@ -33,7 +33,7 @@ export const CloseFullscreenIcon = symbolIcon('arrow.down.right.and.arrow.up.lef
 export const BottomBarToggleIcon = symbolIcon('rectangle.bottomthird.inset.filled', 14, text);
 export const ExpandAllIcon = symbolIcon('rectangle.expand.vertical', 14, text);
 export const CollapseAllIcon = symbolIcon('rectangle.compress.vertical', 14, text);
-export const ComponentIcon = symbolIcon('square.grid.2x2', 12, () => '#029CFD');
+export const ComponentIcon = symbolIcon('square.grid.2x2', 12, () => '#007AFF');
 export const GroupIcon = symbolIcon('folder', 14, () => '#6F2CAC');
 export const StoryIcon = symbolIcon('bookmark', 12, () => '#37D5D3');
 
