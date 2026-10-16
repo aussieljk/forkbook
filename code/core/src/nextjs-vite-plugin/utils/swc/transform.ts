@@ -2,7 +2,7 @@ import type loadJsConfig from 'next/dist/build/load-jsconfig.js';
 import type { findPagesDir } from 'next/dist/lib/find-pages-dir.js';
 import type { NextConfigComplete } from 'next/dist/server/config-shared.js';
 import path from 'pathe';
-import type { SourceMap } from 'rollup';
+import type { SourceMap } from 'rolldown';
 import { shouldOutputCommonJs } from '../nextjs.ts';
 import { getBaseSWCOptions } from './options.ts';
 

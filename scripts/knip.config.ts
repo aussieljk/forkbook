@@ -2,7 +2,7 @@ import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 // eslint-disable-next-line depend/ban-dependencies
-import fg from 'fast-glob';
+import { glob } from 'tinyglobby';
 import type { KnipConfig } from 'knip';
 import { match } from 'minimatch';
 
@@ -73,7 +73,7 @@ export const addBundlerEntries = async (config: KnipConfig) => {
   const rootManifest = await import(pathToFileURL(join(baseDir, 'package.json')).href, {
     with: { type: 'json' },
   });
-  const workspaceDirs = await fg(rootManifest.workspaces.packages, {
+  const workspaceDirs = await glob(rootManifest.workspaces.packages, {
     cwd: baseDir,
     onlyDirectories: true,
   });
