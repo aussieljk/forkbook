@@ -1,5 +1,6 @@
-import type { StaticImportEntry } from 'oxc-parser';
-import { parse as oxcRawParse } from 'oxc-parser';
+import { type ParseResult, parse as oxcRawParse } from 'rolldown/utils';
+
+type StaticImportEntry = ParseResult['module']['staticImports'][number]['entries'][number];
 
 import { OxcParseError } from './errors.ts';
 import type { ImportEdge } from './types.ts';
