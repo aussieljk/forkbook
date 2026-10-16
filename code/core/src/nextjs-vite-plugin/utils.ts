@@ -14,7 +14,6 @@ export function getExecutionEnvironment(config: UserConfig) {
 
 export const getNextjsVersion = (): string => require('next/package.json').version;
 
-
 export const getNextjsMajorVersion = (): number => {
   try {
     const version = getNextjsVersion();
@@ -23,4 +22,3 @@ export const getNextjsMajorVersion = (): number => {
     return 16;
   }
 };
-

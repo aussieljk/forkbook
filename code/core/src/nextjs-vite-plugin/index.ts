@@ -18,11 +18,7 @@ import {
 import { vitePluginNextDynamic } from './plugins/next-dynamic/plugin.ts';
 import { type NextImagePluginOptions, vitePluginNextImage } from './plugins/next-image/plugin.ts';
 import { vitePluginNextMocks } from './plugins/next-mocks/plugin.ts';
-import {
-  getExecutionEnvironment,
-  getNextjsMajorVersion,
-  isVitestEnv,
-} from './utils.ts';
+import { getExecutionEnvironment, getNextjsMajorVersion, isVitestEnv } from './utils.ts';
 import { loadNextConfig } from './utils/next-config.ts';
 
 const require = createRequire(import.meta.url);
