@@ -60,6 +60,8 @@
       "version": "0.0.1-0",
       "bin": {
         "forkbook": "./dist/bin/dispatcher.js",
+        "sb-rn-get-stories": "./dist/react-native/bin/get-stories.js",
+        "storybook": "./dist/bin/dispatcher.js",
       },
       "dependencies": {
         "@mdx-js/react": "^3.0.0",
