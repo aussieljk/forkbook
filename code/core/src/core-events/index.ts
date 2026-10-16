@@ -69,6 +69,8 @@ enum events {
   STORIES_COLLAPSE_ALL = 'storiesCollapseAll',
   STORIES_EXPAND_ALL = 'storiesExpandAll',
   DOCS_RENDERED = 'docsRendered',
+  // Infinite docs scroll: a docs page further down came into view (the preview tells the manager)
+  DOCS_PAGE_IN_VIEW = 'docsPageInView',
   SHARED_STATE_CHANGED = 'sharedStateChanged',
   SHARED_STATE_SET = 'sharedStateSet',
   NAVIGATE_URL = 'navigateUrl',
@@ -114,6 +116,7 @@ export const {
   CURRENT_STORY_WAS_SET,
   DOCS_PREPARED,
   DOCS_RENDERED,
+  DOCS_PAGE_IN_VIEW,
   FORCE_RE_RENDER,
   FORCE_REMOUNT,
   GLOBALS_UPDATED,

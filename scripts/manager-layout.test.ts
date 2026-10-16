@@ -107,4 +107,26 @@ describe('the built manager', () => {
     expect(layout.sidebarFont).toMatch(/^"?Inter Variable"?/);
     expect(layout.serif).toEqual([]);
   }, 60_000);
+
+  it('renders markdown tables, and scrolls from one docs page into the next', async () => {
+    const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
+    await page.goto(`${base}/?path=/docs/first--docs`);
+    const preview = page.frameLocator('#storybook-preview-iframe');
+    await preview.locator('h1', { hasText: 'First page' }).waitFor();
+
+    // GitHub-flavoured markdown: the pipe table is a table.
+    expect(await preview.locator('table td', { hasText: 'alpha' }).count()).toBe(1);
+
+    // The next docs page loads below the first one.
+    const frame = page.frame({ name: 'storybook-preview-iframe' })!;
+    await frame.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    const second = preview.locator('.fb-infinite-docs-page h1', { hasText: 'Second page' });
+    await second.waitFor();
+
+    // The URL follows the page in view, without a new render of the preview.
+    await frame.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => page.url(), { timeout: 15_000 }).toMatch(/path=\/docs\/second--docs/);
+    expect(await preview.locator('h1', { hasText: 'First page' }).count()).toBe(1);
+    await page.close();
+  }, 60_000);
 });
