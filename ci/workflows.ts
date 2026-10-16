@@ -48,7 +48,7 @@ const check: Step[] = [
   sh('Build', 'bun run build'),
   sh('Typecheck', 'bun run typecheck'),
   // The manager layout test opens the built manager in headless Chromium.
-  sh('Install Chromium', 'bunx playwright install --with-deps chromium-headless-shell'),
+  sh('Install Chromium', 'node node_modules/playwright/cli.js install --with-deps chromium-headless-shell'),
   sh('Unit tests', 'bun run test:unit'),
 ];
 
