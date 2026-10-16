@@ -1,5 +1,4 @@
 declare module 'lazy-universal-dotenv';
-declare module '@aw-web-design/x-default-browser';
 declare module '@discoveryjs/json-ext';
 
 declare var FEATURES: import('@aussieljk/forkbook/internal/types').StorybookConfigRaw['features'];

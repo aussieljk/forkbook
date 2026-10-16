@@ -6,7 +6,6 @@ import {
   SelectionStore,
 } from '@aussieljk/forkbook/internal/preview-api';
 import { addons as managerAddons } from '@aussieljk/forkbook/manager-api';
-import './polyfill.ts';
 
 import type { ReactRenderer } from '@aussieljk/forkbook/react';
 import { Channel } from '@aussieljk/forkbook/internal/channels';

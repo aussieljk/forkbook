@@ -37,7 +37,6 @@ declare var __FORKBOOK_TEST_SPY_LISTENERS__: Set<any>;
 declare var __FORKBOOK_ACTIONS__: any;
 declare var __FORKBOOK_VITEST_MOCKER__: any;
 
-declare module '@aw-web-design/x-default-browser';
 declare module 'ansi-to-html';
 declare module 'lazy-universal-dotenv';
 declare module 'react-inspector';
