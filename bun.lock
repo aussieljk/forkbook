@@ -57,7 +57,7 @@
     },
     "code/core": {
       "name": "@aussieljk/forkbook",
-      "version": "0.0.1-2",
+      "version": "0.0.1-3",
       "bin": {
         "forkbook": "dist/bin/dispatcher.js",
         "sb-rn-get-stories": "dist/react-native/bin/get-stories.js",
@@ -91,7 +91,7 @@
         "oxc-resolver": "11.21.2",
         "oxfmt": "^0.70.0",
         "pathe": "^2.0.3",
-        "probe-image-size": "^7.3.0",
+        "probe-image-size": "^7.4.0",
         "recast": "^0.23.5",
         "semver": "^7.7.3",
         "styled-jsx": "5.1.6",
