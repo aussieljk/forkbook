@@ -4,14 +4,12 @@ import { dirname, resolve } from 'pathe';
 import { createRequire } from 'node:module';
 import type { NextConfigComplete } from 'next/dist/server/config-shared.js';
 import type { PluginOption } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 import { vitePluginNextEnv } from './plugins/next-env/plugin.ts';
 import { vitePluginNextFont } from './plugins/next-font/plugin.ts';
 import { vitePluginNextSwc } from './plugins/next-swc/plugin.ts';
 
 import './polyfills/promise-with-resolvers.ts';
-import nextLoadJsConfig from 'next/dist/build/load-jsconfig.js';
 import {
   PHASE_DEVELOPMENT_SERVER,
   PHASE_PRODUCTION_BUILD,
@@ -23,7 +21,6 @@ import { vitePluginNextMocks } from './plugins/next-mocks/plugin.ts';
 import {
   getExecutionEnvironment,
   getNextjsMajorVersion,
-  getViteMajorVersion,
   isVitestEnv,
 } from './utils.ts';
 import { loadNextConfig } from './utils/next-config.ts';
@@ -31,10 +28,6 @@ import { loadNextConfig } from './utils/next-config.ts';
 const require = createRequire(import.meta.url);
 const compiledReactDir = dirname(require.resolve('next/dist/compiled/react'));
 const compiledReactDomDir = dirname(require.resolve('next/dist/compiled/react-dom'));
-
-const loadJsConfig: typeof nextLoadJsConfig =
-  // biome-ignore lint/suspicious/noExplicitAny: CJS support
-  (nextLoadJsConfig as any).default || nextLoadJsConfig;
 
 export type PluginOptions = {
   /**
@@ -51,7 +44,6 @@ export type PluginOptions = {
 
 function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginOption[] {
   const resolvedDir = resolve(dir);
-  const isVite8orNewer = getViteMajorVersion() >= 8;
   const nextConfigResolver = Promise.withResolvers<NextConfigComplete>();
 
   const nodeEnv = process.env.NODE_ENV;
@@ -65,19 +57,6 @@ function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginO
   loadNextConfig(phase, resolvedDir).then(nextConfigResolver.resolve, nextConfigResolver.reject);
 
   return [
-    isVite8orNewer
-      ? null
-      : nextConfigResolver.promise.then(async (nextConfig) => {
-          const loadedJSConfig = await loadJsConfig(resolvedDir, nextConfig);
-          const { enforce, ...tsconfigPathConfig } = tsconfigPaths({
-            root: resolvedDir,
-            ...(loadedJSConfig.jsConfigPath ? { projects: [loadedJSConfig.jsConfigPath] } : {}),
-          });
-
-          return {
-            ...tsconfigPathConfig,
-          };
-        }),
     {
       name: '@aussieljk/forkbook/internal/nextjs-vite-plugin',
       enforce: 'pre' as const,
@@ -87,7 +66,7 @@ function VitePlugin({ dir = process.cwd(), image }: PluginOptions = {}): PluginO
 
         const executionEnvironment = getExecutionEnvironment(config);
         const resolveConfig = {
-          ...(isVite8orNewer ? { tsconfigPaths: true } : {}),
+          tsconfigPaths: true,
           ...(!isVitestEnv && {
             alias: [
               {

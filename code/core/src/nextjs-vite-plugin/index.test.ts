@@ -4,14 +4,8 @@ import type { NextConfigComplete } from 'next/dist/server/config-shared.js';
 
 const requireResolveMock = vi.hoisted(() => vi.fn((id: string) => `/resolved/${id}`));
 const loadConfigMock = vi.hoisted(() => vi.fn());
-const loadJsConfigMock = vi.hoisted(() => vi.fn());
-const loadJsConfigModule = vi.hoisted(() => ({
-  defaultExport: { default: loadJsConfigMock } as unknown,
-}));
-const tsconfigPathsMock = vi.hoisted(() => vi.fn());
 const getExecutionEnvironmentMock = vi.hoisted(() => vi.fn());
 const getNextjsMajorVersionMock = vi.hoisted(() => vi.fn());
-const getViteMajorVersionMock = vi.hoisted(() => vi.fn());
 
 vi.mock('node:module', () => ({
   createRequire: () => ({
@@ -19,18 +13,8 @@ vi.mock('node:module', () => ({
   }),
 }));
 
-vi.mock('next/dist/build/load-jsconfig.js', () => ({
-  get default() {
-    return loadJsConfigModule.defaultExport;
-  },
-}));
-
 vi.mock('next/dist/server/config.js', () => ({
   default: loadConfigMock,
-}));
-
-vi.mock('vite-tsconfig-paths', () => ({
-  default: tsconfigPathsMock,
 }));
 
 vi.mock('./plugins/next-dynamic/plugin', () => ({
@@ -64,7 +48,6 @@ vi.mock('./utils', async (importOriginal) => {
     ...actual,
     getExecutionEnvironment: getExecutionEnvironmentMock,
     getNextjsMajorVersion: getNextjsMajorVersionMock,
-    getViteMajorVersion: getViteMajorVersionMock,
     get isVitestEnv() {
       return process.env.VITEST === 'true';
     },
@@ -82,67 +65,18 @@ describe('VitePlugin', () => {
 
     process.env.VITEST = 'false';
 
-    loadJsConfigModule.defaultExport = { default: loadJsConfigMock };
     loadConfigMock.mockResolvedValue(nextConfig);
-    loadJsConfigMock.mockResolvedValue({
-      jsConfigPath: '/root/tsconfig.json',
-    });
-    tsconfigPathsMock.mockReturnValue({
-      enforce: 'pre',
-      name: 'vite-tsconfig-paths',
-    });
     getExecutionEnvironmentMock.mockReturnValue('browser');
     getNextjsMajorVersionMock.mockReturnValue(16);
-    getViteMajorVersionMock.mockReturnValue(7);
   });
 
-  it('injects vite-tsconfig-paths on Vite 7 when load-jsconfig is a nested default export', async () => {
+  it('uses the native tsconfig paths support of Vite', async () => {
     const { default: VitePlugin } = await import('./index.ts');
 
     const plugins = VitePlugin({ dir: '/root' });
-    const tsconfigPlugin = await plugins[0];
-    const configPlugin = plugins[1];
-
-    expect(loadJsConfigMock).toHaveBeenCalledWith('/root', nextConfig);
-    expect(tsconfigPathsMock).toHaveBeenCalledWith({
-      projects: ['/root/tsconfig.json'],
-      root: '/root',
-    });
-    expect(tsconfigPlugin).toMatchObject({ name: 'vite-tsconfig-paths' });
-    expect(await configPlugin?.config?.({})).toMatchObject({
-      resolve: {
-        alias: expect.any(Array),
-      },
-    });
-    expect((await configPlugin?.config?.({}))?.resolve).not.toHaveProperty('tsconfigPaths');
-  });
-
-  it('injects vite-tsconfig-paths when load-jsconfig is a function export', async () => {
-    loadJsConfigModule.defaultExport = loadJsConfigMock;
-
-    const { default: VitePlugin } = await import('./index.ts');
-
-    const plugins = VitePlugin({ dir: '/root' });
-    await plugins[0];
-
-    expect(loadJsConfigMock).toHaveBeenCalledWith('/root', nextConfig);
-    expect(tsconfigPathsMock).toHaveBeenCalledWith({
-      projects: ['/root/tsconfig.json'],
-      root: '/root',
-    });
-  });
-
-  it('uses native tsconfig paths support on Vite 8 and newer', async () => {
-    getViteMajorVersionMock.mockReturnValue(8);
-
-    const { default: VitePlugin } = await import('./index.ts');
-
-    const plugins = VitePlugin({ dir: '/root' });
-    const configPlugin = plugins[1];
+    const configPlugin = plugins[0];
     const config = await configPlugin?.config?.({});
 
-    expect(plugins[0]).toBeNull();
-    expect(tsconfigPathsMock).not.toHaveBeenCalled();
     expect(config).toMatchObject({
       resolve: {
         alias: expect.any(Array),
@@ -151,14 +85,13 @@ describe('VitePlugin', () => {
     });
   });
 
-  it('enables native tsconfig paths in Vitest environments on Vite 8', async () => {
+  it('enables native tsconfig paths in Vitest environments', async () => {
     process.env.VITEST = 'true';
-    getViteMajorVersionMock.mockReturnValue(8);
 
     const { default: VitePlugin } = await import('./index.ts');
 
     const plugins = VitePlugin({ dir: '/root' });
-    const configPlugin = plugins[1];
+    const configPlugin = plugins[0];
     const config = await configPlugin?.config?.({});
 
     expect(config).toMatchObject({
