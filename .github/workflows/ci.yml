@@ -34,5 +34,7 @@ jobs:
         run: bun run build
       - name: Typecheck
         run: bun run typecheck
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium-headless-shell
       - name: Unit tests
         run: bun run test:unit
