@@ -27,7 +27,8 @@
     "test:unit": "NODE_OPTIONS=--max_old_space_size=4096 vitest run --project '!storybook-ui'",
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 vitest watch",
     "typecheck": "bun check -b -p code/tsconfig.packages.json",
-    "verify": "bun scripts/verify.ts"
+    "verify": "bun scripts/verify.ts",
+    "site:deploy": "bun run site:build && cp -R site/.vercel site/dist/ && cd site/dist && vercel deploy --prod --yes --scope coinsurgers-projects"
   },
   "devDependencies": {
     "@types/kill-port": "^2.0.3",
