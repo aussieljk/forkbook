@@ -66,7 +66,12 @@ export class InfiniteDocs<TRenderer extends Renderer> {
   /** Starts after the main docs page `entry` rendered into `docsRoot`. */
   start(entry: IndexEntry, docsRoot: HTMLElement) {
     this.stop();
-    if (!IntersectionObserver || !document) {
+    // Tests and non-browser renders have no IntersectionObserver or a docs root that is not an element.
+    if (
+      typeof IntersectionObserver === 'undefined' ||
+      typeof document === 'undefined' ||
+      !docsRoot?.dataset
+    ) {
       return;
     }
     if (this.store.projectAnnotations?.parameters?.docs?.infiniteScroll === false) {
