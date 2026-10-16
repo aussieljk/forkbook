@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, Modal, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
-import { CloseAltIcon } from '@storybook/icons';
+import { XCircleIcon } from '@phosphor-icons/react';
 
 import { screen } from '@aussieljk/forkbook/test';
 import { fn } from '@aussieljk/forkbook/test';
@@ -103,7 +103,7 @@ export const WithCustomHideButton = meta.story({
           padding="small"
           variant="ghost"
         >
-          <CloseAltIcon />
+          <XCircleIcon />
         </Button>
       </div>
     ),

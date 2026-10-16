@@ -8,12 +8,12 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 
 import {
+  ArrowsClockwiseIcon,
   FastForwardIcon,
-  PlayBackIcon,
-  PlayNextIcon,
   RewindIcon,
-  SyncIcon,
-} from '@storybook/icons';
+  SkipBackIcon,
+  SkipForwardIcon,
+} from '@phosphor-icons/react';
 
 import { type API } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -92,7 +92,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             onPointerDown={preventFocusLoss}
             disabled={!controlStates.back}
           >
-            <PlayBackIcon />
+            <SkipBackIcon />
           </Button>
 
           <Button
@@ -104,7 +104,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             onPointerDown={preventFocusLoss}
             disabled={!controlStates.next}
           >
-            <PlayNextIcon />
+            <SkipForwardIcon />
           </Button>
 
           <Button
@@ -127,7 +127,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             onClick={controls.rerun}
             onPointerDown={preventFocusLoss}
           >
-            <SyncIcon />
+            <ArrowsClockwiseIcon />
           </Button>
         </div>
         {(importPath || storyFileName) &&

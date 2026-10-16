@@ -9,7 +9,7 @@ import {
   useTabsState,
 } from '@aussieljk/forkbook/internal/components';
 
-import { CheckIcon, CopyIcon } from '@storybook/icons';
+import { CheckIcon, CopyIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 

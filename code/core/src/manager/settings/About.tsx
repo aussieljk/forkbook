@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button, Link, ForkbookLogo } from '@aussieljk/forkbook/internal/components';
 
-import { DocumentIcon, GithubIcon } from '@storybook/icons';
+import { FileTextIcon, GithubLogoIcon } from '@phosphor-icons/react';
 
 import { UpgradeBlock } from '../components/upgrade/UpgradeBlock.tsx';
 import styles from './About.module.css';
@@ -19,13 +19,13 @@ const AboutScreen: FC<{ onNavigateToWhatsNew?: () => void }> = ({ onNavigateToWh
         <div className={styles.actions}>
           <Button ariaLabel={false} asChild>
             <a href="https://github.com/aussieljk/forkbook">
-              <GithubIcon />
+              <GithubLogoIcon />
               GitHub
             </a>
           </Button>
           <Button ariaLabel={false} asChild>
             <a href="https://forkbook.ljk.dev/docs">
-              <DocumentIcon style={{ display: 'inline', marginRight: 5 }} />
+              <FileTextIcon style={{ display: 'inline', marginRight: 5 }} />
               Documentation
             </a>
           </Button>

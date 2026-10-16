@@ -80,10 +80,15 @@ async function generateExportsFile(): Promise<void> {
   const input: Record<string, string> = {};
   const virtualModules: Record<string, string> = {};
 
+  // The icons global holds only the icons that Forkbook uses, not the whole Phosphor package.
+  const sources: Record<string, string> = {
+    '@phosphor-icons/react': join(CORE_ROOT_DIR, 'src', 'manager', 'globals', 'icons.ts'),
+  };
+
   for (const mod of globalPackages) {
     const key = mod.replace(/[/@]/g, '_');
     input[key] = `\0${key}`;
-    virtualModules[`\0${key}`] = `export * from '${mod}'`;
+    virtualModules[`\0${key}`] = `export * from '${sources[mod] ?? mod}'`;
   }
 
   const bundle = await rolldown({

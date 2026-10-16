@@ -16,7 +16,7 @@ import type {
   TestProviderStateByProviderId,
 } from '@aussieljk/forkbook/internal/types';
 
-import { ChevronSmallUpIcon, PlayAllHollowIcon, SweepIcon } from '@storybook/icons';
+import { BroomIcon, CaretUpIcon, PlayCircleIcon } from '@phosphor-icons/react';
 
 import { internal_fullTestProviderStore } from '#manager-stores';
 import { clsx } from 'clsx';
@@ -47,7 +47,7 @@ const RunButton = ({
     {...props}
   >
     <ActionList.Icon>
-      <PlayAllHollowIcon />
+      <PlayCircleIcon />
     </ActionList.Icon>
     {children}
   </ActionList.Button>
@@ -220,7 +220,7 @@ export const TestingWidget = ({
               id="testing-module-collapse-toggle"
               ariaLabel={isCollapsed ? 'Expand testing module' : 'Collapse testing module'}
             >
-              <ChevronSmallUpIcon
+              <CaretUpIcon
                 style={{
                   transform: isCollapsed ? 'none' : 'rotate(180deg)',
                   transition: 'transform 250ms',
@@ -285,7 +285,7 @@ export const TestingWidget = ({
                 isRunning ? "Can't clear statuses while tests are running" : 'Clear all statuses'
               }
             >
-              <SweepIcon />
+              <BroomIcon />
             </ActionList.Button>
           )}
         </div>

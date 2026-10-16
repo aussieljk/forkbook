@@ -9,7 +9,7 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
-import { BeakerIcon, DocumentIcon, PlayHollowIcon } from '@storybook/icons';
+import { FileTextIcon, FlaskIcon, PlayCircleIcon } from '@phosphor-icons/react';
 
 import { color } from '@aussieljk/forkbook/theming';
 
@@ -43,9 +43,9 @@ const BUILT_IN_FILTER_DEFS: Array<{
   icon: React.ReactElement;
   tag: string;
 }> = [
-  { id: '_docs', title: 'Documentation', icon: <DocumentIcon color={color.gold} />, tag: '_docs' },
-  { id: '_play', title: 'Play', icon: <PlayHollowIcon color={color.seafoam} />, tag: '_play' },
-  { id: '_test', title: 'Testing', icon: <BeakerIcon color={color.green} />, tag: '_test' },
+  { id: '_docs', title: 'Documentation', icon: <FileTextIcon color={color.gold} />, tag: '_docs' },
+  { id: '_play', title: 'Play', icon: <PlayCircleIcon color={color.seafoam} />, tag: '_play' },
+  { id: '_test', title: 'Testing', icon: <FlaskIcon color={color.green} />, tag: '_test' },
 ];
 
 export function useTagFilterEntries(indexJson: StoryIndex) {

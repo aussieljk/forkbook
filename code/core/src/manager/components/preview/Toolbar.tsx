@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { AbstractToolbar, Button } from '@aussieljk/forkbook/internal/components';
 import { Addon_TypesEnum, type Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { CloseIcon, ExpandIcon } from '@storybook/icons';
+import { ArrowsOutLineVerticalIcon, XIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 import {
@@ -62,7 +62,7 @@ export const fullScreenTool: Addon_BaseType = {
               ariaLabel={isFullscreen ? 'Exit full screen' : 'Enter full screen'}
               shortcut={shortcut}
             >
-              {isFullscreen ? <CloseIcon /> : <ExpandIcon />}
+              {isFullscreen ? <XIcon /> : <ArrowsOutLineVerticalIcon />}
             </Button>
           )
         }

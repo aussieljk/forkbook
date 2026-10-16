@@ -4,7 +4,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '@storybook/global';
-import { EditorIcon } from '@storybook/icons';
+import { CodeIcon } from '@phosphor-icons/react';
 
 import { Consumer, types, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -47,7 +47,7 @@ export const openInEditorTool: Addon_BaseType = {
             padding="small"
             variant="ghost"
           >
-            <EditorIcon />
+            <CodeIcon />
           </Button>
         );
       }}

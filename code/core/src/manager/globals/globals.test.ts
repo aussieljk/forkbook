@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { createContext, runInContext } from 'node:vm';
 
@@ -5,6 +6,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 
 import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
 import { build } from 'esbuild';
+import { glob } from 'tinyglobby';
 
 import { globalsModuleInfoMap } from './globals-module-info.ts';
 import { globalsNameReferenceMap } from './globals.ts';
@@ -105,5 +107,33 @@ describe.each(['development', 'production'])('%s manager entries', (mode) => {
       props: { children: 'development' },
     });
     expect(development.ref).toBe(ref);
+  });
+});
+
+describe('the icons global', () => {
+  it('has every Phosphor icon that Forkbook imports', async () => {
+    const src = fileURLToPath(new URL('../..', import.meta.url));
+    const files = await glob(['**/*.{ts,tsx}'], {
+      cwd: src,
+      absolute: true,
+      ignore: ['react-native*/**', '**/*.test.*'],
+    });
+    const icons = await import('./icons.ts');
+
+    const missing = new Set<string>();
+    for (const file of files) {
+      const text = await readFile(file, 'utf8');
+      for (const [, names] of text.matchAll(
+        /import\s+\{([^}]*)\}\s+from\s+'@phosphor-icons\/react'/g
+      )) {
+        for (const name of names.split(',').map((part) => part.trim().split(/\s+as\s+/)[0])) {
+          if (name && !(name in icons)) {
+            missing.add(name);
+          }
+        }
+      }
+    }
+
+    expect([...missing]).toEqual([]);
   });
 });

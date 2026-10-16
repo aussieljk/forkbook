@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { EyeIcon } from '@storybook/icons';
+import { EyeIcon } from '@phosphor-icons/react';
 
 import ListItem from './ListItem.tsx';
 

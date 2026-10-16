@@ -7,7 +7,7 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import type { API_Notification } from '@aussieljk/forkbook/internal/types';
 
-import { FailedIcon } from '@storybook/icons';
+import { XCircleIcon } from '@phosphor-icons/react';
 
 import type { ModuleFn } from '../lib/types.tsx';
 
@@ -65,7 +65,7 @@ export const init: ModuleFn = ({ provider, fullAPI }) => {
               subHeadline:
                 payload.error || 'Check the Forkbook process on the command line for more details.',
             },
-            icon: <FailedIcon color={color.negative} />,
+            icon: <XCircleIcon color={color.negative} />,
             duration: 8_000,
           });
         }

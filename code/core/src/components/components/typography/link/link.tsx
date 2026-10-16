@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { ChevronRightIcon } from '@storybook/icons';
+import { CaretRightIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 
@@ -91,7 +91,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           data-contains-icon={containsIcon || undefined}
         >
           {children}
-          {withArrow && <ChevronRightIcon />}
+          {withArrow && <CaretRightIcon />}
         </span>
       </Comp>
     );

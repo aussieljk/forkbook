@@ -11,14 +11,13 @@ import * as EVENTS_MANAGER_ERRORS from '@aussieljk/forkbook/internal/manager-err
 import * as ROUTER from '@aussieljk/forkbook/internal/router';
 import * as TYPES from '@aussieljk/forkbook/internal/types';
 
-import * as ICONS from '@storybook/icons';
-
 import * as MANAGER_API from '@aussieljk/forkbook/manager-api';
 import * as TEST from '@aussieljk/forkbook/test';
 import * as THEMING from '@aussieljk/forkbook/theming';
 import * as THEMINGCREATE from '@aussieljk/forkbook/theming/create';
 
 import type { globalsNameReferenceMap } from './globals.ts';
+import * as ICONS from './icons.ts';
 
 // Here we map the name of a module to their VALUE in the global scope.
 export const globalsNameValueMap: Required<Record<keyof typeof globalsNameReferenceMap, any>> = {
@@ -31,7 +30,7 @@ export const globalsNameValueMap: Required<Record<keyof typeof globalsNameRefere
   },
   'react-dom': REACT_DOM,
   'react-dom/client': REACT_DOM_CLIENT,
-  '@storybook/icons': ICONS,
+  '@phosphor-icons/react': ICONS,
 
   '@aussieljk/forkbook/manager-api': MANAGER_API,
 

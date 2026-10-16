@@ -14,7 +14,10 @@ import {
   type StoryId,
 } from '@aussieljk/forkbook/internal/types';
 
-import { CollapseIcon as CollapseIconSvg, ExpandAltIcon } from '@storybook/icons';
+import {
+  ArrowsInLineVerticalIcon as CollapseIconSvg,
+  ArrowsOutSimpleIcon,
+} from '@phosphor-icons/react';
 
 import { internal_fullStatusStore as fullStatusStore } from '#manager-stores';
 import { clsx } from 'clsx';
@@ -296,7 +299,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
               setFullyExpanded();
             }}
           >
-            {isFullyExpanded ? <CollapseIconSvg /> : <ExpandAltIcon />}
+            {isFullyExpanded ? <CollapseIconSvg /> : <ArrowsOutSimpleIcon />}
           </Button>
         )}
       </RootNode>

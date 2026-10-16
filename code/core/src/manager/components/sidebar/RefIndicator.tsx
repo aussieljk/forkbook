@@ -5,14 +5,14 @@ import { Button, PopoverProvider, Select, Spaced } from '@aussieljk/forkbook/int
 
 import { global } from '@storybook/global';
 import {
-  AlertIcon,
-  DocumentIcon,
+  ClockIcon,
+  CodeIcon,
+  FileTextIcon,
   GlobeIcon,
   LightningIcon,
   LockIcon,
-  MarkupIcon,
-  TimeIcon,
-} from '@storybook/icons';
+  WarningIcon,
+} from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
@@ -190,7 +190,7 @@ const SourceCodeMessage: FC<{
 
   return (
     <Message href={url}>
-      <MarkupIcon color={theme.color.secondary} />
+      <CodeIcon color={theme.color.secondary} />
       <div>
         <MessageTitle>View source code</MessageTitle>
       </div>
@@ -238,7 +238,7 @@ const ReadDocsMessage: FC = () => {
 
   return (
     <Message href="https://forkbook.ljk.dev/docs/sharing/storybook-composition">
-      <DocumentIcon color={theme.color.green} />
+      <FileTextIcon color={theme.color.green} />
       <div>
         <MessageTitle>Read Composition docs</MessageTitle>
         <div>Learn how to combine multiple Storybooks into one.</div>
@@ -252,7 +252,7 @@ const ErrorOccurredMessage: FC<{ url: string }> = ({ url }) => {
 
   return (
     <Message href={url.replace(/\/?$/, '/index.html')}>
-      <AlertIcon color={theme.color.negative} />
+      <WarningIcon color={theme.color.negative} />
       <div>
         <MessageTitle>Something went wrong</MessageTitle>
         <div>This external Forkbook didn't load. Debug it in a new tab now.</div>
@@ -266,7 +266,7 @@ const LoadingMessage: FC<{ url: string }> = ({ url }) => {
 
   return (
     <Message href={url.replace(/\/?$/, '/index.html')}>
-      <TimeIcon color={theme.color.secondary} />
+      <ClockIcon color={theme.color.secondary} />
       <div>
         <MessageTitle>Please wait</MessageTitle>
         <div>This Forkbook is loading.</div>

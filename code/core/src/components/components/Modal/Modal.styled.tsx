@@ -3,7 +3,7 @@ import React, { forwardRef, useContext } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { CrossIcon } from '@storybook/icons';
+import { XIcon } from '@phosphor-icons/react';
 
 import type { TransitionStatus } from 'react-transition-state';
 import { clsx } from 'clsx';
@@ -112,7 +112,7 @@ export const Close = ({ asChild, children, onClick, ...props }: CloseProps) => {
       shortcut={['Escape']}
       onClick={close}
     >
-      <CrossIcon />
+      <XIcon />
     </Button>
   );
 };
@@ -130,7 +130,7 @@ export const CloseButton = ({ ariaLabel, ...props }: React.ComponentProps<typeof
   return (
     <Close asChild>
       <Button ariaLabel={ariaLabel || 'Close'} data-deprecated="Modal.CloseButton" {...props}>
-        <CrossIcon />
+        <XIcon />
       </Button>
     </Close>
   );

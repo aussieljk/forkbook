@@ -7,7 +7,13 @@ import type {
   StoryIndex,
 } from '@aussieljk/forkbook/internal/types';
 
-import { BatchAcceptIcon, DocumentIcon, ShareAltIcon, SweepIcon, UndoIcon } from '@storybook/icons';
+import {
+  ArrowCounterClockwiseIcon,
+  BroomIcon,
+  ChecksIcon,
+  FileTextIcon,
+  ShareNetworkIcon,
+} from '@phosphor-icons/react';
 
 import type { API } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -186,7 +192,7 @@ export const FilterPanel = ({
                 key="select-all"
                 onClick={() => setAllFilters(true)}
               >
-                <BatchAcceptIcon />
+                <ChecksIcon />
                 <ActionList.Text>Select all</ActionList.Text>
               </ActionList.Button>
             ) : (
@@ -199,7 +205,7 @@ export const FilterPanel = ({
                   await api.resetStatusFilters();
                 }}
               >
-                <SweepIcon />
+                <BroomIcon />
                 <ActionList.Text>Clear filters</ActionList.Text>
               </ActionList.Button>
             )}
@@ -212,7 +218,7 @@ export const FilterPanel = ({
                 tooltip="Reset to default selection"
                 disabled={isDefaultSelection}
               >
-                <UndoIcon />
+                <ArrowCounterClockwiseIcon />
               </ActionList.Button>
             )}
           </ActionList.Item>
@@ -259,13 +265,13 @@ export const FilterPanel = ({
               target="_blank"
             >
               <ActionList.Icon>
-                <DocumentIcon />
+                <FileTextIcon />
               </ActionList.Icon>
               <ActionList.Text>
                 <span>Learn how to add tags</span>
               </ActionList.Text>
               <ActionList.Icon>
-                <ShareAltIcon />
+                <ShareNetworkIcon />
               </ActionList.Icon>
             </ActionList.Link>
           </ActionList.Item>

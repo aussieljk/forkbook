@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {
-  AddIcon,
-  AlertIcon,
   BellIcon,
-  FaceHappyIcon,
-  HomeIcon,
-  SubtractIcon,
-} from '@storybook/icons';
+  HouseIcon,
+  MinusIcon,
+  PlusIcon,
+  SmileyIcon,
+  WarningIcon,
+} from '@phosphor-icons/react';
 
 import { IconGallery, IconItem } from './IconGallery';
 
@@ -18,22 +18,22 @@ export default {
 export const DefaultStyle = () => (
   <IconGallery>
     <IconItem name="add">
-      <AddIcon />
+      <PlusIcon />
     </IconItem>
     <IconItem name="subtract">
-      <SubtractIcon />
+      <MinusIcon />
     </IconItem>
     <IconItem name="home">
-      <HomeIcon />
+      <HouseIcon />
     </IconItem>
     <IconItem name="facehappy">
-      <FaceHappyIcon />
+      <SmileyIcon />
     </IconItem>
     <IconItem name="bar">
       <img src="https://forkbook.ljk.dev/images/placeholders/50x50.png" alt="example" />
     </IconItem>
     <IconItem name="very-long-icon-name">
-      <AlertIcon />
+      <WarningIcon />
     </IconItem>
     <IconItem name="very-long-icon-name-that-should-truncate">
       <BellIcon />

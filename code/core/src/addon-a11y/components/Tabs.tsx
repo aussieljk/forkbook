@@ -2,7 +2,13 @@ import * as React from 'react';
 
 import { Button, TabsView } from '@aussieljk/forkbook/internal/components';
 
-import { CollapseIcon, ExpandAltIcon, EyeCloseIcon, EyeIcon, SyncIcon } from '@storybook/icons';
+import {
+  ArrowsClockwiseIcon,
+  ArrowsInLineVerticalIcon,
+  ArrowsOutSimpleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from '@phosphor-icons/react';
 
 import type { Result } from 'axe-core';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -59,7 +65,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
                   : 'Highlight elements with accessibility test results'
               }
             >
-              {highlighted ? <EyeCloseIcon /> : <EyeIcon />}
+              {highlighted ? <EyeSlashIcon /> : <EyeIcon />}
             </Button>
             <Button
               variant="ghost"
@@ -68,7 +74,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
               ariaLabel={allExpanded ? 'Collapse all results' : 'Expand all results'}
               aria-expanded={allExpanded}
             >
-              {allExpanded ? <CollapseIcon /> : <ExpandAltIcon />}
+              {allExpanded ? <ArrowsInLineVerticalIcon /> : <ArrowsOutSimpleIcon />}
             </Button>
             <Button
               variant="ghost"
@@ -76,7 +82,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
               onClick={handleManual}
               ariaLabel="Rerun accessibility scan"
             >
-              <SyncIcon />
+              <ArrowsClockwiseIcon />
             </Button>
           </div>
         }

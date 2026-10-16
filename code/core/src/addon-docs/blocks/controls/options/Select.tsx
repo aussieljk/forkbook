@@ -3,7 +3,7 @@ import React from 'react';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { ChevronSmallDownIcon } from '@storybook/icons';
+import { CaretDownIcon } from '@phosphor-icons/react';
 
 import { getControlId } from '../helpers';
 import type { ControlProps, NormalizedOptionsConfig, OptionsSelection } from '../types';
@@ -35,7 +35,7 @@ const SingleSelect: FC<SelectProps> = ({
 
   return (
     <span className={styles.wrapper}>
-      <ChevronSmallDownIcon />
+      <CaretDownIcon />
       <label htmlFor={controlId} className="fb-sr-only">
         {name}
       </label>

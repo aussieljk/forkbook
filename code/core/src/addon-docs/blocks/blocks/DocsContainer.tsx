@@ -3,6 +3,8 @@ import React, { useEffect, useMemo } from 'react';
 
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
+import { IconContext } from '@phosphor-icons/react';
+
 import type { ThemeVars } from '@aussieljk/forkbook/theming';
 import { ensure as ensureTheme, ThemeProvider } from '@aussieljk/forkbook/theming';
 
@@ -15,6 +17,9 @@ import { SourceContainer } from './SourceContainer';
 import { scrollToElement } from './utils';
 
 const { document, window: globalWindow } = globalThis;
+
+// Forkbook icons are 14 px unless a component gives another size.
+const ICONS = { size: 14 };
 
 export interface DocsContainerProps<TFramework extends Renderer = Renderer> {
   context: DocsContextProps<TFramework>;
@@ -65,20 +70,22 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
       <DocsContext.Provider value={context}>
         <SourceContainer channel={context.channel}>
           <ThemeProvider theme={ensureTheme(theme as ThemeVars)}>
-            <DocsPageWrapper
-              lang={lang}
-              toc={
-                toc ? (
-                  <TableOfContents
-                    className="sbdocs sbdocs-toc--custom"
-                    channel={context.channel}
-                    {...toc}
-                  />
-                ) : null
-              }
-            >
-              {children}
-            </DocsPageWrapper>
+            <IconContext.Provider value={ICONS}>
+              <DocsPageWrapper
+                lang={lang}
+                toc={
+                  toc ? (
+                    <TableOfContents
+                      className="sbdocs sbdocs-toc--custom"
+                      channel={context.channel}
+                      {...toc}
+                    />
+                  ) : null
+                }
+              >
+                {children}
+              </DocsPageWrapper>
+            </IconContext.Provider>
           </ThemeProvider>
         </SourceContainer>
       </DocsContext.Provider>

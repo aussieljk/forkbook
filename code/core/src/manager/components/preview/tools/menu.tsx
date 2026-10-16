@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Separator } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { MenuIcon } from '@storybook/icons';
+import { ListIcon } from '@phosphor-icons/react';
 
 import { Consumer, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -49,7 +49,7 @@ export const menuTool: Addon_BaseType = {
                   }
                 }}
               >
-                <MenuIcon />
+                <ListIcon />
               </Button>
               <Separator />
             </>

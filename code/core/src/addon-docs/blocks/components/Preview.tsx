@@ -5,7 +5,7 @@ import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import type { ActionItem } from '@aussieljk/forkbook/internal/components';
 import { Bar, Button, ToggleButton, Zoom } from '@aussieljk/forkbook/internal/components';
 
-import { CopyIcon, MarkupIcon } from '@storybook/icons';
+import { CodeIcon, CopyIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 
@@ -168,7 +168,7 @@ export const Preview: FC<PreviewProps> = ({
               variant="ghost"
               className="docblock-code-toggle docblock-code-toggle--disabled"
             >
-              <MarkupIcon /> No code available
+              <CodeIcon /> No code available
             </Button>
           )}
           {hasValidSource && (
@@ -183,7 +183,7 @@ export const Preview: FC<PreviewProps> = ({
                 variant="ghost"
                 className={`docblock-code-toggle${expanded ? ' docblock-code-toggle--expanded' : ''}`}
               >
-                <MarkupIcon /> {expanded ? 'Hide code' : 'Show code'}
+                <CodeIcon /> {expanded ? 'Hide code' : 'Show code'}
               </ToggleButton>
               <Button lang="en" ariaLabel={false} variant="ghost" onClick={handleCopyCode}>
                 <CopyIcon /> {copied ?? 'Copy code'}

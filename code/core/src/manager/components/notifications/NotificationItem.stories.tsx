@@ -3,10 +3,10 @@ import React from 'react';
 import { LocationProvider } from '@aussieljk/forkbook/internal/router';
 
 import {
-  AccessibilityIcon as AccessibilityIconIcon,
-  BookIcon as BookIconIcon,
-  FaceHappyIcon,
-} from '@storybook/icons';
+  BookOpenIcon as BookIconIcon,
+  PersonArmsSpreadIcon as AccessibilityIconIcon,
+  SmileyIcon,
+} from '@phosphor-icons/react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -131,7 +131,7 @@ export const LinkIconWithColor: Story = {
       content: {
         headline: 'Forkbook with a smile!',
       },
-      icon: <FaceHappyIcon color="hotpink" />,
+      icon: <SmileyIcon color="hotpink" />,
       link: '/some/path',
     },
   },
@@ -146,7 +146,7 @@ export const LinkIconWithColorSubHeadline: Story = {
         headline: 'Forkbook X.X is available with a smile! Download now »',
         subHeadline: 'This link also has a sub headline',
       },
-      icon: <FaceHappyIcon color="tomato" />,
+      icon: <SmileyIcon color="tomato" />,
       link: '/some/path',
     },
   },

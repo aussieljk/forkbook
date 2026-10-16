@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button, Form, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { AddIcon, EditIcon, SubtractIcon } from '@storybook/icons';
+import { MinusIcon, PencilSimpleIcon, PlusIcon } from '@phosphor-icons/react';
 
 import { clsx } from 'clsx';
 import { cloneDeep } from 'es-toolkit/object';
@@ -147,7 +147,7 @@ export const ObjectControl: FC<ObjectProps> = ({
           padding="small"
           size="small"
         >
-          <EditIcon />
+          <PencilSimpleIcon />
         </ToggleButton>
       )}
       {!showRaw ? (
@@ -169,12 +169,12 @@ export const ObjectControl: FC<ObjectProps> = ({
           }
           plusMenuElement={
             <ActionButton type="button">
-              <AddIcon />
+              <PlusIcon />
             </ActionButton>
           }
           minusMenuElement={
             <ActionButton type="button">
-              <SubtractIcon />
+              <MinusIcon />
             </ActionButton>
           }
           inputElement={(_: unknown, __: unknown, ___: unknown, key: string) =>
