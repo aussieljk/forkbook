@@ -37,7 +37,7 @@ import {
 } from '@aussieljk/forkbook/internal/telemetry';
 import type { Presets } from '@aussieljk/forkbook/internal/types';
 
-import { match } from 'micromatch';
+import picomatch from 'picomatch';
 import { join, normalize, relative, resolve, sep } from 'pathe';
 import path from 'pathe';
 import picocolors from 'picocolors';
@@ -577,7 +577,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
     async transform(code, id) {
       const relativeId = relative(finalOptions.vitestRoot, id);
 
-      if (match([relativeId], finalOptions.includeStories).length > 0) {
+      if (picomatch.isMatch(relativeId, finalOptions.includeStories)) {
         return vitestTransform({
           code,
           fileName: id,
