@@ -1,11 +1,12 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 import {
-  BabelFileClass,
+  type BabelFile,
   type GeneratorOptions,
   type NodePath,
   type RecastOptions,
   babelParse,
+  createBabelFile,
   generate,
   recast,
   types as t,
@@ -38,18 +39,6 @@ import {
   isCsfFactoryCall,
   unwrapExpression,
 } from './story-shape/utils.ts';
-
-// We add this BabelFile as a temporary workaround to deal with a BabelFileClass "ImportEquals should have a literal source" issue in no link mode with tsup
-interface BabelFile {
-  ast: t.File;
-  opts: any;
-  hub: any;
-  metadata: object;
-  path: NodePath<t.Program>;
-  scope: any;
-  inputMap: object | null;
-  code: string;
-}
 
 type CsfMutationState = {
   diagnostics: CsfMutationDiagnostic[];
@@ -1122,7 +1111,7 @@ export class CsfFile {
   }
 }
 
-/** Using new babel.File is more powerful and give access to API such as buildCodeFrameError */
+/** A parsed file with its Program path, so paths have scopes and `buildCodeFrameError`. */
 export const babelParseFile = ({
   code,
   filename = '',
@@ -1132,10 +1121,7 @@ export const babelParseFile = ({
   filename?: string;
   ast?: t.File;
 }): BabelFile => {
-  return new BabelFileClass(
-    { filename, highlightCode: false },
-    { code, ast: ast ?? babelParse(code) }
-  );
+  return createBabelFile({ code, ast: ast ?? babelParse(code), filename });
 };
 
 export const loadCsf = (code: string, options: CsfOptions) => {
