@@ -6,14 +6,14 @@ import {
   UPDATE_QUERY_PARAMS,
 } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import EventEmitter from 'events';
 
 import { init as initURL } from '../modules/url';
 
 vi.mock('@aussieljk/forkbook/internal/client-logger');
-vi.mock('@storybook/global', () => ({
+vi.mock('../../shared/global.ts', () => ({
   global: {
     window: {
       location: {

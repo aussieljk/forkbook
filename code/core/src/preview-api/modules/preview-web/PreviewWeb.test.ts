@@ -34,7 +34,7 @@ import type {
   Renderer,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { toMerged } from 'es-toolkit/object';
 
@@ -65,9 +65,9 @@ const { history, document } = global;
 const mockStoryIndex = vi.fn(() => storyIndex);
 
 let mockFetchResult: any;
-vi.mock('@storybook/global', async (importOriginal) => ({
+vi.mock('../../../shared/global.ts', async (importOriginal) => ({
   global: {
-    ...(await importOriginal<typeof import('@storybook/global')>),
+    ...(await importOriginal<typeof import('../../../shared/global.ts')>),
     history: { replaceState: vi.fn() },
     document: {
       location: {

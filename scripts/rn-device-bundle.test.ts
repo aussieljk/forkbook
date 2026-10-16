@@ -41,6 +41,9 @@ const ENTRIES = [
 // A value that each property access, call and `new` gives again, so any package API works.
 const STUB = `
 const target = function () {};
+// A spread (\`{ ...pkg }\`) copies only own keys. The test entry spreads @testing-library/dom and
+// then wraps \`screen\`, so \`screen\` must be an own key.
+Object.defineProperty(target, 'screen', { enumerable: true, configurable: true, value: null });
 const stub = new Proxy(target, {
   get: (_, key) => {
     if (key === Symbol.toPrimitive) return () => '';

@@ -8,7 +8,7 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import type { WhatsNewCache, WhatsNewData } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import type { ModuleFn } from '../lib/types.tsx';
 

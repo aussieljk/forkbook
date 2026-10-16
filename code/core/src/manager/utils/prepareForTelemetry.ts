@@ -1,7 +1,7 @@
 /* eslint-disable local-rules/no-uncategorized-errors */
 import { UncaughtManagerError } from '@aussieljk/forkbook/internal/manager-errors';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import type { BrowserInfo } from 'browser-dtector';
 import BrowserDetector from 'browser-dtector';

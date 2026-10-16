@@ -17,8 +17,8 @@ import { Provider as ManagerProvider } from '../root.tsx';
 // `fetch` cannot leak into other test files. We copy all own property descriptors (a plain spread
 // drops non-enumerable globals like happy-dom's `document`) and keep the prototype, so the other
 // globals that manager modules rely on are preserved.
-vi.mock('@storybook/global', async (importOriginal) => {
-  const mod = await importOriginal<typeof import('@storybook/global')>();
+vi.mock('../../shared/global.ts', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('../../shared/global.ts')>();
   const global = Object.create(
     Object.getPrototypeOf(mod.global),
     Object.getOwnPropertyDescriptors(mod.global)

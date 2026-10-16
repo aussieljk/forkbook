@@ -1,4 +1,4 @@
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../src/shared/global.ts';
 
 import { actions, configureActions } from '@aussieljk/forkbook/actions';
 

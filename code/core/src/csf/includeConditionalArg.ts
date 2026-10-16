@@ -1,5 +1,4 @@
-/* @ts-expect-error (has no typings) */
-import { isEqual } from '@ngard/tiny-isequal';
+import { isEqual } from 'es-toolkit/predicate';
 
 import type { Args, Conditional, Globals, InputType } from './story.ts';
 

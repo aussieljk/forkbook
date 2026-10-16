@@ -4,7 +4,7 @@ import { STORY_FINISHED, STORY_PREPARED } from '@aussieljk/forkbook/internal/cor
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { ManagerContext } from '@aussieljk/forkbook/manager-api';
 import { expect, fn, waitFor, within } from '@aussieljk/forkbook/test';

@@ -1,6 +1,6 @@
 import type { SyntheticEvent } from 'react';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import memoize from 'memoizerific';
 import type { HashEntry, IndexHash } from '@aussieljk/forkbook/manager-api';

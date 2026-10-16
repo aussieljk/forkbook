@@ -1,7 +1,7 @@
 import type { ModuleImportFn, ProjectAnnotations } from '@aussieljk/forkbook/internal/types';
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import type { MaybePromise } from './Preview.tsx';
 import { PreviewWithSelection } from './PreviewWithSelection.tsx';

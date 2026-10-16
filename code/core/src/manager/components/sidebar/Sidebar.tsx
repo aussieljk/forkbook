@@ -7,7 +7,7 @@ import type {
   StoryIndex,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { useStorybookApi, type State } from '@aussieljk/forkbook/manager-api';
 

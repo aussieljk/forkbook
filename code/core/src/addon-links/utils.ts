@@ -8,7 +8,7 @@ import type {
   StoryName,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { addons, makeDecorator } from '@aussieljk/forkbook/preview-api';
 

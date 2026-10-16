@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { getSelectionSpecifierFromPath, pathToId, setPath } from './UrlStore.ts';
 
 const { history, document } = global;
 
-vi.mock('@storybook/global', () => ({
+vi.mock('../../../shared/global.ts', () => ({
   global: {
     history: { replaceState: vi.fn() },
     document: {

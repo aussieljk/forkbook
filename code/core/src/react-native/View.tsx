@@ -5,7 +5,7 @@ import {
   transformStoryIndexToStoriesHash,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { dedent } from 'ts-dedent';
-import deepmerge from 'deepmerge';
+import { toMerged } from 'es-toolkit/object';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Channel, WebsocketTransport } from '@aussieljk/forkbook/internal/channels';
@@ -351,7 +351,7 @@ export class View {
       const [ready, setReady] = useState(false);
 
       const appliedTheme = useMemo(
-        () => deepmerge(colorScheme === 'dark' ? darkTheme : theme, params.theme ?? {}),
+        () => toMerged(colorScheme === 'dark' ? darkTheme : theme, params.theme ?? {}),
         [colorScheme]
       );
 

@@ -1,15 +1,14 @@
 import type { FC, HTMLAttributes, ReactNode } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useCallback, useContext, useEffect, useId, useState } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
-import type { PopperOptions, Config as ReactPopperTooltipConfig } from 'react-popper-tooltip';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import { Popover as BasePopover } from '@base-ui/react/popover';
 import type { Color } from '@aussieljk/forkbook/theming';
 
+import { PortalContainerContext } from '../shared/overlayHelpers.tsx';
 import { PortalTheme } from '../shared/PortalTheme.tsx';
 import styles from './WithTooltip.module.css';
 
@@ -84,17 +83,27 @@ interface WithHideFn {
   onHide: () => void;
 }
 
-export interface WithTooltipPureProps
-  extends
-    Omit<ReactPopperTooltipConfig, 'closeOnOutsideClick'>,
-    Omit<HTMLAttributes<HTMLElement>, 'children'>,
-    PopperOptions {
+type TriggerType = 'click' | 'double-click' | 'right-click' | 'hover' | 'focus';
+
+export interface WithTooltipPureProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   svg?: boolean;
   withArrows?: boolean;
   hasChrome?: boolean;
   tooltip: ReactNode | ((p: WithHideFn) => ReactNode);
   children: ReactNode;
   onDoubleClick?: () => void;
+  /** The interaction that shows the tooltip. `null` shows it only through `visible`. */
+  trigger?: TriggerType | TriggerType[] | null;
+  placement?: string;
+  /** `[along the trigger, away from the trigger]`, in pixels. */
+  offset?: [number, number];
+  strategy?: 'absolute' | 'fixed';
+  delayShow?: number;
+  delayHide?: number;
+  defaultVisible?: boolean;
+  visible?: boolean;
+  onVisibleChange?: (visible: boolean) => void;
+  interactive?: boolean;
   /**
    * If `true`, a click outside the trigger element closes the tooltip
    *
@@ -108,113 +117,122 @@ export interface WithTooltipPureProps
   portalContainer?: Element | string | null;
 }
 
+/** Base UI takes a side and an alignment. Popper's `auto` placements become `top`. */
+const toSideAndAlign = (placement: string) => {
+  const [side, align = 'center'] = placement.split('-');
+  return {
+    side: (side === 'auto' ? 'top' : side) as 'top' | 'bottom' | 'left' | 'right',
+    align: align as 'start' | 'center' | 'end',
+  };
+};
+
 // Pure, does not bind to the body
 const WithTooltipPure = ({
   svg = false,
   trigger = 'click',
   closeOnOutsideClick = false,
   placement = 'top',
-  modifiers = [
-    {
-      name: 'preventOverflow',
-      options: {
-        padding: 8,
-      },
-    },
-    {
-      name: 'offset',
-      options: {
-        offset: [8, 8],
-      },
-    },
-    {
-      name: 'arrow',
-      options: {
-        padding: 8,
-      },
-    },
-  ],
   hasChrome = true,
   defaultVisible = false,
   withArrows,
-  offset,
+  offset = [0, 8],
   tooltip,
   children,
-  closeOnTriggerHidden,
-  mutationObserverOptions,
   delayHide = trigger === 'hover' ? 200 : 0,
   visible,
-  interactive,
+  interactive: _interactive,
   delayShow = trigger === 'hover' ? 400 : 0,
   strategy,
-  followCursor,
   onVisibleChange,
   portalContainer,
   ...props
 }: WithTooltipPureProps) => {
   const Container = svg ? 'g' : 'div';
-  const isHover = trigger === 'hover' || (Array.isArray(trigger) && trigger.includes('hover'));
-  const {
-    getArrowProps,
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isVisible,
-    state,
-  } = usePopperTooltip(
-    {
-      trigger,
-      placement,
-      defaultVisible,
-      delayHide,
-      interactive,
-      closeOnOutsideClick,
-      closeOnTriggerHidden,
-      onVisibleChange,
-      delayShow,
-      followCursor,
-      mutationObserverOptions,
-      visible,
-      offset,
+  const triggers = trigger === null ? [] : Array.isArray(trigger) ? trigger : [trigger];
+  const isHover = triggers.includes('hover');
+  const isClick = triggers.includes('click');
+  const isFocus = triggers.includes('focus');
+  const triggerId = useId();
+
+  const [shown, setShown] = useState(defaultVisible);
+  const isVisible = visible ?? shown;
+  const setVisible = useCallback(
+    (next: boolean) => {
+      setShown(next);
+      onVisibleChange?.(next);
     },
-    {
-      modifiers,
-      strategy,
-    }
+    [onVisibleChange]
   );
 
-  const portalTarget: Element =
+  // Base UI opens and closes for more reasons than the props allow. Keep only the allowed ones.
+  const onOpenChange = useCallback(
+    (open: boolean, { reason }: { reason: string }) => {
+      if (
+        (reason === 'trigger-press' && !isClick) ||
+        (reason === 'trigger-hover' && !isHover) ||
+        (reason === 'trigger-focus' && !isFocus) ||
+        (reason === 'outside-press' && !closeOnOutsideClick)
+      ) {
+        return;
+      }
+      setVisible(open);
+    },
+    [isClick, isHover, isFocus, closeOnOutsideClick, setVisible]
+  );
+
+  const contextContainer = useContext(PortalContainerContext);
+  const portalTarget =
     (typeof portalContainer === 'string'
       ? document.querySelector(portalContainer)
-      : portalContainer) || document.body;
-
-  const tooltipComponent = isVisible ? (
-    <Tooltip
-      placement={state?.placement}
-      ref={setTooltipRef}
-      hasChrome={hasChrome}
-      arrowProps={getArrowProps()}
-      withArrows={withArrows}
-      {...getTooltipProps()}
-    >
-      {/* @ts-expect-error (non strict) */}
-      {typeof tooltip === 'function' ? tooltip({ onHide: () => onVisibleChange(false) }) : tooltip}
-    </Tooltip>
-  ) : null;
+      : portalContainer) ||
+    contextContainer ||
+    document.body;
 
   return (
-    <>
-      <Container
-        className={svg ? styles.targetSvg : styles.target}
-        data-hover={isHover || undefined}
-        ref={setTriggerRef as any}
-        {...(props as any)}
+    <BasePopover.Root open={isVisible} onOpenChange={onOpenChange} triggerId={triggerId}>
+      <BasePopover.Trigger
+        id={triggerId}
+        nativeButton={false}
+        openOnHover={isHover}
+        delay={delayShow}
+        closeDelay={delayHide}
+        render={
+          <Container
+            className={svg ? styles.targetSvg : styles.target}
+            data-hover={isHover || undefined}
+            {...(props as any)}
+          />
+        }
       >
         {children}
-      </Container>
-      {isVisible &&
-        ReactDOM.createPortal(<PortalTheme>{tooltipComponent}</PortalTheme>, portalTarget)}
-    </>
+      </BasePopover.Trigger>
+      <BasePopover.Portal container={portalTarget as HTMLElement}>
+        <PortalTheme>
+          <BasePopover.Positioner
+            {...toSideAndAlign(placement)}
+            sideOffset={offset[1]}
+            alignOffset={offset[0]}
+            collisionPadding={8}
+            arrowPadding={8}
+            positionMethod={strategy}
+            style={{ zIndex: 2147483647 }}
+          >
+            <BasePopover.Popup
+              initialFocus={false}
+              finalFocus={false}
+              render={<Tooltip hasChrome={hasChrome} />}
+            >
+              {hasChrome && withArrows && (
+                <BasePopover.Arrow render={<div className={styles.arrow} />} />
+              )}
+              {typeof tooltip === 'function'
+                ? tooltip({ onHide: () => setVisible(false) })
+                : tooltip}
+            </BasePopover.Popup>
+          </BasePopover.Positioner>
+        </PortalTheme>
+      </BasePopover.Portal>
+    </BasePopover.Root>
   );
 };
 

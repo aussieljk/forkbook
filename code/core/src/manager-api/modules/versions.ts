@@ -4,7 +4,7 @@ import type {
   API_Versions,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import memoize from 'memoizerific';
 import semver from 'semver';

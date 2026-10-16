@@ -1,6 +1,6 @@
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { darken, lighten, rgba } from 'polished';
 

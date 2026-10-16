@@ -2,7 +2,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { logger } from './index.ts';
 
-vi.mock('@storybook/global', () => ({ global: { ...global, LOGLEVEL: 'debug' } }));
+vi.mock('../shared/global.ts', () => ({ global: { ...global, LOGLEVEL: 'debug' } }));
 
 describe('client-logger default LOGLEVEL', () => {
   const initialConsole = { ...global.console };

@@ -1,4 +1,4 @@
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 export const clearStyles = (selector: string | string[]) => {
   const selectors = Array.isArray(selector) ? selector : [selector];

@@ -1,4 +1,4 @@
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../../src/shared/global.ts';
 
 // eslint-disable-next-line depend/ban-dependencies
 import lodash from 'lodash-es';

@@ -5,7 +5,7 @@ import { createBrowserChannel } from '@aussieljk/forkbook/internal/channels';
 import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
 import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 import { XCircleIcon } from '@phosphor-icons/react';
 
 import type { API, AddonStore } from '@aussieljk/forkbook/manager-api';

@@ -22,8 +22,8 @@ import type {
   StrictArgTypes,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
-import { global as globalThis } from '@storybook/global';
+import { global } from '../../../../shared/global.ts';
+import { global as globalThis } from '../../../../shared/global.ts';
 
 import { Tag } from '../../../../shared/constants/tags.ts';
 import { applyHooks } from '../../addons/index.ts';

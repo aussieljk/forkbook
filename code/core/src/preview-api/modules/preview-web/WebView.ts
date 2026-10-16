@@ -1,7 +1,7 @@
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import AnsiToHtml from 'ansi-to-html';
 import { parse } from 'picoquery';

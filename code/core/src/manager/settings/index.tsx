@@ -6,7 +6,7 @@ import { Location, Route } from '@aussieljk/forkbook/internal/router';
 import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 import { XIcon } from '@phosphor-icons/react';
 
 import { types, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';

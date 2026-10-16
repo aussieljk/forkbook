@@ -1,4 +1,4 @@
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import invariant from 'tiny-invariant';
 

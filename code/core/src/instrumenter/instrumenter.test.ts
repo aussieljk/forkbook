@@ -6,7 +6,7 @@ import {
   STORY_RENDER_PHASE_CHANGED,
 } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { EVENTS } from './EVENTS.ts';
 import { Instrumenter, isClass } from './instrumenter.ts';

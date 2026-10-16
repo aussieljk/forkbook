@@ -50,7 +50,7 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 import { isReviewManagerRoute } from '../../shared/review/routes.ts';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 import { throttle } from 'es-toolkit/function';
 
 import { BUILT_IN_FILTERS } from '../../shared/constants/tags.ts';

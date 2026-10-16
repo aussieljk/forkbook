@@ -1,6 +1,6 @@
 import { ElementA11yParameterError } from '@aussieljk/forkbook/internal/preview-errors';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import type { AxeResults, ContextProp, ContextSpec, RunOptions, Spec } from 'axe-core';
 import { addons, waitForAnimations } from '@aussieljk/forkbook/preview-api';

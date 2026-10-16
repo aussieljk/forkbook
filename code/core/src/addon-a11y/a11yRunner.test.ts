@@ -23,7 +23,7 @@ const { axeMock, documentMock } = vi.hoisted(() => {
   };
 });
 
-vi.mock('@storybook/global', () => ({
+vi.mock('../shared/global.ts', () => ({
   global: {
     document: documentMock,
   },

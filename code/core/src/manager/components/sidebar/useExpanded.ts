@@ -3,7 +3,7 @@ import { useCallback, useEffect, useReducer } from 'react';
 
 import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { throttle } from 'es-toolkit/function';
 import type { StoriesHash } from '@aussieljk/forkbook/manager-api';

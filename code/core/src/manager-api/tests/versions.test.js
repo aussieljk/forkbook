@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { init as initVersions } from '../modules/versions';
 
@@ -8,7 +8,7 @@ vi.mock('../version', () => ({
   version: '3.0.0',
 }));
 
-vi.mock('@storybook/global', () => ({
+vi.mock('../../shared/global.ts', () => ({
   global: {
     VERSIONCHECK: JSON.stringify({
       success: true,

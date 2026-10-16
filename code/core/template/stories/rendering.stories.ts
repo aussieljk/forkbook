@@ -6,7 +6,7 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/types';
 
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../src/shared/global.ts';
 
 import { expect, waitFor, within } from '@aussieljk/forkbook/test';
 

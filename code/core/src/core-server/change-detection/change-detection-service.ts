@@ -1,6 +1,6 @@
 import { join, normalize } from 'pathe';
 
-import { dequal } from 'dequal';
+import { isEqual } from 'es-toolkit/predicate';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type {
   Status,
@@ -48,7 +48,7 @@ function isSameStatus(a: Status | undefined, b: Status): boolean {
     a.title === b.title &&
     a.description === b.description &&
     a.sidebarContextMenu === b.sidebarContextMenu &&
-    dequal(a.data, b.data)
+    isEqual(a.data, b.data)
   );
 }
 

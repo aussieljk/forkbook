@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { RenderContext } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { addons } from '../addons/index.ts';
 import { PreviewWeb } from './PreviewWeb.tsx';
@@ -65,7 +65,7 @@ vi.mock('@aussieljk/forkbook/internal/components', async (importOriginal) => {
 vi.mock('./WebView');
 
 const { document } = global;
-vi.mock('@storybook/global', () => ({
+vi.mock('../../../shared/global.ts', () => ({
   global: {
     ...globalThis,
     history: { replaceState: vi.fn() },

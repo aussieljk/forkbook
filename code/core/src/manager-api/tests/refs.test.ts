@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { transformStoryIndexToStoriesHash } from '../lib/stories.ts';
 import { getSourceType, init as initRefs } from '../modules/refs.ts';
@@ -13,7 +13,7 @@ const { fetch } = global;
 
 const fetchMock = vi.mocked(fetch);
 
-vi.mock('@storybook/global', () => {
+vi.mock('../../shared/global.ts', () => {
   const globalMock = {
     fetch: vi.fn(() => Promise.resolve({})),
     REFS: {

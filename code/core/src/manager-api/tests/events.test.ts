@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getEventMetadata } from '../lib/events.ts';
 import type { API } from '../root.tsx';
 
-vi.mock('@storybook/global', () => ({
+vi.mock('../../shared/global.ts', () => ({
   global: {
     location: { origin: 'http://localhost:6006', pathname: '/' },
   },

@@ -1,7 +1,7 @@
 import type { ArgTypes, PreparedStory } from '@aussieljk/forkbook/internal/types';
 import type { Args, StoryId } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { DEEPLY_EQUAL, combineArgs, deepDiff, mapArgsToTypes, validateOptions } from './args.ts';
 import { inferArgTypes } from './inferArgTypes.ts';

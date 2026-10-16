@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react';
 import React, { useCallback } from 'react';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import * as R from 'react-router-dom';
 

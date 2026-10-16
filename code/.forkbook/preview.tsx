@@ -4,7 +4,7 @@ import { IconContext } from '@phosphor-icons/react';
 
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 
-import { global } from '@storybook/global';
+import { global } from '../core/src/shared/global.ts';
 
 import type { Decorator, Loader, ReactRenderer } from '@aussieljk/forkbook/react-vite';
 import { definePreview } from '@aussieljk/forkbook/react-vite';
@@ -29,7 +29,7 @@ import { isChromatic } from './isChromatic.ts';
 import styles from './preview.module.css';
 import * as vitestPreview from './vitest.preview.ts';
 
-sb.mock(import('@storybook/global'), { spy: true });
+sb.mock(import('../core/src/shared/global.ts'), { spy: true });
 
 // Register custom matchers on @aussieljk/forkbook/test's expect so play functions can use them
 expect.extend({ toHaveLiveRegion });

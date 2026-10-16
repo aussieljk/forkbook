@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import styles from './ErrorFormatter.module.css';
 

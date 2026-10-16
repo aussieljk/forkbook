@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
