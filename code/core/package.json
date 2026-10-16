@@ -1,6 +1,6 @@
 {
   "name": "@aussieljk/forkbook",
-  "version": "0.0.1-3",
+  "version": "0.0.1-4",
   "description": "Forkbook: a small, fast fork of Storybook for React with Vite, Next.js with Vite and React Native",
   "keywords": [
     "forkbook",
