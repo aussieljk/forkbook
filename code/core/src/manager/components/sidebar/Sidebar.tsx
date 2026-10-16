@@ -121,7 +121,7 @@ export const Sidebar = React.memo(function Sidebar({
         Forkbook
       </h1>
       <IconSymbols />
-      <ScrollArea vertical offset={3} scrollbarSize={6} scrollPadding="4rem">
+      <ScrollArea vertical offset={2} scrollbarSize={3} scrollPadding="4rem">
         <div className={styles.stack}>
           <div>
             <Heading

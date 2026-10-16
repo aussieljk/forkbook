@@ -5,7 +5,6 @@
 
   &:where([data-highlighted]) {
     background: var(--fb-background-hoverable);
-    color: var(--fb-color-secondary);
   }
 }
 

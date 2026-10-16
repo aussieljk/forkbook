@@ -42,7 +42,7 @@
   --docs-code-border: var(--fb-color-mediumlight);
   --docs-code-color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.1));
   --docs-code-background: var(--fb-color-lighter);
-  --docs-even-row-background: var(--fb-color-lighter);
+  --docs-table-header-background: var(--fb-color-lighter);
 
   max-width: 1000px;
   width: 100%;
@@ -415,35 +415,39 @@
   }
 
   & :global(:where(table:not(.fb-anchor, .fb-unstyled, .fb-unstyled table))) {
+    /* A wide table scrolls on its own, not the page. */
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
     margin: 16px 0;
     font-size: var(--fb-size-s2);
-    line-height: 24px;
+    line-height: 22px;
     padding: 0;
     border-collapse: collapse;
+    border-spacing: 0;
 
     & tr {
-      border-top: 1px solid var(--fb-app-border-color);
       margin: 0;
       padding: 0;
     }
 
-    & tr:nth-of-type(2n) {
-      background-color: var(--docs-even-row-background);
-    }
-
     & tr th {
-      font-weight: bold;
+      font-weight: var(--fb-weight-bold);
+      text-align: left;
       color: var(--fb-color-default-text);
+      background: var(--docs-table-header-background);
       border: 1px solid var(--fb-app-border-color);
       margin: 0;
-      padding: 6px 13px;
+      padding: 8px 12px;
+      vertical-align: bottom;
     }
 
     & tr td {
       border: 1px solid var(--fb-app-border-color);
       color: var(--fb-color-default-text);
       margin: 0;
-      padding: 6px 13px;
+      padding: 8px 12px;
+      vertical-align: top;
     }
 
     & tr th :first-of-type,
@@ -455,12 +459,11 @@
     & tr td :last-child {
       margin-bottom: 0;
     }
-  }
-}
+  }}
 
 :where([data-fb-theme='dark']) .docsContent {
   --docs-code-border: var(--fb-color-darker);
   --docs-code-color: rgb(from var(--fb-color-default-text) r g b / calc(alpha - 0.3));
   --docs-code-background: var(--fb-color-border);
-  --docs-even-row-background: var(--fb-color-darker);
+  --docs-table-header-background: var(--fb-color-darker);
 }

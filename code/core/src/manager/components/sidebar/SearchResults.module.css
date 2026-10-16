@@ -29,7 +29,7 @@
 
   &:hover,
   &:focus {
-    background: rgb(from var(--fb-color-secondary) r g b / calc(alpha - 0.93));
+    background: var(--fb-background-hoverable);
     outline: none;
   }
 }
@@ -46,7 +46,8 @@
 
 .mark {
   background: transparent;
-  color: var(--fb-color-secondary);
+  color: var(--fb-color-default-text);
+  font-weight: var(--fb-weight-bold);
 
   @media (forced-colors: active) {
     color: HighlightText;

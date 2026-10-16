@@ -207,6 +207,15 @@ describe('full snapshots', () => {
       }
     `);
   });
+  it('compiles a GitHub-flavoured markdown table to table elements by default', () => {
+    const table = dedent`
+      | Name | Value |
+      |---|---|
+      | a | 1 |
+    `;
+    expect(compileSync(table)).toContain('_components.table');
+    expect(compileSync(table, { gfm: false })).not.toContain('_components.table');
+  });
   it('compile', async () => {
     const input = dedent`
       # hello

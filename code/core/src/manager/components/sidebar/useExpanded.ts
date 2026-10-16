@@ -7,7 +7,7 @@ import { global } from '../../../shared/global.ts';
 
 import { throttle } from 'es-toolkit/function';
 import type { StoriesHash } from '@aussieljk/forkbook/manager-api';
-import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import { addons, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { matchesKeyCode, matchesModifiers } from '../../keybinding.ts';
 import { getAncestorIds, getDescendantIds, isAncestor, scrollIntoView } from '../../utils/tree.ts';
@@ -51,7 +51,8 @@ const initializeExpanded = ({
   selectedStoryId: string | null;
 }) => {
   const selectedStory = selectedStoryId && data[selectedStoryId];
-  const candidates = [...rootIds];
+  // By default every group and component starts open (`sidebar.expandAll`).
+  const candidates = expandAllByDefault() ? Object.keys(data) : [...rootIds];
   if (highlightedRef.current?.refId === refId) {
     candidates.push(...getAncestorIds(data, highlightedRef.current?.itemId));
   }
@@ -66,6 +67,9 @@ const initializeExpanded = ({
 };
 
 const noop = () => {};
+
+/** The `sidebar.expandAll` option of the manager config. Default: true. */
+export const expandAllByDefault = () => addons.getConfig().sidebar?.expandAll !== false;
 
 export const useExpanded = ({
   containerRef,

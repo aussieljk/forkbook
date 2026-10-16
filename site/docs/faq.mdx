@@ -4,7 +4,9 @@ import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 # FAQ
 
-## Can I have a Storybook with no local stories?
+<span id="can-i-have-a-storybook-with-no-local-stories" />
+
+## Can I have a Forkbook with no local stories?
 
 Yes. If you only use [composition](/docs/sharing/storybook-composition), set `stories` to an empty list:
 
@@ -14,7 +16,9 @@ stories: [],
 
 Forkbook shows an error when a glob in `stories` finds no files. Fix the glob, or remove it.
 
-## Extensionless imports in storybook/main.ts and required .ts extensions
+<span id="extensionless-imports-in-storybookmaints-and-required-ts-extensions" />
+
+## Extensionless imports in .forkbook/main.ts and required .ts extensions
 
 `.forkbook/main.ts` runs in Node as an ES module. Node does not add file extensions. Give the extension in each relative import:
 

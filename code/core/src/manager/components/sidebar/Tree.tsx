@@ -21,7 +21,7 @@ import {
 
 import { internal_fullStatusStore as fullStatusStore } from '#manager-stores';
 import { clsx } from 'clsx';
-import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
+import { addons, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 import type {
   API,
   ComponentEntry,
@@ -545,6 +545,7 @@ export const Tree = React.memo<{
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const api = useStorybookApi();
+  const showIcons = addons.getConfig().sidebar?.showIcons === true;
   const includedStatusFilters = useStorybookState().includedStatusFilters ?? [];
   const isModifiedFilterActive = includedStatusFilters.includes('status-value:modified');
 
@@ -752,7 +753,10 @@ export const Tree = React.memo<{
   ]);
   return (
     <StatusContext.Provider value={{ data, allStatuses, groupStatus }}>
-      <div ref={containerRef}>{treeItems}</div>
+      {/* Type icons show only with `sidebar.showIcons` (default: false). */}
+      <div ref={containerRef} data-sidebar-tree data-show-icons={showIcons || undefined}>
+        {treeItems}
+      </div>
     </StatusContext.Provider>
   );
 });

@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 
 import { Loader } from '@aussieljk/forkbook/internal/components';
 import {
+  DOCS_PAGE_IN_VIEW,
   PREVIEW_BUILDER_PROGRESS,
   SET_CURRENT_STORY,
 } from '@aussieljk/forkbook/internal/core-events';
@@ -80,6 +81,22 @@ const Preview = React.memo<PreviewProps>(function Preview(props) {
       }
     }
   }, [entry, viewMode, storyId, api]);
+
+  // Infinite docs scroll: the sidebar and the URL follow the docs page in view. The preview has
+  // that page already, so the new selection is not sent back to it.
+  useEffect(() => {
+    const onDocsPageInView = ({ storyId: id }: { storyId: string }) => {
+      if (viewMode !== 'docs') {
+        return;
+      }
+      previousStoryId.current = id;
+      const params = new URLSearchParams(global.window.location.search);
+      params.set('path', `/docs/${id}`);
+      api.navigateUrl(`?${params.toString().replaceAll('%2F', '/')}`, { replace: true });
+    };
+    api.on(DOCS_PAGE_IN_VIEW, onDocsPageInView);
+    return () => api.off(DOCS_PAGE_IN_VIEW, onDocsPageInView);
+  }, [api, viewMode]);
 
   const mainRef = useRef<HTMLElement>(null);
   const { landmarkProps } = useLandmark(

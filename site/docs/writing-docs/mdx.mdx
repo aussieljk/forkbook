@@ -28,3 +28,21 @@ Use a button for the main action of a page.
 Add MDX files to `stories` in `.forkbook/main.ts`, for example `'../src/**/*.mdx'`.
 
 Each page of this site is an MDX file.
+
+## Tables and other GitHub markdown
+
+GitHub-flavoured markdown is on by default: tables, task lists, strikethrough and links from plain URLs. To turn it off, set `gfm: false` in the options of the docs addon:
+
+```ts
+addons: [{ name: '@aussieljk/forkbook/addon-docs', options: { mdxPluginOptions: { gfm: false } } }],
+```
+
+## Infinite scroll
+
+When you scroll to the end of a docs page, the next docs page (in sidebar order) shows below it. The sidebar and the URL follow the page that you read. Story pages do not change.
+
+To turn it off, set the `docs.infiniteScroll` parameter to `false` in `.forkbook/preview.ts`:
+
+```ts
+parameters: { docs: { infiniteScroll: false } }
+```

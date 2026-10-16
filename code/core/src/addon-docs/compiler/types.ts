@@ -4,4 +4,6 @@ export type MdxCompileOptions = Parameters<typeof mdxCompile>[1];
 
 export interface CompileOptions {
   mdxCompileOptions?: MdxCompileOptions;
+  /** GitHub-flavoured markdown: tables, task lists, strikethrough and autolinks. Default: true. */
+  gfm?: boolean;
 }

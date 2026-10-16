@@ -42,6 +42,7 @@ import type { StorySpecifier } from '../store/StoryIndexStore.ts';
 import type { MaybePromise } from './Preview.tsx';
 import { Preview } from './Preview.tsx';
 import type { Selection, SelectionStore } from './SelectionStore.ts';
+import { InfiniteDocs } from './InfiniteDocs.ts';
 import type { View } from './View.ts';
 import { shouldAutoplay } from './embedMode.ts';
 import { getEmbedResizeViewport } from './getEmbedResizeViewport.ts';
@@ -86,6 +87,9 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
   currentSelection?: Selection;
 
   currentRender?: PossibleRender<TRenderer>;
+
+  /** The docs pages below the selected docs page (`docs.infiniteScroll`). */
+  infiniteDocs?: InfiniteDocs<TRenderer>;
 
   constructor(
     public importFn: ModuleImportFn,
@@ -315,6 +319,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     }
 
     const { storyId } = selection;
+    this.infiniteDocs?.stop();
     let entry;
     try {
       entry = await this.storyStoreValue.storyIdToEntry(storyId);
@@ -497,11 +502,31 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
         })
       );
     } else {
-      this.currentRender.renderToElement(
-        this.view.prepareForDocs({ scrollReset: storyIdChanged || viewModeChanged }),
-        // This argument is used for docs, which is currently only compatible with HTMLElements
-        this.renderStoryToElement.bind(this) as any
-      );
+      const docsRoot = this.view.prepareForDocs({ scrollReset: storyIdChanged || viewModeChanged });
+      const docsRender = this.currentRender;
+      docsRender
+        .renderToElement(
+          docsRoot,
+          // This argument is used for docs, which is currently only compatible with HTMLElements
+          this.renderStoryToElement.bind(this) as any
+        )
+        .then(() => {
+          // The next docs pages render below this one, unless the selection changed meanwhile.
+          if (this.currentRender === docsRender && this.storyStoreValue) {
+            this.infiniteDocs ??= new InfiniteDocs<TRenderer>(
+              this.channel,
+              this.storyStoreValue,
+              this.renderStoryToElement.bind(this) as any,
+              () => ({
+                showStoryDuringRender: () => {},
+                showMain: () => {},
+                showError: () => {},
+                showException: (err: Error) => logger.error(err),
+              })
+            );
+            this.infiniteDocs.start(entry, docsRoot as HTMLElement);
+          }
+        });
     }
   }
 

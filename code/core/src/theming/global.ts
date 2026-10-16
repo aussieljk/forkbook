@@ -16,6 +16,26 @@ body {
   box-sizing: border-box;
 }
 
+/* Thin, neutral scrollbars everywhere (panels, docs, code blocks). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(120 120 128 / 0.45) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(120 120 128 / 0.45);
+  border-radius: 5px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: ${typography.weight.regular};
   margin: 0;

@@ -2,37 +2,12 @@
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
-  color: currentColor;
+  /* One neutral grey for every type: the label carries the meaning. */
+  color: var(--fb-text-muted-color);
 
-  &[data-type='group'] {
-    color: var(--fb-color-ultraviolet);
-  }
-
-  &[data-type='component'],
-  &[data-type='heading'] {
-    color: var(--fb-color-secondary);
-  }
-
-  &[data-type='document'] {
-    color: #ff8300;
-  }
-
-  &[data-type='story'] {
-    color: var(--fb-color-seafoam);
-  }
-
-  &[data-type='test'] {
-    color: var(--fb-color-green);
-  }
-}
-
-:where([data-fb-theme='dark']) .typeIcon {
-  &[data-type='group'] {
-    color: var(--fb-color-primary);
-  }
-
-  &[data-type='document'] {
-    color: var(--fb-color-gold);
+  /* In the tree the icons are off by default (`sidebar.showIcons`). */
+  [data-sidebar-tree]:not([data-show-icons]) & {
+    display: none;
   }
 }
 

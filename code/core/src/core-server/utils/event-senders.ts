@@ -47,6 +47,7 @@ export const CORE_EVENT_SENDERS: Record<events, EventSender> = {
   [events.STORIES_COLLAPSE_ALL]: 'manager',
   [events.STORIES_EXPAND_ALL]: 'manager',
   [events.DOCS_RENDERED]: 'preview',
+  [events.DOCS_PAGE_IN_VIEW]: 'preview',
   [events.SHARED_STATE_CHANGED]: 'any',
   [events.SHARED_STATE_SET]: 'any',
   [events.NAVIGATE_URL]: 'any',
