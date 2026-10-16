@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 import { TrashIcon } from '@phosphor-icons/react';
 
 import type { ControllerStateAndHelpers } from 'downshift';

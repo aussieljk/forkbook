@@ -1,4 +1,4 @@
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../../src/shared/global.ts';
 
 import { MINIMAL_VIEWPORTS } from '@aussieljk/forkbook/viewport';
 

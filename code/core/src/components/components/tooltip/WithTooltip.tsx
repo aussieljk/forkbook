@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useId, useState } from 'reac
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import type { Color } from '@aussieljk/forkbook/theming';

@@ -1,7 +1,7 @@
 import { PREVIEW_KEYDOWN } from '@aussieljk/forkbook/internal/core-events';
 import type { PlayFunctionContext } from '@aussieljk/forkbook/internal/csf';
 
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../src/shared/global.ts';
 
 import { expect, fn, userEvent, within } from '@aussieljk/forkbook/test';
 

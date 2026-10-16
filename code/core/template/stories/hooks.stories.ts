@@ -1,6 +1,6 @@
 import type { PartialStoryFn, StoryContext } from '@aussieljk/forkbook/internal/types';
 
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../src/shared/global.ts';
 
 import { useEffect, useState } from '@aussieljk/forkbook/preview-api';
 import { userEvent, within } from '@aussieljk/forkbook/test';

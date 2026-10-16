@@ -27,7 +27,6 @@
   ],
   "dependencies": {
     "@aussieljk/forkbook": "workspace:*",
-    "@storybook/global": "^5.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^16.2.0",

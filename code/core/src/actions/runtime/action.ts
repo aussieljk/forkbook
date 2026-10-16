@@ -1,7 +1,7 @@
 import { ImplicitActionsDuringRendering } from '@aussieljk/forkbook/internal/preview-errors';
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import type { PreviewWeb } from '@aussieljk/forkbook/preview-api';
 import { addons } from '@aussieljk/forkbook/preview-api';

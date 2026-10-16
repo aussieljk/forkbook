@@ -3,7 +3,7 @@ import React, { forwardRef, useCallback, useMemo } from 'react';
 
 import { Button, PopoverProvider, Select, Spaced } from '@aussieljk/forkbook/internal/components';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 import {
   ClockIcon,
   CodeIcon,

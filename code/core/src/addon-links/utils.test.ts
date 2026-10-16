@@ -8,7 +8,7 @@ import { addons } from '@aussieljk/forkbook/preview-api';
 import { hrefTo, hrefToSync, linkTo } from './utils.ts';
 
 vi.mock('@aussieljk/forkbook/preview-api');
-vi.mock('@storybook/global', () => ({
+vi.mock('../shared/global.ts', () => ({
   global: {
     document: global.document,
     window: global,

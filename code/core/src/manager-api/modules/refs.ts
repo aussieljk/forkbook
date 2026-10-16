@@ -10,7 +10,7 @@ import type {
   StoryIndex,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { dedent } from 'ts-dedent';
 

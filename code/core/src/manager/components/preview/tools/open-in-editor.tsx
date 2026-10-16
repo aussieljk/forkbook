@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../../shared/global.ts';
 import { CodeIcon } from '@phosphor-icons/react';
 
 import { Consumer, types, useStorybookApi } from '@aussieljk/forkbook/manager-api';

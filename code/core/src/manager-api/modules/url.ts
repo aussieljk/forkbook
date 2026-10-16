@@ -9,7 +9,7 @@ import { buildArgsParam, queryFromLocation } from '@aussieljk/forkbook/internal/
 import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
 import type { API_Layout, API_UI, API_ViewMode, Args } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { omit } from 'es-toolkit/object';

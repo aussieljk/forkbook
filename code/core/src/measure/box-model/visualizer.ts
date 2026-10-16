@@ -1,5 +1,5 @@
 /** Based on https://gist.github.com/awestbro/e668c12662ad354f02a413205b65fce7 */
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import type {
   Dimensions,

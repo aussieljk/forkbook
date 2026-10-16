@@ -3,7 +3,7 @@ import React, { type ReactNode, useCallback, useRef, useState } from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 import { MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react';
 
 import type { DownshiftState, StateChangeOptions } from 'downshift';

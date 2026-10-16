@@ -1,5 +1,5 @@
 /// <reference path="./typings.d.ts" />
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 const { window: globalWindow } = global;
 

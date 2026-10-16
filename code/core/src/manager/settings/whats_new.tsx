@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 
 import { Button, Loader } from '@aussieljk/forkbook/internal/components';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 import { EyeIcon, EyeSlashIcon, HeartIcon, WarningIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';

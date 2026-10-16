@@ -4,7 +4,7 @@ import React, { Fragment, Component as ReactComponent, StrictMode } from 'react'
 
 import type { RenderContext } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { getAct } from './act-compat.ts';
 import type { ReactRenderer, StoryContext } from './types.ts';

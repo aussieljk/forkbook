@@ -6,7 +6,7 @@ import { ProviderDoesNotExtendBaseProviderError } from '@aussieljk/forkbook/inte
 import { Location, LocationProvider, useNavigate } from '@aussieljk/forkbook/internal/router';
 import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { IconContext } from '@phosphor-icons/react';
 import { HelmetProvider } from 'react-helmet-async';

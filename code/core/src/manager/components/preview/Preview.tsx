@@ -8,7 +8,7 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import type { Addon_WrapperType } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { Helmet } from 'react-helmet-async';
 import { Consumer, addons, type Combo } from '@aussieljk/forkbook/manager-api';

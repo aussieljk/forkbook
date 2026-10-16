@@ -10,7 +10,7 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import type { StatusValue } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import {
   experimental_useStatusStore,

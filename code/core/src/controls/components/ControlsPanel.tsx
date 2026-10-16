@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { STORY_FINISHED, STORY_PREPARED } from '@aussieljk/forkbook/internal/core-events';
 import type { ArgTypes, DocgenPayload, StoryId } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { mergeServiceArgTypes } from '../../docs-tools/argTypes/docgenServiceArgTypes.ts';

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Tag } from '@aussieljk/forkbook/internal/preview-api';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { configure } from '@aussieljk/forkbook/test';
 

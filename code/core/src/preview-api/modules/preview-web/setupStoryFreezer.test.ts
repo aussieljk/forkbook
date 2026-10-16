@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { global as globalRef } from '@storybook/global';
+import { global as globalRef } from '../../../shared/global.ts';
 import {
   STORY_HOT_UPDATED,
   STORY_RENDER_PHASE_CHANGED,

@@ -4,7 +4,7 @@ import {
   TELEMETRY_ERROR,
 } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 import { globalPackages, globalsNameReferenceMap } from './globals/globals.ts';
 import { globalsNameValueMap } from './globals/runtime.ts';
 import { maybeSetupPreviewNavigator } from './preview-navigator.ts';

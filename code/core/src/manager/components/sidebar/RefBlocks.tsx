@@ -10,7 +10,7 @@ import {
   Spaced,
 } from '@aussieljk/forkbook/internal/components';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 import { ArrowsClockwiseIcon, BroomIcon, CaretDownIcon, LockIcon } from '@phosphor-icons/react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';

@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import { simulatePageLoad } from './simulate-pageload.ts';
 

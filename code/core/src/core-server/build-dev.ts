@@ -25,7 +25,7 @@ import type {
   LoadOptions,
   Options,
 } from '@aussieljk/forkbook/internal/types';
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { join, relative, resolve } from 'pathe';
 import invariant from 'tiny-invariant';

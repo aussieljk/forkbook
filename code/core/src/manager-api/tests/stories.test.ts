@@ -20,7 +20,7 @@ import {
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import { type API_StoryEntry, type StoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../shared/global.ts';
 
 import { EventEmitter } from 'events';
 
@@ -49,7 +49,7 @@ vi.mock('../stores/status.ts');
 vi.mock('../lib/events.ts', () => ({
   getEventMetadata: vi.fn(() => ({ sourceType: 'local' })),
 }));
-vi.mock('@storybook/global', () => ({
+vi.mock('../../shared/global.ts', () => ({
   global: {
     ...globalThis,
     fetch: vi.fn(() => ({ json: () => ({ v: 5, entries: mockGetEntries() }) })),

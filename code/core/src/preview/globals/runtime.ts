@@ -4,7 +4,7 @@ import * as CORE_EVENTS from '@aussieljk/forkbook/internal/core-events';
 import * as CORE_EVENTS_PREVIEW_ERRORS from '@aussieljk/forkbook/internal/preview-errors';
 import * as TYPES from '@aussieljk/forkbook/internal/types';
 
-import * as GLOBAL from '@storybook/global';
+import * as GLOBAL from '../../shared/global.ts';
 
 import * as ACTIONS from '@aussieljk/forkbook/actions';
 import * as PREVIEW_API from '@aussieljk/forkbook/preview-api';

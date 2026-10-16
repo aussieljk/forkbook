@@ -25,9 +25,9 @@ vi.mock('./csf/processCSFFile', async (importOriginal) => ({
   ),
 }));
 
-vi.mock('@storybook/global', async (importOriginal) => ({
+vi.mock('../../../shared/global.ts', async (importOriginal) => ({
   global: {
-    ...(await importOriginal<typeof import('@storybook/global')>()),
+    ...(await importOriginal<typeof import('../../../shared/global.ts')>()),
   },
 }));
 

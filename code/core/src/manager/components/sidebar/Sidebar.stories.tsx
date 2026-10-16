@@ -7,7 +7,7 @@ import {
   type StatusesByStoryIdAndTypeId,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 

@@ -4,7 +4,7 @@ import {
   STORY_RENDER_PHASE_CHANGED,
 } from '@aussieljk/forkbook/internal/core-events';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 
 const FREEZE_STYLE_ID = 'storybook-freeze-after-finished';
 const PRE_FREEZE_STYLE_ID = 'storybook-freeze-end-frame-preload';

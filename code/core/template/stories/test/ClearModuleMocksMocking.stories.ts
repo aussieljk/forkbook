@@ -1,5 +1,5 @@
 // Replace your-framework with the framework you are using, e.g. react-vite, nextjs, nextjs-vite, etc.
-import { global as globalThis } from '@storybook/global';
+import { global as globalThis } from '../../../src/shared/global.ts';
 
 import { clearAllMocks, expect, waitFor } from '@aussieljk/forkbook/test';
 

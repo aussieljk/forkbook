@@ -17,7 +17,7 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 import { applyServicesPresetOnce } from './utils/apply-services-preset-once.ts';
 
-import { global } from '@storybook/global';
+import { global } from '../shared/global.ts';
 
 import { dirname, isAbsolute, join, relative, resolve } from 'pathe';
 

@@ -21,7 +21,7 @@ import { composeConfigs } from './composeConfigs.ts';
 import { normalizeProjectAnnotations } from './normalizeProjectAnnotations.ts';
 import { prepareContext, prepareMeta, prepareStory as realPrepareStory } from './prepareStory.ts';
 
-vi.mock('@storybook/global', { spy: true });
+vi.mock('../../../../shared/global.ts', { spy: true });
 
 const id = 'id';
 const name = 'name';

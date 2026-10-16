@@ -8,7 +8,7 @@ import type {
   Tag,
 } from '@aussieljk/forkbook/internal/types';
 
-import { global } from '@storybook/global';
+import { global } from '../../../shared/global.ts';
 import { FileTextIcon, FlaskIcon, PlayCircleIcon } from '@phosphor-icons/react';
 
 import { color } from '@aussieljk/forkbook/theming';

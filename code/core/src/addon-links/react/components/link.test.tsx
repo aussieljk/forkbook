@@ -13,7 +13,7 @@ import { addons } from '@aussieljk/forkbook/preview-api';
 import LinkTo from './link.tsx';
 
 vi.mock('@aussieljk/forkbook/preview-api');
-vi.mock('@storybook/global', () => ({
+vi.mock('../../../shared/global.ts', () => ({
   global: {
     document: {
       location: {
