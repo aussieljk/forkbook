@@ -798,7 +798,6 @@
     "@babel/types": "^7.28.5",
     "@base-ui/react": "^1.9.0",
     "@clack/prompts": "1.0.0-alpha.7",
-    "@devtools-ds/object-inspector": "^1.1.2",
     "@discoveryjs/json-ext": "^0.5.3",
     "@expo/ui": "58.0.13",
     "@fal-works/esbuild-plugin-global-externals": "^2.1.2",

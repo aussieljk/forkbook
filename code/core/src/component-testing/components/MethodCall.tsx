@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { ObjectInspector } from '@devtools-ds/object-inspector';
+import { ObjectInspector } from 'react-inspector';
 import { useTheme } from '@aussieljk/forkbook/theming';
 
 import type { Call, CallRef, ElementRef } from '../../instrumenter/types.ts';
@@ -240,18 +240,20 @@ export const ObjectNode = ({
   nested?: boolean;
   callsById?: Map<Call['id'], Call>;
 }) => {
-  const isDarkMode = useTheme().base === 'dark';
+  const { base, addonActionsTheme } = useTheme();
+  const isDarkMode = base === 'dark';
   const colors = useThemeColors();
 
   if (showInspector) {
     return (
       <>
-        <ObjectInspector
-          id="interactions-object-inspector"
-          data={value}
-          includePrototypes={false}
-          colorScheme={isDarkMode ? 'dark' : 'light'}
-        />
+        <span id="interactions-object-inspector">
+          <ObjectInspector
+            data={value}
+            showNonenumerable={false}
+            theme={addonActionsTheme ?? (isDarkMode ? 'chromeDark' : 'chromeLight')}
+          />
+        </span>
       </>
     );
   }
