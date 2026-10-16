@@ -3,7 +3,7 @@ import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 
 import { dedent } from 'ts-dedent';
-import { z } from 'zod';
+import * as v from 'valibot';
 
 import { invariant } from '../common/utils/utils.ts';
 
@@ -11,11 +11,11 @@ const DEFAULT_SETTINGS_PATH = join(homedir(), '.forkbook', 'settings.json');
 
 const VERSION = 1;
 
-const userSettingSchema = z.object({
-  version: z.number(),
+const userSettingSchema = v.object({
+  version: v.number(),
   // NOTE: every key (and subkey) below must be optional, for forwards compatibility reasons
   // (we can remove keys once they are deprecated)
-  userSince: z.number().optional(),
+  userSince: v.optional(v.number()),
 });
 
 let settings: Settings | undefined;
@@ -26,7 +26,7 @@ export async function globalSettings(filePath = DEFAULT_SETTINGS_PATH) {
 
   try {
     const content = await fs.readFile(filePath, 'utf8');
-    const settingsValue = userSettingSchema.parse(JSON.parse(content));
+    const settingsValue = v.parse(userSettingSchema, JSON.parse(content));
     settings = new Settings(filePath, settingsValue);
   } catch (err: any) {
     // We don't currently log the issue we have loading the setting file here, but if it doesn't
@@ -52,7 +52,7 @@ export function _clearGlobalSettings() {
 export class Settings {
   private filePath: string;
 
-  public value: z.infer<typeof userSettingSchema>;
+  public value: v.InferOutput<typeof userSettingSchema>;
 
   /**
    * Create a new Settings instance
@@ -60,7 +60,7 @@ export class Settings {
    * @param filePath Path to the JSON settings file
    * @param value Loaded value of settings
    */
-  constructor(filePath: string, value: z.infer<typeof userSettingSchema>) {
+  constructor(filePath: string, value: v.InferOutput<typeof userSettingSchema>) {
     this.filePath = filePath;
     this.value = value;
   }
