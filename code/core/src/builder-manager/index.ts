@@ -3,14 +3,12 @@ import { cp, rm, writeFile } from 'node:fs/promises';
 import { stringifyProcessEnvs } from '@aussieljk/forkbook/internal/common';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
-import { globalExternals } from '@fal-works/esbuild-plugin-global-externals';
 import { resolveModulePath } from 'exsolve';
 import { join, parse } from 'pathe';
 import sirv from 'sirv';
 
-import { globalsModuleInfoMap } from '../manager/globals/globals-module-info.ts';
-import { BROWSER_TARGETS, SUPPORTED_FEATURES } from '../shared/constants/environments-support.ts';
 import { resolvePackageDir } from '../shared/utils/module.ts';
+import { bundleManagerEntries } from './bundle.ts';
 import type {
   BuilderBuildResult,
   BuilderFunction,
@@ -56,61 +54,8 @@ export const getConfig: ManagerBuilder['getConfig'] = async (options) => {
   return {
     entryPoints: await wrapManagerEntries(entryPoints, options.cacheKey),
     outdir: join(options.outputDir || './', 'fb-addons'),
-    format: 'iife',
-    write: false,
-    ignoreAnnotations: true,
-    resolveExtensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'],
-    outExtension: { '.js': '.js' },
-    loader: {
-      '.js': 'jsx',
-      // media
-      '.png': 'dataurl',
-      '.gif': 'dataurl',
-      '.jpg': 'dataurl',
-      '.jpeg': 'dataurl',
-      '.svg': 'dataurl',
-      '.webp': 'dataurl',
-      '.webm': 'dataurl',
-      '.mp3': 'dataurl',
-      // modern fonts
-      '.woff2': 'dataurl',
-      // legacy font formats
-      '.woff': 'dataurl',
-      '.eot': 'dataurl',
-      '.ttf': 'dataurl',
-    },
-    target: BROWSER_TARGETS,
-    supported: SUPPORTED_FEATURES,
-    platform: 'browser',
-    bundle: true,
-    minify: false,
-    minifyWhitespace: false,
-    minifyIdentifiers: false,
-    minifySyntax: true,
-    metafile: false, // turn this on to assist with debugging the bundling of managerEntries
-
-    // treeShaking: true,
-
-    sourcemap: false,
-    conditions: ['browser', 'module', 'default'],
-
-    jsxFactory: 'React.createElement',
-    jsxFragment: 'React.Fragment',
-    jsx: 'transform',
-    jsxImportSource: 'react',
-
     tsconfig: tsconfigPath,
-
-    legalComments: 'external',
-    plugins: [globalExternals(globalsModuleInfoMap)],
-
-    banner: {
-      js: 'try{',
-    },
-    footer: {
-      js: '}catch(e){ console.error("[Forkbook] One of your manager-entries failed: " + import.meta.url, e); }',
-    },
-
+    minify: false,
     define: {
       'process.env': JSON.stringify(envs),
       ...stringifyProcessEnvs(envs),
@@ -121,10 +66,7 @@ export const getConfig: ManagerBuilder['getConfig'] = async (options) => {
 };
 
 export const executor = {
-  get: async () => {
-    const { build } = await import('esbuild');
-    return build;
-  },
+  get: async () => bundleManagerEntries,
 };
 
 /**
@@ -189,13 +131,6 @@ const starter: StarterFunction = async function* starterGeneratorFn({
   );
 
   const { cssFiles, jsFiles } = await readOrderedFiles(addonsDir, compilation?.outputFiles);
-
-  if (compilation.metafile && options.outputDir) {
-    await writeFile(
-      join(options.outputDir, 'metafile.json'),
-      JSON.stringify(compilation.metafile, null, 2)
-    );
-  }
 
   // Build additional global values
   const globals: Record<string, any> = await buildFrameworkGlobalsFromOptions(options);
@@ -275,7 +210,6 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
   const addonsDir = config.outdir;
   const coreDirTarget = join(options.outputDir, `fb-manager`);
 
-  // TODO: this doesn't watch, we should change this to use the esbuild watch API: https://esbuild.github.io/api/#watch
   compilation = await instance({
     ...config,
     minify: true,

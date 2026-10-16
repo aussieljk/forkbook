@@ -6,8 +6,7 @@ import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import { FindPackageVersionsError } from '@aussieljk/forkbook/internal/server-errors';
 
 import * as find from 'empathic/find';
-// eslint-disable-next-line depend/ban-dependencies
-import type { ResultPromise } from 'execa';
+import type { ExecProcess } from '../utils/exec.ts';
 
 import type { ExecuteCommandOptions } from '../utils/command.ts';
 import { executeCommand } from '../utils/command.ts';
@@ -74,7 +73,7 @@ export class Yarn1Proxy extends JsPackageManager {
   }: Omit<ExecuteCommandOptions, 'command'> & {
     args: string[];
     useRemotePkg?: boolean;
-  }): ResultPromise {
+  }): ExecProcess {
     const [command, ...rest] = args;
     return executeCommand({
       ...options,

@@ -1,6 +1,6 @@
 /**
  * This is an isolated file that is registered as a loader in Node. It is used to convert TS to ESM
- * using esbuild. Do _not_ import from other modules in core unless strictly necessary, as it will
+ * with the oxc transformer of rolldown. Do _not_ import from other modules in core unless strictly necessary, as it will
  * cause the dist to get huge.
  */
 import { readFileSync, readdirSync } from 'node:fs';
@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 import { deprecate } from '@aussieljk/forkbook/internal/node-logger';
 
-import { transformSync } from 'esbuild';
+import { transformSync } from 'rolldown/utils';
 import { dedent } from 'ts-dedent';
 
 import { NODE_TARGET } from '../shared/constants/environments-support.ts';
@@ -139,10 +139,10 @@ export function addExtensionsToRelativeImports(source: string, filePath: string)
 export const load: LoadHookSync = (url, context, nextLoad) => {
   // Strip any query string (e.g. the cache-busting `?<timestamp>` importModule appends for
   // skipCache) before checking the extension, otherwise a cache-busted URL like
-  // `file:///main.ts?123` no longer ends with `.ts` and silently skips the esbuild transform below.
+  // `file:///main.ts?123` no longer ends with `.ts` and silently skips the transform below.
   const urlWithoutQuery = url.split('?')[0];
 
-  /** Convert TS to ESM using esbuild */
+  /** Convert TS to ESM with oxc */
   if (
     urlWithoutQuery.endsWith('.ts') ||
     urlWithoutQuery.endsWith('.tsx') ||
@@ -153,12 +153,12 @@ export const load: LoadHookSync = (url, context, nextLoad) => {
   ) {
     const filePath = fileURLToPath(url);
     const rawSource = readFileSync(filePath, 'utf-8');
-    const transformedSource = transformSync(rawSource, {
-      loader: 'ts',
-      target: NODE_TARGET,
-      format: 'esm',
-      platform: 'neutral',
-    });
+    const transformedSource = transformSync(filePath, rawSource, { target: NODE_TARGET });
+    if (transformedSource.errors.length) {
+      throw new Error(
+        `Could not transform ${filePath}:\n${transformedSource.errors.map((error) => error.message).join('\n')}`
+      );
+    }
 
     // Add extensions to relative imports so Node.js ESM can resolve them
     const sourceWithExtensions = addExtensionsToRelativeImports(transformedSource.code, filePath);

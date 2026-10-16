@@ -1,4 +1,5 @@
-export { isWebContainer } from '@webcontainer/env';
+/** StackBlitz WebContainers set `process.versions.webcontainer`. */
+export const isWebContainer = () => process.versions.webcontainer != null;
 
 import { nodePathsToArray } from './paths.ts';
 
@@ -8,7 +9,7 @@ export async function loadEnvs(options: { production?: boolean } = {}): Promise<
   stringified: Record<string, string>;
   raw: Record<string, string>;
 }> {
-  const { getEnvironment } = await import('lazy-universal-dotenv');
+  const { loadEnv } = await import('vite');
   const defaultNodeEnv = options.production ? 'production' : 'development';
 
   const baseEnv: Record<string, string> = {
@@ -22,15 +23,9 @@ export async function loadEnvs(options: { production?: boolean } = {}): Promise<
     PUBLIC_URL: options.production ? '.' : '',
   };
 
-  const dotenv = getEnvironment({ nodeEnv: baseEnv['NODE_ENV'] });
-
-  const envEntries = Object.fromEntries<string>(
-    Object.entries<string>({
-      // TODO: it seems wrong that dotenv overrides process.env, but that's how it has always worked
-      ...process.env,
-      ...dotenv.raw,
-    }).filter(([name]) => /^FORKBOOK_/.test(name))
-  );
+  // .env, .env.local, .env.[mode] and .env.[mode].local, with variable expansion. A variable that
+  // is already in process.env wins over the files.
+  const envEntries = loadEnv(baseEnv['NODE_ENV'], process.cwd(), 'FORKBOOK_');
 
   const raw: Record<string, string> = { ...baseEnv, ...envEntries };
   (raw as any).NODE_PATH = nodePathsToArray((raw.NODE_PATH as string) || '');

@@ -17,7 +17,7 @@ import { Feature } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 import { coerce, satisfies } from 'semver';
-import stripJsonComments from 'strip-json-comments';
+import { type ParseError, parse as parseJsonc } from 'jsonc-parser';
 import invariant from 'tiny-invariant';
 
 import { getRendererDir } from './dirs.ts';
@@ -29,10 +29,16 @@ export function readFileAsJson(jsonPath: string, allowComments?: boolean) {
   }
 
   const fileContent = readFileSync(filePath, 'utf8');
-  const jsonContent = allowComments ? stripJsonComments(fileContent) : fileContent;
-
   try {
-    return JSON.parse(jsonContent);
+    if (!allowComments) {
+      return JSON.parse(fileContent);
+    }
+    const errors: ParseError[] = [];
+    const value = parseJsonc(fileContent, errors);
+    if (errors.length) {
+      throw new SyntaxError(`Invalid JSON at offset ${errors[0].offset}`);
+    }
+    return value;
   } catch (e) {
     logger.error(picocolors.red(`Invalid json in file: ${filePath}`));
     throw e;

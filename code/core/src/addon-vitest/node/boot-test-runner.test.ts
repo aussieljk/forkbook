@@ -151,7 +151,6 @@ describe('bootTestRunner', () => {
           FORKBOOK_CONFIG_DIR: '.forkbook',
           FORKBOOK_PREVIEW_ANNOTATIONS: JSON.stringify(['/project/.forkbook/preview.ts']),
         },
-        extendEnv: true,
       },
     });
     message({ type: 'ready' });

@@ -2,17 +2,17 @@ import type { WriteStream } from 'node:fs';
 import { createWriteStream, mkdirSync } from 'node:fs';
 import { copyFile, readFile, realpath, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
+import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
 
 import { type MergeExclusive } from 'type-fest';
-import uniqueString from 'unique-string';
 
 import type { JsPackageManager } from '../js-package-manager/index.ts';
 import satelliteAddons from '../satellite-addons.ts';
 
 const tempDir = () => realpath(os.tmpdir());
 
-const getPath = async (prefix = '') => join(await tempDir(), prefix + uniqueString());
+const getPath = async (prefix = '') => join(await tempDir(), prefix + randomUUID());
 
 export async function temporaryDirectory({ prefix = '' } = {}) {
   const directory = await getPath(prefix);

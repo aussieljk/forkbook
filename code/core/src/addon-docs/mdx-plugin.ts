@@ -2,8 +2,7 @@ import { fileURLToPath } from 'node:url';
 
 import type { Options } from '@aussieljk/forkbook/internal/types';
 
-import { createFilter } from '@rollup/pluginutils';
-import type { Plugin } from 'vite';
+import { type Plugin, createFilter } from 'vite';
 
 import type { CompileOptions } from './compiler';
 import { compile } from './compiler';

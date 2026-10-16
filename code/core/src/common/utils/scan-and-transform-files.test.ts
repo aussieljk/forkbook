@@ -26,8 +26,8 @@ vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   },
 }));
 
-vi.mock('globby', () => ({
-  globby: mocks.globby,
+vi.mock('tinyglobby', () => ({
+  glob: mocks.globby,
 }));
 
 describe('scanAndTransformFiles', () => {

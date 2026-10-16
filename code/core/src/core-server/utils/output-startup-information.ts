@@ -1,8 +1,7 @@
-import { CLI_COLORS, logger } from '@aussieljk/forkbook/internal/node-logger';
+import { CLI_COLORS, logger, prettyTime } from '@aussieljk/forkbook/internal/node-logger';
 import type { VersionCheck } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
-import prettyTime from 'pretty-hrtime';
 import { dedent } from 'ts-dedent';
 
 import { getReachableNetworkAddresses } from './server-address.ts';

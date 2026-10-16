@@ -213,6 +213,10 @@ export async function generateBundle({
     contexts.push(
       esbuild.context({
         ...sharedOptions,
+        external: [
+          ...(sharedOptions.external as string[]),
+          ...entries.node.flatMap((entry) => entry.external ?? []),
+        ].filter(Boolean),
         entryPoints: entries.node.map(({ entryPoint }) => entryPoint),
         platform: 'node',
         target: NODE_TARGET,

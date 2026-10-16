@@ -169,10 +169,11 @@ export class StoryIndexGenerator {
 
     // Dynamically import globby because it is a pure ESM module
     // eslint-disable-next-line depend/ban-dependencies
-    const { globby } = await import('globby');
+    const { glob } = await import('tinyglobby');
 
-    const files = await globby(globPattern, {
+    const files = await glob(globPattern, {
       absolute: true,
+      expandDirectories: false,
       cwd: globCwd,
       ...commonGlobOptions(globPattern),
       onlyFiles: true,

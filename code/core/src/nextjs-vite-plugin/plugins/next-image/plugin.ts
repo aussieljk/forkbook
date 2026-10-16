@@ -2,12 +2,11 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import { type FilterPattern, createFilter } from '@rollup/pluginutils';
+import { type FilterPattern, type Plugin, createFilter } from 'vite';
 import type { NextConfigComplete } from 'next/dist/server/config-shared.js';
 import path from 'pathe';
 import probeSync from 'probe-image-size/sync.js';
 import { dedent } from 'ts-dedent';
-import type { Plugin } from 'vite';
 import { VITEST_PLUGIN_NAME, isVitestEnv } from '../../utils.ts';
 import { getAlias } from './alias/index.tsx';
 

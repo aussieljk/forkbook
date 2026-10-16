@@ -50,6 +50,9 @@ const config: BuildEntries = {
         exportEntries: ['./nextjs-vite/preset'],
         entryPoint: './src/nextjs-vite/preset.ts',
         dts: false,
+        // postcss-load-config imports a config file natively first. jiti is only a fallback,
+        // and the user installs it when they need it.
+        external: ['jiti'],
       },
     ],
   },

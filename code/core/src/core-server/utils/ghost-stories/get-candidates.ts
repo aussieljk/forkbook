@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { babelParse, traverse } from '@aussieljk/forkbook/internal/babel';
 
 // eslint-disable-next-line depend/ban-dependencies
-import { glob } from 'glob';
+import { glob } from 'tinyglobby';
 
 import { getComponentComplexity } from './component-analyzer.ts';
 
@@ -149,6 +149,7 @@ export async function getComponentCandidates({
     files = await glob(globPattern, {
       cwd,
       absolute: true,
+      expandDirectories: false,
       ignore: [
         '**/node_modules/**',
         '**/.git/**',
