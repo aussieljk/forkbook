@@ -670,7 +670,9 @@
     }
   },
   "bin": {
-    "forkbook": "./dist/bin/dispatcher.js"
+    "forkbook": "./dist/bin/dispatcher.js",
+    "sb-rn-get-stories": "./dist/react-native/bin/get-stories.js",
+    "storybook": "./dist/bin/dispatcher.js"
   },
   "files": [
     "dist/**/*",

@@ -156,9 +156,15 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
                   // END
 
                   // START Next.js v16.4 support
+                  // The route tree of the root segment. `useRouter` reads `data.bfcacheId`, and
+                  // a layout router reads `slots` (null: a story has no child segments).
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore Only available in Next.js >= v16.4.0
-                  parentRenderTree: { data: { bfcacheId: 0 } },
+                  parentRenderTree: {
+                    segment: '',
+                    data: { ...newLazyCacheNode, bfcacheId: 0 },
+                    slots: null,
+                  },
                   // END
                   url: pathname,
                   loading: null,

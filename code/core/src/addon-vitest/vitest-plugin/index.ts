@@ -8,6 +8,7 @@ import type {} from '@vitest/browser-playwright';
 import {
   DEFAULT_FILES_PATTERN,
   HandledError,
+  defaultConfigDir,
   getInterpretedFile,
   normalizeStories,
   optionalEnvToBoolean,
@@ -60,7 +61,7 @@ const WORKING_DIR = process.cwd();
 
 const defaultOptions = {
   storybookScript: undefined,
-  configDir: resolve(join(WORKING_DIR, '.forkbook')),
+  configDir: resolve(join(WORKING_DIR, defaultConfigDir(WORKING_DIR))),
   storybookUrl: 'http://localhost:6006',
   disableAddonDocs: true,
   initialGlobals: {},

@@ -19,6 +19,7 @@ import { storybookConfigExtensions } from '../../shared/constants/extensions.ts'
 import { JsPackageManager } from '../js-package-manager/JsPackageManager.ts';
 import { frameworkToBuilder } from './framework.ts';
 import { getAddonNames } from './get-addon-names.ts';
+import { defaultConfigDir } from './default-config-dir.ts';
 import { extractFrameworkPackageName } from './get-framework-name.ts';
 import { extractRenderer } from './get-renderer-name.ts';
 import { getStorybookConfiguration } from './get-storybook-configuration.ts';
@@ -75,14 +76,14 @@ export const findConfigFile = (prefix: string, configDir: string) => {
 };
 
 export const getConfigInfo = (configDir?: string) => {
-  let storybookConfigDir = configDir ?? '.forkbook';
+  let storybookConfigDir = configDir ?? defaultConfigDir();
 
   if (!existsSync(storybookConfigDir)) {
     const packageJsonPaths = JsPackageManager.listAllPackageJsonPaths(storybookConfigDir);
 
     for (const packageJsonPath of packageJsonPaths) {
       const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-      const storybookScript = packageJson.scripts?.forkbook;
+      const storybookScript = packageJson.scripts?.forkbook ?? packageJson.scripts?.storybook;
       if (storybookScript && !configDir) {
         const configParam = getStorybookConfiguration(storybookScript, '-c', '--config-dir');
 
@@ -103,7 +104,7 @@ export const getConfigInfo = (configDir?: string) => {
 };
 
 export const getStorybookInfo = async (
-  configDir = '.forkbook',
+  configDir = defaultConfigDir(),
   cwd?: string,
   { skipCache }: { skipCache?: boolean } = {}
 ): Promise<CoreCommon_StorybookInfo> => {

@@ -3,6 +3,7 @@ import { dirname, isAbsolute, resolve } from 'node:path';
 import type { PackageManagerName } from '@aussieljk/forkbook/internal/common';
 import {
   JsPackageManagerFactory,
+  defaultConfigDir,
   getStorybookInfo,
   warnOnYarn1,
 } from '@aussieljk/forkbook/internal/common';
@@ -56,7 +57,7 @@ export const getStorybookData = async ({
     { skipCache }
   );
 
-  const configDir = userDefinedConfigDir || configDirFromScript || '.forkbook';
+  const configDir = userDefinedConfigDir || configDirFromScript || defaultConfigDir();
 
   const workingDir = getWorkingDir(configDir);
 

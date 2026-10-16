@@ -20,6 +20,34 @@ export async function getFrameworkName(options: Options) {
   return typeof framework === 'object' ? framework.name : framework;
 }
 
+/** The Storybook framework names that Forkbook accepts, and the Forkbook name of each. */
+const storybookFrameworkNames: Record<string, string> = {
+  '@storybook/react-vite': '@aussieljk/forkbook/react-vite',
+  '@storybook/nextjs-vite': '@aussieljk/forkbook/nextjs-vite',
+};
+
+type FrameworkField = string | { name: string; options?: any } | undefined;
+
+/** The `framework` field of a main config, with a Storybook name changed to its Forkbook name. */
+export function forkbookFramework<T extends FrameworkField>(framework: T): T {
+  const name = typeof framework === 'string' ? framework : framework?.name;
+  const forkbookName = name ? storybookFrameworkNames[name] : undefined;
+  if (!forkbookName) {
+    return framework;
+  }
+  return (
+    typeof framework === 'string'
+      ? forkbookName
+      : { ...(framework as { name: string }), name: forkbookName }
+  ) as T;
+}
+
+/** A main config (or preset) with a Storybook framework name changed to its Forkbook name. */
+export function withForkbookFramework<T extends { framework?: FrameworkField }>(config: T): T {
+  const framework = forkbookFramework(config?.framework);
+  return framework === config?.framework ? config : ({ ...(config as object), framework } as T);
+}
+
 /**
  * Extracts the proper framework name from the given framework field. The framework field can be the
  * framework package name or a path to the framework package.
@@ -32,7 +60,7 @@ export async function getFrameworkName(options: Options) {
  * ```
  */
 export const extractFrameworkPackageName = (framework: string) => {
-  const normalizedPath = normalizePath(framework);
+  const normalizedPath = normalizePath(forkbookFramework(framework));
   const frameworkName = Object.keys(frameworkPackages).find((pkg) => normalizedPath.endsWith(pkg));
 
   return frameworkName ?? framework;

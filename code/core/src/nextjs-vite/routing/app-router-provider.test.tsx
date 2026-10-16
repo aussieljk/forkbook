@@ -37,6 +37,18 @@ describe('RouterDecorator with parameters.nextjs.appDirectory: true', () => {
     expect(renderAppDirectoryStory(Probe)).toBe('<span>0</span>');
   });
 
+  it('gives a root route tree with no slots, as Next.js >= v16.4 reads it', () => {
+    const Probe = () => {
+      const layoutRouterContext = useContext(LayoutRouterContext) as unknown as {
+        parentRenderTree?: { segment?: string; slots?: unknown };
+      } | null;
+      const tree = layoutRouterContext?.parentRenderTree;
+      return <span>{`${JSON.stringify(tree?.segment)} ${String(tree?.slots)}`}</span>;
+    };
+
+    expect(renderAppDirectoryStory(Probe)).toBe('<span>&quot;&quot; null</span>');
+  });
+
   // The regression requires Next.js >= 16.4; the first test guards the missing context field.
   it('supports useRouter() consumers', () => {
     const Probe = () => {

@@ -11,6 +11,7 @@ export * from './utils/envs.ts';
 export * from './utils/find-storybook-package-root.ts';
 export * from './utils/common-glob-options.ts';
 export * from './utils/deep-merge.ts';
+export * from './utils/default-config-dir.ts';
 export * from './utils/framework.ts';
 export * from './utils/get-builder-options.ts';
 export * from './utils/get-pkg-pr-new-package-specifier.ts';
