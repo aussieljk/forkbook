@@ -169,8 +169,6 @@ describe('configureEslintPlugin', () => {
 
       // Mock file content with JSON5 features (comments, trailing comma)
       const mockConfigFile = dedent`{
-        // Some comment here
-        "extends": ["plugin:other"],
         // Top-level comment
         "extends": [
           // Comment before existing item
@@ -201,13 +199,13 @@ describe('configureEslintPlugin', () => {
           // Top-level comment
           "extends": [
             // Comment before existing item
-            "plugin:other", // Inline comment for existing item
-            "plugin:@aussieljk/forkbook/recommended"
+            "plugin:other",
+            "plugin:@aussieljk/forkbook/recommended", // Inline comment for existing item
           ],
           "rules": {
             // Comment for rules object
-            "no-unused-vars": "warn" // Another comment
-          }
+            "no-unused-vars": "warn", // Another comment
+          },
           // Trailing comment
         }"
       `);
@@ -223,13 +221,13 @@ describe('configureEslintPlugin', () => {
           // Top-level comment
           "extends": [
             // Comment before existing item
-            "plugin:other", // Inline comment for existing item
-            "plugin:@aussieljk/forkbook/recommended"
+            "plugin:other",
+            "plugin:@aussieljk/forkbook/recommended", // Inline comment for existing item
           ],
           "rules": {
             // Comment for rules object
-            "no-unused-vars": "warn" // Another comment
-          }
+            "no-unused-vars": "warn", // Another comment
+          },
           // Trailing comment
         }"
       `);

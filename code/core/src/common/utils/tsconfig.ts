@@ -3,7 +3,7 @@ import { basename, dirname, extname, relative, resolve } from 'node:path';
 
 import * as find from 'empathic/find';
 import picomatch from 'picomatch';
-import stripJsonComments from 'strip-json-comments';
+import { type ParseError, parse as parseJsonc } from 'jsonc-parser';
 
 import { getProjectRoot } from './paths.ts';
 
@@ -379,13 +379,13 @@ function readTsconfigConfig(configPath: string): TsconfigConfig | undefined {
    * and timed out imports that load `common` transitively (e.g. docgen-harness loading react
    * `utils.ts`).
    *
-   * Prefer the lightweight JSONC path: strip comments + trailing commas, then `JSON.parse`.
-   * Enable `trailingCommas` so Vite-style / editor-formatted tsconfigs still parse; without it
-   * a trailing comma makes `JSON.parse` fail and we silently skip that config.
+   * Parse as JSONC: tsconfig files can have comments and trailing commas.
    */
   try {
     const content = readFileSync(configPath, 'utf-8');
-    return JSON.parse(stripJsonComments(content, { trailingCommas: true })) as TsconfigConfig;
+    const errors: ParseError[] = [];
+    const config = parseJsonc(content, errors, { allowTrailingComma: true }) as TsconfigConfig;
+    return errors.length ? undefined : config;
   } catch {
     return undefined;
   }

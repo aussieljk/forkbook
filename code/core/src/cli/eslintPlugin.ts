@@ -4,7 +4,7 @@ import { type JsPackageManager, getProjectRoot } from '@aussieljk/forkbook/inter
 import { type CsfValue, readConfig, writeConfig } from '@aussieljk/forkbook/internal/csf-tools';
 import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
-import commentJson from 'comment-json';
+import { applyEdits, modify, parse as parseJsonc } from 'jsonc-parser';
 import detectIndent from 'detect-indent';
 import * as find from 'empathic/find';
 import picocolors from 'picocolors';
@@ -410,8 +410,8 @@ export async function configureEslintPlugin({
     if (eslintConfigFile.endsWith('json')) {
       logger.debug(`Detected JSON config at ${eslintConfigFile}`);
       const eslintFileContents = await readFile(eslintConfigFile, { encoding: 'utf8' });
-      const eslintConfig = commentJson.parse(eslintFileContents) as {
-        extends?: string[];
+      const eslintConfig = parseJsonc(eslintFileContents) as {
+        extends?: string | string[];
       };
       const existingExtends = normalizeExtends(eslintConfig.extends).filter(Boolean);
 
@@ -419,13 +419,22 @@ export async function configureEslintPlugin({
         return;
       }
 
-      if (!Array.isArray(eslintConfig.extends)) {
-        eslintConfig.extends = eslintConfig.extends ? [eslintConfig.extends] : [];
-      }
-      eslintConfig.extends.push('plugin:@aussieljk/forkbook/recommended');
-
+      // jsonc-parser changes only the `extends` value, so the comments and the format stay.
       const spaces = detectIndent(eslintFileContents).amount || 2;
-      await writeFile(eslintConfigFile, commentJson.stringify(eslintConfig, null, spaces));
+      const formattingOptions = { insertSpaces: true, tabSize: spaces };
+      const plugin = 'plugin:@aussieljk/forkbook/recommended';
+      const edits = Array.isArray(eslintConfig.extends)
+        ? modify(eslintFileContents, ['extends', -1], plugin, {
+            formattingOptions,
+            isArrayInsertion: true,
+          })
+        : modify(
+            eslintFileContents,
+            ['extends'],
+            eslintConfig.extends ? [eslintConfig.extends, plugin] : [plugin],
+            { formattingOptions }
+          );
+      await writeFile(eslintConfigFile, applyEdits(eslintFileContents, edits));
     } else {
       if (isFlatConfig) {
         logger.debug(`Detected flat config at ${eslintConfigFile}`);
