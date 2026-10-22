@@ -66,6 +66,20 @@ export async function generateBundle({
   const external = (await getExternal(DIR_CWD)).runtimeExternal;
   const { entries, postbuild } = entry;
 
+  // `use-sync-external-store` is CommonJS. A user project bundles our browser files as ESM and
+  // cannot get its named exports (MISSING_EXPORT). Base UI imports it, so use ESM copies instead.
+  const useSyncExternalStoreAlias = {
+    'use-sync-external-store/shim': join(DIR_CWD, 'src/shared/use-sync-external-store/shim.ts'),
+    'use-sync-external-store/shim/with-selector': join(
+      DIR_CWD,
+      'src/shared/use-sync-external-store/with-selector.ts'
+    ),
+    'use-sync-external-store/with-selector': join(
+      DIR_CWD,
+      'src/shared/use-sync-external-store/with-selector.ts'
+    ),
+  };
+
   const sharedOptions = {
     absWorkingDir: DIR_CWD,
     format: 'esm',
@@ -147,6 +161,7 @@ export async function generateBundle({
       react: resolvePackageDir('react'),
       'react-dom': resolvePackageDir('react-dom'),
       'react-dom/client': join(resolvePackageDir('react-dom'), 'client'),
+      ...useSyncExternalStoreAlias,
     },
     define: {
       // This should set react in prod mode for the manager
@@ -271,6 +286,7 @@ export async function generateBundle({
         entryPoints: entries.browser.map(({ entryPoint }) => entryPoint),
         platform: 'browser',
         chunkNames: '_browser-chunks/[name]-[hash]',
+        alias: useSyncExternalStoreAlias,
         target: BROWSER_TARGETS,
         supported: SUPPORTED_FEATURES,
         plugins: [
