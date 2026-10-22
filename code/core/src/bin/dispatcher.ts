@@ -17,7 +17,7 @@ import { resolvePackageDir } from '../shared/utils/module.ts';
  *
  * - Core Forkbook commands (dev, build, index, tools, skills) go to dist/bin/core.js
  * - Init goes to the create CLI (dist/create/bin/index.js)
- * - Other CLI commands (add, remove) go to the CLI commands (dist/cli-commands/bin/index.js)
+ * - Other CLI commands (add, remove, migrate, pages) go to the CLI commands (dist/cli-commands/bin/index.js)
  */
 if (!isNodeVersionSupported(process.versions.node)) {
   logger.error(
@@ -44,6 +44,17 @@ async function run() {
 
   if (args[0] === 'tools' && !args.includes('--no-attach')) {
     process.env.FORKBOOK_ATTACHED_TOOLS = 'true';
+  }
+
+  // `init --pages` writes page stories. The CLI commands have it as `pages`.
+  if (args[0] === 'init' && args.includes('--pages')) {
+    process.argv.splice(
+      2,
+      process.argv.length,
+      'pages',
+      ...args.slice(1).filter((a) => a !== '--pages')
+    );
+    args[0] = 'pages';
   }
 
   const bin = ['dev', 'build', 'index', 'tools', 'skills'].includes(args[0])

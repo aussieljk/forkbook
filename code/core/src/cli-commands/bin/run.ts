@@ -18,6 +18,8 @@ import picocolors from 'picocolors';
 
 import { version } from '../../../package.json';
 import { add } from '../add.ts';
+import { migrate } from '../migrate.ts';
+import { pages } from '../pages.ts';
 
 addToGlobalContext('cliVersion', versions['@aussieljk/forkbook']);
 
@@ -146,6 +148,34 @@ command('remove <addon>')
       logger.outro('Done!');
     }).catch(handleCommandFailure(options.logfile))
   );
+
+command('migrate')
+  .description('Move a Storybook project to Forkbook')
+  .option('--dry-run', 'Print the changes, but do not write them')
+  .action(async (options: { dryRun?: boolean }) => {
+    const result = await migrate({ dryRun: options.dryRun, version: String(version) });
+    const verb = options.dryRun ? 'Would change' : 'Changed';
+    logger.log(`Removed packages: ${result.removedPackages.join(', ') || 'none'}`);
+    logger.log(`Added package: ${result.addedPackage}`);
+    logger.log(`${verb} ${result.changedFiles.length} files:`);
+    for (const file of result.changedFiles) {
+      logger.log(`  ${file}`);
+    }
+    logger.log(`Now run ${picocolors.bold(result.installCommand)}, then read the diff.`);
+  });
+
+command('pages')
+  .description('Write a story for each Next.js App Router page (also `init --pages`)')
+  .option('--dry-run', 'Print the files, but do not write them')
+  .action(async (options: { dryRun?: boolean }) => {
+    const result = await pages({ dryRun: options.dryRun });
+    for (const file of [result.helper, ...result.written].filter(Boolean)) {
+      logger.log(`${options.dryRun ? 'Would write' : 'Wrote'} ${file}`);
+    }
+    for (const file of result.skipped) {
+      logger.log(`Skipped ${file} (redirect only)`);
+    }
+  });
 
 command('info')
   .description('Prints debugging information about the local environment')
