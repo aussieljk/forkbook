@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import { dirname, join, relative } from 'pathe';
 import type { Plugin } from 'rolldown';
 
@@ -70,6 +72,28 @@ function commonDirectory(files: string[]) {
 }
 
 /**
+ * Gives the real file of a manager entry and the package that owns it. `wrapManagerEntries` writes
+ * a file in the cache that only imports the real entry, so read that import back.
+ */
+export async function describeManagerEntry(entry: string) {
+  const wrapper = await readFile(entry, 'utf8').catch(() => '');
+  const imported = /^import '(.*)';$/.exec(wrapper.trim())?.[1]?.replaceAll("\\'", "'");
+  const file = imported ?? entry;
+  const normalized = file.replaceAll('\\', '/');
+  const packagePath = normalized.split('/node_modules/').slice(1).at(-1);
+  let owner: string | undefined;
+  if (packagePath) {
+    const parts = packagePath.split('/');
+    owner = parts[0].startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0];
+    const area = /\/dist\/(addon-[^/]+)\//.exec(normalized)?.[1];
+    if (area) {
+      owner = `${owner}/${area}`;
+    }
+  }
+  return { file, owner };
+}
+
+/**
  * Bundles each manager entry into its own file with no imports. The manager page loads each file
  * as a module, so `import.meta` works. The code runs in a `try` block, so an entry that fails does
  * not stop the others.
@@ -80,40 +104,53 @@ export async function bundleManagerEntries(config: ManagerBuildConfig): Promise<
 
   const outputFiles = await Promise.all(
     config.entryPoints.map(async (entry) => {
-      const bundle = await rolldown({
-        input: entry,
-        platform: 'browser',
-        tsconfig: config.tsconfig,
-        logLevel: 'warn',
-        resolve: {
-          conditionNames: ['browser', 'module', 'default'],
-          extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'],
-        },
-        moduleTypes: {
-          '.js': 'jsx',
-          ...Object.fromEntries(MEDIA_EXTENSIONS.map((extension) => [extension, 'dataurl'])),
-        },
-        transform: { target: BROWSER_TARGETS, jsx: 'react', define: config.define },
-        plugins: [globalExternals(), injectCss()],
-        // A manager entry runs for its side effects. Keep every module, even in a package that
-        // says it has no side effects.
-        treeshake: { moduleSideEffects: () => true, annotations: false },
-      });
       try {
-        const { output } = await bundle.generate({
-          format: 'esm',
-          codeSplitting: false,
-          minify: config.minify ? true : 'dce-only',
-          banner: 'try{',
-          footer:
-            '}catch(e){ console.error("[Forkbook] One of your manager-entries failed: " + import.meta.url, e); }',
-        });
-        return { path: join(config.outdir, relative(base, entry)), contents: output[0].code };
-      } finally {
-        await bundle.close();
+        return await bundleManagerEntry(entry);
+      } catch (error) {
+        const { file, owner } = await describeManagerEntry(entry);
+        throw new Error(
+          `Could not build the manager entry ${file}${owner ? ` (from ${owner})` : ''}.\n` +
+            `${error instanceof Error ? error.message : String(error)}`,
+          { cause: error }
+        );
       }
     })
   );
+
+  async function bundleManagerEntry(entry: string) {
+    const bundle = await rolldown({
+      input: entry,
+      platform: 'browser',
+      tsconfig: config.tsconfig,
+      logLevel: 'warn',
+      resolve: {
+        conditionNames: ['browser', 'module', 'default'],
+        extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx'],
+      },
+      moduleTypes: {
+        '.js': 'jsx',
+        ...Object.fromEntries(MEDIA_EXTENSIONS.map((extension) => [extension, 'dataurl'])),
+      },
+      transform: { target: BROWSER_TARGETS, jsx: 'react', define: config.define },
+      plugins: [globalExternals(), injectCss()],
+      // A manager entry runs for its side effects. Keep every module, even in a package that
+      // says it has no side effects.
+      treeshake: { moduleSideEffects: () => true, annotations: false },
+    });
+    try {
+      const { output } = await bundle.generate({
+        format: 'esm',
+        codeSplitting: false,
+        minify: config.minify ? true : 'dce-only',
+        banner: 'try{',
+        footer:
+          '}catch(e){ console.error("[Forkbook] One of your manager-entries failed: " + import.meta.url, e); }',
+      });
+      return { path: join(config.outdir, relative(base, entry)), contents: output[0].code };
+    } finally {
+      await bundle.close();
+    }
+  }
 
   return { outputFiles };
 }
