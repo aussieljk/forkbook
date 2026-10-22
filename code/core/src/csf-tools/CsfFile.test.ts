@@ -1309,6 +1309,81 @@ describe('CsfFile', () => {
       ).toThrow('CSF: unexpected dynamic title');
     });
 
+    describe('meta spreads', () => {
+      it('reads title and tags from a spread of a local object', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const { meta } = parse(dedent`
+          const base = { title: 'foo/bar', tags: ['!autodocs'] };
+          const meta = { ...base, component: Foo };
+          export default meta;
+          export const A = {};
+        `);
+        expect(meta.title).toBe('foo/bar');
+        expect(meta.tags).toEqual(['!autodocs']);
+        expect(warn).not.toHaveBeenCalled();
+        warn.mockRestore();
+      });
+
+      it('reads title and tags from a spread of an inline object', () => {
+        const { meta } = parse(dedent`
+          export default { ...{ title: 'foo/bar', tags: ['x'] } satisfies Meta };
+          export const A = {};
+        `);
+        expect(meta.title).toBe('foo/bar');
+        expect(meta.tags).toEqual(['x']);
+      });
+
+      it('lets a later property override a spread', () => {
+        const { meta } = parse(dedent`
+          const base = { title: 'a', tags: ['a'] };
+          export default { ...base, title: 'b', tags: ['b'] };
+          export const A = {};
+        `);
+        expect(meta.title).toBe('b');
+        expect(meta.tags).toEqual(['b']);
+      });
+
+      it('warns about title and tags for a spread of a function call', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        loadCsf(
+          dedent`
+            const meta = { ...page('/x', Page) };
+            export default meta;
+            export const A = {};
+          `,
+          { makeTitle, fileName: 'src/Page.stories.tsx' }
+        ).parse();
+        const messages = warn.mock.calls.map(([m]) => String(m));
+        expect(messages).toHaveLength(2);
+        expect(messages[0]).toContain('"title"');
+        expect(messages[1]).toContain('"tags"');
+        messages.forEach((m) => expect(m).toContain('src/Page.stories.tsx'));
+        warn.mockRestore();
+      });
+
+      it('does not warn about a field that a later property sets', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        const { meta } = parse(dedent`
+          export default { ...page('/x'), title: 'foo', tags: ['a'] };
+          export const A = {};
+        `);
+        expect(meta.title).toBe('foo');
+        expect(warn).not.toHaveBeenCalled();
+        warn.mockRestore();
+      });
+
+      it('warns only about the field that is not set later', () => {
+        const warn = vi.spyOn(logger, 'warn').mockImplementation(() => {});
+        parse(dedent`
+          export default { ...page('/x'), title: 'foo' };
+          export const A = {};
+        `);
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(String(warn.mock.calls[0][0])).toContain('"tags"');
+        warn.mockRestore();
+      });
+    });
+
     it('storiesOf calls', () => {
       expect(() =>
         parse(

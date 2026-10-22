@@ -413,13 +413,65 @@ export class CsfFile {
     `);
   }
 
+  /**
+   * Gets the properties of the meta object. Spreads of object literals, or of identifiers that
+   * refer to object literals, are expanded. Other spreads are returned in `unresolved`, with the
+   * number of properties that come before them.
+   */
+  _flattenMetaProperties(
+    declaration: t.ObjectExpression,
+    program: t.Program,
+    seen = new Set<string>()
+  ) {
+    const properties: t.ObjectProperty[] = [];
+    const unresolved: { index: number; node: t.Node }[] = [];
+    for (const p of declaration.properties) {
+      if (!t.isSpreadElement(p)) {
+        properties.push(p as t.ObjectProperty);
+        continue;
+      }
+      let arg: t.Node | undefined = unwrapExpression(p.argument);
+      if (t.isIdentifier(arg) && !seen.has(arg.name)) {
+        seen.add(arg.name);
+        const init = findVarInitialization(arg.name, program);
+        arg = init ? unwrapExpression(init) : undefined;
+      }
+      if (t.isObjectExpression(arg)) {
+        const inner = this._flattenMetaProperties(arg, program, seen);
+        inner.unresolved.forEach((u) =>
+          unresolved.push({ index: properties.length + u.index, node: u.node })
+        );
+        properties.push(...inner.properties);
+      } else {
+        unresolved.push({ index: properties.length, node: p });
+      }
+    }
+    return { properties, unresolved };
+  }
+
   _parseMeta(declaration: t.ObjectExpression, program: t.Program) {
     if (this._metaNode) {
       throw new MultipleMetaError('multiple meta objects', declaration, this._options.fileName);
     }
     this._metaNode = declaration;
     const meta: StaticMeta = {};
-    (declaration.properties as t.ObjectProperty[]).forEach((p) => {
+    const { properties, unresolved } = this._flattenMetaProperties(declaration, program);
+    // A spread that we cannot read can set `title` or `tags`. Warn when no later static
+    // property sets the field, because the indexer then ignores the value.
+    for (const { index, node } of unresolved) {
+      for (const field of ['title', 'tags']) {
+        const setLater = properties
+          .slice(index)
+          .some((p) => t.isIdentifier(p.key) && p.key.name === field);
+        if (!setLater) {
+          logger.warn(dedent`
+            CSF: cannot read the "${field}" of the default export statically, because it can come from a dynamic value ${formatLocation(node, this._options.fileName)}.
+            The indexer ignores a "${field}" that comes from this value. Set "${field}" directly in the meta object.
+          `);
+        }
+      }
+    }
+    properties.forEach((p) => {
       if (t.isIdentifier(p.key)) {
         const value = t.isObjectMethod(p) ? p : p.value;
         this._metaAnnotations[p.key.name] = value;
