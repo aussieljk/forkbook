@@ -93,3 +93,56 @@ describe('isStoryHoistable', () => {
     expect(output).toEqual(false);
   });
 });
+
+describe('getHoistedComponents', () => {
+  const component = (id, name, children) => ({ type: 'component', id, name, children });
+  const story = (id, name) => ({ type: 'story', subtype: 'story', id, name, tags: [] });
+  const docs = (id, tags = ['autodocs']) => ({ type: 'docs', id, name: 'Docs', tags });
+  const hash = (...entries) => Object.fromEntries(entries.map((e) => [e.id, e]));
+
+  it('hoists a single story with the component name', () => {
+    const data = hash(
+      component('button', 'Button', ['button--button']),
+      story('button--button', 'Button')
+    );
+    expect(utils.getHoistedComponents(data)).toEqual({
+      hoisted: { button: 'button--button' },
+      hiddenIds: [],
+    });
+  });
+
+  it('hoists a single story with an autodocs entry and hides the docs entry', () => {
+    const data = hash(
+      component('button', 'Button', ['button--docs', 'button--button']),
+      docs('button--docs'),
+      story('button--button', 'Button')
+    );
+    expect(utils.getHoistedComponents(data)).toEqual({
+      hoisted: { button: 'button--button' },
+      hiddenIds: ['button--docs'],
+    });
+  });
+
+  it('does not hoist when the docs entry is not autodocs', () => {
+    const data = hash(
+      component('button', 'Button', ['button--docs', 'button--button']),
+      docs('button--docs', []),
+      story('button--button', 'Button')
+    );
+    expect(utils.getHoistedComponents(data).hoisted).toEqual({});
+  });
+
+  it('does not hoist when the story name is different', () => {
+    const data = hash(
+      component('button', 'Button', ['button--docs', 'button--primary']),
+      docs('button--docs'),
+      story('button--primary', 'Primary')
+    );
+    expect(utils.getHoistedComponents(data).hoisted).toEqual({});
+  });
+
+  it('hoists a component with only a docs entry', () => {
+    const data = hash(component('intro', 'Intro', ['intro--docs']), docs('intro--docs', []));
+    expect(utils.getHoistedComponents(data).hoisted).toEqual({ intro: 'intro--docs' });
+  });
+});

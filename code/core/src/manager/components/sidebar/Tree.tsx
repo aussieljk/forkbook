@@ -47,7 +47,7 @@ import {
   getAncestorIds,
   getDescendantIds,
   getLink,
-  isStoryHoistable,
+  getHoistedComponents,
 } from '../../utils/tree.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import { useContextMenu } from './ContextMenu.tsx';
@@ -590,50 +590,24 @@ export const Tree = React.memo<{
   // That is:
   //  - components with a single story child with the same name
   //  - components with only a single docs child
-  const singleStoryComponentIds = useMemo(() => {
-    return Object.keys(data).filter((id) => {
-      const entry = data[id];
+  //  - components with a single story child with the same name and one autodocs entry
+  const { hoisted, hiddenIds } = useMemo(() => getHoistedComponents(data), [data]);
 
-      if (entry.type !== 'component') {
-        return false;
-      }
-
-      const { children = [], name } = entry;
-
-      if (children.length !== 1) {
-        return false;
-      }
-
-      const onlyChild = data[children[0]];
-
-      if (onlyChild.type === 'docs') {
-        return true;
-      }
-
-      if (onlyChild.type === 'story' && onlyChild.subtype === 'story') {
-        return isStoryHoistable(onlyChild.name, name);
-      }
-      return false;
-    });
-  }, [data]);
-
-  // Omit single-story components from the list of nodes.
+  // Omit single-story components and their hidden autodocs entries from the list of nodes.
   const collapsedItems = useMemo(
-    () => Object.keys(data).filter((id) => !singleStoryComponentIds.includes(id)),
-    [data, singleStoryComponentIds]
+    () => Object.keys(data).filter((id) => !(id in hoisted) && !hiddenIds.includes(id)),
+    [data, hoisted, hiddenIds]
   );
 
   // Rewrite the dataset to place the single child story in place of the component.
-  // TODO: Move this to the `transformStoryIndexToStoriesHash` util.
   const collapsedData = useMemo(() => {
-    return singleStoryComponentIds.reduce(
-      (acc, id) => {
-        const { children, parent, name } = data[id] as ComponentEntry;
-        const [childId] = children;
+    return Object.entries(hoisted).reduce(
+      (acc, [id, childId]) => {
+        const { parent, name } = data[id] as ComponentEntry;
         if (parent) {
-          const siblings = [...(data[parent] as GroupEntry).children];
+          const siblings = [...(acc[parent] as GroupEntry).children];
           siblings[siblings.indexOf(id)] = childId;
-          acc[parent] = { ...data[parent], children: siblings } as GroupEntry;
+          acc[parent] = { ...acc[parent], children: siblings } as GroupEntry;
         }
         acc[childId] = {
           ...data[childId],
@@ -645,7 +619,7 @@ export const Tree = React.memo<{
       },
       { ...data }
     );
-  }, [data, singleStoryComponentIds]);
+  }, [data, hoisted]);
 
   const ancestry = useMemo(() => {
     return collapsedItems.reduce(
