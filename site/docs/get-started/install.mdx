@@ -13,6 +13,10 @@ bun add -d @aussieljk/forkbook
 bunx forkbook init
 ```
 
+### Do I need `bun pm trust`?
+
+No. Bun blocks the install script of one dependency, `@parcel/watcher`. Bun tells you this after `bun add`. You can ignore the message. The script only builds the watcher from source when `npm_config_build_from_source=true` is set. Bun installs a prebuilt binary for your platform, so the watcher works without the script.
+
 You can use npm, pnpm or yarn. Forkbook finds your package manager from your lockfile. To set it, use `--package-manager`.
 
 `init` does these steps:
@@ -36,6 +40,7 @@ You can use npm, pnpm or yarn. Forkbook finds your package manager from your loc
 | `-f`, `--force` | Adds Forkbook when a configuration is already there. |
 | `--no-dev` | Does not start the dev server at the end. |
 | `--agent` | Agent mode: no prompts, and it writes setup instructions for an AI agent. |
+| `--pages` | Next.js App Router: writes one story for each page. See [A story for each page](/docs/get-started/frameworks/nextjs-pages). The alias is `forkbook pages`. |
 | `--no-agent` | Turns agent mode off, also when Forkbook finds an AI agent. |
 
 ## Start Forkbook

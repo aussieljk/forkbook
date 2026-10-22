@@ -19,6 +19,18 @@ const meta = {
 
 Without a `title`, Forkbook makes the title from the file path. For example, `src/forms/text-field.stories.tsx` gets the title `Forms/Text Field`.
 
+### How the indexer reads the title
+
+Forkbook reads `title` and `tags` from the source code. It does not run the file. It can read a literal value, and a spread of a local object:
+
+```tsx
+const base = { title: 'Forms/Text field', tags: ['autodocs'] };
+
+const meta = { ...base, component: TextField } satisfies Meta<typeof TextField>;
+```
+
+It cannot read a value from a function call or from an import. Then it shows a warning with the file and the field (`title` or `tags`). Write a literal value to fix it.
+
 ## Sort the stories
 
 Set `parameters.options.storySort` in `.forkbook/preview.ts`:

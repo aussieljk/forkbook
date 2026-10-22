@@ -1,0 +1,70 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Get started/Frameworks/Next.js App Router: a story for each page" />
+
+# Next.js App Router: a story for each page
+
+Forkbook can write one story for each page of a Next.js App Router project. Then you can see every route of the app in Forkbook.
+
+## Write the stories
+
+```sh
+bunx forkbook init --pages
+```
+
+`forkbook pages` is an alias of the same command. Run it again after you add pages.
+
+The command does these steps:
+
+1. It finds each `page.tsx` in the `app` folder.
+2. It writes a `page.stories.tsx` next to each `page.tsx`.
+3. It writes the helper `.storybook/page.tsx` (or `.forkbook/page.tsx`).
+4. It skips a page that only calls `redirect()`. That page shows no content.
+
+## The helper
+
+Each story calls `page(path, Component)` from the helper. The helper puts the page in the chrome of the root layout (for example the header, the navigation and the fonts), so the story looks like the real route.
+
+```tsx
+// app/settings/page.stories.tsx
+import { page } from '../../.storybook/page';
+import SettingsPage from './page';
+
+export default page('/settings', SettingsPage);
+```
+
+You can change `.storybook/page.tsx`. For example, add the providers that your root layout uses.
+
+## Parameters of a dynamic route
+
+A dynamic route, for example `app/posts/[slug]/page.tsx`, needs values for its parameters. The story uses the first value that `generateStaticParams()` returns. If the page has no `generateStaticParams()`, give the parameters in the story yourself.
+
+The mock of `next/navigation` gets the real path of the story, for example `/posts/hello-world`. Thus `usePathname()` and `useParams()` give the same values as in the app.
+
+## One story for each page
+
+Each page gets one story. To see the page at different sizes, use the viewport tool in the toolbar. Do not add a story for each size.
+
+## The sidebar
+
+The title of the story is the same as the name of the story. When the name is the same as the title, the sidebar shows one item (a leaf) for the route, and not a component with one story in it. This is also true when autodocs is on.
+
+To remove all folders from the sidebar, set `flat` in `.forkbook/manager.ts`:
+
+```ts
+import { addons } from '@aussieljk/forkbook/manager-api';
+
+addons.setConfig({
+  sidebar: { flat: true },
+});
+```
+
+## Node.js modules in a page
+
+A server page can read files with `node:fs`. In the browser, Forkbook gives stand-ins for these modules:
+
+- `node:fs`: `readFileSync` and `existsSync`. They read the files with `import.meta.glob` and `?raw`, so the files are in the bundle.
+- `node:path`.
+- `process.cwd()`.
+
+For more, see [Next.js with Vite](/docs/get-started/frameworks/nextjs-vite#nodejs-modules-in-the-browser).

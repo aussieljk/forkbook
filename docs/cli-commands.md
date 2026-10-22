@@ -2,25 +2,21 @@
 
 ## CLI
 
-Forkbook CLI (_Command Line Interface_) is the easiest way to add [Forkbook](https://github.com/storybookjs/storybook) to your project.
-
-![Screenshot](docs/getstorybook.png)
-
-Go to your project and run:
+The Forkbook CLI adds Forkbook to your project. Go to your project and run:
 
 ```sh
-cd my-app
-npx storybook@latest init
+bun add -d @aussieljk/forkbook
+bunx forkbook init
 ```
 
-In addition to `init`, the CLI also has other commands:
+The CLI also has these commands:
 
-- `add` - add an addon and register it
-- `info` - print out system information for bug reports
-- `upgrade` - upgrade to the latest version of Forkbook (or a specific version)
-- `migrate` - run codemods to migrate your code
+- `add`: adds an addon and registers it.
+- `remove`: removes an addon.
+- `migrate`: moves a project from Storybook to Forkbook. It removes the `storybook` and `@storybook/*` packages, adds Forkbook, changes the imports, and renames `STORYBOOK_*`, `sb-` and `--sb-`. Use `--dry-run` to see the changes first.
+- `init --pages` (alias `pages`): for a Next.js App Router project, writes one `page.stories.tsx` for each `page.tsx`.
 
-See the command-line help with `-h` (including other useful commands) for details.
+Use `-h` to see all commands and options.
 
 ## Core APIs
 
