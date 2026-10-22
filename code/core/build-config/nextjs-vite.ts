@@ -17,6 +17,10 @@ const config: BuildEntries = {
         dts: false,
       },
       {
+        exportEntries: ['./nextjs-vite/node-stand-ins'],
+        entryPoint: './src/nextjs-vite/node-stand-ins/index.ts',
+      },
+      {
         exportEntries: ['./nextjs-vite/cache.mock'],
         entryPoint: './src/nextjs-vite/export-mocks/cache/index.ts',
       },
