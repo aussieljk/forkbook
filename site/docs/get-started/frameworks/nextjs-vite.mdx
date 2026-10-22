@@ -60,7 +60,7 @@ A server component can use Node.js modules. The browser does not have them, so F
 | --- | --- |
 | `node:fs` | `readFileSync` and `existsSync`. Forkbook reads the files with `import.meta.glob` and `?raw`, so they are in the bundle. |
 | `node:path` | The path functions. |
-| `process.cwd()` | Returns a value, so code that joins paths to it runs. |
+| `process.cwd()` | Returns the project root (the folder of the Next.js config). `fs` reads files relative to it. |
 
 Other `node:fs` functions are not there. Mock them in the story.
 

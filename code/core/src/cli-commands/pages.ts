@@ -18,7 +18,7 @@ export interface PagesResult {
   helper?: string;
 }
 
-const HELPER_PATH = '.storybook/page.tsx';
+const HELPER_FILE = 'page.tsx';
 
 /** `app/(shop)/blog/[slug]/page.tsx` to `/blog/[slug]`. Route groups and slots are not in the URL. */
 export function routeFromPage(pagePath: string) {
@@ -175,7 +175,12 @@ export async function pages({
   }
 
   const result: PagesResult = { written: [], skipped: [] };
-  const helperPath = join(cwd, HELPER_PATH);
+  // The helper goes in the config folder: `.forkbook` when it is there, else `.storybook`.
+  const helperFile = join(
+    existsSync(join(cwd, '.forkbook')) ? '.forkbook' : '.storybook',
+    HELPER_FILE
+  );
+  const helperPath = join(cwd, helperFile);
   const layoutPath = (await glob(`${appDir}/layout.{tsx,jsx,ts,js}`, { cwd, absolute: true }))[0];
 
   const pageFiles = await glob(`${appDir}/**/page.{tsx,jsx}`, {
@@ -206,7 +211,7 @@ export async function pages({
   }
 
   if (result.written.length > 0 && !existsSync(helperPath)) {
-    result.helper = HELPER_PATH;
+    result.helper = helperFile;
     if (!dryRun) {
       await mkdir(dirname(helperPath), { recursive: true });
       await writeFile(helperPath, pageHelper({ helperPath, layoutPath }));

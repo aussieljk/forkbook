@@ -18,8 +18,9 @@ The command does these steps:
 
 1. It finds each `page.tsx` in the `app` folder.
 2. It writes a `page.stories.tsx` next to each `page.tsx`.
-3. It writes the helper `.storybook/page.tsx` (or `.forkbook/page.tsx`).
-4. It skips a page that only calls `redirect()`. That page shows no content.
+3. It writes the helper `page.tsx` in `.forkbook` (or in `.storybook` if there is no `.forkbook` folder). It writes the helper only one time.
+4. It skips a page that only calls `redirect()` or `permanentRedirect()`. That page shows no content.
+5. It does not change a page that already has a stories file. Route groups such as `(marketing)` are not part of the route.
 
 ## The helper
 
@@ -27,13 +28,27 @@ Each story calls `page(path, Component)` from the helper. The helper puts the pa
 
 ```tsx
 // app/settings/page.stories.tsx
-import { page } from '../../.storybook/page';
-import SettingsPage from './page';
+import type { Meta, StoryObj } from '@aussieljk/forkbook/nextjs-vite';
 
-export default page('/settings', SettingsPage);
+import { page } from '../../.forkbook/page';
+import Page from './page';
+
+const meta = {
+  title: 'settings',
+  tags: ['!autodocs'],
+  ...page('/settings', Page),
+} satisfies Meta;
+
+export default meta;
+
+export const Default: StoryObj = { name: 'settings' };
 ```
 
-You can change `.storybook/page.tsx`. For example, add the providers that your root layout uses.
+Keep `title` and `tags` as literal values in the meta. The indexer cannot read them from the return value of `page()`.
+
+The root layout is called as a plain function. If your root layout uses hooks, change the helper.
+
+You can change the helper. For example, add the providers that your root layout uses.
 
 ## Parameters of a dynamic route
 
@@ -47,7 +62,9 @@ Each page gets one story. To see the page at different sizes, use the viewport t
 
 ## The sidebar
 
-The title of the story is the same as the name of the story. When the name is the same as the title, the sidebar shows one item (a leaf) for the route, and not a component with one story in it. This is also true when autodocs is on.
+The title is the route without the first `/` (the root route is `index`). The story name is the last part of the title. When the story name is the same as the last part of the title, the sidebar shows one item (a leaf) for the route, and not a component with one story in it. This is also true when autodocs is on.
+
+Without more settings, the leaves are in folders by path (`posts/[slug]` is in the folder `posts`).
 
 To remove all folders from the sidebar, set `flat` in `.forkbook/manager.ts`:
 
@@ -65,6 +82,6 @@ A server page can read files with `node:fs`. In the browser, Forkbook gives stan
 
 - `node:fs`: `readFileSync` and `existsSync`. They read the files with `import.meta.glob` and `?raw`, so the files are in the bundle.
 - `node:path`.
-- `process.cwd()`.
+- `process.cwd()`: it returns the project root (the folder of the Next.js config).
 
 For more, see [Next.js with Vite](/docs/get-started/frameworks/nextjs-vite#nodejs-modules-in-the-browser).
