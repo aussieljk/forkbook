@@ -597,6 +597,11 @@
       "types": "./dist/nextjs-vite/node/index.d.ts",
       "default": "./dist/nextjs-vite/node/index.js"
     },
+    "./nextjs-vite/node-stand-ins": {
+      "code": "./src/nextjs-vite/node-stand-ins/index.ts",
+      "types": "./dist/nextjs-vite/node-stand-ins/index.d.ts",
+      "default": "./dist/nextjs-vite/node-stand-ins/index.js"
+    },
     "./nextjs-vite/preset": {
       "code": "./src/nextjs-vite/preset.ts",
       "default": "./dist/nextjs-vite/preset.js"
