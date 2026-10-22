@@ -56,7 +56,7 @@
     },
     "code/core": {
       "name": "@aussieljk/forkbook",
-      "version": "0.0.1-6",
+      "version": "0.0.1-7",
       "bin": {
         "forkbook": "dist/bin/dispatcher.js",
         "sb-rn-get-stories": "dist/react-native/bin/get-stories.js",
