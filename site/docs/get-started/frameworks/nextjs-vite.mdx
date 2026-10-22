@@ -50,6 +50,20 @@ const preview: Preview = {
 export default preview;
 ```
 
+To write one story for each page, see [A story for each page](/docs/get-started/frameworks/nextjs-pages).
+
+## Node.js modules in the browser
+
+A server component can use Node.js modules. The browser does not have them, so Forkbook gives stand-ins:
+
+| Module | What works |
+| --- | --- |
+| `node:fs` | `readFileSync` and `existsSync`. Forkbook reads the files with `import.meta.glob` and `?raw`, so they are in the bundle. |
+| `node:path` | The path functions. |
+| `process.cwd()` | Returns a value, so code that joins paths to it runs. |
+
+Other `node:fs` functions are not there. Mock them in the story.
+
 ## Navigation in a story
 
 ```ts

@@ -4,9 +4,35 @@ import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 # Moving from Storybook
 
-Forkbook is one package. To move a project, change the packages, change the imports, and rename a small number of names.
+Forkbook is one package. To move a project, change the packages, change the imports, and rename a small number of names. The `forkbook migrate` command does all of these steps.
 
-## 1. Change the packages
+## Use forkbook migrate
+
+```sh
+bunx @aussieljk/forkbook migrate --dry-run
+bunx @aussieljk/forkbook migrate
+```
+
+`--dry-run` shows the changes and does not write them. Without it, the command does these steps:
+
+1. It removes `storybook` and each `@storybook/*` package, and adds `@aussieljk/forkbook`.
+2. It changes the imports (see the table in step 2 below).
+3. It renames `STORYBOOK_*` to `FORKBOOK_*`, `sb-` to `fb-` and `--sb-` to `--fb-`.
+
+Read the diff before you commit it.
+
+## Known faults
+
+| Fault | Version | Fix | Workaround |
+| --- | --- | --- | --- |
+| The build fails when the a11y addon is on. The error is `MISSING_EXPORT` from `use-sync-external-store/shim`. | 0.0.1-6 | The next release | Remove `@aussieljk/forkbook/addon-a11y` from `addons` in `main.ts`. |
+| The indexer ignores a `title` or `tags` that come from a spread or from a function call in the meta. | 0.0.1-6 | The next release | Write `title` and `tags` as literal values in the meta. |
+
+## The manual steps
+
+Use these steps as a reference, or when you do not want to use `forkbook migrate`.
+
+### 1. Change the packages
 
 Remove `storybook` and each `@storybook/*` package. Add Forkbook:
 
@@ -19,7 +45,7 @@ Do not install Forkbook as `"storybook": "npm:@aussieljk/forkbook"`. Then the pa
 
 Remove patches of `@storybook/*` packages. For example, Forkbook already has the Next.js 16.4 router fix.
 
-## 2. Change the imports
+### 2. Change the imports
 
 Change each import as this table shows.
 
@@ -51,14 +77,14 @@ grep -rlE "['\"](@storybook/|storybook/)" src .storybook \
 
 Read the diff before you commit it.
 
-## 3. What stays the same
+### 3. What stays the same
 
 - The `storybook` bin. Your `storybook dev` and `storybook build` scripts work.
 - The `.storybook` folder. Forkbook reads it when there is no `.forkbook` folder.
 - The framework names `@storybook/react-vite` and `@storybook/nextjs-vite` in `main.ts`.
 - CSF, `Meta`, `StoryObj`, args, parameters, decorators, loaders and play functions.
 
-## 4. Renamed names
+### 4. Renamed names
 
 | Storybook | Forkbook |
 | --- | --- |

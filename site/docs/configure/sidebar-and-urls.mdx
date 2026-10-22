@@ -29,6 +29,7 @@ addons.setConfig({
     collapsedRoots: ['other'],
     showIcons: false,
     expandAll: true,
+    flat: false,
   },
 });
 ```
@@ -39,5 +40,10 @@ addons.setConfig({
 | `collapsedRoots` | `[]` | The ids of the top-level groups that start closed. |
 | `showIcons` | `false` | Shows a grey type icon (group, component, docs, story) before each item. |
 | `expandAll` | `true` | Opens every group and component when Forkbook starts. Set `false` to open only the top-level groups. |
+| `flat` | `false` | Removes all folders. The sidebar shows each item at the top level. |
+
+## One leaf for a story
+
+When the name of a story is the same as its title, the sidebar shows one item (a leaf) for the story. It does not show a component with one story in it. This is also true when autodocs is on. [A story for each page](/docs/get-started/frameworks/nextjs-pages) uses this rule.
 
 The sidebar uses neutral greys for hover and for the selected item.
