@@ -136,3 +136,50 @@ export const removeNoiseFromName = (storyName: string) => storyName.replaceAll(/
 
 export const isStoryHoistable = (storyName: string, componentName: string) =>
   removeNoiseFromName(storyName) === removeNoiseFromName(componentName);
+
+/**
+ * Find the components that the sidebar shows as one leaf (single story hoisting):
+ *
+ * - A component with only one docs child.
+ * - A component with one story child that has the same name as the component.
+ * - The same, plus one autodocs entry. The sidebar hides the autodocs entry. It stays reachable
+ *   by its URL and in the search results.
+ *
+ * Returns a map from each hoisted component id to the id of the child that replaces it, and the
+ * ids of the hidden autodocs entries.
+ */
+export const getHoistedComponents = (data: IndexHash) => {
+  const hoisted: Record<string, string> = {};
+  const hiddenIds: string[] = [];
+
+  Object.values(data).forEach((entry) => {
+    if (entry.type !== 'component') {
+      return;
+    }
+    const children = (entry.children ?? []).map((id) => data[id]).filter(Boolean);
+    const stories = children.filter((child) => child.type === 'story');
+    const docs = children.filter((child) => child.type === 'docs');
+
+    if (children.length === 1 && docs.length === 1) {
+      hoisted[entry.id] = docs[0].id;
+      return;
+    }
+
+    const [story] = stories;
+    const autodocs = docs.filter((child) => child.tags?.includes('autodocs'));
+    if (
+      stories.length === 1 &&
+      story.type === 'story' &&
+      story.subtype === 'story' &&
+      docs.length === autodocs.length &&
+      children.length === 1 + docs.length &&
+      docs.length <= 1 &&
+      isStoryHoistable(story.name, entry.name)
+    ) {
+      hoisted[entry.id] = story.id;
+      hiddenIds.push(...docs.map((child) => child.id));
+    }
+  });
+
+  return { hoisted, hiddenIds };
+};

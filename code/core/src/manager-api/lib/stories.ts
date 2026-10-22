@@ -222,7 +222,7 @@ export const transformStoryIndexToStoriesHash = (
   });
 
   const { sidebar = {} } = provider.getConfig();
-  const { showRoots, collapsedRoots = [], renderAriaLabel, renderLabel } = sidebar;
+  const { showRoots, flat, collapsedRoots = [], renderAriaLabel, renderLabel } = sidebar;
 
   const setShowRoots = typeof showRoots !== 'undefined';
 
@@ -233,7 +233,8 @@ export const transformStoryIndexToStoriesHash = (
 
     // First, split the title into a set of names, separated by '/' and trimmed.
     const { title } = item;
-    const groups = title.trim().split(TITLE_PATH_SEPARATOR);
+    // With the `flat` option, the full title is one name, so the sidebar makes no folders.
+    const groups = flat ? [title.trim()] : title.trim().split(TITLE_PATH_SEPARATOR);
     const root = (!setShowRoots || showRoots) && groups.length > 1 ? [groups.shift()] : [];
     const names = [...root, ...groups];
 

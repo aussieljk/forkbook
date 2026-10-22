@@ -275,6 +275,36 @@ describe('stories API', () => {
         title: 'a/b',
       });
     });
+    it('makes no folders when flat = true', () => {
+      const moduleArgs = createMockModuleArgs({});
+      const { api } = initStories(moduleArgs as unknown as ModuleArgs);
+      const { store, provider } = moduleArgs;
+      provider.getConfig.mockReturnValue({ sidebar: { flat: true } });
+      api.setIndex({
+        v: 5,
+        entries: {
+          'a-b-c--1': {
+            type: 'story',
+            subtype: 'story',
+            id: 'a-b-c--1',
+            title: 'a/b/c',
+            name: '1',
+            importPath: './a/b/c.ts',
+          },
+        },
+      });
+      const { index } = store.getState();
+      expect(Object.keys(index!)).toEqual(['a-b-c', 'a-b-c--1']);
+      expect(index!['a-b-c']).toMatchObject({
+        type: 'component',
+        name: 'a/b/c',
+        depth: 0,
+        children: ['a-b-c--1'],
+      });
+      expect(index!['a-b-c']).not.toHaveProperty('parent', expect.anything());
+      expect(index!['a-b-c--1']).toMatchObject({ parent: 'a-b-c', depth: 1 });
+    });
+
     it('does not put bare stories into a root when showRoots = true', () => {
       const moduleArgs = createMockModuleArgs({});
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
