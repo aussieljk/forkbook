@@ -7,7 +7,7 @@ import { toMcpToolName } from '../../toolset-names.ts';
  *
  * The prose predates the toolsets and is eval-tuned, so it is kept verbatim. It names sibling
  * capabilities by their MCP tool names rather than through `getToolName`, because valibot descriptions
- * are static strings with no per-consumer rendering. One of them, `get-storybook-story-instructions`,
+ * are static strings with no per-consumer rendering. One of them, `get-forkbook-story-instructions`,
  * is an `@aussieljk/forkbook/addon-mcp` tool with no toolset method;
  * a CLI consumer would need this sentence rewritten rather than re-rendered.
  */
@@ -16,7 +16,7 @@ const storyInputProps = {
     v.optional(v.record(v.string(), v.any())),
     v.description(`Optional custom props to pass to the story for rendering. Use this when you don't want to render the default story,
 but you want to customize some args or other props.
-You can look up the component's documentation using the get-storybook-story-instructions tool to see what props are available.`)
+You can look up the component's documentation using the get-forkbook-story-instructions tool to see what props are available.`)
   ),
   globals: v.pipe(
     v.optional(v.record(v.string(), v.any())),

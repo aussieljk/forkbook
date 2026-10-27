@@ -1,5 +1,5 @@
 import { existsSync } from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, rename, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
 import { glob } from 'tinyglobby';
@@ -12,6 +12,33 @@ const IMPORT_RULES: [RegExp, string][] = [
 
 /** `STORYBOOK_*` env vars and `__STORYBOOK_*` globals become `FORKBOOK_*` and `__FORKBOOK_*`. */
 const ENV_RULE: [RegExp, string] = [/(?<![A-Za-z0-9])(_*)STORYBOOK_/g, '$1FORKBOOK_'];
+
+/** The names that Forkbook changed: the config folders, the story list, the Metro wrapper and the config type. */
+const NAME_RULES: [RegExp, string][] = [
+  [/\.rnstorybook\b/g, '.rnforkbook'],
+  [/(?<![\w-])\.storybook\b/g, '.forkbook'],
+  [/storybook\.requires/g, 'forkbook.requires'],
+  [
+    /@storybook\/react-native\/metro\/withStorybook/g,
+    '@aussieljk/forkbook/react-native/metro/withForkbook',
+  ],
+  [/withStorybook/g, 'withForkbook'],
+  [/\bStorybookConfig\b/g, 'ForkbookConfig'],
+];
+
+/** The `storybook` and `sb-rn-get-stories` commands and the `storybook*` script names in package.json scripts. */
+const SCRIPT_RULES: [RegExp, string][] = [
+  [/\bsb-rn-get-stories\b/g, 'forkbook rn-stories'],
+  [/(?<![\w@/.-])storybook(?=[\s:]|$)/g, 'forkbook'],
+];
+
+/** The folders and files that Forkbook renamed, from the old path to the new path. */
+const MOVES: [string, string][] = [
+  ['.storybook', '.forkbook'],
+  ['.rnstorybook', '.rnforkbook'],
+  ['.rnforkbook/storybook.requires.ts', '.rnforkbook/forkbook.requires.ts'],
+  ['.rnforkbook/storybook.requires.js', '.rnforkbook/forkbook.requires.js'],
+];
 
 /** `sb-*` classes and `--sb-*` CSS variables become `fb-*` and `--fb-*`. */
 const CSS_RULE: [RegExp, string] = [/(?<![\w-])(--)?sb-(?=[a-z])/g, '$1fb-'];
@@ -35,6 +62,8 @@ export interface MigrateOptions {
 }
 
 export interface MigrateResult {
+  /** The folders and files that were renamed, as `old -> new`. */
+  moved: string[];
   removedPackages: string[];
   addedPackage: string;
   changedFiles: string[];
@@ -46,7 +75,8 @@ function apply(text: string, rules: [RegExp, string][]) {
 }
 
 export function migrateSource(text: string) {
-  return apply(text, [...IMPORT_RULES, ENV_RULE, CSS_RULE]);
+  // The Metro wrapper import goes first, before the general import rule changes its package name.
+  return apply(text, [NAME_RULES[3], ...IMPORT_RULES, ...NAME_RULES, ENV_RULE, CSS_RULE]);
 }
 
 export function installCommand(cwd: string) {
@@ -90,8 +120,13 @@ export async function migrate({
     ...packageJson.devDependencies,
     '@aussieljk/forkbook': `^${version}`,
   };
-  for (const [name, script] of Object.entries<string>(packageJson.scripts ?? {})) {
-    packageJson.scripts[name] = apply(script, [ENV_RULE]);
+  if (packageJson.scripts) {
+    packageJson.scripts = Object.fromEntries(
+      Object.entries<string>(packageJson.scripts).map(([name, script]) => [
+        apply(name, SCRIPT_RULES),
+        apply(script, [ENV_RULE, ...NAME_RULES, ...SCRIPT_RULES]),
+      ])
+    );
   }
   const before = await readFile(packageJsonPath, 'utf8');
   const after = `${JSON.stringify(packageJson, null, 2)}\n`;
@@ -99,6 +134,17 @@ export async function migrate({
     changedFiles.push('package.json');
     if (!dryRun) {
       await writeFile(packageJsonPath, after);
+    }
+  }
+
+  const moved: string[] = [];
+  for (const [from, to] of MOVES) {
+    const source = join(cwd, dryRun ? from.replace('.rnforkbook/', '.rnstorybook/') : from);
+    if (existsSync(source) && !existsSync(join(cwd, to))) {
+      moved.push(`${from} -> ${to}`);
+      if (!dryRun) {
+        await rename(source, join(cwd, to));
+      }
     }
   }
 
@@ -115,6 +161,7 @@ export async function migrate({
   }
 
   return {
+    moved,
     removedPackages,
     addedPackage: `@aussieljk/forkbook@^${version}`,
     changedFiles,

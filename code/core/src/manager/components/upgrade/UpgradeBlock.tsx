@@ -47,7 +47,7 @@ export const UpgradeBlock: FC<UpgradeBlockProps> = ({ onNavigateToWhatsNew }) =>
       {
         id: 'npm',
         title: 'npm',
-        children: <UpgradeSnippet command="npx storybook@latest upgrade" />,
+        children: <UpgradeSnippet command="npx @aussieljk/forkbook@latest upgrade" />,
       },
       {
         id: 'yarn',

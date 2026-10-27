@@ -153,7 +153,7 @@ export async function bootstrapAttachedRuntime(
   const enableDelegatedMode = deps.setDelegatedMode ?? setDelegatedMode;
   enableDelegatedMode(true);
 
-  const configDir = record.configDir ?? resolve(record.cwd, defaultConfigDir(record.cwd));
+  const configDir = record.configDir ?? resolve(record.cwd, defaultConfigDir());
   const { loadStorybook, getService } = await resolveLoaders(deps);
   try {
     await loadStorybook({ configDir, channel: connection.channel });

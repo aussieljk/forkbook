@@ -10,7 +10,7 @@ import {
 
 import type { StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
-import type { StorybookConfig } from '../config.ts';
+import type { ForkbookConfig } from '../config.ts';
 import {
   type Addon,
   ensureRelativePathHasDot,
@@ -36,7 +36,7 @@ export interface GenerateOptions {
 }
 
 /** @todo Remove support for `main.addons` in a future major version. */
-function warnDeprecatedMainAddonsField(main: StorybookConfig, configPath: string) {
+function warnDeprecatedMainAddonsField(main: ForkbookConfig, configPath: string) {
   const addons = main.addons ?? [];
   if (addons.length === 0) {
     return;
@@ -66,7 +66,7 @@ function getLocalIPAddress() {
   return '0.0.0.0';
 }
 
-/** Writes `storybook.requires.ts` (or `.js`) in the config folder. */
+/** Writes `forkbook.requires.ts` (or `.js`) in the config folder. */
 export async function generate({
   configPath,
   useJs = false,
@@ -80,13 +80,13 @@ export async function generate({
   const storybookRequiresLocation = path.resolve(
     cwd,
     configPath,
-    `storybook.requires.${useJs ? 'js' : 'ts'}`
+    `forkbook.requires.${useJs ? 'js' : 'ts'}`
   );
 
   const main = (await loadMainConfig({
     configDir: path.resolve(cwd, configPath),
     cwd,
-  })) as unknown as StorybookConfig;
+  })) as unknown as ForkbookConfig;
 
   warnDeprecatedMainAddonsField(main, configPath);
 

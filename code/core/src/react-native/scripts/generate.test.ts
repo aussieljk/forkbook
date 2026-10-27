@@ -29,7 +29,7 @@ describe('generate', () => {
 
     await generate({ configPath });
 
-    const file = readFileSync(join(configPath, 'storybook.requires.ts'), 'utf8');
+    const file = readFileSync(join(configPath, 'forkbook.requires.ts'), 'utf8');
     expect(file).toContain('/// <reference types="@aussieljk/forkbook/react-native/metro-env" />');
     expect(file).toContain(
       "import { start, updateView, type View, type Features } from '@aussieljk/forkbook/react-native';"
@@ -45,7 +45,7 @@ describe('generate', () => {
 
     await generate({ configPath });
 
-    const file = readFileSync(join(configPath, 'storybook.requires.ts'), 'utf8');
+    const file = readFileSync(join(configPath, 'forkbook.requires.ts'), 'utf8');
     expect(file).toContain('import "@aussieljk/forkbook/addon-ondevice-controls/register";');
     expect(file).toContain('import "@aussieljk/forkbook/addon-ondevice-actions/register";');
   });

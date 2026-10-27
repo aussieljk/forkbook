@@ -13,8 +13,8 @@ describe('deriveStorybookPlatformScripts', () => {
     const result = deriveStorybookPlatformScripts(inputScripts);
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
-      'storybook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+      'forkbook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
     });
     expect(result.missingBaseScripts).toEqual([]);
   });
@@ -25,7 +25,7 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
     });
     expect(result.missingBaseScripts).toEqual(['android']);
   });
@@ -37,8 +37,8 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
-      'storybook:android': 'FORKBOOK_ENABLED=true react-native run-android',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+      'forkbook:android': 'FORKBOOK_ENABLED=true react-native run-android',
     });
     expect(result.missingBaseScripts).toEqual([]);
   });
@@ -49,7 +49,7 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=false react-native run-ios',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=false react-native run-ios',
     });
   });
 
@@ -60,8 +60,8 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true FOO=bar react-native run-ios',
-      'storybook:android':
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true FOO=bar react-native run-ios',
+      'forkbook:android':
         'cross-env FORKBOOK_ENABLED=true FOO=bar BAZ=qux react-native run-android',
     });
   });
@@ -72,7 +72,7 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios':
+      'forkbook:ios':
         'cross-env-shell FORKBOOK_ENABLED=true FOO=bar "react-native run-ios && echo done"',
     });
   });
@@ -83,7 +83,7 @@ describe('deriveStorybookPlatformScripts', () => {
     });
 
     expect(result.scriptsToAdd).toEqual({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
     });
   });
 
@@ -94,8 +94,8 @@ describe('deriveStorybookPlatformScripts', () => {
       storybook: 'cross-env FORKBOOK_ENABLED=true react-native start',
       test: 'jest',
       lint: 'eslint .',
-      'storybook:web': 'storybook dev -p 6006',
-      'build-storybook': 'storybook build',
+      'forkbook:web': 'forkbook dev -p 6006',
+      'build-storybook': 'forkbook build',
     };
     const snapshot = { ...inputScripts };
 

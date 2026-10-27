@@ -980,7 +980,7 @@ describe('attached tools', () => {
           reason: 'no-instance',
           instances: [],
           remediation:
-            'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+            'No running Forkbook was found for this project. Start it first (for example `npm run forkbook`), then retry with `--attach`.',
         });
       }),
     });
@@ -991,7 +991,7 @@ describe('attached tools', () => {
     expect(result.outcome).toEqual({ kind: 'attach-gate', reason: 'no-instance' });
     expect(result.requestedMode).toBe('attached');
     expect(result.attachMode).toBe('attached');
-    expect(result.output).toContain('npm run storybook');
+    expect(result.output).toContain('npm run forkbook');
     expect(result.output).toContain('--attach');
   });
 

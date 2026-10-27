@@ -13,7 +13,7 @@
     "eslint-plugin-compat"
   ],
   "ignorePatterns": [
-    "storybook-static",
+    "forkbook-static",
     "built-storybooks",
     "**/__testfixtures__",
     "**/__mockdata__",

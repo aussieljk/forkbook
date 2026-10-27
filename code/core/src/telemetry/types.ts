@@ -1,4 +1,4 @@
-import type { StorybookConfig, TypescriptOptions } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig, TypescriptOptions } from '@aussieljk/forkbook/internal/types';
 
 import type { DetectResult } from 'package-manager-detector';
 
@@ -105,7 +105,7 @@ export type StorybookMetadata = {
    * built-in `ModuleFederationPlugin` directly without one of these packages.
    */
   hasModuleFederation?: boolean;
-  features?: StorybookConfig['features'];
+  features?: ForkbookConfig['features'];
   refCount?: number;
   preview?: {
     usesGlobals?: boolean;

@@ -5,7 +5,7 @@ import { chmod, mkdir, readFile, readdir, rename, rm, stat, writeFile } from 'no
 import { homedir, userInfo } from 'node:os';
 
 import { findStorybookPackageRoot, normalizeAddonName } from '@aussieljk/forkbook/internal/common';
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { join, resolve } from 'pathe';
 
@@ -107,7 +107,7 @@ export function getStorybookBaseUrl(address: string) {
 }
 
 export function getMcpMetadataFromMainConfig(
-  mainConfig: Pick<StorybookConfig, 'addons'>
+  mainConfig: Pick<ForkbookConfig, 'addons'>
 ): RuntimeInstanceRecord['mcp'] {
   // Normalize entries so addons registered via `getAbsolutePath()` are recognized, not just bare names.
   const addon = mainConfig.addons?.find(

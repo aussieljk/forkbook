@@ -25,7 +25,7 @@ describe('getUIBuildingInstructionsTool', () => {
       {
         name: 'test-server',
         version: '1.0.0',
-        description: 'Test server for get-storybook-story-instructions tool',
+        description: 'Test server for get-forkbook-story-instructions tool',
       },
       {
         adapter,

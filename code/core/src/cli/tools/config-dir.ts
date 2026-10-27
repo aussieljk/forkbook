@@ -15,5 +15,5 @@ export function resolveStorybookConfigDir({
   if (configDir) {
     return isAbsolute(configDir) ? configDir : resolve(projectCwd, configDir);
   }
-  return resolve(projectCwd, defaultConfigDir(projectCwd));
+  return resolve(projectCwd, defaultConfigDir());
 }

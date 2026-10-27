@@ -12,7 +12,7 @@ import {
 } from '@aussieljk/forkbook/internal/common';
 import { getInterpretedFile } from '@aussieljk/forkbook/internal/common';
 import { readConfig } from '@aussieljk/forkbook/internal/csf-tools';
-import type { PackageJson, StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { PackageJson, ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { RN_FORKBOOK_DIR } from '../shared/constants/config-folder.ts';
 
@@ -112,7 +112,7 @@ export const computeStorybookMetadata = async ({
 }: {
   packageJsonPath: string;
   packageJson: PackageJson;
-  mainConfig?: StorybookConfig & Record<string, any>;
+  mainConfig?: ForkbookConfig & Record<string, any>;
   configDir: string;
 }): Promise<StorybookMetadata> => {
   const settings = isCI() && !detectAgent() ? undefined : await globalSettings();
@@ -336,7 +336,7 @@ function resolveDefaultConfigDir(packageJson: PackageJson): string {
     Scenarios:
     1. user changed it to something else e.g. "storybook:dev"
     2. they are using nx where the storybook config is defined somewhere else
-    3. React Native on-device Forkbook uses `.rnstorybook` and `storybook:ios`/`storybook:android`
+    3. React Native on-device Forkbook uses `.rnforkbook` and `forkbook:ios`/`forkbook:android`
        scripts (no `storybook` script), so the `.forkbook` default never finds the config.
   */
   const fromScript = getStorybookConfiguration(

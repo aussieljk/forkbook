@@ -3,13 +3,12 @@ import { join, parse, relative, resolve } from 'node:path';
 
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { MainFileEvaluationError } from '@aussieljk/forkbook/internal/server-errors';
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { dedent } from 'ts-dedent';
 
 import { importModule } from '../../shared/utils/module.ts';
 import { defaultConfigDir } from './default-config-dir.ts';
-import { withForkbookFramework } from './get-framework-name.ts';
 import { getInterpretedFile } from './interpret-files.ts';
 import { validateConfigurationFiles } from './validate-configuration-files.ts';
 
@@ -21,14 +20,14 @@ export async function loadMainConfig({
   configDir: string;
   cwd?: string;
   skipCache?: boolean;
-}): Promise<StorybookConfig> {
+}): Promise<ForkbookConfig> {
   await validateConfigurationFiles(configDir, cwd);
 
   const mainPath = getInterpretedFile(resolve(configDir, 'main')) as string;
 
   try {
     const out = await importModule(mainPath, { skipCache });
-    return withForkbookFramework(out);
+    return out;
   } catch (e) {
     if (!(e instanceof Error)) {
       throw e;
@@ -61,7 +60,7 @@ export async function loadMainConfig({
         } finally {
           await rm(modifiedMainPath);
         }
-        return withForkbookFramework(out);
+        return out;
       }
     }
 

@@ -12,20 +12,20 @@ import { createChannelServer } from './channelServer.ts';
 const PACKAGE = '@aussieljk/forkbook';
 
 /** Options for configuring Storybook with React Native. */
-export interface WithStorybookOptions {
-  /** The path to the Storybook config folder. Defaults to './.rnstorybook'. */
+export interface WithForkbookOptions {
+  /** The path to the Storybook config folder. Defaults to './.rnforkbook'. */
   configPath?: string;
 
   /** WebSocket configuration for syncing storybook instances or sending events to storybook. */
   websockets?: WebsocketsOptions | 'auto';
 
-  /** Whether to write storybook.requires.js instead of storybook.requires.ts. Defaults to false. */
+  /** Whether to write forkbook.requires.js instead of forkbook.requires.ts. Defaults to false. */
   useJs?: boolean;
 
   /** If false, Storybook is removed from the JS bundle. Defaults to true. */
   enabled?: boolean;
 
-  /** Whether to include doc tools in the storybook.requires file. Defaults to true. */
+  /** Whether to include doc tools in the forkbook.requires file. Defaults to true. */
   docTools?: boolean;
 
   /**
@@ -52,19 +52,16 @@ const stubPath = () => createRequire(import.meta.url).resolve(`${PACKAGE}/react-
  *
  * ```js
  * const { getDefaultConfig } = require('expo/metro-config');
- * const { withStorybook } = require('@aussieljk/forkbook/react-native/metro/withStorybook');
+ * const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
  *
- * module.exports = withStorybook(getDefaultConfig(__dirname), {
+ * module.exports = withForkbook(getDefaultConfig(__dirname), {
  *   enabled: process.env.EXPO_PUBLIC_FORKBOOK_ENABLED === 'true',
  * });
  * ```
  */
-export function withStorybook(
-  config: MetroConfig,
-  options: WithStorybookOptions = {}
-): MetroConfig {
+export function withForkbook(config: MetroConfig, options: WithForkbookOptions = {}): MetroConfig {
   const {
-    configPath = path.resolve(process.cwd(), './.rnstorybook'),
+    configPath = path.resolve(process.cwd(), './.rnforkbook'),
     websockets,
     useJs = false,
     enabled = true,

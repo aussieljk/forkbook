@@ -45,7 +45,7 @@ describe('buildServerInstructions', () => {
 
       ## UI Building and Story Writing Workflow
 
-      - Before creating or editing components or stories, call **get-storybook-story-instructions**; its output is the source of truth for imports, story patterns, and testing conventions.
+      - Before creating or editing components or stories, call **get-forkbook-story-instructions**; its output is the source of truth for imports, story patterns, and testing conventions.
       - After editing anything that changes how the UI looks — components, stories, styles, themes, tokens — call **stories-changed** to discover the affected stories.
       - End your final response with the review section from **review-create**'s result — never substitute preview URLs. **stories-preview** is only for mid-loop iteration or a requested direct link. If nothing visually changed, say so.
       - After a visually observable UI change, or when the user asks to see or browse stories/components, call **review-create** (again on each iteration) and follow its description and result. Visual work is not done until the review is published; any newly created story MUST be included.
@@ -81,7 +81,7 @@ describe('buildServerInstructions', () => {
 
       ## UI Building and Story Writing Workflow
 
-      - Before creating or editing components or stories, call **get-storybook-story-instructions**; its output is the source of truth for imports, story patterns, and testing conventions.
+      - Before creating or editing components or stories, call **get-forkbook-story-instructions**; its output is the source of truth for imports, story patterns, and testing conventions.
       - After editing anything that changes how the UI looks — components, stories, styles, themes, tokens — call **stories-changed** to discover the affected stories.
       - End your final response with the review section from **review-create**'s result — never substitute preview URLs. **stories-preview** is only for mid-loop iteration or a requested direct link. If nothing visually changed, say so.
       - After a visually observable UI change, or when the user asks to see or browse stories/components, call **review-create** (again on each iteration) and follow its description and result. Visual work is not done until the review is published; any newly created story MUST be included.
@@ -182,7 +182,7 @@ describe('buildServerInstructions', () => {
       });
 
       expect(instructions).toContain('npx forkbook skills write-story');
-      expect(instructions).not.toContain('get-storybook-story-instructions');
+      expect(instructions).not.toContain('get-forkbook-story-instructions');
     });
 
     it('renders review, preview, and discovery references as CLI commands', () => {

@@ -17,9 +17,9 @@ describe('getStorybookInfo React Native framework inference', () => {
     }
   });
 
-  it('infers @storybook/react-native when framework is missing in .rnstorybook', async () => {
+  it('infers @storybook/react-native when framework is missing in .rnforkbook', async () => {
     dir = join(tmpdir(), `fb-rn-info-${Date.now()}`);
-    mkdirSync(join(dir, '.rnstorybook'), { recursive: true });
+    mkdirSync(join(dir, '.rnforkbook'), { recursive: true });
     writeFileSync(
       join(dir, 'package.json'),
       JSON.stringify({
@@ -29,11 +29,11 @@ describe('getStorybookInfo React Native framework inference', () => {
       })
     );
     writeFileSync(
-      join(dir, '.rnstorybook/main.js'),
+      join(dir, '.rnforkbook/main.js'),
       `module.exports = { stories: ['**/*.stories.tsx'], deviceAddons: [] };`
     );
 
-    const info = await getStorybookInfo(join(dir, '.rnstorybook'), dir);
+    const info = await getStorybookInfo(join(dir, '.rnforkbook'), dir);
 
     expect(info.frameworkPackage).toBe('@storybook/react-native');
     expect(info.rendererPackage).toBe('@storybook/react-native');

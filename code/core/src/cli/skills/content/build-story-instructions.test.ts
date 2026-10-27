@@ -135,9 +135,9 @@ describe('buildStoryInstructions framework handling', () => {
       renderer: '@storybook/react-native',
     });
 
-    expect(instructions).toContain('React Native uses `.rnstorybook` directory');
+    expect(instructions).toContain('React Native uses `.rnforkbook` directory');
     expect(buildStoryInstructions({ ...baseInputs, transport: 'mcp' })).not.toContain(
-      '.rnstorybook'
+      '.rnforkbook'
     );
   });
 });

@@ -116,13 +116,13 @@ describe('TelemetryService', () => {
       const selectedFeatures = new Set([Feature.DOCS, Feature.TEST]);
 
       vi.mocked(getProcessAncestry).mockReturnValue([
-        { command: 'npx storybook@8.0.5 init' },
+        { command: 'npx @aussieljk/forkbook@8.0.5 init' },
       ] as any);
 
       await telemetryService.trackInitWithContext(
         ProjectType.REACT,
         selectedFeatures,
-        '.rnstorybook'
+        '.rnforkbook'
       );
 
       expect(getProcessAncestry).toHaveBeenCalled();
@@ -139,7 +139,7 @@ describe('TelemetryService', () => {
           versionSpecifier: '8.0.5',
           cliIntegration: undefined,
         },
-        { configDir: '.rnstorybook' }
+        { configDir: '.rnforkbook' }
       );
     });
 

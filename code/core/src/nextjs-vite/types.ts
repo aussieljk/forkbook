@@ -1,7 +1,7 @@
 import type { CompatibleString } from '@aussieljk/forkbook/internal/types';
 
 import type { BuilderOptions } from '@aussieljk/forkbook/builder-vite';
-import type { StorybookConfig as StorybookConfigReactVite } from '@aussieljk/forkbook/react-vite';
+import type { ForkbookConfig as StorybookConfigReactVite } from '@aussieljk/forkbook/react-vite';
 
 import type { NextRouter } from 'next/router';
 
@@ -36,7 +36,7 @@ type StorybookConfigFramework = {
 };
 
 /** The interface for Forkbook configuration in `main.ts` files. */
-export type StorybookConfig = Omit<StorybookConfigReactVite, keyof StorybookConfigFramework> &
+export type ForkbookConfig = Omit<StorybookConfigReactVite, keyof StorybookConfigFramework> &
   StorybookConfigFramework;
 
 export interface NextJsParameters {

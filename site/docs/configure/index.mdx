@@ -21,9 +21,9 @@ Forkbook reads its configuration from the `.forkbook` folder. If there is no `.f
 ## main.ts
 
 ```ts
-import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-const config: StorybookConfig = {
+const config: ForkbookConfig = {
   framework: '@aussieljk/forkbook/react-vite',
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts|tsx)'],
   addons: ['@aussieljk/forkbook/addon-docs', '@aussieljk/forkbook/addon-a11y'],

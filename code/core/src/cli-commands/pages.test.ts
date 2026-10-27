@@ -57,11 +57,11 @@ describe('pages', () => {
       'app/page.stories.tsx',
     ]);
     expect(result.skipped).toEqual(['app/old/page.tsx']);
-    expect(result.helper).toBe('.storybook/page.tsx');
+    expect(result.helper).toBe('.forkbook/page.tsx');
     expect(await readFile(join(cwd, 'app/done/page.stories.tsx'), 'utf8')).toBe('// already here');
 
     const post = await readFile(join(cwd, 'app/blog/[slug]/page.stories.tsx'), 'utf8');
-    expect(post).toContain(`import { page } from '../../../.storybook/page';`);
+    expect(post).toContain(`import { page } from '../../../.forkbook/page';`);
     expect(post).toContain(`import Page, { generateStaticParams } from './page';`);
     expect(post).toContain(`title: "blog/[slug]",\n  tags: ['!autodocs'],`);
     expect(post).toContain(`...page("/blog/[slug]", Page, { generateStaticParams }),`);
@@ -72,7 +72,7 @@ describe('pages', () => {
     expect(about).toContain(`...page("/about", Page),`);
 
     expect(await readFile(join(cwd, 'app/page.stories.tsx'), 'utf8')).toContain(`title: "index"`);
-    expect(await readFile(join(cwd, '.storybook/page.tsx'), 'utf8')).toContain(
+    expect(await readFile(join(cwd, '.forkbook/page.tsx'), 'utf8')).toContain(
       `import RootLayout from '../app/layout';`
     );
 
@@ -86,6 +86,6 @@ describe('pages', () => {
 
     expect(result.written).toHaveLength(3);
     expect(existsSync(join(cwd, 'app/page.stories.tsx'))).toBe(false);
-    expect(existsSync(join(cwd, '.storybook/page.tsx'))).toBe(false);
+    expect(existsSync(join(cwd, '.forkbook/page.tsx'))).toBe(false);
   });
 });

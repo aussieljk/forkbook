@@ -1,5 +1,5 @@
 import { getStorybookInfo } from '@aussieljk/forkbook/internal/common';
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { cleanPaths } from './sanitize.ts';
 
@@ -13,7 +13,7 @@ const cleanAndSanitizePath = (path: string) => {
   return pnpmDir ? pnpmDir[1].replace('+', '/') : cleaned;
 };
 
-export async function getFrameworkInfo(mainConfig: StorybookConfig, configDir: string) {
+export async function getFrameworkInfo(mainConfig: ForkbookConfig, configDir: string) {
   const { frameworkPackage, rendererPackage, builderPackage } = await getStorybookInfo(configDir);
 
   const frameworkOptions =

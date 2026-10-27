@@ -8,7 +8,7 @@ export const build = async (cliOptions: any) => {
   const options = {
     ...cliOptions,
     configDir: cliOptions.configDir || defaultConfigDir(),
-    outputDir: cliOptions.outputDir || './storybook-static',
+    outputDir: cliOptions.outputDir || './forkbook-static',
     configType: 'PRODUCTION',
     cache,
     packageJson,

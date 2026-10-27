@@ -50,7 +50,7 @@ const startStorybookIfNotRunning = async () => {
 
   try {
     // We don't await the process because we don't want Vitest to hang while Forkbook is starting
-    // Use shell so commands like `yarn forkbook` or `npm run storybook -- --quiet`
+    // Use shell so commands like `yarn forkbook` or `npm run forkbook -- --quiet`
     // are interpreted correctly across platforms.
     storybookProcess = spawn(storybookScript, {
       shell: true,

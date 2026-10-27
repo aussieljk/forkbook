@@ -59,11 +59,11 @@ export class FinalizationCommand {
 
     const contents = await fs.readFile(foundGitIgnoreFile, 'utf-8');
     const hasStorybookLog = contents.includes('*storybook.log');
-    const hasStorybookStatic = contents.includes('storybook-static');
+    const hasStorybookStatic = contents.includes('forkbook-static');
 
     const linesToAdd = [
       !hasStorybookLog ? '*storybook.log' : '',
-      !hasStorybookStatic ? 'storybook-static' : '',
+      !hasStorybookStatic ? 'forkbook-static' : '',
     ]
       .filter(Boolean)
       .join('\n');

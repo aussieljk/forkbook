@@ -6,7 +6,7 @@ const RESTART_GUIDANCE =
 
 export function formatNoInstance(records: StorybookInstanceRecord[]): string {
   const lines = [
-    'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+    'No running Forkbook was found for this project. Start it first (for example `npm run forkbook`), then retry with `--attach`.',
   ];
   if (records.length > 0) {
     lines.push(
@@ -36,7 +36,7 @@ export function formatOldServer(version: string): string {
 }
 
 export function formatConnectionFailed(record: StorybookInstanceRecord): string {
-  return `Could not connect to the Forkbook at ${record.url}. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run storybook\`) and retry.`;
+  return `Could not connect to the Forkbook at ${record.url}. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run forkbook\`) and retry.`;
 }
 
 // Symmetric fact-only report: every path shown is a stored or compared fact, and no path appears

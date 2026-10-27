@@ -157,15 +157,15 @@ describe('readRegistry', () => {
   });
 
   it('accepts records with an optional storybookPath (written by servers that record their installation)', async () => {
-    const withStorybookPath = {
+    const withForkbookPath = {
       ...aliveRecord,
       storybookPath: '/projects/alive/node_modules/storybook',
     };
     vol.fromNestedJSON({
-      [REGISTRY_DIR]: { 'storybook-path.json': JSON.stringify(withStorybookPath) },
+      [REGISTRY_DIR]: { 'storybook-path.json': JSON.stringify(withForkbookPath) },
     });
 
-    await expect(readRegistry(REGISTRY_DIR)).resolves.toEqual([withStorybookPath]);
+    await expect(readRegistry(REGISTRY_DIR)).resolves.toEqual([withForkbookPath]);
   });
 
   it('accepts records with optional agent provenance', async () => {

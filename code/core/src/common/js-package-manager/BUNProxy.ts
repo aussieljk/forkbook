@@ -97,7 +97,7 @@ export class BUNProxy extends JsPackageManager {
   }
 
   getRunStorybookCommand(): string {
-    return 'bun run storybook';
+    return 'bun run forkbook';
   }
 
   getRunCommand(command: string): string {

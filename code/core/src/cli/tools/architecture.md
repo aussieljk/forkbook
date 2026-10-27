@@ -71,7 +71,7 @@ discovery side, where its worst case is an honest miss, never a false match.
 `cwd` plays no part in the gate: the same installation attaches in-process even when the server
 was started from an unrelated directory. A different installation (for example `npx
 storybook@latest tools` against a project-local server, or a project-local CLI against a server
-started via `npx storybook@latest dev`) respawns instead: a child host is started from the
+started via `npx @aussieljk/forkbook@latest dev`) respawns instead: a child host is started from the
 *recorded* installation — `record.storybookPath` → its own manifest → its host entry, a
 deterministic lookup, never a guessed bin — with the record's `cwd` as working directory and the
 paired record's port pinned so the child re-resolves to that exact instance. The child is the

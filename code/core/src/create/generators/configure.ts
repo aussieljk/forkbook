@@ -88,16 +88,16 @@ export async function configureMain({
   }
 
   if (isTypescript) {
-    imports.push(`import type { StorybookConfig } from '${frameworkPackage}';`);
+    imports.push(`import type { ForkbookConfig } from '${frameworkPackage}';`);
   } else {
-    finalPrefixes.push(`/** @type { import('${frameworkPackage}').StorybookConfig } */`);
+    finalPrefixes.push(`/** @type { import('${frameworkPackage}').ForkbookConfig } */`);
   }
 
   let mainJsContents = '';
   mainJsContents = mainConfigTemplate
     .replace('<<import>>', `${imports.join('\n\n')}\n\n`)
     .replace('<<prefix>>', finalPrefixes.length > 0 ? `${finalPrefixes.join('\n\n')}\n` : '')
-    .replace('<<type>>', isTypescript ? ': StorybookConfig' : '')
+    .replace('<<type>>', isTypescript ? ': ForkbookConfig' : '')
     .replace('<<mainContents>>', mainContents);
 
   const mainPath = `./${storybookConfigFolder}/main.${isTypescript ? 'ts' : 'js'}`;

@@ -47,10 +47,10 @@ const mismatch = {
 describe('attach failure messages', () => {
   it('tells the caller how to start Forkbook and lists the running instances that did not match', () => {
     expect(formatNoInstance([])).toMatchInlineSnapshot(`
-      "No running Forkbook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`."
+      "No running Forkbook was found for this project. Start it first (for example \`npm run forkbook\`), then retry with \`--attach\`."
     `);
     expect(formatNoInstance([other])).toMatchInlineSnapshot(`
-      "No running Forkbook was found for this project. Start it first (for example \`npm run storybook\`), then retry with \`--attach\`.
+      "No running Forkbook was found for this project. Start it first (for example \`npm run forkbook\`), then retry with \`--attach\`.
 
       Running Forkbook instances that did not match this project — target one by re-running this command from its project directory, or with \`--config-dir <dir>\`:
       - http://localhost:6006 (cwd \`/apps/web\`; configDir \`/apps/web/.forkbook\`)"
@@ -101,7 +101,7 @@ describe('attach failure messages', () => {
 
   it('points at the unreachable URL and how to start Forkbook again', () => {
     expect(formatConnectionFailed(other)).toMatchInlineSnapshot(
-      `"Could not connect to the Forkbook at http://localhost:6006. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run storybook\`) and retry."`
+      `"Could not connect to the Forkbook at http://localhost:6006. The instance registry may be stale — if that Forkbook is no longer running, start it again (for example \`npm run forkbook\`) and retry."`
     );
   });
 

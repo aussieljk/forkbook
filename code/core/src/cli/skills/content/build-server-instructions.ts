@@ -17,7 +17,7 @@ export type ServerInstructionsInputs = {
 /**
  * The full rule for how the agent should present links in its final
  * user-facing response, delivered through the
- * `get-storybook-story-instructions` output. The server instructions only
+ * `get-forkbook-story-instructions` output. The server instructions only
  * carry a terse pointer to the same rule: MCP clients truncate server
  * instructions (Claude Code cuts them at 2,048 chars), so anything beyond
  * the workflow trigger must live in tool descriptions and tool results.
@@ -53,7 +53,7 @@ export function buildServerInstructions({
     // ending and skip review-create.
     const previewStoriesStep = `After editing anything that changes how the UI looks — components, stories, styles, themes, tokens — call **${ref('stories.changed')}** to discover the affected stories.`;
     // Terse pointer only: the full link-presentation rule reaches the agent
-    // through the get-storybook-story-instructions output (getFinalLinksGuidance)
+    // through the get-forkbook-story-instructions output (getFinalLinksGuidance)
     // and the review-create and stories-preview tool results, which are
     // never truncated.
     const finalLinksStep = `End your final response with the review section from **${ref('review.create')}**'s result — never substitute preview URLs. **${ref('stories.preview')}** is only for mid-loop iteration or a requested direct link. If nothing visually changed, say so.`;

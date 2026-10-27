@@ -67,19 +67,19 @@ describe('metroConfig codemod', () => {
     expect(result.status).toBe('updated');
     expect(after).not.toBe(before);
     expect(await getFormattedDiff(before, after, filePath)).toMatchInlineSnapshot(`
-      "+ const { withStorybook } = require('@storybook/react-native/withStorybook');
+      "+ const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
       + 
       + 
         const defaultConfig = {};
         
       - module.exports = defaultConfig;
       - 
-      + module.exports = withStorybook(defaultConfig);
+      + module.exports = withForkbook(defaultConfig);
       + "
     `);
   });
 
-  it('wraps existing wrapper as outermost withStorybook', async () => {
+  it('wraps existing wrapper as outermost withForkbook', async () => {
     const filePath = path.join(tempDir, 'metro.config.js');
     const before = 'module.exports = withExpo(defaultConfig);\n';
     await writeFile(filePath, before, 'utf-8');
@@ -95,9 +95,9 @@ describe('metroConfig codemod', () => {
     expect(await getFormattedDiff(before, after, filePath)).toMatchInlineSnapshot(`
       "- module.exports = withExpo(defaultConfig);
       - 
-      + const { withStorybook } = require('@storybook/react-native/withStorybook');
+      + const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
       + 
-      + module.exports = withStorybook(withExpo(defaultConfig));
+      + module.exports = withForkbook(withExpo(defaultConfig));
       + "
     `);
   });
@@ -116,8 +116,8 @@ export default async function makeMetroConfig() {
       expect(await getFormattedDiff(before, transformed.code, filePath)).toMatchInlineSnapshot(`
         "- export default async function makeMetroConfig() {
         - 
-        + import { withStorybook } from '@storybook/react-native/withStorybook';
-        + export default withStorybook(async function makeMetroConfig() {
+        + import { withForkbook } from '@aussieljk/forkbook/react-native/metro/withForkbook';
+        + export default withForkbook(async function makeMetroConfig() {
         + 
             return { resolver: {} };
           
@@ -136,15 +136,17 @@ export default async function makeMetroConfig() {
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code).toContain(
-        "import { withStorybook } from '@storybook/react-native/withStorybook'"
+        "import { withForkbook } from '@aussieljk/forkbook/react-native/metro/withForkbook'"
       );
-      expect(transformed.code).not.toContain("require('@storybook/react-native/withStorybook')");
+      expect(transformed.code).not.toContain(
+        "require('@aussieljk/forkbook/react-native/metro/withForkbook')"
+      );
     }
   });
 
-  it('reuses aliased ESM withStorybook import when wrapping export default', () => {
+  it('reuses aliased ESM withForkbook import when wrapping export default', () => {
     const before = `
-import { withStorybook as wrapMetro } from '@storybook/react-native/withStorybook';
+import { withForkbook as wrapMetro } from '@aussieljk/forkbook/react-native/metro/withForkbook';
 
 export default {};
 `;
@@ -153,16 +155,16 @@ export default {};
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code).toContain(
-        "import { withStorybook as wrapMetro } from '@storybook/react-native/withStorybook'"
+        "import { withForkbook as wrapMetro } from '@aussieljk/forkbook/react-native/metro/withForkbook'"
       );
       expect(transformed.code).toContain('export default wrapMetro({});');
-      expect(transformed.code).not.toContain('export default withStorybook({});');
+      expect(transformed.code).not.toContain('export default withForkbook({});');
     }
   });
 
-  it('treats aliased ESM withStorybook wrapper as already configured', () => {
+  it('treats aliased ESM withForkbook wrapper as already configured', () => {
     const before = `
-import { withStorybook as wrapMetro } from '@storybook/react-native/withStorybook';
+import { withForkbook as wrapMetro } from '@aussieljk/forkbook/react-native/metro/withForkbook';
 
 export default wrapMetro({});
 `;
@@ -170,9 +172,9 @@ export default wrapMetro({});
     expect(transformed.action).toBe('already-configured');
   });
 
-  it('reuses aliased CJS withStorybook binding when wrapping module.exports', () => {
+  it('reuses aliased CJS withForkbook binding when wrapping module.exports', () => {
     const before = `
-const { withStorybook: wrapMetro } = require('@storybook/react-native/withStorybook');
+const { withForkbook: wrapMetro } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
 const config = {};
 module.exports = config;
 `;
@@ -181,10 +183,10 @@ module.exports = config;
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code).toContain(
-        "const { withStorybook: wrapMetro } = require('@storybook/react-native/withStorybook');"
+        "const { withForkbook: wrapMetro } = require('@aussieljk/forkbook/react-native/metro/withForkbook');"
       );
       expect(transformed.code).toContain('module.exports = wrapMetro(config);');
-      expect(transformed.code).not.toContain('module.exports = withStorybook(config);');
+      expect(transformed.code).not.toContain('module.exports = withForkbook(config);');
     }
   });
 
@@ -195,7 +197,7 @@ module.exports = config;
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code).toContain(
-        "import { withStorybook } from '@storybook/react-native/withStorybook'"
+        "import { withForkbook } from '@aussieljk/forkbook/react-native/metro/withForkbook'"
       );
     }
   });
@@ -214,7 +216,7 @@ module.exports = {};
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(await getFormattedDiff(before, transformed.code, filePath)).toMatchInlineSnapshot(`
-        "+ const { withStorybook } = require('@storybook/react-native/withStorybook');
+        "+ const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
         + 
         + 
           const hint = \`
@@ -224,7 +226,7 @@ module.exports = {};
           
         - module.exports = {};
         - 
-        + module.exports = withStorybook({});
+        + module.exports = withForkbook({});
         + "
       `);
     }
@@ -249,9 +251,9 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
           
         - export default async function makeMetroConfig<T = string>(): Promise<MetroConfig> {
         - 
-        + import { withStorybook } from '@storybook/react-native/withStorybook';
+        + import { withForkbook } from '@aussieljk/forkbook/react-native/metro/withForkbook';
         + 
-        + export default withStorybook(async function makeMetroConfig<T = string>(): Promise<MetroConfig> {
+        + export default withForkbook(async function makeMetroConfig<T = string>(): Promise<MetroConfig> {
         + 
             return {} as MetroConfig;
           
@@ -287,7 +289,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
     const filePath = path.join(tempDir, 'metro.config.js');
     await writeFile(
       filePath,
-      "const { withStorybook } = require('@storybook/react-native/withStorybook');\nmodule.exports = withStorybook({});\n",
+      "const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');\nmodule.exports = withForkbook({});\n",
       'utf-8'
     );
 
@@ -365,7 +367,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
 
     expect(prompt.text).toHaveBeenCalled();
     expect(result.status).toBe('updated');
-    expect(updated).toContain('withStorybook');
+    expect(updated).toContain('withForkbook');
   });
 
   it('adds fallback comment on unsupported config shape', async () => {
@@ -392,7 +394,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
     if (transformed.action === 'updated') {
       // 'use strict' must remain the very first content in the output.
       expect(transformed.code.trimStart()).toMatch(/^['"]use strict['"]/);
-      expect(transformed.code).toContain('withStorybook');
+      expect(transformed.code).toContain('withForkbook');
     }
   });
 
@@ -403,7 +405,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code.trimStart()).toMatch(/^\/\/ @ts-nocheck/);
-      expect(transformed.code).toContain('withStorybook');
+      expect(transformed.code).toContain('withForkbook');
     }
   });
 
@@ -414,7 +416,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code.trimStart()).toMatch(/^\/\* eslint-disable \*\//);
-      expect(transformed.code).toContain('withStorybook');
+      expect(transformed.code).toContain('withForkbook');
     }
   });
 
@@ -425,28 +427,30 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
     expect(transformed.action).toBe('updated');
     if (transformed.action === 'updated') {
       expect(transformed.code.trimStart()).toMatch(/^\/\/ @ts-nocheck/);
-      expect(transformed.code).toContain('withStorybook');
+      expect(transformed.code).toContain('withForkbook');
     }
   });
 
   it('containsStorybookImport detects import/require across top-level statement forms', () => {
     expect(
       containsStorybookImport(
-        "import { withStorybook } from '@storybook/react-native/withStorybook';"
+        "import { withForkbook } from '@aussieljk/forkbook/react-native/metro/withForkbook';"
       )
     ).toBe(true);
     expect(containsStorybookImport("const sb = require('storybook/internal/common');")).toBe(true);
     expect(
-      containsStorybookImport("withSomething(require('@storybook/react-native/withStorybook'));")
-    ).toBe(true);
-    expect(
       containsStorybookImport(
-        "module.exports = require('@storybook/react-native/withStorybook').withStorybook({});"
+        "withSomething(require('@aussieljk/forkbook/react-native/metro/withForkbook'));"
       )
     ).toBe(true);
     expect(
       containsStorybookImport(
-        "export const withSb = require('@storybook/react-native/withStorybook');"
+        "module.exports = require('@aussieljk/forkbook/react-native/metro/withForkbook').withForkbook({});"
+      )
+    ).toBe(true);
+    expect(
+      containsStorybookImport(
+        "export const withSb = require('@aussieljk/forkbook/react-native/metro/withForkbook');"
       )
     ).toBe(true);
     expect(containsStorybookImport('const x = require("react-native");')).toBe(false);

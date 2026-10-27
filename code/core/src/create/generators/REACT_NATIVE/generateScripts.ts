@@ -1,7 +1,7 @@
 type PlatformScriptName = 'ios' | 'android';
 
 export interface StorybookPlatformScriptDerivationResult {
-  scriptsToAdd: Partial<Record<'storybook:ios' | 'storybook:android', string>>;
+  scriptsToAdd: Partial<Record<'forkbook:ios' | 'forkbook:android', string>>;
   missingBaseScripts: PlatformScriptName[];
 }
 
@@ -10,7 +10,7 @@ const FORKBOOK_ENV_PREFIX = `cross-env ${FORKBOOK_ENV_ASSIGNMENT}`;
 const FORKBOOK_ENV_PATTERN = /(?:^|\s)FORKBOOK_ENABLED=/;
 const CROSS_ENV_PREFIX_PATTERN = /^(cross-env(?:-shell)?\s+)/;
 
-const withStorybookEnv = (scriptValue: string) => {
+const withForkbookEnv = (scriptValue: string) => {
   const normalizedScriptValue = scriptValue.trim();
 
   if (FORKBOOK_ENV_PATTERN.test(normalizedScriptValue)) {
@@ -32,14 +32,14 @@ export const deriveStorybookPlatformScripts = (
 
   const iosScript = typeof scripts?.ios === 'string' ? scripts.ios.trim() : '';
   if (iosScript) {
-    scriptsToAdd['storybook:ios'] = withStorybookEnv(iosScript);
+    scriptsToAdd['forkbook:ios'] = withForkbookEnv(iosScript);
   } else {
     missingBaseScripts.push('ios');
   }
 
   const androidScript = typeof scripts?.android === 'string' ? scripts.android.trim() : '';
   if (androidScript) {
-    scriptsToAdd['storybook:android'] = withStorybookEnv(androidScript);
+    scriptsToAdd['forkbook:android'] = withForkbookEnv(androidScript);
   } else {
     missingBaseScripts.push('android');
   }

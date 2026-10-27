@@ -7,7 +7,7 @@ export {
   FORKBOOK_STORY_ID_PARAM,
 } from './constants.ts';
 
-export type { Addon, Features, StorybookConfig } from './config.ts';
+export type { Addon, Features, ForkbookConfig } from './config.ts';
 
 export type {
   Meta,

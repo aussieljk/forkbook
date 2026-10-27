@@ -61,7 +61,7 @@ const WORKING_DIR = process.cwd();
 
 const defaultOptions = {
   storybookScript: undefined,
-  configDir: resolve(join(WORKING_DIR, defaultConfigDir(WORKING_DIR))),
+  configDir: resolve(join(WORKING_DIR, defaultConfigDir())),
   storybookUrl: 'http://localhost:6006',
   disableAddonDocs: true,
   initialGlobals: {},
@@ -495,7 +495,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
       return config;
     },
     async configureVitest(context) {
-      context.vitest.config.coverage.exclude.push('storybook-static');
+      context.vitest.config.coverage.exclude.push('forkbook-static');
 
       const isBrowserModeEnabled = context.project.config.browser?.enabled === true;
 

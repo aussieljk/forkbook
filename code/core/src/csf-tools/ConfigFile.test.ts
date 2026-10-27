@@ -294,9 +294,9 @@ describe('ConfigFile', () => {
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-              const config: StorybookConfig = {
+              const config: ForkbookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
               }
               module.exports = config;
@@ -354,9 +354,9 @@ describe('ConfigFile', () => {
           getField(
             ['stories'],
             dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-              const config: StorybookConfig = {
+              const config: ForkbookConfig = {
                 stories: [{ directory: '../src', titlePrefix: 'Demo' }],
               }
               export default config;
@@ -1203,9 +1203,9 @@ describe('ConfigFile', () => {
     describe('getNameFromPath', () => {
       it(`supports string literal node`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             framework: 'foo',
           }
           export default config;
@@ -1217,11 +1217,11 @@ describe('ConfigFile', () => {
       describe('satisfies', () => {
         it(`supports string literal node`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+            import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
   
             const config = {
               framework: 'foo',
-            } satisfies StorybookConfig
+            } satisfies ForkbookConfig
             export default config;
           `;
           const config = loadConfig(source).parse();
@@ -1230,11 +1230,11 @@ describe('ConfigFile', () => {
 
         it(`supports string literal node without variables`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+            import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
   
             export default {
               framework: 'foo',
-            } satisfies StorybookConfig;
+            } satisfies ForkbookConfig;
           `;
           const config = loadConfig(source).parse();
           expect(config.getNameFromPath(['framework'])).toEqual('foo');
@@ -1242,12 +1242,12 @@ describe('ConfigFile', () => {
 
         it(`supports object expression node with name property`, () => {
           const source = dedent`
-            import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+            import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
   
             const config = {
               framework: { name: 'foo', options: { bar: require('baz') } },
               "otherField": { "name": 'foo', options: { bar: require('baz') } },
-            } satisfies StorybookConfig
+            } satisfies ForkbookConfig
             export default config;
           `;
           const config = loadConfig(source).parse();
@@ -1258,9 +1258,9 @@ describe('ConfigFile', () => {
 
       it(`supports object expression node with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             framework: { name: 'foo', options: { bar: require('baz') } },
             "otherField": { "name": 'foo', options: { bar: require('baz') } },
           }
@@ -1273,9 +1273,9 @@ describe('ConfigFile', () => {
 
       it(`supports wrapped names`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             framework: getAbsolutePath('foo'),
           }
           export default config;
@@ -1286,9 +1286,9 @@ describe('ConfigFile', () => {
 
       it(`returns undefined when accessing a field that does not exist`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = { }
+          const config: ForkbookConfig = { }
           export default config;
         `;
         const config = loadConfig(source).parse();
@@ -1297,9 +1297,9 @@ describe('ConfigFile', () => {
 
       it(`throws an error when node is of unexpected type`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             framework: makesNoSense(),
           }
           export default config;
@@ -1314,9 +1314,9 @@ describe('ConfigFile', () => {
     describe('getNamesFromPath', () => {
       it(`supports an array with string literal and object expression with name property`, () => {
         const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             addons: [
               'foo',
               { name: 'bar', options: {} },
@@ -1337,7 +1337,7 @@ describe('ConfigFile', () => {
         describe('default export', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
     
               const config = {
                 addons: [
@@ -1348,7 +1348,7 @@ describe('ConfigFile', () => {
                   "foo",
                   { "name": 'bar', options: {} },
                 ],
-              } satisfies StorybookConfig
+              } satisfies ForkbookConfig
               export default config;
             `;
             const config = loadConfig(source).parse();
@@ -1358,7 +1358,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
     
               export default {
                 addons: [
@@ -1369,7 +1369,7 @@ describe('ConfigFile', () => {
                   "foo",
                   { "name": 'bar', options: {} },
                 ],
-              } satisfies StorybookConfig;
+              } satisfies ForkbookConfig;
             `;
             const config = loadConfig(source).parse();
             expect(config.getNamesFromPath(['addons'])).toEqual(['foo', 'bar']);
@@ -1380,7 +1380,7 @@ describe('ConfigFile', () => {
         describe('module exports', () => {
           it(`supports an array with string literal and object expression with name property`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
     
               const config = {
                 addons: [
@@ -1391,7 +1391,7 @@ describe('ConfigFile', () => {
                   "foo",
                   { "name": 'bar', options: {} },
                 ],
-              } satisfies StorybookConfig
+              } satisfies ForkbookConfig
               module.exports = config;
             `;
             const config = loadConfig(source).parse();
@@ -1401,7 +1401,7 @@ describe('ConfigFile', () => {
 
           it(`supports an array with string literal and object expression with name property without variable`, () => {
             const source = dedent`
-              import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+              import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
     
               module.exports = {
                 addons: [
@@ -1412,7 +1412,7 @@ describe('ConfigFile', () => {
                   "foo",
                   { "name": 'bar', options: {} },
                 ],
-              } satisfies StorybookConfig;
+              } satisfies ForkbookConfig;
             `;
             const config = loadConfig(source).parse();
             expect(config.getNamesFromPath(['addons'])).toEqual(['foo', 'bar']);
@@ -1424,9 +1424,9 @@ describe('ConfigFile', () => {
 
     it(`returns undefined when accessing a field that does not exist`, () => {
       const source = dedent`
-        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+        import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-        const config: StorybookConfig = { }
+        const config: ForkbookConfig = { }
         export default config;
       `;
       const config = loadConfig(source).parse();
@@ -1441,9 +1441,9 @@ describe('ConfigFile', () => {
          * Copyright Example
          */
 
-        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+        import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-        const config: StorybookConfig = { stories: [] };
+        const config: ForkbookConfig = { stories: [] };
         export default config;
       `;
 
@@ -1456,12 +1456,12 @@ describe('ConfigFile', () => {
          * Copyright Example
          */
 
-        import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+        import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
         import { dirname } from 'node:path';
         import { fileURLToPath } from 'node:url';
 
-        const config: StorybookConfig = { stories: [] };
+        const config: ForkbookConfig = { stories: [] };
         export default config;
       `);
     });
@@ -1512,7 +1512,7 @@ describe('ConfigFile', () => {
 
     it(`supports setting a default import for a field that does not exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1523,7 +1523,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import path from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1531,7 +1531,7 @@ describe('ConfigFile', () => {
     it(`uses the existing node import when using node:xyz paths but the package xyz is already imported`, () => {
       const source = dedent`
         import { join } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1542,14 +1542,14 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import { join, dirname } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
 
     it(`supports setting a default import for a field that does exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1560,14 +1560,14 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import path from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
 
     it(`supports setting a named import for a field that does not exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1578,7 +1578,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import { dirname } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1587,7 +1587,7 @@ describe('ConfigFile', () => {
       const source = dedent`
         import { dirname } from 'path';
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1599,7 +1599,7 @@ describe('ConfigFile', () => {
       expect(parsed).toMatchInlineSnapshot(`
         import { dirname } from 'path';
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1626,7 +1626,7 @@ describe('ConfigFile', () => {
   describe('setRequireImport', () => {
     it(`supports setting a default import for a field that does not exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1637,7 +1637,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         const path = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1645,7 +1645,7 @@ describe('ConfigFile', () => {
     it(`supports setting a default import for a field that does exist`, () => {
       const source = dedent`
         const path = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1656,14 +1656,14 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         const path = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
 
     it(`supports setting a named import for a field that does not exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1677,7 +1677,7 @@ describe('ConfigFile', () => {
           dirname,
         } = require('path');
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1686,7 +1686,7 @@ describe('ConfigFile', () => {
       const source = dedent`
         const { dirname } = require('path');
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1701,7 +1701,7 @@ describe('ConfigFile', () => {
           basename,
         } = require('path');
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1710,7 +1710,7 @@ describe('ConfigFile', () => {
       const source = dedent`
         const { dirname } = require('path');
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1725,7 +1725,7 @@ describe('ConfigFile', () => {
           basename,
         } = require('path');
 
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1735,7 +1735,7 @@ describe('ConfigFile', () => {
     it(`removes a default require import`, () => {
       const source = dedent`
         const path = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1745,7 +1745,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1753,7 +1753,7 @@ describe('ConfigFile', () => {
     it(`removes a default ES6 import`, () => {
       const source = dedent`
         import path from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1763,7 +1763,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1771,7 +1771,7 @@ describe('ConfigFile', () => {
     it(`removes a named require import`, () => {
       const source = dedent`
         const { dirname, basename } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1784,7 +1784,7 @@ describe('ConfigFile', () => {
         const {
           basename,
         } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
         `);
     });
@@ -1792,7 +1792,7 @@ describe('ConfigFile', () => {
     it(`removes a named ES6 import`, () => {
       const source = dedent`
         import { dirname, basename } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1803,7 +1803,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import { basename } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
         `);
     });
@@ -1811,7 +1811,7 @@ describe('ConfigFile', () => {
     it(`removes multiple named require imports`, () => {
       const source = dedent`
         const { dirname, basename, join } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1824,7 +1824,7 @@ describe('ConfigFile', () => {
         const {
           join,
         } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1832,7 +1832,7 @@ describe('ConfigFile', () => {
     it(`removes multiple named ES6 imports`, () => {
       const source = dedent`
         import { dirname, basename, join } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1843,7 +1843,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import { join } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1851,7 +1851,7 @@ describe('ConfigFile', () => {
     it(`removes a namespace ES6 import`, () => {
       const source = dedent`
         import * as path from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
       const config = loadConfig(source).parse();
@@ -1860,7 +1860,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1868,7 +1868,7 @@ describe('ConfigFile', () => {
     it(`preserves default import when removing a namespace ES6 import`, () => {
       const source = dedent`
         import path, * as alsoPath from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
       const config = loadConfig(source).parse();
@@ -1878,7 +1878,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import path from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1886,7 +1886,7 @@ describe('ConfigFile', () => {
     it(`removes entire require declaration when all named imports are removed`, () => {
       const source = dedent`
         const { dirname, basename } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1896,7 +1896,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1904,7 +1904,7 @@ describe('ConfigFile', () => {
     it(`removes entire ES6 declaration when all named imports are removed`, () => {
       const source = dedent`
         import { dirname, basename } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1914,7 +1914,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1922,7 +1922,7 @@ describe('ConfigFile', () => {
     it(`handles node: prefix in require imports`, () => {
       const source = dedent`
         const { dirname } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1932,7 +1932,7 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -1940,7 +1940,7 @@ describe('ConfigFile', () => {
     it(`handles node: prefix in ES6 imports`, () => {
       const source = dedent`
         import { dirname } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1950,14 +1950,14 @@ describe('ConfigFile', () => {
       const parsed = babelPrint(config._ast);
 
       expect(parsed).toMatchInlineSnapshot(`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
 
     it(`does nothing when require import does not exist`, () => {
       const source = dedent`
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1972,7 +1972,7 @@ describe('ConfigFile', () => {
     it(`does nothing when trying to remove non-existent named require import`, () => {
       const source = dedent`
         const { dirname } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -1987,7 +1987,7 @@ describe('ConfigFile', () => {
     it(`does nothing when trying to remove non-existent named ES6 import`, () => {
       const source = dedent`
         import { dirname } from 'path';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -2003,7 +2003,7 @@ describe('ConfigFile', () => {
       const source = dedent`
         import { readFile } from 'fs';
         const { dirname } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -2014,7 +2014,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         const { dirname } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -2023,7 +2023,7 @@ describe('ConfigFile', () => {
       const source = dedent`
         import { readFile } from 'fs';
         const { dirname } = require('path');
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `;
 
@@ -2034,7 +2034,7 @@ describe('ConfigFile', () => {
 
       expect(parsed).toMatchInlineSnapshot(`
         import { readFile } from 'fs';
-        const config: StorybookConfig = { };
+        const config: ForkbookConfig = { };
         export default config;
       `);
     });
@@ -2113,12 +2113,12 @@ describe('ConfigFile', () => {
   describe('parse', () => {
     it("export { X } with X is import { X } from 'another-file'", () => {
       const source = dedent`
-          import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+          import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
           import { path } from 'path';
 
           export { path };
 
-          const config: StorybookConfig = {
+          const config: ForkbookConfig = {
             addons: [
               'foo',
               { name: 'bar', options: {} },
@@ -2150,13 +2150,13 @@ describe('ConfigFile', () => {
     it('detects exports object on various TS satisfies/as export syntaxes', () => {
       const syntaxes = [
         'const config = { framework: "foo" }; export default config;',
-        'const config = { framework: "foo" }; export default config satisfies StorybookConfig;',
-        'const config = { framework: "foo" }; export default config as StorybookConfig;',
-        'const config = { framework: "foo" }; export default config as unknown as StorybookConfig;',
+        'const config = { framework: "foo" }; export default config satisfies ForkbookConfig;',
+        'const config = { framework: "foo" }; export default config as ForkbookConfig;',
+        'const config = { framework: "foo" }; export default config as unknown as ForkbookConfig;',
         'export default { framework: "foo" };',
-        'export default { framework: "foo" } satisfies StorybookConfig;',
-        'export default { framework: "foo" } as StorybookConfig;',
-        'export default { framework: "foo" } as unknown as StorybookConfig;',
+        'export default { framework: "foo" } satisfies ForkbookConfig;',
+        'export default { framework: "foo" } as ForkbookConfig;',
+        'export default { framework: "foo" } as unknown as ForkbookConfig;',
       ];
       for (const source of syntaxes) {
         const config = loadConfig(source).parse();

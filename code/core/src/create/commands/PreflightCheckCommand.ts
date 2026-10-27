@@ -139,7 +139,7 @@ export class PreflightCheckCommand {
           This version is behind the latest release, which is: ${latestVersion}!
           You likely ran the init command through npx, which can use a locally cached version.
           
-          To get the latest, please run: ${CLI_COLORS.cta('npx storybook@latest init')}
+          To get the latest, please run: ${CLI_COLORS.cta('npx @aussieljk/forkbook@latest init')}
           You may want to ${CLI_COLORS.cta('CTRL+C')} to stop, and run with the latest version instead.
         `);
     } else if (isPrerelease) {

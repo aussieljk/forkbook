@@ -190,7 +190,7 @@ export default defineGeneratorModule({
       storybookConfigFolder: RN_FORKBOOK_DIR,
       skipGenerator: true,
       storybookCommand: null,
-      shouldRunDev: false, // React Native is started via platform scripts (see postConfigure), not `storybook dev`
+      shouldRunDev: false, // React Native is started via platform scripts (see postConfigure), not `forkbook dev`
     };
   },
   postInstall: async ({ packageManager }) => {
@@ -231,7 +231,7 @@ export default defineGeneratorModule({
       }
 
       if (lastMetroCodemodResult.status === 'updated') {
-        return 'Metro config was updated automatically with withStorybook(...).';
+        return 'Metro config was updated automatically with withForkbook(...).';
       }
 
       if (lastMetroCodemodResult.status === 'already-configured') {
@@ -250,12 +250,12 @@ export default defineGeneratorModule({
     })();
 
     const metroStatus = lastMetroCodemodResult?.status;
-    const showWithStorybookManualSnippet =
+    const showWithForkbookManualSnippet =
       !lastMetroCodemodResult ||
       metroStatus === 'fallback-commented' ||
       metroStatus === 'skipped-missing-file';
 
-    const mayNeedFollowUp = !!scriptWarningSummary || showWithStorybookManualSnippet;
+    const mayNeedFollowUp = !!scriptWarningSummary || showWithForkbookManualSnippet;
 
     logger.log(dedent`
       ${CLI_COLORS.success('Forkbook for React Native is set up.')}
@@ -270,12 +270,12 @@ export default defineGeneratorModule({
       ${CLI_COLORS.info(' ' + metroCodemodSummary + ' ')}
 
       ${
-        showWithStorybookManualSnippet
+        showWithForkbookManualSnippet
           ? dedent`
-      If your Metro config still needs wiring, wrap the default export with withStorybook:
+      If your Metro config still needs wiring, wrap the default export with withForkbook:
 
-      ${CLI_COLORS.info(' ' + "const { withStorybook } = require('@storybook/react-native/withStorybook');" + ' ')}
-      ${CLI_COLORS.info(' ' + 'module.exports = withStorybook(defaultConfig);' + ' ')}
+      ${CLI_COLORS.info(' ' + "const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');" + ' ')}
+      ${CLI_COLORS.info(' ' + 'module.exports = withForkbook(defaultConfig);' + ' ')}
       `
           : ''
       }

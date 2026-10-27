@@ -104,7 +104,7 @@ export type Params = {
   hasStoryWrapper?: boolean;
   /**
    * Enable websockets for the storybook server to remotely control the storybook
-   * default: automatically enabled when a websocket config is injected via storybook.requires (i.e. when FORKBOOK_WS_HOST is set), otherwise false
+   * default: automatically enabled when a websocket config is injected via forkbook.requires (i.e. when FORKBOOK_WS_HOST is set), otherwise false
    */
   enableWebsockets?: boolean;
   query?: string;
@@ -272,7 +272,7 @@ export class View {
     );
   };
 
-  getStorybookUI = (params: Partial<Params> = {}) => {
+  getForkbookUI = (params: Partial<Params> = {}) => {
     const {
       enableWebsockets = !!globalThis.FORKBOOK_WEBSOCKET,
       CustomUIComponent,
@@ -444,8 +444,8 @@ export class View {
           setContext(newStory);
 
           if (shouldPersistSelection && !params.storage) {
-            console.warn(dedent`Please set storage in getStorybookUI like this:
-              const StorybookUIRoot = view.getStorybookUI({
+            console.warn(dedent`Please set storage in getForkbookUI like this:
+              const ForkbookUIRoot = view.getForkbookUI({
                 storage: {
                   getItem: AsyncStorage.getItem,
                   setItem: AsyncStorage.setItem,

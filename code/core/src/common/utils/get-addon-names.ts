@@ -1,8 +1,8 @@
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { normalizePath } from './normalize-path.ts';
 
-type AddonEntry = NonNullable<StorybookConfig['addons']>[number];
+type AddonEntry = NonNullable<ForkbookConfig['addons']>[number];
 
 /**
  * Resolve an addon config entry (string, object, or absolute path) to its bare package name.
@@ -36,7 +36,7 @@ export const normalizeAddonName = (addon: AddonEntry): string | undefined => {
     .replace(/\/preset$/, '');
 };
 
-export const getAddonNames = (mainConfig: StorybookConfig): string[] => {
+export const getAddonNames = (mainConfig: ForkbookConfig): string[] => {
   const addons = mainConfig.addons || [];
   const addonList = addons.map(normalizeAddonName);
 

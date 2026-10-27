@@ -20,7 +20,7 @@ describe('generateReactNativeEntrypoint', () => {
     expect(path.basename(templatePath)).toMatchInlineSnapshot(`"index.expo.js"`);
   });
 
-  it('generates .rnstorybook/index.ts for TypeScript projects', async () => {
+  it('generates .rnforkbook/index.ts for TypeScript projects', async () => {
     const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-ts-'));
 
     try {
@@ -28,27 +28,27 @@ describe('generateReactNativeEntrypoint', () => {
         language: SupportedLanguage.TYPESCRIPT,
         cwd,
       });
-      const outputPath = path.join(cwd, '.rnstorybook', 'index.ts');
+      const outputPath = path.join(cwd, '.rnforkbook', 'index.ts');
       const output = await readFile(outputPath, 'utf-8');
 
       expect(normalizePath(path.relative(cwd, result.targetPath))).toMatchInlineSnapshot(
-        `".rnstorybook/index.ts"`
+        `".rnforkbook/index.ts"`
       );
       expect(output).toMatchInlineSnapshot(`
         "import { AppRegistry } from 'react-native';
         import AsyncStorage from '@react-native-async-storage/async-storage';
         import { LiteUI } from '@storybook/react-native-ui-lite';
 
-        import { view } from './storybook.requires';
+        import { view } from './forkbook.requires';
         import { name as appName } from '../app.json';
 
         /**
          * This file is user-editable.
          *
-         * Use it as your React Native Storybook entrypoint and wrap \`StorybookUIRoot\`
+         * Use it as your React Native Storybook entrypoint and wrap \`ForkbookUIRoot\`
          * with application decorators/providers (theme, i18n, state, navigation, etc).
          */
-        const StorybookUIRoot = view.getStorybookUI({
+        const ForkbookUIRoot = view.getForkbookUI({
           shouldPersistSelection: true,
           storage: {
             getItem: AsyncStorage.getItem,
@@ -57,9 +57,9 @@ describe('generateReactNativeEntrypoint', () => {
           CustomUIComponent: LiteUI,
         });
 
-        AppRegistry.registerComponent(appName, () => StorybookUIRoot);
+        AppRegistry.registerComponent(appName, () => ForkbookUIRoot);
 
-        export default StorybookUIRoot;
+        export default ForkbookUIRoot;
         "
       `);
     } finally {
@@ -67,7 +67,7 @@ describe('generateReactNativeEntrypoint', () => {
     }
   });
 
-  it('generates .rnstorybook/index.js for JavaScript projects', async () => {
+  it('generates .rnforkbook/index.js for JavaScript projects', async () => {
     const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-js-'));
 
     try {
@@ -75,27 +75,27 @@ describe('generateReactNativeEntrypoint', () => {
         language: SupportedLanguage.JAVASCRIPT,
         cwd,
       });
-      const outputPath = path.join(cwd, '.rnstorybook', 'index.js');
+      const outputPath = path.join(cwd, '.rnforkbook', 'index.js');
       const output = await readFile(outputPath, 'utf-8');
 
       expect(normalizePath(path.relative(cwd, result.targetPath))).toMatchInlineSnapshot(
-        `".rnstorybook/index.js"`
+        `".rnforkbook/index.js"`
       );
       expect(output).toMatchInlineSnapshot(`
         "import { AppRegistry } from 'react-native';
         import AsyncStorage from '@react-native-async-storage/async-storage';
         import { LiteUI } from '@storybook/react-native-ui-lite';
 
-        import { view } from './storybook.requires';
+        import { view } from './forkbook.requires';
         import { name as appName } from '../app.json';
 
         /**
          * This file is user-editable.
          *
-         * Use it as your React Native Storybook entrypoint and wrap \`StorybookUIRoot\`
+         * Use it as your React Native Storybook entrypoint and wrap \`ForkbookUIRoot\`
          * with application decorators/providers (theme, i18n, state, navigation, etc).
          */
-        const StorybookUIRoot = view.getStorybookUI({
+        const ForkbookUIRoot = view.getForkbookUI({
           shouldPersistSelection: true,
           storage: {
             getItem: AsyncStorage.getItem,
@@ -104,9 +104,9 @@ describe('generateReactNativeEntrypoint', () => {
           CustomUIComponent: LiteUI,
         });
 
-        AppRegistry.registerComponent(appName, () => StorybookUIRoot);
+        AppRegistry.registerComponent(appName, () => ForkbookUIRoot);
 
-        export default StorybookUIRoot;
+        export default ForkbookUIRoot;
         "
       `);
     } finally {
@@ -123,25 +123,25 @@ describe('generateReactNativeEntrypoint', () => {
         templateVariant: 'expo',
         cwd,
       });
-      const outputPath = path.join(cwd, '.rnstorybook', 'index.ts');
+      const outputPath = path.join(cwd, '.rnforkbook', 'index.ts');
       const output = await readFile(outputPath, 'utf-8');
 
       expect(normalizePath(path.relative(cwd, result.targetPath))).toMatchInlineSnapshot(
-        `".rnstorybook/index.ts"`
+        `".rnforkbook/index.ts"`
       );
       expect(output).toMatchInlineSnapshot(`
         "import { registerRootComponent } from 'expo';
         import AsyncStorage from '@react-native-async-storage/async-storage';
 
-        import { view } from './storybook.requires';
+        import { view } from './forkbook.requires';
 
         /**
          * This file is user-editable.
          *
-         * Use it as your React Native Storybook entrypoint and wrap \`StorybookUIRoot\`
+         * Use it as your React Native Storybook entrypoint and wrap \`ForkbookUIRoot\`
          * with application decorators/providers (theme, i18n, state, navigation, etc).
          */
-        const StorybookUIRoot = view.getStorybookUI({
+        const ForkbookUIRoot = view.getForkbookUI({
           shouldPersistSelection: true,
           storage: {
             getItem: AsyncStorage.getItem,
@@ -149,7 +149,7 @@ describe('generateReactNativeEntrypoint', () => {
           },
         });
 
-        registerRootComponent(StorybookUIRoot);
+        registerRootComponent(ForkbookUIRoot);
         "
       `);
     } finally {
@@ -159,7 +159,7 @@ describe('generateReactNativeEntrypoint', () => {
 
   it('overwrites existing target index file on rerun', async () => {
     const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-overwrite-'));
-    const targetPath = path.join(cwd, '.rnstorybook', 'index.js');
+    const targetPath = path.join(cwd, '.rnforkbook', 'index.js');
 
     try {
       await mkdir(path.dirname(targetPath), { recursive: true });
@@ -176,16 +176,16 @@ describe('generateReactNativeEntrypoint', () => {
         import AsyncStorage from '@react-native-async-storage/async-storage';
         import { LiteUI } from '@storybook/react-native-ui-lite';
 
-        import { view } from './storybook.requires';
+        import { view } from './forkbook.requires';
         import { name as appName } from '../app.json';
 
         /**
          * This file is user-editable.
          *
-         * Use it as your React Native Storybook entrypoint and wrap \`StorybookUIRoot\`
+         * Use it as your React Native Storybook entrypoint and wrap \`ForkbookUIRoot\`
          * with application decorators/providers (theme, i18n, state, navigation, etc).
          */
-        const StorybookUIRoot = view.getStorybookUI({
+        const ForkbookUIRoot = view.getForkbookUI({
           shouldPersistSelection: true,
           storage: {
             getItem: AsyncStorage.getItem,
@@ -194,9 +194,9 @@ describe('generateReactNativeEntrypoint', () => {
           CustomUIComponent: LiteUI,
         });
 
-        AppRegistry.registerComponent(appName, () => StorybookUIRoot);
+        AppRegistry.registerComponent(appName, () => ForkbookUIRoot);
 
-        export default StorybookUIRoot;
+        export default ForkbookUIRoot;
         "
       `);
     } finally {
@@ -206,7 +206,7 @@ describe('generateReactNativeEntrypoint', () => {
 
   it('keeps sibling extension file when generating target extension', async () => {
     const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-sibling-'));
-    const tsPath = path.join(cwd, '.rnstorybook', 'index.ts');
+    const tsPath = path.join(cwd, '.rnforkbook', 'index.ts');
 
     try {
       await mkdir(path.dirname(tsPath), { recursive: true });
@@ -218,7 +218,7 @@ describe('generateReactNativeEntrypoint', () => {
       });
 
       const sibling = await readFile(tsPath, 'utf-8');
-      const jsPath = path.join(cwd, '.rnstorybook', 'index.js');
+      const jsPath = path.join(cwd, '.rnforkbook', 'index.js');
       const generated = await readFile(jsPath, 'utf-8');
 
       expect(sibling).toMatchInlineSnapshot(`
@@ -230,16 +230,16 @@ describe('generateReactNativeEntrypoint', () => {
         import AsyncStorage from '@react-native-async-storage/async-storage';
         import { LiteUI } from '@storybook/react-native-ui-lite';
 
-        import { view } from './storybook.requires';
+        import { view } from './forkbook.requires';
         import { name as appName } from '../app.json';
 
         /**
          * This file is user-editable.
          *
-         * Use it as your React Native Storybook entrypoint and wrap \`StorybookUIRoot\`
+         * Use it as your React Native Storybook entrypoint and wrap \`ForkbookUIRoot\`
          * with application decorators/providers (theme, i18n, state, navigation, etc).
          */
-        const StorybookUIRoot = view.getStorybookUI({
+        const ForkbookUIRoot = view.getForkbookUI({
           shouldPersistSelection: true,
           storage: {
             getItem: AsyncStorage.getItem,
@@ -248,9 +248,9 @@ describe('generateReactNativeEntrypoint', () => {
           CustomUIComponent: LiteUI,
         });
 
-        AppRegistry.registerComponent(appName, () => StorybookUIRoot);
+        AppRegistry.registerComponent(appName, () => ForkbookUIRoot);
 
-        export default StorybookUIRoot;
+        export default ForkbookUIRoot;
         "
       `);
     } finally {
@@ -258,9 +258,9 @@ describe('generateReactNativeEntrypoint', () => {
     }
   });
 
-  it('does not modify existing storybook.requires file', async () => {
+  it('does not modify existing forkbook.requires file', async () => {
     const cwd = await mkdtemp(path.join(os.tmpdir(), 'fb-rn-entry-requires-'));
-    const requiresPath = path.join(cwd, '.rnstorybook', 'storybook.requires.ts');
+    const requiresPath = path.join(cwd, '.rnforkbook', 'forkbook.requires.ts');
     const originalRequires = 'export const view = {};\n';
 
     try {

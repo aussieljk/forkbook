@@ -412,7 +412,7 @@ function formatRequiresDevServer(
   }
 
   const lines = [
-    `\`${commandPath}\` requires a running Forkbook dev server, and none was found for this project. Start it first (for example \`npm run storybook\`), then re-run this command.`,
+    `\`${commandPath}\` requires a running Forkbook dev server, and none was found for this project. Start it first (for example \`npm run forkbook\`), then re-run this command.`,
   ];
   if (discovery.records.length > 0) {
     const candidates = discovery.records

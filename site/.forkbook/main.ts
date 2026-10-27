@@ -1,7 +1,7 @@
-import type { StorybookConfig } from '@aussieljk/forkbook/nextjs-vite';
+import type { ForkbookConfig } from '@aussieljk/forkbook/nextjs-vite';
 
 // The Forkbook docs site. Each page is an MDX file in ../docs.
-const config: StorybookConfig = {
+const config: ForkbookConfig = {
   framework: '@aussieljk/forkbook/nextjs-vite',
   stories: ['../docs/**/*.mdx'],
   addons: ['@aussieljk/forkbook/addon-docs'],

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import { getFrameworkInfo } from './get-framework-info.ts';
 
@@ -21,7 +21,7 @@ describe('getFrameworkInfo', () => {
   });
 
   it('returns framework/builder/renderer with empty options when no framework provided', async () => {
-    const result = await getFrameworkInfo({} as StorybookConfig, '/tmp/.forkbook');
+    const result = await getFrameworkInfo({} as ForkbookConfig, '/tmp/.forkbook');
     expect(result).toEqual({
       framework: { name: defaultInfo.frameworkPackage, options: {} },
       builder: defaultInfo.builderPackage,
@@ -32,7 +32,7 @@ describe('getFrameworkInfo', () => {
   it('passes configDir to getStorybookInfo', async () => {
     const configDir = '/my/project/.forkbook';
     const { getStorybookInfo } = await import('@aussieljk/forkbook/internal/common');
-    await getFrameworkInfo({} as StorybookConfig, configDir);
+    await getFrameworkInfo({} as ForkbookConfig, configDir);
     expect(getStorybookInfo).toHaveBeenCalledWith(configDir);
   });
 

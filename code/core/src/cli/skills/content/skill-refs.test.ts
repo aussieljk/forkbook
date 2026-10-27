@@ -5,7 +5,7 @@ import { SKILL_IDS, SKILLS } from './skills.ts';
 
 describe('getSkillRef', () => {
   it('renders the frozen MCP tool name for write-story on the MCP transport', () => {
-    expect(getSkillRef('mcp')('write-story')).toBe('get-storybook-story-instructions');
+    expect(getSkillRef('mcp')('write-story')).toBe('get-forkbook-story-instructions');
   });
 
   it('renders the skills CLI command on the CLI transport', () => {

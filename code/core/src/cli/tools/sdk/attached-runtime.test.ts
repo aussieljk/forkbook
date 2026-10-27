@@ -144,7 +144,7 @@ describe('bootstrapAttachedRuntime', () => {
 
     await expect(failure).rejects.toThrow(AttachUnavailableError);
     await expect(failure).rejects.toMatchObject({ data: { reason: 'no-instance' } });
-    await expect(failure).rejects.toThrow('npm run storybook');
+    await expect(failure).rejects.toThrow('npm run forkbook');
     await expect(failure).rejects.toThrow('configDir `/apps/web/.forkbook`');
     const error = await rejectedAttachUnavailable(failure);
     expect(error.data.instances.every((instance) => !('token' in instance))).toBe(true);
@@ -376,7 +376,7 @@ describe('bootstrapAttachedRuntime', () => {
 
     await expect(failure).rejects.toMatchObject({ data: { reason: 'connection-failed' } });
     await expect(failure).rejects.toThrow(RECORD.url);
-    await expect(failure).rejects.toThrow('npm run storybook');
+    await expect(failure).rejects.toThrow('npm run forkbook');
     const error = await rejectedAttachUnavailable(failure);
     expect(error.data.instances.every((instance) => !('token' in instance))).toBe(true);
     expect(inspect(error)).not.toContain('secret');

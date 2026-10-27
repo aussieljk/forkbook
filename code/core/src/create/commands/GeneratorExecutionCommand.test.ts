@@ -47,7 +47,7 @@ describe('GeneratorExecutionCommand', () => {
       return mockAddonService;
     });
     mockPackageManager = {
-      getRunCommand: vi.fn().mockReturnValue('npm run storybook'),
+      getRunCommand: vi.fn().mockReturnValue('npm run forkbook'),
     } as unknown as JsPackageManager;
 
     command = new GeneratorExecutionCommand(dependencyCollector, mockPackageManager);

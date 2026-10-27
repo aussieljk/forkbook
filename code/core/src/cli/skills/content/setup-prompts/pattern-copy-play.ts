@@ -654,9 +654,9 @@ export function instructions(projectInfo: ProjectInfo): string {
 
     \`\`\`ts
     // ${configDir}/main.ts
-    import type { StorybookConfig } from "${typeImport}";
+    import type { ForkbookConfig } from "${typeImport}";
 
-    const config: StorybookConfig = {
+    const config: ForkbookConfig = {
       staticDirs: ["../public"],
     };
 

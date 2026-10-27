@@ -50,7 +50,7 @@ it("re-asserts Forkbook's build options when a user plugin's config hook overrid
   await build({
     configType: 'PRODUCTION',
     configDir: '',
-    outputDir: 'storybook-static-test',
+    outputDir: 'forkbook-static-test',
     channel: new Channel({}),
     presets: {
       apply: async (key: string, config?: InlineConfig) =>
@@ -79,7 +79,7 @@ it("re-asserts Forkbook's build options when a user plugin's config hook overrid
   );
 
   const enforced = {
-    outDir: 'storybook-static-test',
+    outDir: 'forkbook-static-test',
     emptyOutDir: false,
   };
   expect(resolved.build).toMatchObject(enforced);

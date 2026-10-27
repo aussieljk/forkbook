@@ -4,17 +4,17 @@ import { program } from 'commander';
 import { generate } from '../scripts/generate.ts';
 
 program
-  .description('Generator for the storybook.requires file used in react native storybook')
+  .description('Writes the forkbook.requires file of a React Native Forkbook')
   .option(
     '-c, --config-path <path>',
     'The path to your config folder relative to your project-dir',
-    './.rnstorybook'
+    './.rnforkbook'
   )
-  .option('-j, --use-js', 'Use a js file for storybook.requires')
-  .option('-D, --no-doc-tools', 'Do not include doc tools in the storybook.requires file')
+  .option('-j, --use-js', 'Use a js file for forkbook.requires')
+  .option('-D, --no-doc-tools', 'Do not include doc tools in the forkbook.requires file')
   .option(
     '-w, --host <host>',
-    "Host for websockets, the value 'auto' will tell storybook to use your local ip address"
+    "Host for websockets, the value 'auto' tells Forkbook to use your local ip address"
   )
   .option('-p, --port <port>', 'Port for websockets', (value) => {
     const port = parseInt(value, 10);

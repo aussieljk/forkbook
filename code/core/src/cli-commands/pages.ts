@@ -175,11 +175,8 @@ export async function pages({
   }
 
   const result: PagesResult = { written: [], skipped: [] };
-  // The helper goes in the config folder: `.forkbook` when it is there, else `.storybook`.
-  const helperFile = join(
-    existsSync(join(cwd, '.forkbook')) ? '.forkbook' : '.storybook',
-    HELPER_FILE
-  );
+  // The helper goes in the config folder.
+  const helperFile = join('.forkbook', HELPER_FILE);
   const helperPath = join(cwd, helperFile);
   const layoutPath = (await glob(`${appDir}/layout.{tsx,jsx,ts,js}`, { cwd, absolute: true }))[0];
 

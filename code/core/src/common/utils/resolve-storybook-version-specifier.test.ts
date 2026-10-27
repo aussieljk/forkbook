@@ -12,7 +12,7 @@ describe('resolveStorybookVersionSpecifier', () => {
         [
           {
             command:
-              'npx storybook@https://pkg.pr.new/storybookjs/storybook/storybook@from-ancestry upgrade',
+              'npx @aussieljk/forkbook@https://pkg.pr.new/storybookjs/storybook/storybook@from-ancestry upgrade',
           },
         ],
         {

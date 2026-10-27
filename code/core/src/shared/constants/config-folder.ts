@@ -3,10 +3,10 @@ import { dirname, join, normalize, relative, resolve } from 'pathe';
 import { storybookConfigExtensions } from './extensions.ts';
 
 /** Default React Native on-device Forkbook config directory name. */
-export const RN_FORKBOOK_DIR = '.rnstorybook';
+export const RN_FORKBOOK_DIR = '.rnforkbook';
 
-// The import name that the React Native Storybook docs use.
-export const DOCUMENTED_PREVIEW_IMPORT = '#.storybook/preview';
+// The import name that the React Native docs use.
+export const DOCUMENTED_PREVIEW_IMPORT = '#.forkbook/preview';
 
 export function isReactNativeStorybookPath(fileOrDir?: string): boolean {
   if (!fileOrDir) {

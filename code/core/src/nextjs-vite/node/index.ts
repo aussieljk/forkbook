@@ -1,5 +1,5 @@
-import type { StorybookConfig } from '../types.ts';
+import type { ForkbookConfig } from '../types.ts';
 
-export function defineMain(config: StorybookConfig) {
+export function defineMain(config: ForkbookConfig) {
   return config;
 }

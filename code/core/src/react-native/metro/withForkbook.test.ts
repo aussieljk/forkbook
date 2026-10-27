@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { generate } from '../scripts/generate.ts';
 import { createChannelServer } from './channelServer.ts';
-import { withStorybook } from './withStorybook.ts';
+import { withForkbook } from './withForkbook.ts';
 
 vi.mock('./channelServer.ts', () => ({
   createChannelServer: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('../scripts/generate.ts', () => ({
   generate: vi.fn(),
 }));
 
-describe('withStorybook', () => {
+describe('withForkbook', () => {
   const config = { resolver: {}, transformer: {} } as MetroConfig;
 
   beforeEach(() => {
@@ -28,19 +28,19 @@ describe('withStorybook', () => {
   });
 
   test('generates the requires file and starts no channel server by default', () => {
-    withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
+    withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });
 
     expect(createChannelServer).not.toHaveBeenCalled();
     expect(generate).toHaveBeenCalledWith({
-      configPath: '/tmp/.rnstorybook',
+      configPath: '/tmp/.rnforkbook',
       useJs: false,
       docTools: true,
     });
   });
 
   test('starts the channel server for websockets "auto"', () => {
-    withStorybook(config, {
-      configPath: '/tmp/.rnstorybook',
+    withForkbook(config, {
+      configPath: '/tmp/.rnforkbook',
       enabled: true,
       websockets: 'auto',
     });
@@ -54,8 +54,8 @@ describe('withStorybook', () => {
   test('does not start the channel server when FORKBOOK_SERVER is false', () => {
     process.env.FORKBOOK_SERVER = 'false';
 
-    withStorybook(config, {
-      configPath: '/tmp/.rnstorybook',
+    withForkbook(config, {
+      configPath: '/tmp/.rnforkbook',
       enabled: true,
       websockets: 'auto',
     });
@@ -65,8 +65,8 @@ describe('withStorybook', () => {
   });
 
   test('passes secure websocket options through to the channel server and generator', () => {
-    withStorybook(config, {
-      configPath: '/tmp/.rnstorybook',
+    withForkbook(config, {
+      configPath: '/tmp/.rnforkbook',
       enabled: true,
       websockets: {
         host: '127.0.0.1',
@@ -79,7 +79,7 @@ describe('withStorybook', () => {
 
     expect(createChannelServer).toHaveBeenCalledWith(
       expect.objectContaining({
-        configPath: '/tmp/.rnstorybook',
+        configPath: '/tmp/.rnforkbook',
         websockets: true,
         secured: true,
         ssl: expect.objectContaining({
@@ -91,7 +91,7 @@ describe('withStorybook', () => {
 
     expect(generate).toHaveBeenCalledWith(
       expect.objectContaining({
-        configPath: '/tmp/.rnstorybook',
+        configPath: '/tmp/.rnforkbook',
         host: '127.0.0.1',
         port: 7007,
         secured: true,
@@ -101,7 +101,7 @@ describe('withStorybook', () => {
 
   test('does not generate when storybook is disabled', () => {
     expect(() =>
-      withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: false })
+      withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false })
     ).not.toThrow();
     expect(generate).not.toHaveBeenCalled();
   });
@@ -110,7 +110,7 @@ describe('withStorybook', () => {
     process.env.FORKBOOK_WS_HOST = '192.168.1.10';
     process.env.FORKBOOK_WS_PORT = '8123';
 
-    withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
+    withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });
 
     expect(createChannelServer).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -122,7 +122,7 @@ describe('withStorybook', () => {
 
     expect(generate).toHaveBeenCalledWith(
       expect.objectContaining({
-        configPath: '/tmp/.rnstorybook',
+        configPath: '/tmp/.rnforkbook',
         host: '192.168.1.10',
         port: 8123,
       })
@@ -130,7 +130,7 @@ describe('withStorybook', () => {
   });
 });
 
-describe('withStorybook resolution', () => {
+describe('withForkbook resolution', () => {
   const resolveRequest = vi.fn((_ctx: any, name: string) => ({
     filePath: `/node_modules/${name}/index.js`,
     type: 'sourceFile',
@@ -145,19 +145,19 @@ describe('withStorybook resolution', () => {
     (result.resolver as any).resolveRequest(...args);
 
   test.each(['os', 'tty'])('replaces %s with empty on native platforms', (mod) => {
-    const result = withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
+    const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });
 
     expect(resolve(result, {}, mod, 'ios')).toEqual({ type: 'empty' });
     expect(resolve(result, {}, mod, 'android')).toEqual({ type: 'empty' });
   });
 
   test.each(['os', 'tty'])('preserves real %s on web for Expo API Routes', (mod) => {
-    const result = withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
+    const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });
     expect(resolve(result, {}, mod, 'web')).not.toEqual({ type: 'empty' });
   });
 
   test.each(['os', 'tty'])('also replaces %s when storybook is disabled', (mod) => {
-    const result = withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: false });
+    const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false });
     const ctx = { resolveRequest };
 
     expect(resolve(result, ctx, mod, 'ios')).toEqual({ type: 'empty' });
@@ -165,7 +165,7 @@ describe('withStorybook resolution', () => {
   });
 
   test('resolves Forkbook with package exports and the import condition', () => {
-    const result = withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: true });
+    const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });
     resolveRequest.mockClear();
 
     resolve(result, { base: true }, '@aussieljk/forkbook/react-native', 'ios');
@@ -182,7 +182,7 @@ describe('withStorybook resolution', () => {
   });
 
   test('removes Storybook modules when storybook is disabled', () => {
-    const result = withStorybook(config, { configPath: '/tmp/.rnstorybook', enabled: false });
+    const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false });
 
     expect(resolve(result, {}, '@aussieljk/forkbook/react-native', 'ios')).toEqual({
       type: 'empty',
@@ -191,8 +191,8 @@ describe('withStorybook resolution', () => {
   });
 
   test('removes the full UI in lite mode', () => {
-    const result = withStorybook(config, {
-      configPath: '/tmp/.rnstorybook',
+    const result = withForkbook(config, {
+      configPath: '/tmp/.rnforkbook',
       enabled: true,
       liteMode: true,
     });

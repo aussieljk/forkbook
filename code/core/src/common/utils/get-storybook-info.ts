@@ -83,7 +83,7 @@ export const getConfigInfo = (configDir?: string) => {
 
     for (const packageJsonPath of packageJsonPaths) {
       const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
-      const storybookScript = packageJson.scripts?.forkbook ?? packageJson.scripts?.storybook;
+      const storybookScript = packageJson.scripts?.forkbook;
       if (storybookScript && !configDir) {
         const configParam = getStorybookConfiguration(storybookScript, '-c', '--config-dir');
 
@@ -128,7 +128,7 @@ export const getStorybookInfo = async (
   if (!frameworkField) {
     /*
       React Native on-device Forkbook historically omitted `framework` from main.ts.
-      When the config lives in `.rnstorybook`, infer the framework so telemetry
+      When the config lives in `.rnforkbook`, infer the framework so telemetry
       `metadata.framework.name` is populated for existing projects (scoped to the
       RN config dir to avoid mis-attributing web Storybooks in the same monorepo).
     */

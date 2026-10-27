@@ -129,8 +129,8 @@ const isModuleExportsTarget = (left: t.LVal | t.OptionalMemberExpression) => {
   );
 };
 
-const isWithStorybookCall = (node: t.Node | null | undefined, withStorybookLocalName: string) => {
-  return t.isCallExpression(node) && t.isIdentifier(node.callee, { name: withStorybookLocalName });
+const isWithForkbookCall = (node: t.Node | null | undefined, withForkbookLocalName: string) => {
+  return t.isCallExpression(node) && t.isIdentifier(node.callee, { name: withForkbookLocalName });
 };
 
 const parseConfig = (source: string) => {
@@ -181,19 +181,19 @@ export const containsStorybookImport = (source: string) => {
   return false;
 };
 
-const hasWithStorybookBinding = (program: t.Program) => {
+const hasWithForkbookBinding = (program: t.Program) => {
   for (const statement of program.body) {
     if (
       t.isImportDeclaration(statement) &&
-      statement.source.value === '@storybook/react-native/withStorybook'
+      statement.source.value === '@aussieljk/forkbook/react-native/metro/withForkbook'
     ) {
-      const withStorybookSpecifier = statement.specifiers.find(
+      const withForkbookSpecifier = statement.specifiers.find(
         (specifier) =>
           t.isImportSpecifier(specifier) &&
-          t.isIdentifier(specifier.imported, { name: 'withStorybook' })
+          t.isIdentifier(specifier.imported, { name: 'withForkbook' })
       );
-      if (withStorybookSpecifier && t.isImportSpecifier(withStorybookSpecifier)) {
-        return withStorybookSpecifier.local.name;
+      if (withForkbookSpecifier && t.isImportSpecifier(withForkbookSpecifier)) {
+        return withForkbookSpecifier.local.name;
       }
     }
 
@@ -215,7 +215,7 @@ const hasWithStorybookBinding = (program: t.Program) => {
         continue;
       }
 
-      if (firstArgument.value !== '@storybook/react-native/withStorybook') {
+      if (firstArgument.value !== '@aussieljk/forkbook/react-native/metro/withForkbook') {
         continue;
       }
 
@@ -224,7 +224,7 @@ const hasWithStorybookBinding = (program: t.Program) => {
           continue;
         }
 
-        if (!t.isIdentifier(property.key, { name: 'withStorybook' })) {
+        if (!t.isIdentifier(property.key, { name: 'withForkbook' })) {
           continue;
         }
 
@@ -301,11 +301,11 @@ const shiftFileLeadingComments = (fromNode: t.Node, toNode: t.Node) => {
   }
 };
 
-const injectWithStorybookImport = (program: t.Program, useEsmImport: boolean) => {
+const injectWithForkbookImport = (program: t.Program, useEsmImport: boolean) => {
   if (useEsmImport) {
     const importDeclaration = t.importDeclaration(
-      [t.importSpecifier(t.identifier('withStorybook'), t.identifier('withStorybook'))],
-      t.stringLiteral('@storybook/react-native/withStorybook')
+      [t.importSpecifier(t.identifier('withForkbook'), t.identifier('withForkbook'))],
+      t.stringLiteral('@aussieljk/forkbook/react-native/metro/withForkbook')
     );
     const lastImportIndex = [...program.body]
       .reverse()
@@ -329,10 +329,10 @@ const injectWithStorybookImport = (program: t.Program, useEsmImport: boolean) =>
   const requireDeclaration = t.variableDeclaration('const', [
     t.variableDeclarator(
       t.objectPattern([
-        t.objectProperty(t.identifier('withStorybook'), t.identifier('withStorybook'), false, true),
+        t.objectProperty(t.identifier('withForkbook'), t.identifier('withForkbook'), false, true),
       ]),
       t.callExpression(t.identifier('require'), [
-        t.stringLiteral('@storybook/react-native/withStorybook'),
+        t.stringLiteral('@aussieljk/forkbook/react-native/metro/withForkbook'),
       ])
     ),
   ]);
@@ -355,7 +355,7 @@ export const prependMetroFallbackComment = (source: string) => {
 export const transformMetroConfigSource = (source: string, filePath: string): TransformResult => {
   const ast = parseConfig(source);
   const program = ast.program;
-  const withStorybookLocalName = hasWithStorybookBinding(program) ?? 'withStorybook';
+  const withForkbookLocalName = hasWithForkbookBinding(program) ?? 'withForkbook';
   let matchedExport = false;
   let changed = false;
 
@@ -366,11 +366,11 @@ export const transformMetroConfigSource = (source: string, filePath: string): Tr
       }
 
       matchedExport = true;
-      if (isWithStorybookCall(statement.expression.right, withStorybookLocalName)) {
+      if (isWithForkbookCall(statement.expression.right, withForkbookLocalName)) {
         return { action: 'already-configured' };
       }
 
-      statement.expression.right = t.callExpression(t.identifier(withStorybookLocalName), [
+      statement.expression.right = t.callExpression(t.identifier(withForkbookLocalName), [
         statement.expression.right as t.Expression,
       ]);
       changed = true;
@@ -394,7 +394,7 @@ export const transformMetroConfigSource = (source: string, filePath: string): Tr
       // Preserve TypeScript/Flow function metadata when converting declaration -> expression.
       functionExpression.returnType = statement.declaration.returnType ?? null;
       functionExpression.typeParameters = statement.declaration.typeParameters ?? null;
-      statement.declaration = t.callExpression(t.identifier(withStorybookLocalName), [
+      statement.declaration = t.callExpression(t.identifier(withForkbookLocalName), [
         functionExpression,
       ]);
       changed = true;
@@ -405,11 +405,11 @@ export const transformMetroConfigSource = (source: string, filePath: string): Tr
       return { action: 'unsupported' };
     }
 
-    if (isWithStorybookCall(statement.declaration, withStorybookLocalName)) {
+    if (isWithForkbookCall(statement.declaration, withForkbookLocalName)) {
       return { action: 'already-configured' };
     }
 
-    statement.declaration = t.callExpression(t.identifier(withStorybookLocalName), [
+    statement.declaration = t.callExpression(t.identifier(withForkbookLocalName), [
       statement.declaration,
     ]);
     changed = true;
@@ -423,9 +423,9 @@ export const transformMetroConfigSource = (source: string, filePath: string): Tr
     return { action: 'already-configured' };
   }
 
-  if (!hasWithStorybookBinding(program)) {
+  if (!hasWithForkbookBinding(program)) {
     const shouldUseEsmImport = usesEsmSyntax(program) || filePath.endsWith('.mjs');
-    injectWithStorybookImport(program, shouldUseEsmImport);
+    injectWithForkbookImport(program, shouldUseEsmImport);
   }
 
   return {
@@ -572,7 +572,7 @@ export const runMetroCodemodOrFallback = async ({
       return {
         status: 'already-configured',
         filePath,
-        notes: ['Metro config already appears to be wrapped with withStorybook.'],
+        notes: ['Metro config already appears to be wrapped with withForkbook.'],
       };
     }
 
@@ -595,7 +595,7 @@ export const runMetroCodemodOrFallback = async ({
     return {
       status: 'updated',
       filePath,
-      notes: ['Metro config was updated with withStorybook wrapper.'],
+      notes: ['Metro config was updated with withForkbook wrapper.'],
     };
   } catch (error) {
     const fallbackSource = prependMetroFallbackComment(source);

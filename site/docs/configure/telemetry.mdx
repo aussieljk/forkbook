@@ -11,7 +11,7 @@ Forkbook sends no telemetry to anyone by default. It does not send data to Story
 Forkbook can send its events and traces with OpenTelemetry (OTLP over HTTP), for example to SigNoz. Set `OTEL_EXPORTER_OTLP_ENDPOINT`:
 
 ```sh
-OTEL_EXPORTER_OTLP_ENDPOINT=https://otel.example.dev bun run storybook
+OTEL_EXPORTER_OTLP_ENDPOINT=https://otel.example.dev bun run forkbook
 ```
 
 - Each telemetry event becomes a log record.

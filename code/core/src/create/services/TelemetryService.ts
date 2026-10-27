@@ -62,7 +62,7 @@ export class TelemetryService {
     },
     options: { configDir?: string } = {}
   ): Promise<void> {
-    // Pass configDir so metadata resolves `.rnstorybook` (RN) instead of defaulting to `.forkbook`.
+    // Pass configDir so metadata resolves `.rnforkbook` (RN) instead of defaulting to `.forkbook`.
     await telemetry('init', data, { configDir: options.configDir });
   }
 

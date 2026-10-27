@@ -14,21 +14,21 @@ import {
 } from './config-folder.ts';
 
 describe('isReactNativeStorybookPath', () => {
-  it('matches .rnstorybook config files and directories', () => {
-    expect(isReactNativeStorybookPath('.rnstorybook')).toBe(true);
-    expect(isReactNativeStorybookPath('.rnstorybook/preview.tsx')).toBe(true);
-    expect(isReactNativeStorybookPath('/project/.rnstorybook/preview.ts')).toBe(true);
-    expect(isReactNativeStorybookPath('C:\\project\\.rnstorybook\\preview.tsx')).toBe(true);
+  it('matches .rnforkbook config files and directories', () => {
+    expect(isReactNativeStorybookPath('.rnforkbook')).toBe(true);
+    expect(isReactNativeStorybookPath('.rnforkbook/preview.tsx')).toBe(true);
+    expect(isReactNativeStorybookPath('/project/.rnforkbook/preview.ts')).toBe(true);
+    expect(isReactNativeStorybookPath('C:\\project\\.rnforkbook\\preview.tsx')).toBe(true);
     expect(isReactNativeStorybookPath('.forkbook/preview.ts')).toBe(false);
     expect(isReactNativeStorybookPath(undefined)).toBe(false);
   });
 });
 
 describe('webPreviewCandidates', () => {
-  it('lists .forkbook preview files next to .rnstorybook', () => {
+  it('lists .forkbook preview files next to .rnforkbook', () => {
     const projectDir = resolve('app');
 
-    expect(webPreviewCandidates(join('app', '.rnstorybook', 'preview.tsx'))).toEqual(
+    expect(webPreviewCandidates(join('app', '.rnforkbook', 'preview.tsx'))).toEqual(
       storybookConfigExtensions.map((extension) =>
         join(projectDir, '.forkbook', `preview${extension}`)
       )
@@ -37,9 +37,9 @@ describe('webPreviewCandidates', () => {
 });
 
 describe('hasSiblingReactNativeConfig', () => {
-  it('detects .rnstorybook beside the config directory', () => {
+  it('detects .rnforkbook beside the config directory', () => {
     const configDir = join('apps', 'mobile', '.forkbook');
-    const sibling = join(resolve('apps', 'mobile'), '.rnstorybook');
+    const sibling = join(resolve('apps', 'mobile'), '.rnforkbook');
 
     expect(hasSiblingReactNativeConfig(configDir, (file) => file === sibling)).toBe(true);
     expect(hasSiblingReactNativeConfig(configDir, () => false)).toBe(false);
@@ -49,7 +49,7 @@ describe('hasSiblingReactNativeConfig', () => {
 
 describe('previewFileForImports', () => {
   it('prefers an existing web preview over the native file', () => {
-    const nativePreview = join('app', '.rnstorybook', 'preview.tsx');
+    const nativePreview = join('app', '.rnforkbook', 'preview.tsx');
     const webPreview = join(resolve('app'), '.forkbook', 'preview.ts');
 
     expect(previewFileForImports(nativePreview, (file) => file === webPreview)).toBe(webPreview);
@@ -61,20 +61,20 @@ describe('applyPreviewImportsMap', () => {
   it('writes the documented specifier relative to the package directory', () => {
     const packageJson: { imports?: Record<string, unknown> } = {};
     const fromDirectory = join('repo');
-    const previewFile = join('repo', 'apps', 'mobile', '.rnstorybook', 'preview.ts');
+    const previewFile = join('repo', 'apps', 'mobile', '.rnforkbook', 'preview.ts');
 
     expect(applyPreviewImportsMap(packageJson, previewFile, fromDirectory)).toBe(true);
     expect(packageJson.imports?.[DOCUMENTED_PREVIEW_IMPORT]).toBe(
-      './apps/mobile/.rnstorybook/preview.ts'
+      './apps/mobile/.rnforkbook/preview.ts'
     );
   });
 
   it('does not rewrite a mapping that already points at the same file', () => {
     const fromDirectory = join('app');
-    const previewFile = join('app', '.rnstorybook', 'preview.tsx');
+    const previewFile = join('app', '.rnforkbook', 'preview.tsx');
     const packageJson = {
       imports: {
-        [DOCUMENTED_PREVIEW_IMPORT]: './.rnstorybook/preview.tsx',
+        [DOCUMENTED_PREVIEW_IMPORT]: './.rnforkbook/preview.tsx',
         '#*': ['./*'],
       },
     };

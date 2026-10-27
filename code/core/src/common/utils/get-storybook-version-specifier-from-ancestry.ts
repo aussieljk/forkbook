@@ -1,7 +1,7 @@
 const PKG_PR_NEW_CLI_SPECIFIER_IN_TEXT_RE =
   /https?:\/\/[^/\s'"]*pkg\.pr\.new\/(?:[^@\s/]+\/[^@\s/]+\/)?(?:create-storybook|storybook)@[^\s'"]+/;
 
-const PACKAGE_AT_SPECIFIER_RE = /\s(?:create-storybook|storybook)@([^\s'"]+)/;
+const PACKAGE_AT_SPECIFIER_RE = /\s@aussieljk\/forkbook@([^\s'"]+)/;
 
 export type ProcessAncestryEntry = {
   command?: string | null;
@@ -13,8 +13,8 @@ const stripQuotedUrls = (command: string) => command.replace(/['"](https?:\/\/[^
  * Read a Forkbook version specifier from process ancestry.
  *
  * Prefers a pkg.pr.new CLI URL in the command so `npx --yes https://pkg.pr.new/.../storybook@sha`
- * and `npx storybook@https://pkg.pr.new/...` resolve to the same source. Falls back to
- * `create-storybook@<spec>` / `storybook@<spec>` for npm tags and semver.
+ * and `npx @aussieljk/forkbook@https://pkg.pr.new/...` resolve to the same source. Falls back to
+ * `@aussieljk/forkbook@<spec>` for npm tags and semver.
  */
 export const getStorybookVersionSpecifierFromAncestry = (
   ancestry: readonly ProcessAncestryEntry[]

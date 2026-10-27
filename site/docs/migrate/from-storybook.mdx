@@ -18,6 +18,9 @@ bunx @aussieljk/forkbook migrate
 1. It removes `storybook` and each `@storybook/*` package, and adds `@aussieljk/forkbook`.
 2. It changes the imports (see the table in step 2 below).
 3. It renames `STORYBOOK_*` to `FORKBOOK_*`, `sb-` to `fb-` and `--sb-` to `--fb-`.
+4. It moves `.storybook` to `.forkbook` and `.rnstorybook` to `.rnforkbook`, and `storybook.requires` to `forkbook.requires`.
+5. It renames `withStorybook` to `withForkbook` and `StorybookConfig` to `ForkbookConfig`.
+6. In the package.json scripts, it changes the `storybook` command to `forkbook`, `sb-rn-get-stories` to `forkbook rn-stories`, and script names such as `storybook:ios` to `forkbook:ios`.
 
 Read the diff before you commit it.
 
@@ -79,9 +82,6 @@ Read the diff before you commit it.
 
 ### 3. What stays the same
 
-- The `storybook` bin. Your `storybook dev` and `storybook build` scripts work.
-- The `.storybook` folder. Forkbook reads it when there is no `.forkbook` folder.
-- The framework names `@storybook/react-vite` and `@storybook/nextjs-vite` in `main.ts`.
 - CSF, `Meta`, `StoryObj`, args, parameters, decorators, loaders and play functions.
 
 ### 4. Renamed names
@@ -92,6 +92,14 @@ Read the diff before you commit it.
 | Globals `__STORYBOOK_*` | `__FORKBOOK_*` |
 | CSS classes `sb-*` (for example `sb-show-main`) | `fb-*` (for example `fb-show-main`) |
 | CSS variables `--sb-*` | `--fb-*` |
+| The `storybook` command | `forkbook` |
+| `sb-rn-get-stories` | `forkbook rn-stories` |
+| The `.storybook` folder | `.forkbook` |
+| The `.rnstorybook` folder | `.rnforkbook` |
+| `storybook.requires.ts` | `forkbook.requires.ts` |
+| `withStorybook` (Metro) | `withForkbook` |
+| `StorybookConfig` | `ForkbookConfig` |
+| Framework names `@storybook/react-vite` and `@storybook/nextjs-vite` | `@aussieljk/forkbook/react-vite` and `@aussieljk/forkbook/nextjs-vite` |
 
 Change each of these names in your code, your tests and your scripts. Forkbook does not read the old names.
 

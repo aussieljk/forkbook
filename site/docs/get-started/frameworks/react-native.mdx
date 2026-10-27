@@ -29,36 +29,36 @@ bunx forkbook init --type react_native
 // metro.config.js
 const path = require('node:path');
 const { getDefaultConfig } = require('expo/metro-config');
-const { withStorybook } = require('@aussieljk/forkbook/react-native/metro/withStorybook');
+const { withForkbook } = require('@aussieljk/forkbook/react-native/metro/withForkbook');
 
 const config = getDefaultConfig(__dirname);
 
-module.exports = withStorybook(config, {
+module.exports = withForkbook(config, {
   enabled: process.env.FORKBOOK_ENABLED === 'true',
-  configPath: path.resolve(__dirname, '.rnstorybook'),
+  configPath: path.resolve(__dirname, '.rnforkbook'),
 });
 ```
 
 When `enabled` is `false`, every Forkbook import resolves to an empty module. A release build then has no Forkbook code.
 
-### Options of withStorybook
+### Options of withForkbook
 
 | Option | Default | What it does |
 | --- | --- | --- |
 | `enabled` | `true` | Puts Forkbook in the bundle. |
-| `configPath` | `./.rnstorybook` | The folder with `main.ts`, `preview.tsx` and `index.tsx`. |
+| `configPath` | `./.rnforkbook` | The folder with `main.ts`, `preview.tsx` and `index.tsx`. |
 | `liteMode` | `false` | Uses a smaller UI with no addons panel. |
 | `docTools` | `true` | Adds the tools that make the args table. |
-| `useJs` | `false` | Writes `storybook.requires.js` in place of `storybook.requires.ts`. |
+| `useJs` | `false` | Writes `forkbook.requires.js` in place of `forkbook.requires.ts`. |
 | `websockets` | none | Starts a channel server, so a web Forkbook or a test can control the device. Use `'auto'` or `{ host, port, secured }`. |
 
 ## The configuration folder
 
 ```ts
-// .rnstorybook/main.ts
-import type { StorybookConfig } from '@aussieljk/forkbook/react-native';
+// .rnforkbook/main.ts
+import type { ForkbookConfig } from '@aussieljk/forkbook/react-native';
 
-const main: StorybookConfig = {
+const main: ForkbookConfig = {
   stories: ['../src/**/*.stories.?(ts|tsx)'],
   deviceAddons: [
     '@aussieljk/forkbook/addon-ondevice-controls',
@@ -70,26 +70,26 @@ export default main;
 ```
 
 ```tsx
-// .rnstorybook/index.tsx
+// .rnforkbook/index.tsx
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { view } from './storybook.requires';
+import { view } from './forkbook.requires';
 
-const StorybookUIRoot = view.getStorybookUI({
+const ForkbookUIRoot = view.getForkbookUI({
   storage: { getItem: AsyncStorage.getItem, setItem: AsyncStorage.setItem },
 });
 
-export default StorybookUIRoot;
+export default ForkbookUIRoot;
 ```
 
 The `storage` option keeps the last story between launches. It is optional.
 
 ## The story list
 
-`storybook.requires.ts` lists your stories. Metro writes it when it starts. To write it yourself, run:
+`forkbook.requires.ts` lists your stories. Metro writes it when it starts. To write it yourself, run:
 
 ```sh
-bunx sb-rn-get-stories --config-path .rnstorybook
+bunx forkbook rn-stories --config-path .rnforkbook
 ```
 
 Commit this file. Do not format it with a formatter, because Metro writes it again in its own format.
@@ -111,7 +111,7 @@ export const Primary: StoryObj<typeof meta> = {
 
 ## Show Forkbook in the app
 
-Show `StorybookUIRoot` in place of your app when `FORKBOOK_ENABLED` is set. For example, in `index.ts`, export the Forkbook root when the variable is `true`.
+Show `ForkbookUIRoot` in place of your app when `FORKBOOK_ENABLED` is set. For example, in `index.ts`, export the Forkbook root when the variable is `true`.
 
 ## Tests
 

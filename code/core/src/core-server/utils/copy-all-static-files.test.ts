@@ -11,7 +11,7 @@ vi.mock('node:fs/promises', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({ logger: { info: vi.fn() } }));
 
 const configDir = '/project/.forkbook';
-const outputDir = '/project/storybook-static';
+const outputDir = '/project/forkbook-static';
 
 beforeEach(async () => {
   memfs.vol.reset();

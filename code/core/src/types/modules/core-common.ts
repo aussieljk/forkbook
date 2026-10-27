@@ -756,7 +756,7 @@ export interface StorybookConfigRaw {
  * The interface for Forkbook configuration in `main.ts` files. This interface is public All values
  * should be wrapped with `PresetValue<>`, though there are a few exceptions: `addons`, `framework`
  */
-export interface StorybookConfig {
+export interface ForkbookConfig {
   /**
    * Sets the addons you want to use with Forkbook.
    *

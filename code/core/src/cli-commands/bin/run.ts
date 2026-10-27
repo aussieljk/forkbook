@@ -157,6 +157,9 @@ command('migrate')
     const verb = options.dryRun ? 'Would change' : 'Changed';
     logger.log(`Removed packages: ${result.removedPackages.join(', ') || 'none'}`);
     logger.log(`Added package: ${result.addedPackage}`);
+    for (const move of result.moved) {
+      logger.log(`${options.dryRun ? 'Would move' : 'Moved'} ${move}`);
+    }
     logger.log(`${verb} ${result.changedFiles.length} files:`);
     for (const file of result.changedFiles) {
       logger.log(`  ${file}`);

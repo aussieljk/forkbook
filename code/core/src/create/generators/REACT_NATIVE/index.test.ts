@@ -39,7 +39,7 @@ describe('REACT_NATIVE generator module', () => {
   beforeEach(() => {
     vi.mocked(copyTemplateFiles).mockResolvedValue();
     vi.mocked(generateReactNativeEntrypoint).mockResolvedValue({
-      targetPath: '.rnstorybook/index.js',
+      targetPath: '.rnforkbook/index.js',
       extension: 'js',
     });
     vi.mocked(runMetroCodemodOrFallback).mockResolvedValue({
@@ -75,14 +75,14 @@ describe('REACT_NATIVE generator module', () => {
       { storybookVersionSpecifier: undefined }
     );
     expect(packageManager.addScripts).toHaveBeenCalledWith({
-      'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
-      'storybook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
+      'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+      'forkbook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
     });
     expect(runMetroCodemodOrFallback).toHaveBeenCalled();
     expect(packageManager.writePackageJson).toHaveBeenCalledWith(
       expect.objectContaining({
         imports: expect.objectContaining({
-          '#.storybook/preview': './.rnstorybook/preview.tsx',
+          '#.forkbook/preview': './.rnforkbook/preview.tsx',
         }),
       }),
       process.cwd()
@@ -93,8 +93,8 @@ describe('REACT_NATIVE generator module', () => {
     const packageManager = createPackageManager({
       ios: 'react-native run-ios',
       android: 'react-native run-android',
-      'storybook:ios': 'echo old-ios',
-      'storybook:android': 'echo old-android',
+      'forkbook:ios': 'echo old-ios',
+      'forkbook:android': 'echo old-android',
     });
 
     await reactNativeGenerator.configure(packageManager, {
@@ -110,8 +110,8 @@ describe('REACT_NATIVE generator module', () => {
 
     expect(packageManager.addScripts).toHaveBeenCalledWith(
       expect.objectContaining({
-        'storybook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
-        'storybook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
+        'forkbook:ios': 'cross-env FORKBOOK_ENABLED=true react-native run-ios',
+        'forkbook:android': 'cross-env FORKBOOK_ENABLED=true react-native run-android',
       })
     );
   });
@@ -136,8 +136,8 @@ describe('REACT_NATIVE generator module', () => {
 
     const logged = String(vi.mocked(logger.log).mock.calls.at(-1)?.[0] ?? '');
     expect(logged).not.toContain('Replace the contents of your app entry');
-    expect(logged).toContain('npm run storybook:ios');
-    expect(logged).toContain('npm run storybook:android');
+    expect(logged).toContain('npm run forkbook:ios');
+    expect(logged).toContain('npm run forkbook:android');
   });
 
   it('postConfigure shows env fallback warning when scripts are missing', async () => {

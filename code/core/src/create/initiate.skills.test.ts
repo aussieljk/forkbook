@@ -64,7 +64,7 @@ describe('init: the skills step', () => {
     ).mockResolvedValue({ compatible: true });
     vi.mocked(executeGeneratorExecution).mockResolvedValue({
       configDir: '.forkbook',
-      storybookCommand: 'npm run storybook',
+      storybookCommand: 'npm run forkbook',
       extraAddons: [],
     } as Awaited<ReturnType<typeof executeGeneratorExecution>>);
     vi.mocked(executeDependencyInstallation).mockResolvedValue({ status: 'success' });

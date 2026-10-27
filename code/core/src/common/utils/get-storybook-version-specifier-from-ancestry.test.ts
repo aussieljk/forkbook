@@ -13,19 +13,19 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
     ).toBeUndefined();
   });
 
-  it('extracts a version from npm create storybook@', () => {
+  it('extracts a version from bunx @aussieljk/forkbook@', () => {
     expect(
       getStorybookVersionSpecifierFromAncestry([
         { command: 'node' },
-        { command: 'npm create storybook@7.0.0-alpha.3' },
+        { command: 'bunx @aussieljk/forkbook@7.0.0-alpha.3' },
         { command: 'npm' },
       ])
     ).toBe('7.0.0-alpha.3');
   });
 
-  it('extracts a version from npx storybook@ init', () => {
+  it('extracts a version from npx @aussieljk/forkbook@ init', () => {
     expect(
-      getStorybookVersionSpecifierFromAncestry([{ command: 'npx storybook@7.0.0 init' }])
+      getStorybookVersionSpecifierFromAncestry([{ command: 'npx @aussieljk/forkbook@7.0.0 init' }])
     ).toBe('7.0.0');
   });
 
@@ -35,9 +35,9 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
     ).toBeUndefined();
   });
 
-  it('extracts latest from create-storybook@latest', () => {
+  it('extracts latest from @aussieljk/forkbook@latest', () => {
     expect(
-      getStorybookVersionSpecifierFromAncestry([{ command: 'npx create-storybook@latest' }])
+      getStorybookVersionSpecifierFromAncestry([{ command: 'npx @aussieljk/forkbook@latest' }])
     ).toBe('latest');
   });
 
@@ -50,9 +50,9 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
   it('uses the most recent matching ancestor', () => {
     expect(
       getStorybookVersionSpecifierFromAncestry([
-        { command: 'npx create-storybook@foo' },
+        { command: 'npx @aussieljk/forkbook@foo' },
         { command: 'npm' },
-        { command: 'npx create-storybook@bar' },
+        { command: 'npx @aussieljk/forkbook@bar' },
       ])
     ).toBe('bar');
   });
@@ -130,11 +130,11 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
 
   it('extracts npm tags and prerelease versions', () => {
     expect(
-      getStorybookVersionSpecifierFromAncestry([{ command: 'npx storybook@next upgrade' }])
+      getStorybookVersionSpecifierFromAncestry([{ command: 'npx @aussieljk/forkbook@next upgrade' }])
     ).toBe('next');
     expect(
       getStorybookVersionSpecifierFromAncestry([
-        { command: 'npx storybook@10.6.0-alpha.7 upgrade' },
+        { command: 'npx @aussieljk/forkbook@10.6.0-alpha.7 upgrade' },
       ])
     ).toBe('10.6.0-alpha.7');
   });

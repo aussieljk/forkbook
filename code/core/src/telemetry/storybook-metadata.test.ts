@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getStorybookInfo, isCI } from '@aussieljk/forkbook/internal/common';
 import {
   type PackageJson,
-  type StorybookConfig,
+  type ForkbookConfig,
   SupportedBuilder,
   SupportedFramework,
   SupportedRenderer,
@@ -55,7 +55,7 @@ const packageJsonMock: PackageJson = {
 
 const packageJsonPath = process.cwd();
 
-const mainJsMock: StorybookConfig = {
+const mainJsMock: ForkbookConfig = {
   stories: [],
 };
 

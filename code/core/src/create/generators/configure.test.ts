@@ -35,7 +35,7 @@ describe('configureMain', () => {
     expect(mainConfigContent).toMatchInlineSnapshot(`
       "
 
-      /** @type { import('@aussieljk/forkbook/react-vite').StorybookConfig } */
+      /** @type { import('@aussieljk/forkbook/react-vite').ForkbookConfig } */
       const config = {
         "stories": [
           "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
@@ -63,9 +63,9 @@ describe('configureMain', () => {
 
     expect(mainConfigPath).toEqual('./.forkbook/main.ts');
     expect(mainConfigContent).toMatchInlineSnapshot(`
-      "import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+      "import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-      const config: StorybookConfig = {
+      const config: ForkbookConfig = {
         "stories": [
           "../stories/**/*.mdx",
           "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
@@ -93,9 +93,9 @@ describe('configureMain', () => {
 
     expect(mainConfigPath).toEqual('./.forkbook/main.ts');
     expect(mainConfigContent).toMatchInlineSnapshot(`
-      "import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+      "import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
-      const config: StorybookConfig = {
+      const config: ForkbookConfig = {
         "stories": [
           "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
         ],
@@ -128,7 +128,7 @@ describe('configureMain', () => {
     expect(mainConfigContent).toMatchInlineSnapshot(`
       "import path from 'node:path';
 
-      /** @type { import('@aussieljk/forkbook/react-vite').StorybookConfig } */
+      /** @type { import('@aussieljk/forkbook/react-vite').ForkbookConfig } */
       const config = {
         "stories": [
           "../stories/**/*.mdx",

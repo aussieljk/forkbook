@@ -40,15 +40,15 @@ describe('FinalizationCommand', () => {
       vi.mocked(fs.appendFile).mockResolvedValue(undefined);
 
       await command.execute({
-        storybookCommand: 'npm run storybook',
+        storybookCommand: 'npm run forkbook',
       });
 
       expect(fs.appendFile).toHaveBeenCalledWith(
         '/test/project/.gitignore',
-        '\n*storybook.log\nstorybook-static\n'
+        '\n*storybook.log\nforkbook-static\n'
       );
       expect(logger.step).toHaveBeenCalledWith(expect.stringContaining('successfully installed'));
-      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run storybook'));
+      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run forkbook'));
       expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('forkbook.ljk.dev'));
     });
 
@@ -69,7 +69,7 @@ describe('FinalizationCommand', () => {
       vi.mocked(getProjectRoot).mockReturnValue('/test/project');
 
       await command.execute({
-        storybookCommand: 'npm run storybook',
+        storybookCommand: 'npm run forkbook',
       });
 
       expect(fs.readFile).not.toHaveBeenCalled();
@@ -78,10 +78,10 @@ describe('FinalizationCommand', () => {
 
     it('should not add entries that already exist in gitignore', async () => {
       vi.mocked(find.up).mockReturnValue('/test/project/.gitignore');
-      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*storybook.log\nstorybook-static\n');
+      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*storybook.log\nforkbook-static\n');
 
       await command.execute({
-        storybookCommand: 'npm run storybook',
+        storybookCommand: 'npm run forkbook',
       });
 
       expect(fs.appendFile).not.toHaveBeenCalled();
@@ -93,13 +93,10 @@ describe('FinalizationCommand', () => {
       vi.mocked(fs.appendFile).mockResolvedValue(undefined);
 
       await command.execute({
-        storybookCommand: 'npm run storybook',
+        storybookCommand: 'npm run forkbook',
       });
 
-      expect(fs.appendFile).toHaveBeenCalledWith(
-        '/test/project/.gitignore',
-        '\nstorybook-static\n'
-      );
+      expect(fs.appendFile).toHaveBeenCalledWith('/test/project/.gitignore', '\nforkbook-static\n');
     });
 
     it('should include storybook command in output', async () => {
@@ -244,10 +241,10 @@ describe('FinalizationCommand', () => {
       });
       vi.mocked(find.up).mockReturnValue(undefined);
 
-      await cmd.execute({ storybookCommand: 'npm run storybook' });
+      await cmd.execute({ storybookCommand: 'npm run forkbook' });
 
       expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('To run Forkbook, run'));
-      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run storybook'));
+      expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run forkbook'));
     });
 
     it('should not print storybook command message when storybookCommand is null', async () => {

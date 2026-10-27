@@ -1,6 +1,6 @@
 import type {
   CompatibleString,
-  StorybookConfig as StorybookConfigBase,
+  ForkbookConfig as StorybookConfigBase,
 } from '@aussieljk/forkbook/internal/types';
 
 import type { BuilderOptions, StorybookConfigVite } from '@aussieljk/forkbook/builder-vite';
@@ -39,7 +39,7 @@ type StorybookConfigFramework = {
 };
 
 /** The interface for Forkbook configuration in `main.ts` files. */
-export type StorybookConfig = Omit<
+export type ForkbookConfig = Omit<
   StorybookConfigBase,
   keyof StorybookConfigVite | keyof StorybookConfigFramework
 > &

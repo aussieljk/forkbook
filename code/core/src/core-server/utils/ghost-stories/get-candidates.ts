@@ -156,7 +156,7 @@ export async function getComponentCandidates({
         '**/dist/**',
         '**/__mocks__/**',
         '**/build/**',
-        '**/storybook-static/**',
+        '**/forkbook-static/**',
         '**/*.test.*',
         '**/*.d.*',
         '**/*.config.*',

@@ -385,7 +385,7 @@ function createToolsHost(args: {
       throw new AttachUnavailableError({
         reason: 'no-instance',
         instances: [],
-        remediation: `\`${ref}\` needs a running Forkbook dev server, and this tools host loaded the project's configuration on its own. Start Forkbook (for example \`npm run storybook\`), then retry.`,
+        remediation: `\`${ref}\` needs a running Forkbook dev server, and this tools host loaded the project's configuration on its own. Start Forkbook (for example \`npm run forkbook\`), then retry.`,
       });
     }
 

@@ -12,4 +12,4 @@ export const GET_STORIES_BY_COMPONENT_TOOL_NAME = toMcpToolName('stories.findByC
 export const RUN_STORY_TESTS_TOOL_NAME = toMcpToolName('test.run');
 export const DISPLAY_REVIEW_TOOL_NAME = toMcpToolName('review.create');
 
-export const GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME = 'get-storybook-story-instructions';
+export const GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME = 'get-forkbook-story-instructions';

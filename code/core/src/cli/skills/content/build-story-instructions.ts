@@ -53,7 +53,7 @@ This Forkbook exposes component documentation tools. Before creating or changing
     .replace(
       '{{RENDERER_REQUIREMENTS}}',
       resolvedRenderer === '@storybook/react-native'
-        ? '- React Native uses `.rnstorybook` directory'
+        ? '- React Native uses `.rnforkbook` directory'
         : ''
     )
     .replace('\n{{DOCS_WORKFLOW_GUIDANCE}}', docsEnabled ? docsWorkflowGuidance : '')

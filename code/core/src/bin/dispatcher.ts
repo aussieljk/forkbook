@@ -17,6 +17,7 @@ import { resolvePackageDir } from '../shared/utils/module.ts';
  *
  * - Core Forkbook commands (dev, build, index, tools, skills) go to dist/bin/core.js
  * - Init goes to the create CLI (dist/create/bin/index.js)
+ * - rn-stories goes to the React Native story list writer (dist/react-native/bin/get-stories.js)
  * - Other CLI commands (add, remove, migrate, pages) go to the CLI commands (dist/cli-commands/bin/index.js)
  */
 if (!isNodeVersionSupported(process.versions.node)) {
@@ -31,16 +32,6 @@ async function run() {
   Module.enableCompileCache();
 
   const args = process.argv.slice(2);
-
-  // Agents that learned `storybook ai setup` from Forkbook 10 docs keep calling it, and the generic
-  // "Did you mean add?" fallback would steer them to the wrong command. Remove in Forkbook 12.
-  if (args[0] === 'ai') {
-    logger.error(
-      dedent`The \`storybook ai\` command was removed in Forkbook 11.
-      Run \`npx forkbook skills setup\` instead of \`storybook ai setup\`, and \`npx forkbook tools\` for the other \`ai\` subcommands.`
-    );
-    process.exit(1);
-  }
 
   if (args[0] === 'tools' && !args.includes('--no-attach')) {
     process.env.FORKBOOK_ATTACHED_TOOLS = 'true';
@@ -61,10 +52,12 @@ async function run() {
     ? 'dist/bin/core.js'
     : args[0] === 'init'
       ? 'dist/create/bin/index.js'
-      : 'dist/cli-commands/bin/index.js';
+      : args[0] === 'rn-stories'
+        ? 'dist/react-native/bin/get-stories.js'
+        : 'dist/cli-commands/bin/index.js';
 
-  if (args[0] === 'init') {
-    // The create CLI takes its options without the `init` command name.
+  if (args[0] === 'init' || args[0] === 'rn-stories') {
+    // These CLIs take their options without the command name.
     process.argv.splice(2, 1);
   }
 

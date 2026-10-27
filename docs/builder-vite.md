@@ -37,7 +37,7 @@ See https://vitejs.dev/guide/#scaffolding-your-first-vite-project,
 
 ```
 npm create vite@latest # follow the prompts
-npx storybook@latest init --builder vite && npm run storybook
+npx @aussieljk/forkbook@latest init --builder vite && npm run forkbook
 ```
 
 ### Customize Vite config
@@ -95,11 +95,11 @@ The function should return the updated Vite configuration.
 Configure your `.forkbook/main.ts` to use TypeScript:
 
 ```typescript
-import type { StorybookConfig } from '@aussieljk/forkbook/react-vite';
+import type { ForkbookConfig } from '@aussieljk/forkbook/react-vite';
 
 // (or whatever framework you are using)
 
-const config: StorybookConfig = {
+const config: ForkbookConfig = {
   // other storybook options...,
   async viteFinal(config, options) {
     // modify and return config

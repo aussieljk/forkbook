@@ -428,7 +428,7 @@ describe('createTools', () => {
         reason: 'no-instance',
         instances: [],
         remediation:
-          'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+          'No running Forkbook was found for this project. Start it first (for example `npm run forkbook`), then retry with `--attach`.',
       })
     );
 
@@ -463,7 +463,7 @@ describe('createTools', () => {
         reason: 'no-instance',
         instances: [],
         remediation:
-          'No running Forkbook was found for this project. Start it first (for example `npm run storybook`), then retry with `--attach`.',
+          'No running Forkbook was found for this project. Start it first (for example `npm run forkbook`), then retry with `--attach`.',
       })
     );
     vi.mocked(spawnChild).mockResolvedValue(spawned);

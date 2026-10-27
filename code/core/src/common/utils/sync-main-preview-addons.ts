@@ -6,7 +6,7 @@ import {
   writeConfig,
 } from '@aussieljk/forkbook/internal/csf-tools';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
-import type { StorybookConfig } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 
@@ -14,7 +14,7 @@ import { getAddonAnnotations } from './get-addon-annotations.ts';
 import { getAddonNames } from './get-addon-names.ts';
 
 export async function syncStorybookAddons(
-  mainConfig: StorybookConfig,
+  mainConfig: ForkbookConfig,
   previewConfigPath: string,
   configDir: string
 ) {
@@ -29,7 +29,7 @@ export async function syncStorybookAddons(
 }
 
 export async function syncPreviewAddonsWithMainConfig(
-  mainConfig: StorybookConfig,
+  mainConfig: ForkbookConfig,
   previewConfig: ConfigFile,
   configDir: string
 ): Promise<ConfigFile> {

@@ -3,7 +3,7 @@ import type { JsPackageManager, PackageManagerName } from '@aussieljk/forkbook/i
 import type { ConfigFile } from '@aussieljk/forkbook/internal/csf-tools';
 import type {
   Feature,
-  StorybookConfig,
+  ForkbookConfig,
   SupportedBuilder,
   SupportedFramework,
   SupportedLanguage,
@@ -56,7 +56,7 @@ export type Generator<T = Record<string, any>> = (
     builderPackage: string;
     frameworkPackage: string;
     configDir: string;
-    mainConfig?: StorybookConfig;
+    mainConfig?: ForkbookConfig;
     mainConfigCSFFile?: ConfigFile;
     previewConfigPath?: string;
   } & T

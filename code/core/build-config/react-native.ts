@@ -1,7 +1,7 @@
 import type { BuildEntries } from '../../../scripts/build/utils/entry-utils.ts';
 
 // React Native (iOS), vendored from storybookjs/react-native v10.6.1. Metro bundles the browser
-// entries for the device. The node entries run in metro.config and in the `sb-rn-get-stories` bin.
+// entries for the device. The node entries run in metro.config and in the `forkbook rn-stories` command.
 const config: BuildEntries = {
   entries: {
     browser: [
@@ -14,7 +14,7 @@ const config: BuildEntries = {
         entryPoint: './src/react-native/preview.ts',
       },
       {
-        // Takes the place of the config folder when Storybook is disabled (metro/withStorybook).
+        // Takes the place of the config folder when Storybook is disabled (metro/withForkbook).
         exportEntries: ['./react-native/stub'],
         entryPoint: './src/react-native/stub.tsx',
         dts: false,
@@ -52,8 +52,8 @@ const config: BuildEntries = {
     ],
     node: [
       {
-        exportEntries: ['./react-native/metro/withStorybook'],
-        entryPoint: './src/react-native/metro/withStorybook.ts',
+        exportEntries: ['./react-native/metro/withForkbook'],
+        entryPoint: './src/react-native/metro/withForkbook.ts',
       },
       {
         exportEntries: ['./react-native/node'],
@@ -64,7 +64,7 @@ const config: BuildEntries = {
         entryPoint: './src/react-native/scripts/generate.ts',
       },
       {
-        // The `sb-rn-get-stories` bin.
+        // The `forkbook rn-stories` command.
         entryPoint: './src/react-native/bin/get-stories.ts',
         dts: false,
       },

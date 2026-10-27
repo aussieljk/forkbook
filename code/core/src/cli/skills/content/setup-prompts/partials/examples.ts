@@ -143,9 +143,9 @@ export function getMainConfigExample(projectInfo: ProjectInfo): string {
   return dedent`
     \`\`\`${ts}
     // ${configDir}/main.${ts}
-    import type { StorybookConfig } from '${typeImport}';
+    import type { ForkbookConfig } from '${typeImport}';
 
-    const config: StorybookConfig = { staticDirs: ['../public'] };
+    const config: ForkbookConfig = { staticDirs: ['../public'] };
     export default config;
     \`\`\`
   `;

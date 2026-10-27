@@ -24,7 +24,7 @@ export const IGNORED_FOLDERS = [
   '.next',
   'dist',
   '.git',
-  'storybook-static',
+  'forkbook-static',
   'coverage',
 ];
 

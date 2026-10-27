@@ -650,10 +650,10 @@
     "./react-native/metro-env": {
       "types": "./assets/react-native/metro-env.d.ts"
     },
-    "./react-native/metro/withStorybook": {
-      "code": "./src/react-native/metro/withStorybook.ts",
-      "types": "./dist/react-native/metro/withStorybook.d.ts",
-      "default": "./dist/react-native/metro/withStorybook.js"
+    "./react-native/metro/withForkbook": {
+      "code": "./src/react-native/metro/withForkbook.ts",
+      "types": "./dist/react-native/metro/withForkbook.d.ts",
+      "default": "./dist/react-native/metro/withForkbook.js"
     },
     "./react-native/node": {
       "code": "./src/react-native/metro/node.ts",
@@ -740,9 +740,7 @@
     }
   },
   "bin": {
-    "forkbook": "dist/bin/dispatcher.js",
-    "sb-rn-get-stories": "dist/react-native/bin/get-stories.js",
-    "storybook": "dist/bin/dispatcher.js"
+    "forkbook": "dist/bin/dispatcher.js"
   },
   "files": [
     "dist/**/*",
