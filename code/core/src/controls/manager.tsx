@@ -9,7 +9,7 @@ import type {
 import { SAVE_STORY_REQUEST, SAVE_STORY_RESPONSE } from '@aussieljk/forkbook/internal/core-events';
 import type { Args } from '@aussieljk/forkbook/internal/csf';
 
-import { CheckCircleIcon, XCircleIcon } from '@phosphor-icons/react';
+import { CircleCheckIcon, CircleXIcon } from 'lucide-react';
 
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import {
@@ -60,7 +60,7 @@ export default addons.register(ADDON_ID, (api) => {
 
         api.addNotification({
           id: 'save-story-success',
-          icon: <CheckCircleIcon color={color.positive} />,
+          icon: <CircleCheckIcon color={color.positive} />,
           content: {
             headline: 'Story saved',
             subHeadline: (
@@ -74,7 +74,7 @@ export default addons.register(ADDON_ID, (api) => {
       } catch (error: any) {
         api.addNotification({
           id: 'save-story-error',
-          icon: <XCircleIcon color={color.negative} />,
+          icon: <CircleXIcon color={color.negative} />,
           content: {
             headline: 'Failed to save story',
             subHeadline:
@@ -105,7 +105,7 @@ export default addons.register(ADDON_ID, (api) => {
 
       api.addNotification({
         id: 'save-story-success',
-        icon: <CheckCircleIcon color={color.positive} />,
+        icon: <CircleCheckIcon color={color.positive} />,
         content: {
           headline: 'Story created',
           subHeadline: (

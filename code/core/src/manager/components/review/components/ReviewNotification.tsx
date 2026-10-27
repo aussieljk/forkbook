@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef, type FC } from 'react';
 
-import { MagicWandIcon } from '@phosphor-icons/react';
+import { WandSparklesIcon } from 'lucide-react';
 
 import { useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 import { reviewAvailableNotificationId } from '../constants.ts';
@@ -72,7 +72,7 @@ export const ReviewNotification: FC = () => {
         headline: 'New review available',
         subHeadline: review.title ?? 'Open the curated review to spot-check your changes',
       },
-      icon: <MagicWandIcon />,
+      icon: <WandSparklesIcon />,
       onClick: ({ onDismiss }) => {
         handleNotificationClick(createdAt);
         onDismiss();

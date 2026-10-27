@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button, Form, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { MinusIcon, PencilSimpleIcon, PlusIcon } from '@phosphor-icons/react';
+import { MinusIcon, PencilIcon, PlusIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 import { cloneDeep } from 'es-toolkit/object';
@@ -147,7 +147,7 @@ export const ObjectControl: FC<ObjectProps> = ({
           padding="small"
           size="small"
         >
-          <PencilSimpleIcon />
+          <PencilIcon />
         </ToggleButton>
       )}
       {!showRaw ? (

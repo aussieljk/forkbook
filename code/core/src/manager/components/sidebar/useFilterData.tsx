@@ -9,7 +9,7 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../../shared/global.ts';
-import { FileTextIcon, FlaskIcon, PlayCircleIcon } from '@phosphor-icons/react';
+import { FileTextIcon, FlaskConicalIcon, CirclePlayIcon } from 'lucide-react';
 
 import { color } from '@aussieljk/forkbook/theming';
 
@@ -44,8 +44,8 @@ const BUILT_IN_FILTER_DEFS: Array<{
   tag: string;
 }> = [
   { id: '_docs', title: 'Documentation', icon: <FileTextIcon color={color.gold} />, tag: '_docs' },
-  { id: '_play', title: 'Play', icon: <PlayCircleIcon color={color.seafoam} />, tag: '_play' },
-  { id: '_test', title: 'Testing', icon: <FlaskIcon color={color.green} />, tag: '_test' },
+  { id: '_play', title: 'Play', icon: <CirclePlayIcon color={color.seafoam} />, tag: '_play' },
+  { id: '_test', title: 'Testing', icon: <FlaskConicalIcon color={color.green} />, tag: '_test' },
 ];
 
 export function useTagFilterEntries(indexJson: StoryIndex) {

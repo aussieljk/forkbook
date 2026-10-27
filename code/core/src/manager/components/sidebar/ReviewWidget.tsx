@@ -2,7 +2,7 @@ import React, { useMemo, useRef, type SyntheticEvent } from 'react';
 
 import { ActionList, Card } from '@aussieljk/forkbook/internal/components';
 
-import { MagicWandIcon, XCircleIcon } from '@phosphor-icons/react';
+import { WandSparklesIcon, CircleXIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
@@ -67,7 +67,7 @@ export const ReviewWidget = () => {
         <ActionList as="div">
           <ActionList.Item as="div">
             <ActionList.Text className={styles.headerContent}>
-              <MagicWandIcon className={styles.agenticIcon} aria-hidden />
+              <WandSparklesIcon className={styles.agenticIcon} aria-hidden />
               <h2 className={styles.headerTitle} id={HEADING_ID}>
                 Quick review
               </h2>
@@ -101,7 +101,7 @@ export const ReviewWidget = () => {
           ariaLabel="Dismiss review"
           onClick={onDismiss}
         >
-          <XCircleIcon className={styles.dismissIcon} />
+          <CircleXIcon className={styles.dismissIcon} />
         </ActionList.Button>
       </Card>
     </section>

@@ -9,7 +9,7 @@ import {
   useTabsState,
 } from '@aussieljk/forkbook/internal/components';
 
-import { CheckIcon, CopyIcon } from '@phosphor-icons/react';
+import { CheckIcon, CopyIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 

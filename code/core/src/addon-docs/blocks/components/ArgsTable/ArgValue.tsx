@@ -7,7 +7,7 @@ import {
   codeCommon,
 } from '@aussieljk/forkbook/internal/components';
 
-import { CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 import { uniq } from 'es-toolkit/array';
@@ -131,9 +131,9 @@ const ArgSummary: FC<ArgSummaryProps> = ({ value, initialExpandedArgs }) => {
       <button className={clsx(codeCommon, styles.expandable, 'sbdocs-expandable')}>
         <span>{summaryAsString}</span>
         {isOpen ? (
-          <CaretUpIcon className={styles.chevron} />
+          <ChevronUpIcon className={styles.chevron} />
         ) : (
-          <CaretDownIcon className={styles.chevron} />
+          <ChevronDownIcon className={styles.chevron} />
         )}
       </button>
     </PopoverProvider>

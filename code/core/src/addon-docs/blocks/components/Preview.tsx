@@ -5,7 +5,7 @@ import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import type { ActionItem } from '@aussieljk/forkbook/internal/components';
 import { Bar, Button, ToggleButton, Zoom } from '@aussieljk/forkbook/internal/components';
 
-import { CodeIcon, CopyIcon } from '@phosphor-icons/react';
+import { CodeIcon, CopyIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 

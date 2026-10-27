@@ -1,6 +1,6 @@
 import React, { type FC, Fragment, useEffect } from 'react';
 
-import { IconContext } from '@phosphor-icons/react';
+import { LucideProvider } from 'lucide-react';
 
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 
@@ -164,9 +164,9 @@ const loaders = [
 const decorators = [
   // Forkbook icons are 14 px, as in the manager (see manager/index.tsx)
   (Story) => (
-    <IconContext.Provider value={{ size: 14 }}>
+    <LucideProvider size={14}>
       <Story />
-    </IconContext.Provider>
+    </LucideProvider>
   ),
   // This decorator adds the DocsContext created in the loader above
   (Story, { loaded: { docsContext } }) =>

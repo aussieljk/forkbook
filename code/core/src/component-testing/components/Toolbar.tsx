@@ -8,12 +8,12 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 
 import {
-  ArrowsClockwiseIcon,
+  RefreshCwIcon,
   FastForwardIcon,
   RewindIcon,
   SkipBackIcon,
   SkipForwardIcon,
-} from '@phosphor-icons/react';
+} from 'lucide-react';
 
 import { type API } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -127,7 +127,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             onClick={controls.rerun}
             onPointerDown={preventFocusLoss}
           >
-            <ArrowsClockwiseIcon />
+            <RefreshCwIcon />
           </Button>
         </div>
         {(importPath || storyFileName) &&

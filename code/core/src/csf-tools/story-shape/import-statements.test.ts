@@ -163,14 +163,14 @@ describe('buildImportStatements', () => {
       statementsFor(
         dedent`
         import Link, { Banner, Dialog } from '@primer/react';
-        import { CopilotIcon } from '@primer/octicons-react';
+        import { BotIcon } from 'lucide-react';
       `,
-        ['Banner', 'CopilotIcon', 'Dialog', 'Link']
+        ['Banner', 'BotIcon', 'Dialog', 'Link']
       )
     ).toMatchInlineSnapshot(`
       [
         "import Link, { Banner, Dialog } from '@primer/react';",
-        "import { CopilotIcon } from '@primer/octicons-react';",
+        "import { BotIcon } from 'lucide-react';",
       ]
     `);
   });

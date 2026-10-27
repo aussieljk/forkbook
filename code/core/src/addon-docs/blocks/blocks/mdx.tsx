@@ -10,7 +10,7 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 
-import { LinkIcon } from '@phosphor-icons/react';
+import { LinkIcon } from 'lucide-react';
 
 import { Source } from '../components';
 import type { DocsContextProps } from './DocsContext';

@@ -2,7 +2,7 @@ import React, { type FC, useRef } from 'react';
 
 import { Button, Link, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowsLeftRightIcon, CheckIcon, CopyIcon } from '@phosphor-icons/react';
+import { ArrowLeftRightIcon, CheckIcon, CopyIcon } from 'lucide-react';
 import { useLandmark } from '../../../hooks/useLandmark.ts';
 import { CopyButton } from './CopyButton.tsx';
 import styles from './AttentionBanner.module.css';

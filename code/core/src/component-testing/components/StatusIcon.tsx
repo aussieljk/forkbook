@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CheckIcon, CircleIcon, PlayIcon, StopCircleIcon } from '@phosphor-icons/react';
+import { CheckIcon, CircleIcon, PlayIcon, CircleStopIcon } from 'lucide-react';
 
 import { useTheme } from '@aussieljk/forkbook/theming';
 
@@ -18,7 +18,7 @@ export const StatusIcon: React.FC<StatusIconProps> = ({ status }) => {
       return <CheckIcon color={theme.color.positive} data-testid="icon-done" />;
     }
     case CallStates.ERROR: {
-      return <StopCircleIcon color={theme.color.negative} data-testid="icon-error" />;
+      return <CircleStopIcon color={theme.color.negative} data-testid="icon-error" />;
     }
     case CallStates.ACTIVE: {
       return <PlayIcon color={theme.color.secondary} data-testid="icon-active" />;

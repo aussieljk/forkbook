@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef 
 import { Button } from '@aussieljk/forkbook/internal/components';
 import type { API_IndexHash, API_Refs } from '@aussieljk/forkbook/internal/types';
 
-import { ListIcon, SquareSplitVerticalIcon } from '@phosphor-icons/react';
+import { MenuIcon, Rows2Icon } from 'lucide-react';
 
 import {
   type API_KeyCollection,
@@ -134,7 +134,7 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
           aria-controls={isMobileMenuOpen ? 'storybook-mobile-menu' : undefined}
           shortcut={navShortcut}
         >
-          <ListIcon />
+          <MenuIcon />
           <p className={styles.text}>{fullStoryName}</p>
         </Button>
       )}
@@ -151,7 +151,7 @@ const MobileBottomBarContent: FC<MobileBottomBarContentProps> = ({
           aria-expanded={isMobilePanelOpen}
           aria-controls={isMobilePanelOpen ? 'storybook-mobile-addon-panel' : undefined}
         >
-          <SquareSplitVerticalIcon />
+          <Rows2Icon />
         </Button>
       )}
     </header>

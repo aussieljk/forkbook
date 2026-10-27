@@ -5,9 +5,9 @@ import {
   HouseIcon,
   MinusIcon,
   PlusIcon,
-  SmileyIcon,
-  WarningIcon,
-} from '@phosphor-icons/react';
+  SmileIcon,
+  TriangleAlertIcon,
+} from 'lucide-react';
 
 import { IconGallery, IconItem } from './IconGallery';
 
@@ -27,13 +27,13 @@ export const DefaultStyle = () => (
       <HouseIcon />
     </IconItem>
     <IconItem name="facehappy">
-      <SmileyIcon />
+      <SmileIcon />
     </IconItem>
     <IconItem name="bar">
       <img src="https://forkbook.ljk.dev/images/placeholders/50x50.png" alt="example" />
     </IconItem>
     <IconItem name="very-long-icon-name">
-      <WarningIcon />
+      <TriangleAlertIcon />
     </IconItem>
     <IconItem name="very-long-icon-name-that-should-truncate">
       <BellIcon />

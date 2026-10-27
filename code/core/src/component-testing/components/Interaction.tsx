@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
 
-import { CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
 import { type Call, CallStates, type ControlStates } from '../../instrumenter/types.ts';
 import { INTERNAL_RENDER_CALL_ID } from '../constants.ts';
@@ -185,7 +185,7 @@ export const Interaction = ({
               ariaLabel={getExpandButtonAriaLabel({ isCollapsed, stepName })}
               aria-expanded={!isCollapsed}
             >
-              {isCollapsed ? <CaretUpIcon /> : <CaretDownIcon />}
+              {isCollapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
             </Button>
           )}
         </div>

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
-import { IconContext } from '@phosphor-icons/react';
+import { LucideProvider } from 'lucide-react';
 
 import type { ThemeVars } from '@aussieljk/forkbook/theming';
 import {
@@ -24,7 +24,6 @@ import { scrollToElement } from './utils';
 const { document, window: globalWindow } = globalThis;
 
 // Forkbook icons are 14 px unless a component gives another size.
-const ICONS = { size: 14 };
 
 /**
  * The light or dark Forkbook theme, from the OS setting. It changes when the OS setting changes. A
@@ -94,7 +93,7 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
       <DocsContext.Provider value={context}>
         <SourceContainer channel={context.channel}>
           <ThemeProvider theme={ensureTheme(theme ?? preferredTheme)}>
-            <IconContext.Provider value={ICONS}>
+            <LucideProvider size={14}>
               <DocsPageWrapper
                 lang={lang}
                 toc={
@@ -109,7 +108,7 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
               >
                 {children}
               </DocsPageWrapper>
-            </IconContext.Provider>
+            </LucideProvider>
           </ThemeProvider>
         </SourceContainer>
       </DocsContext.Provider>

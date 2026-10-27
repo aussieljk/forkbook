@@ -2,13 +2,7 @@ import * as React from 'react';
 
 import { Button, TabsView } from '@aussieljk/forkbook/internal/components';
 
-import {
-  ArrowsClockwiseIcon,
-  ArrowsInLineVerticalIcon,
-  ArrowsOutSimpleIcon,
-  EyeIcon,
-  EyeSlashIcon,
-} from '@phosphor-icons/react';
+import { RefreshCwIcon, FoldVerticalIcon, ExpandIcon, EyeIcon, EyeOffIcon } from 'lucide-react';
 
 import type { Result } from 'axe-core';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -65,7 +59,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
                   : 'Highlight elements with accessibility test results'
               }
             >
-              {highlighted ? <EyeSlashIcon /> : <EyeIcon />}
+              {highlighted ? <EyeOffIcon /> : <EyeIcon />}
             </Button>
             <Button
               variant="ghost"
@@ -74,7 +68,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
               ariaLabel={allExpanded ? 'Collapse all results' : 'Expand all results'}
               aria-expanded={allExpanded}
             >
-              {allExpanded ? <ArrowsInLineVerticalIcon /> : <ArrowsOutSimpleIcon />}
+              {allExpanded ? <FoldVerticalIcon /> : <ExpandIcon />}
             </Button>
             <Button
               variant="ghost"
@@ -82,7 +76,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs }) => {
               onClick={handleManual}
               ariaLabel="Rerun accessibility scan"
             >
-              <ArrowsClockwiseIcon />
+              <RefreshCwIcon />
             </Button>
           </div>
         }

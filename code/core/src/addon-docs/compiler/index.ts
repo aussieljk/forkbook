@@ -16,7 +16,10 @@ export const compile = async (
   return mdxResult.toString();
 };
 
-export const compileSync = (input: string, { mdxCompileOptions = {}, gfm }: CompileOptions = {}) => {
+export const compileSync = (
+  input: string,
+  { mdxCompileOptions = {}, gfm }: CompileOptions = {}
+) => {
   const options = getCompilerOptions(mdxCompileOptions, gfm);
 
   const mdxResult = mdxCompileSync(input, options);

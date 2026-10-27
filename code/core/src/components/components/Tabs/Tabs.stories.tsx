@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
 
-import { SquareSplitVerticalIcon, XIcon } from '@phosphor-icons/react';
+import { Rows2Icon, XIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -220,7 +220,7 @@ const AddonTools = () => (
     }}
   >
     <Button padding="small" variant="ghost" ariaLabel="Tool 1">
-      <SquareSplitVerticalIcon />
+      <Rows2Icon />
     </Button>
     <Button padding="small" variant="ghost" ariaLabel="Tool 2">
       <XIcon />

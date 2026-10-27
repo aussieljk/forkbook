@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
 
-import { WarningIcon } from '@phosphor-icons/react';
+import { TriangleAlertIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 
 import styles from './SnippetWarning.module.css';
@@ -31,7 +31,7 @@ export const SnippetWarning: FC<SnippetWarningProps> = ({ warning, className }) 
       size="small"
       padding="small"
     >
-      <WarningIcon />
+      <TriangleAlertIcon />
     </Button>
   );
 };

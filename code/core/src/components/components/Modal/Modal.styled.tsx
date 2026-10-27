@@ -3,7 +3,7 @@ import React, { forwardRef, useContext } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { XIcon } from '@phosphor-icons/react';
+import { XIcon } from 'lucide-react';
 
 import type { TransitionStatus } from 'react-transition-state';
 import { clsx } from 'clsx';

@@ -7,7 +7,7 @@ import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../shared/global.ts';
-import { XIcon } from '@phosphor-icons/react';
+import { XIcon } from 'lucide-react';
 
 import { types, useStorybookApi, useStorybookState } from '@aussieljk/forkbook/manager-api';
 

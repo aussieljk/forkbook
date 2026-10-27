@@ -14,10 +14,7 @@ import {
   type StoryId,
 } from '@aussieljk/forkbook/internal/types';
 
-import {
-  ArrowsInLineVerticalIcon as CollapseIconSvg,
-  ArrowsOutSimpleIcon,
-} from '@phosphor-icons/react';
+import { FoldVerticalIcon as CollapseIconSvg, ExpandIcon } from 'lucide-react';
 
 import { internal_fullStatusStore as fullStatusStore } from '#manager-stores';
 import { clsx } from 'clsx';
@@ -299,7 +296,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
               setFullyExpanded();
             }}
           >
-            {isFullyExpanded ? <CollapseIconSvg /> : <ArrowsOutSimpleIcon />}
+            {isFullyExpanded ? <CollapseIconSvg /> : <ExpandIcon />}
           </Button>
         )}
       </RootNode>

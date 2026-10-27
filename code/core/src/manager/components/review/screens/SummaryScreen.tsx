@@ -22,13 +22,13 @@ import {
 import { clsx } from 'clsx';
 
 import {
-  CaretDownIcon,
-  CaretLeftIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
   CheckIcon,
   CopyIcon,
-  MagicWandIcon,
+  WandSparklesIcon,
   XIcon,
-} from '@phosphor-icons/react';
+} from 'lucide-react';
 
 import { useLandmark } from '../../../hooks/useLandmark.ts';
 import { AttentionBanner } from '../components/AttentionBanner.tsx';
@@ -227,7 +227,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
         leading={
           <Button variant="ghost" size="small" padding="small" ariaLabel="Exit review" asChild>
             <a href={buildSummaryBackHref(returnSearch)} {...{ [REVIEW_SUMMARY_BACK_ATTR]: '' }}>
-              <CaretLeftIcon />
+              <ChevronLeftIcon />
               <ForkbookIcon width={14} height={14} aria-hidden="true" />
             </a>
           </Button>
@@ -266,7 +266,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
           <main className={styles.main}>
             <SummaryLandmark>
               <Card className={styles.summaryCard} color="agentic">
-                <MagicWandIcon />
+                <WandSparklesIcon />
                 <DocumentWrapper className={clsx(styles.markdownWrapper, styles.summaryContent)}>
                   <h2 className={styles.summaryHeading}>Summary:</h2>{' '}
                   <Markdown>{state.description}</Markdown>
@@ -313,7 +313,7 @@ export const SummaryScreen: FC<SummaryScreenProps> = ({
                                   toggleCollection(index);
                                 }}
                               >
-                                <CaretDownIcon
+                                <ChevronDownIcon
                                   className={styles.toggleChevronIcon}
                                   style={{ transform: `rotate(${isExpanded ? -180 : 0}deg)` }}
                                 />

@@ -8,12 +8,12 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 
 import {
-  ArrowCounterClockwiseIcon,
-  BroomIcon,
-  ChecksIcon,
+  RotateCcwIcon,
+  BrushCleaningIcon,
+  CheckCheckIcon,
   FileTextIcon,
-  ShareNetworkIcon,
-} from '@phosphor-icons/react';
+  Share2Icon,
+} from 'lucide-react';
 
 import type { API } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
@@ -192,7 +192,7 @@ export const FilterPanel = ({
                 key="select-all"
                 onClick={() => setAllFilters(true)}
               >
-                <ChecksIcon />
+                <CheckCheckIcon />
                 <ActionList.Text>Select all</ActionList.Text>
               </ActionList.Button>
             ) : (
@@ -205,7 +205,7 @@ export const FilterPanel = ({
                   await api.resetStatusFilters();
                 }}
               >
-                <BroomIcon />
+                <BrushCleaningIcon />
                 <ActionList.Text>Clear filters</ActionList.Text>
               </ActionList.Button>
             )}
@@ -218,7 +218,7 @@ export const FilterPanel = ({
                 tooltip="Reset to default selection"
                 disabled={isDefaultSelection}
               >
-                <ArrowCounterClockwiseIcon />
+                <RotateCcwIcon />
               </ActionList.Button>
             )}
           </ActionList.Item>
@@ -271,7 +271,7 @@ export const FilterPanel = ({
                 <span>Learn how to add tags</span>
               </ActionList.Text>
               <ActionList.Icon>
-                <ShareNetworkIcon />
+                <Share2Icon />
               </ActionList.Icon>
             </ActionList.Link>
           </ActionList.Item>

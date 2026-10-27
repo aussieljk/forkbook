@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button, Select } from '@aussieljk/forkbook/internal/components';
 
-import { PaintBrushIcon } from '@phosphor-icons/react';
+import { PaintbrushIcon } from 'lucide-react';
 
 import {
   addons,
@@ -89,7 +89,7 @@ export const ThemeSwitcher = React.memo(function ThemeSwitcher() {
           updateGlobals({ theme: alternateTheme });
         }}
       >
-        <PaintBrushIcon />
+        <PaintbrushIcon />
         {label}
       </Button>
     );
@@ -98,7 +98,7 @@ export const ThemeSwitcher = React.memo(function ThemeSwitcher() {
   if (hasMultipleThemes(themesList)) {
     return (
       <Select
-        icon={<PaintBrushIcon />}
+        icon={<PaintbrushIcon />}
         ariaLabel={ariaLabel}
         disabled={isLocked}
         key={THEME_SWITCHER_ID}

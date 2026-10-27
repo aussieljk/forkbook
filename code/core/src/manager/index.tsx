@@ -8,7 +8,7 @@ import type { Addon_PageType } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../shared/global.ts';
 
-import { IconContext } from '@phosphor-icons/react';
+import { LucideProvider } from 'lucide-react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ManagerProvider, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -26,8 +26,7 @@ ThemeProvider.displayName = 'ThemeProvider';
 HelmetProvider.displayName = 'HelmetProvider';
 
 // Forkbook icons are 14 px unless a component gives another size. The addons get the same
-// IconContext through the '@phosphor-icons/react' manager global.
-const ICONS = { size: 14 };
+// LucideProvider through the 'lucide-react' manager global.
 
 export interface RootProps {
   provider: Provider;
@@ -73,7 +72,7 @@ export const Main: FC<{ provider: Provider }> = ({ provider }) => {
 
             return (
               <ThemeProvider key="theme.provider" theme={ensureTheme(state.theme)}>
-                <IconContext.Provider value={ICONS}>
+                <LucideProvider size={14}>
                   <LayoutProvider>
                     <App
                       key="app"
@@ -85,7 +84,7 @@ export const Main: FC<{ provider: Provider }> = ({ provider }) => {
                       setManagerLayoutState={setManagerLayoutState}
                     />
                   </LayoutProvider>
-                </IconContext.Provider>
+                </LucideProvider>
               </ThemeProvider>
             );
           }}

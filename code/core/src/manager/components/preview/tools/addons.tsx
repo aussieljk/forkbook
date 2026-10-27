@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { SidebarSimpleIcon, SquareSplitVerticalIcon } from '@phosphor-icons/react';
+import { PanelLeftIcon, Rows2Icon } from 'lucide-react';
 
 import { Consumer, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -51,7 +51,7 @@ export const addonsTool: Addon_BaseType = {
                   }
                 }}
               >
-                {panelPosition === 'bottom' ? <SquareSplitVerticalIcon /> : <SidebarSimpleIcon />}
+                {panelPosition === 'bottom' ? <Rows2Icon /> : <PanelLeftIcon />}
               </Button>
             </>
           )

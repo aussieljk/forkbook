@@ -12,12 +12,7 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import {
-  FileTextIcon,
-  SidebarSimpleIcon,
-  SquareSplitVerticalIcon,
-  XIcon,
-} from '@phosphor-icons/react';
+import { FileTextIcon, PanelLeftIcon, Rows2Icon, XIcon } from 'lucide-react';
 
 import type { State } from '@aussieljk/forkbook/manager-api';
 
@@ -125,7 +120,7 @@ export const AddonPanel = React.memo<{
               ariaDescription="Changes the location of the addon panel to the bottom or right of the screen, but does not have any effect on its content."
               shortcut={shortcuts.panelPosition}
             >
-              {panelPosition === 'bottom' ? <SidebarSimpleIcon /> : <SquareSplitVerticalIcon />}
+              {panelPosition === 'bottom' ? <PanelLeftIcon /> : <Rows2Icon />}
             </Button>
             <Button
               key="visibility"

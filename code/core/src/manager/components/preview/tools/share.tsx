@@ -4,7 +4,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import { SHARE_ISOLATE_MODE } from '@aussieljk/forkbook/internal/core-events';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { ArrowSquareOutIcon } from '@phosphor-icons/react';
+import { SquareArrowOutUpRightIcon } from 'lucide-react';
 
 import { Consumer, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -39,7 +39,7 @@ export const isolationModeTool: Addon_BaseType = {
               api.emit(SHARE_ISOLATE_MODE, originHrefs.previewHref);
             }}
           >
-            <ArrowSquareOutIcon />
+            <SquareArrowOutUpRightIcon />
           </Button>
         );
       }}

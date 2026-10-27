@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
-import { FileTextIcon } from '@phosphor-icons/react';
+import { FileTextIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import { DOCUMENTATION_PLAY_FUNCTION_LINK } from '../constants.ts';

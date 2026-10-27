@@ -11,7 +11,7 @@ import {
 } from '@aussieljk/forkbook/internal/components';
 
 import { global } from '../../../shared/global.ts';
-import { ArrowsClockwiseIcon, BroomIcon, CaretDownIcon, LockIcon } from '@phosphor-icons/react';
+import { RefreshCwIcon, BrushCleaningIcon, ChevronDownIcon, LockIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
@@ -60,7 +60,7 @@ export const AuthBlock: FC<{ loginUrl: string; id: string }> = ({ loginUrl, id }
             </Text>
             <div>
               <Button ariaLabel={false} size="small" variant="outline" onClick={refresh}>
-                <ArrowsClockwiseIcon />
+                <RefreshCwIcon />
                 Refresh now
               </Button>
             </div>
@@ -101,7 +101,7 @@ export const ErrorBlock: FC<{ error: Error }> = ({ error }) => {
             }
           >
             <Link>
-              View error <CaretDownIcon />
+              View error <ChevronDownIcon />
             </Link>
           </PopoverProvider>{' '}
           <Link href="https://forkbook.ljk.dev/docs" cancel={false} target="_blank">
@@ -146,7 +146,7 @@ export const EmptyBlock = ({
                     await api.resetStatusFilters();
                   }}
                 >
-                  <BroomIcon />
+                  <BrushCleaningIcon />
                   Clear filters
                 </Button>
               ) : null}

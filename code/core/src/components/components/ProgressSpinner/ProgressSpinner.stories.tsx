@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StopCircleIcon } from '@phosphor-icons/react';
+import { CircleStopIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -67,6 +67,6 @@ export const WithContent: Story = {
   ...Colored,
   args: {
     ...Colored.args,
-    children: <StopCircleIcon size={10} />,
+    children: <CircleStopIcon size={10} />,
   },
 };

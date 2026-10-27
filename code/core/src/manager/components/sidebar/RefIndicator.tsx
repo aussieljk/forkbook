@@ -9,10 +9,10 @@ import {
   CodeIcon,
   FileTextIcon,
   GlobeIcon,
-  LightningIcon,
+  ZapIcon,
   LockIcon,
-  WarningIcon,
-} from '@phosphor-icons/react';
+  TriangleAlertIcon,
+} from 'lucide-react';
 
 import { clsx } from 'clsx';
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
@@ -252,7 +252,7 @@ const ErrorOccurredMessage: FC<{ url: string }> = ({ url }) => {
 
   return (
     <Message href={url.replace(/\/?$/, '/index.html')}>
-      <WarningIcon color={theme.color.negative} />
+      <TriangleAlertIcon color={theme.color.negative} />
       <div>
         <MessageTitle>Something went wrong</MessageTitle>
         <div>This external Forkbook didn't load. Debug it in a new tab now.</div>
@@ -281,7 +281,7 @@ const PerformanceDegradedMessage: FC = () => {
 
   return (
     <Message href="https://forkbook.ljk.dev/docs/sharing/storybook-composition">
-      <LightningIcon color={theme.color.gold} />
+      <ZapIcon color={theme.color.gold} />
       <div>
         <MessageTitle>Reduce lag</MessageTitle>
         <div>Learn how to speed up Composition performance.</div>

@@ -5,7 +5,7 @@ export const globalsNameReferenceMap = {
   'react/jsx-dev-runtime': '__REACT_JSX_DEV_RUNTIME__',
   'react-dom': '__REACT_DOM__',
   'react-dom/client': '__REACT_DOM_CLIENT__',
-  '@phosphor-icons/react': '__FORKBOOK_ICONS__',
+  'lucide-react': '__FORKBOOK_ICONS__',
 
   '@aussieljk/forkbook/manager-api': '__FORKBOOK_API__',
 

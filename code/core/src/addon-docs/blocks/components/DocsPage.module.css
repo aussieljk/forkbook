@@ -459,7 +459,8 @@
     & tr td :last-child {
       margin-bottom: 0;
     }
-  }}
+  }
+}
 
 :where([data-fb-theme='dark']) .docsContent {
   --docs-code-border: var(--fb-color-darker);

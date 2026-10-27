@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Select } from '@aussieljk/forkbook/internal/components';
 
-import { PersonArmsSpreadIcon } from '@phosphor-icons/react';
+import { AccessibilityIcon } from 'lucide-react';
 
 import { useGlobals } from '@aussieljk/forkbook/manager-api';
 
@@ -32,7 +32,7 @@ export const VisionSimulator = () => {
       <Select
         resetLabel="Reset color filter"
         onReset={() => updateGlobals({ [VISION_GLOBAL_KEY]: undefined })}
-        icon={<PersonArmsSpreadIcon />}
+        icon={<AccessibilityIcon />}
         disabled={isLocked}
         ariaLabel={isLocked ? 'Vision filter set by story globals' : 'Vision filter'}
         ariaDescription="Select a vision filter among predefined options, or reset to remove the filter."

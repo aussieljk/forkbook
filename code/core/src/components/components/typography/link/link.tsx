@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 
-import { CaretRightIcon } from '@phosphor-icons/react';
+import { ChevronRightIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 
@@ -91,7 +91,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           data-contains-icon={containsIcon || undefined}
         >
           {children}
-          {withArrow && <CaretRightIcon />}
+          {withArrow && <ChevronRightIcon />}
         </span>
       </Comp>
     );

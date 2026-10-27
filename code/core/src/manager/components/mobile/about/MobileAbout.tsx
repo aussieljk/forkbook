@@ -9,7 +9,7 @@ import {
   ScrollArea,
 } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowLeftIcon, GithubLogoIcon, ShareNetworkIcon } from '@phosphor-icons/react';
+import { ArrowLeftIcon, GitForkIcon, Share2Icon } from 'lucide-react';
 
 import { useTransitionState } from 'react-transition-state';
 
@@ -70,13 +70,13 @@ export const MobileAbout: FC = () => {
                 rel="noopener noreferrer"
               >
                 <ActionList.Icon>
-                  <GithubLogoIcon />
+                  <GitForkIcon />
                 </ActionList.Icon>
                 <ActionList.Text>
                   <span>GitHub</span>
                 </ActionList.Text>
                 <ActionList.Icon>
-                  <ShareNetworkIcon />
+                  <Share2Icon />
                 </ActionList.Icon>
               </ActionList.Link>
             </ActionList.Item>
@@ -94,7 +94,7 @@ export const MobileAbout: FC = () => {
                   <span>Documentation</span>
                 </ActionList.Text>
                 <ActionList.Icon>
-                  <ShareNetworkIcon />
+                  <Share2Icon />
                 </ActionList.Icon>
               </ActionList.Link>
             </ActionList.Item>

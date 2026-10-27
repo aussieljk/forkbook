@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Select } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowsOutIcon } from '@phosphor-icons/react';
+import { Maximize2Icon } from 'lucide-react';
 
 import { useViewport } from '../useViewport.ts';
 import { iconsMap } from '../viewportIcons.tsx';
@@ -65,7 +65,7 @@ export const ViewportTool = () => {
       defaultOptions={value}
       options={options}
       onSelect={(selected) => select(selected as string)}
-      icon={<ArrowsOutIcon />}
+      icon={<Maximize2Icon />}
     >
       {isDefault ? null : name}
     </Select>

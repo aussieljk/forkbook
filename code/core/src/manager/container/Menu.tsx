@@ -3,13 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import { ActionList } from '@aussieljk/forkbook/internal/components';
 import { STORIES_COLLAPSE_ALL } from '@aussieljk/forkbook/internal/core-events';
 
-import {
-  CheckIcon,
-  CommandIcon,
-  FileTextIcon,
-  InfoIcon,
-  ShareNetworkIcon,
-} from '@phosphor-icons/react';
+import { CheckIcon, CommandIcon, FileTextIcon, InfoIcon, Share2Icon } from 'lucide-react';
 
 import type { API } from '@aussieljk/forkbook/manager-api';
 
@@ -165,7 +159,7 @@ export const useMenu = ({
       href: docsUrl,
       right: (
         <ActionList.Icon>
-          <ShareNetworkIcon />
+          <Share2Icon />
         </ActionList.Icon>
       ),
       icon: <FileTextIcon />,
