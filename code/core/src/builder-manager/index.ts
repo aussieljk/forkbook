@@ -21,13 +21,13 @@ import { getData } from './utils/data.ts';
 import { readOrderedFiles } from './utils/files.ts';
 import { buildFrameworkGlobalsFromOptions } from './utils/framework.ts';
 import { wrapManagerEntries } from './utils/managerEntries.ts';
-import { getTemplatePath, renderHTML } from './utils/template.ts';
+import { urlPathDepth } from '../router/story-paths.ts';
+import { getTemplatePath, renderHTML, withRouteDepth } from './utils/template.ts';
 
 export { BROWSER_TARGETS, NODE_TARGET } from '../shared/constants/environments-support.ts';
 
 const CORE_DIR_ORIGIN = join(resolvePackageDir('@aussieljk/forkbook'), 'dist/manager');
 
-const isRootPath = /^\/($|\?)/;
 let compilation: Compilation;
 let asyncIterator: ReturnType<StarterFunction> | ReturnType<BuilderFunction>;
 
@@ -155,20 +155,24 @@ const starter: StarterFunction = async function* starterGeneratorFn({
 
   yield;
 
-  router.use('/', ({ url }, res, next) => {
-    if (url && isRootPath.test(url)) {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/html');
-      res.write(html);
-      res.end();
-    } else {
+  // Serve the manager page for every page URL, so a story URL (for example
+  // `/example/button/primary`) works when the browser reloads it. Requests for files (a name with
+  // a dot), Vite modules (`/@...`) and requests that do not ask for HTML go to the next handler.
+  router.use('/', (req, res, next) => {
+    const pathname = (req.url ?? '/').split(/[?#]/)[0];
+    const isPage =
+      (req.method === 'GET' || req.method === 'HEAD') &&
+      (pathname === '/' ||
+        (!pathname.split('/').pop()?.includes('.') &&
+          !pathname.startsWith('/@') &&
+          (req.headers.accept ?? '').includes('text/html')));
+    if (!isPage && pathname !== '/index.html') {
       next();
+      return;
     }
-  });
-  router.use(`/index.html`, (req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
-    res.write(html);
+    res.write(withRouteDepth(html, pathname === '/index.html' ? 0 : urlPathDepth(pathname)));
     res.end();
   });
 

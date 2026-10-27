@@ -2,6 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      // The manager URL follows the story tree (for example /example/button/primary). Relative
+      // URLs on this page must start from the Forkbook root, so add a <base> element. The server
+      // or the static build sets the depth of the page path.
+      (function () {
+        var depth = /*FORKBOOK_ROUTE_DEPTH*/ 0;
+        if (!depth) return;
+        var parts = location.pathname.replace(/\/+$/, '').split('/');
+        var base = document.createElement('base');
+        base.href = parts.slice(0, Math.max(1, parts.length - depth)).join('/') + '/';
+        document.head.appendChild(base);
+      })();
+    </script>
 
     <title><%= typeof title !== 'undefined'? title : 'Forkbook'%></title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -5,7 +5,12 @@ import {
   STORY_ARGS_UPDATED,
   UPDATE_QUERY_PARAMS,
 } from '@aussieljk/forkbook/internal/core-events';
-import { buildArgsParam, queryFromLocation } from '@aussieljk/forkbook/internal/router';
+import {
+  buildArgsParam,
+  buildManagerHref,
+  getBasename,
+  queryFromLocation,
+} from '@aussieljk/forkbook/internal/router';
 import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
 import type { API_Layout, API_UI, API_ViewMode, Args } from '@aussieljk/forkbook/internal/types';
 
@@ -250,7 +255,7 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
       const { id: currentStoryId, refId: currentRefId } = fullAPI.getCurrentStoryData() ?? {};
       const isCurrentStory = storyId === currentStoryId && options.refId === currentRefId;
 
-      const { customQueryParams, location, refs } = store.getState();
+      const { customQueryParams, refs } = store.getState();
       const {
         base,
         inheritArgs = isCurrentStory,
@@ -266,7 +271,7 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
         throw new Error(`Invalid refId: ${refId}`);
       }
 
-      const pathname = location.pathname || '/';
+      const pathname = `${getBasename()}/`;
       const originAddress = global.window.location.origin + pathname;
       const networkAddress = global.FORKBOOK_NETWORK_ADDRESS ?? originAddress;
       const managerBase =
@@ -305,7 +310,11 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
       const freezeParam = freeze ? '&freeze=finished' : '';
 
       return {
-        managerHref: `${managerBase}?path=/${viewMode}/${refId ? `${refId}_` : ''}${storyId}${argsParam}${globalsParam}${customManagerParams}`,
+        managerHref: buildManagerHref(
+          managerBase,
+          `/${viewMode}/${refId ? `${refId}_` : ''}${storyId}`,
+          `${argsParam}${globalsParam}${customManagerParams}`.replace(/^&/, '')
+        ),
         previewHref: `${previewBase}?id=${storyId}&viewMode=${viewMode}${refParam}${argsParam}${refId ? '' : globalsParam}${customPreviewParams}${embedParam}${freezeParam}`,
       };
     },

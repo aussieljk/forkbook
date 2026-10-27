@@ -22,7 +22,12 @@ import {
 } from '@aussieljk/forkbook/internal/core-events';
 import { sanitize, toId } from '@aussieljk/forkbook/internal/csf';
 import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
-import { queryFromLocation } from '@aussieljk/forkbook/internal/router';
+import {
+  fromUrlPath,
+  queryFromLocation,
+  setStoryPathEntries,
+  toUrlPath,
+} from '@aussieljk/forkbook/internal/router';
 import type {
   API_ComposedRef,
   API_DocsEntry,
@@ -419,6 +424,27 @@ export const init: ModuleFn<SubAPI, SubState> = ({
     navigate(buildNavigationUrl(path, customQueryParams ?? {}), options);
   };
 
+  /**
+   * Before the index loads, the manager guesses the story from the URL path. When the index loads,
+   * read the URL again, and show the tree URL path for the story.
+   */
+  const canonicaliseUrl = () => {
+    const { location: currentLocation, path, customQueryParams } = store.getState();
+    const pathname = currentLocation?.pathname;
+    if (!pathname || queryFromLocation(currentLocation).path) {
+      return;
+    }
+    const resolved = fromUrlPath(pathname);
+    if (resolved === '/' || (resolved === path && toUrlPath(resolved) === pathname)) {
+      return;
+    }
+    const target = buildNavigationUrl(
+      `${resolved}${currentLocation.hash ?? ''}`,
+      customQueryParams ?? {}
+    );
+    navigate(target, { replace: true });
+  };
+
   const persistFilters = (inputPatch: Parameters<typeof store.setState>[0]) => {
     return store.setState(inputPatch, {
       persistence: 'url' as const,
@@ -801,12 +827,16 @@ export const init: ModuleFn<SubAPI, SubState> = ({
         allStatuses,
       });
 
+      setStoryPathEntries(Object.values(input.entries));
+
       await store.setState({
         internal_index: input,
         filteredIndex: addPreparedStories(newFilteredHash, oldFilteredHash),
         index: addPreparedStories(newHash, oldHash),
         indexError: undefined,
       });
+
+      canonicaliseUrl();
     },
     // FIXME: is there a bug where filtered stories get added back in on updateStory???
     updateStory: async (

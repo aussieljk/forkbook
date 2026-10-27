@@ -76,3 +76,10 @@ export const renderHTML = async (
     head: headRef,
   });
 };
+
+/**
+ * Sets the number of path segments of the page URL in the manager HTML. The page uses it to find
+ * the Forkbook root when it is opened at a story path, for example `/example/button/primary`.
+ */
+export const withRouteDepth = (html: string, depth: number) =>
+  html.replace('/*FORKBOOK_ROUTE_DEPTH*/ 0', `/*FORKBOOK_ROUTE_DEPTH*/ ${depth}`);

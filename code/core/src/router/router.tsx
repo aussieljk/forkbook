@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { global } from '../shared/global.ts';
 
@@ -8,7 +8,8 @@ import * as R from 'react-router-dom';
 import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import type { LinkProps, NavigateOptions, RenderData } from './types.ts';
-import { getMatch, parsePath, queryFromLocation } from './utils.ts';
+import { fromUrlPath, toUrlPath } from './story-paths.ts';
+import { getMatch, parsePath, queryFromLocation, stringifyQuery } from './utils.ts';
 
 const { document } = global;
 
@@ -42,7 +43,31 @@ interface RoutePropsDefault {
   children: ReactNode;
 }
 
-const getBase = () => `${document.location.pathname}?`;
+/**
+ * The path where Forkbook is hosted, without a trailing slash (`''` at the root). The page sets a
+ * `<base>` element when it is opened at a deep path, so `document.baseURI` is the Forkbook root.
+ */
+export const getBasename = (): string => {
+  try {
+    return new URL('.', document.baseURI).pathname.replace(/\/+$/, '');
+  } catch {
+    return '';
+  }
+};
+
+/**
+ * Changes an internal navigation target (`/story/<id>&args=a:1#hash`) to a URL relative to the
+ * Forkbook root (`/example/button/primary?args=a:1#hash`).
+ */
+export const toRouterUrl = (target: string): string => {
+  // Callers add the query after the hash (`/docs/<id>#heading&args=a:1`), so read the query parts
+  // from both sides of the hash.
+  const [beforeHash, afterHash] = target.split(/#(.*)/s);
+  const [path, ...queryParts] = beforeHash.split('&');
+  const [hash, ...hashQueryParts] = afterHash === undefined ? [] : afterHash.split('&');
+  const query = [...queryParts, ...hashQueryParts].join('&');
+  return `${toUrlPath(path || '/')}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
+};
 
 export const useNavigate = () => {
   const navigate = R.useNavigate();
@@ -55,14 +80,18 @@ export const useNavigate = () => {
       return navigate(`${document.location.search}${to === '#' ? '' : to}`, options);
     }
     if (typeof to === 'string') {
-      const target = plain ? to : `?path=${to}`;
-      const [search, hash] = target.split('#');
+      const target = plain ? to : toRouterUrl(to);
+      const [url, hash] = target.split('#');
+      const current = `${document.location.pathname}${document.location.search}`;
+      const isSamePage = plain
+        ? url === document.location.search
+        : `${getBasename()}${url}` === current;
 
       // When navigating to an anchor on the same page, e.g. via searching a sub-headline, the
       // preview does not re-render, so nothing scrolls to the anchor. Emitting NAVIGATE_URL makes
       // the preview scroll, and the manager's NAVIGATE_URL handler performs the actual `#hash`
       // navigation through the in-page branch above.
-      if (search === document.location.search && hash) {
+      if (isSamePage && hash) {
         addons.getChannel().emit(NAVIGATE_URL, `#${hash}`);
 
         return undefined;
@@ -80,7 +109,7 @@ export const useNavigate = () => {
 
 /** A component that will navigate to a new location/path when clicked */
 export const Link = ({ to, children, ...rest }: LinkProps) => (
-  <R.Link to={`${getBase()}path=${to}`} {...rest}>
+  <R.Link to={toRouterUrl(to)} {...rest}>
     {children}
   </R.Link>
 );
@@ -92,8 +121,20 @@ Link.displayName = 'QueryLink';
  */
 export const Location = ({ children }: LocationProps) => {
   const location = R.useLocation();
-  const { path = '', singleStory } = queryFromLocation(location);
+  const navigate = R.useNavigate();
+  const { path: legacyPath, singleStory, ...otherQuery } = queryFromLocation(location);
+  const path = legacyPath || fromUrlPath(location.pathname);
   const { viewMode, storyId, refId } = parsePath(path);
+
+  // Old URLs keep the story in the `path` query parameter (`/?path=/story/<id>`). Replace them
+  // with the new URL, which keeps the story in the URL path.
+  useEffect(() => {
+    if (legacyPath) {
+      navigate(`${toUrlPath(legacyPath)}${stringifyQuery(otherQuery)}${location.hash}`, {
+        replace: true,
+      });
+    }
+  }, [legacyPath]);
 
   return (
     <>
@@ -152,6 +193,7 @@ Route.displayName = 'Route';
 
 export { Match, Route };
 
-export const LocationProvider: typeof R.BrowserRouter = (...args) => R.BrowserRouter(...args);
+export const LocationProvider: typeof R.BrowserRouter = (props) =>
+  R.BrowserRouter({ basename: getBasename() || undefined, ...props });
 export const BaseLocationProvider: typeof R.Router = (...args) => R.Router(...args);
 export const MemoryRouter: typeof R.MemoryRouter = (...args) => R.MemoryRouter(...args);

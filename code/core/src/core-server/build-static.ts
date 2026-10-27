@@ -33,6 +33,7 @@ import { buildOrThrow } from './utils/build-or-throw.ts';
 import { copyAllStaticFilesRelativeToMain } from './utils/copy-all-static-files.ts';
 import { getBuilders } from './utils/get-builders.ts';
 import { writeIndexJson } from './utils/index-json.ts';
+import { writeRoutePages } from './utils/write-route-pages.ts';
 import { writeManifests } from './utils/manifests/manifests.ts';
 import { extractStorybookMetadata } from './utils/metadata.ts';
 import { outputStats } from './utils/output-stats.ts';
@@ -179,6 +180,18 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
   const storyIndexGeneratorPromise = presets.apply<StoryIndexGenerator>('storyIndexGenerator');
 
   effects.push(writeIndexJson(join(options.outputDir, 'index.json'), storyIndexGeneratorPromise));
+
+  if (!options.previewOnly) {
+    // Each story URL gets its own copy of the manager page, so a static host serves deep links.
+    effects.push(
+      (async () => {
+        const index = await (await storyIndexGeneratorPromise)?.getIndex();
+        if (index) {
+          await writeRoutePages(options.outputDir, index);
+        }
+      })()
+    );
+  }
 
   if (!core?.disableProjectJson) {
     effects.push(
