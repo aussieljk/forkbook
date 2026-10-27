@@ -1,0 +1,91 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Configure/Start page" />
+
+# Start page
+
+Forkbook shows a start page at `/`. By default, the start page shows a grid of cards, one card for each component. Each card shows the component name, its title path and the number of stories.
+
+- When a story has a [thumbnail](/docs/writing-stories/thumbnails), the card shows the thumbnail.
+- When a story has no thumbnail, the card shows a live preview of the first story. The preview loads only when the card comes near the view.
+- Click a card to open the component. If the component has a docs page, the docs page opens. If not, the first story opens.
+
+The sidebar has two links at the top: **Home** opens the start page and **All stories** opens the `/all` page.
+
+## The `root` option
+
+Use `root` in `.forkbook/main.ts` to change the start page.
+
+| Value | What it does |
+| --- | --- |
+| Not set | The start page shows the grid of components. |
+| `{ mdx: './Home.mdx' }` | The MDX file shows above the grid. |
+| `{ mdx: './Home.mdx', mode: 'replace' }` | Only the MDX file shows. The grid does not show. |
+| `false` | There is no start page. `/` opens the first story. |
+
+The `mdx` path is relative to the config folder. Forkbook does not show the MDX file in the sidebar or in the grid.
+
+### Show MDX above the grid
+
+```ts
+// .forkbook/main.ts
+const config: ForkbookConfig = {
+  // ...
+  root: { mdx: './Home.mdx' },
+};
+```
+
+```mdx
+{/* .forkbook/Home.mdx */}
+# Our design system
+
+Read the components below, or search with the sidebar.
+```
+
+### Replace the grid with MDX
+
+With `mode: 'replace'`, you control all of the page. Add the [`StoryGrid`](/docs/api/doc-blocks/doc-block-storygrid) block where you want the grid.
+
+```ts
+// .forkbook/main.ts
+const config: ForkbookConfig = {
+  // ...
+  root: { mdx: './Home.mdx', mode: 'replace' },
+};
+```
+
+```mdx
+{/* .forkbook/Home.mdx */}
+import { StoryGrid } from '@aussieljk/forkbook/addon-docs/blocks';
+
+# Our design system
+
+## Forms
+
+<StoryGrid include={['Forms']} />
+
+## All other components
+
+<StoryGrid exclude={['Forms']} />
+```
+
+### Turn off the start page
+
+```ts
+// .forkbook/main.ts
+const config: ForkbookConfig = {
+  // ...
+  root: false,
+};
+```
+
+Then `/` opens the first story, as in Storybook.
+
+## The all stories page
+
+The `/all` page shows all stories of all components on one page, with a heading for each component. The **All stories** link in the sidebar opens it.
+
+A switch at the top of the page sets how the stories load:
+
+- **One frame**: all stories render in one preview frame. This is fast, but the stories share one page, so global styles and state can affect other stories.
+- **Frame per story**: each story renders in its own preview frame. This is slower, but each story is isolated.

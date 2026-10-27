@@ -1,0 +1,43 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="Writing stories/Thumbnails" />
+
+# Thumbnails
+
+Use `parameters.thumbnail` to give a story an image. Forkbook shows the thumbnail:
+
+- On the card of the component in the grid of the [start page](/docs/configure/start-page) and of the [`StoryGrid`](/docs/api/doc-blocks/doc-block-storygrid) block.
+- Next to the story in the search results.
+
+A card without a thumbnail shows a live preview of the first story. A thumbnail loads faster than a live preview.
+
+## Set a thumbnail
+
+Set the thumbnail on one story, or on the meta to use it for all stories in the file. The card uses the thumbnail of the first story.
+
+```tsx
+const meta = {
+  component: Button,
+  parameters: { thumbnail: './button.png' },
+} satisfies Meta<typeof Button>;
+
+export const Primary: Story = {
+  parameters: { thumbnail: 'https://example.com/primary.png' },
+};
+```
+
+## URL or local file
+
+The value is a URL or a path to a local file.
+
+| Value | Example | What Forkbook does |
+| --- | --- | --- |
+| A URL | `https://example.com/a.png`, `/logo.png`, `data:image/png;base64,...` | Uses the URL as it is. A path that starts with `/` is a URL, for example a file in `staticDirs`. |
+| A local file | `./button.png`, `../images/card.webp` | Finds the file relative to the story file. |
+
+### Local files
+
+- In dev, Forkbook serves a local file at `thumbnails/<path from the project root>`. For example, `src/Button/button.png` is at `thumbnails/src/Button/button.png`.
+- In a static build (`forkbook build`), Forkbook copies each local file to the same path in the output folder.
+- The file must be in the project folder. Forkbook ignores a file outside the project folder.
+- The file must be an image. These types are supported: `avif`, `gif`, `jpeg`, `jpg`, `png`, `svg` and `webp`. Forkbook ignores other file types.

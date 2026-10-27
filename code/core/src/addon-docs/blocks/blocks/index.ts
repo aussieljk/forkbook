@@ -18,6 +18,7 @@ export * from './Source';
 export * from './SourceContainer';
 export * from './Stories';
 export * from './Story';
+export * from './StoryGrid';
 export * from './Subheading';
 export * from './Subtitle';
 export * from './Title';

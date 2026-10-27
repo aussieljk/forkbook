@@ -1,0 +1,26 @@
+import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<Meta title="API/Doc blocks/StoryGrid" />
+
+# StoryGrid block
+
+`StoryGrid` shows a grid of cards, one card for each component. It is the same grid as the [start page](/docs/configure/start-page). Use it in an MDX file, for example in the start page MDX with `mode: 'replace'`.
+
+```mdx
+import { StoryGrid } from '@aussieljk/forkbook/addon-docs/blocks';
+
+<StoryGrid />
+
+<StoryGrid include={['Forms', 'Layout']} />
+
+<StoryGrid exclude={['Internal']} />
+```
+
+| Prop | What it does |
+| --- | --- |
+| `include` | Shows only the components with a title that starts with one of these prefixes. A prefix matches a full title segment: `'Forms'` matches `Forms/Input`, but not `FormsExtra/Input`. |
+| `exclude` | Hides the components with a title that starts with one of these prefixes. |
+
+- Each card shows the [thumbnail](/docs/writing-stories/thumbnails) of the first story. If there is no thumbnail, the card shows a live preview of the first story.
+- Click a card to open the component in Forkbook. If the component has a docs page, the docs page opens. If not, the first story opens.
+- The grid does not show the start page MDX file.
