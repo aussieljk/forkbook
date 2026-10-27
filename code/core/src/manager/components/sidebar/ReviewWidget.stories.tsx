@@ -119,7 +119,7 @@ const makeManagerContext = (
       setAllStatusFilters: options.setAllStatusFilters ?? fn().mockName('api::setAllStatusFilters'),
       setQueryParams: options.setQueryParams ?? fn().mockName('api::setQueryParams'),
       getStoryHrefs: (storyId: string) => ({
-        managerHref: `?path=/story/${storyId}`,
+        managerHref: `./_story/${storyId}`,
         previewHref: `iframe.html?id=${storyId}&viewMode=story`,
       }),
       addNotification: fn().mockName('api::addNotification'),

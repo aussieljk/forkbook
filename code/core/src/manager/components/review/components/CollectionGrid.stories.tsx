@@ -355,7 +355,7 @@ export const FortyStoriesOverflow = meta.story({
 export const Accessibility = meta.story({
   args: {
     storyIds: ['button-component--base', 'button-component--variants', 'button-component--sizes'],
-    getStoryHref: (storyId: string) => `?path=/story/${storyId}`,
+    getStoryHref: (storyId: string) => `./_story/${storyId}`,
     showAll: true,
   },
   globals: { viewport: { value: 'desktop' } },

@@ -15,13 +15,13 @@ describe('extractErrorMessage', () => {
 
   it('strips the Forkbook debug banner and returns the actual message', () => {
     const message =
-      '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/button--primary\x1B[39m\n\nmissing theme context provider';
+      '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/_story/button--primary\x1B[39m\n\nmissing theme context provider';
     expect(extractErrorMessage(message, undefined)).toBe('missing theme context provider');
   });
 
   it('strips the debug banner even when ANSI codes have been removed', () => {
     const message =
-      '\nClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/button--primary\n\nmissing theme context provider';
+      '\nClick to debug the error directly in Forkbook: http://localhost:6006/_story/button--primary\n\nmissing theme context provider';
     expect(extractErrorMessage(message, undefined)).toBe('missing theme context provider');
   });
 
@@ -47,7 +47,7 @@ describe('extractErrorMessage', () => {
 
   it('handles a banner where the actual message itself is multi-line', () => {
     const message =
-      '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/button--primary\x1B[39m\n\nfirst error line\nsecond line';
+      '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/_story/button--primary\x1B[39m\n\nfirst error line\nsecond line';
     expect(extractErrorMessage(message, undefined)).toBe('first error line');
   });
 

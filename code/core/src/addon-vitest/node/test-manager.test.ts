@@ -455,7 +455,7 @@ describe('TestManager', () => {
       errors: [
         {
           message:
-            '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/story--one\x1B[39m\n\nexpect(element).toBeInTheDocument()',
+            '\n\x1B[34mClick to debug the error directly in Forkbook: http://localhost:6006/_story/story--one\x1B[39m\n\nexpect(element).toBeInTheDocument()',
           stack:
             'Error: expect(element).toBeInTheDocument()\n    at Proxy.expectWrapper (http://localhost:6006/deps/storybook_test.js?v=8c5dc1d5:13691:16)',
           stacks: [

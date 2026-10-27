@@ -46,7 +46,12 @@ import {
   type RuntimeInstanceRecord,
   writeStorybookRuntimeInstanceRecord,
 } from './utils/runtime-instance-registry.ts';
-import { getServerAddresses, getServerChannelUrl, getServerPort } from './utils/server-address.ts';
+import {
+  getServerAddresses,
+  getServerChannelUrl,
+  getServerPort,
+  withInitialPath,
+} from './utils/server-address.ts';
 import { getServer } from './utils/server-init.ts';
 import { stripCommentsAndStrings } from './utils/strip-comments-and-strings.ts';
 import { updateCheck } from './utils/update-check.ts';
@@ -100,8 +105,7 @@ export async function buildDevStandalone(
   const { address: localAddress, networkAddress } = getServerAddresses(
     port,
     options.host,
-    options.https ? 'https' : 'http',
-    options.initialPath
+    options.https ? 'https' : 'http'
   );
 
   const cacheOutputDir = resolvePathInStorybookCache('public', cacheKey);
@@ -316,9 +320,9 @@ export async function buildDevStandalone(
         updateInfo: versionCheck,
         version: storybookVersion,
         name,
-        address: localAddress,
+        address: withInitialPath(localAddress, options.initialPath),
         host: options.host,
-        networkAddress,
+        networkAddress: withInitialPath(networkAddress, options.initialPath),
         allowedHosts,
         managerTotalTime,
         previewTotalTime,

@@ -129,8 +129,7 @@ export const AnchorMdx: FC<PropsWithChildren<AnchorMdxProps>> = (props) => {
 
         if (isLeftClick) {
           event.preventDefault();
-          // use the A element's href, which has been modified for
-          // local paths without a `?path=` query param prefix
+          // use the A element's href, which the manager opens relative to the Forkbook root
           navigate(context, event.currentTarget.getAttribute('href') || '');
         }
       }}

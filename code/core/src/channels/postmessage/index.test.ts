@@ -154,7 +154,7 @@ describe('PostMessageTransport origin validation', () => {
     });
 
     it('sends to the parent window with the referrer origin when the referrer is an allowed host', () => {
-      vi.spyOn(document, 'referrer', 'get').mockReturnValue('http://127.0.0.1:6006/?path=/story/a');
+      vi.spyOn(document, 'referrer', 'get').mockReturnValue('http://127.0.0.1:6006/_story/a');
       const parent = { postMessage: vi.fn() };
       vi.stubGlobal('parent', parent);
       const transport = createTransport('preview');

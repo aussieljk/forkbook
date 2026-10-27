@@ -49,7 +49,7 @@ const flattenedEntries: ReviewNavEntry[] = [
 describe('buildReviewStoryHref', () => {
   it('builds a story URL with collection query param', () => {
     expect(buildReviewStoryHref({ storyId: 'story-a', collectionIndex: 1 })).toBe(
-      `?path=/story/story-a&${REVIEW_COLLECTION_QUERY_PARAM}=1`
+      `./_story/story-a?${REVIEW_COLLECTION_QUERY_PARAM}=1`
     );
   });
 });
@@ -69,8 +69,8 @@ describe('parseReviewStoryHref', () => {
   });
 
   it('returns null for malformed hrefs', () => {
-    expect(parseReviewStoryHref('?path=/review/')).toBeNull();
-    expect(parseReviewStoryHref('?path=/story/foo')).toBeNull();
+    expect(parseReviewStoryHref('./review/')).toBeNull();
+    expect(parseReviewStoryHref('./_story/foo')).toBeNull();
   });
 });
 
@@ -121,7 +121,7 @@ describe('path helpers', () => {
   });
 
   it('builds the summary href', () => {
-    expect(buildReviewChangesSummaryHref()).toBe('?path=/review/');
+    expect(buildReviewChangesSummaryHref()).toBe('./review/');
   });
 });
 
@@ -224,6 +224,7 @@ describe('getAdjacentCollectionFirstStory', () => {
 
 describe('isReviewReturnSearch', () => {
   it('treats the review summary as a review route', () => {
+    expect(isReviewReturnSearch('/review/')).toBe(true);
     expect(isReviewReturnSearch('?path=/review/')).toBe(true);
     expect(isReviewReturnSearch(buildReviewChangesSummaryHref())).toBe(true);
   });
@@ -235,17 +236,17 @@ describe('isReviewReturnSearch', () => {
   });
 
   it('allows normal canvas stories as exit targets', () => {
-    expect(isReviewReturnSearch('?path=/story/foo')).toBe(false);
+    expect(isReviewReturnSearch('/example/foo')).toBe(false);
   });
 });
 
 describe('buildSummaryBackHref', () => {
   it('returns the last viewed search when recorded', () => {
-    expect(buildSummaryBackHref('?path=/story/foo')).toBe('?path=/story/foo');
+    expect(buildSummaryBackHref('/example/foo?args=a:1')).toBe('./example/foo?args=a:1');
   });
 
   it('falls back to the Forkbook root when nothing is recorded', () => {
-    expect(buildSummaryBackHref(null)).toBe('/');
-    expect(buildSummaryBackHref(undefined)).toBe('/');
+    expect(buildSummaryBackHref(null)).toBe('./');
+    expect(buildSummaryBackHref(undefined)).toBe('./');
   });
 });

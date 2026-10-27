@@ -175,7 +175,7 @@ export const reviewToolset = defineToolset({
           0
         );
 
-        const reviewUrl = `${ctx.origin.replace(/\/$/, '')}/?path=${REVIEW_PAGE_PATH}`;
+        const reviewUrl = `${ctx.origin.replace(/\/$/, '')}${REVIEW_PAGE_PATH}`;
         const data: ReviewCreateOutput = {
           reviewUrl,
           collectionCount,

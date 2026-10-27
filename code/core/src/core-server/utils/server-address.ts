@@ -42,18 +42,25 @@ export function getServerAddresses(
   const address = new URL(`${proto}://127.0.0.1:${port}/`);
   const networkAddress = new URL(`${proto}://${host || getLocalIp()}:${port}/`);
 
-  if (initialPath) {
-    const searchParams = `?path=${decodeURIComponent(
-      initialPath.startsWith('/') ? initialPath : `/${initialPath}`
-    )}`;
-    address.search = searchParams;
-    networkAddress.search = searchParams;
-  }
-
   return {
-    address: address.href,
-    networkAddress: networkAddress.href,
+    address: withInitialPath(address.href, initialPath),
+    networkAddress: withInitialPath(networkAddress.href, initialPath),
   };
+}
+
+/**
+ * Adds the `--initial-path` to a server address. `/story/<id>` and `/docs/<id>` are internal paths,
+ * so they change to `/_story/<id>` and `/_docs/<id>`.
+ */
+export function withInitialPath(address: string, initialPath?: string) {
+  if (!initialPath) {
+    return address;
+  }
+  const url = new URL(address);
+  url.pathname = decodeURIComponent(
+    initialPath.startsWith('/') ? initialPath : `/${initialPath}`
+  ).replace(/^\/(story|docs)\//, '/_$1/');
+  return url.href;
 }
 
 interface PortOptions {

@@ -38,7 +38,7 @@ function registerStubStoriesToolset(
           handler:
             overrides.handler ??
             (async (input: { id: string }, ctx) => {
-              const stories = [{ previewUrl: `${ctx.origin}/?path=/story/${input.id}` }];
+              const stories = [{ previewUrl: `${ctx.origin}/_story/${input.id}` }];
               return {
                 ok: true,
                 data: { stories, extraNotInContract: 'internal' },
@@ -89,10 +89,10 @@ describe('toolset-backed MCP tools', () => {
     const result = await callToolsetMethod(makeServer(), previewOptions, { id: 'button--primary' });
 
     expect(result.content).toEqual([
-      { type: 'text', text: 'http://localhost:6006/?path=/story/button--primary' },
+      { type: 'text', text: 'http://localhost:6006/_story/button--primary' },
     ]);
     expect(result.structuredContent).toEqual({
-      stories: [{ previewUrl: 'http://localhost:6006/?path=/story/button--primary' }],
+      stories: [{ previewUrl: 'http://localhost:6006/_story/button--primary' }],
     });
     expect(result.isError).toBeUndefined();
   });

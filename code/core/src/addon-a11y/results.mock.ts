@@ -464,7 +464,7 @@ export const results = {
               data: 'root-1-child-a2--grandchild-a1-1',
               relatedNodes: [
                 {
-                  html: '<a tabindex="-1" href="/iframe.html?path=/story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
+                  html: '<a tabindex="-1" href="/_story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
                   target: [
                     '.css-1x6s7u8 > div > div[data-highlighted-ref-id="storybook_internal"] > .css-79elbk[data-title="storybook_internal"] > .css-ohbggj > div[data-selected="true"][data-parent-id="root-1-child-a2"][data-nodetype="story"] > .css-xwriep',
                   ],
@@ -479,7 +479,7 @@ export const results = {
           all: [],
           none: [],
           impact: 'critical',
-          html: '<a tabindex="-1" href="/iframe.html?path=/story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
+          html: '<a tabindex="-1" href="/_story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
           target: [
             '.css-ocnlra > div > div[data-highlighted-ref-id="storybook_internal"] > .css-79elbk[data-title="storybook_internal"] > .css-ohbggj > div[data-selected="true"][data-parent-id="root-1-child-a2"][data-nodetype="story"] > .css-xwriep',
           ],
@@ -624,7 +624,7 @@ export const results = {
           all: [],
           none: [],
           impact: 'serious',
-          html: '<a tabindex="-1" href="/iframe.html?path=/story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
+          html: '<a tabindex="-1" href="/_story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
           target: [
             '.css-ocnlra > div > div[data-highlighted-ref-id="storybook_internal"] > .css-79elbk[data-title="storybook_internal"] > .css-ohbggj > div[data-selected="true"][data-parent-id="root-1-child-a2"][data-nodetype="story"] > .css-xwriep',
           ],
@@ -696,7 +696,7 @@ export const results = {
           all: [],
           none: [],
           impact: 'serious',
-          html: '<a tabindex="-1" href="/iframe.html?path=/story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
+          html: '<a tabindex="-1" href="/_story/root-1-child-a2--grandchild-a1-1" id="root-1-child-a2--grandchild-a1-1" class="css-xwriep">',
           target: [
             '.css-1x6s7u8 > div > div[data-highlighted-ref-id="storybook_internal"] > .css-79elbk[data-title="storybook_internal"] > .css-ohbggj > div[data-selected="true"][data-parent-id="root-1-child-a2"][data-nodetype="story"] > .css-xwriep',
           ],

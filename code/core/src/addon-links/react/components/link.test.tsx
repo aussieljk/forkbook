@@ -50,14 +50,11 @@ describe('LinkTo', () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText('link')).toHaveAttribute(
-          'href',
-          'originpathname?path=/story/foo--bar'
-        );
+        expect(screen.getByText('link')).toHaveAttribute('href', 'originpathnamefoo/bar');
       });
       expect(container.firstChild).toMatchInlineSnapshot(`
         <a
-          href="originpathname?path=/story/foo--bar"
+          href="originpathnamefoo/bar"
         >
           link
         </a>
@@ -81,10 +78,7 @@ describe('LinkTo', () => {
         );
       });
 
-      expect(screen.getByText('link')).toHaveAttribute(
-        'href',
-        'originpathname?path=/story/foo--bar'
-      );
+      expect(screen.getByText('link')).toHaveAttribute('href', 'originpathnamefoo/bar');
 
       await userEvent.click(screen.getByText('link'));
 

@@ -33,7 +33,8 @@ describe('previewStories', () => {
         {
           title: 'Button',
           name: 'Primary',
-          previewUrl: 'http://localhost:6006/?path=/story/button--primary',
+          previewUrl: 'http://localhost:6006/button/primary',
+          iframeUrl: 'http://localhost:6006/iframe.html?id=button--primary',
         },
       ],
     });
@@ -53,8 +54,7 @@ describe('previewStories', () => {
     });
 
     const url = (result.stories[0] as { previewUrl: string }).previewUrl;
-    expect(url).toContain('http://localhost:6006/?path=/story/button--primary');
-    expect(url).toContain('&args=');
+    expect(url).toContain('http://localhost:6006/button/primary?args=');
     expect(url).toContain('label:Hi');
     expect(url).toContain('disabled:!true');
     expect(url).toContain('&globals=');
@@ -96,7 +96,7 @@ describe('previewStories', () => {
     expect(result.stories[0]).toMatchObject({
       title: 'Button',
       name: 'Primary',
-      previewUrl: 'http://localhost:6006/?path=/story/button--primary',
+      previewUrl: 'http://localhost:6006/button/primary',
     });
     expect(result.stories[1]).toMatchObject({
       error: expect.stringContaining('does-not-exist'),

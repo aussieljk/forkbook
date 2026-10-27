@@ -24,7 +24,7 @@ import { useStorybookMetadata } from './utils/metadata.ts';
 import { getSecurityHeadersMiddleware } from './utils/getSecurityHeadersMiddleware.ts';
 import { getMiddleware } from './utils/middleware.ts';
 import { openInBrowser } from './utils/open-browser/open-in-browser.ts';
-import { addLoopbackListener, getListenHost } from './utils/server-address.ts';
+import { addLoopbackListener, getListenHost, withInitialPath } from './utils/server-address.ts';
 import type { getServer } from './utils/server-init.ts';
 import { useStatics } from './utils/server-statics.ts';
 import { summarizeIndex } from './utils/summarizeIndex.ts';
@@ -187,7 +187,11 @@ export async function storybookDevServer(
       // Origin checks only trust loopback hostnames, and 0.0.0.0 also listens on 127.0.0.1.
       const url =
         options.host && options.host !== '0.0.0.0' ? options.networkAddress : options.localAddress;
-      openInBrowser(options.previewOnly ? `${url}iframe.html?navigator=true` : url!).catch(() => {
+      openInBrowser(
+        options.previewOnly
+          ? `${url}iframe.html?navigator=true`
+          : withInitialPath(url!, options.initialPath)
+      ).catch(() => {
         // the browser window could not be opened, this is non-critical, we just ignore the error
       });
     }

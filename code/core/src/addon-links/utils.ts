@@ -12,6 +12,7 @@ import { global } from '../shared/global.ts';
 
 import { addons, makeDecorator } from '@aussieljk/forkbook/preview-api';
 
+import { entryUrlPath } from '../router/story-paths.ts';
 import { PARAM_KEY } from './constants.ts';
 
 const { document, HTMLElement } = global;
@@ -48,14 +49,12 @@ const generateStoryUrl = (title: ComponentTitle | undefined, name: StoryName): s
   const existingId = query.id ?? query.path?.match(/^\/story\/(.+)$/)?.[1];
   const titleToLink = title || existingId?.split('--', 2)[0] || '';
 
-  const id = toId(titleToLink, name);
-  const path = `/story/${id}`;
+  // With a title, the URL follows the sidebar tree. With only a story ID, use `/_story/<id>`.
+  const urlPath = (title && entryUrlPath({ title, name })) || `/_story/${toId(titleToLink, name)}`;
 
   // Drop the `iframe.html` from the preview path
   const sbPath = location.pathname.replace(/iframe\.html$/, '');
-  return `${location.origin + sbPath}?${Object.entries({ path })
-    .map((item) => `${item[0]}=${item[1]}`)
-    .join('&')}`;
+  return `${location.origin + sbPath}${urlPath.slice(1)}`;
 };
 
 export const hrefTo = (title: ComponentTitle | undefined, name: StoryName): Promise<string> => {

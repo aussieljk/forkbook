@@ -20,7 +20,7 @@ import { Main } from './index.tsx';
 import Provider from './provider.ts';
 
 const WS_DISCONNECTED_NOTIFICATION_ID = 'CORE/WS_DISCONNECTED';
-const MOCK_STORY_PATH = '/?path=/story/example-button--primary';
+const MOCK_STORY_PATH = '/_story/example-button--primary';
 
 const originalChannel = getChannel();
 const channel = new Channel({});

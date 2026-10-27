@@ -15,7 +15,6 @@ import {
 } from './review-mode.ts';
 import {
   REVIEW_COLLECTION_QUERY_PARAM,
-  buildReviewChangesSummaryHref,
   buildReviewStoryTarget,
   isReviewReturnSearch,
   type ReviewNavEntry,
@@ -84,7 +83,7 @@ export const navigateOutOfReview = async (
     }
 
     if (returnSearch && !isReviewReturnSearch(returnSearch)) {
-      navigate(returnSearch.startsWith('?') ? returnSearch : `?${returnSearch}`, { plain: true });
+      navigate(returnSearch, { plain: true });
       return;
     }
 
@@ -132,5 +131,5 @@ export const acceptPendingReview = async (
   // summary later must not auto-enter a review the reviewer already left.
   sessionStore.write(AUTO_ENTERED_SESSION_KEY, autoEnteredLatchValue(pending.createdAt));
   void enterReviewMode(api, filters, mode);
-  navigate(buildReviewChangesSummaryHref(), { plain: true });
+  navigate(REVIEW_CHANGES_URL);
 };

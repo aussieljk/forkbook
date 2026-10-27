@@ -51,7 +51,8 @@ const changedThemeFile = 'packages/ui/src/theme.ts';
 const changedPreviewFile = 'packages/ui/.forkbook/preview.tsx';
 
 const buttonStoryHit = { storyFile: './src/Button.stories.tsx', depth: 1 };
-const previewUrl = 'http://localhost:6006/?path=/story/button--primary';
+const previewUrl = 'http://localhost:6006/button/primary';
+const iframeUrl = 'http://localhost:6006/iframe.html?id=button--primary';
 
 const getIndex = vi.fn();
 const getChangedFiles = vi.fn();
@@ -174,7 +175,7 @@ describe('stories.preview', () => {
 
     expect(outcome.ok).toBe(true);
     expect(outcome.data).toEqual({
-      stories: [{ title: 'Button', name: 'Primary', previewUrl }],
+      stories: [{ title: 'Button', name: 'Primary', previewUrl, iframeUrl }],
       instructions: expect.stringContaining('publish the review with'),
     });
     expect(getIndex).toHaveBeenCalledOnce();

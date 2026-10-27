@@ -75,7 +75,7 @@ describe('modifyErrorMessage', () => {
 
     expect(task.result?.errors?.[0].message).toMatchInlineSnapshot(`
       "
-      [34mClick to debug the error directly in Forkbook: http://localhost:6006/?path=/story/my-story&addonPanel=@aussieljk/forkbook/interactions/panel[39m
+      [34mClick to debug the error directly in Forkbook: http://localhost:6006/_story/my-story?addonPanel=@aussieljk/forkbook/interactions/panel[39m
 
       Original error message"
     `);
