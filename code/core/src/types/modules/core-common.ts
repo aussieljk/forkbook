@@ -664,6 +664,19 @@ export interface SecurityConfig {
   insecureIframeMessaging?: boolean;
 }
 
+/** The options for the start page at `/`. See `root` in the main config. */
+export type RootPageOptions =
+  | false
+  | {
+      /** An MDX file for the start page, relative to the config folder. */
+      mdx?: string;
+      /**
+       * `above` (default): the MDX shows above the grid of components. `replace`: only the MDX
+       * shows.
+       */
+      mode?: 'above' | 'replace';
+    };
+
 export interface StorybookConfigRaw {
   /**
    * Sets the addons you want to use with Forkbook.
@@ -748,6 +761,8 @@ export interface StorybookConfigRaw {
   managerHead?: string;
 
   tags?: TagsOptions;
+
+  root?: RootPageOptions;
 
   services?: void;
 }
@@ -863,6 +878,22 @@ export interface ForkbookConfig {
 
   /** Configure non-standard tag behaviors */
   tags?: PresetValue<StorybookConfigRaw['tags']>;
+
+  /**
+   * The start page at `/`. By default it shows a grid of cards, one for each component.
+   *
+   * - `false`: no start page. `/` opens the first story.
+   * - `{ mdx }`: an MDX file (relative to the config folder) that shows above the grid.
+   * - `{ mdx, mode: 'replace' }`: the MDX file is the full page. Put `<StoryGrid />` from
+   *   `@aussieljk/forkbook/addon-docs/blocks` in the MDX to show the grid.
+   *
+   * @example
+   *
+   * ```ts
+   * root: { mdx: './Home.mdx', mode: 'above' };
+   * ```
+   */
+  root?: PresetValue<StorybookConfigRaw['root']>;
 
   /** Run open-service registration side effects for the server environment. */
   services?: PresetValue<StorybookConfigRaw['services']>;

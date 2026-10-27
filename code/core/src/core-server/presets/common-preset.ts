@@ -73,6 +73,7 @@ import { defaultFavicon, defaultStaticDirs } from '../utils/constants.ts';
 import { initializeSaveStory } from '../utils/save-story/save-story.ts';
 import { mapStaticDir, parseStaticDir } from '../utils/server-statics.ts';
 import { type OptionsWithRequiredCache, initializeWhatsNew } from '../utils/whats-new.ts';
+import { rootMdxPath } from '../../shared/root-page.ts';
 import { getWsToken } from './wsToken.ts';
 
 const interpolate = (string: string, data: Record<string, string> = {}) =>
@@ -231,6 +232,13 @@ export const core = async (existing: CoreConfig, options: Options): Promise<Core
 });
 
 const babelPresetEnvMajor = getBabelPresetEnvMajor();
+
+/** Adds the MDX file of the start page (`root.mdx`) to the stories, so it is indexed and built. */
+export const stories: PresetProperty<'stories'> = async (existing, options) => {
+  const mdx = rootMdxPath(await options.presets.apply('root'), options.configDir);
+  const entries = existing ?? [];
+  return mdx ? [...entries, mdx] : entries;
+};
 
 export const features: PresetProperty<'features'> = async (existing, options) => ({
   ...existing,

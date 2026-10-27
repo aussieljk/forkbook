@@ -1,3 +1,4 @@
+import { resolveThumbnail } from '../../shared/thumbnails.ts';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { dirname, extname, join, normalize, relative, resolve, sep } from 'node:path';
@@ -478,6 +479,10 @@ export class StoryIndexGenerator {
         }
         if (input.exportName) {
           entry.exportName = input.exportName;
+        }
+        const thumbnail = resolveThumbnail(input.thumbnail, absolutePath, this.options.workingDir);
+        if (thumbnail) {
+          entry.thumbnail = thumbnail;
         }
 
         return entry;
