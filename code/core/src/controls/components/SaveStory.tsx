@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Bar, Button, Form, Modal } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowCounterClockwiseIcon, CheckIcon, PlusIcon } from '@phosphor-icons/react';
+import { RotateCcwIcon, CheckIcon, PlusIcon } from 'lucide-react';
 
 import styles from './SaveStory.module.css';
 
@@ -87,7 +87,7 @@ export const SaveStory = ({ saveStory, createStory, resetArgs }: SaveStoryProps)
           </Button>
 
           <Button ariaLabel="Reset changes" onClick={() => resetArgs()}>
-            <ArrowCounterClockwiseIcon />
+            <RotateCcwIcon />
             <span>Reset</span>
           </Button>
         </div>

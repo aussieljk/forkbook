@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import React from 'react';
 
-import { LightningSlashIcon } from '@phosphor-icons/react';
+import { ZapOffIcon } from 'lucide-react';
 
 import styles from './Loader.module.css';
 
@@ -30,7 +30,7 @@ export const Loader = ({ progress, error, size = 32, ...props }: LoaderProps) =>
         role="status"
         {...props}
       >
-        <LightningSlashIcon className={styles.errorIcon} />
+        <ZapOffIcon className={styles.errorIcon} />
         <div className={styles.progressMessage}>{error.message}</div>
       </div>
     );

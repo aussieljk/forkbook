@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from '@aussieljk/forkbook/internal/components';
 
-import { FileTextIcon } from '@phosphor-icons/react';
+import { FileTextIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 

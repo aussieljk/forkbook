@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button, Form, PopoverProvider } from '@aussieljk/forkbook/internal/components';
 
-import { CodeIcon } from '@phosphor-icons/react';
+import { CodeIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 

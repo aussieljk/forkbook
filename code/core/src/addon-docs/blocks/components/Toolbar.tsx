@@ -3,13 +3,7 @@ import React from 'react';
 
 import { Button, Toolbar as SharedToolbar } from '@aussieljk/forkbook/internal/components';
 
-import {
-  ArrowCounterClockwiseIcon,
-  ArrowsClockwiseIcon,
-  MagnifyingGlassMinusIcon,
-  MagnifyingGlassPlusIcon,
-  ShareNetworkIcon,
-} from '@phosphor-icons/react';
+import { RotateCcwIcon, RefreshCwIcon, ZoomOutIcon, ZoomInIcon, Share2Icon } from 'lucide-react';
 import { clsx } from 'clsx';
 
 import { getStoryHref } from '../getStoryHref';
@@ -79,7 +73,7 @@ export const Toolbar: FC<ToolbarProps> = ({
               onClick={onReloadStory}
               ariaLabel="Reload story"
             >
-              <ArrowsClockwiseIcon />
+              <RefreshCwIcon />
             </Button>
           )}
           <Button
@@ -92,7 +86,7 @@ export const Toolbar: FC<ToolbarProps> = ({
             }}
             ariaLabel="Zoom in"
           >
-            <MagnifyingGlassPlusIcon />
+            <ZoomInIcon />
           </Button>
           <Button
             padding="small"
@@ -104,7 +98,7 @@ export const Toolbar: FC<ToolbarProps> = ({
             }}
             ariaLabel="Zoom out"
           >
-            <MagnifyingGlassMinusIcon />
+            <ZoomOutIcon />
           </Button>
           <Button
             padding="small"
@@ -116,7 +110,7 @@ export const Toolbar: FC<ToolbarProps> = ({
             }}
             ariaLabel="Reset zoom"
           >
-            <ArrowCounterClockwiseIcon />
+            <RotateCcwIcon />
           </Button>
         </>
       )}
@@ -137,7 +131,7 @@ export const Toolbar: FC<ToolbarProps> = ({
             ariaLabel="Open canvas in new tab"
           >
             <a href={getStoryHref(storyId)} target="_blank" rel="noopener noreferrer">
-              <ShareNetworkIcon />
+              <Share2Icon />
             </a>
           </Button>
         </div>

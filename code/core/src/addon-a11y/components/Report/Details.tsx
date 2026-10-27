@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useState } from 'react';
 
 import { Button, Link, SyntaxHighlighter } from '@aussieljk/forkbook/internal/components';
 
-import { CheckIcon, CopyIcon, CrosshairIcon } from '@phosphor-icons/react';
+import { CheckIcon, CopyIcon, CrosshairIcon } from 'lucide-react';
 
 import { Tabs } from '@base-ui/react/tabs';
 

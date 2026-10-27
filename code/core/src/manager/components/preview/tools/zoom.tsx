@@ -4,7 +4,7 @@ import React, { Component, createContext, memo, useCallback, useEffect, useRef }
 import { ActionList, PopoverProvider, ToggleButton } from '@aussieljk/forkbook/internal/components';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { ArrowCounterClockwiseIcon, MagnifyingGlassPlusIcon } from '@phosphor-icons/react';
+import { RotateCcwIcon, ZoomInIcon } from 'lucide-react';
 
 import { types, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
@@ -69,7 +69,7 @@ export const Zoom = memo<{
                 unit="%"
                 before={
                   <ActionList.Button size="small" padding="small" readOnly aria-hidden>
-                    <MagnifyingGlassPlusIcon />
+                    <ZoomInIcon />
                   </ActionList.Button>
                 }
                 after={
@@ -81,7 +81,7 @@ export const Zoom = memo<{
                     ariaLabel="Reset zoom"
                     aria-hidden={value === INITIAL_ZOOM_LEVEL}
                   >
-                    <ArrowCounterClockwiseIcon />
+                    <RotateCcwIcon />
                   </ActionList.Button>
                 }
                 value={`${Math.round(value * 100)}%`}

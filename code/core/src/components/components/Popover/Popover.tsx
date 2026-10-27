@@ -1,6 +1,6 @@
 import React, { type HTMLAttributes, forwardRef } from 'react';
 
-import { XIcon } from '@phosphor-icons/react';
+import { XIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 

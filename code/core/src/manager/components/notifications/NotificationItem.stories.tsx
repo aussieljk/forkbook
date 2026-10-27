@@ -4,9 +4,9 @@ import { LocationProvider } from '@aussieljk/forkbook/internal/router';
 
 import {
   BookOpenIcon as BookIconIcon,
-  PersonArmsSpreadIcon as AccessibilityIconIcon,
-  SmileyIcon,
-} from '@phosphor-icons/react';
+  AccessibilityIcon as AccessibilityIconIcon,
+  SmileIcon,
+} from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -131,7 +131,7 @@ export const LinkIconWithColor: Story = {
       content: {
         headline: 'Forkbook with a smile!',
       },
-      icon: <SmileyIcon color="hotpink" />,
+      icon: <SmileIcon color="hotpink" />,
       link: '/some/path',
     },
   },
@@ -146,7 +146,7 @@ export const LinkIconWithColorSubHeadline: Story = {
         headline: 'Forkbook X.X is available with a smile! Download now »',
         subHeadline: 'This link also has a sub headline',
       },
-      icon: <SmileyIcon color="tomato" />,
+      icon: <SmileIcon color="tomato" />,
       link: '/some/path',
     },
   },

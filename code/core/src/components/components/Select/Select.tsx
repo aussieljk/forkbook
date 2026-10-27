@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 
-import { ArrowClockwiseIcon } from '@phosphor-icons/react';
+import { RotateCwIcon } from 'lucide-react';
 
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import { clsx } from 'clsx';
@@ -275,7 +275,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               type: 'reset',
               value: undefined,
               title: resetLabel ?? 'Reset selection',
-              icon: <ArrowClockwiseIcon />,
+              icon: <RotateCwIcon />,
               description: undefined,
               children: undefined,
             }

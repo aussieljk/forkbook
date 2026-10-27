@@ -4,7 +4,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import { FORCE_REMOUNT } from '@aussieljk/forkbook/internal/core-events';
 import type { Addon_BaseType } from '@aussieljk/forkbook/internal/types';
 
-import { ArrowsClockwiseIcon } from '@phosphor-icons/react';
+import { RefreshCwIcon } from 'lucide-react';
 
 import { Consumer, types } from '@aussieljk/forkbook/manager-api';
 import type { Combo } from '@aussieljk/forkbook/manager-api';
@@ -54,7 +54,7 @@ export const remountTool: Addon_BaseType = {
             onAnimationEnd={() => setIsAnimating(false)}
             disabled={!storyId}
           >
-            <ArrowsClockwiseIcon />
+            <RefreshCwIcon />
           </Button>
         );
       }}

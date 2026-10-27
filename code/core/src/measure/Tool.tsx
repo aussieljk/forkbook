@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import { ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { RulerIcon } from '@phosphor-icons/react';
+import { RulerIcon } from 'lucide-react';
 
 import { useGlobals, useParameter, useStorybookApi } from '@aussieljk/forkbook/manager-api';
 

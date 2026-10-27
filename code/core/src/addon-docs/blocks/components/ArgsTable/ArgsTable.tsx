@@ -5,7 +5,7 @@ import { once } from '@aussieljk/forkbook/internal/client-logger';
 import { Button, Link, ResetWrapper } from '@aussieljk/forkbook/internal/components';
 import { includeConditionalArg } from '@aussieljk/forkbook/internal/csf';
 
-import { ArrowCounterClockwiseIcon, FileTextIcon } from '@phosphor-icons/react';
+import { RotateCcwIcon, FileTextIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 import { pickBy } from 'es-toolkit/object';
@@ -286,7 +286,7 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
               ariaLabel={isResetting ? 'Resetting controls...' : 'Reset controls'}
               lang="en"
             >
-              <ArrowCounterClockwiseIcon />
+              <RotateCcwIcon />
             </Button>
           </div>
         )}

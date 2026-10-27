@@ -2,17 +2,17 @@ import type { FC } from 'react';
 import React from 'react';
 
 import {
-  BookmarkSimpleIcon,
+  BookmarkIcon,
   FileTextIcon,
-  FlaskIcon,
+  FlaskConicalIcon,
   FolderIcon,
-  SquaresFourIcon,
-} from '@phosphor-icons/react';
+  LayoutGridIcon,
+} from 'lucide-react';
 
 import styles from './IconSymbols.module.css';
 
 // The tree icons are defined once as SVG symbols and used everywhere with <use>. Each symbol holds
-// a 14 px Phosphor icon. The status marks are simple shapes.
+// a 14 px Lucide icon. The status marks are simple shapes.
 
 const GROUP_ID = 'icon--group';
 const COMPONENT_ID = 'icon--component';
@@ -35,16 +35,16 @@ export const IconSymbols: FC = () => {
         <FolderIcon size={14} />
       </symbol>
       <symbol id={COMPONENT_ID}>
-        <SquaresFourIcon size={14} />
+        <LayoutGridIcon size={14} />
       </symbol>
       <symbol id={DOCUMENT_ID}>
         <FileTextIcon size={14} />
       </symbol>
       <symbol id={STORY_ID}>
-        <BookmarkSimpleIcon size={14} />
+        <BookmarkIcon size={14} />
       </symbol>
       <symbol id={TEST_ID}>
-        <FlaskIcon size={14} />
+        <FlaskConicalIcon size={14} />
       </symbol>
       <symbol id={SUCCESS_ID}>
         <path

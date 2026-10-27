@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { SmileyIcon } from '@phosphor-icons/react';
+import { SmileIcon } from 'lucide-react';
 
 import { expect, fn } from '@aussieljk/forkbook/test';
 
@@ -31,7 +31,7 @@ export const Base = meta.story({
 export const IconButton = meta.story({
   args: {
     ariaLabel: 'Button',
-    children: <SmileyIcon />,
+    children: <SmileIcon />,
     padding: 'small',
     variant: 'ghost',
   },
@@ -261,7 +261,7 @@ export const WithIcon = meta.story({
     ariaLabel: false,
     children: (
       <>
-        <SmileyIcon />
+        <SmileIcon />
         Button
       </>
     ),
@@ -278,7 +278,7 @@ export const WithIcon = meta.story({
 export const IconOnly = meta.story({
   args: {
     ariaLabel: 'Button',
-    children: <SmileyIcon />,
+    children: <SmileIcon />,
     padding: 'small',
   },
   render: (args) => (
@@ -401,24 +401,24 @@ export const Animated = meta.story({
       </Row>
       <Row>
         <Button {...args} animation="glow">
-          <SmileyIcon /> Button
+          <SmileIcon /> Button
         </Button>
         <Button {...args} animation="jiggle">
-          <SmileyIcon /> Button
+          <SmileIcon /> Button
         </Button>
         <Button {...args} animation="rotate360">
-          <SmileyIcon /> Button
+          <SmileIcon /> Button
         </Button>
       </Row>
       <Row>
         <Button {...args} ariaLabel="Happy" animation="glow" padding="small">
-          <SmileyIcon />
+          <SmileIcon />
         </Button>
         <Button {...args} ariaLabel="Happy" animation="jiggle" padding="small">
-          <SmileyIcon />
+          <SmileIcon />
         </Button>
         <Button {...args} ariaLabel="Happy" animation="rotate360" padding="small">
-          <SmileyIcon />
+          <SmileIcon />
         </Button>
       </Row>
     </Stack>
@@ -428,7 +428,7 @@ export const Animated = meta.story({
 export const AriaLabel = meta.story({
   args: {
     ariaLabel: 'Button',
-    children: <SmileyIcon />,
+    children: <SmileIcon />,
   },
 });
 
@@ -453,7 +453,7 @@ export const AriaDescription = meta.story({
   args: {
     ariaLabel: 'Button',
     ariaDescription: 'Clicking this button allegedly makes you happy.',
-    children: <SmileyIcon />,
+    children: <SmileIcon />,
   },
 });
 
@@ -477,7 +477,7 @@ export const ShortcutAndTooltip = meta.story({
 export const ShortcutAndDefaultTooltip = meta.story({
   args: {
     ariaLabel: 'Button',
-    children: <SmileyIcon />,
+    children: <SmileIcon />,
     shortcut: ['Control', 'Shift', 'H'],
   },
 });

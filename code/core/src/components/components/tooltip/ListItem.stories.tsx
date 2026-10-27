@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { EyeIcon } from '@phosphor-icons/react';
+import { EyeIcon } from 'lucide-react';
 
 import ListItem from './ListItem.tsx';
 

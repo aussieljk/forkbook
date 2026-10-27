@@ -30,7 +30,7 @@ export const globalsNameValueMap: Required<Record<keyof typeof globalsNameRefere
   },
   'react-dom': REACT_DOM,
   'react-dom/client': REACT_DOM_CLIENT,
-  '@phosphor-icons/react': ICONS,
+  'lucide-react': ICONS,
 
   '@aussieljk/forkbook/manager-api': MANAGER_API,
 

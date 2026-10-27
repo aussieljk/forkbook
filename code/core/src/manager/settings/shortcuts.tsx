@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import { Button, Form, Tooltip, TooltipProvider } from '@aussieljk/forkbook/internal/components';
 
-import { CheckIcon } from '@phosphor-icons/react';
+import { CheckIcon } from 'lucide-react';
 
 import {
   type API_KeyCollection,

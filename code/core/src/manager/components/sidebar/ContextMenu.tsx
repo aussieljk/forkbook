@@ -10,7 +10,7 @@ import {
   type StatusValue,
 } from '@aussieljk/forkbook/internal/types';
 
-import { CodeIcon, CopyIcon, DotsThreeIcon } from '@phosphor-icons/react';
+import { CodeIcon, CopyIcon, EllipsisIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import type { API } from '@aussieljk/forkbook/manager-api';
@@ -115,7 +115,7 @@ export const useContextMenu = (
     !context.refId && (providerLinks.length > 0 || links.length > 0 || topLinks.length > 0);
 
   const buttonStatus = visibleStatus?.status ?? 'status-value:unknown';
-  const menuIcon = visibleStatus?.icon ?? <DotsThreeIcon />;
+  const menuIcon = visibleStatus?.icon ?? <EllipsisIcon />;
 
   return useMemo(() => {
     // Never show the SidebarContextMenu in production

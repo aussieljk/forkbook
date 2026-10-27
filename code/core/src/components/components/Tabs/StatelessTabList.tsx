@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 import { Tabs } from '@base-ui/react/tabs';
 import { Button } from '../Button/Button.tsx';
@@ -119,7 +119,7 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
             onClick={scrollBackward}
             tabIndex={-1}
           >
-            <CaretLeftIcon />
+            <ChevronLeftIcon />
           </Button>
         </div>
       )}
@@ -143,7 +143,7 @@ export const StatelessTabList: FC<StatelessTabListProps> = ({ children, ...rest 
             onClick={scrollForward}
             tabIndex={-1}
           >
-            <CaretRightIcon />
+            <ChevronRightIcon />
           </Button>
         </div>
       )}

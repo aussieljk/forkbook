@@ -2,7 +2,7 @@ import React, { Fragment, memo, useCallback } from 'react';
 
 import { Select, ToggleButton } from '@aussieljk/forkbook/internal/components';
 
-import { CircleIcon, GridFourIcon, ImageIcon } from '@phosphor-icons/react';
+import { CircleIcon, Grid2x2Icon, ImageIcon } from 'lucide-react';
 
 import { useGlobals, useParameter } from '@aussieljk/forkbook/manager-api';
 
@@ -94,7 +94,7 @@ const Pure = memo(function PureTool(props: PureProps) {
         tooltip={isLocked ? 'Grid set by story parameters' : 'Toggle grid visibility'}
         onClick={() => update({ value: backgroundName, grid: !isGrid })}
       >
-        <GridFourIcon />
+        <Grid2x2Icon />
       </ToggleButton>
 
       {length > 0 ? (

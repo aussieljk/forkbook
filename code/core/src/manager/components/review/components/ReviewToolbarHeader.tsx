@@ -2,7 +2,7 @@ import React, { type FC, type ReactNode } from 'react';
 
 import { Badge, Button } from '@aussieljk/forkbook/internal/components';
 
-import { CaretLeftIcon, CaretRightIcon, MagicWandIcon } from '@phosphor-icons/react';
+import { ChevronLeftIcon, ChevronRightIcon, WandSparklesIcon } from 'lucide-react';
 
 import {
   buildReviewChangesSummaryHref,
@@ -107,8 +107,8 @@ export const ReviewToolbarHeader: FC = () => {
           leading={
             <Button variant="ghost" size="small" padding="small" ariaLabel="Back to review" asChild>
               <a href={buildReviewChangesSummaryHref()}>
-                <CaretLeftIcon />
-                <MagicWandIcon />
+                <ChevronLeftIcon />
+                <WandSparklesIcon />
               </a>
             </Button>
           }
@@ -128,9 +128,9 @@ export const ReviewToolbarHeader: FC = () => {
               <NavButton
                 entry={previousEntry}
                 ariaLabel="Previous story"
-                icon={<CaretLeftIcon />}
+                icon={<ChevronLeftIcon />}
               />
-              <NavButton entry={nextEntry} ariaLabel="Next story" icon={<CaretRightIcon />} />
+              <NavButton entry={nextEntry} ariaLabel="Next story" icon={<ChevronRightIcon />} />
             </>
           }
         />

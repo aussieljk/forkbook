@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { Button, Modal } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowsClockwiseIcon } from '@phosphor-icons/react';
+import { RefreshCwIcon } from 'lucide-react';
 
 import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
@@ -117,7 +117,7 @@ export function GlobalErrorModal({ onRerun, storeState }: GlobalErrorModalProps)
         <Modal.Title className={styles.title}>Forkbook Test Error Details</Modal.Title>
         <div className={styles.actionBar}>
           <Button onClick={onRerun} variant="ghost" ariaLabel={false}>
-            <ArrowsClockwiseIcon />
+            <RefreshCwIcon />
             Rerun
           </Button>
           <Button variant="ghost" ariaLabel={false} asChild>

@@ -111,7 +111,7 @@ describe.each(['development', 'production'])('%s manager entries', (mode) => {
 });
 
 describe('the icons global', () => {
-  it('has every Phosphor icon that Forkbook imports', async () => {
+  it('has every Lucide icon that Forkbook imports', async () => {
     const src = fileURLToPath(new URL('../..', import.meta.url));
     const files = await glob(['**/*.{ts,tsx}'], {
       cwd: src,
@@ -123,9 +123,7 @@ describe('the icons global', () => {
     const missing = new Set<string>();
     for (const file of files) {
       const text = await readFile(file, 'utf8');
-      for (const [, names] of text.matchAll(
-        /import\s+\{([^}]*)\}\s+from\s+'@phosphor-icons\/react'/g
-      )) {
+      for (const [, names] of text.matchAll(/import\s+\{([^}]*)\}\s+from\s+'lucide-react'/g)) {
         for (const name of names.split(',').map((part) => part.trim().split(/\s+as\s+/)[0])) {
           if (name && !(name in icons)) {
             missing.add(name);

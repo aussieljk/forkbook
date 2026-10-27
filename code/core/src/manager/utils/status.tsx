@@ -12,7 +12,7 @@ import {
   type StoryId,
 } from '@aussieljk/forkbook/internal/types';
 
-import { CircleIcon } from '@phosphor-icons/react';
+import { CircleIcon } from 'lucide-react';
 
 import memoizerific from 'memoizerific';
 import { transparentize } from 'polished';

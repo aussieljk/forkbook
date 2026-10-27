@@ -5,7 +5,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
 
 import { global } from '../../../shared/global.ts';
-import { TrashIcon } from '@phosphor-icons/react';
+import { Trash2Icon } from 'lucide-react';
 
 import type { ControllerStateAndHelpers } from 'downshift';
 import { clsx } from 'clsx';
@@ -198,7 +198,7 @@ export const SearchResults: FC<{
             onClick={handleClearLastViewed}
             ariaLabel="Clear recently opened items"
           >
-            <TrashIcon />
+            <Trash2Icon />
           </Button>
         </div>
       )}

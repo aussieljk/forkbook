@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { EmptyTabContent, Link } from '@aussieljk/forkbook/internal/components';
 
-import { FileTextIcon } from '@phosphor-icons/react';
+import { FileTextIcon } from 'lucide-react';
 
 import styles from './Empty.module.css';
 

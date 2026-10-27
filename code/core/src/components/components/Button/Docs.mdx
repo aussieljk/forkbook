@@ -17,7 +17,7 @@ Button component is used to trigger an action or event, such as submitting a for
 import { Button } from '@storybook/components';
 
 // If you would like to use icons, please import them from the icons library
-import { HeartIcon, SmileyIcon } from '@phosphor-icons/react'
+import { HeartIcon, SmileIcon } from 'lucide-react'
 `} />
 
 ## Usage
@@ -68,7 +68,7 @@ Use the `variant` prop to change the visual style of the button. You can set the
 
 ### Button with icon
 
-You can add an icon to the button by adding the icon on the left of the text. Please use any icon from the icon library `@phosphor-icons/react`. You can still set `ariaLabel` to `false` if the button's text fully conveys the meaning of the button. If the icon is necessary to understand the button's purpose, you should pass a more meaningful text to `ariaLabel`.
+You can add an icon to the button by adding the icon on the left of the text. Please use any icon from the icon library `lucide-react`. You can still set `ariaLabel` to `false` if the button's text fully conveys the meaning of the button. If the icon is necessary to understand the button's purpose, you should pass a more meaningful text to `ariaLabel`.
 
 <Canvas of={ButtonStories.WithIcon} />
 <Source
@@ -76,7 +76,7 @@ You can add an icon to the button by adding the icon on the left of the text. Pl
   dark={true}
   code={`
 <Button ariaLabel={false}>
-  <SmileyIcon /> Button
+  <SmileIcon /> Button
 </Button>
 `} />
 
@@ -90,7 +90,7 @@ You can also use the button as an icon only button by removing the text. To make
   dark={true}
   code={`
 <Button ariaLabel="Button" padding="small">
-  <SmileyIcon />
+  <SmileIcon />
 </Button>
 `} />
 
@@ -121,13 +121,13 @@ You can use the `animate` prop to add animations to the button. You can set the 
   dark={true}
   code={`
 <Button ariaLabel={false} animation="glow">
-  <SmileyIcon />Button
+  <SmileIcon />Button
 </Button>
 <Button ariaLabel={false} animation="jiggle">
-  <SmileyIcon />Button
+  <SmileIcon />Button
 </Button>
 <Button ariaLabel={false} animation="rotate360">
-  <SmileyIcon />Button
+  <SmileIcon />Button
 </Button>
 `} />
 
@@ -141,7 +141,7 @@ You can use the `disabled` prop to set the button as disabled.
   dark={true}
   code={`
 <Button ariaLabel={false} disabled>
-  <SmileyIcon />Button
+  <SmileIcon />Button
 </Button>
  `}
 />

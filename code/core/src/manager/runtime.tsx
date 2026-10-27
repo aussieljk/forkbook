@@ -6,7 +6,7 @@ import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/inte
 import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../shared/global.ts';
-import { XCircleIcon } from '@phosphor-icons/react';
+import { CircleXIcon } from 'lucide-react';
 
 import type { API, AddonStore } from '@aussieljk/forkbook/manager-api';
 import { addons, types } from '@aussieljk/forkbook/manager-api';
@@ -62,7 +62,7 @@ class ReactProvider extends Provider {
           headline: 'Connection lost',
           subHeadline: 'Please restart your Forkbook server and reload the page',
         },
-        icon: <XCircleIcon color={color.negative} />,
+        icon: <CircleXIcon color={color.negative} />,
         link: undefined,
       });
     });

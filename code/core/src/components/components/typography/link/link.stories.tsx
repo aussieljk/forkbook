@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import React from 'react';
 
-import { DiscordLogoIcon, SidebarIcon } from '@phosphor-icons/react';
+import { MessageCircleIcon, PanelLeftIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -88,13 +88,13 @@ export const StyledLinks = {
       </Link>
       <br />
       <Link href="http://google.com" {...args}>
-        <DiscordLogoIcon />
+        <MessageCircleIcon />
         With icon in front
       </Link>
       <br />
       <Link title="Toggle sidebar" containsIcon href="http://google.com" {...args}>
         {/* A linked icon by itself   */}
-        <SidebarIcon />
+        <PanelLeftIcon />
       </Link>
       <br />
       <Link containsIcon withArrow href="http://google.com" {...args}>

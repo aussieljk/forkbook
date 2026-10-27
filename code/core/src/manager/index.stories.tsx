@@ -4,7 +4,7 @@ import { MemoryRouter } from '@aussieljk/forkbook/internal/router';
 import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
 import type { API_PreparedStoryIndex } from '@aussieljk/forkbook/internal/types';
 
-import { XCircleIcon } from '@phosphor-icons/react';
+import { CircleXIcon } from 'lucide-react';
 
 import { HelmetProvider } from 'react-helmet-async';
 import { getChannel, setChannel } from '@aussieljk/forkbook/internal/channels';
@@ -88,7 +88,7 @@ class ReactProvider extends Provider {
           headline: 'Connection lost',
           subHeadline: 'Please restart your Forkbook server and reload the page',
         },
-        icon: <XCircleIcon color={color.negative} />,
+        icon: <CircleXIcon color={color.negative} />,
         link: undefined,
       });
     });

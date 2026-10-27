@@ -80,9 +80,9 @@ async function generateExportsFile(): Promise<void> {
   const input: Record<string, string> = {};
   const virtualModules: Record<string, string> = {};
 
-  // The icons global holds only the icons that Forkbook uses, not the whole Phosphor package.
+  // The icons global holds only the icons that Forkbook uses, not the whole Lucide package.
   const sources: Record<string, string> = {
-    '@phosphor-icons/react': join(CORE_ROOT_DIR, 'src', 'manager', 'globals', 'icons.ts'),
+    'lucide-react': join(CORE_ROOT_DIR, 'src', 'manager', 'globals', 'icons.ts'),
   };
 
   for (const mod of globalPackages) {

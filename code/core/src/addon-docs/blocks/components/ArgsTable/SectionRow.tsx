@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React, { useState } from 'react';
 
-import { CaretDownIcon, CaretRightIcon } from '@phosphor-icons/react';
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
 
 import styles from './SectionRow.module.css';
 
@@ -45,9 +45,9 @@ export const SectionRow: FC<SectionRowProps> = ({
           </button>
           <span className={styles.flexWrapper}>
             {expanded ? (
-              <CaretDownIcon className={styles.expanderIcon} />
+              <ChevronDownIcon className={styles.expanderIcon} />
             ) : (
-              <CaretRightIcon className={styles.expanderIcon} />
+              <ChevronRightIcon className={styles.expanderIcon} />
             )}
             {label}
           </span>

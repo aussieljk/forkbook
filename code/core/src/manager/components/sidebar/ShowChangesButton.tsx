@@ -9,7 +9,7 @@ import type {
   Tag,
 } from '@aussieljk/forkbook/internal/types';
 
-import { ArrowCounterClockwiseIcon } from '@phosphor-icons/react';
+import { RotateCcwIcon } from 'lucide-react';
 
 import {
   experimental_useStatusStore,
@@ -147,7 +147,7 @@ export const ShowChangesButton = () => {
           onClick={onClearClick}
           ariaLabel="Clear"
         >
-          <ArrowCounterClockwiseIcon />
+          <RotateCcwIcon />
         </Button>
       )}
     </div>

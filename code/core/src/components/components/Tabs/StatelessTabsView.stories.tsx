@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button, EmptyTabContent } from '@aussieljk/forkbook/internal/components';
 
-import { ArrowsOutLineVerticalIcon, XIcon } from '@phosphor-icons/react';
+import { UnfoldVerticalIcon, XIcon } from 'lucide-react';
 
 import { fn } from '@aussieljk/forkbook/test';
 
@@ -40,7 +40,7 @@ const RenderEmpty = (args: StatelessTabsViewProps) => (
 const DEFAULT_TOOLS = (
   <div>
     <Button variant="ghost" padding="small" ariaLabel="Go full screen">
-      <ArrowsOutLineVerticalIcon />
+      <UnfoldVerticalIcon />
     </Button>
     <Button variant="ghost" padding="small" ariaLabel="Close">
       <XIcon />

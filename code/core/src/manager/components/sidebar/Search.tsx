@@ -4,7 +4,7 @@ import { Button } from '@aussieljk/forkbook/internal/components';
 import { REVIEW_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../../shared/global.ts';
-import { MagnifyingGlassIcon, XIcon } from '@phosphor-icons/react';
+import { SearchIcon, XIcon } from 'lucide-react';
 
 import type { DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
@@ -394,7 +394,7 @@ export const Search = React.memo<SearchProps>(function Search({
                 className={`search-field ${styles.searchField}`}
               >
                 <div className={styles.iconWrapper}>
-                  <MagnifyingGlassIcon />
+                  <SearchIcon />
                 </div>
                 <input
                   className={styles.input}

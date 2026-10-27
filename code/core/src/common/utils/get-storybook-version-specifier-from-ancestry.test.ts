@@ -130,7 +130,9 @@ describe('getStorybookVersionSpecifierFromAncestry', () => {
 
   it('extracts npm tags and prerelease versions', () => {
     expect(
-      getStorybookVersionSpecifierFromAncestry([{ command: 'npx @aussieljk/forkbook@next upgrade' }])
+      getStorybookVersionSpecifierFromAncestry([
+        { command: 'npx @aussieljk/forkbook@next upgrade' },
+      ])
     ).toBe('next');
     expect(
       getStorybookVersionSpecifierFromAncestry([

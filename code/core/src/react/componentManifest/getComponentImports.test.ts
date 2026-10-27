@@ -710,7 +710,7 @@ test('Does not rewrite unscoped package subpath (valid bare specifier)', async (
 
 test('Merges multiple imports from the same package (defaults and named)', async () => {
   const code = dedent`
-    import { CopilotIcon } from '@primer/octicons-react';
+    import { BotIcon } from 'lucide-react';
     import { Banner } from "@primer/react";
     import Link from "@primer/react";
     import { Dialog } from "@primer/react";
@@ -719,7 +719,7 @@ test('Merges multiple imports from the same package (defaults and named)', async
 
     const meta = {};
     export default meta;
-    export const S = <div><Link/><Heading/><Banner/><Dialog/><Stack/><CopilotIcon/></div>;
+    export const S = <div><Link/><Heading/><Banner/><Dialog/><Stack/><BotIcon/></div>;
   `;
   expect(await getImports(code)).toMatchInlineSnapshot(
     `
@@ -734,12 +734,12 @@ test('Merges multiple imports from the same package (defaults and named)', async
           "localImportName": "Banner",
         },
         {
-          "componentName": "CopilotIcon",
-          "importId": "@primer/octicons-react",
-          "importName": "CopilotIcon",
+          "componentName": "BotIcon",
+          "importId": "lucide-react",
+          "importName": "BotIcon",
           "isPackage": false,
           "jsxDepth": 1,
-          "localImportName": "CopilotIcon",
+          "localImportName": "BotIcon",
         },
         {
           "componentName": "Dialog",
@@ -776,7 +776,7 @@ test('Merges multiple imports from the same package (defaults and named)', async
       ],
       "imports": [
         "import Link, { Banner, Dialog, Heading, Stack } from '@primer/react';",
-        "import { CopilotIcon } from '@primer/octicons-react';",
+        "import { BotIcon } from 'lucide-react';",
       ],
     }
   `
