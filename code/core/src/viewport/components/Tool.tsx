@@ -6,6 +6,7 @@ import { Maximize2Icon } from 'lucide-react';
 
 import { useViewport } from '../useViewport.ts';
 import { iconsMap } from '../viewportIcons.tsx';
+import { FrameSize, usePreviewFrameSize } from './FrameSize.tsx';
 import styles from './Tool.module.css';
 
 export const ViewportTool = () => {
@@ -17,8 +18,10 @@ export const ViewportTool = () => {
     isLocked,
     options: viewportMap,
     reset,
+    resize,
     select,
   } = useViewport();
+  const frameSize = usePreviewFrameSize();
 
   const options = useMemo(() => {
     const presetOptions = Object.entries(viewportMap).map(([k, value]) => ({
@@ -54,20 +57,27 @@ export const ViewportTool = () => {
   }, [viewportMap, isCustom, value, name]);
 
   return (
-    <Select
-      resetLabel="Reset viewport"
-      onReset={reset}
-      key="viewport"
-      disabled={isLocked}
-      ariaLabel={isLocked ? 'Viewport size set by story parameters' : 'Viewport size'}
-      ariaDescription="Select a viewport among predefined options for the preview area, or reset to the default viewport."
-      tooltip={isLocked ? 'Viewport set by story parameters' : 'Change viewport'}
-      defaultOptions={value}
-      options={options}
-      onSelect={(selected) => select(selected as string)}
-      icon={<Maximize2Icon />}
-    >
-      {isDefault ? null : name}
-    </Select>
+    <>
+      <Select
+        resetLabel="Reset viewport"
+        onReset={reset}
+        key="viewport"
+        disabled={isLocked}
+        ariaLabel={isLocked ? 'Viewport size set by story parameters' : 'Viewport size'}
+        ariaDescription="Select a viewport among predefined options for the preview area, or reset to the default viewport."
+        tooltip={isLocked ? 'Viewport set by story parameters' : 'Change viewport'}
+        defaultOptions={value}
+        options={options}
+        onSelect={(selected) => select(selected as string)}
+        icon={<Maximize2Icon />}
+      >
+        {isDefault ? null : name}
+      </Select>
+      <FrameSize
+        size={frameSize}
+        disabled={isLocked}
+        onApply={({ width, height }) => resize(`${width}px`, `${height}px`)}
+      />
+    </>
   );
 };

@@ -57,6 +57,10 @@ const config = defineMain({
       titlePrefix: 'controls',
     },
     {
+      directory: '../core/src/viewport',
+      titlePrefix: 'viewport',
+    },
+    {
       directory: '../core/src/highlight',
       titlePrefix: 'highlight',
     },
