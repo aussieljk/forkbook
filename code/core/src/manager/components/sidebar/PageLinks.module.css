@@ -1,0 +1,31 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: inherit;
+  font-size: var(--fb-size-s2);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--fb-background-hoverable);
+    outline: none;
+  }
+
+  &[aria-current='page'] {
+    background: var(--fb-background-hoverable);
+    font-weight: var(--fb-weight-bold);
+  }
+}

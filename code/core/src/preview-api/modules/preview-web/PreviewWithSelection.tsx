@@ -42,6 +42,7 @@ import type { StorySpecifier } from '../store/StoryIndexStore.ts';
 import type { MaybePromise } from './Preview.tsx';
 import { Preview } from './Preview.tsx';
 import type { Selection, SelectionStore } from './SelectionStore.ts';
+import { AllStories, isAllStoriesMode } from './AllStories.ts';
 import { InfiniteDocs } from './InfiniteDocs.ts';
 import type { View } from './View.ts';
 import { shouldAutoplay } from './embedMode.ts';
@@ -90,6 +91,8 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
 
   /** The docs pages below the selected docs page (`docs.infiniteScroll`). */
   infiniteDocs?: InfiniteDocs<TRenderer>;
+
+  allStories?: AllStories<TRenderer>;
 
   constructor(
     public importFn: ModuleImportFn,
@@ -167,8 +170,10 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
       });
     }
 
-    // If the story has been selected during initialization - if `SET_CURRENT_STORY` is
-    // emitted while we are loading the preview, we don't need to do any selection now.
+    if (isAllStoriesMode({ search: globalWindow.location?.search ?? '' })) {
+      await this.renderAllStories();
+      return;
+    }
 
     // If the story has been selected during initialization - if `SET_CURRENT_STORY` is
     // emitted while we are loading the preview, we don't need to do any selection now.
@@ -205,6 +210,19 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     this.channel.emit(CURRENT_STORY_WAS_SET, this.selectionStore.selection);
 
     await this.renderSelection({ persistedArgs: args });
+  }
+
+  /** Renders all stories in one page (`iframe.html?allStories=true`). */
+  async renderAllStories() {
+    if (!this.storyStoreValue) {
+      throw new CalledPreviewMethodBeforeInitializationError({ methodName: 'renderAllStories' });
+    }
+    this.allStories ??= new AllStories<TRenderer>(
+      this.storyStoreValue,
+      this.renderStoryToElement.bind(this) as any
+    );
+    const root = this.view.prepareForDocs({ scrollReset: false }) as HTMLElement;
+    await this.allStories.render(root);
   }
 
   // EVENT HANDLERS

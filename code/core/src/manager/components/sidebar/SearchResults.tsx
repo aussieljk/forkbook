@@ -13,6 +13,7 @@ import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 import { useTheme } from '@aussieljk/forkbook/theming';
 
 import { matchesKeyCode, matchesModifiers } from '../../keybinding.ts';
+import { thumbnailSrc } from '../../utils/root-page.ts';
 import { getStatus } from '../../utils/status.tsx';
 import { UseSymbol } from './IconSymbols.tsx';
 import { NoResults } from './NoResults.tsx';
@@ -50,6 +51,23 @@ const Highlight: FC<PropsWithChildren<{ match?: Match }>> = React.memo(function 
   return <span>{result}</span>;
 });
 
+/**
+ * The thumbnail of a search result: the `thumbnail` of a story, or of the first story of a
+ * component.
+ */
+const useResultThumbnail = (item: SearchResult['item']): string | undefined => {
+  const api = useStorybookApi();
+  if ('thumbnail' in item && typeof item.thumbnail === 'string') {
+    return item.thumbnail;
+  }
+  if (item.type !== 'component' || !api?.resolveStory) {
+    return undefined;
+  }
+  const refId = item.refId === 'storybook_internal' ? undefined : item.refId;
+  const first = api.resolveStory(item.children[0], refId) as { thumbnail?: unknown } | undefined;
+  return typeof first?.thumbnail === 'string' ? first.thumbnail : undefined;
+};
+
 const Result: FC<
   SearchResult & {
     isHighlighted: boolean;
@@ -75,6 +93,7 @@ const Result: FC<
   const pathMatches = matches.filter((match: Match) => match.key === 'path');
 
   const icon = item.status ? getStatus(theme, item.status).icon : null;
+  const thumbnail = useResultThumbnail(item);
 
   return (
     <li
@@ -114,6 +133,9 @@ const Result: FC<
           ))}
         </div>
       </div>
+      {thumbnail ? (
+        <img className={styles.thumbnail} src={thumbnailSrc(thumbnail)} alt="" loading="lazy" />
+      ) : null}
       {item.status ? <StatusLabel status={item.status}>{icon}</StatusLabel> : null}
     </li>
   );

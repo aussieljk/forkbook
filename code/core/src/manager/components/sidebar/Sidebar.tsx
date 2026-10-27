@@ -18,6 +18,7 @@ import { Explorer } from './Explorer.tsx';
 import { Filter } from './Filter.tsx';
 import type { HeadingProps } from './Heading.tsx';
 import { Heading } from './Heading.tsx';
+import { PageLinks } from './PageLinks.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
 import ReviewWidget, { useActiveReviewStoryCount } from './ReviewWidget.tsx';
 import { Search } from './Search.tsx';
@@ -133,6 +134,7 @@ export const Sidebar = React.memo(function Sidebar({
               onMenuClick={onMenuClick}
             />
           </div>
+          <PageLinks />
           {!isLoading && showReviewWidget ? <ReviewWidget /> : null}
           <Search
             dataset={dataset}

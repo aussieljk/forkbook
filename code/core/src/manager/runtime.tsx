@@ -15,6 +15,7 @@ import { color } from '@aussieljk/forkbook/theming';
 import { ToolbarManager } from '../toolbar/components/ToolbarManager.tsx';
 import { TOOLBAR_ID } from '../toolbar/constants.ts';
 import { renderStorybookUI } from './index.tsx';
+import { getRootPage } from './utils/root-page.ts';
 import Provider from './provider.ts';
 
 const WS_DISCONNECTED_NOTIFICATION_ID = 'CORE/WS_DISCONNECTED';
@@ -27,6 +28,14 @@ addons.register(TOOLBAR_ID, () =>
     render: () => <ToolbarManager />,
   })
 );
+
+// The MDX file of the start page shows on `/`, so the sidebar does not show it.
+addons.register('forkbook/root-page', (api) => {
+  const { mdxImportPath } = getRootPage();
+  if (mdxImportPath) {
+    api.setFilter('forkbook-root-mdx', (entry) => entry.importPath !== mdxImportPath);
+  }
+});
 
 // Install the manager channel at module load, before the deferred render below and before any
 // manager entry can read it. This guarantees `addons.getChannel()` returns the real channel in the
