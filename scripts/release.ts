@@ -132,7 +132,9 @@ const { name, version: current } = readPkg();
 const bumped = !!capture(['npm', 'view', `${name}@${current}`, 'version']);
 
 if (bumped) {
-  const next = nextVersion(current);
+  // A run that published but did not push its version commit leaves npm ahead of package.json.
+  let next = nextVersion(current);
+  while (capture(['npm', 'view', `${name}@${next}`, 'version'])) next = nextVersion(next);
   step(`${name}@${current} is on npm. The next version is ${next}.`);
   const pkg = readPkg();
   pkg.version = next;
