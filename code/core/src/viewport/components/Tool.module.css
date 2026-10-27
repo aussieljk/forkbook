@@ -7,3 +7,18 @@
   font-weight: var(--fb-weight-regular);
   color: var(--fb-text-muted-color);
 }
+
+.segments {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  padding: 1px;
+  border-radius: 4px;
+  box-shadow: var(--fb-app-border-color) 0 0 0 1px inset;
+}
+
+/* The pressed segment. Base UI Toggle sets data-pressed. */
+.segment:where([data-pressed]) {
+  background: rgb(from var(--fb-bar-selected-color) r g b / calc(alpha - 0.93));
+  color: var(--fb-bar-selected-color);
+}
