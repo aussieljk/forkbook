@@ -289,11 +289,14 @@ export const ReviewProvider: FC<{ children: ReactNode }> = ({ children }) => {
     if (viewMode !== 'story' && viewMode !== 'docs') {
       return;
     }
-    const search = location?.search;
-    if (search && !isReviewReturnSearch(search)) {
-      sessionStore.write(PRE_REVIEW_RETURN_KEY, search);
+    if (!location) {
+      return;
     }
-  }, [isInReviewMode, viewMode, location?.search]);
+    const returnLocation = `${location.pathname}${location.search}`;
+    if (!isReviewReturnSearch(returnLocation)) {
+      sessionStore.write(PRE_REVIEW_RETURN_KEY, returnLocation);
+    }
+  }, [isInReviewMode, viewMode, location?.pathname, location?.search]);
 
   const value = useMemo<ReviewContextValue>(
     () => ({

@@ -11,15 +11,13 @@ import { clearRegistry, getService } from '../../../shared/open-service/server.t
 import { registerReviewService } from '../../../shared/open-service/services/review/server.ts';
 import {
   NOTIFIED_REVIEW_CREATED_AT_KEY,
+  REVIEW_CHANGES_URL,
   VISITED_REVIEW_CREATED_AT_KEY,
   reviewAvailableNotificationId,
 } from './constants.ts';
 import { acceptPendingReview, dismissReview, navigateOutOfReview } from './review-actions.ts';
 import { enterReviewMode, type ReviewModeHandle } from './review-mode.ts';
-import {
-  REVIEW_COLLECTION_QUERY_PARAM,
-  buildReviewChangesSummaryHref,
-} from './review-navigation.ts';
+import { REVIEW_COLLECTION_QUERY_PARAM } from './review-navigation.ts';
 import type { ReviewState } from './review-state.ts';
 
 const review: ReviewState = {
@@ -102,7 +100,7 @@ describe('navigateOutOfReview', () => {
     await navigateOutOfReview(
       api,
       navigate as unknown as NavigateFunction,
-      '?path=/story/example--default',
+      '/example/default',
       mode
     );
 
@@ -116,7 +114,7 @@ describe('navigateOutOfReview', () => {
     const { api } = makeApi();
     const navigate = vi.fn() as unknown as NavigateFunction;
 
-    await navigateOutOfReview(api, navigate, '?path=/story/example--default', makeMode(), {
+    await navigateOutOfReview(api, navigate, '/example/default', makeMode(), {
       visitCreatedAt: review.createdAt,
     });
 
@@ -130,7 +128,7 @@ describe('navigateOutOfReview', () => {
     const { api } = makeApi();
     const navigate = vi.fn() as unknown as NavigateFunction;
 
-    await navigateOutOfReview(api, navigate, '?path=/story/example--default', makeMode());
+    await navigateOutOfReview(api, navigate, '/example/default', makeMode());
 
     expect(sessionStorage.getItem(VISITED_REVIEW_CREATED_AT_KEY)).toBeNull();
     expect(sessionStorage.getItem(NOTIFIED_REVIEW_CREATED_AT_KEY)).toBeNull();
@@ -146,7 +144,7 @@ describe('navigateOutOfReview', () => {
     setAllTagFilters.mockRejectedValueOnce(new Error('restore failed'));
 
     await expect(
-      navigateOutOfReview(api, navigate, '?path=/story/example--default', mode, {
+      navigateOutOfReview(api, navigate, '/example/default', mode, {
         visitCreatedAt: review.createdAt,
       })
     ).rejects.toThrow('restore failed');
@@ -165,7 +163,7 @@ describe('navigateOutOfReview', () => {
     setAllTagFilters.mockRejectedValueOnce(new Error('restore failed'));
 
     await expect(
-      navigateOutOfReview(api, navigate, '?path=/story/example--default', mode, {
+      navigateOutOfReview(api, navigate, '/example/default', mode, {
         onExitingChange,
       })
     ).rejects.toThrow('restore failed');
@@ -180,7 +178,7 @@ describe('navigateOutOfReview', () => {
     await navigateOutOfReview(
       api,
       navigate,
-      `?path=/story/story--default&${REVIEW_COLLECTION_QUERY_PARAM}=0`,
+      `/story/default?${REVIEW_COLLECTION_QUERY_PARAM}=0`,
       makeMode()
     );
 
@@ -253,7 +251,7 @@ describe('acceptPendingReview', () => {
       reviewAvailableNotificationId(pending.createdAt!)
     );
     expect(sessionStorage.getItem(VISITED_REVIEW_CREATED_AT_KEY)).toBe(String(pending.createdAt));
-    expect(navigate).toHaveBeenCalledWith(buildReviewChangesSummaryHref(), { plain: true });
+    expect(navigate).toHaveBeenCalledWith(REVIEW_CHANGES_URL);
   });
 
   it('does not enter review mode or navigate when the accept command fails', async () => {

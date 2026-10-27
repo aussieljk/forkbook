@@ -1928,7 +1928,7 @@ describe('stories API', () => {
     it('initializes status filters from URL statuses param', () => {
       const moduleArgs = createMockModuleArgs({
         initialState: {
-          location: { search: '?path=/story/a--1&statuses=new%3Bmodified' } as any,
+          location: { search: '?statuses=new%3Bmodified' } as any,
         } as any,
       });
       const { state } = initStories({

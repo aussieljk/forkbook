@@ -10,13 +10,14 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
+import { buildStoryPathMap, toUrlPath } from '../../code/core/src/router/story-paths.ts';
 import preview from '../.forkbook/preview.ts';
 
 const SITE = 'https://forkbook.ljk.dev';
 const site = join(import.meta.dirname, '..');
 const dist = join(site, 'dist');
 
-type Entry = { id: string; title: string; type: string; importPath: string };
+type Entry = { id: string; title: string; name: string; type: string; importPath: string };
 type Page = { id: string; title: string; url: string; markdown: string; description: string };
 
 const entries: Entry[] = Object.values(
@@ -76,8 +77,11 @@ const write = (path: string, text: string) => {
   writeFileSync(path, text);
 };
 
+// The Forkbook URL of each docs page follows the sidebar tree, for example `/configure/sidebar-and-urls/docs`.
+const pathMap = buildStoryPathMap(entries);
+
 for (const page of pages) {
-  const target = `/?path=/docs/${page.id}`;
+  const target = toUrlPath(`/docs/${page.id}`, pathMap);
   write(join(dist, `${page.url}.md`), page.markdown);
   write(
     join(dist, page.url, 'index.html'),

@@ -6,7 +6,11 @@ import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 ## Permalink to stories
 
-Each story has a URL: `/?path=/story/<story id>`. A docs page has `/?path=/docs/<page id>`. The story ID comes from the title and the export name, for example `forms-text-field--primary`.
+Each story has a URL that follows the sidebar tree. The story `Primary` with the title `Forms/Text Field` is at `/forms/text-field/primary`. The docs page of that component is at `/forms/text-field/docs`.
+
+When two stories get the same URL, or the URL is reserved (`/`, `/all`, `/settings/...`, `/review/...`), the story uses `/_story/<story id>`. A docs page uses `/_docs/<page id>`. These URLs always work, so use them when you know only the story ID. The story ID comes from the title and the export name, for example `forms-text-field--primary`.
+
+Old links of the form `/?path=/story/<story id>` still work. Forkbook changes them to the new URL.
 
 To open only the story, with no Forkbook UI, use `/iframe.html?id=<story id>&viewMode=story`.
 

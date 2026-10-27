@@ -106,7 +106,7 @@ const managerApi: API = {
   addStatusFilters: fn().mockName('api::addStatusFilters'),
   removeStatusFilters: fn().mockName('api::removeStatusFilters'),
   getStoryHrefs: (storyId: string, options?: { embed?: boolean; freeze?: boolean }) => ({
-    managerHref: `?path=/story/${storyId}`,
+    managerHref: `./_story/${storyId}`,
     previewHref: `iframe.html?id=${storyId}&viewMode=story${options?.embed ? '&embed=true' : ''}${options?.freeze ? '&freeze=finished' : ''}`,
   }),
   navigate: navigateMock,
@@ -266,7 +266,7 @@ const meta = preview.meta({
   },
   decorators: [
     (Story, { parameters }) => (
-      <MemoryRouter initialEntries={parameters?.routerInitialEntries ?? ['/?path=/review/']}>
+      <MemoryRouter initialEntries={parameters?.routerInitialEntries ?? ['/review/']}>
         <ManagerStateSync parameters={parameters}>
           <div
             id="main-content-wrapper"
@@ -404,7 +404,7 @@ export const PendingUpdateFromStoryNavigatesToSummary = meta.story({
     // snapshot (in Edge especially) differs on nearly every build and had to be re-accepted
     // over and over. The flow itself is still covered as an interaction test.
     chromatic: { disableSnapshot: true },
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default&collection=0'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default?collection=0'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -448,7 +448,7 @@ export const PendingUpdateSupersedesStale = meta.story({
 export const ShowsNotificationForEachNewReview = meta.story({
   render: () => <ReviewOutsideHarness />,
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -488,7 +488,7 @@ export const ShowsNotificationForEachNewReview = meta.story({
 export const ShowsNotificationForUnseenReview = meta.story({
   render: () => <ReviewOutsideWithNotificationsHarness />,
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -514,7 +514,7 @@ export const ShowsNotificationForUnseenReview = meta.story({
 export const DismissesNotificationOnReviewVisit = meta.story({
   render: () => <ReviewOutsideWithNotificationsHarness />,
   parameters: {
-    routerInitialEntries: ['/?path=/review/'],
+    routerInitialEntries: ['/review/'],
     managerState: {
       path: '/review/',
       viewMode: 'review',
@@ -549,7 +549,7 @@ export const DismissesNotificationOnReviewVisit = meta.story({
 export const HidesNotificationAfterReviewVisited = meta.story({
   render: () => <ReviewOutsideHarness />,
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -568,7 +568,7 @@ export const HidesNotificationAfterReviewVisited = meta.story({
 export const NotificationClickFromStoryNavigatesAndDismisses = meta.story({
   render: () => <ReviewOutsideHarness />,
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -644,10 +644,7 @@ export const DoesNotReenterReviewModeAfterExit = meta.story({
   },
   // This tab browsed a story before the review arrived.
   beforeEach: () => {
-    sessionStorage.setItem(
-      PRE_REVIEW_RETURN_KEY,
-      '?path=/story/manager-settings-guidepage--default'
-    );
+    sessionStorage.setItem(PRE_REVIEW_RETURN_KEY, '/_story/manager-settings-guidepage--default');
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -700,10 +697,7 @@ export const DoesNotReenterReviewModeAfterReload = meta.story({
     chromatic: { disableSnapshot: true },
   },
   beforeEach: () => {
-    sessionStorage.setItem(
-      PRE_REVIEW_RETURN_KEY,
-      '?path=/story/manager-settings-guidepage--default'
-    );
+    sessionStorage.setItem(PRE_REVIEW_RETURN_KEY, '/_story/manager-settings-guidepage--default');
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -753,7 +747,7 @@ export const DismissalReturnsEachTabToItsOwnStory = meta.story({
   ),
   parameters: {
     chromatic: { disableSnapshot: true },
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default&collection=0'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default?collection=0'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -763,10 +757,7 @@ export const DismissalReturnsEachTabToItsOwnStory = meta.story({
   // This tab entered the review from its own story; both facts are tab-local
   // sessionStorage, seeded before the provider mounts.
   beforeEach: () => {
-    sessionStorage.setItem(
-      PRE_REVIEW_RETURN_KEY,
-      '?path=/story/manager-settings-aboutscreen--default'
-    );
+    sessionStorage.setItem(PRE_REVIEW_RETURN_KEY, '/_story/manager-settings-aboutscreen--default');
     sessionStorage.setItem(REVIEW_MODE_SESSION_KEY, '1');
   },
   play: async ({ canvasElement }) => {

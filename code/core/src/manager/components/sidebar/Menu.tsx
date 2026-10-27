@@ -150,7 +150,7 @@ export const SidebarMenu: FC<SidebarMenuProps> = ({ menu, isHighlighted, onClick
           isMobile={true}
           asChild
         >
-          <a href="./?path=/settings/about" rel="canonical">
+          <a href="./settings/about" rel="canonical">
             <SettingsIcon />
           </a>
         </SidebarButton>

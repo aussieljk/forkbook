@@ -81,7 +81,7 @@ const makeManagerContext = (
     clearNotification: fn().mockName('api::clearNotification'),
     getUrlState: () => ({ path: '/', queryParams: {} }),
     getStoryHrefs: (storyId: string) => ({
-      managerHref: `?path=/story/${storyId}`,
+      managerHref: `./_story/${storyId}`,
       previewHref: `iframe.html?id=${storyId}&viewMode=story`,
     }),
     setAllTagFilters: fn().mockName('api::setAllTagFilters'),

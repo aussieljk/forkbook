@@ -9,7 +9,7 @@ import {
 } from './review-navigation.ts';
 
 const isReviewStoryHref = (href: string) =>
-  href.startsWith('?path=/story/') && href.includes(`${REVIEW_COLLECTION_QUERY_PARAM}=`);
+  href.includes(`${REVIEW_COLLECTION_QUERY_PARAM}=`) && parseReviewStoryHref(href) !== null;
 
 const isReviewSummaryHref = (href: string) => href === buildReviewChangesSummaryHref();
 

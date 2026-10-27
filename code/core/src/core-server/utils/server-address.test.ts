@@ -49,8 +49,8 @@ describe('getServerAddresses', () => {
   it('should return server addresses with initial path', () => {
     const initialPath = '/foo/bar';
 
-    const expectedAddress = `${proto}://127.0.0.1:${port}/?path=/foo/bar`;
-    const expectedNetworkAddress = `${proto}://${host}:${port}/?path=/foo/bar`;
+    const expectedAddress = `${proto}://127.0.0.1:${port}/foo/bar`;
+    const expectedNetworkAddress = `${proto}://${host}:${port}/foo/bar`;
 
     const result = getServerAddresses(port, host, proto, initialPath);
 
@@ -58,11 +58,17 @@ describe('getServerAddresses', () => {
     expect(result.networkAddress).toBe(expectedNetworkAddress);
   });
 
+  it('should change an internal story path to its URL', () => {
+    const result = getServerAddresses(port, host, proto, '/story/button--primary');
+
+    expect(result.address).toBe(`${proto}://127.0.0.1:${port}/_story/button--primary`);
+  });
+
   it('should return server addresses with initial path and add slash if missing', () => {
     const initialPath = 'foo/bar';
 
-    const expectedAddress = `${proto}://127.0.0.1:${port}/?path=/foo/bar`;
-    const expectedNetworkAddress = `${proto}://${host}:${port}/?path=/foo/bar`;
+    const expectedAddress = `${proto}://127.0.0.1:${port}/foo/bar`;
+    const expectedNetworkAddress = `${proto}://${host}:${port}/foo/bar`;
 
     const result = getServerAddresses(port, host, proto, initialPath);
 
@@ -73,9 +79,9 @@ describe('getServerAddresses', () => {
 
 describe('getReachableNetworkAddresses', () => {
   it('lists every external IPv4 address of the machine when the host is 0.0.0.0', () => {
-    expect(getReachableNetworkAddresses('http://0.0.0.0:6006/?path=/foo/bar')).toEqual([
-      'http://192.168.1.100:6006/?path=/foo/bar',
-      'http://192.130.20.4:6006/?path=/foo/bar',
+    expect(getReachableNetworkAddresses('http://0.0.0.0:6006/foo/bar')).toEqual([
+      'http://192.168.1.100:6006/foo/bar',
+      'http://192.130.20.4:6006/foo/bar',
     ]);
   });
 

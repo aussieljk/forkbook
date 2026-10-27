@@ -3,6 +3,7 @@ import type { SyntheticEvent } from 'react';
 import { global } from '../../shared/global.ts';
 
 import memoize from 'memoizerific';
+import { buildManagerHref, getBasename } from '@aussieljk/forkbook/internal/router';
 import type { HashEntry, IndexHash } from '@aussieljk/forkbook/manager-api';
 
 import { DEFAULT_REF_ID } from '../components/sidebar/Sidebar.tsx';
@@ -14,7 +15,7 @@ export const createId = (itemId: string, refId?: string) =>
   !refId || refId === DEFAULT_REF_ID ? itemId : `${refId}_${itemId}`;
 
 export const getLink = (item: HashEntry, refId?: string) => {
-  return `${document.location.pathname}?path=/${item.type}/${createId(item.id, refId)}`;
+  return buildManagerHref(`${getBasename()}/`, `/${item.type}/${createId(item.id, refId)}`);
 };
 
 export const prevent = (e: SyntheticEvent) => {

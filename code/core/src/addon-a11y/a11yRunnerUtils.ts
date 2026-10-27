@@ -23,7 +23,7 @@ export const withLinkPaths = (results: AxeResults, storyId: string) => {
         ...result,
         nodes: result.nodes.map((node, index) => {
           const id = `${key}.${result.id}.${index + 1}`;
-          const linkPath = `${pathname}?path=/story/${storyId}&addonPanel=${PANEL_ID}&a11ySelection=${id}`;
+          const linkPath = `${pathname}_story/${storyId}?addonPanel=${PANEL_ID}&a11ySelection=${id}`;
           return { id, ...node, linkPath };
         }),
       }));

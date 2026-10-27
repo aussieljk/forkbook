@@ -86,7 +86,7 @@ describe('preview', () => {
   describe('hrefTo()', () => {
     it('should return promise resolved with story href', async () => {
       const href = await hrefTo('title', 'name');
-      expect(href).toContain('?path=/story/title--name');
+      expect(href).toContain('/title/name');
     });
 
     it('should fall back to query.path when title is omitted', async () => {
@@ -94,14 +94,14 @@ describe('preview', () => {
 
       const href = await hrefTo(undefined, 'next-name');
 
-      expect(href).toContain('?path=/story/current-title--next-name');
+      expect(href).toContain('/_story/current-title--next-name');
     });
   });
 
   describe('hrefToSync()', () => {
     it('should return story href synchronously', () => {
       const href = hrefToSync('title', 'name');
-      expect(href).toContain('?path=/story/title--name');
+      expect(href).toContain('/title/name');
     });
 
     it('should fall back to query.path when title is omitted', () => {
@@ -109,7 +109,7 @@ describe('preview', () => {
 
       const href = hrefToSync(undefined, 'next-name');
 
-      expect(href).toContain('?path=/story/current-title--next-name');
+      expect(href).toContain('/_story/current-title--next-name');
     });
   });
 });

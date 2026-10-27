@@ -32,6 +32,10 @@ const previewSuccessSchema = v.object({
   title: v.string(),
   name: v.string(),
   previewUrl: v.pipe(v.string(), v.description('Direct URL to open the story preview.')),
+  iframeUrl: v.pipe(
+    v.string(),
+    v.description('URL of the story preview frame without the manager.')
+  ),
 });
 
 const previewFailureSchema = v.object({

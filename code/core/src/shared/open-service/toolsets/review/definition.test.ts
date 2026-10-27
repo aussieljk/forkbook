@@ -12,7 +12,7 @@ import {
 } from '../../toolset-definition.ts';
 import { reviewToolset } from './definition.ts';
 
-const reviewUrl = 'http://localhost:6006/?path=/review/';
+const reviewUrl = 'http://localhost:6006/review/';
 
 const input = {
   title: 'Button tweaks',
@@ -108,7 +108,7 @@ describe('review.create', () => {
     const outcome = await createReview({}, { ...cliCtx, origin: 'http://localhost:6006/nested' });
 
     expect(outcome.data).toMatchObject({
-      reviewUrl: 'http://localhost:6006/nested/?path=/review/',
+      reviewUrl: 'http://localhost:6006/nested/review/',
     });
   });
 

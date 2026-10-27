@@ -211,9 +211,8 @@ function loadStoryIframes(params: { structuredContent?: PreviewStoriesOutput }):
     iframe.style.width = '100%';
     iframe.style.height = '0';
 
-    const iframeSrc = storyResult.previewUrl.replace('/?path=/story/', '/iframe.html?id=');
     // Add MCP App param to enable size reporting in Forkbook's preview.ts
-    const url = new URL(iframeSrc);
+    const url = new URL(storyResult.iframeUrl);
     url.searchParams.set(MCP_APP_PARAM, 'true');
     iframe.src = url.toString();
 

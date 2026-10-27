@@ -95,7 +95,7 @@ const managerApi: API = {
   addStatusFilters: fn().mockName('api::addStatusFilters'),
   removeStatusFilters: fn().mockName('api::removeStatusFilters'),
   getStoryHrefs: (storyId: string, options?: { embed?: boolean; freeze?: boolean }) => ({
-    managerHref: `?path=/story/${storyId}`,
+    managerHref: `./_story/${storyId}`,
     previewHref: `iframe.html?id=${storyId}&viewMode=story${options?.embed ? '&embed=true' : ''}${options?.freeze ? '&freeze=finished' : ''}`,
   }),
 } as unknown as API;
@@ -136,7 +136,7 @@ const meta = preview.meta({
 
 export const OnReviewedStory = meta.story({
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-guidepage--default&collection=0'],
+    routerInitialEntries: ['/_story/manager-settings-guidepage--default?collection=0'],
     managerState: {
       path: '/story/manager-settings-guidepage--default',
       viewMode: 'story',
@@ -164,7 +164,7 @@ export const OnReviewedStory = meta.story({
 
 export const Progress = meta.story({
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-aboutscreen--default&collection=0'],
+    routerInitialEntries: ['/_story/manager-settings-aboutscreen--default?collection=0'],
     managerState: {
       path: '/story/manager-settings-aboutscreen--default',
       viewMode: 'story',
@@ -191,7 +191,7 @@ export const Progress = meta.story({
 
 export const NewStory = meta.story({
   parameters: {
-    routerInitialEntries: ['/?path=/story/manager-settings-checklist--default&collection=0'],
+    routerInitialEntries: ['/_story/manager-settings-checklist--default?collection=0'],
     managerState: {
       path: '/story/manager-settings-checklist--default',
       viewMode: 'story',

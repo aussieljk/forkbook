@@ -1,3 +1,5 @@
+import { fromUrlPath, toRouterUrl } from '@aussieljk/forkbook/internal/router';
+
 import {
   REVIEW_COLLECTION_QUERY_PARAM,
   isReviewSummaryPath,
@@ -20,33 +22,49 @@ export interface ReviewNavEntry {
   collectionIndex: number;
 }
 
-export const buildReviewChangesSummaryHref = () => `?path=${REVIEW_CHANGES_URL}`;
+/**
+ * Review hrefs are relative to the Forkbook root. The manager page sets a `<base>` element, so
+ * `./review/` opens the review page at any base path.
+ */
+const toRelativeHref = (urlPath: string) => `.${urlPath}`;
+
+export const buildReviewChangesSummaryHref = () => toRelativeHref(REVIEW_CHANGES_URL);
 
 /** Default back target when no story has been visited yet. */
-export const FORKBOOK_ROOT_HREF = '/';
+export const FORKBOOK_ROOT_HREF = './';
 
+/**
+ * The return location is a URL path and query relative to the Forkbook root, for example
+ * `/example/button/primary?args=a:1`.
+ */
 export const buildSummaryBackHref = (returnSearch: string | null | undefined): string =>
-  returnSearch || FORKBOOK_ROOT_HREF;
+  returnSearch ? toRelativeHref(returnSearch) : FORKBOOK_ROOT_HREF;
 
 /** Marks summary-header back links for SPA navigation in useReviewNavigationInterceptor. */
 export const REVIEW_SUMMARY_BACK_ATTR = 'data-review-summary-back';
 
-/** Forkbook router navigate target for a review story (no `?path=` wrapper). */
+/** Forkbook router navigate target for a review story. */
 export const buildReviewStoryTarget = (entry: ReviewNavEntry): string =>
   `/story/${entry.storyId}&${REVIEW_COLLECTION_QUERY_PARAM}=${entry.collectionIndex}`;
 
-/** Full `?path=` href for a review story, derived from the router target. */
+/** Full href for a review story, derived from the router target. */
 export const buildReviewStoryHref = (entry: ReviewNavEntry): string =>
-  `?path=${buildReviewStoryTarget(entry)}`;
+  toRelativeHref(toRouterUrl(buildReviewStoryTarget(entry)));
+
+/** Splits a URL path and query (relative to the Forkbook root) into the internal path and query. */
+const parseManagerLocation = (location: string) => {
+  const url = new URL(location.replace(/^\./, ''), 'http://forkbook.local');
+  const params = url.searchParams;
+  const path = params.get('path') ?? fromUrlPath(url.pathname);
+  return { path, params };
+};
 
 export const parseReviewStoryHref = (href: string): ReviewNavEntry | null => {
-  if (!href.startsWith('?path=/story/')) {
+  if (!href.startsWith('./')) {
     return null;
   }
-  const query = href.startsWith('?') ? href.slice(1) : href;
-  const params = new URLSearchParams(query);
-  const path = params.get('path');
-  if (!path?.startsWith('/story/')) {
+  const { path, params } = parseManagerLocation(href);
+  if (!path.startsWith('/story/')) {
     return null;
   }
   const storyId = path.slice('/story/'.length);
@@ -59,11 +77,9 @@ export const parseReviewStoryHref = (href: string): ReviewNavEntry | null => {
   return { storyId, collectionIndex };
 };
 
-/** True when a manager search string points back at a review route (not a canvas). */
+/** True when a manager location (URL path and query) points back at a review route (not a canvas). */
 export const isReviewReturnSearch = (search: string): boolean => {
-  const normalized = search.startsWith('?') ? search.slice(1) : search;
-  const params = new URLSearchParams(normalized);
-  const path = params.get('path') ?? '';
+  const { path, params } = parseManagerLocation(search);
   if (isReviewSummaryPath(path) || path.startsWith(REVIEW_CHANGES_URL)) {
     return true;
   }
