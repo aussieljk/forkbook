@@ -58,7 +58,7 @@ const TooltipProvider = ({
   children,
   defaultVisible,
   startOpen,
-  delayShow = 400,
+  delayShow = 0,
   delayHide = 200,
   visible,
   onVisibleChange,

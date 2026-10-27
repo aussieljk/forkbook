@@ -16,24 +16,28 @@ body {
   box-sizing: border-box;
 }
 
-/* Thin, neutral scrollbars everywhere (panels, docs, code blocks). */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(120 120 128 / 0.45) transparent;
+/* 1px neutral scrollbars everywhere (panels, docs, code blocks).
+   Chrome ignores the ::-webkit-scrollbar rules when scrollbar-width is set,
+   so only Firefox gets scrollbar-width. */
+@supports (-moz-appearance: none) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(120 120 128 / 0.45) transparent;
+  }
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 1px;
+  height: 1px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
   background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(120 120 128 / 0.45);
-  border-radius: 5px;
+  background: rgb(120 120 128 / 0.6);
 }
 
 h1, h2, h3, h4, h5, h6 {

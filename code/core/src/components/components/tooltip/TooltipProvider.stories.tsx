@@ -19,7 +19,7 @@ const meta = preview.meta({
     triggerOnFocusOnly: false,
     placement: 'top',
     offset: 8,
-    delayShow: 400,
+    delayShow: 0,
     delayHide: 200,
     tooltip: <SampleTooltipNote />,
     children: <Trigger>Hover me!</Trigger>,

@@ -10,7 +10,7 @@ import type { DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
 import type { FuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
-import { shortcutToHumanString, useStorybookApi } from '@aussieljk/forkbook/manager-api';
+import { useStorybookApi } from '@aussieljk/forkbook/manager-api';
 
 import { useLandmark } from '../../hooks/useLandmark.ts';
 import { getGroupStatus, getMostCriticalStatusValue } from '../../utils/status.tsx';
@@ -73,7 +73,6 @@ export const Search = React.memo<SearchProps>(function Search({
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputPlaceholder, setPlaceholder] = useState('Find components');
   const [allComponents, showAllComponents] = useState(false);
-  const searchShortcut = api ? shortcutToHumanString(api.getShortcutKeys().search) : '/';
 
   const makeFuse = useCallback(() => {
     const list: SearchItem[] = [];
@@ -401,17 +400,6 @@ export const Search = React.memo<SearchProps>(function Search({
                   {...inputProps}
                   data-mobile={isMobile || undefined}
                 />
-                {!isMobile && enableShortcuts && !isOpen && (
-                  <code className={styles.focusKey}>
-                    {searchShortcut === '⌘ K' ? (
-                      <>
-                        <span className={styles.focusKeyCmd}>⌘</span>K
-                      </>
-                    ) : (
-                      searchShortcut
-                    )}
-                  </code>
-                )}
                 <div className={styles.actions}>
                   {input && (
                     <Button

@@ -141,7 +141,7 @@ const WithTooltipPure = ({
   delayHide = trigger === 'hover' ? 200 : 0,
   visible,
   interactive: _interactive,
-  delayShow = trigger === 'hover' ? 400 : 0,
+  delayShow = 0,
   strategy,
   onVisibleChange,
   portalContainer,

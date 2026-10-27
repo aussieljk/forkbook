@@ -28,7 +28,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
       horizontal = false,
       vertical = false,
       offset = 2,
-      scrollbarSize = 3,
+      scrollbarSize = 1,
       scrollPadding = 0,
       className,
       focusable = false,

@@ -9,8 +9,6 @@
   overflow-y: hidden;
   box-shadow: var(--fb-app-border-color) 0 -1px 0 0 inset;
   background: var(--fb-bar-bg);
-  scrollbar-color: var(--fb-bar-text-color) var(--fb-bar-bg);
-  scrollbar-width: thin;
   z-index: 4;
 }
 

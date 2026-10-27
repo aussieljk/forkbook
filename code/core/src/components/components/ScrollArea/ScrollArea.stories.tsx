@@ -121,7 +121,7 @@ export const CustomOffset = () => (
 );
 
 export const CustomSize = () => (
-  <ScrollArea horizontal vertical scrollbarSize={20}>
+  <ScrollArea horizontal vertical>
     {list((i) => (
       <Fragment key={i}>
         {list((ii) => (

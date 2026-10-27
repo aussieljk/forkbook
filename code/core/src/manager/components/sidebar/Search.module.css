@@ -95,31 +95,6 @@
   }
 }
 
-.focusKey {
-  margin: 5px;
-  margin-top: 6px;
-  height: 16px;
-  font-family: var(--fb-font-base);
-  line-height: 16px;
-  text-align: center;
-  font-size: 11px;
-  color: var(--fb-color-dark);
-  user-select: none;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-:where([data-fb-theme='dark']) .focusKey {
-  color: var(--fb-text-muted-color);
-}
-
-.focusKeyCmd {
-  font-size: 14px;
-}
-
 .actions {
   display: flex;
   align-items: center;
