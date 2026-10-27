@@ -39,8 +39,11 @@ beforeAll(async () => {
 
   server = createServer((req, res) => {
     let path = new URL(req.url ?? '/', 'http://x').pathname;
+    // Like a static host: a story URL such as `/box/default` gets `/box/default/index.html`.
     if (path.endsWith('/')) {
       path += 'index.html';
+    } else if (!extname(path)) {
+      path += '/index.html';
     }
     try {
       const body = readFileSync(join(out, decodeURIComponent(path)));
@@ -66,7 +69,7 @@ afterAll(async () => {
 describe('the built manager', () => {
   it('has the sidebar on the left, the toolbar and the preview, the panel below, and Inter', async () => {
     const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
-    await page.goto(`${base}/?path=/story/box--default`);
+    await page.goto(`${base}/box/default`);
     await page.locator('.sidebar-container').waitFor();
     await page.getByRole('tab', { name: 'Controls' }).waitFor();
 
@@ -110,7 +113,7 @@ describe('the built manager', () => {
 
   it('renders markdown tables, and scrolls from one docs page into the next', async () => {
     const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
-    await page.goto(`${base}/?path=/docs/first--docs`);
+    await page.goto(`${base}/first/docs`);
     const preview = page.frameLocator('#storybook-preview-iframe');
     await preview.locator('h1', { hasText: 'First page' }).waitFor();
 
@@ -125,7 +128,7 @@ describe('the built manager', () => {
 
     // The URL follows the page in view, without a new render of the preview.
     await frame.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await expect.poll(() => page.url(), { timeout: 15_000 }).toMatch(/path=\/docs\/second--docs/);
+    await expect.poll(() => page.url(), { timeout: 15_000 }).toMatch(/\/second\/docs$/);
     expect(await preview.locator('h1', { hasText: 'First page' }).count()).toBe(1);
     await page.close();
   }, 60_000);

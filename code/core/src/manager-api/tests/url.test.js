@@ -343,7 +343,7 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toEqual('/?path=/story/test--story');
+    expect(managerHref).toEqual('/_story/test--story');
     expect(previewHref).toEqual('/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -358,7 +358,7 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toContain('&args=a:1&globals=b:2');
+    expect(managerHref).toContain('args=a:1&globals=b:2');
     expect(previewHref).toContain('&args=a:1&globals=b:2');
   });
 
@@ -373,7 +373,7 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toContain('&args=a:!null;b:!hex(f00);c:!undefined');
+    expect(managerHref).toContain('args=a:!null;b:!hex(f00);c:!undefined');
     expect(previewHref).toContain('&args=a:!null;b:!hex(f00);c:!undefined');
   });
 
@@ -388,7 +388,7 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--another-story');
-    expect(managerHref).toEqual('/?path=/story/test--another-story&globals=b:2');
+    expect(managerHref).toEqual('/_story/test--another-story?globals=b:2');
     expect(previewHref).toEqual('/iframe.html?id=test--another-story&viewMode=story&globals=b:2');
   });
 
@@ -406,7 +406,7 @@ describe('getStoryHrefs', () => {
       inheritArgs: false,
       inheritGlobals: false,
     });
-    expect(managerHref).toEqual('/?path=/story/test--story');
+    expect(managerHref).toEqual('/_story/test--story');
     expect(previewHref).toEqual('/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -423,7 +423,7 @@ describe('getStoryHrefs', () => {
     const { managerHref, previewHref } = api.getStoryHrefs('test--story', {
       queryParams: { args: 'a:2;c:3', globals: 'd:5' },
     });
-    expect(managerHref).toContain('&args=a:2;b:2;c:3&globals=c:3;d:5');
+    expect(managerHref).toContain('args=a:2;b:2;c:3&globals=c:3;d:5');
     expect(previewHref).toContain('&args=a:2;b:2;c:3&globals=c:3;d:5');
   });
 
@@ -445,7 +445,7 @@ describe('getStoryHrefs', () => {
         viewMode: 'not-allowed-in-preview',
       },
     });
-    expect(managerHref).toContain('&args=a:1&globals=b:2&one=1&foo.bar=baz');
+    expect(managerHref).toContain('args=a:1&globals=b:2&one=1&foo.bar=baz');
     expect(previewHref).toContain('&args=a:1&globals=b:2&one=1&foo.bar=baz');
 
     expect(managerHref).toContain('id=not-allowed-in-preview');
@@ -466,7 +466,7 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toContain('&args=equal:g%3Dh&globals=ampersand:c%26d');
+    expect(managerHref).toContain('args=equal:g%3Dh&globals=ampersand:c%26d');
     expect(previewHref).toContain('&args=equal:g%3Dh&globals=ampersand:c%26d');
   });
 
@@ -483,7 +483,7 @@ describe('getStoryHrefs', () => {
     const { managerHref, previewHref } = api.getStoryHrefs('test--story', {
       queryParams: { equal: 'a=b', ampersand: 'c&d' },
     });
-    expect(managerHref).toContain('&equal=a%3Db&ampersand=c%26d');
+    expect(managerHref).toContain('equal=a%3Db&ampersand=c%26d');
     expect(previewHref).toContain('&equal=a%3Db&ampersand=c%26d');
   });
 
@@ -498,11 +498,11 @@ describe('getStoryHrefs', () => {
     store.setState(state);
 
     const origin = api.getStoryHrefs('test--story', { base: 'origin' });
-    expect(origin.managerHref).toContain('http://localhost:6006/?path=');
+    expect(origin.managerHref).toContain('http://localhost:6006/_story/');
     expect(origin.previewHref).toContain('http://localhost:6006/iframe.html');
 
     const network = api.getStoryHrefs('test--story', { base: 'network' });
-    expect(network.managerHref).toContain('http://192.168.1.1:6006/?path=');
+    expect(network.managerHref).toContain('http://192.168.1.1:6006/_story/');
     expect(network.previewHref).toContain('http://192.168.1.1:6006/iframe.html');
   });
 
@@ -518,7 +518,7 @@ describe('getStoryHrefs', () => {
     store.setState({ refs: { external: { url: 'https://sb.example.com' } } });
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story', { refId: 'external' });
-    expect(managerHref).toEqual('/?path=/story/external_test--story&globals=b:2');
+    expect(managerHref).toEqual('/_story/external_test--story?globals=b:2');
     expect(previewHref).toEqual(
       'https://sb.example.com/iframe.html?id=test--story&viewMode=story&refId=external'
     );
@@ -536,7 +536,7 @@ describe('getStoryHrefs', () => {
     global.document.baseURI = 'http://localhost:6006/index.html';
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toEqual('/index.html?path=/story/test--story');
+    expect(managerHref).toEqual('/_story/test--story');
     expect(previewHref).toEqual('/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -567,7 +567,7 @@ describe('getStoryHrefs', () => {
     global.document.baseURI = 'http://localhost:6006/storybook';
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toEqual('/storybook?path=/story/test--story');
+    expect(managerHref).toEqual('/_story/test--story');
     expect(previewHref).toEqual('/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -583,7 +583,7 @@ describe('getStoryHrefs', () => {
     global.document.baseURI = 'http://localhost:6006/design-system/';
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toEqual('/design-system/?path=/story/test--story');
+    expect(managerHref).toEqual('/design-system/_story/test--story');
     expect(previewHref).toEqual('/design-system/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -599,7 +599,7 @@ describe('getStoryHrefs', () => {
     global.document.baseURI = 'http://localhost:6006/design-system/index.html';
 
     const { managerHref, previewHref } = api.getStoryHrefs('test--story');
-    expect(managerHref).toEqual('/design-system/index.html?path=/story/test--story');
+    expect(managerHref).toEqual('/design-system/_story/test--story');
     expect(previewHref).toEqual('/design-system/iframe.html?id=test--story&viewMode=story');
   });
 
@@ -643,6 +643,7 @@ describe('getStoryHrefs', () => {
     });
     store.setState(state);
 
+    global.document.baseURI = 'http://localhost:6006/design-system/';
     const origin = api.getStoryHrefs('test--story', { base: 'origin' });
     expect(origin.previewHref).toContain('http://localhost:6006/design-system/iframe.html');
 
@@ -678,7 +679,7 @@ describe('getStoryHrefs', () => {
     const { managerHref, previewHref } = api.getStoryHrefs('test--story', { freeze: true });
     expect(previewHref).toEqual('/iframe.html?id=test--story&viewMode=story&freeze=finished');
     // Freezing is a preview-only contract; the manager href must be unaffected.
-    expect(managerHref).toEqual('/?path=/story/test--story');
+    expect(managerHref).toEqual('/_story/test--story');
   });
 
   it('opts the preview into embed mode when embed is set', () => {

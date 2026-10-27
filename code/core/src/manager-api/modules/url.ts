@@ -8,7 +8,6 @@ import {
 import {
   buildArgsParam,
   buildManagerHref,
-  getBasename,
   queryFromLocation,
 } from '@aussieljk/forkbook/internal/router';
 import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
@@ -271,7 +270,9 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
         throw new Error(`Invalid refId: ${refId}`);
       }
 
-      const pathname = `${getBasename()}/`;
+      const pathname = global.document?.baseURI
+        ? new URL('.', global.document.baseURI).pathname
+        : '/';
       const originAddress = global.window.location.origin + pathname;
       const networkAddress = global.FORKBOOK_NETWORK_ADDRESS ?? originAddress;
       const managerBase =
