@@ -30,5 +30,7 @@ export const resolveRootPage = (
     return { enabled: true, mode };
   }
   const path = relative(workingDir, mdx);
-  return { enabled: true, mode, mdxImportPath: path.startsWith('.') ? path : `./${path}` };
+  // The same rule as the index `importPath`: `.forkbook/Home.mdx` gets `./`, `../x` does not.
+  const isRelative = /^\.{1,2}(\/|$)/.test(path);
+  return { enabled: true, mode, mdxImportPath: isRelative ? path : `./${path}` };
 };

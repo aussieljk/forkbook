@@ -96,3 +96,21 @@ export const Searching = () => <SearchResults {...searching} />;
 export const NoResults = () => <SearchResults {...noResults} />;
 
 export const LastViewed = () => <SearchResults {...lastViewed} />;
+
+const thumbnail = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="28"><rect width="40" height="28" fill="#ff4785"/></svg>'
+)}`;
+
+export const WithThumbnails = {
+  render: () => (
+    <SearchResults
+      {...searching}
+      results={results.map((result) => ({ ...result, item: { ...result.item, thumbnail } }))}
+    />
+  ),
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    if (canvasElement.querySelectorAll('img').length === 0) {
+      throw new Error('Expected a thumbnail in the search results');
+    }
+  },
+};

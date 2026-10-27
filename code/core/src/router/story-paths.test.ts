@@ -1,6 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  ALL_STORIES_PATH,
+  HOME_PATH,
   buildManagerHref,
   buildStoryPathMap,
   entryUrlPath,
@@ -52,5 +54,42 @@ describe('story paths', () => {
     expect(buildManagerHref('/sb', '/settings/about', 'a=1')).toBe('/sb/settings/about?a=1');
     expect(urlPathDepth('/example/button/primary')).toBe(3);
     expect(urlPathDepth('/')).toBe(0);
+  });
+
+  describe('start page and all stories page', () => {
+    const root = globalThis as { FORKBOOK_ROOT?: { enabled: boolean } };
+    afterEach(() => {
+      delete root.FORKBOOK_ROOT;
+    });
+
+    it('changes the internal paths to `/` and `/all`', () => {
+      expect(toUrlPath(HOME_PATH, map)).toBe('/');
+      expect(toUrlPath(ALL_STORIES_PATH, map)).toBe('/all');
+      expect(buildManagerHref('/sb/', HOME_PATH)).toBe('/sb/');
+      expect(buildManagerHref('/sb/', ALL_STORIES_PATH)).toBe('/sb/all');
+    });
+
+    it('opens the start page on `/` only when it is on', () => {
+      expect(fromUrlPath('/', map)).toBe('/');
+      root.FORKBOOK_ROOT = { enabled: true };
+      expect(fromUrlPath('/', map)).toBe(HOME_PATH);
+      expect(fromUrlPath('/index.html', map)).toBe(HOME_PATH);
+      root.FORKBOOK_ROOT = { enabled: false };
+      expect(fromUrlPath('/', map)).toBe('/');
+    });
+
+    it('reads `/all` with a trailing slash or capitals', () => {
+      expect(fromUrlPath('/all/', map)).toBe(ALL_STORIES_PATH);
+      expect(fromUrlPath('/ALL', map)).toBe(ALL_STORIES_PATH);
+    });
+
+    it('does not give a story the reserved paths', () => {
+      const reserved = buildStoryPathMap([
+        { id: 'all--x', title: 'All', name: 'X', type: 'story' },
+      ]);
+      expect(isReservedUrlPath('/')).toBe(true);
+      expect(entryUrlPath({ title: 'All', name: 'X' })).toBe('/all/x');
+      expect(toUrlPath('/story/all--x', reserved)).toBe('/all/x');
+    });
   });
 });

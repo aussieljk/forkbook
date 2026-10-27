@@ -1,0 +1,58 @@
+.page {
+  padding: 24px;
+}
+
+.heading {
+  margin-top: 0;
+}
+
+.allStories {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--fb-border-color, rgba(0, 0, 0, 0.1));
+}
+
+.switch {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 6px;
+  background: var(--fb-background-hoverable);
+}
+
+.switchButton {
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--fb-size-s1);
+  cursor: pointer;
+
+  &[aria-checked='true'] {
+    background: var(--fb-background-content);
+    font-weight: var(--fb-weight-bold);
+  }
+}
+
+.oneFrame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+}
