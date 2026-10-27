@@ -43,7 +43,7 @@ describe('story paths', () => {
     expect(fromUrlPath('/example/button/docs', map)).toBe('/docs/example-button--docs');
     expect(fromUrlPath('/_story/abc--def', map)).toBe('/story/abc--def');
     expect(fromUrlPath('/settings/about', map)).toBe('/settings/about');
-    expect(fromUrlPath('/all', map)).toBe('/');
+    expect(fromUrlPath('/all', map)).toBe('/all/');
     expect(fromUrlPath('/index.html', map)).toBe('/');
     expect(fromUrlPath('/other/thing/one', map)).toBe('/story/other-thing--one');
   });

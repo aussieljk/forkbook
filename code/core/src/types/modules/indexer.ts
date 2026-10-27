@@ -70,6 +70,11 @@ export interface BaseIndexEntry {
   title: ComponentTitle;
   tags?: Tag[];
   importPath: Path;
+  /**
+   * The `parameters.thumbnail` of the story, or of its meta. A URL, or a path from the Forkbook
+   * root (`thumbnails/...`) for a local file.
+   */
+  thumbnail?: string;
 }
 export type StoryIndexEntry = BaseIndexEntry & {
   type: 'story';
@@ -132,6 +137,8 @@ export type BaseIndexInput = {
   metaId?: MetaId;
   /** Tags for filtering entries in Forkbook and its tools. */
   tags?: Tag[];
+  /** The `parameters.thumbnail` of the story or meta, as written in the file. */
+  thumbnail?: string;
   /**
    * The id of the entry, auto-generated from {@link title}/{@link metaId} and {@link exportName} if
    * unspecified. If specified, the story in the CSF file _must_ have a matching id set at

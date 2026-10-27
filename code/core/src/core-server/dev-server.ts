@@ -19,6 +19,7 @@ import { getCachingMiddleware } from './utils/get-caching-middleware.ts';
 import { getAccessControlMiddleware } from './utils/getAccessControlMiddleware.ts';
 import { getHostValidationMiddleware } from './utils/getHostValidationMiddleware.ts';
 import { registerIndexJsonRoute } from './utils/index-json.ts';
+import { registerThumbnailRoute } from './utils/thumbnails.ts';
 import { registerManifests } from './utils/manifests/manifests.ts';
 import { useStorybookMetadata } from './utils/metadata.ts';
 import { getSecurityHeadersMiddleware } from './utils/getSecurityHeadersMiddleware.ts';
@@ -89,6 +90,8 @@ export async function storybookDevServer(
     workingDir,
     configDir,
   });
+
+  registerThumbnailRoute(app, workingDir);
 
   (await getMiddleware(options.configDir))(app);
 

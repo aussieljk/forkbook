@@ -43,6 +43,8 @@ export { ActionBar } from './components/ActionBar/ActionBar.tsx';
 export { ActionList } from './components/ActionList/ActionList.tsx';
 export { Collapsible } from './components/Collapsible/Collapsible.tsx';
 export { Card } from './components/Card/Card.tsx';
+export { StoryGrid, useNearView } from './components/StoryGrid/StoryGrid.tsx';
+export type { StoryGridProps, StoryGridComponent } from './components/StoryGrid/StoryGrid.tsx';
 export { Modal, ModalDecorator } from './components/Modal/Modal.tsx';
 export { Spaced } from './components/spaced/Spaced.tsx';
 export { Placeholder } from './components/placeholder/placeholder.tsx';

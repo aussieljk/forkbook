@@ -33,6 +33,7 @@ import { buildOrThrow } from './utils/build-or-throw.ts';
 import { copyAllStaticFilesRelativeToMain } from './utils/copy-all-static-files.ts';
 import { getBuilders } from './utils/get-builders.ts';
 import { writeIndexJson } from './utils/index-json.ts';
+import { copyThumbnails } from './utils/thumbnails.ts';
 import { writeRoutePages } from './utils/write-route-pages.ts';
 import { writeManifests } from './utils/manifests/manifests.ts';
 import { extractStorybookMetadata } from './utils/metadata.ts';
@@ -188,6 +189,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
         const index = await (await storyIndexGeneratorPromise)?.getIndex();
         if (index) {
           await writeRoutePages(options.outputDir, index);
+          await copyThumbnails(options.outputDir, index, process.cwd());
         }
       })()
     );

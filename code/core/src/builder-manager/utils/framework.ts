@@ -10,6 +10,8 @@ import {
   SupportedBuilder,
 } from '@aussieljk/forkbook/internal/types';
 
+import { resolveRootPage } from '../../shared/root-page.ts';
+
 export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
   const globals: Record<string, any> = {};
 
@@ -35,6 +37,11 @@ export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
   if (security?.insecureIframeMessaging) {
     globals.INSECURE_IFRAME_MESSAGING = true;
   }
+
+  globals.FORKBOOK_ROOT = resolveRootPage(await options.presets.apply('root'), {
+    configDir: options.configDir,
+    workingDir: process.cwd(),
+  });
 
   return globals;
 };

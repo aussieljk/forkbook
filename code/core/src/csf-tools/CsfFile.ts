@@ -272,6 +272,27 @@ export interface StoryTest {
   parent: { node: t.Node };
 }
 
+/** Reads `parameters.thumbnail` when it is a string literal in the object. */
+export const staticThumbnail = (parameters: t.Node | undefined): string | undefined => {
+  if (!t.isObjectExpression(parameters)) {
+    return undefined;
+  }
+  const property = parameters.properties.find(
+    (p): p is t.ObjectProperty =>
+      t.isObjectProperty(p) &&
+      ((t.isIdentifier(p.key) && p.key.name === 'thumbnail') ||
+        (t.isStringLiteral(p.key) && p.key.value === 'thumbnail'))
+  );
+  const value = property?.value;
+  if (t.isStringLiteral(value)) {
+    return value.value;
+  }
+  if (t.isTemplateLiteral(value) && value.expressions.length === 0) {
+    return value.quasis[0].value.cooked ?? undefined;
+  }
+  return undefined;
+};
+
 export class CsfFile {
   _ast: t.File;
 
@@ -1114,7 +1135,11 @@ export class CsfFile {
     Object.entries(this._stories).map(([exportName, story]) => {
       // don't remove any duplicates or negations -- tags will be combined in the index
       const tags = [...(this._meta?.tags ?? []), ...(story.tags ?? [])];
+      const thumbnail =
+        staticThumbnail(this._storyAnnotations[exportName]?.parameters) ??
+        staticThumbnail(this._metaAnnotations.parameters);
       const storyInput = {
+        ...(thumbnail ? { thumbnail } : {}),
         rawComponentPath: this._rawComponentPath,
         exportName,
         title: this.meta?.title,

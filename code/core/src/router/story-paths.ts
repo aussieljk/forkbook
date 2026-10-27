@@ -8,8 +8,9 @@
  *
  * Reserved URL paths:
  *
- * - `/`: the start page. For now it shows the default story.
- * - `/all`: a future page that shows all stories. For now it is the same as `/`.
+ * - `/`: the start page (internal path `/home/`). With `root: false` in the main config, `/` opens
+ *   the first story (internal path `/`).
+ * - `/all`: the page that shows all stories (internal path `/all/`).
  * - `/settings/...` and `/review...`: manager pages.
  * - `/_story/<id>` and `/_docs/<id>`: a story that has no tree path, for example a story from a
  *   composed ref, a story whose tree path is reserved, or a story that is not in the index yet.
@@ -27,6 +28,16 @@ type ViewMode = 'story' | 'docs';
 
 /** First URL segments that the manager uses for its own pages. */
 const APP_ROUTE_SEGMENTS = new Set(['settings', 'review']);
+
+/** The internal path of the start page. */
+export const HOME_PATH = '/home/';
+
+/** The internal path of the page that shows all stories. */
+export const ALL_STORIES_PATH = '/all/';
+
+/** True when the start page is on. The server sets `FORKBOOK_ROOT` from `root` in the main config. */
+const isRootPageEnabled = () =>
+  (globalThis as { FORKBOOK_ROOT?: { enabled?: boolean } }).FORKBOOK_ROOT?.enabled === true;
 
 /** URL paths that no story can have. */
 export const RESERVED_URL_PATHS = ['/', '/all'];
@@ -100,8 +111,11 @@ const storyRouteRegex = /^\/(story|docs)\/(.+)$/;
  * - `/settings/about` gives `/settings/about`.
  */
 export const toUrlPath = (internalPath: string | undefined, map = currentMap): string => {
-  if (!internalPath || internalPath === '/') {
+  if (!internalPath || internalPath === '/' || internalPath === HOME_PATH) {
     return '/';
+  }
+  if (internalPath === ALL_STORIES_PATH) {
+    return '/all';
   }
   const match = internalPath.match(storyRouteRegex);
   if (!match) {
@@ -130,15 +144,18 @@ export const fromUrlPath = (urlPath: string | undefined, map = currentMap): stri
   }
   path = path.toLowerCase();
   if (path === '/index.html') {
-    return '/';
+    path = '/';
   }
   const first = firstSegment(path);
   if (APP_ROUTE_SEGMENTS.has(first)) {
     return path;
   }
   const trimmed = trimTrailingSlash(path);
-  if (RESERVED_URL_PATHS.includes(trimmed)) {
-    return '/';
+  if (trimmed === '/all') {
+    return ALL_STORIES_PATH;
+  }
+  if (trimmed === '/') {
+    return isRootPageEnabled() ? HOME_PATH : '/';
   }
   const escaped = trimmed.match(/^\/_(story|docs)\/(.+)$/);
   if (escaped) {

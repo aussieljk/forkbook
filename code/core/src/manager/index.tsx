@@ -1,3 +1,4 @@
+import { allStoriesPageAddon, homePageAddon } from './components/home/HomePages.tsx';
 import type { ComponentProps, FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -66,7 +67,12 @@ export const Main: FC<{ provider: Provider }> = ({ provider }) => {
             );
 
             const pages: Addon_PageType[] = useMemo(
-              () => [settingsPageAddon, ...Object.values(api.getElements(types.experimental_PAGE))],
+              () => [
+                settingsPageAddon,
+                homePageAddon,
+                allStoriesPageAddon,
+                ...Object.values(api.getElements(types.experimental_PAGE)),
+              ],
               [Object.keys(api.getElements(types.experimental_PAGE)).join()]
             );
 
