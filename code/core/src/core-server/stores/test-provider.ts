@@ -24,6 +24,11 @@ function getTestProviderStoreBundle(): TestProviderStoreBundle {
   );
 }
 
+/** Creates the store now. The leader must exist before the manager connects its follower. */
+export function startTestProviderStore() {
+  getTestProviderStoreBundle();
+}
+
 export const getTestProviderStoreById: TestProviderStoreBundle['getTestProviderStoreById'] = (id) =>
   getTestProviderStoreBundle().getTestProviderStoreById(id);
 

@@ -13,6 +13,7 @@ import { getAnonymousProjectId, getProjectSince } from './anonymous-id.ts';
 import { detectAgent } from './detect-agent.ts';
 import { set as saveToCache } from './event-cache.ts';
 import { emitOtelEvent } from './otel.ts';
+import { sendErrorToSentry } from './sentry.ts';
 import { getSessionId } from './session-id.ts';
 import type { Options, TelemetryData } from './types.ts';
 
@@ -97,7 +98,10 @@ export async function sendTelemetry(
 
   let request: any;
   try {
-    request = prepareRequest(data, context);
+    request =
+      eventType === 'error'
+        ? Promise.all([prepareRequest(data, context), sendErrorToSentry(data, context)])
+        : prepareRequest(data, context);
     tasks.push(request);
 
     const sessionId = await getSessionId();

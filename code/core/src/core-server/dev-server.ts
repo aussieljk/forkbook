@@ -12,6 +12,7 @@ import { resolveChangeDetectionAdapter } from '../shared/open-service/services/m
 import { isTelemetryModuleEnabled, telemetry, withSpan } from '../telemetry/index.ts';
 import { ChangeDetectionService } from './change-detection/change-detection-service.ts';
 import { getStatusStoreByTypeId } from './stores/status.ts';
+import { startTestProviderStore } from './stores/test-provider.ts';
 import type { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';
 import { doTelemetry } from './utils/doTelemetry.ts';
 import { getManagerBuilder, getPreviewBuilder } from './utils/get-builders.ts';
@@ -49,6 +50,10 @@ export async function storybookDevServer(
     configDir,
     workingDir,
   });
+
+  // The manager always makes a test provider store follower. Without addon-vitest nothing else
+  // starts the leader, and the follower times out with an error.
+  startTestProviderStore();
 
   const storyIndexGeneratorPromise = withSpan('forkbook.story-index', {}, () =>
     options.presets.apply<StoryIndexGenerator>('storyIndexGenerator')
