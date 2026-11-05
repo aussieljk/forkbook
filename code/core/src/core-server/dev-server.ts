@@ -22,7 +22,6 @@ import { getHostValidationMiddleware } from './utils/getHostValidationMiddleware
 import { registerIndexJsonRoute } from './utils/index-json.ts';
 import { registerThumbnailRoute } from './utils/thumbnails.ts';
 import { registerManifests } from './utils/manifests/manifests.ts';
-import { useStorybookMetadata } from './utils/metadata.ts';
 import { getSecurityHeadersMiddleware } from './utils/getSecurityHeadersMiddleware.ts';
 import { getMiddleware } from './utils/middleware.ts';
 import { openInBrowser } from './utils/open-browser/open-in-browser.ts';
@@ -118,12 +117,6 @@ export async function storybookDevServer(
 
   if (options.debugWebpack) {
     logConfig('Preview webpack config', await previewBuilder.getConfig(options));
-  }
-
-  // Boot up the `/project.json` route handler early to avoid Vite Dev Server
-  // serving a NX monorepo `project.json` file instead.
-  if (!core?.disableProjectJson) {
-    useStorybookMetadata(app, options.configDir);
   }
 
   const managerResult = options.previewOnly
@@ -234,7 +227,7 @@ export async function storybookDevServer(
           });
         }
       } catch {}
-      await telemetry('canceled', payload, { immediate: true });
+      await telemetry('canceled', payload);
     } finally {
       await disposeChangeDetectionRuntime();
       // Always terminate on signal, even when telemetry is disabled.

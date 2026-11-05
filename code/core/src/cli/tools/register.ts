@@ -218,8 +218,7 @@ async function reportToolsCommandTelemetry(
       ...(outcome.kind === 'intercept' ? { interceptReason: outcome.reason } : {}),
       duration,
     },
-    // Metadata must describe the target project, consistent with the opt-out resolution.
-    { report: result.report, configDir: cliOptions.configDir }
+    { report: result.report }
   );
   if (outcome.kind === 'error') {
     await sendTelemetryError(outcome.error, 'tools-command', { cliOptions });

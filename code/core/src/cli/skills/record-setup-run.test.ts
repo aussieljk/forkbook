@@ -37,20 +37,16 @@ it('persists a project-scoped flag and reports the setup session under the same 
     runId: expect.any(String),
     configDir: resolve('.forkbook'),
   });
-  expect(telemetry).toHaveBeenCalledWith(
-    'ai-setup',
-    {
-      cliOptions: { packageManager: 'npm', prompt: 'optimized-tests' },
-      project: {
-        framework: '@aussieljk/forkbook/react-vite',
-        renderer: '@aussieljk/forkbook/react',
-        builder: '@aussieljk/forkbook/builder-vite',
-        language: 'ts',
-      },
-      runId: (flag as { runId: string }).runId,
+  expect(telemetry).toHaveBeenCalledWith('ai-setup', {
+    cliOptions: { packageManager: 'npm', prompt: 'optimized-tests' },
+    project: {
+      framework: '@aussieljk/forkbook/react-vite',
+      renderer: '@aussieljk/forkbook/react',
+      builder: '@aussieljk/forkbook/builder-vite',
+      language: 'ts',
     },
-    { configDir: resolve('.forkbook') }
-  );
+    runId: (flag as { runId: string }).runId,
+  });
 });
 
 it('still reports the setup session when the flag cannot be written', async () => {
@@ -58,5 +54,5 @@ it('still reports the setup session when the flag cannot be written', async () =
 
   await recordSetupRun({ projectInfo, prompt: 'optimized-tests' });
 
-  expect(telemetry).toHaveBeenCalledWith('ai-setup', expect.anything(), expect.anything());
+  expect(telemetry).toHaveBeenCalledWith('ai-setup', expect.anything());
 });

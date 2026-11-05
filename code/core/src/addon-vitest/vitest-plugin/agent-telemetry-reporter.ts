@@ -77,18 +77,14 @@ export class AgentTelemetryReporter implements Reporter {
     const runId = await getAiSetupRunId(this.configDir);
 
     // Fire and forget — same pattern as the existing test-run telemetry
-    telemetry(
-      'ai-setup-self-healing-scoring',
-      {
-        agent: this.agent,
-        analysis,
-        unhandledErrorCount,
-        duration,
-        watch: this.ctx.config.watch,
-        runId,
-      },
-      { configDir: this.configDir, stripMetadata: true }
-    );
+    telemetry('ai-setup-self-healing-scoring', {
+      agent: this.agent,
+      analysis,
+      unhandledErrorCount,
+      duration,
+      watch: this.ctx.config.watch,
+      runId,
+    });
 
     // Reset for next run (watch mode)
     this.testResults = [];

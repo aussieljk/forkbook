@@ -205,8 +205,8 @@ export async function doInitiate(options: CommandOptions): Promise<
     setupSkillCommand: packageManager.getPackageCommand(['forkbook', 'skills', 'setup']),
   });
 
-  // Step 10: Track telemetry (pass configDir so RN `.rnforkbook` metadata is resolved)
-  await telemetryService.trackInitWithContext(projectType, selectedFeatures, configDir);
+  // Step 10: Track telemetry
+  await telemetryService.trackInitWithContext(projectType, selectedFeatures);
 
   return {
     shouldRunDev:

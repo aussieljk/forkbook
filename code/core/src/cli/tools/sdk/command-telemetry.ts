@@ -75,9 +75,9 @@ export function commandPartsFromRef(ref: string): { toolset: string; tool: strin
 // and wins over whatever the caller parsed, so a record always carries the registered spelling.
 export async function reportToolsCommandEvent(
   record: ToolsCommandTelemetryPayload,
-  options: { report?: ToolsetMethodReport; configDir?: string } = {}
+  options: { report?: ToolsetMethodReport } = {}
 ): Promise<void> {
-  const { report, configDir } = options;
+  const { report } = options;
   const payload: ToolsCommandTelemetryRecord = report
     ? {
         ...report.payload,
@@ -88,7 +88,7 @@ export async function reportToolsCommandEvent(
       }
     : record;
   try {
-    await telemetry('tools-command', payload, { configDir });
+    await telemetry('tools-command', payload);
   } catch {
     // Telemetry is never part of the tool's result contract.
   }
@@ -102,24 +102,20 @@ export async function reportSdkAttachGate(args: {
   error: unknown;
   clientInfo: Pick<Required<ToolsClientInfo>, 'kind'>;
   requestedMode: ToolsMode;
-  configDir?: string;
 }): Promise<void> {
   if (!shouldReportSdkInvocation(args.clientInfo.kind)) {
     return;
   }
   const attachGate = attachGateReasonFromError(args.error);
-  await reportToolsCommandEvent(
-    {
-      success: false,
-      outcome: 'attach-gate',
-      ...toolsCommandDimensions({
-        clientInfo: args.clientInfo,
-        requestedMode: args.requestedMode,
-        fallbackReason: attachGate,
-      }),
-    },
-    { configDir: args.configDir }
-  );
+  await reportToolsCommandEvent({
+    success: false,
+    outcome: 'attach-gate',
+    ...toolsCommandDimensions({
+      clientInfo: args.clientInfo,
+      requestedMode: args.requestedMode,
+      fallbackReason: attachGate,
+    }),
+  });
 }
 
 export async function reportSdkInvocation(args: {
@@ -132,14 +128,13 @@ export async function reportSdkInvocation(args: {
   result: { ok: boolean } | { error: unknown };
   report?: ToolsetMethodReport;
   duration: number;
-  configDir?: string;
 }): Promise<void> {
   if (!shouldReportSdkInvocation(args.clientInfo.kind)) {
     return;
   }
   const dimensions = toolsCommandDimensions(args);
   const invoked = commandPartsFromRef(args.ref);
-  const options = { report: args.report, configDir: args.configDir };
+  const options = { report: args.report };
   if (!('ok' in args.result)) {
     const attachGate = attachGateReasonFromError(args.result.error);
     await reportToolsCommandEvent(

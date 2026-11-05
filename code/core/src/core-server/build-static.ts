@@ -9,7 +9,7 @@ import {
   resolveAddonName,
 } from '@aussieljk/forkbook/internal/common';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
-import { getPrecedingUpgrade, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import type {
   BuilderOptions,
   CLIOptions,
@@ -36,7 +36,6 @@ import { writeIndexJson } from './utils/index-json.ts';
 import { copyThumbnails } from './utils/thumbnails.ts';
 import { writeRoutePages } from './utils/write-route-pages.ts';
 import { writeManifests } from './utils/manifests/manifests.ts';
-import { extractStorybookMetadata } from './utils/metadata.ts';
 import { outputStats } from './utils/output-stats.ts';
 import { summarizeIndex } from './utils/summarizeIndex.ts';
 
@@ -127,7 +126,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
   if (invokedBy) {
     // NOTE: we don't await this event to avoid slowing things down.
     // This could result in telemetry events being lost.
-    telemetry('test-run', { runner: invokedBy, watch: false }, { configDir: options.configDir });
+    telemetry('test-run', { runner: invokedBy, watch: false });
   }
 
   const fullOptions: Options = {
@@ -195,12 +194,6 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
     );
   }
 
-  if (!core?.disableProjectJson) {
-    effects.push(
-      extractStorybookMetadata(join(options.outputDir, 'project.json'), options.configDir)
-    );
-  }
-
   if (options.debugWebpack) {
     logConfig('Preview webpack config', await previewBuilder.getConfig(fullOptions));
   }
@@ -237,16 +230,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
     try {
       const generator = await storyIndexGeneratorPromise;
       const storyIndex = await generator?.getIndex();
-      const payload: any = {
-        precedingUpgrade: await getPrecedingUpgrade(),
-      };
-      if (storyIndex) {
-        Object.assign(payload, {
-          storyIndex: summarizeIndex(storyIndex),
-        });
-      }
-
-      await telemetry('build', payload, { configDir: options.configDir });
+      await telemetry('build', storyIndex ? { storyIndex: summarizeIndex(storyIndex) } : {});
     } catch (e) {
       // Telemetry failures should not fail the build process
       logger.debug?.(`Build telemetry failed: ${e instanceof Error ? e.message : String(e)}`);

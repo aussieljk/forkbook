@@ -90,25 +90,20 @@ describe('reportToolsCommandEvent', () => {
           event: 'tool:stories_findByComponent',
           payload: { componentCount: 2, success: 'not a record field' },
         },
-        configDir: '/repo/.forkbook',
       }
     );
 
-    expect(telemetry).toHaveBeenCalledWith(
-      'tools-command',
-      {
-        toolset: 'stories',
-        tool: 'find-by-component',
-        event: 'tool:stories_findByComponent',
-        componentCount: 2,
-        success: true,
-        outcome: 'success',
-        client: 'cli',
-        requestedMode: 'auto',
-        attachMode: 'local',
-      },
-      { configDir: '/repo/.forkbook' }
-    );
+    expect(telemetry).toHaveBeenCalledWith('tools-command', {
+      toolset: 'stories',
+      tool: 'find-by-component',
+      event: 'tool:stories_findByComponent',
+      componentCount: 2,
+      success: true,
+      outcome: 'success',
+      client: 'cli',
+      requestedMode: 'auto',
+      attachMode: 'local',
+    });
   });
 
   it('sends the record alone when the run produced no report', async () => {
@@ -120,17 +115,13 @@ describe('reportToolsCommandEvent', () => {
       attachMode: 'auto',
     });
 
-    expect(telemetry).toHaveBeenCalledWith(
-      'tools-command',
-      {
-        success: false,
-        outcome: 'intercept',
-        client: 'cli',
-        requestedMode: 'auto',
-        attachMode: 'auto',
-      },
-      { configDir: undefined }
-    );
+    expect(telemetry).toHaveBeenCalledWith('tools-command', {
+      success: false,
+      outcome: 'intercept',
+      client: 'cli',
+      requestedMode: 'auto',
+      attachMode: 'auto',
+    });
   });
 
   it('never lets a telemetry failure escape', async () => {

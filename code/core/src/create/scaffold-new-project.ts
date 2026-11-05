@@ -104,11 +104,7 @@ export const scaffoldNewProject = async (
   }
 
   if (projectStrategy === 'other') {
-    await telemetry(
-      'exit',
-      { eventType: 'init', reason: 'scaffold-other' },
-      { stripMetadata: true, immediate: true }
-    );
+    await telemetry('exit', { eventType: 'init', reason: 'scaffold-other' });
     logger.warn(
       'To install Forkbook on another framework, first generate a project with that framework and then rerun this command.'
     );

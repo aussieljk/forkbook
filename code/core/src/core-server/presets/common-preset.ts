@@ -65,8 +65,6 @@ import { isAbsolute, join } from 'pathe';
 import { dedent } from 'ts-dedent';
 
 import { resolvePackageDir } from '../../shared/utils/module.ts';
-import { initAIAnalyticsChannel } from '../server-channel/ai-setup-channel.ts';
-import { initGhostStoriesChannel } from '../server-channel/ghost-stories-channel.ts';
 import { initOpenInEditorChannel } from '../server-channel/open-in-editor-channel.ts';
 import { initTelemetryChannel } from '../server-channel/telemetry-channel.ts';
 import { defaultFavicon, defaultStaticDirs } from '../utils/constants.ts';
@@ -310,10 +308,8 @@ export const experimental_serverChannel = async (
   channel: Channel,
   options: OptionsWithRequiredCache
 ) => {
-  initAIAnalyticsChannel(channel, options, () => storyIndexGeneratorPromise);
   initializeWhatsNew(channel, options);
   initializeSaveStory(channel, options);
-  initGhostStoriesChannel(channel, options);
   initOpenInEditorChannel(channel);
   initTelemetryChannel(channel);
 

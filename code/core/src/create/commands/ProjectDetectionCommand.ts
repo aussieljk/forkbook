@@ -81,11 +81,7 @@ We assume that Forkbook is already instantiated for your project. Do you still w
       if (force || options.yes) {
         options.force = true;
       } else {
-        await telemetry(
-          'exit',
-          { eventType: 'init', reason: 'existing-installation' },
-          { stripMetadata: true, immediate: true }
-        );
+        await telemetry('exit', { eventType: 'init', reason: 'existing-installation' });
         process.exit(0);
       }
     }

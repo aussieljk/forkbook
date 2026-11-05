@@ -137,8 +137,7 @@ describe('AgentTelemetryReporter', () => {
           }),
           unhandledErrorCount: 0,
           watch: false,
-        }),
-        { configDir: '.forkbook', stripMetadata: true }
+        })
       );
     });
 
@@ -172,8 +171,7 @@ describe('AgentTelemetryReporter', () => {
             cumulativeTotal: 3,
             cumulativePassed: 2,
           }),
-        }),
-        expect.anything()
+        })
       );
     });
 
@@ -221,8 +219,7 @@ describe('AgentTelemetryReporter', () => {
             total: 1,
             passed: 1,
           }),
-        }),
-        expect.anything()
+        })
       );
     });
 
@@ -238,8 +235,7 @@ describe('AgentTelemetryReporter', () => {
         'ai-setup-self-healing-scoring',
         expect.objectContaining({
           unhandledErrorCount: 2,
-        }),
-        expect.anything()
+        })
       );
     });
 

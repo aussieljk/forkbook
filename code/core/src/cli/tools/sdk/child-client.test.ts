@@ -305,7 +305,6 @@ describe('spawnChildHost', () => {
           host: 'child',
           duration: expect.any(Number),
         },
-        expect.anything(),
       ],
     ]);
   });
@@ -340,11 +339,7 @@ describe('spawnChildHost', () => {
       markdown: 'ok',
     });
     expect(vi.mocked(telemetry).mock.calls).toEqual([
-      [
-        'tools-command',
-        expect.objectContaining({ toolset: 'docs', tool: 'list', success: true }),
-        expect.anything(),
-      ],
+      ['tools-command', expect.objectContaining({ toolset: 'docs', tool: 'list', success: true })],
     ]);
     expect(vi.mocked(telemetry).mock.calls[0][1]).not.toHaveProperty('componentCount');
   });

@@ -53,8 +53,6 @@ export interface CoreConfig {
       };
   renderer?: RendererName;
   channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
-  /** Disables the generation of project.json, a file containing Forkbook metadata */
-  disableProjectJson?: boolean;
   /**
    * Disables Forkbook telemetry
    *

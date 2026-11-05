@@ -104,15 +104,11 @@ describe('extractMockCalls', () => {
       previewConfigPath,
       findMockRedirect
     );
-    expect(telemetry).toHaveBeenCalledWith(
-      'mocking',
-      {
-        modulesMocked: 1,
-        modulesSpied: 1,
-        modulesManuallyMocked: 0,
-      },
-      { configDir }
-    );
+    expect(telemetry).toHaveBeenCalledWith('mocking', {
+      modulesMocked: 1,
+      modulesSpied: 1,
+      modulesManuallyMocked: 0,
+    });
   });
 
   it('handles no sb.mock calls in preview file', () => {

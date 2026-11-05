@@ -8,8 +8,6 @@
  */
 import { randomUUID } from 'node:crypto';
 
-import type { TelemetryData } from './types.ts';
-
 const DEFAULT_DSN =
   'https://8a5d3f1dc20f5a43d5c1f0cbde30202c@o4510395505508352.ingest.us.sentry.io/4512332001509376';
 
@@ -43,13 +41,15 @@ function parseStack(stack: string | undefined) {
   return frames.reverse();
 }
 
-export async function sendErrorToSentry(data: TelemetryData, context: Record<string, any>) {
+export async function sendErrorToSentry(
+  payload: Record<string, any>,
+  context: Record<string, any>
+) {
   const dsn = process.env.FORKBOOK_SENTRY_DSN ?? DEFAULT_DSN;
   if (!dsn) {
     return;
   }
 
-  const { payload, metadata } = data;
   const error: SentryError = typeof payload.error === 'object' ? (payload.error ?? {}) : {};
   const type = error.name ?? payload.name ?? 'Error';
   const value = error.message ?? payload.code ?? payload.errorHash ?? 'Unknown error';
@@ -61,7 +61,7 @@ export async function sendErrorToSentry(data: TelemetryData, context: Record<str
     timestamp: Date.now() / 1000,
     platform: 'node',
     level: 'error',
-    release: `forkbook@${context.storybookVersion}`,
+    release: `forkbook@${context.version}`,
     environment: context.inCI ? 'ci' : 'local',
     exception: {
       values: [{ type, value, ...(frames.length ? { stacktrace: { frames } } : {}) }],
@@ -73,10 +73,7 @@ export async function sendErrorToSentry(data: TelemetryData, context: Record<str
       blocking: payload.blocking,
       platform: context.platform,
       node: context.nodeVersion,
-      framework: metadata?.framework?.name,
-      renderer: metadata?.renderer,
     },
-    user: context.anonymousId ? { id: context.anonymousId } : undefined,
     extra: { payload, context },
   };
 

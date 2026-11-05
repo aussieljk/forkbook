@@ -104,7 +104,7 @@ describe('withTelemetry', () => {
     await withTelemetry('dev', { cliOptions }, run);
 
     expect(telemetry).toHaveBeenCalledTimes(1);
-    expect(telemetry).toHaveBeenCalledWith('boot', { eventType: 'dev' }, { stripMetadata: true });
+    expect(telemetry).toHaveBeenCalledWith('boot', { eventType: 'dev' });
   });
 
   it('treats init interruption errors as canceled telemetry', async () => {
@@ -117,18 +117,8 @@ describe('withTelemetry', () => {
 
     await expect(withTelemetry('init', { cliOptions }, run)).resolves.toBeUndefined();
 
-    expect(telemetry).toHaveBeenNthCalledWith(
-      1,
-      'boot',
-      { eventType: 'init' },
-      { stripMetadata: true }
-    );
-    expect(telemetry).toHaveBeenNthCalledWith(
-      2,
-      'canceled',
-      { eventType: 'init' },
-      { stripMetadata: true, immediate: true }
-    );
+    expect(telemetry).toHaveBeenNthCalledWith(1, 'boot', { eventType: 'init' });
+    expect(telemetry).toHaveBeenNthCalledWith(2, 'canceled', { eventType: 'init' });
     expect(exitSpy).toHaveBeenCalledWith(0);
 
     exitSpy.mockRestore();
@@ -144,18 +134,8 @@ describe('withTelemetry', () => {
 
     await expect(withTelemetry('init', { cliOptions }, run)).resolves.toBeUndefined();
 
-    expect(telemetry).toHaveBeenNthCalledWith(
-      1,
-      'boot',
-      { eventType: 'init' },
-      { stripMetadata: true }
-    );
-    expect(telemetry).toHaveBeenNthCalledWith(
-      2,
-      'canceled',
-      { eventType: 'init' },
-      { stripMetadata: true, immediate: true }
-    );
+    expect(telemetry).toHaveBeenNthCalledWith(1, 'boot', { eventType: 'init' });
+    expect(telemetry).toHaveBeenNthCalledWith(2, 'canceled', { eventType: 'init' });
     expect(exitSpy).toHaveBeenCalledWith(0);
 
     exitSpy.mockRestore();
@@ -188,18 +168,8 @@ describe('withTelemetry', () => {
 
     await expect(withTelemetry('init', { cliOptions }, run)).resolves.toBeUndefined();
 
-    expect(telemetry).toHaveBeenNthCalledWith(
-      1,
-      'boot',
-      { eventType: 'init' },
-      { stripMetadata: true }
-    );
-    expect(telemetry).toHaveBeenNthCalledWith(
-      2,
-      'canceled',
-      { eventType: 'init' },
-      { stripMetadata: true, immediate: true }
-    );
+    expect(telemetry).toHaveBeenNthCalledWith(1, 'boot', { eventType: 'init' });
+    expect(telemetry).toHaveBeenNthCalledWith(2, 'canceled', { eventType: 'init' });
     expect(exitSpy).toHaveBeenCalledWith(0);
 
     exitSpy.mockRestore();
@@ -225,7 +195,7 @@ describe('withTelemetry', () => {
         withTelemetry('dev', { cliOptions, printError: vi.fn() }, run)
       ).rejects.toThrow(error);
 
-      expect(telemetry).toHaveBeenCalledWith('boot', { eventType: 'dev' }, { stripMetadata: true });
+      expect(telemetry).toHaveBeenCalledWith('boot', { eventType: 'dev' });
     });
 
     it('resolves telemetry state when cli option is passed', async () => {
@@ -273,7 +243,7 @@ describe('withTelemetry', () => {
           error: expect.objectContaining({ message: 'An Error!', name: 'Error' }),
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: true })
+        { force: true }
       );
     });
 
@@ -296,7 +266,7 @@ describe('withTelemetry', () => {
           error: undefined,
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: false })
+        { force: true }
       );
     });
 
@@ -355,7 +325,7 @@ describe('withTelemetry', () => {
           error: expect.objectContaining({ message: 'An Error!', name: 'Error' }),
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: true })
+        { force: true }
       );
     });
 
@@ -401,7 +371,7 @@ describe('withTelemetry', () => {
           error: expect.objectContaining({ message: 'An Error!', name: 'Error' }),
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: true, force: true })
+        { force: true }
       );
     });
 
@@ -449,7 +419,7 @@ describe('withTelemetry', () => {
           error: expect.objectContaining({ message: 'An Error!', name: 'Error' }),
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: true })
+        { force: true }
       );
     });
 
@@ -499,7 +469,7 @@ describe('withTelemetry', () => {
           error: expect.objectContaining({ message: 'An Error!', name: 'Error' }),
           isErrorInstance: true,
         }),
-        expect.objectContaining({ enableCrashReports: true })
+        { force: true }
       );
     });
 
@@ -566,10 +536,7 @@ describe('sendTelemetryError', () => {
         errorHash: 'some-hash',
         name: 'Error',
       }),
-      expect.objectContaining({
-        enableCrashReports: false,
-        immediate: true,
-      })
+      { force: true }
     );
   });
 
@@ -591,10 +558,7 @@ describe('sendTelemetryError', () => {
         isErrorInstance: false,
         errorHash: 'NO_MESSAGE',
       }),
-      expect.objectContaining({
-        enableCrashReports: false,
-        immediate: true,
-      })
+      { force: true }
     );
   });
 
@@ -617,10 +581,7 @@ describe('sendTelemetryError', () => {
         errorHash: 'EMPTY_MESSAGE',
         name: 'Error',
       }),
-      expect.objectContaining({
-        enableCrashReports: false,
-        immediate: true,
-      })
+      { force: true }
     );
   });
 
@@ -651,10 +612,7 @@ describe('sendTelemetryError', () => {
         error: undefined,
         isErrorInstance: true,
       }),
-      expect.objectContaining({
-        enableCrashReports: false,
-        immediate: true,
-      })
+      { force: true }
     );
   });
 
@@ -678,10 +636,7 @@ describe('sendTelemetryError', () => {
         error: expect.objectContaining({ message: 'Init non-blocking error', name: 'Error' }),
         isErrorInstance: true,
       }),
-      expect.objectContaining({
-        enableCrashReports: true,
-        immediate: true,
-      })
+      { force: true }
     );
   });
 });

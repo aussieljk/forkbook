@@ -64,6 +64,12 @@ export async function hasAiSetupRun(configDir: string): Promise<boolean> {
   return !!(await readProjectScopedFlag('ai-setup-ran', configDir));
 }
 
+/** True for 2 hours after `forkbook skills setup` ran in this project. */
+export async function isWithinAiSetupSession(configDir: string): Promise<boolean> {
+  const flag = await readProjectScopedFlag('ai-setup-ran', configDir);
+  return !!flag && Date.now() - flag.timestamp < 2 * 60 * 60 * 1000;
+}
+
 export async function getAiSetupRunId(configDir: string): Promise<string | undefined> {
   return (await readProjectScopedFlag('ai-setup-ran', configDir))?.runId;
 }

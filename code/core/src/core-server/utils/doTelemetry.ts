@@ -1,4 +1,4 @@
-import { getPrecedingUpgrade, telemetry } from '@aussieljk/forkbook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 import type { CoreConfig, Options } from '@aussieljk/forkbook/internal/types';
 
 import type { Polka } from 'polka';
@@ -19,33 +19,15 @@ export async function doTelemetry(
     !versionUpdates || (versionUpdates && versionCheck),
     'versionCheck should be defined when versionUpdates is true'
   );
-  telemetry(
-    'dev',
-    async () => {
-      const generator = await storyIndexGeneratorPromise;
-      let indexAndStats;
-      try {
-        indexAndStats = await generator?.getIndexAndStats();
-      } catch (err) {
-        // If we fail to get the index, treat it as a recoverable error, but send it up to telemetry
-        // as if we crashed. Returning { error } triggers automatic error telemetry in place of
-        // the normal event.
-        const error = err instanceof Error ? err : new Error('encountered a non-recoverable error');
-        return { error };
-      }
-
-      const payload = {
-        precedingUpgrade: await getPrecedingUpgrade(),
-      };
-      if (indexAndStats) {
-        Object.assign(payload, {
-          versionStatus: versionUpdates && versionCheck ? versionStatus(versionCheck) : 'disabled',
-          storyIndex: summarizeIndex(indexAndStats.storyIndex),
-          storyStats: indexAndStats.stats,
-        });
-      }
-      return payload;
-    },
-    { configDir: options.configDir }
-  );
+  telemetry('dev', async () => {
+    const indexAndStats = await (await storyIndexGeneratorPromise)?.getIndexAndStats();
+    if (!indexAndStats) {
+      return {};
+    }
+    return {
+      versionStatus: versionUpdates && versionCheck ? versionStatus(versionCheck) : 'disabled',
+      storyIndex: summarizeIndex(indexAndStats.storyIndex),
+      storyStats: indexAndStats.stats,
+    };
+  });
 }

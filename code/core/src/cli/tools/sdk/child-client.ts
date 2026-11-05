@@ -308,7 +308,6 @@ export async function spawnChildHost(
           result: outcome,
           report: outcome.telemetry,
           duration: Date.now() - start,
-          configDir: hello.storybook.configDir,
         });
         return outcome;
       } catch (error) {
@@ -320,7 +319,6 @@ export async function spawnChildHost(
           host: 'child',
           result: { error },
           duration: Date.now() - start,
-          configDir: hello.storybook.configDir,
         });
         throw error;
       } finally {

@@ -30,7 +30,6 @@ import { MainFileMissingError } from '@aussieljk/forkbook/internal/server-errors
 import {
   detectAgent,
   isTelemetryModuleEnabled,
-  isWithinInitialSession,
   oneWayHash,
   telemetry,
   setTelemetryEnabled,
@@ -47,6 +46,7 @@ import type { PluginOption } from 'vite';
 
 // Shared plugins from builder-vite (relative import to prebundle without adding a package dependency)
 import { withoutVitePlugins } from '../../builder-vite/utils/without-vite-plugins.ts';
+import { isWithinAiSetupSession } from '../../shared/utils/ai-checklist-flags.ts';
 import {
   FORKBOOK_CORE_GHOST_STORIES_PROVIDE_KEY,
   FORKBOOK_CORE_RENDER_ANALYSIS_PROVIDE_KEY,
@@ -305,7 +305,8 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
     async config(nonMutableInputConfig, { mode }) {
       if (isTelemetryModuleEnabled()) {
         agent = detectAgent();
-        withinAgenticSetupSession = !!agent && (await isWithinInitialSession('ai-setup'));
+        withinAgenticSetupSession =
+          !!agent && (await isWithinAiSetupSession(finalOptions.configDir));
       }
 
       if (mode) {
@@ -525,15 +526,11 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
       // NOTE: we start telemetry immediately but do not wait on it. Typically it should complete
       // before the tests do. If not we may miss the event, we are OK with that.
-      telemetry(
-        'test-run',
-        {
-          runner: 'vitest',
-          watch: context.vitest.config.watch,
-          coverage: !!context.vitest.config.coverage?.enabled,
-        },
-        { configDir: finalOptions.configDir }
-      );
+      telemetry('test-run', {
+        runner: 'vitest',
+        watch: context.vitest.config.watch,
+        coverage: !!context.vitest.config.coverage?.enabled,
+      });
 
       if (isTelemetryModuleEnabled()) {
         // When an agent is running vitest via CLI, inject a reporter that sends

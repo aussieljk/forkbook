@@ -9,10 +9,8 @@ import {
 import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import {
   ErrorCollector,
-  getPrecedingUpgrade,
   isTelemetryStateResolved,
   oneWayHash,
-  onPayloadError,
   setTelemetryEnabled,
   telemetry,
   withSpan,
@@ -119,8 +117,6 @@ export async function sendTelemetryError(
       // If this throws, eg. due to main.js breaking, we fall back to 'error'
     }
     if (errorLevel !== 'none') {
-      const precedingUpgrade = await getPrecedingUpgrade();
-
       const error = _error as Error & Record<string, any>;
 
       let errorHash;
@@ -139,7 +135,6 @@ export async function sendTelemetryError(
           category,
           eventType,
           blocking,
-          precedingUpgrade,
           error: errorLevel === 'full' ? error : undefined,
           errorHash,
           // if we ever end up sending a non-error instance, we'd like to know
@@ -147,12 +142,7 @@ export async function sendTelemetryError(
           // Include parent error information if this is a sub-error
           ...(parent ? { parent: parent.fullErrorCode } : {}),
         },
-        {
-          immediate: true,
-          configDir: options.cliOptions.configDir || options.presetOptions?.configDir,
-          enableCrashReports: errorLevel === 'full',
-          force: true,
-        }
+        { force: true }
       );
 
       // If this is a StorybookError with sub-errors, send telemetry for each sub-error separately
@@ -170,7 +160,8 @@ export async function sendTelemetryError(
 async function resolveTelemetryState(options: TelemetryOptions) {
   // 1. If telemetry is explicitly set via CLI options or env var, set and skip loading main config
   if (options.cliOptions.disableTelemetry !== undefined) {
-    return await setTelemetryEnabled(!options.cliOptions.disableTelemetry);
+    setTelemetryEnabled(!options.cliOptions.disableTelemetry);
+    return;
   }
 
   let mainConfig;
@@ -183,12 +174,13 @@ async function resolveTelemetryState(options: TelemetryOptions) {
   // 2. If main config succesfully loaded, set based on that
   // (unset = enabled, true/false = disabled/enabled)
   if (mainConfig) {
-    return await setTelemetryEnabled(!mainConfig?.core?.disableTelemetry);
+    setTelemetryEnabled(!mainConfig?.core?.disableTelemetry);
+    return;
   }
 
   // 3. If main config could not be loaded, set to fallback,
   // which is usually disabled but can be enabled for certain commands (e.g. init)
-  await setTelemetryEnabled(options.fallbackTelemetryState ?? false);
+  setTelemetryEnabled(options.fallbackTelemetryState ?? false);
 }
 
 function isInterruptionError(error: unknown): boolean {
@@ -233,7 +225,7 @@ export async function withTelemetry<T>(
 
   async function cancelTelemetry() {
     canceled = true;
-    await telemetry('canceled', { eventType }, { stripMetadata: true, immediate: true });
+    await telemetry('canceled', { eventType });
 
     process.exit(0);
   }
@@ -244,13 +236,7 @@ export async function withTelemetry<T>(
     process.on('SIGINT', cancelTelemetry);
   }
 
-  // Register error handler so that payload factories returning { error } or throwing
-  // automatically trigger sendTelemetryError with full context (presets, cache, error levels).
-  onPayloadError(async (error, evtType) => {
-    await sendTelemetryError(error, evtType, options);
-  });
-
-  telemetry('boot', { eventType }, { stripMetadata: true });
+  telemetry('boot', { eventType });
 
   try {
     // One trace per command. For `dev`, the span ends when the server is ready.
@@ -282,6 +268,5 @@ export async function withTelemetry<T>(
       await sendTelemetryError(error, eventType, options, false);
     }
     process.off('SIGINT', cancelTelemetry);
-    onPayloadError(undefined);
   }
 }

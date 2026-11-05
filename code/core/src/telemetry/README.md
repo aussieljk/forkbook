@@ -1,5 +1,5 @@
 # Forkbook Telemetry
 
-Forkbook collects completely anonymous telemetry data about general usage. Participation in this program is optional and it’s easy to opt-out.
+Forkbook sends nothing to Storybook. It sends events only to your own OpenTelemetry server (when `OTEL_EXPORTER_OTLP_ENDPOINT` is set) and error reports to the Forkbook Sentry project. `core.disableTelemetry` turns off both.
 
 For more information visit: [forkbook.ljk.dev/docs/configure/telemetry](https://forkbook.ljk.dev/docs/configure/telemetry)

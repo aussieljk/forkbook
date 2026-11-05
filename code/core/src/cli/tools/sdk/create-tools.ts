@@ -121,7 +121,6 @@ export async function createTools(
             error,
             clientInfo,
             requestedMode: mode,
-            configDir: options.configDir,
           });
         }
         throw error;
@@ -448,7 +447,6 @@ function createToolsHost(args: {
           result: outcome,
           report: outcome.telemetry,
           duration: Date.now() - start,
-          configDir: runtime.configDir,
         });
         return outcome;
       } catch (error) {
@@ -469,7 +467,6 @@ function createToolsHost(args: {
           fallbackReason: args.fallbackReason,
           result: { error: mapped },
           duration: Date.now() - start,
-          configDir: runtime.configDir,
         });
         throw mapped;
       }

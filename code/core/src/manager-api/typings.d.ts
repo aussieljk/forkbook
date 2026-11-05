@@ -16,8 +16,3 @@ declare var FORKBOOK_RENDERER:
 declare var FORKBOOK_BUILDER:
   | import('@aussieljk/forkbook/internal/types').SupportedBuilder
   | undefined;
-declare var FORKBOOK_LAST_EVENTS: Record<
-  import('@aussieljk/forkbook/telemetry').EventType,
-  import('@aussieljk/forkbook/telemetry').CacheEntry
->;
-declare var FORKBOOK_SESSION_ID: string | undefined;

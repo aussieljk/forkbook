@@ -65,7 +65,7 @@ describe('TelemetryService', () => {
 
       await telemetryService.trackInit(data);
 
-      expect(telemetry).toHaveBeenCalledWith('init', data, { configDir: undefined });
+      expect(telemetry).toHaveBeenCalledWith('init', data);
     });
 
     it('should track scaffolded event', async () => {
@@ -102,11 +102,10 @@ describe('TelemetryService', () => {
     it('should track prompt cancellation', async () => {
       await telemetryService.trackPromptCancel('install-type');
 
-      expect(telemetry).toHaveBeenCalledWith(
-        'canceled',
-        { eventType: 'init', prompt: 'install-type' },
-        { stripMetadata: true, immediate: true }
-      );
+      expect(telemetry).toHaveBeenCalledWith('canceled', {
+        eventType: 'init',
+        prompt: 'install-type',
+      });
     });
   });
 
@@ -119,28 +118,20 @@ describe('TelemetryService', () => {
         { command: 'npx @aussieljk/forkbook@8.0.5 init' },
       ] as any);
 
-      await telemetryService.trackInitWithContext(
-        ProjectType.REACT,
-        selectedFeatures,
-        '.rnforkbook'
-      );
+      await telemetryService.trackInitWithContext(ProjectType.REACT, selectedFeatures);
 
       expect(getProcessAncestry).toHaveBeenCalled();
-      expect(telemetry).toHaveBeenCalledWith(
-        'init',
-        {
-          projectType: ProjectType.REACT,
-          features: {
-            dev: true,
-            docs: true,
-            test: true,
-            ai: false,
-          },
-          versionSpecifier: '8.0.5',
-          cliIntegration: undefined,
+      expect(telemetry).toHaveBeenCalledWith('init', {
+        projectType: ProjectType.REACT,
+        features: {
+          dev: true,
+          docs: true,
+          test: true,
+          ai: false,
         },
-        { configDir: '.rnforkbook' }
-      );
+        versionSpecifier: '8.0.5',
+        cliIntegration: undefined,
+      });
     });
 
     it('should handle ancestry errors gracefully', async () => {
@@ -153,21 +144,17 @@ describe('TelemetryService', () => {
 
       await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 
-      expect(telemetry).toHaveBeenCalledWith(
-        'init',
-        {
-          projectType: ProjectType.NEXTJS,
-          features: {
-            dev: true,
-            docs: false,
-            test: false,
-            ai: false,
-          },
-          versionSpecifier: undefined,
-          cliIntegration: undefined,
+      expect(telemetry).toHaveBeenCalledWith('init', {
+        projectType: ProjectType.NEXTJS,
+        features: {
+          dev: true,
+          docs: false,
+          test: false,
+          ai: false,
         },
-        { configDir: undefined }
-      );
+        versionSpecifier: undefined,
+        cliIntegration: undefined,
+      });
     });
 
     it('should detect CLI integration from ancestry', async () => {
@@ -184,8 +171,7 @@ describe('TelemetryService', () => {
         'init',
         expect.objectContaining({
           cliIntegration: 'vike',
-        }),
-        { configDir: undefined }
+        })
       );
     });
 
@@ -204,8 +190,7 @@ describe('TelemetryService', () => {
           'init',
           expect.objectContaining({
             features: expect.objectContaining({ ai: true }),
-          }),
-          { configDir: undefined }
+          })
         );
       });
     });

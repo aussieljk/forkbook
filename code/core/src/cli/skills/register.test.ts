@@ -99,7 +99,7 @@ describe('registerSkillsCommand', () => {
       tokens: [],
       all: true,
     });
-    expect(telemetry).toHaveBeenCalledWith('skills-get', { skill: 'all' }, expect.anything());
+    expect(telemetry).toHaveBeenCalledWith('skills-get', { skill: 'all' });
   });
 
   it('records the setup run when the setup skill was served', async () => {

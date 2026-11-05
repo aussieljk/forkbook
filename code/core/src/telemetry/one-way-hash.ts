@@ -1,7 +1,6 @@
-import type { BinaryLike } from 'crypto';
-import { createHash } from 'crypto';
+import { createHash } from 'node:crypto';
 
-export const oneWayHash = (payload: BinaryLike): string => {
+export const oneWayHash = (payload: string): string => {
   const hash = createHash('sha256');
 
   // Always prepend the payload value with salt. This ensures the hash is truly

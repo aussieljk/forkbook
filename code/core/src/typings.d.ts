@@ -15,14 +15,6 @@ declare var FORKBOOK_RENDERER: import('./types/modules/renderers').SupportedRend
 declare var FORKBOOK_HOOKS_CONTEXT: any;
 declare var FORKBOOK_CURRENT_TASK_LOG: undefined | null | Array<any>;
 declare var FB_TELEMETRY_STATE: 'enabled' | 'disabled' | undefined;
-declare var FB_TELEMETRY_QUEUE: Array<import('./telemetry').QueuedEvent>;
-declare var PAYLOAD_ERROR_HANDLER: import('./telemetry').PayloadErrorHandler | undefined;
-
-declare var FORKBOOK_LAST_EVENTS: Record<
-  import('./telemetry').EventType,
-  import('./telemetry').CacheEntry
->;
-declare var FORKBOOK_SESSION_ID: string | undefined;
 declare var FORKBOOK_NETWORK_ADDRESS: string | undefined;
 
 declare var __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__: any;

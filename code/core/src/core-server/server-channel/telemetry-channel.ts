@@ -5,44 +5,18 @@ import {
   SHARE_ISOLATE_MODE,
   SIDEBAR_FILTER_CHANGED,
 } from '@aussieljk/forkbook/internal/core-events';
-import {
-  type CacheEntry,
-  getLastEvents,
-  getSessionId,
-  telemetry,
-} from '@aussieljk/forkbook/internal/telemetry';
+import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 import { REVIEW_EVENTS, type ReviewPageviewPayload } from '../../shared/review/events.ts';
 
-export const makePayload = (
-  userAgent: string,
-  lastInit: CacheEntry | undefined,
-  sessionId: string
-) => {
-  let timeSinceInit: number | undefined;
-  const payload = {
-    userAgent,
-    timeSinceInit,
-  };
-
-  if (sessionId && lastInit?.body?.sessionId === sessionId) {
-    payload.timeSinceInit = Date.now() - lastInit.timestamp;
-  }
-  return payload;
-};
-
 export function initTelemetryChannel(channel: Channel) {
-  channel.on(PREVIEW_INITIALIZED, async ({ userAgent }) => {
-    try {
-      const sessionId = await getSessionId();
-      const lastEvents = await getLastEvents();
-      const lastInit = lastEvents.init;
-      const lastPreviewFirstLoad = lastEvents['preview-first-load'];
-      if (!lastPreviewFirstLoad) {
-        const payload = makePayload(userAgent, lastInit, sessionId);
-        telemetry('preview-first-load', payload);
-      }
-    } catch {}
+  // Send only the first preview load of each dev server.
+  let previewLoaded = false;
+  channel.on(PREVIEW_INITIALIZED, ({ userAgent }) => {
+    if (!previewLoaded) {
+      previewLoaded = true;
+      telemetry('preview-first-load', { userAgent });
+    }
   });
   channel.on(SHARE_ISOLATE_MODE, async () => {
     telemetry('share', { action: 'isolate-mode-opened' });

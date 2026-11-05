@@ -19,21 +19,17 @@ export async function recordSetupRun({ projectInfo, prompt }: SetupRun): Promise
     })
     .catch(() => {});
 
-  await telemetry(
-    'ai-setup',
-    {
-      cliOptions: {
-        packageManager: projectInfo.packageManager.type,
-        prompt,
-      },
-      project: {
-        framework: projectInfo.framework,
-        renderer: projectInfo.rendererPackage,
-        builder: projectInfo.builderPackage,
-        language: projectInfo.language,
-      },
-      runId,
+  await telemetry('ai-setup', {
+    cliOptions: {
+      packageManager: projectInfo.packageManager.type,
+      prompt,
     },
-    { configDir }
-  );
+    project: {
+      framework: projectInfo.framework,
+      renderer: projectInfo.rendererPackage,
+      builder: projectInfo.builderPackage,
+      language: projectInfo.language,
+    },
+    runId,
+  });
 }
