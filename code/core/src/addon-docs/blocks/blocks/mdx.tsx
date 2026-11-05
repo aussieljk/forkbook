@@ -36,7 +36,7 @@ export const AddContext: FC<PropsWithChildren<DocsContextProps>> = (props) => {
   );
 };
 
-interface CodeOrSourceMdxProps {
+export interface CodeOrSourceMdxProps {
   className?: string;
 }
 
@@ -94,7 +94,7 @@ const AnchorInPage: FC<PropsWithChildren<AnchorInPageProps>> = ({ hash, children
   );
 };
 
-interface AnchorMdxProps {
+export interface AnchorMdxProps {
   href: string;
   target: string;
 }
