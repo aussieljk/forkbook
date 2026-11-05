@@ -15,13 +15,10 @@ type BranchNode = {
 
 export async function maybeSetupPreviewNavigator() {
   const url = new URL(window.location.href);
-  if (
-    url.searchParams.get('navigator') !== 'true' ||
-    (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__
-  ) {
+  if (url.searchParams.get('navigator') !== 'true' || globalThis.__FORKBOOK_PREVIEW_NAVIGATOR__) {
     return;
   }
-  (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__ = true;
+  globalThis.__FORKBOOK_PREVIEW_NAVIGATOR__ = true;
 
   // TODO: custom story sort is not respected
   const index = (await (await fetch('./index.json')).json()) as StoryIndex;
@@ -218,5 +215,5 @@ export const setupPreviewNavigator = async (index: StoryIndex, currentEntryId: s
 export const teardownPreviewNavigator = () => {
   document.querySelector('#fb-navigator-container')?.remove();
   document.querySelector('#fb-navigator-style')?.remove();
-  (globalThis as any).__FORKBOOK_PREVIEW_NAVIGATOR__ = false;
+  globalThis.__FORKBOOK_PREVIEW_NAVIGATOR__ = false;
 };

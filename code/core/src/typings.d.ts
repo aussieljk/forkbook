@@ -22,10 +22,11 @@ declare var __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__: any;
 declare var __FORKBOOK_ADDONS_CHANNEL__: any;
 declare var __FORKBOOK_ADDONS_MANAGER: any;
 declare var __FORKBOOK_ADDONS_PREVIEW: import('./preview-api/modules/addons/main').AddonStore;
+declare var __FORKBOOK_PREVIEW_NAVIGATOR__: boolean | undefined;
 declare var __FORKBOOK_PREVIEW__: import('./preview-api/modules/preview-web/PreviewWeb').PreviewWeb<any>;
 declare var __FORKBOOK_STORY_STORE__: any;
 declare var __FORKBOOK_TEST__: any;
-declare var __FORKBOOK_TEST_SPY_LISTENERS__: Set<any>;
+declare var __FORKBOOK_TEST_SPY_LISTENERS__: Set<(...args: unknown[]) => void>;
 declare var __FORKBOOK_ACTIONS__: any;
 declare var __FORKBOOK_VITEST_MOCKER__: any;
 

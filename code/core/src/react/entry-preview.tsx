@@ -32,8 +32,9 @@ export const decorators: Decorator[] = [
     return <React.Suspense>{story()}</React.Suspense>;
   },
   (story, context) => {
-    // @ts-expect-error this feature flag only exists in the react frameworks
-    if (context.tags?.includes(Tag.TEST_FN) && !global.FEATURES?.experimentalTestSyntax) {
+    // Only the React frameworks add this feature flag (see `react-vite/types.ts`).
+    const features = global.FEATURES as { experimentalTestSyntax?: boolean } | undefined;
+    if (context.tags?.includes(Tag.TEST_FN) && !features?.experimentalTestSyntax) {
       throw new Error(
         'To use the experimental test function, you must enable the experimentalTestSyntax feature flag. See https://forkbook.ljk.dev/docs/api/main-config/main-config-features#experimentaltestsyntax'
       );

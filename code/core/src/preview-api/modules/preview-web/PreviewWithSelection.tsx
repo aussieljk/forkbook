@@ -219,7 +219,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     }
     this.allStories ??= new AllStories<TRenderer>(
       this.storyStoreValue,
-      this.renderStoryToElement.bind(this) as any
+      this.renderStoryToElement.bind(this)
     );
     const root = this.view.prepareForDocs({ scrollReset: false }) as HTMLElement;
     await this.allStories.render(root);
@@ -526,7 +526,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
         .renderToElement(
           docsRoot,
           // This argument is used for docs, which is currently only compatible with HTMLElements
-          this.renderStoryToElement.bind(this) as any
+          this.renderStoryToElement.bind(this)
         )
         .then(() => {
           // The next docs pages render below this one, unless the selection changed meanwhile.
@@ -534,7 +534,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
             this.infiniteDocs ??= new InfiniteDocs<TRenderer>(
               this.channel,
               this.storyStoreValue,
-              this.renderStoryToElement.bind(this) as any,
+              this.renderStoryToElement.bind(this),
               () => ({
                 showStoryDuringRender: () => {},
                 showMain: () => {},

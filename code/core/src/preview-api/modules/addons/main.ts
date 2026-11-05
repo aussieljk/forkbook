@@ -1,7 +1,7 @@
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   getChannel as readInstalledChannel,
-  setChannel as installStorybookChannel,
+  setChannel as installForkbookChannel,
 } from '@aussieljk/forkbook/internal/channels';
 import { mockChannel } from '../../../channels/mock-channel.ts';
 
@@ -43,7 +43,7 @@ export class AddonStore {
 
   setChannel = (channel: Channel): void => {
     this.channel = channel;
-    installStorybookChannel(channel);
+    installForkbookChannel(channel);
     this.resolve();
   };
 }

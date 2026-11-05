@@ -1,10 +1,10 @@
 import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
-export interface View<TStorybookRoot> {
+export interface View<TRoot> {
   // Get ready to render a story, returning the element to render to
-  prepareForStory(story: PreparedStory<any>, options?: { scrollReset?: boolean }): TStorybookRoot;
+  prepareForStory(story: PreparedStory<any>, options?: { scrollReset?: boolean }): TRoot;
 
-  prepareForDocs(options?: { scrollReset?: boolean }): TStorybookRoot;
+  prepareForDocs(options?: { scrollReset?: boolean }): TRoot;
 
   showErrorDisplay(err: { message?: string; stack?: string }): void;
 

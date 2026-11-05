@@ -22,7 +22,7 @@ interface ParsingResult<T> {
 }
 
 const ACORN_WALK_VISITORS = {
-  // @ts-expect-error (Converted from ts-ignore)
+  // @ts-expect-error `base` exists at runtime, but the acorn-walk types do not export it.
   ...acornWalk.base,
   JSXElement: () => {},
 };
@@ -42,7 +42,7 @@ function calculateNodeDepth(node: estree.Expression): number {
   const depths: number[] = [];
 
   acornWalk.ancestor(
-    // @ts-expect-error (Converted from ts-ignore)
+    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
     node,
     {
       ObjectExpression(_: any, ancestors: estree.Node[]) {
@@ -82,7 +82,7 @@ function parseFunction(
 
   // If there is at least a JSXElement in the body of the function, then it's a React component.
   acornWalk.simple(
-    // @ts-expect-error (Converted from ts-ignore)
+    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
     funcNode.body,
     {
       JSXElement(node: any) {
@@ -118,7 +118,7 @@ function parseClass(
 
   // If there is at least a JSXElement in the body of the class, then it's a React component.
   acornWalk.simple(
-    // @ts-expect-error (Converted from ts-ignore)
+    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
     classNode.body,
     {
       JSXElement(node: any) {

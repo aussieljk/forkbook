@@ -1,7 +1,5 @@
 import { global } from '../shared/global.ts';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const { LOGLEVEL } = global;
 
 type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'silent';
@@ -77,7 +75,7 @@ export const deprecate = once('warn');
 export const pretty =
   (type: keyof typeof logger) =>
   (...args: Parameters<LoggingFn>) => {
-    const argArray: Parameters<LoggingFn> = [] as any;
+    const argArray: unknown[] = [];
 
     if (args.length) {
       const startTagRe = /<span\s+style=(['"])([^'"]*)\1\s*>/gi;
@@ -98,8 +96,8 @@ export const pretty =
       }
     }
 
-    // eslint-disable-next-line prefer-spread
-    logger[type].apply(logger, argArray);
+    const [message, ...rest] = argArray;
+    logger[type](message, ...rest);
   };
 
 pretty.trace = pretty('trace');

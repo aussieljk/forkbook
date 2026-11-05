@@ -11,6 +11,7 @@ import type {
   BufferedEvent,
   ChannelEvent,
   ChannelHandler,
+  ChannelSendOptions,
   ChannelTransport,
   Config,
 } from '../types.ts';
@@ -123,7 +124,7 @@ export class PostMessageTransport implements ChannelTransport {
    *
    * @param event
    */
-  send(event: ChannelEvent, options?: any): Promise<any> {
+  send(event: ChannelEvent, options?: ChannelSendOptions): Promise<unknown> {
     const {
       target,
 

@@ -93,7 +93,6 @@ export function composeStory<TRenderer extends Renderer = Renderer, TArgs extend
   exportsName?: string
 ): ComposedStoryFn<TRenderer, Partial<TArgs>> {
   if (storyAnnotations === undefined) {
-    // eslint-disable-next-line local-rules/no-uncategorized-errors
     throw new Error('Expected a story but received undefined.');
   }
 

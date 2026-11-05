@@ -23,7 +23,7 @@ import type { Plugin } from 'vite';
  */
 export const vitePluginNextDynamic = () =>
   ({
-    name: 'vite-plugin-storybook-nextjs-dynamic',
+    name: 'vite-plugin-forkbook-nextjs-dynamic',
     transform(code, id) {
       // Regex to match the dynamic import pattern
       const dynamicImportRegex =

@@ -10,8 +10,7 @@ import type {
 } from './types.ts';
 
 const isMulti = (args: ChannelArgs): args is ChannelArgsMulti => {
-  // @ts-expect-error (we guard against this right here)
-  return args.transports !== undefined;
+  return 'transports' in args && args.transports !== undefined;
 };
 
 const generateRandomId = () => {

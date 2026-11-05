@@ -4,14 +4,26 @@ export interface Config {
 
 export interface BufferedEvent {
   event: ChannelEvent;
-  resolve: (value?: any) => void;
-  reject: (reason?: any) => void;
+  resolve: (value?: unknown) => void;
+  reject: (reason?: unknown) => void;
+}
+
+/** Per-event options: the target frame and the telejson `stringify` options. */
+export interface ChannelSendOptions {
+  target?: string;
+  allowRegExp?: boolean;
+  allowSymbol?: boolean;
+  allowDate?: boolean;
+  allowError?: boolean;
+  allowUndefined?: boolean;
+  maxDepth?: number;
+  space?: number;
 }
 
 export type ChannelHandler = (event: ChannelEvent) => void;
 
 export interface ChannelTransport {
-  send(event: ChannelEvent, options?: any): void;
+  send(event: ChannelEvent, options?: ChannelSendOptions): void;
   setHandler(handler: ChannelHandler): void;
 }
 

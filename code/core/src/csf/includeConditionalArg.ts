@@ -2,10 +2,13 @@ import { isEqual } from 'es-toolkit/predicate';
 
 import type { Args, Conditional, Globals, InputType } from './story.ts';
 
-const count = (vals: any[]) => vals.map((v) => typeof v !== 'undefined').filter(Boolean).length;
+const count = (vals: unknown[]) => vals.map((v) => typeof v !== 'undefined').filter(Boolean).length;
 
-export const testValue = (cond: Omit<Conditional, 'arg' | 'global'>, value: any) => {
-  const { exists, eq, neq, truthy } = cond as any;
+type ConditionalTestFields = { exists?: boolean; eq?: unknown; neq?: unknown; truthy?: boolean };
+
+export const testValue = (cond: Omit<Conditional, 'arg' | 'global'>, value: unknown) => {
+  // `Conditional` is a union, so read each test field as optional.
+  const { exists, eq, neq, truthy } = cond as ConditionalTestFields;
   if (count([exists, eq, neq, truthy]) > 1) {
     throw new Error(`Invalid conditional test ${JSON.stringify({ exists, eq, neq })}`);
   }
@@ -32,12 +35,12 @@ export const includeConditionalArg = (argType: InputType, args: Args, globals: G
     return true;
   }
 
-  const { arg, global } = argType.if as any;
+  const { arg, global } = argType.if as { arg?: string; global?: string };
   if (count([arg, global]) !== 1) {
     throw new Error(`Invalid conditional value ${JSON.stringify({ arg, global })}`);
   }
 
-  const value = arg ? args[arg] : globals[global];
+  const value = arg ? args[arg] : globals[global as string];
 
   return testValue(argType.if!, value);
 };

@@ -129,7 +129,7 @@ export function extractMockCalls(
     }
 
     walk(ast as any, {
-      // @ts-expect-error - Node comes from babel
+      // @ts-expect-error The walker types the node as ESTree, but the AST comes from Babel.
       async enter(node: t.Node) {
         if (
           node.type !== 'CallExpression' ||

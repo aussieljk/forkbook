@@ -25,12 +25,12 @@ export async function vitePluginNextEnv(
   } catch (error) {
     // Next.js < 15.4.0
     getDefineEnv =
-      // @ts-expect-error - TODO: Ignoring because types are for >= 15.4.0
+      // @ts-expect-error The installed Next.js types are for >= 15.4.0, where this module moved.
       (await import('next/dist/build/webpack/plugins/define-env-plugin.js')).getDefineEnv;
   }
 
   return {
-    name: 'vite-plugin-storybook-nextjs-env',
+    name: 'vite-plugin-forkbook-nextjs-env',
     enforce: 'pre' as const,
     async config(config, env) {
       isDev = env.mode !== 'production';

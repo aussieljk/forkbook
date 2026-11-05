@@ -7,7 +7,7 @@ import type { PresetProperty } from '@aussieljk/forkbook/internal/types';
 import type { StorybookConfigVite } from '@aussieljk/forkbook/builder-vite';
 
 import semver from 'semver';
-import vitePluginStorybookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
+import vitePluginForkbookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
 import { nodeStandInsPlugin } from './node-stand-ins/plugin.ts';
 import { normalizePostCssConfig } from './find-postcss-config.ts';
@@ -78,7 +78,7 @@ export const viteFinal: StorybookConfigVite['viteFinal'] = async (config, option
     },
     plugins: [
       ...(config.plugins ?? []),
-      vitePluginStorybookNextjs(vitePluginOptions),
+      vitePluginForkbookNextjs(vitePluginOptions),
       nodeStandInsPlugin(nextDir ?? config.root ?? process.cwd()),
     ],
   };

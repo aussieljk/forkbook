@@ -486,7 +486,7 @@ export enum Addon_TypesEnum {
   /** This adds items in the toolbar above the canvas - on the right side. */
   TOOLEXTRA = 'toolextra',
   /**
-   * This adds wrapper components around the canvas/iframe component storybook renders.
+   * This adds wrapper components around the canvas/iframe component Forkbook renders.
    *
    * @unstable this API is not stable yet, and is likely to change in 8.0.
    */

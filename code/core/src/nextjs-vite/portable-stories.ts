@@ -24,7 +24,7 @@ import { INTERNAL_DEFAULT_PROJECT_ANNOTATIONS as reactAnnotations } from '../rea
 import * as nextJsAnnotations from './preview.tsx';
 
 /**
- * Function that sets the globalConfig of your storybook. The global config is the preview module of
+ * Function that sets the globalConfig of your Forkbook. The global config is the preview module of
  * your .forkbook folder.
  *
  * It should be run a single time, so that your global config (e.g. decorators) is applied to your
@@ -133,7 +133,7 @@ export function composeStories<TModule extends Store_CSFExports<ReactRenderer, a
   csfExports: TModule,
   projectAnnotations?: ProjectAnnotations<ReactRenderer>
 ) {
-  // @ts-expect-error (Converted from ts-ignore)
+  // @ts-expect-error The React types of the arguments are narrower than the generic Renderer types.
   const composedStories = originalComposeStories(csfExports, projectAnnotations, composeStory);
 
   return composedStories as unknown as Omit<

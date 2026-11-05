@@ -32,7 +32,7 @@ export function vitePluginNextSwc(
   const resolvedDir = resolve(rootDir);
 
   return {
-    name: 'vite-plugin-storybook-nextjs-swc',
+    name: 'vite-plugin-forkbook-nextjs-swc',
     enforce: 'pre' as const,
     async config(config, env) {
       const nextConfig = await nextConfigResolver.promise;

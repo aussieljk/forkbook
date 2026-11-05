@@ -129,7 +129,6 @@ export class Preview<TRenderer extends Renderer> {
       const projectAnnotations = await this.getProjectAnnotationsOrRenderError();
       await this.runBeforeAllHook(projectAnnotations);
       await this.initializeWithProjectAnnotations(projectAnnotations);
-      // eslint-disable-next-line compat/compat
       const userAgent = globalThis?.navigator?.userAgent;
       await this.channel.emit(PREVIEW_INITIALIZED, { userAgent });
     } catch (err) {
@@ -203,7 +202,7 @@ export class Preview<TRenderer extends Renderer> {
   async getStoryIndexFromServer() {
     const result = await fetch(STORY_INDEX_PATH);
     if (result.status === 200) {
-      return result.json() as any as StoryIndex;
+      return (await result.json()) as StoryIndex;
     }
 
     throw new StoryIndexFetchError({ text: await result.text() });

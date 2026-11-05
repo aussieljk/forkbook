@@ -1,6 +1,6 @@
 # Forkbook Logger
 
-Any client-side logging that is done through storybook should be done through this package.
+Any client-side logging that is done through Forkbook should be done through this package.
 
 Examples:
 

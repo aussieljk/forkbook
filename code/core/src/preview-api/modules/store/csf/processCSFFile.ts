@@ -11,6 +11,7 @@ import type {
   Parameters,
   Path,
   Renderer,
+  StoryAnnotationsOrFn,
 } from '@aussieljk/forkbook/internal/types';
 import type {
   CSFFile,
@@ -62,7 +63,7 @@ export function processCSFFile<TRenderer extends Renderer>(
       if (isExportStory(key, meta) && isStory<TRenderer>(namedExports[key])) {
         const story: Story<TRenderer> = namedExports[key];
 
-        const storyMeta = normalizeStory(key, story.input as any, meta);
+        const storyMeta = normalizeStory(key, story.input as StoryAnnotationsOrFn<TRenderer>, meta);
         checkDisallowedParameters(storyMeta.parameters);
 
         csfFile.stories[storyMeta.id] = storyMeta;
@@ -74,11 +75,14 @@ export function processCSFFile<TRenderer extends Renderer>(
           const childId = toTestId(storyMeta.id, name);
 
           child.input.parameters ??= {};
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore We provide the __id parameter because we don't want normalizeStory to calculate the id
-          child.input.parameters.__id = childId;
+          // Set the id, so that normalizeStory does not calculate it.
+          (child.input.parameters as Parameters).__id = childId;
 
-          csfFile.stories[childId] = normalizeStory(name, child.input as any, meta);
+          csfFile.stories[childId] = normalizeStory(
+            name,
+            child.input as StoryAnnotationsOrFn<TRenderer>,
+            meta
+          );
         });
       }
     });

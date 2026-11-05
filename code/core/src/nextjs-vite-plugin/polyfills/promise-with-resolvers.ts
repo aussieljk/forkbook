@@ -5,15 +5,15 @@ if (typeof Promise.withResolvers === 'undefined') {
     // biome-ignore lint/suspicious/noExplicitAny: any is needed for the reject function
     reject: (reason?: any) => void;
   } => {
-    let resolve: (value: T | PromiseLike<T>) => void;
-    let reject: (reason?: unknown) => void;
+    // The Promise executor runs at once, so it assigns both.
+    let resolve!: (value: T | PromiseLike<T>) => void;
+    let reject!: (reason?: unknown) => void;
 
     const promise = new Promise<T>((res, rej) => {
       resolve = res;
       reject = rej;
     });
 
-    // @ts-expect-error resolve/reject are assigned inside the Promise executor
     return { promise, resolve, reject };
   };
 }

@@ -4,9 +4,12 @@ import * as EVENTS from '@aussieljk/forkbook/internal/core-events';
 import { isJSON, parse, stringify } from 'telejson';
 import invariant from 'tiny-invariant';
 
-import type { ChannelHandler, ChannelTransport, Config } from '../types.ts';
+import type { ChannelEvent, ChannelHandler, ChannelTransport, Config } from '../types.ts';
 
 type OnError = (message: Event) => void;
+
+/** A channel event, or the transport's own reply to a server ping. */
+type OutgoingMessage = ChannelEvent | { type: 'pong' };
 
 /**
  * The slice of the WebSocket API this transport drives, so a Node runtime can supply a `ws` socket
@@ -36,7 +39,7 @@ export const SERVER_CHANNEL_PATH = '/storybook-server-channel';
 const CHANNEL_OPTIONS = globalThis.CHANNEL_OPTIONS || {};
 
 export class WebsocketTransport implements ChannelTransport {
-  private buffer: string[] = [];
+  private buffer: OutgoingMessage[] = [];
 
   private handler?: ChannelHandler;
 
@@ -47,7 +50,6 @@ export class WebsocketTransport implements ChannelTransport {
   private isClosed = false;
 
   constructor({ url, onError, page, createSocket }: WebsocketTransportArgs) {
-    // eslint-disable-next-line compat/compat
     this.socket = createSocket ? createSocket(url) : new WebSocket(url);
     this.socket.onopen = () => {
       this.isReady = true;
@@ -85,7 +87,7 @@ export class WebsocketTransport implements ChannelTransport {
     this.handler = handler;
   }
 
-  send(event: any) {
+  send(event: OutgoingMessage) {
     if (!this.isClosed) {
       if (!this.isReady) {
         this.sendLater(event);
@@ -95,11 +97,11 @@ export class WebsocketTransport implements ChannelTransport {
     }
   }
 
-  private sendLater(event: any) {
+  private sendLater(event: OutgoingMessage) {
     this.buffer.push(event);
   }
 
-  private sendNow(event: any) {
+  private sendNow(event: OutgoingMessage) {
     const data = stringify(event, {
       maxDepth: 15,
       ...CHANNEL_OPTIONS,

@@ -8,9 +8,10 @@ export const applyDecorators = (
   storyFn: LegacyStoryFn<ReactRenderer>,
   decorators: DecoratorFunction<ReactRenderer>[]
 ): LegacyStoryFn<ReactRenderer> => {
-  // @ts-expect-error originalFn is not defined on the type for decorator. This is a temporary fix
-  // that we will remove soon (likely) in favour of a proper concept of "inner" decorators.
-  const jsxIndex = decorators.findIndex((d) => d.originalFn === jsxDecorator);
+  // `originalFn` is set on hooked decorators, and is not part of the decorator type.
+  const jsxIndex = decorators.findIndex(
+    (d) => (d as typeof d & { originalFn?: unknown }).originalFn === jsxDecorator
+  );
 
   const reorderedDecorators =
     jsxIndex === -1 ? decorators : [...decorators.splice(jsxIndex, 1), ...decorators];

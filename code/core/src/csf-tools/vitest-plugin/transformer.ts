@@ -1,4 +1,3 @@
-/* eslint-disable local-rules/no-uncategorized-errors */
 import { types as t } from '@aussieljk/forkbook/internal/babel';
 import { getStoryTitle } from '@aussieljk/forkbook/internal/common';
 import { combineTags } from '@aussieljk/forkbook/internal/csf/csf-utils';
@@ -350,7 +349,7 @@ export async function vitestTransform({
 
   const storyTestStatements = Object.entries(validStories)
     .map(([exportName, node]) => {
-      if (node === null) {
+      if (!node) {
         logger.warn(
           dedent`
             [Forkbook]: Could not transform "${exportName}" story into test at "${fileName}".

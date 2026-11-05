@@ -1,3 +1,3 @@
-import vitePluginStorybookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
+import vitePluginForkbookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
-export const storybookNextJsPlugin = vitePluginStorybookNextjs;
+export const storybookNextJsPlugin = vitePluginForkbookNextjs;

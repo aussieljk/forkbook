@@ -98,54 +98,58 @@ export interface Presets {
     config: TypescriptOptions,
     args?: Options
   ): Promise<TypescriptOptions>;
-  apply(extension: 'framework', config?: {}, args?: any): Promise<Preset>;
-  apply(extension: 'babel', config?: {}, args?: any): Promise<any>;
-  apply(extension: 'swc', config?: {}, args?: any): Promise<any>;
-  apply(extension: 'entries', config?: [], args?: any): Promise<unknown>;
-  apply(extension: 'env', config?: {}, args?: any): Promise<any>;
-  apply(extension: 'stories', config?: [], args?: any): Promise<StoriesEntry[]>;
-  apply(extension: 'managerEntries', config: [], args?: any): Promise<string[]>;
-  apply(extension: 'refs', config?: [], args?: any): Promise<StorybookConfigRaw['refs']>;
+  apply(extension: 'framework', config?: {}, args?: unknown): Promise<Preset>;
+  apply(extension: 'babel', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'swc', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'entries', config?: [], args?: unknown): Promise<unknown>;
+  apply(extension: 'env', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'stories', config?: [], args?: unknown): Promise<StoriesEntry[]>;
+  apply(extension: 'managerEntries', config: [], args?: unknown): Promise<string[]>;
+  apply(extension: 'refs', config?: [], args?: unknown): Promise<StorybookConfigRaw['refs']>;
   apply(
     extension: 'core',
     config?: StorybookConfigRaw['core'],
-    args?: any
+    args?: unknown
   ): Promise<NonNullable<StorybookConfigRaw['core']>>;
   apply(
     extension: 'docs',
     config?: StorybookConfigRaw['docs'],
-    args?: any
+    args?: unknown
   ): Promise<NonNullable<StorybookConfigRaw['docs']>>;
   apply(
     extension: 'features',
     config?: StorybookConfigRaw['features'],
-    args?: any
+    args?: unknown
   ): Promise<NonNullable<StorybookConfigRaw['features']>>;
   apply(
     extension: 'typescript',
     config?: StorybookConfigRaw['typescript'],
-    args?: any
+    args?: unknown
   ): Promise<NonNullable<StorybookConfigRaw['typescript']>>;
   apply(
     extension: 'build',
     config?: StorybookConfigRaw['build'],
-    args?: any
+    args?: unknown
   ): Promise<NonNullable<StorybookConfigRaw['build']>>;
   apply(
     extension: 'staticDirs',
     config?: StorybookConfigRaw['staticDirs'],
-    args?: any
+    args?: unknown
   ): Promise<StorybookConfigRaw['staticDirs']>;
-  apply(extension: 'services', config?: StorybookConfigRaw['services'], args?: any): Promise<void>;
+  apply(
+    extension: 'services',
+    config?: StorybookConfigRaw['services'],
+    args?: unknown
+  ): Promise<void>;
   apply(
     extension: 'experimental_docgenProvider',
     config: DocgenProviderDescriptor[],
-    args?: any
+    args?: unknown
   ): Promise<DocgenProviderDescriptor[]>;
   apply(
     extension: 'experimental_storyDocsProvider',
     config: StoryDocsProvider,
-    args?: any
+    args?: unknown
   ): Promise<StoryDocsProvider>;
 
   /** The second and third parameter are not needed. And make type inference easier. */
@@ -581,7 +585,7 @@ export interface StorybookFeatures {
   /**
    * @temporary This feature flag is a migration assistant, and is scheduled to be removed.
    *
-   * Set NODE_ENV to development in built Storybooks for better testability and debuggability
+   * Set NODE_ENV to development in built Forkbooks for better testability and debuggability
    */
   developmentModeForBuild?: boolean;
   /**
@@ -636,10 +640,10 @@ export interface SecurityConfig {
    * In dev mode, the manager and preview can only be embedded by a website running on localhost.
    * This prevents attacks that hijack a local Forkbook embedded in an iframe from a malicious domain.
    *
-   * If you need remote Storybooks to compose this Forkbook while it is running in dev mode,
+   * If you need remote Forkbooks to compose this Forkbook while it is running in dev mode,
    * you may set `insecureRemoteIframeEmbed` to `true`.
    *
-   * Built Storybooks can still be embedded and composed without restrictions, and don't need
+   * Built Forkbooks can still be embedded and composed without restrictions, and don't need
    * this flag.
    *
    * @default false
@@ -651,7 +655,7 @@ export interface SecurityConfig {
    * only accepts messages from its own preview iframes. In dev mode, a preview only accepts
    * messages from a manager on localhost, and both send messages only to the expected origin.
    *
-   * If you need remote Storybooks to compose this Forkbook while it is running in dev mode,
+   * If you need remote Forkbooks to compose this Forkbook while it is running in dev mode,
    * you may set `insecureIframeMessaging` to `true`.
    *
    * Built previews accept messages from any origin, so composing a built Forkbook doesn't need

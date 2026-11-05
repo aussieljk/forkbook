@@ -37,7 +37,7 @@ export function vitePluginNextFont() {
   let devMode = true;
 
   return {
-    name: 'vite-plugin-storybook-nextjs-font',
+    name: 'vite-plugin-forkbook-nextjs-font',
     enforce: 'pre' as const,
     async config(config, env) {
       devMode = env.mode !== 'production';

@@ -92,7 +92,7 @@ export const createRouter = (overrides: Partial<NextRouter>) => {
     ...defaultRouterState,
     ...overrides,
     ...routerActions,
-    // @ts-expect-error TODO improve typings
+    // @ts-expect-error The mock events are `vi.fn` mocks, not a `MittEmitter`.
     events: routerEvents,
   };
 

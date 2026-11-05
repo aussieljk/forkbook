@@ -34,27 +34,28 @@ interface Effect {
 type AbstractFunction = (...args: any[]) => any;
 
 export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args> {
-  hookListsMap: WeakMap<AbstractFunction, Hook[]> = undefined as any;
+  // `init()` sets every field below. The constructor calls it.
+  hookListsMap!: WeakMap<AbstractFunction, Hook[]>;
 
-  mountedDecorators: Set<AbstractFunction> = undefined as any;
+  mountedDecorators!: Set<AbstractFunction>;
 
-  prevMountedDecorators: Set<AbstractFunction> = undefined as any;
+  prevMountedDecorators!: Set<AbstractFunction>;
 
-  currentHooks: Hook[] = undefined as any;
+  currentHooks!: Hook[];
 
-  nextHookIndex: number = undefined as any;
+  nextHookIndex!: number;
 
-  currentPhase: 'MOUNT' | 'UPDATE' | 'NONE' = undefined as any;
+  currentPhase!: 'MOUNT' | 'UPDATE' | 'NONE';
 
-  currentEffects: Effect[] = undefined as any;
+  currentEffects!: Effect[];
 
-  prevEffects: Effect[] = undefined as any;
+  prevEffects!: Effect[];
 
-  currentDecoratorName: string | null = undefined as any;
+  currentDecoratorName!: string | null;
 
-  hasUpdates: boolean = undefined as any;
+  hasUpdates!: boolean;
 
-  currentContext: StoryContext<TRenderer, TArgs> | null = undefined as any;
+  currentContext!: StoryContext<TRenderer, TArgs> | null;
 
   renderListener = (storyId: StoryId) => {
     if (storyId !== this.currentContext?.id) {
@@ -388,12 +389,12 @@ function useStateLike<S>(
 ): [S, (update: ((prevState: S) => S) | S) => void] {
   const stateRef = useRefLike(
     name,
-    // @ts-expect-error S type should never be function, but there's no way to tell that to TypeScript
-    typeof initialState === 'function' ? initialState() : initialState
+    // S is never a function, so a function here is the initialiser.
+    typeof initialState === 'function' ? (initialState as () => S)() : initialState
   );
   const setState = (update: ((prevState: S) => S) | S) => {
-    // @ts-expect-error S type should never be function, but there's no way to tell that to TypeScript
-    stateRef.current = typeof update === 'function' ? update(stateRef.current) : update;
+    stateRef.current =
+      typeof update === 'function' ? (update as (prevState: S) => S)(stateRef.current) : update;
     triggerUpdate();
   };
   return [stateRef.current, setState];

@@ -68,7 +68,7 @@ export function vitePluginNextImage(
   }
 
   return {
-    name: 'vite-plugin-storybook-nextjs-image',
+    name: 'vite-plugin-forkbook-nextjs-image',
     enforce: 'pre' as const,
     async configResolved(config) {
       // Auto-detect SVGR plugin

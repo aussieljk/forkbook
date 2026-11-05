@@ -99,8 +99,7 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
   let renderedJSX: React.ReactElement<any> = code;
   const Type = renderedJSX.type;
 
-  // @ts-expect-error (Converted from ts-ignore)
-  for (let i = 0; i < options?.skip; i += 1) {
+  for (let i = 0; i < (options?.skip ?? 0); i += 1) {
     if (typeof renderedJSX === 'undefined') {
       logger.warn('Cannot skip undefined element');
       return null;
@@ -133,7 +132,7 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
      *
      * https://github.com/zhyd1997/storybook/blob/20863a75ba4026d7eba6b288991a2cf091d4dfff/code/renderers/react/template/stories/errors.stories.tsx#L14
      *
-     * Or it show the error message when run `yarn build-storybook --quiet`:
+     * Or it show the error message when run `forkbook build --quiet`:
      *
      * Cannot read properties of undefined (reading '__docgenInfo').
      */
@@ -187,13 +186,13 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
   };
 
   const result = React.Children.map(code, (c) => {
-    // @ts-expect-error FIXME: workaround react-element-to-jsx-string
-    const child = typeof c === 'number' ? c.toString() : c;
+    const child = typeof c === 'number' ? String(c) : c;
     const toJSXString =
       typeof reactElementToJSXString === 'function'
         ? reactElementToJSXString
-        : // @ts-expect-error (Converted from ts-ignore)
-          reactElementToJSXString.default;
+        : // CJS interop: the module can be the namespace object.
+          (reactElementToJSXString as unknown as { default: typeof reactElementToJSXString })
+            .default;
     let string: string = toJSXString(simplifyNodeForStringify(child), opts as Options);
 
     if (string.indexOf('&quot;') > -1) {

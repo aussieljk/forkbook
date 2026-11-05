@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
-// eslint-disable-next-line depend/ban-dependencies
 import yaml from 'js-yaml';
 import { dedent } from 'ts-dedent';
 
