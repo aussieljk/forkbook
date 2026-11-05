@@ -4,7 +4,18 @@ import { Meta } from '@aussieljk/forkbook/addon-docs/blocks';
 
 # Telemetry
 
-Forkbook sends no telemetry to anyone by default. It does not send data to Storybook.
+Forkbook does not send data to Storybook. By default it sends one kind of data: error reports, to the Forkbook Sentry project.
+
+## Error reports
+
+When the dev server, the build or the CLI has an error, Forkbook sends an error report to Sentry. Paths to your user folder are removed first.
+
+- To stop error reports, set `FORKBOOK_SENTRY_DSN` to an empty string, or turn off telemetry.
+- To send them to your own Sentry project, set `FORKBOOK_SENTRY_DSN` to its DSN.
+
+## Turn off telemetry
+
+Set `core.disableTelemetry: true` in `main.ts`, use `--disable-telemetry`, or set `FORKBOOK_DISABLE_TELEMETRY=true`. This stops the error reports and the OpenTelemetry events.
 
 ## Send telemetry to your own server
 

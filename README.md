@@ -47,7 +47,7 @@ Replace the packages with `@aussieljk/forkbook` and change the imports. See [for
 
 ## Notes
 
-- Telemetry: Forkbook sends nothing. To send traces and logs to your own OpenTelemetry server, set `OTEL_EXPORTER_OTLP_ENDPOINT` ([telemetry](https://forkbook.ljk.dev/docs/configure/telemetry)).
+- Telemetry: Forkbook sends nothing to Storybook. By default it sends error reports to the Forkbook Sentry project. To stop them, set `FORKBOOK_SENTRY_DSN=""` or `FORKBOOK_DISABLE_TELEMETRY=true`. To send traces and logs to your own OpenTelemetry server, set `OTEL_EXPORTER_OTLP_ENDPOINT` ([telemetry](https://forkbook.ljk.dev/docs/configure/telemetry)).
 
 ## Links
 
