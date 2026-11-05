@@ -28,6 +28,8 @@ export const vitestCommonConfig = defineConfig({
     // Disable globals due to https://github.com/testing-library/user-event/pull/1176 not being released yet
     globals: false,
     testTimeout: 10000,
+    // Tests must never send error reports to the Forkbook Sentry project.
+    env: { FORKBOOK_SENTRY_DSN: '' },
     environment: 'node',
     // `enabled` is set per project with `*.test-d.ts` files: Vitest warns once per enabling project.
     typecheck: {

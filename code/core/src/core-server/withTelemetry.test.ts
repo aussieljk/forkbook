@@ -513,6 +513,7 @@ describe('sendTelemetryError', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(ErrorCollector.getErrors).mockReturnValue([]);
+    vi.mocked(telemetry).mockResolvedValue(undefined);
   });
 
   it('handles error instances and sends telemetry', async () => {
