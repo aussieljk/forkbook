@@ -112,16 +112,18 @@ command('add <addon>')
   .option('--skip-install', 'Skip installing deps')
   .option('-s --skip-postinstall', 'Skip package specific postinstall config modifications')
   .option('-y --yes', 'Skip prompting the user')
-  .action((addonName: string, options: Parameters<typeof add>[1]) => {
-    withTelemetry('add', { cliOptions: options }, async () => {
-      logger.intro(`Setting up your project for ${addonName}`);
+  .action(
+    (addonName: string, options: Parameters<typeof add>[1] & { logfile?: string | boolean }) => {
+      withTelemetry('add', { cliOptions: options }, async () => {
+        logger.intro(`Setting up your project for ${addonName}`);
 
-      await add(addonName, options);
+        await add(addonName, options);
 
-      await telemetry('add', { addon: addonName, source: 'cli' });
-      logger.outro('Done!');
-    }).catch(handleCommandFailure);
-  });
+        await telemetry('add', { addon: addonName, source: 'cli' });
+        logger.outro('Done!');
+      }).catch(handleCommandFailure(options.logfile));
+    }
+  );
 
 type RemoveCommandOptions = {
   packageManager?: PackageManagerName;

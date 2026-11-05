@@ -169,6 +169,19 @@ describe('AddonConfigurationCommand', () => {
       expect(mockTaskLog.error).toHaveBeenCalledWith('Failed to configure addons');
     });
 
+    it('should show the manual setup link for an addon that failed', async () => {
+      vi.mocked(addonVitestPostinstall).mockRejectedValue(new Error('Vitest configuration failed'));
+
+      await command.execute({
+        addons: ['@aussieljk/forkbook/addon-vitest', '@aussieljk/forkbook/addon-a11y'],
+        configDir: '.forkbook',
+      });
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('- @aussieljk/forkbook/addon-vitest: https://forkbook.ljk.dev/')
+      );
+    });
+
     it('should handle unexpected errors during execution', async () => {
       const unexpectedError = new Error('Unexpected error');
       vi.mocked(prompt.taskLog).mockImplementation(() => {
