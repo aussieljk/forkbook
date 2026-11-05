@@ -38,7 +38,7 @@ export interface SubState {
   customQueryParams: QueryParams;
 }
 
-const parseBoolean = (value: string) => {
+const parseBoolean = (value: string | undefined) => {
   if (value === 'true' || value === '1') {
     return true;
   }
@@ -131,7 +131,7 @@ const initialUrlSupport = ({
     navSize,
     bottomPanelHeight,
     rightPanelWidth,
-    panelPosition: ['right', 'bottom'].includes(panel) ? panel : undefined,
+    panelPosition: panel === 'right' || panel === 'bottom' ? panel : undefined,
   };
   const ui: Partial<API_UI> = {
     enableShortcuts: parseBoolean(shortcuts),
@@ -358,7 +358,7 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
     applyQueryParams(input, options) {
       const { path, hash = '', queryParams } = api.getUrlState();
 
-      navigateTo(`${path}${hash}`, { ...queryParams, ...input } as any, options);
+      navigateTo(`${path}${hash}`, { ...queryParams, ...input }, options);
       api.setQueryParams(input);
     },
     navigateUrl(url, options) {

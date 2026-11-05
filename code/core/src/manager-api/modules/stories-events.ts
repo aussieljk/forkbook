@@ -30,11 +30,12 @@ import { isReviewManagerRoute } from '../../shared/review/routes.ts';
 import { type EventMeta, getEventMetadata } from '../lib/events.ts';
 import { denormalizeStoryParameters } from '../lib/stories.ts';
 import type { ModuleArgs } from '../lib/types.tsx';
+import type { LayoutOptions } from './layout.ts';
 import type { SubAPI } from './stories-types.ts';
 
 const removedOptions = ['enableShortcuts', 'theme', 'showRoots'];
 
-function removeRemovedOptions(options?: Record<string, unknown>) {
+function removeRemovedOptions(options?: LayoutOptions) {
   if (!options || typeof options === 'string') {
     return options;
   }
@@ -137,7 +138,7 @@ export const listenToStoryEvents = ({
     const { sourceType } = getEventMetadata(this, fullAPI)!;
 
     if (sourceType === 'local') {
-      const options = api.getCurrentParameter<Record<string, unknown>>('options');
+      const options = api.getCurrentParameter<LayoutOptions>('options');
 
       if (options) {
         fullAPI.setOptions(removeRemovedOptions(options));
@@ -195,7 +196,7 @@ export const listenToStoryEvents = ({
 
     if (!ref) {
       api.setIndex(index);
-      const options = api.getCurrentParameter<Record<string, unknown>>('options');
+      const options = api.getCurrentParameter<LayoutOptions>('options');
       fullAPI.setOptions(removeRemovedOptions(options));
     } else {
       fullAPI.setRef(ref.id, { ...ref, storyIndex: index }, true);

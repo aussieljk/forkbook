@@ -1,3 +1,4 @@
+import type { StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
@@ -12,6 +13,10 @@ import { ReviewProvider } from '../review/components/ReviewProvider.tsx';
 import { REVIEW_COLLECTION_QUERY_PARAM } from '../review/review-navigation.ts';
 import { reviewServiceForStories as reviewService } from '../review/review-service-story-helpers.ts';
 import { ReviewWidget } from './ReviewWidget.tsx';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
 
 type EventListener = (payload?: unknown) => void;
 
@@ -34,7 +39,7 @@ const setReviewingStatuses = (storyIds: string[]) => {
 };
 
 const buildIndexEntries = (storyIds: string[]) =>
-  storyIds.reduce<Record<string, any>>((acc, id) => {
+  storyIds.reduce<Record<string, Partial<StoryIndexEntry>>>((acc, id) => {
     acc[id] = {
       type: 'story',
       id,
@@ -72,7 +77,7 @@ const makeManagerContext = (
     on?: ReturnType<typeof fn>;
     off?: ReturnType<typeof fn>;
   } = {}
-): any => {
+): object => {
   const on =
     options.on ??
     fn((eventName: string, listener: EventListener): (() => void) => {
@@ -152,7 +157,7 @@ const meta = {
       );
       return (
         <MemoryRouter initialEntries={['/']}>
-          <ManagerContext.Provider value={makeManagerContext(options)}>
+          <ManagerContext.Provider value={asManagerContext(makeManagerContext(options))}>
             <ReviewProvider>{content}</ReviewProvider>
           </ManagerContext.Provider>
         </MemoryRouter>

@@ -83,11 +83,12 @@ export class AddonStore {
       | Addon_Types
       | Addon_TypesEnum.experimental_PAGE
       | Addon_TypesEnum.experimental_TEST_PROVIDER,
-  >(type: T): Addon_Collection<Addon_TypesMapping[T]> | any {
+  >(type: T): Addon_Collection<Addon_TypesMapping[T]> {
     if (!this.elements[type]) {
       this.elements[type] = {};
     }
-    return this.elements[type];
+    // `add` stores each element under its own type, so this collection only has elements of type T.
+    return this.elements[type] as Addon_Collection<Addon_TypesMapping[T]>;
   }
 
   /**

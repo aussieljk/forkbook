@@ -1,4 +1,6 @@
+import type { SerializedError } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { TestCase, TestModule, Vitest } from 'vitest/node';
 
 import { AgentTelemetryReporter } from './agent-telemetry-reporter.ts';
 
@@ -30,13 +32,15 @@ function createMockTestCase({
   reports?: Array<{ type: string; result?: Record<string, unknown> }>;
   errors?: Array<{ message: string; stack?: string }>;
 }) {
-  return {
+  const testCase = {
     meta: () => ({ storyId, reports }),
     result: () => ({
       state: status,
       errors: status === 'failed' ? errors : [],
     }),
   };
+  // A test case with only the methods that the reporter reads.
+  return testCase as unknown as TestCase;
 }
 
 function createMockTestModules(testCounts: { passed: number; failed: number }) {
@@ -60,8 +64,11 @@ function createMockTestModules(testCounts: { passed: number; failed: number }) {
       },
       errors: () => [],
     },
-  ];
+  ] as unknown as TestModule[];
 }
+
+/** The Vitest context with only the config that the reporter reads. */
+const mockVitest = (config: { watch: boolean }) => ({ config }) as unknown as Vitest;
 
 describe('AgentTelemetryReporter', () => {
   let reporter: AgentTelemetryReporter;
@@ -81,7 +88,7 @@ describe('AgentTelemetryReporter', () => {
         storyId: 'my-story--primary',
         status: 'passed',
       });
-      reporter.onTestCaseResult(testCase as any);
+      reporter.onTestCaseResult(testCase);
     });
 
     it('should skip tests without storyId', () => {
@@ -89,7 +96,7 @@ describe('AgentTelemetryReporter', () => {
         storyId: undefined,
         status: 'passed',
       });
-      reporter.onTestCaseResult(testCase as any);
+      reporter.onTestCaseResult(testCase);
     });
 
     it('should skip example story IDs', () => {
@@ -97,31 +104,31 @@ describe('AgentTelemetryReporter', () => {
         storyId: 'example-button--primary',
         status: 'passed',
       });
-      reporter.onTestCaseResult(testCase as any);
+      reporter.onTestCaseResult(testCase);
     });
   });
 
   describe('onTestRunEnd', () => {
     it('should send telemetry with run analysis of collected results', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
-      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }) as any);
+      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }));
       reporter.onTestCaseResult(
         createMockTestCase({
           storyId: 's2',
           status: 'failed',
           errors: [{ message: 'Error: Module not found: foo' }],
-        }) as any
+        })
       );
       reporter.onTestCaseResult(
         createMockTestCase({
           storyId: 's3',
           status: 'passed',
           reports: [{ type: 'render-analysis', result: { emptyRender: true } }],
-        }) as any
+        })
       );
 
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 2, failed: 1 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 2, failed: 1 }), []);
 
       expect(telemetry).toHaveBeenCalledWith(
         'ai-setup-self-healing-scoring',
@@ -142,7 +149,7 @@ describe('AgentTelemetryReporter', () => {
     });
 
     it('should include cumulative stats merged from cache history', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
       // Current run: 1 failed story
       reporter.onTestCaseResult(
@@ -150,7 +157,7 @@ describe('AgentTelemetryReporter', () => {
           storyId: 'current-run',
           status: 'failed',
           errors: [{ message: 'boom' }],
-        }) as any
+        })
       );
 
       // Cumulative cache returns history with previously-passing stories on top
@@ -160,7 +167,7 @@ describe('AgentTelemetryReporter', () => {
         { storyId: 'previous-2', status: 'PASS' },
       ]);
 
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 0, failed: 1 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 0, failed: 1 }), []);
 
       expect(telemetry).toHaveBeenCalledWith(
         'ai-setup-self-healing-scoring',
@@ -176,11 +183,11 @@ describe('AgentTelemetryReporter', () => {
     });
 
     it('should pass collected results to mergeAndWriteStoryHistory', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
-      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }) as any);
+      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }));
 
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }), []);
 
       expect(mergeAndWriteStoryHistory).toHaveBeenCalledWith([
         expect.objectContaining({ storyId: 's1', status: 'PASS' }),
@@ -188,29 +195,29 @@ describe('AgentTelemetryReporter', () => {
     });
 
     it('should not include storyId in the telemetry payload', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
       reporter.onTestCaseResult(
-        createMockTestCase({ storyId: 'my-secret-story-id', status: 'passed' }) as any
+        createMockTestCase({ storyId: 'my-secret-story-id', status: 'passed' })
       );
 
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }), []);
 
       const payload = JSON.stringify(vi.mocked(telemetry).mock.calls[0][1]);
       expect(payload).not.toContain('my-secret-story-id');
     });
 
     it('should filter out example stories from analysis', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
       reporter.onTestCaseResult(
-        createMockTestCase({ storyId: 'my-story--primary', status: 'passed' }) as any
+        createMockTestCase({ storyId: 'my-story--primary', status: 'passed' })
       );
       reporter.onTestCaseResult(
-        createMockTestCase({ storyId: 'example-button--primary', status: 'passed' }) as any
+        createMockTestCase({ storyId: 'example-button--primary', status: 'passed' })
       );
 
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 2, failed: 0 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 2, failed: 0 }), []);
 
       expect(telemetry).toHaveBeenCalledWith(
         'ai-setup-self-healing-scoring',
@@ -224,12 +231,12 @@ describe('AgentTelemetryReporter', () => {
     });
 
     it('should count unhandled errors', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
-      await reporter.onTestRunEnd(
-        createMockTestModules({ passed: 0, failed: 0 }) as any,
-        [{ message: 'unhandled' }, { message: 'another' }] as any
-      );
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 0, failed: 0 }), [
+        { message: 'unhandled' },
+        { message: 'another' },
+      ] as SerializedError[]);
 
       expect(telemetry).toHaveBeenCalledWith(
         'ai-setup-self-healing-scoring',
@@ -240,19 +247,19 @@ describe('AgentTelemetryReporter', () => {
     });
 
     it('should reset collected results after each run', async () => {
-      reporter.onInit({ config: { watch: false } } as any);
+      reporter.onInit(mockVitest({ watch: false }));
 
-      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }) as any);
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }) as any, []);
+      reporter.onTestCaseResult(createMockTestCase({ storyId: 's1', status: 'passed' }));
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 1, failed: 0 }), []);
 
       reporter.onTestCaseResult(
         createMockTestCase({
           storyId: 's2',
           status: 'failed',
           errors: [{ message: 'err' }],
-        }) as any
+        })
       );
-      await reporter.onTestRunEnd(createMockTestModules({ passed: 0, failed: 1 }) as any, []);
+      await reporter.onTestRunEnd(createMockTestModules({ passed: 0, failed: 1 }), []);
 
       const secondCall = vi.mocked(telemetry).mock.calls[1];
       expect(secondCall[1]).toEqual(

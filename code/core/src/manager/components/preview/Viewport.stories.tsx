@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react';
+
 import { ManagerContext } from '@aussieljk/forkbook/manager-api';
 import { fn } from '@aussieljk/forkbook/test';
 import type { ViewportMap } from '@aussieljk/forkbook/viewport';
@@ -5,7 +7,10 @@ import type { ViewportMap } from '@aussieljk/forkbook/viewport';
 import preview from '../../../../../.forkbook/preview.tsx';
 import { Viewport } from './Viewport.tsx';
 
-const managerContext: any = {
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = ComponentProps<typeof ManagerContext.Provider>['value'];
+
+const managerContext = {
   state: {},
   api: {
     getCurrentParameter: fn(),
@@ -58,7 +63,7 @@ const meta = preview.meta({
   },
   decorators: [
     (Story) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <Story />
       </ManagerContext.Provider>
     ),

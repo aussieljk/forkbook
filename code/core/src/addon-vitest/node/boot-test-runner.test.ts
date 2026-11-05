@@ -263,10 +263,7 @@ describe('bootTestRunner', () => {
     await promise;
 
     const { internal_UniversalStore } = await import('@aussieljk/forkbook/internal/core-server');
-    (internal_UniversalStore as any).__prepare(
-      mockChannel,
-      internal_UniversalStore.Environment.SERVER
-    );
+    internal_UniversalStore.__prepare(mockChannel, internal_UniversalStore.Environment.SERVER);
     const leader = internal_UniversalStore.create({ ...storeOptions, leader: true });
     try {
       await leader.untilReady();
@@ -737,11 +734,11 @@ describe('bootTestRunner', () => {
   describe('with one fake child per spawn', () => {
     type FakeChild = ReturnType<typeof fakeChild>;
     const fakeChild = () => {
-      const handlers: Record<string, (...args: any[]) => void> = {};
+      const handlers: Record<string, (...args: unknown[]) => void> = {};
       return {
         stdout: { on: vi.fn() },
         stderr: { on: vi.fn() },
-        on: vi.fn((event: string, handler: (...args: any[]) => void) => {
+        on: vi.fn((event: string, handler: (...args: unknown[]) => void) => {
           handlers[event] = handler;
         }),
         send: vi.fn(),

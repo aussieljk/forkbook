@@ -243,10 +243,8 @@ export function useDragging({
             state.panelPosition === 'bottom' ? 'bottomPanelHeight' : 'rightPanelWidth';
           const panelDragSize =
             state.panelPosition === 'bottom'
-              ? // @ts-expect-error (non strict)
-                e.view.innerHeight - e.clientY
-              : // @ts-expect-error (non strict)
-                e.view.innerWidth - e.clientX;
+              ? window.innerHeight - e.clientY
+              : window.innerWidth - e.clientX;
           const minimumSize =
             state.panelPosition === 'bottom'
               ? MINIMUM_HORIZONTAL_PANEL_HEIGHT_PX

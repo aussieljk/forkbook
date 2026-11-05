@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 
 import { Loader } from '@aussieljk/forkbook/internal/components';
@@ -157,7 +157,8 @@ const Canvas: FC<{
       }) => {
         const id = 'canvas';
 
-        const [progress, setProgress] = useState(undefined);
+        const [progress, setProgress] =
+          useState<ComponentProps<typeof Loader>['progress']>(undefined);
         useEffect(() => {
           if (global.CONFIG_TYPE === 'DEVELOPMENT') {
             try {
@@ -172,10 +173,8 @@ const Canvas: FC<{
           }
         }, []);
         // A ref simply depends on its readiness
-        // @ts-expect-error (non strict)
-        const refLoading = !!refs[refId] && !refs[refId].previewInitialized;
+        const refLoading = !!refId && !!refs[refId] && !refs[refId].previewInitialized;
         // The root also might need to wait on webpack
-        // @ts-expect-error (non strict)
         const isBuilding = !(progress?.value === 1 || progress === undefined);
         const rootLoading = !refId && (!previewInitialized || isBuilding);
         const isLoading = entry ? refLoading || rootLoading : rootLoading;
@@ -200,7 +199,6 @@ const Canvas: FC<{
                         scale={scale}
                         entry={entry}
                         viewMode={viewMode}
-                        // @ts-expect-error (non strict)
                         refId={refId}
                         queryParams={queryParams}
                         storyId={storyId}

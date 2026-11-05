@@ -141,7 +141,7 @@ interface API_AddonShortcut {
   defaultShortcut: API_KeyCollection;
   actionName: string;
   showInMenu?: boolean;
-  action: (...args: any[]) => any;
+  action: (...args: never[]) => unknown;
 }
 type API_AddonShortcuts = Record<string, API_AddonShortcut>;
 type API_AddonShortcutLabels = Record<string, string>;

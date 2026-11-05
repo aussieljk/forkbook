@@ -9,8 +9,11 @@ import { dedent } from 'ts-dedent';
 import { standardData as standardHeaderData } from './Heading.stories.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
 import { Ref } from './Refs.tsx';
-import { mockDataset } from './mockdata.ts';
+import { mockIndexes } from './mockdata.ts';
 import type { RefType } from './types.ts';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
 
 const managerContext = {
   state: { docsOptions: {} },
@@ -22,7 +25,7 @@ const managerContext = {
     getElements: fn(() => ({})).mockName('api::getElements'),
     getShortcutKeys: fn(() => ({})).mockName('api::getShortcutKeys'),
   },
-} as any;
+};
 
 const meta = {
   component: Ref,
@@ -35,7 +38,7 @@ const meta = {
   globals: { sb_theme: 'side-by-side' },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <IconSymbols />
         {storyFn()}
       </ManagerContext.Provider>
@@ -47,13 +50,12 @@ const meta = {
 export default meta;
 
 const { menu } = standardHeaderData;
-const filteredIndex = mockDataset.withRoot;
+const filteredIndex = mockIndexes.withRoot;
 const storyId = '1-12-121';
 
 export const simpleData = { menu, filteredIndex, storyId };
 export const loadingData = { menu, filteredIndex: {} };
 
-// @ts-expect-error (non strict)
 const indexError: Error = (() => {
   try {
     const err = new Error('There was a severe problem');
@@ -67,7 +69,7 @@ const indexError: Error = (() => {
     `;
     throw err;
   } catch (e) {
-    return e;
+    return e as Error;
   }
 })();
 
@@ -78,7 +80,6 @@ const refs: Record<string, RefType> = {
     url: 'https://example.com',
     previewInitialized: false,
     type: 'lazy',
-    // @ts-expect-error (invalid input)
     filteredIndex,
     allStatuses: {},
   },
@@ -97,7 +98,6 @@ const refs: Record<string, RefType> = {
     url: 'https://example.com',
     type: 'unknown',
     previewInitialized: false,
-    // @ts-expect-error (invalid input)
     filteredIndex,
     allStatuses: {},
   },
@@ -107,7 +107,6 @@ const refs: Record<string, RefType> = {
     url: 'https://example.com',
     type: 'auto-inject',
     previewInitialized: false,
-    // @ts-expect-error (invalid input)
     filteredIndex,
     allStatuses: {},
   },
@@ -117,7 +116,6 @@ const refs: Record<string, RefType> = {
     url: 'https://example.com',
     type: 'auto-inject',
     previewInitialized: true,
-    // @ts-expect-error (invalid input)
     filteredIndex,
     allStatuses: {},
   },
@@ -126,7 +124,6 @@ const refs: Record<string, RefType> = {
     title: 'It has versions',
     url: 'https://example.com',
     type: 'lazy',
-    // @ts-expect-error (invalid input)
     filteredIndex,
     versions: { '1.0.0': 'https://example.com/v1', '2.0.0': 'https://example.com' },
     previewInitialized: true,
@@ -137,7 +134,6 @@ const refs: Record<string, RefType> = {
     title: 'It has versions',
     url: 'https://example.com',
     type: 'lazy',
-    // @ts-expect-error (invalid input)
     filteredIndex,
     versions: { '1.0.0': 'https://example.com/v1', '2.0.0': 'https://example.com/v2' },
     previewInitialized: true,
@@ -165,7 +161,6 @@ const refs: Record<string, RefType> = {
     id: 'long',
     title: 'This storybook has a very very long name for some reason',
     url: 'https://example.com',
-    // @ts-expect-error (invalid input)
     filteredIndex,
     type: 'lazy',
     versions: {
@@ -181,7 +176,6 @@ const refs: Record<string, RefType> = {
     sourceUrl: 'https://github.com/storybookjs/storybook',
     previewInitialized: false,
     type: 'lazy',
-    // @ts-expect-error (invalid input)
     filteredIndex,
     allStatuses: {},
   },

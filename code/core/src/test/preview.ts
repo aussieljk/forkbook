@@ -25,6 +25,13 @@ const resetAllMocksLoader: LoaderFunction = ({ parameters }) => {
   }
 };
 
+/** An action that the user wrote in the args (`fn()` or `action()`), not one made from argTypes. */
+const isExplicitAction = (value: unknown): value is (...args: unknown[]) => unknown =>
+  typeof value === 'function' &&
+  'isAction' in value &&
+  !!value.isAction &&
+  !('implicit' in value && value.implicit);
+
 export const traverseArgs = (value: unknown, depth = 0, key?: string): unknown => {
   // Make sure to not get in infinite loops with self referencing args
   if (depth > 5) {
@@ -43,13 +50,8 @@ export const traverseArgs = (value: unknown, depth = 0, key?: string): unknown =
   }
 
   // wrap explicit actions in a spy
-  if (
-    typeof value === 'function' &&
-    'isAction' in value &&
-    value.isAction &&
-    !('implicit' in value && value.implicit)
-  ) {
-    const mock = fn(value as any);
+  if (isExplicitAction(value)) {
+    const mock = fn(value);
 
     if (key) {
       mock.mockName(key);

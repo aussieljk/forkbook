@@ -25,7 +25,10 @@ function update(storage: StoreAPI, patch: Patch) {
 }
 
 type GetState = () => State;
-type SetState = (a: any, b: any) => any;
+type SetState = (
+  patch: Partial<State> | ((state: State) => Partial<State>),
+  callback: (state: State) => void
+) => void;
 
 export interface Upstream {
   /**

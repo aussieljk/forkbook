@@ -36,7 +36,7 @@ export interface SubAPI {
    *   `@aussieljk/forkbook/internal/core-events`.
    * @param args - The arguments to pass to the event listener.
    */
-  emit: (type: string, ...args: any[]) => void;
+  emit: (type: string, ...args: unknown[]) => void;
   /**
    * Adds a one-time listener to the channel for the given event type.
    *
@@ -48,6 +48,16 @@ export interface SubAPI {
 }
 
 export type SubState = Record<string, never>;
+
+/** Event data that goes to one frame, for example `{ options: { target: 'my-ref' } }`. */
+const hasTarget = (data: unknown): data is { options: { target: string } } =>
+  typeof data === 'object' &&
+  data !== null &&
+  'options' in data &&
+  typeof data.options === 'object' &&
+  data.options !== null &&
+  'target' in data.options &&
+  typeof data.options.target === 'string';
 
 export const init: ModuleFn<SubAPI, SubState> = ({ provider }) => {
   const api: SubAPI = {
@@ -61,7 +71,8 @@ export const init: ModuleFn<SubAPI, SubState> = ({ provider }) => {
     once: (type, handler) => provider.channel?.once(type, handler),
     emit: (type, data, ...args) => {
       if (
-        data?.options?.target &&
+        hasTarget(data) &&
+        data.options.target &&
         data.options.target !== 'storybook-preview-iframe' &&
         !data.options.target.startsWith('storybook-ref-')
       ) {

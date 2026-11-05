@@ -191,21 +191,24 @@ export const SearchResults: FC<{
     const currentTarget = event.currentTarget as HTMLElement;
     const storyId = currentTarget.getAttribute('data-id');
     const refId = currentTarget.getAttribute('data-refid');
-    // @ts-expect-error (non strict)
-    const item = api.resolveStory(storyId, refId === 'storybook_internal' ? undefined : refId);
+    if (!storyId) {
+      return;
+    }
+    const item = api.resolveStory(
+      storyId,
+      refId === 'storybook_internal' || refId === null ? undefined : refId
+    );
 
     if (item?.type === 'component') {
       api.emit(PRELOAD_ENTRIES, {
-        // @ts-expect-error (TODO)
-        ids: [item.isLeaf ? item.id : item.children[0]],
+        ids: ['isLeaf' in item && item.isLeaf ? item.id : item.children[0]],
         options: { target: refId },
       });
     }
   }, []);
 
   const handleClearLastViewed = () => {
-    // @ts-expect-error (non strict)
-    clearLastViewed();
+    clearLastViewed?.();
     closeMenu();
   };
 

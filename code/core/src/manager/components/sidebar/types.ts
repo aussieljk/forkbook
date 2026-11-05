@@ -4,12 +4,16 @@ import type { ControllerStateAndHelpers } from 'downshift';
 import type { State, StoriesHash } from '@aussieljk/forkbook/manager-api';
 
 export type Refs = State['refs'];
-export type RefType = Refs[keyof Refs] & { allStatuses?: StatusesByStoryIdAndTypeId };
+// The main ref has a `null` title, so its wrapper gets no `data-title`.
+export type RefType = Omit<Refs[keyof Refs], 'title'> & {
+  title?: string | null;
+  allStatuses?: StatusesByStoryIdAndTypeId;
+};
 export type Item = StoriesHash[keyof StoriesHash];
 export type Dataset = Record<string, Item>;
 
 export interface CombinedDataset {
-  hash: Refs;
+  hash: Record<string, RefType>;
   entries: [string, RefType][];
 }
 
@@ -33,11 +37,11 @@ export interface Match {
   arrayIndex: number;
 }
 
-export function isExpandType(x: any): x is ExpandType {
-  return !!(x && x.showAll);
+export function isExpandType(x: unknown): x is ExpandType {
+  return typeof x === 'object' && x !== null && 'showAll' in x && !!x.showAll;
 }
-export function isSearchResult(x: any): x is SearchResult {
-  return !!(x && x.item);
+export function isSearchResult(x: unknown): x is SearchResult {
+  return typeof x === 'object' && x !== null && 'item' in x && !!x.item;
 }
 export interface ExpandType {
   showAll: () => void;

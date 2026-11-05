@@ -5,7 +5,7 @@ import { type TestProviderState } from '@aussieljk/forkbook/internal/types';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext, addons } from '@aussieljk/forkbook/manager-api';
+import { type API, ManagerContext, addons } from '@aussieljk/forkbook/manager-api';
 import { expect, fn, waitFor } from '@aussieljk/forkbook/test';
 
 import { ADDON_ID as A11Y_ADDON_ID } from '../../addon-a11y/constants.ts';
@@ -13,7 +13,10 @@ import { storeOptions } from '../constants.ts';
 import { store as mockStore } from '../manager-store.mock.ts';
 import { TestProviderRender } from './TestProviderRender.tsx';
 
-const managerContext: any = {
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
+const managerContext = {
   api: {
     getDocsUrl: fn(({ subpath }) => `https://forkbook.ljk.dev/docs/${subpath}`).mockName(
       'api::getDocsUrl'
@@ -29,7 +32,7 @@ const meta = {
   title: 'TestProviderRender',
   component: TestProviderRender,
   args: {
-    api: managerContext.api,
+    api: managerContext.api as unknown as API,
     testProviderState: 'test-provider-state:pending',
     componentTestStatusValueToStoryIds: {
       'status-value:error': [],
@@ -56,7 +59,7 @@ const meta = {
       </div>
     ),
     (StoryFn) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <StoryFn />
       </ManagerContext.Provider>
     ),

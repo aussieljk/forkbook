@@ -12,6 +12,9 @@ import { getCalls, getInteractions } from '../mocks/index.ts';
 import { InteractionsPanel } from './InteractionsPanel.tsx';
 import ToolbarStories from './Toolbar.stories.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 const wrapperStyle: React.CSSProperties = {
   backgroundColor: 'var(--fb-background-content)',
   color: 'var(--fb-color-default-text)',
@@ -25,7 +28,7 @@ const wrapperStyle: React.CSSProperties = {
 };
 
 const interactions = getInteractions(CallStates.DONE);
-const managerContext: any = {
+const managerContext = {
   state: {},
   api: {
     getDocsUrl: fn().mockName('api::getDocsUrl'),
@@ -46,8 +49,8 @@ const meta = {
   title: 'InteractionsPanel',
   component: InteractionsPanel,
   decorators: [
-    (Story: any) => (
-      <ManagerContext.Provider value={managerContext}>
+    (Story) => (
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <div id="panel-tab-content" style={wrapperStyle}>
           <Story />
         </div>

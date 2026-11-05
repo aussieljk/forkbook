@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import React, { Fragment } from 'react';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
@@ -81,13 +81,31 @@ const ellipsize = (string: string, maxlength: number): string => {
   return `${string.slice(0, maxlength).replace(trimEnd, '')}…`;
 };
 
-const stringify = (value: any) => {
+const stringify = (value: unknown) => {
   try {
     return JSON.stringify(value, null, 1);
   } catch (e) {
     return String(value);
   }
 };
+
+/** The shapes that the instrumenter serialises values to (see `serializeValues`). */
+interface SerializedValues {
+  __date__: { value: string };
+  __error__: { name: string; message: string };
+  __regexp__: { flags: string; source: string };
+  __function__: { name: string };
+  __symbol__: { description: string };
+  __element__: ElementRef['__element__'];
+  __class__: { name: string };
+  __callId__: CallRef['__callId__'];
+}
+
+const isSerialized = <K extends keyof SerializedValues>(
+  value: unknown,
+  key: K
+): value is Pick<SerializedValues, K> =>
+  value != null && Object.prototype.hasOwnProperty.call(value, key);
 
 const interleave = (nodes: ReactElement[], separator: ReactElement) =>
   nodes.flatMap((node, index) =>
@@ -103,12 +121,12 @@ export const Node = ({
   callsById,
   ...props
 }: {
-  value: any;
+  value: unknown;
   nested?: boolean;
   /** Shows an object inspector instead of just printing the object. Only available for Objects */
   showObjectInspector?: boolean;
   callsById?: Map<Call['id'], Call>;
-  [props: string]: any;
+  style?: CSSProperties;
 }) => {
   switch (true) {
     case value === null:
@@ -124,24 +142,24 @@ export const Node = ({
     case typeof value === 'boolean':
       return <BooleanNode {...props} value={value} />;
 
-    case Object.prototype.hasOwnProperty.call(value, '__date__'):
+    case isSerialized(value, '__date__'):
       return <DateNode {...props} {...value.__date__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__error__'):
+    case isSerialized(value, '__error__'):
       return <ErrorNode {...props} {...value.__error__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__regexp__'):
+    case isSerialized(value, '__regexp__'):
       return <RegExpNode {...props} {...value.__regexp__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__function__'):
+    case isSerialized(value, '__function__'):
       return <FunctionNode {...props} {...value.__function__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__symbol__'):
+    case isSerialized(value, '__symbol__'):
       return <SymbolNode {...props} {...value.__symbol__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__element__'):
+    case isSerialized(value, '__element__'):
       return <ElementNode {...props} {...value.__element__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__class__'):
+    case isSerialized(value, '__class__'):
       return <ClassNode {...props} {...value.__class__} />;
-    case Object.prototype.hasOwnProperty.call(value, '__callId__'):
+    case isSerialized(value, '__callId__'):
       return <MethodCall call={callsById?.get(value.__callId__)} callsById={callsById} />;
 
-    case Object.prototype.toString.call(value) === '[object Object]':
+    case typeof value === 'object' && Object.prototype.toString.call(value) === '[object Object]':
       return (
         <ObjectNode
           value={value}
@@ -205,7 +223,7 @@ export const ArrayNode = ({
   nested = false,
   callsById,
 }: {
-  value: any[];
+  value: unknown[];
   nested?: boolean;
   callsById?: Map<Call['id'], Call>;
 }) => {
@@ -403,7 +421,7 @@ export const SymbolNode = ({ description }: { description: string }) => {
   );
 };
 
-export const OtherNode = ({ value }: { value: any }) => {
+export const OtherNode = ({ value }: { value: unknown }) => {
   const colors = useThemeColors();
   return <span style={{ color: colors.meta }}>{stringify(value)}</span>;
 };
@@ -437,7 +455,7 @@ export const MethodCall = ({
   }
 
   if (call.method === 'step' && call.path?.length === 0) {
-    return <StepNode label={call.args[0]} />;
+    return <StepNode label={String(call.args[0])} />;
   }
 
   const path = call.path?.flatMap((elem, index) => {
@@ -446,7 +464,7 @@ export const MethodCall = ({
       callId ? (
         <MethodCall key={`elem${index}`} call={callsById?.get(callId)} callsById={callsById} />
       ) : (
-        <span key={`elem${index}`}>{elem as any}</span>
+        <span key={`elem${index}`}>{String(elem)}</span>
       ),
       <wbr key={`wbr${index}`} />,
       <span key={`dot${index}`}>.</span>,

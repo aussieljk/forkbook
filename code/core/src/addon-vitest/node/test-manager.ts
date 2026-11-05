@@ -30,7 +30,7 @@ import { errorToErrorLike } from '../utils.ts';
 import { VitestManager } from './vitest-manager.ts';
 
 export type TestManagerOptions = {
-  storybookOptions: Options;
+  storybookOptions: Pick<Options, 'configDir'>;
   configLoader?: BuilderOptions['configLoader'];
   store: internal_UniversalStore<StoreState, StoreEvent>;
   componentTestStatusStore: StatusStoreByTypeId;
@@ -83,7 +83,7 @@ export class TestManager {
 
   private onReady?: TestManagerOptions['onReady'];
 
-  public storybookOptions: Options;
+  public storybookOptions: Pick<Options, 'configDir'>;
 
   public readonly configLoader?: TestManagerOptions['configLoader'];
 
@@ -387,13 +387,13 @@ export class TestManager {
     }));
   }
 
-  async reportFatalError(message: string, error: Error | any) {
+  async reportFatalError(message: string, error: unknown) {
     await this.store.untilReady();
     this.store.send({
       type: 'FATAL_ERROR',
       payload: {
         message,
-        error: errorToErrorLike(error),
+        error: error instanceof Error ? errorToErrorLike(error) : { message: String(error) },
       },
     });
   }

@@ -39,12 +39,10 @@ export const parsePath: (path: string | undefined) => StoryData = memoize(1000)(
   return result;
 });
 
-interface Args {
-  [key: string]: any;
-}
+type Args = Record<string, unknown>;
 
 export const DEEPLY_EQUAL = Symbol('Deeply equal');
-export const deepDiff = (value: any, update: any): any => {
+export const deepDiff = (value: unknown, update: unknown): unknown => {
   if (typeof value !== typeof update) {
     return update;
   }
@@ -53,7 +51,7 @@ export const deepDiff = (value: any, update: any): any => {
     return DEEPLY_EQUAL;
   }
   if (Array.isArray(value) && Array.isArray(update)) {
-    const res = update.reduce((acc, upd, index) => {
+    const res = update.reduce<unknown[]>((acc, upd, index) => {
       const diff = deepDiff(value[index], upd);
 
       if (diff !== DEEPLY_EQUAL) {
@@ -69,7 +67,7 @@ export const deepDiff = (value: any, update: any): any => {
   }
   if (isPlainObject(value) && isPlainObject(update)) {
     return Object.keys({ ...value, ...update }).reduce((acc, key) => {
-      const diff = deepDiff(value?.[key], update?.[key]);
+      const diff = deepDiff(value[key], update[key]);
       return diff === DEEPLY_EQUAL ? acc : Object.assign(acc, { [key]: diff });
     }, {});
   }
@@ -193,7 +191,8 @@ export const buildArgsParam = (initialArgs: Args | undefined, args: Args): strin
     return '';
   }
 
-  const object = Object.entries(update).reduce((acc, [key, value]) => {
+  // `args` is an object, so the diff is an object too.
+  const object = Object.entries(update as Args).reduce((acc, [key, value]) => {
     if (validateArgs(key, value)) {
       return Object.assign(acc, { [key]: value });
     }
@@ -216,11 +215,13 @@ export const buildArgsParam = (initialArgs: Args | undefined, args: Args): strin
     .join(';');
 };
 
-interface Query {
-  [key: string]: any;
-}
+type Query = Record<string, unknown>;
+/** Forkbook's own URL params are flat strings, so the parsed query is typed as strings. */
+type ParsedQuery = Record<string, string | undefined>;
 
-const queryFromString = memoize(1000)((s?: string): Query => (s !== undefined ? parse(s) : {}));
+const queryFromString = memoize(1000)((s?: string): ParsedQuery =>
+  s !== undefined ? (parse(s) as ParsedQuery) : {}
+);
 
 export const queryFromLocation = (location?: Partial<Location>) => {
   return queryFromString(location?.search ? location.search.slice(1) : '');

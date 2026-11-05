@@ -38,7 +38,7 @@ const channel: Channel = new Channel({
   },
 });
 
-(UniversalStore as any).__prepare(channel, UniversalStore.Environment.SERVER);
+UniversalStore.__prepare(channel, UniversalStore.Environment.SERVER);
 
 const store = UniversalStore.create<StoreState, StoreEvent>(storeOptions);
 
@@ -52,7 +52,7 @@ const testManager = new TestManager({
   },
   storybookOptions: {
     configDir: process.env.FORKBOOK_CONFIG_DIR || '',
-  } as any,
+  },
   configLoader: process.env.FORKBOOK_CONFIG_LOADER as BuilderOptions['configLoader'],
   previewAnnotations: JSON.parse(
     process.env.FORKBOOK_PREVIEW_ANNOTATIONS || '[]'

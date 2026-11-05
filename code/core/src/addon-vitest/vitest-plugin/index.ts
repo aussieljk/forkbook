@@ -477,9 +477,8 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
       const config = mergeConfig(baseConfig, viteConfigFromForkbook);
 
       // alert the user of problems
-      if ((nonMutableInputConfig.test?.include?.length ?? 0) > 0) {
+      if (nonMutableInputConfig.test?.include?.length) {
         // remove the user's existing include, because we're replacing it with our own heuristic based on main.ts#stories
-        // @ts-expect-error: Ignore
         nonMutableInputConfig.test.include = [];
         console.log(
           picocolors.yellow(dedent`

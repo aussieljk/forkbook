@@ -58,8 +58,5 @@ export class ForkbookReporter implements Reporter {
     this.ctx.state.pathsSet.clear();
     this.ctx.state.idMap.clear();
     this.ctx.state.errorsSet.clear();
-    // TODO: Remove this once we don't support Vitest < 4
-    // @ts-expect-error processTimeoutCauses does not exist in Vitest 4
-    this.ctx.state.processTimeoutCauses?.clear();
   }
 }

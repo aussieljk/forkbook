@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { type ReactNode, useEffect } from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -8,8 +8,11 @@ import { expect, waitFor, within } from '@aussieljk/forkbook/test';
 import { LayoutProvider, useLayout } from '../../layout/LayoutProvider.tsx';
 import { MobileAbout } from './MobileAbout.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 /** A helper component to open the about page via the MobileLayoutContext */
-const OpenAboutHelper = ({ children }: { children: any }) => {
+const OpenAboutHelper = ({ children }: { children: ReactNode }) => {
   const { setMobileAboutOpen } = useLayout();
   useEffect(() => {
     setMobileAboutOpen(true);
@@ -36,7 +39,7 @@ const meta = {
                   version: '7.2.0',
                 }),
               },
-            } as any
+            } as unknown as ManagerContextValue
           }
         >
           <LayoutProvider>

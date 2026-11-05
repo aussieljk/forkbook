@@ -35,8 +35,8 @@ const filterWarn: API_FilterFunction = ({ statuses = {} }) =>
 const filterError: API_FilterFunction = ({ statuses = {} }) =>
   Object.values(statuses).some(({ value }) => value === 'status-value:error');
 const filterBoth: API_FilterFunction = ({ statuses = {} }) =>
-  Object.values(statuses).some(({ value }) =>
-    ['status-value:warning', 'status-value:error'].includes(value as any)
+  Object.values(statuses).some(
+    ({ value }) => value === 'status-value:warning' || value === 'status-value:error'
   );
 
 const getFilter = (warningsActive = false, errorsActive = false) => {

@@ -7,13 +7,19 @@ import { LinkIcon } from 'lucide-react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import { type API, ManagerContext } from '@aussieljk/forkbook/manager-api';
 import { expect, fn, screen, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
 import { useMenu } from '../../container/Menu.tsx';
 import { LayoutProvider } from '../layout/LayoutProvider.tsx';
 import { type MenuList, SidebarMenu } from './Menu.tsx';
 import styles from './Menu.stories.module.css';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
+/** An API with only the methods that the menu uses. */
+const asApi = (api: object) => api as API;
 
 const getAPIMocks = () => ({
   getShortcutKeys: fn()
@@ -46,7 +52,7 @@ const fakemenu: MenuList = [
   ],
 ];
 
-const managerContext: any = {
+const managerContext = {
   state: {},
   api: {
     getData: fn().mockName('api::getData'),
@@ -68,7 +74,7 @@ const meta = {
   globals: { sb_theme: 'side-by-side' },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <LayoutProvider>{storyFn()}</LayoutProvider>
       </ManagerContext.Provider>
     ),
@@ -86,8 +92,7 @@ export const Real: Story = {
   args: {
     isHighlighted: true,
   },
-  // @ts-expect-error (non strict)
-  render: (args) => <SidebarMenu menu={fakemenu} {...args} />,
+  render: (args) => <SidebarMenu {...args} />,
 };
 
 const DoubleThemeRenderingHack = ({ children }: { children: ReactNode }) => (
@@ -98,15 +103,14 @@ export const Expanded: Story = {
   globals: { sb_theme: 'light', viewport: 'desktop' },
   render: () => {
     const menu = useMenu({
-      api: {
+      api: asApi({
         ...getAPIMocks(),
-        // @ts-expect-error (Converted from ts-ignore)
         getShortcutKeys: () => ({}),
         getAddonsShortcuts: () => ({}),
         versionUpdateAvailable: () => false,
         isWhatsNewUnread: () => false,
         getDocsUrl: () => 'https://forkbook.ljk.dev/docs',
-      },
+      }),
       showToolbar: false,
       isPanelShown: false,
       isNavShown: false,
@@ -149,9 +153,8 @@ export const ExpandedWithShortcuts: Story = {
   ...Expanded,
   render: () => {
     const menu = useMenu({
-      api: {
+      api: asApi({
         ...getAPIMocks(),
-        // @ts-expect-error (invalid)
         getShortcutKeys: () => ({
           shortcutsPage: ['⌘', '⇧​', ','],
           toggleNav: ['⌥', 'S'],
@@ -170,7 +173,7 @@ export const ExpandedWithShortcuts: Story = {
         versionUpdateAvailable: () => false,
         isWhatsNewUnread: () => false,
         getDocsUrl: () => 'https://forkbook.ljk.dev/docs',
-      },
+      }),
       showToolbar: false,
       isPanelShown: false,
       isNavShown: false,
@@ -202,15 +205,14 @@ export const ExpandedWithWhatsNew: Story = {
   ...Expanded,
   render: () => {
     const menu = useMenu({
-      api: {
+      api: asApi({
         ...getAPIMocks(),
-        // @ts-expect-error (invalid)
         getShortcutKeys: () => ({}),
         getAddonsShortcuts: () => ({}),
         versionUpdateAvailable: () => false,
         isWhatsNewUnread: () => true,
         getDocsUrl: () => 'https://forkbook.ljk.dev/docs',
-      },
+      }),
       showToolbar: false,
       isPanelShown: false,
       isNavShown: false,
@@ -228,8 +230,7 @@ export const ExpandedWithWhatsNew: Story = {
     await new Promise((res) => {
       setTimeout(res, 500);
     });
-    // @ts-expect-error (non strict)
-    await Expanded.play(context);
+    await Expanded.play?.(context);
     const releaseNotes = await canvas.queryByText(/What's new/);
     await expect(releaseNotes).not.toBeInTheDocument();
   },

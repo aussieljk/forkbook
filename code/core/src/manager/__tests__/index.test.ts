@@ -7,7 +7,7 @@ describe('Main API', () => {
   it('should fail if provider is not extended from the base Provider', () => {
     const run = () => {
       const fakeProvider = {};
-      // @ts-expect-error (Converted from ts-ignore)
+      // @ts-expect-error The test passes a wrong root element and provider on purpose.
       renderForkbookUI(null, fakeProvider);
     };
 

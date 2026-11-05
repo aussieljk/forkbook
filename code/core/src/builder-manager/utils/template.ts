@@ -39,13 +39,13 @@ export const renderHTML = async (
   customHead: Promise<string | false>,
   cssFiles: string[],
   jsFiles: string[],
-  features: Promise<Record<string, any>>,
+  features: Promise<Record<string, unknown>>,
   refs: Promise<Record<string, Ref>>,
   logLevel: Promise<string>,
   docsOptions: Promise<DocsOptions>,
   tagsOptions: Promise<TagsOptions>,
   { versionCheck, configType }: Options,
-  globals: Record<string, any>
+  globals: Record<string, unknown>
 ) => {
   const titleRef = await title;
   const templateRef = await template;

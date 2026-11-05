@@ -18,12 +18,15 @@ import { init as initModule } from '../modules/globals.ts';
 import type { API } from '../root.tsx';
 
 const getEventMetadata = vi.mocked(_getEventData, true);
+
+/** Event metadata with only the fields that a test needs. */
+const eventMetadata = (meta: object) => meta as ReturnType<typeof _getEventData>;
 const logger = vi.mocked(_logger, true);
 
 vi.mock('@aussieljk/forkbook/internal/client-logger');
 vi.mock('../lib/events');
 beforeEach(() => {
-  getEventMetadata.mockReset().mockReturnValue({ sourceType: 'local' } as any);
+  getEventMetadata.mockReset().mockReturnValue(eventMetadata({ sourceType: 'local' }));
 });
 
 function createMockStore() {
@@ -140,7 +143,9 @@ describe('globals API', () => {
     } as unknown as ModuleArgs);
     store.setState(state);
 
-    getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } } as any);
+    getEventMetadata.mockReturnValueOnce(
+      eventMetadata({ sourceType: 'external', ref: { id: 'ref' } })
+    );
     channel.emit(SET_STORIES, { globals: { a: 'b' } });
     expect(store.getState()).toEqual({
       userGlobals: {},
@@ -161,7 +166,9 @@ describe('globals API', () => {
     } as unknown as ModuleArgs);
     store.setState(state);
 
-    getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } } as any);
+    getEventMetadata.mockReturnValueOnce(
+      eventMetadata({ sourceType: 'external', ref: { id: 'ref' } })
+    );
     channel.emit(SET_GLOBALS, {
       globals: { a: 'b' },
       globalTypes: { a: {} },
@@ -237,7 +244,9 @@ describe('globals API', () => {
     } as unknown as ModuleArgs);
     store.setState(state);
 
-    getEventMetadata.mockReturnValueOnce({ sourceType: 'external', ref: { id: 'ref' } } as any);
+    getEventMetadata.mockReturnValueOnce(
+      eventMetadata({ sourceType: 'external', ref: { id: 'ref' } })
+    );
     logger.warn.mockClear();
     channel.emit(GLOBALS_UPDATED, {
       initialGlobals: { a: 'b' },

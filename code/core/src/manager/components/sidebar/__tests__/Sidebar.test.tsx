@@ -27,7 +27,7 @@ const factory = (props: Partial<SidebarProps>): RenderResult => {
 };
 
 const generateStories = ({ title, refId }: { title: string; refId?: string }): API_IndexHash => {
-  const [root, componentName]: [string, string] = title.split('/') as any;
+  const [root, componentName] = title.split('/') as [string, string];
   const rootId: string = root.toLowerCase().replace(/\s+/g, '-');
   const hypenatedComponentName: string = componentName.toLowerCase().replace(/\s+/g, '-');
   const componentId = `${rootId}-${hypenatedComponentName}`;
@@ -54,7 +54,6 @@ const generateStories = ({ title, refId }: { title: string; refId?: string }): A
       parent: rootId,
       tags: [],
     },
-    // @ts-expect-error the missing fields are deprecated and replaced by the type prop
     {
       type: 'docs',
       id: docsId,
@@ -64,7 +63,8 @@ const generateStories = ({ title, refId }: { title: string; refId?: string }): A
       title,
       parent: componentId,
       importPath: './docs.js',
-    },
+      // Without `prepared` and `tags`, as in an index that has not loaded the docs yet.
+    } as HashEntry,
   ];
 
   return storyBase.reduce((accumulator: API_IndexHash, current: HashEntry): API_IndexHash => {

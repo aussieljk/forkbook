@@ -11,6 +11,9 @@ import { MOBILE_TRANSITION_DURATION } from '../../../constants.ts';
 import { LayoutProvider, useLayout } from '../../layout/LayoutProvider.tsx';
 import { MobileNavigation } from './MobileNavigation.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 const MockMenu = () => {
   const api = useStorybookApi();
   const { setMobileAboutOpen } = useLayout();
@@ -93,7 +96,7 @@ const MockManagerProvider: FC<
 > = ({ children, index = baseIndex, exposeApi = false }) => {
   const [showMobileNavigation, setShowMobileNavigation] = useState(false);
 
-  const value: any = useMemo(() => {
+  const value = useMemo(() => {
     const api = {
       getCurrentStoryData: fn(() => index.someStoryId),
       getCurrentVersion: () => ({ version: '0.0.0' }),
@@ -119,7 +122,11 @@ const MockManagerProvider: FC<
     }
   }, [exposeApi, value]);
 
-  return <ManagerContext.Provider value={value}>{children}</ManagerContext.Provider>;
+  return (
+    <ManagerContext.Provider value={value as unknown as ManagerContextValue}>
+      {children}
+    </ManagerContext.Provider>
+  );
 };
 
 const meta = {
@@ -206,8 +213,7 @@ export const MenuOpen: Story = {
 
 export const MenuClosed: Story = {
   play: async (context) => {
-    // @ts-expect-error (non strict)
-    await MenuOpen.play(context);
+    await MenuOpen.play?.(context);
     await new Promise((resolve) => setTimeout(resolve, 500));
     const overlay = await screen.findByLabelText('Close navigation menu');
     await userEvent.click(overlay);
@@ -243,8 +249,7 @@ export const PanelOpen: Story = {
 
 export const PanelClosed: Story = {
   play: async (context) => {
-    // @ts-expect-error (non strict)
-    await PanelOpen.play(context);
+    await PanelOpen.play?.(context);
     await new Promise((resolve) => setTimeout(resolve, 500));
     const closeButton = await screen.findByLabelText('Close addon panel');
     await userEvent.click(closeButton);
@@ -261,8 +266,7 @@ export const PanelDisabled: Story = {
 // menu rather than on the overlay (regression test).
 export const AboutResetOnReopen: Story = {
   play: async (context) => {
-    // @ts-expect-error (non strict)
-    await MenuOpen.play(context);
+    await MenuOpen.play?.(context);
     await userEvent.click(await screen.findByLabelText('About Forkbook'));
     await screen.findByLabelText('Close about section');
 
@@ -274,9 +278,7 @@ export const AboutResetOnReopen: Story = {
     );
     // The reset is delayed until the drawer's exit transition is done.
     await new Promise((resolve) => setTimeout(resolve, MOBILE_TRANSITION_DURATION + 50));
-
-    // @ts-expect-error (non strict)
-    await MenuOpen.play(context);
+    await MenuOpen.play?.(context);
     // waitFor, as the reopened drawer fades in and starts fully transparent
     await waitFor(async () =>
       expect(await screen.findByLabelText('Close navigation menu')).toBeVisible()
@@ -290,8 +292,7 @@ export const AboutResetOnReopen: Story = {
 // escaping the overlay and skipping an element fail the test (regression test).
 export const AboutFocusTrapped: Story = {
   play: async (context) => {
-    // @ts-expect-error (non strict)
-    await MenuOpen.play(context);
+    await MenuOpen.play?.(context);
     await userEvent.click(await screen.findByLabelText('About Forkbook'));
 
     const backButton = await screen.findByLabelText('Close about section');

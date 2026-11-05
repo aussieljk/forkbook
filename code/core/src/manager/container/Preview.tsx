@@ -69,8 +69,7 @@ const getDescription = (item: Item) => {
 const mapper = ({
   api,
   state,
-  // @ts-expect-error (non strict)
-}: Parameters<ComponentProps<typeof Consumer>['filter']>[0]): Omit<
+}: Parameters<NonNullable<ComponentProps<typeof Consumer>['filter']>>[0]): Omit<
   ComponentProps<typeof Preview>,
   'withLoader' | 'id'
 > => {

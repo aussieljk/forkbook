@@ -18,6 +18,10 @@ import { internal_fullStatusStore } from '../../manager-stores.mock.ts';
 import { Filter } from './Filter.tsx';
 import { IconSymbolsDecorator } from './Filter.story-helpers.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
+
 const getDefaultTagFilters = () => {
   const tagOptions = global.TAGS_OPTIONS ?? {};
 
@@ -35,7 +39,17 @@ const getDefaultTagFilters = () => {
   );
 };
 
-const createInitialState = (initialStoryState: Record<string, unknown> = {}) => {
+/** The manager state of these stories. The story parameters can add any other state. */
+type FilterStoryState = Record<string, unknown> & {
+  defaultIncludedTagFilters: string[];
+  defaultExcludedTagFilters: string[];
+  includedTagFilters: string[];
+  excludedTagFilters: string[];
+  includedStatusFilters?: string[];
+  excludedStatusFilters?: string[];
+};
+
+const createInitialState = (initialStoryState: Record<string, unknown> = {}): FilterStoryState => {
   const defaults = getDefaultTagFilters();
 
   const defaultIncludedTagFilters =
@@ -68,7 +82,7 @@ const meta = {
       const api = useMemo(
         () => ({
           addTagFilters: (tags: string[], excluded: boolean) => {
-            setState((current: any) => {
+            setState((current) => {
               const includedTagFilters = new Set(current.includedTagFilters ?? []);
               const excludedTagFilters = new Set(current.excludedTagFilters ?? []);
 
@@ -90,7 +104,7 @@ const meta = {
             });
           },
           removeTagFilters: (tags: string[]) => {
-            setState((current: any) => ({
+            setState((current) => ({
               ...current,
               includedTagFilters: (current.includedTagFilters ?? []).filter(
                 (tag: string) => !tags.includes(tag)
@@ -101,21 +115,21 @@ const meta = {
             }));
           },
           resetTagFilters: () => {
-            setState((current: any) => ({
+            setState((current) => ({
               ...current,
               includedTagFilters: current.defaultIncludedTagFilters ?? [],
               excludedTagFilters: current.defaultExcludedTagFilters ?? [],
             }));
           },
           setAllTagFilters: (included: string[], excluded: string[]) => {
-            setState((current: any) => ({
+            setState((current) => ({
               ...current,
               includedTagFilters: included,
               excludedTagFilters: excluded,
             }));
           },
           addStatusFilters: (statuses: string[], excluded: boolean) => {
-            setState((current: any) => {
+            setState((current) => {
               const includedStatusFilters = new Set(current.includedStatusFilters ?? []);
               const excludedStatusFilters = new Set(current.excludedStatusFilters ?? []);
 
@@ -137,7 +151,7 @@ const meta = {
             });
           },
           removeStatusFilters: (statuses: string[]) => {
-            setState((current: any) => ({
+            setState((current) => ({
               ...current,
               includedStatusFilters: (current.includedStatusFilters ?? []).filter(
                 (s: string) => !statuses.includes(s)
@@ -148,7 +162,7 @@ const meta = {
             }));
           },
           resetStatusFilters: () => {
-            setState((current: any) => ({
+            setState((current) => ({
               ...current,
               includedStatusFilters: [],
               excludedStatusFilters: [],
@@ -161,7 +175,7 @@ const meta = {
       );
 
       return (
-        <ManagerContext.Provider value={{ api, state } as any}>
+        <ManagerContext.Provider value={asManagerContext({ api, state })}>
           <Story args={{ ...args, api }} />
         </ManagerContext.Provider>
       );

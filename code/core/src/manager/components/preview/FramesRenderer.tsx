@@ -43,7 +43,7 @@ export const FramesRenderer: FC<FramesRendererProps> = ({
   queryParams = {},
   storyId = '*',
 }) => {
-  const version = refs[refId]?.version;
+  const version = refId ? refs[refId]?.version : undefined;
   const active = getActive(refId, refs);
   const { current: frames } = useRef<Record<string, string>>({});
 

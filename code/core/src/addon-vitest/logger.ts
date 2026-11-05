@@ -4,7 +4,7 @@ import picocolors from 'picocolors';
 
 import { ADDON_ID } from './constants.ts';
 
-export const log = (message: any) => {
+export const log = (message: { toString(): string }) => {
   logger.log(
     `${picocolors.magenta(ADDON_ID)}: ${message
       .toString()

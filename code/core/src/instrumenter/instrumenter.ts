@@ -26,7 +26,7 @@ import type {
 import { CallStates } from './types.ts';
 import './typings.d.ts';
 
-type PatchedObj<TObj extends Record<string, unknown>> = {
+type PatchedObj<TObj> = {
   [Property in keyof TObj]: TObj[Property] & { __originalFn__: TObj[Property] };
 };
 
@@ -38,7 +38,9 @@ const isObject = (o: unknown): o is object =>
   Object.prototype.toString.call(o) === '[object Object]';
 const isModule = (o: unknown): o is NodeModule =>
   Object.prototype.toString.call(o) === '[object Module]';
-const isInstrumentable = (o: unknown) => {
+const isCallRef = (value: unknown): value is CallRef =>
+  typeof value === 'object' && value !== null && '__callId__' in value;
+const isInstrumentable = (o: unknown): o is object => {
   if (!isObject(o) && !isModule(o)) {
     return false;
   }
@@ -54,9 +56,9 @@ const isInstrumentable = (o: unknown) => {
   return true;
 };
 
-const construct = (obj: any) => {
+const construct = (obj: object) => {
   try {
-    return new obj.constructor();
+    return new (obj.constructor as new () => Record<string, unknown>)();
   } catch {
     return {};
   }
@@ -354,7 +356,7 @@ export class Instrumenter {
     const seen = new Set();
     return merged.reduceRight<LogItem[]>((acc, call) => {
       call.args.forEach((arg) => {
-        if (arg?.__callId__) {
+        if (isCallRef(arg)) {
           seen.add(arg.__callId__);
         }
       });
@@ -374,25 +376,22 @@ export class Instrumenter {
   // Traverses the object structure to recursively patch all function properties.
   // Returns the original object, or a new object with the same constructor,
   // depending on whether it should mutate.
-  instrument<TObj extends Record<string, unknown>>(
-    obj: TObj,
-    options: Options,
-    depth = 0
-  ): PatchedObj<TObj> {
+  instrument<TObj>(obj: TObj, options: Options, depth = 0): PatchedObj<TObj> {
     if (!isInstrumentable(obj)) {
       return obj as PatchedObj<TObj>;
     }
+    const source = obj as Record<string, unknown>;
 
     const { mutate = false, path = [] } = options;
 
-    const keys = options.getKeys ? options.getKeys(obj, depth) : Object.keys(obj);
+    const keys = options.getKeys ? options.getKeys(source, depth) : Object.keys(source);
     depth += 1;
-    return keys.reduce(
+    return keys.reduce<Record<string, unknown>>(
       (acc, key) => {
-        const descriptor = getPropertyDescriptor(obj, key);
+        const descriptor = getPropertyDescriptor(source, key);
         if (typeof descriptor?.get === 'function') {
           if (descriptor.configurable) {
-            const getter = () => descriptor?.get?.bind(obj)?.();
+            const getter = () => descriptor?.get?.bind(source)?.();
             Object.defineProperty(acc, key, {
               get: () => {
                 return this.instrument(getter(), { ...options, path: path.concat(key) }, depth);
@@ -402,7 +401,7 @@ export class Instrumenter {
           return acc;
         }
 
-        const value = (obj as Record<string, any>)[key];
+        const value = source[key];
 
         // Nothing to patch, but might be instrumentable, so we recurse
         if (typeof value !== 'function') {
@@ -417,24 +416,27 @@ export class Instrumenter {
         }
 
         // Patch the function and mark it "patched" by adding a reference to the original function
-        acc[key] = (...args: any[]) => this.track(key, value, obj, args, options);
-        acc[key].__originalFn__ = value;
+        const patched = Object.assign(
+          (...args: unknown[]) => this.track(key, value, source, args, options),
+          { __originalFn__: value }
+        );
+        acc[key] = patched;
 
         // Reuse the original name as the patched function's name
-        Object.defineProperty(acc[key], 'name', { value: key, writable: false });
+        Object.defineProperty(patched, 'name', { value: key, writable: false });
 
         // Deal with functions that also act like an object
         if (Object.keys(value).length > 0) {
           Object.assign(
-            acc[key],
+            patched,
             this.instrument({ ...value }, { ...options, path: path.concat(key) }, depth)
           );
         }
 
         return acc;
       },
-      mutate ? obj : construct(obj)
-    );
+      mutate ? source : construct(source)
+    ) as PatchedObj<TObj>;
   }
 
   // Monkey patch an object method to record calls.
@@ -444,11 +446,17 @@ export class Instrumenter {
     method: string,
     fn: Function,
     object: Record<string, unknown>,
-    args: any[],
+    args: unknown[],
     options: Options
   ) {
-    const storyId: StoryId =
-      args?.[0]?.__storyId__ || global.__FORKBOOK_PREVIEW__?.selectionStore?.selection?.storyId;
+    const firstArg = args[0];
+    const storyIdArg =
+      typeof firstArg === 'object' && firstArg !== null && '__storyId__' in firstArg
+        ? (firstArg.__storyId__ as StoryId)
+        : undefined;
+    // A call outside a story (no selection yet) is tracked under an undefined story ID.
+    const storyId = (storyIdArg ||
+      global.__FORKBOOK_PREVIEW__?.selectionStore?.selection?.storyId) as StoryId;
     const { cursor, ancestors } = this.getState(storyId);
     this.setState(storyId, { cursor: cursor + 1 });
     const id = `${ancestors.slice(-1)[0] || storyId} [${cursor}] ${method}`;
@@ -495,7 +503,7 @@ export class Instrumenter {
     // Possibly we need to add HTMLElement support to telejson though
     // Keeping this function here, as removing it means we need to refactor the deserializing that happens in core interactions
     const maximumDepth = 25; // mimicks the max depth of telejson
-    const serializeValues = (value: any, depth: number, seen: unknown[]): any => {
+    const serializeValues = (value: unknown, depth: number, seen: unknown[]): unknown => {
       if (seen.includes(value)) {
         return '[Circular]';
       }
@@ -529,7 +537,12 @@ export class Instrumenter {
       }
       if (typeof value === 'function') {
         return {
-          __function__: { name: 'getMockName' in value ? value.getMockName() : value.name },
+          __function__: {
+            name:
+              'getMockName' in value && typeof value.getMockName === 'function'
+                ? value.getMockName()
+                : value.name,
+          },
         };
       }
       if (typeof value === 'symbol') {
@@ -542,7 +555,7 @@ export class Instrumenter {
       ) {
         return { __class__: { name: value.constructor.name } };
       }
-      if (Object.prototype.toString.call(value) === '[object Object]') {
+      if (isObject(value)) {
         return Object.fromEntries(
           Object.entries(value).map(([key, val]) => [key, serializeValues(val, ++depth, seen)])
         );
@@ -746,10 +759,7 @@ export class Instrumenter {
  * patched functions will return a Promise when the debugger stops before this function. As such,
  * "interceptable" functions will have to be `await`-ed.
  */
-export function instrument<TObj extends Record<string, any>>(
-  obj: TObj,
-  options: Options = {}
-): TObj {
+export function instrument<TObj extends object>(obj: TObj, options: Options = {}): TObj {
   try {
     let forceInstrument = false;
     let skipInstrument = false;

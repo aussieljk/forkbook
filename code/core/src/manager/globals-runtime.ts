@@ -7,7 +7,7 @@ import { prepareForTelemetry, shouldSkipError } from './utils/prepareForTelemetr
 
 // Apply all the globals
 globalPackages.forEach((key) => {
-  globalThis[globalsNameReferenceMap[key]] = globalsNameValueMap[key];
+  Object.assign(globalThis, { [globalsNameReferenceMap[key]]: globalsNameValueMap[key] });
 });
 
 const queuedErrors: Error[] = [];

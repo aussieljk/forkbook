@@ -1,4 +1,4 @@
-import type { API_HashEntry } from '@aussieljk/forkbook/internal/types';
+import type { API_HashEntry, API_IndexHash } from '@aussieljk/forkbook/internal/types';
 
 export type MockDataSet = Record<string, Record<string, Partial<API_HashEntry>>>;
 
@@ -245,6 +245,9 @@ export const mockDataset: MockDataSet = {
     },
   },
 };
+
+/** The mock dataset typed as index hashes. Its entries are partial, which is enough for stories. */
+export const mockIndexes = mockDataset as Record<string, API_IndexHash>;
 
 export const mockSelected = {
   withRoot: {

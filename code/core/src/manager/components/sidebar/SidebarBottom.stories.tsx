@@ -14,6 +14,9 @@ import { expect, fireEvent, fn, waitFor, within } from '@aussieljk/forkbook/test
 import type { TestProviderStateByProviderId } from '../../../shared/test-provider-store/index.ts';
 import { SidebarBottomBase } from './SidebarBottom.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 const DynamicHeightDemo: FC = () => {
   const [height, setHeight] = useState(100);
 
@@ -40,7 +43,7 @@ const DynamicHeightDemo: FC = () => {
   );
 };
 
-const managerContext: any = {
+const managerContext = {
   state: {
     docsOptions: {
       defaultName: 'Docs',
@@ -93,7 +96,7 @@ const meta = {
       setFilters: fn(),
       getChannel: fn(),
       getElements: fn(() => ({})),
-    } as any as API,
+    } as unknown as API,
     onRunAll: fn(),
     registeredTestProviders,
     testProviderStates,
@@ -103,7 +106,9 @@ const meta = {
   },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={managerContext}>{storyFn()}</ManagerContext.Provider>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
+        {storyFn()}
+      </ManagerContext.Provider>
     ),
   ],
 } satisfies Meta<typeof SidebarBottomBase>;

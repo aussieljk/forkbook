@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { type ComponentProps } from 'react';
+
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
 
 import type { StoriesHash } from '@aussieljk/forkbook/manager-api';
 
 import { searchItem } from '../../utils/tree.ts';
 import { IconSymbols } from './IconSymbols.tsx';
 import { SearchResults } from './SearchResults.tsx';
-import { mockDataset } from './mockdata.ts';
+import { mockIndexes } from './mockdata.ts';
 import type { CombinedDataset, Refs, SearchItem } from './types.ts';
 
 export default {
@@ -15,7 +17,7 @@ export default {
   parameters: { layout: 'fullscreen' },
   globals: { sb_theme: 'side-by-side' },
   decorators: [
-    (storyFn: any) => (
+    (storyFn: Parameters<Decorator>[0]) => (
       <div style={{ padding: '0 20px', maxWidth: '230px' }}>
         <IconSymbols />
         {storyFn()}
@@ -43,15 +45,12 @@ const combinedDataset = (refs: Record<string, StoriesHash>): CombinedDataset => 
   return { hash, entries: Object.entries(hash) };
 };
 
-// @ts-expect-error (invalid input)
-const dataset = combinedDataset({ internal: mockDataset.withRoot, composed: mockDataset.noRoot });
+const dataset = combinedDataset({ internal: mockIndexes.withRoot, composed: mockIndexes.noRoot });
 
-// @ts-expect-error (non strict)
-const internal = Object.values(dataset.hash.internal.index).map((item) =>
+const internal = Object.values(dataset.hash.internal.index ?? {}).map((item) =>
   searchItem(item, dataset.hash.internal)
 );
-// @ts-expect-error (non strict)
-const composed = Object.values(dataset.hash.composed.index).map((item) =>
+const composed = Object.values(dataset.hash.composed.index ?? {}).map((item) =>
   searchItem(item, dataset.hash.composed)
 );
 const stories: SearchItem[] = internal.concat(composed);
@@ -68,26 +67,29 @@ const recents = stories
   .map((story) => ({ item: story, matches: [], score: 0 }));
 
 // We need this to prevent react key warnings
-const passKey: any = (props = { key: '' }) => ({ key: props.key });
+const passKey = (props = { key: '' }) => ({ key: props.key });
+type SearchResultsProps = ComponentProps<typeof SearchResults>;
+const getMenuProps = passKey as SearchResultsProps['getMenuProps'];
+const getItemProps = passKey as SearchResultsProps['getItemProps'];
 
 export const searching = {
   query: 'query',
   results,
   closeMenu: () => {},
-  getMenuProps: passKey,
-  getItemProps: passKey,
+  getMenuProps,
+  getItemProps,
   highlightedIndex: 0,
 };
 export const noResults = {
   ...searching,
-  results: [] as any,
+  results: [],
 };
 export const lastViewed = {
   query: '',
   results: recents,
   closeMenu: () => {},
-  getMenuProps: passKey,
-  getItemProps: passKey,
+  getMenuProps,
+  getItemProps,
   highlightedIndex: 0,
 };
 

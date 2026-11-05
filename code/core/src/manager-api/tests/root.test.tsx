@@ -8,7 +8,7 @@ import type { API_PreparedStoryIndex } from '@aussieljk/forkbook/internal/types'
 
 import { Channel } from '@aussieljk/forkbook/internal/channels';
 
-import type { API, Combo, State } from '../root.tsx';
+import type { API, Combo, ManagerProviderProps, State } from '../root.tsx';
 import { Provider as ManagerProvider } from '../root.tsx';
 
 // The stories module destructures `fetch` from `@storybook/global` at import time to fetch the
@@ -52,7 +52,7 @@ const mockIndex: API_PreparedStoryIndex = {
       importPath: './a.stories.tsx',
       tags: ['dev'],
     },
-  } as any,
+  } as unknown as API_PreparedStoryIndex['entries'],
 };
 
 describe('ManagerProvider', () => {
@@ -74,14 +74,14 @@ describe('ManagerProvider', () => {
 
     render(
       <ManagerProvider
-        provider={provider as any}
+        provider={provider as unknown as ManagerProviderProps['provider']}
         docsOptions={{}}
-        location={{ search: '' } as any}
+        location={{ search: '' } as ManagerProviderProps['location']}
         path="/"
         viewMode="story"
         storyId="a--visible"
         refId={undefined}
-        navigate={vi.fn() as any}
+        navigate={vi.fn()}
       >
         {(combo: Combo) => {
           latestState = combo.state;

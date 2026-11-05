@@ -20,7 +20,7 @@ import type { globalsNameReferenceMap } from './globals.ts';
 import * as ICONS from './icons.ts';
 
 // Here we map the name of a module to their VALUE in the global scope.
-export const globalsNameValueMap: Required<Record<keyof typeof globalsNameReferenceMap, any>> = {
+export const globalsNameValueMap: Record<keyof typeof globalsNameReferenceMap, unknown> = {
   react: REACT,
   'react/jsx-runtime': REACT_JSX_RUNTIME,
   // The manager uses production React, whose development runtime does not provide jsxDEV.

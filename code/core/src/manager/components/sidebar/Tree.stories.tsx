@@ -23,7 +23,11 @@ import { DEFAULT_REF_ID } from './Sidebar.tsx';
 import { Tree } from './Tree.tsx';
 import { index } from './mockdata.large.ts';
 
-const managerContext: any = {
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
+
+const managerContext = {
   state: {
     docsOptions: {
       defaultName: 'Docs',
@@ -84,7 +88,7 @@ const meta = {
   },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <IconSymbols />
         {storyFn()}
       </ManagerContext.Provider>
@@ -94,8 +98,15 @@ const meta = {
 
 export default meta;
 
-// @ts-expect-error (non strict)
-const storyId = Object.values(index).find((story) => story.type === 'story').id;
+const storyId = Object.values(index).find((story) => story.type === 'story')!.id;
+
+/** Tree data from partial entries, which is enough for these stories. */
+const asIndexHash = (data: object) => data as IndexHash;
+
+const getParentId = (id: string): string | null => {
+  const entry = index[id];
+  return entry && 'parent' in entry ? (entry.parent ?? null) : null;
+};
 
 type Story = StoryObj<Meta<typeof Tree>>;
 
@@ -138,8 +149,7 @@ export const SingleStoryComponents: Story = {
     return (
       <Tree
         {...args}
-        // @ts-expect-error (non strict)
-        data={{
+        data={asIndexHash({
           ...{
             single: {
               type: 'component',
@@ -188,7 +198,7 @@ export const SingleStoryComponents: Story = {
             }
             return acc;
           }, {} as IndexHash),
-        }}
+        })}
         highlightedRef={{ current: { itemId: selectedId, refId: DEFAULT_REF_ID } }}
         selectedStoryId={selectedId}
         onSelectStoryId={setSelectedId}
@@ -206,8 +216,7 @@ export const DocsOnlySingleStoryComponents = {
         isBrowsing
         isMain
         refId={DEFAULT_REF_ID}
-        // @ts-expect-error (non strict)
-        data={{
+        data={asIndexHash({
           ...{
             single: {
               type: 'component',
@@ -250,7 +259,7 @@ export const DocsOnlySingleStoryComponents = {
             }
             return acc;
           }, {} as IndexHash),
-        }}
+        })}
         highlightedRef={{ current: { itemId: selectedId, refId: DEFAULT_REF_ID } }}
         setHighlightedItemId={action('setHighlightedItemId')}
         selectedStoryId={selectedId}
@@ -326,14 +335,14 @@ export const WithContextContent: Story = {
 };
 
 const dualSlotStoryId = storyId;
-const dualSlotParentId = (index[dualSlotStoryId] as any).parent as string;
+const dualSlotParentId = getParentId(dualSlotStoryId)!;
 
 const getAncestorChain = (startId: string): IndexHash => {
   const chain: IndexHash = {};
   let currentId: string | null = startId;
   while (currentId && index[currentId]) {
     chain[currentId] = index[currentId];
-    currentId = ((index[currentId] as any)?.parent as string | null) ?? null;
+    currentId = getParentId(currentId);
   }
   return chain;
 };
@@ -364,10 +373,10 @@ function makeDualSlotStory(
       ? [
           (storyFn) => (
             <ManagerContext.Provider
-              value={{
+              value={asManagerContext({
                 ...managerContext,
                 state: { ...managerContext.state, ...contextOverride.state },
-              }}
+              })}
             >
               <IconSymbols />
               {storyFn()}

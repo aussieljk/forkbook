@@ -7,6 +7,9 @@ import { fn } from '@aussieljk/forkbook/test';
 
 import { UpgradeBlock } from './UpgradeBlock.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 const meta = {
   component: UpgradeBlock,
   title: 'UpgradeBlock',
@@ -20,7 +23,7 @@ const meta = {
                 version: '7.2.2-alpha.0',
               }),
             },
-          } as any
+          } as unknown as ManagerContextValue
         }
       >
         {storyFn()}

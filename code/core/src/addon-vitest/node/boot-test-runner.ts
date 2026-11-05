@@ -1,7 +1,7 @@
 import { type ChildProcess } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { Channel, ChannelEvent } from '@aussieljk/forkbook/internal/channels';
 import { executeNodeCommand, loadPreviewOrConfigFile } from '@aussieljk/forkbook/internal/common';
 import {
   type StoryIndexGenerator,
@@ -28,7 +28,7 @@ import {
 } from '../constants.ts';
 import { log } from '../logger.ts';
 import { errorToErrorLike } from '../utils.ts';
-import type { Store } from '../types.ts';
+import type { FatalErrorEvent, Store } from '../types.ts';
 
 const MAX_START_TIME = 30000;
 
@@ -39,12 +39,15 @@ const vitestModulePath = fileURLToPath(
 );
 
 // Events that were triggered before Vitest was ready are queued up and resent once it's ready
-const eventQueue: { type: string; args?: any[] }[] = [];
+const eventQueue: { type: string; args?: unknown[] }[] = [];
 
 type UniversalStoreBridge = {
   eventName: string;
-  subscribe: (listener: (event: any, eventInfo: EventInfo) => void) => () => void;
+  subscribe: (listener: (event: { type: string }, eventInfo: EventInfo) => void) => () => void;
 };
+
+/** A message from the Vitest child process: `ready`, `uncaught-error`, or a channel event. */
+type ChildMessage = ChannelEvent & { payload?: FatalErrorEvent['payload'] };
 
 let child: null | ChildProcess;
 let ready = false;
@@ -68,7 +71,7 @@ const killChild = () => {
 };
 
 const forwardUniversalStoreEvent =
-  (storeEventName: string) => (event: any, eventInfo: EventInfo) => {
+  (storeEventName: string) => (event: { type: string }, eventInfo: EventInfo) => {
     // Until the child is ready, runTestRunner queues run events and sends them after the story index
     if (!ready && event.type === 'TRIGGER_RUN') {
       return;
@@ -194,7 +197,7 @@ const bootTestRunner = async ({
         bridge.subscribe(forwardUniversalStoreEvent(bridge.eventName))
       );
 
-      child.on('message', (event: any) => {
+      child.on('message', (event: ChildMessage) => {
         if (child !== spawnedChild) {
           return;
         }
@@ -215,7 +218,8 @@ const bootTestRunner = async ({
         } else if (event.type === 'uncaught-error') {
           store.send({
             type: 'FATAL_ERROR',
-            payload: event.payload,
+            // The child always sends a payload with `uncaught-error`.
+            payload: event.payload!,
           });
           reject(crashAlreadyReported);
         } else if (bridgedEventNames.has(event.type)) {
@@ -266,7 +270,7 @@ export const runTestRunner = async ({
   channel: Channel;
   store: Store;
   initEvent?: string;
-  initArgs?: any[];
+  initArgs?: unknown[];
   options: Options;
   configLoader?: BuilderOptions['configLoader'];
 }) => {

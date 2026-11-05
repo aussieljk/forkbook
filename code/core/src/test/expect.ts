@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 // TODO SB11: Upgrade @testing-library/jest-dom to v7+ across the monorepo.
 import * as matchers from '@testing-library/jest-dom/matchers';
 import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
@@ -67,25 +66,29 @@ export function createExpect() {
   expect.getState = () => getState<MatcherState>(expect);
   expect.setState = (state) => setState(state as Partial<MatcherState>, expect);
 
-  // @ts-expect-error chai.extend is not typed
-  expect.extend = (expects: MatchersObject) => chai.expect.extend(expect, expects);
-
-  // @ts-ignore tsup borks here for some reason
-  expect.soft = (...args) => {
-    // @ts-ignore tsup borks here for some reason
-    const assert = expect(...args);
-    expect.setState({
-      soft: true,
-    });
-    return assert;
+  // JestExtend adds `extend` to `chai.expect` at runtime, but the chai types do not declare it.
+  const chaiExpect = chai.expect as typeof chai.expect & {
+    extend(expect: ExpectStatic, expects: MatchersObject): void;
   };
+  expect.extend = (expects: MatchersObject) => chaiExpect.extend(expect, expects);
+
+  Object.assign(expect, {
+    soft: (value: unknown, message?: string) => {
+      const assert = expect(value, message);
+      expect.setState({
+        soft: true,
+      });
+      return assert;
+    },
+  });
 
   expect.extend(customMatchers);
 
-  // @ts-ignore tsup borks here for some reason
-  expect.unreachable = (message?: string): never => {
-    chai.assert.fail(`expected${message ? ` "${message}" ` : ' '}not to be reached`);
-  };
+  Object.assign(expect, {
+    unreachable: (message?: string): never => {
+      chai.assert.fail(`expected${message ? ` "${message}" ` : ' '}not to be reached`);
+    },
+  });
 
   function assertions(expected: number) {
     const errorGen = () =>

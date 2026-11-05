@@ -284,7 +284,7 @@ describe('transformStoryIndexToStoriesHash', () => {
     const options = {
       provider: {
         getConfig: () => ({ sidebar: {} }),
-      } as any,
+      } as unknown as Parameters<typeof transformStoryIndexToStoriesHash>[1]['provider'],
       docsOptions: { docsMode: false },
       filters,
       allStatuses,

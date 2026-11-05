@@ -29,7 +29,10 @@ export function createTestingStore(
   const upstream = {
     allowPersistence: false,
     getState: () => internalState,
-    setState: (patch: any, callback?: any) => {
+    setState: (
+      patch: Partial<State> | ((state: State) => Partial<State>),
+      callback?: (state: State) => void
+    ) => {
       if (typeof patch === 'function') {
         internalState = { ...internalState, ...patch(internalState) };
       } else {

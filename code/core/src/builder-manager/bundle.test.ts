@@ -45,7 +45,7 @@ describe('bundleManagerEntries', () => {
         tsconfig: join(dir, 'tsconfig.json'),
         minify: false,
         define: {},
-      } as any)
+      } as Parameters<typeof bundleManagerEntries>[0])
     ).rejects.toThrow(
       `Could not build the manager entry ${addonFile} (from @aussieljk/forkbook/addon-a11y)`
     );

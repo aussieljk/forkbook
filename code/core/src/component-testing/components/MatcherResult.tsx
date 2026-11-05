@@ -19,7 +19,7 @@ const getParams = (line: string, fromIndex = 0): string => {
   return '';
 };
 
-const parseValue = (value: string): any => {
+const parseValue = (value: string): unknown => {
   try {
     return value === 'undefined' ? undefined : JSON.parse(value);
   } catch (e) {
@@ -27,21 +27,25 @@ const parseValue = (value: string): any => {
   }
 };
 
-export const Received = ({ value, parsed }: { value: any; parsed?: boolean }) =>
-  parsed ? (
-    <Node showObjectInspector value={value} style={{ color: '#D43900' }} />
+/** A parsed value shows in an object inspector. An unparsed value is the raw text. */
+type ValueProps = { value: string; parsed?: false } | { value: unknown; parsed: true };
+
+export const Received = (props: ValueProps) =>
+  props.parsed ? (
+    <Node showObjectInspector value={props.value} style={{ color: '#D43900' }} />
   ) : (
-    <span className={styles.received}>{value}</span>
+    <span className={styles.received}>{props.value}</span>
   );
 
-export const Expected = ({ value, parsed }: { value: any; parsed?: boolean }) => {
-  if (parsed) {
+export const Expected = (props: ValueProps) => {
+  if (props.parsed) {
+    const { value } = props;
     if (typeof value === 'string' && value.startsWith('called with')) {
       return <>{value}</>;
     }
     return <Node showObjectInspector value={value} style={{ color: '#16B242' }} />;
   }
-  return <span className={styles.expected}>{value}</span>;
+  return <span className={styles.expected}>{props.value}</span>;
 };
 
 export const MatcherResult = ({

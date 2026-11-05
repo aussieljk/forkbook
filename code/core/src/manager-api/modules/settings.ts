@@ -4,7 +4,7 @@ import type { ModuleFn } from '../lib/types.tsx';
 
 export interface SubAPI {
   storeSelection: () => void;
-  retrieveSelection: () => StoryId;
+  retrieveSelection: () => StoryId | null;
   /**
    * Changes the active settings tab.
    *
@@ -29,10 +29,11 @@ export interface SubAPI {
 }
 
 export interface SubState {
-  settings: API_Settings;
+  // `API_Settings` says `string`, but the ID is null until the first story is tracked.
+  settings: Omit<API_Settings, 'lastTrackedStoryId'> & { lastTrackedStoryId: StoryId | null };
 }
 
-export const init: ModuleFn<SubAPI, SubState> = ({ store, navigate, fullAPI }): any => {
+export const init: ModuleFn<SubAPI, SubState> = ({ store, navigate, fullAPI }) => {
   const isSettingsScreenActive = () => {
     const { path } = fullAPI.getUrlState();
     return !!(path || '').match(/^\/settings/);

@@ -155,12 +155,13 @@ export const init: ModuleFn<SubAPI, SubState> = ({
 
       return null;
     },
-    getCurrentParameter: (parameterName) => {
+    getCurrentParameter: <S>(parameterName?: string) => {
       const { storyId, refId } = store.getState();
       const parameters = api.getParameters({ storyId, refId: refId as string }, parameterName);
       // FIXME Returning falsey parameters breaks a bunch of toolbars code,
       // so this strange logic needs to be here until various client code is updated.
-      return parameters || undefined;
+      // The caller names the type of the parameter it asks for.
+      return (parameters || undefined) as S;
     },
     jumpToComponent: (direction) => {
       const { filteredIndex, storyId, refs, refId } = store.getState();

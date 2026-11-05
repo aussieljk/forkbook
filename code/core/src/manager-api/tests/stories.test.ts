@@ -38,6 +38,12 @@ import {
   preparedEntries,
 } from './mockStoriesEntries.ts';
 
+/** A story entry with only the fields that a test needs. */
+const storyEntry = (entry: Partial<API_StoryEntry>) => entry as API_StoryEntry;
+
+/** Event metadata with only the fields that a test needs. */
+const eventMetadata = (meta: object) => meta as ReturnType<typeof getEventMetadataOriginal>;
+
 const mockGetEntries = vi.fn();
 const fetch = vi.mocked(global.fetch);
 const getEventMetadata = vi.mocked(getEventMetadataOriginal);
@@ -69,7 +75,7 @@ function createMockStore(initialState: Partial<State> = {}) {
       }
       return Promise.resolve(state);
     }),
-  } as any as Store;
+  } as unknown as Store;
 }
 function createMockProvider() {
   return {
@@ -655,7 +661,7 @@ describe('stories API', () => {
         Promise.resolve({
           status: 500,
           text: async () => new Error('sorting error'),
-        } as any as Response)
+        } as unknown as Response)
       );
       const moduleArgs = createMockModuleArgs({});
       const { init } = initStories(moduleArgs as unknown as ModuleArgs);
@@ -684,7 +690,7 @@ describe('stories API', () => {
               },
             },
           }),
-        } as any as Response)
+        } as unknown as Response)
       );
 
       const moduleArgs = createMockModuleArgs({});
@@ -708,7 +714,7 @@ describe('stories API', () => {
         Promise.resolve({
           status: 500,
           text: async () => new Error('sorting error'),
-        } as any as Response)
+        } as unknown as Response)
       );
       const moduleArgs = createMockModuleArgs({});
       const { init } = initStories(moduleArgs as unknown as ModuleArgs);
@@ -736,7 +742,7 @@ describe('stories API', () => {
               },
             },
           }),
-        } as any as Response)
+        } as unknown as Response)
       );
 
       provider.channel.emit(STORY_INDEX_INVALIDATED);
@@ -806,14 +812,16 @@ describe('stories API', () => {
       const { provider } = moduleArgs;
       provider.channel.emit(CURRENT_STORY_WAS_SET, { id: 'a--1' });
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        refId: 'refId',
-        source: '',
-        sourceLocation: '',
-        type: '',
-        ref: { id: 'refId', index: { 'a--1': { args: { a: 'b' } } } } as any,
-      });
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          refId: 'refId',
+          source: '',
+          sourceLocation: '',
+          type: '',
+          ref: { id: 'refId', index: { 'a--1': { args: { a: 'b' } } } },
+        })
+      );
       provider.channel.emit(CURRENT_STORY_WAS_SET, { id: 'a--1' });
       expect(fullAPI.updateRef.mock.calls.length).toBe(1);
       expect(fullAPI.updateRef.mock.calls[0][1]).toEqual({
@@ -844,18 +852,20 @@ describe('stories API', () => {
       initStories(moduleArgs as unknown as ModuleArgs);
       const { provider } = moduleArgs;
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        refId: 'refId',
-        source: '',
-        sourceLocation: '',
-        type: '',
-        ref: {
-          id: 'refId',
-          index: { 'a--1': { args: { a: 'b' } } },
-          filteredIndex: { 'a--1': { args: { a: 'b' } } },
-        } as any,
-      });
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          refId: 'refId',
+          source: '',
+          sourceLocation: '',
+          type: '',
+          ref: {
+            id: 'refId',
+            index: { 'a--1': { args: { a: 'b' } } },
+            filteredIndex: { 'a--1': { args: { a: 'b' } } },
+          },
+        })
+      );
       provider.channel.emit(STORY_ARGS_UPDATED, { storyId: 'a--1', args: { foo: 'bar' } });
       expect(fullAPI.updateRef).toHaveBeenCalledWith('refId', {
         filteredIndex: { 'a--1': { args: { foo: 'bar' } } },
@@ -1393,10 +1403,12 @@ describe('stories API', () => {
 
       api.setIndex({ v: 5, entries: mockEntries });
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        ref: { id: 'refId', stories: { 'a--1': { args: { a: 'b' } } } },
-      } as any);
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          ref: { id: 'refId', stories: { 'a--1': { args: { a: 'b' } } } },
+        })
+      );
       provider.channel.emit(CONFIG_ERROR, { message: 'Failed to run configure' });
       expect(fullAPI.updateRef.mock.calls.length).toBe(1);
       expect(fullAPI.updateRef.mock.calls[0][1]).toEqual({
@@ -1420,10 +1432,12 @@ describe('stories API', () => {
       initStories(moduleArgs as unknown as ModuleArgs);
       const { provider } = moduleArgs;
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        ref: { id: 'refId', stories: { 'a--1': { args: { a: 'b' } } } },
-      } as any);
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          ref: { id: 'refId', stories: { 'a--1': { args: { a: 'b' } } } },
+        })
+      );
       provider.channel.emit(STORY_MISSING, { message: 'Failed to run configure' });
       expect(fullAPI.updateRef.mock.calls.length).toBe(1);
       expect(fullAPI.updateRef.mock.calls[0][1]).toEqual({
@@ -1441,10 +1455,12 @@ describe('stories API', () => {
       initStories(moduleArgs as unknown as ModuleArgs);
       const { provider, store } = moduleArgs;
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        ref: { id: 'ref' },
-      } as any);
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          ref: { id: 'ref' },
+        })
+      );
       const setStoriesPayload = {
         v: 2,
         globalParameters: { global: 'global' },
@@ -1475,10 +1491,12 @@ describe('stories API', () => {
       initStories(moduleArgs as unknown as ModuleArgs);
       const { provider, store } = moduleArgs;
 
-      getEventMetadata.mockReturnValueOnce({
-        sourceType: 'external',
-        ref: { id: 'ref' },
-      } as any);
+      getEventMetadata.mockReturnValueOnce(
+        eventMetadata({
+          sourceType: 'external',
+          ref: { id: 'ref' },
+        })
+      );
       const setStoriesPayload = {
         stories: { 'a--1': {} },
       };
@@ -1537,7 +1555,7 @@ describe('stories API', () => {
       expect(Object.keys(store.getState().filteredIndex!)).toContain('b--1');
 
       provider.getConfig.mockReturnValue({
-        sidebar: { filters: { pattern: (item: any) => item.id.startsWith('a') } },
+        sidebar: { filters: { pattern: (item: { id: string }) => item.id.startsWith('a') } },
       });
       provider.channel.emit(SET_CONFIG);
       await new Promise((resolve) => setTimeout(resolve, 0));
@@ -1555,8 +1573,8 @@ describe('stories API', () => {
 
       await api.setIndex({ v: 5, entries: navigationEntries });
       await api.setFilters({
-        one: (item: any) => !item.id.startsWith('b'),
-        two: (item: any) => !item.id.startsWith('custom'),
+        one: (item: { id: string }) => !item.id.startsWith('b'),
+        two: (item: { id: string }) => !item.id.startsWith('custom'),
       });
 
       expect(store.getState().filters).toEqual(
@@ -1633,7 +1651,7 @@ describe('stories API', () => {
       const { store } = moduleArgs;
 
       await api.setIndex({ v: 5, entries: navigationEntries });
-      await api.setFilter('myCustomFilter', (item: any) => item.id.startsWith('a'));
+      await api.setFilter('myCustomFilter', (item: { id: string }) => item.id.startsWith('a'));
 
       const { filteredIndex } = store.getState();
 
@@ -1763,7 +1781,7 @@ describe('stories API', () => {
       const { store } = moduleArgs;
 
       await api.setIndex({ v: 5, entries: navigationEntries });
-      await api.setFilter('myCustomFilter', (item: any) => item.id.startsWith('a'));
+      await api.setFilter('myCustomFilter', (item: { id: string }) => item.id.startsWith('a'));
 
       await api.setIndex({ v: 5, entries: navigationEntries });
 
@@ -1928,14 +1946,14 @@ describe('stories API', () => {
     it('initializes status filters from URL statuses param', () => {
       const moduleArgs = createMockModuleArgs({
         initialState: {
-          location: { search: '?statuses=new%3Bmodified' } as any,
-        } as any,
+          location: { search: '?statuses=new%3Bmodified' } as State['location'],
+        },
       });
       const { state } = initStories({
         ...(moduleArgs as unknown as ModuleArgs),
         state: {
-          location: { search: '?statuses=new;modified' } as any,
-        } as any,
+          location: { search: '?statuses=new;modified' } as State['location'],
+        } as State,
       });
       // 'new' and 'modified' are both included statuses from the URL param
       expect(state.includedStatusFilters).toEqual(['status-value:new', 'status-value:modified']);
@@ -1973,7 +1991,7 @@ describe('stories API', () => {
         initialState: {
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: [],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { store } = moduleArgs;
@@ -1991,7 +2009,7 @@ describe('stories API', () => {
         initialState: {
           includedStatusFilters: ['status-value:new', 'status-value:modified'],
           excludedStatusFilters: ['status-value:error'],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { store } = moduleArgs;
@@ -2009,7 +2027,7 @@ describe('stories API', () => {
         initialState: {
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: ['status-value:error'],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { store } = moduleArgs;
@@ -2027,7 +2045,7 @@ describe('stories API', () => {
         initialState: {
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: ['status-value:error'],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { store } = moduleArgs;
@@ -2379,17 +2397,17 @@ describe('stories API', () => {
         initialState: {
           path: '/',
           index: {
-            'a--1': { type: 'story', id: 'a--1', depth: 0 } as any,
-            'a--2': { type: 'story', id: 'a--2', depth: 0 } as any,
+            'a--1': storyEntry({ type: 'story', id: 'a--1', depth: 0 }),
+            'a--2': storyEntry({ type: 'story', id: 'a--2', depth: 0 }),
           },
           filteredIndex: {
-            'a--2': { type: 'story', id: 'a--2', depth: 0 } as any,
+            'a--2': storyEntry({ type: 'story', id: 'a--2', depth: 0 }),
           },
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: [],
           includedTagFilters: [],
           excludedTagFilters: [],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { navigate } = moduleArgs;
@@ -2411,17 +2429,17 @@ describe('stories API', () => {
         initialState: {
           path: '/',
           index: {
-            'a--1': { type: 'story', id: 'a--1', depth: 0 } as any,
-            'a--2': { type: 'story', id: 'a--2', depth: 0 } as any,
+            'a--1': storyEntry({ type: 'story', id: 'a--1', depth: 0 }),
+            'a--2': storyEntry({ type: 'story', id: 'a--2', depth: 0 }),
           },
           filteredIndex: {
-            'a--2': { type: 'story', id: 'a--2', depth: 0 } as any,
+            'a--2': storyEntry({ type: 'story', id: 'a--2', depth: 0 }),
           },
           includedStatusFilters: [],
           excludedStatusFilters: [],
           includedTagFilters: [],
           excludedTagFilters: [],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { navigate } = moduleArgs;
@@ -2435,14 +2453,14 @@ describe('stories API', () => {
         initialState: {
           path: '/',
           index: {
-            'a--1': { type: 'story', id: 'a--1', depth: 0 } as any,
+            'a--1': storyEntry({ type: 'story', id: 'a--1', depth: 0 }),
           },
           filteredIndex: {},
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: [],
           includedTagFilters: [],
           excludedTagFilters: [],
-        } as any,
+        },
       });
       const { api } = initStories(moduleArgs as unknown as ModuleArgs);
       const { navigate } = moduleArgs;
@@ -2458,17 +2476,17 @@ describe('stories API', () => {
         initialState: {
           path: '/',
           index: {
-            'a--1': { type: 'story', id: 'a--1' } as any,
-            'a--2': { type: 'story', id: 'a--2' } as any,
+            'a--1': storyEntry({ type: 'story', id: 'a--1' }),
+            'a--2': storyEntry({ type: 'story', id: 'a--2' }),
           },
           filteredIndex: {
-            'a--2': { type: 'story', id: 'a--2' } as any,
+            'a--2': storyEntry({ type: 'story', id: 'a--2' }),
           },
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: [],
           includedTagFilters: [],
           excludedTagFilters: [],
-        } as any,
+        },
       });
       initStories(moduleArgs as unknown as ModuleArgs);
       const { navigate, provider } = moduleArgs;
@@ -2483,14 +2501,14 @@ describe('stories API', () => {
         initialState: {
           path: '/',
           index: {
-            'a--1': { type: 'story', id: 'a--1' } as any,
+            'a--1': storyEntry({ type: 'story', id: 'a--1' }),
           },
           filteredIndex: {},
           includedStatusFilters: ['status-value:new'],
           excludedStatusFilters: [],
           includedTagFilters: [],
           excludedTagFilters: [],
-        } as any,
+        },
       });
       initStories(moduleArgs as unknown as ModuleArgs);
       const { navigate, provider } = moduleArgs;

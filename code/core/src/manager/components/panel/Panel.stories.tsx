@@ -87,19 +87,17 @@ export const JSXTitles = () => {
           title: () => {
             const MAX = 10;
             const [count, setCount] = useState(0);
-            const timer = useRef(null);
+            const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-            const startTimer = useCallback<EventHandler<MouseEvent<any>>>((event) => {
+            const startTimer = useCallback<EventHandler<MouseEvent>>((event) => {
               event.stopPropagation();
               if (timer.current) {
                 return;
               }
-              // @ts-expect-error (non strict)
               timer.current = setInterval(() => {
                 setCount((c) => {
                   if (c === MAX) {
-                    // @ts-expect-error (non strict)
-                    clearInterval(timer.current);
+                    clearInterval(timer.current ?? undefined);
                     timer.current = null;
                     return c;
                   }
@@ -107,16 +105,13 @@ export const JSXTitles = () => {
                 });
               }, 1000);
             }, []);
-            const stopTimer = useCallback<EventHandler<MouseEvent<any> | FocusEvent<any>>>(
-              (event) => {
-                event.stopPropagation();
-                if (timer.current) {
-                  clearInterval(timer.current);
-                  timer.current = null;
-                }
-              },
-              []
-            );
+            const stopTimer = useCallback<EventHandler<MouseEvent | FocusEvent>>((event) => {
+              event.stopPropagation();
+              if (timer.current) {
+                clearInterval(timer.current);
+                timer.current = null;
+              }
+            }, []);
 
             return (
               <div

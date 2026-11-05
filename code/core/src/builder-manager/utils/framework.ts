@@ -13,7 +13,7 @@ import {
 import { resolveRootPage } from '../../shared/root-page.ts';
 
 export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
-  const globals: Record<string, any> = {};
+  const globals: Record<string, unknown> = {};
 
   const { builder: builderConfig, channelOptions } = await options.presets.apply('core');
   const builderName = typeof builderConfig === 'string' ? builderConfig : builderConfig?.name;

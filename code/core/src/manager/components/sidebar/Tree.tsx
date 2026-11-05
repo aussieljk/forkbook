@@ -1,4 +1,4 @@
-import type { ComponentProps, MutableRefObject } from 'react';
+import type { ComponentProps, MutableRefObject, ReactNode } from 'react';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import { Button, ListItem } from '@aussieljk/forkbook/internal/components';
@@ -75,13 +75,17 @@ export const ContextMenu = {
   ListItem,
 };
 
+/** The custom label of an item. `renderLabel` returns a React node, but its type is `unknown`. */
+const renderItemLabel = (item: Item, api: API) => item.renderLabel?.(item, api) as ReactNode;
+
 const getStatusLabel = (status: StatusValue) =>
   status.split(':')[1].replace(/^./, (char) => char.toUpperCase());
 
 interface NodeProps {
   item: Item;
   refId: string;
-  docsMode: boolean;
+  /** Not set for root nodes, which have no statuses or docs mode. */
+  docsMode?: boolean;
   isOrphan: boolean;
   isDisplayed: boolean;
   isSelected: boolean;
@@ -90,8 +94,8 @@ interface NodeProps {
   setExpanded: (action: ExpandAction) => void;
   setFullyExpanded?: () => void;
   onSelectStoryId: (itemId: string) => void;
-  statuses: StatusByTypeId;
-  groupDualStatus: Record<StoryId, { change: StatusValue; test: StatusValue }>;
+  statuses?: StatusByTypeId;
+  groupDualStatus?: Record<StoryId, { change: StatusValue; test: StatusValue }>;
   api: API;
   collapsedData: Record<string, API_HashEntry>;
   isModifiedFilterActive: boolean;
@@ -120,7 +124,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
 
   const statusLinks = useMemo<Link[]>(() => {
     if (item.type === 'story' || item.type === 'docs') {
-      return Object.entries(statuses)
+      return Object.entries(statuses ?? {})
         .filter(([, status]) => status.sidebarContextMenu !== false)
         .filter(([, status]) => status.typeId !== REVIEW_STATUS_TYPE_ID)
         .sort((a, b) => statusPriority.indexOf(a[1].value) - statusPriority.indexOf(b[1].value))
@@ -188,8 +192,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
         onMouseEnter={contextMenu.onMouseEnter}
       >
         <LeafNode
-          // @ts-expect-error (non strict)
-          style={isSelected ? {} : { color: textColor }}
+          style={isSelected ? {} : { color: textColor ?? undefined }}
           href={getLink(item, refId)}
           id={id}
           depth={isOrphan ? item.depth : item.depth - 1}
@@ -203,8 +206,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
           }}
           {...(item.type === 'docs' && { docsMode })}
         >
-          {(item.renderLabel as (i: typeof item, api: API) => React.ReactNode)?.(item, api) ||
-            item.name}
+          {renderItemLabel(item, api) || item.name}
         </LeafNode>
         {isSelected && (
           <Button className={styles.skipToContentLink} asChild ariaLabel={false}>
@@ -280,7 +282,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
           aria-expanded={isExpanded}
         >
           <CollapseIcon isExpanded={isExpanded} />
-          {item.renderLabel?.(item, api) || item.name}
+          {renderItemLabel(item, api) || item.name}
         </Button>
         {isExpanded && (
           <Button
@@ -292,8 +294,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
             data-expanded={isFullyExpanded}
             onClick={(event) => {
               event.preventDefault();
-              // @ts-expect-error (non strict)
-              setFullyExpanded();
+              setFullyExpanded?.();
             }}
           >
             {isFullyExpanded ? <CollapseIconSvg /> : <ExpandIcon />}
@@ -376,8 +377,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
             }
           }}
         >
-          {(item.renderLabel as (i: typeof item, api: API) => React.ReactNode)?.(item, api) ||
-            item.name}
+          {renderItemLabel(item, api) || item.name}
         </BranchNode>
         {isSelected && (
           <Button className={styles.skipToContentLink} asChild ariaLabel={false}>
@@ -484,8 +484,7 @@ const Node = React.memo<NodeProps>(function Node(props) {
           }
         }}
       >
-        {(item.renderLabel as (i: typeof item, api: API) => React.ReactNode)?.(item, api) ||
-          item.name}
+        {renderItemLabel(item, api) || item.name}
       </LeafNode>
       {isSelected && (
         <Button className={styles.skipToContentLink} ariaLabel={false} asChild>
@@ -627,7 +626,6 @@ export const Tree = React.memo<{
 
   // Track expanded nodes, keep it in sync with props and enable keyboard shortcuts.
   const [expanded, setExpanded] = useExpanded({
-    // @ts-expect-error (non strict)
     containerRef,
     isBrowsing,
     refId,
@@ -659,7 +657,6 @@ export const Tree = React.memo<{
         const descendants = expandableDescendants[item.id];
         const isFullyExpanded = descendants.every((d: string) => expanded[d]);
         return (
-          // @ts-expect-error (TODO)
           <Root
             api={api}
             key={id}

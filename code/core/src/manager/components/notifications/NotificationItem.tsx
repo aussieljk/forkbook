@@ -69,13 +69,11 @@ const NotificationItem: FC<{
       return;
     }
     timer.current = setTimeout(onTimeout, duration);
-    // @ts-expect-error (non strict)
-    return () => clearTimeout(timer.current);
+    return () => clearTimeout(timer.current ?? undefined);
   }, [duration, onTimeout]);
 
   const onDismiss = useCallback(() => {
-    // @ts-expect-error (non strict)
-    clearTimeout(timer.current);
+    clearTimeout(timer.current ?? undefined);
     onDismissNotification(id);
 
     if (onClear) {

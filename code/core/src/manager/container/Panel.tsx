@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import React, { useMemo, useState } from 'react';
 
 import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
@@ -9,7 +9,7 @@ import { STORY_PREPARED } from '../../core-events/index.ts';
 import { focusableUIElements } from '../../manager-api/modules/layout.ts';
 import { AddonPanel } from '../components/panel/Panel.tsx';
 
-const Panel: FC<any> = (props) => {
+const Panel: FC<Partial<ComponentProps<typeof AddonPanel>>> = (props) => {
   const api = useStorybookApi();
   const state = useStorybookState();
   const [story, setStory] = useState(api.getCurrentStoryData());
@@ -53,8 +53,13 @@ const Panel: FC<any> = (props) => {
 
     const filteredPanels: typeof allPanels = {};
     Object.entries(allPanels).forEach(([id, p]) => {
-      const { paramKey }: any = p;
-      if (paramKey && parameters && parameters[paramKey] && parameters[paramKey].disable) {
+      const panelParameter = p.paramKey ? parameters?.[p.paramKey] : undefined;
+      if (
+        typeof panelParameter === 'object' &&
+        panelParameter !== null &&
+        'disable' in panelParameter &&
+        panelParameter.disable
+      ) {
         return;
       }
       if (p.disabled === true || (typeof p.disabled === 'function' && p.disabled(parameters))) {

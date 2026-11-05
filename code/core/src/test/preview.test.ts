@@ -7,7 +7,7 @@ const nativeFocus = HTMLElement.prototype.focus;
 
 describe('focus instrumentation', () => {
   beforeAll(async () => {
-    await enhanceContext({ canvasElement: document.body } as any);
+    await enhanceContext({ canvasElement: document.body } as Parameters<typeof enhanceContext>[0]);
   });
 
   afterEach(() => {

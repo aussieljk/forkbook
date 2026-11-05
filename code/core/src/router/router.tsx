@@ -18,7 +18,7 @@ interface MatchingData {
 }
 
 interface LocationProps {
-  children: (renderData: RenderData) => any;
+  children: (renderData: RenderData) => ReactNode;
 }
 
 interface MatchPropsStartsWith {

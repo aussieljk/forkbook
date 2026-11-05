@@ -144,13 +144,13 @@ export interface SubAPI {
    *   retrieve parameters for, or an object containing the story ID and ref ID.
    * @param {ParameterName} [parameterName] - The name of the parameter to retrieve. If not
    *   provided, returns all parameters.
-   * @returns {API_StoryEntry['parameters'] | any} The parameters for the given story ID and
+   * @returns {unknown} The parameters, or the named parameter, for the given story ID and
    *   optional ref ID.
    */
   getParameters: (
     storyId: StoryId | { storyId: StoryId; refId: string },
     parameterName?: ParameterName
-  ) => API_StoryEntry['parameters'] | any;
+  ) => unknown;
   /**
    * Returns the current value of the specified parameter for the currently selected story.
    *

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
+
 import { HighlightStyles } from './HighlightStyles.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
 import { LeafNodeStyleWrapper } from './Tree.tsx';
@@ -18,7 +20,7 @@ export default {
   globals: { sb_theme: 'side-by-side' },
   component: StoryLeafNode,
   decorators: [
-    (StoryFn: any) => (
+    (StoryFn: Parameters<Decorator>[0]) => (
       <>
         <IconSymbols />
         <StoryFn />

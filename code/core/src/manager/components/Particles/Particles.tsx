@@ -63,7 +63,7 @@ const NUM_OF_PARTICLES = 8;
 const JITTER = 15;
 
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
-const sortRandomly = (array: any[]) => array.sort(() => Math.random() - 0.5);
+const sortRandomly = <T,>(array: T[]) => array.sort(() => Math.random() - 0.5);
 
 export const Particles = memo(function Particles({
   anchor: Anchor,

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
+
 import { dedent } from 'ts-dedent';
 
 import { MatcherResult } from './MatcherResult.tsx';
@@ -16,7 +18,7 @@ export default {
   title: 'MatcherResult',
   component: MatcherResult,
   decorators: [
-    (Story: any) => (
+    (Story: Parameters<Decorator>[0]) => (
       <div style={wrapperStyle}>
         <Story />
       </div>

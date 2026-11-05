@@ -3,35 +3,31 @@ import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import { mergeWith } from 'es-toolkit/object';
 import { isEqual } from 'es-toolkit/predicate';
 
-export default <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
+export default <TObj extends object>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   // start with empty object
   let target = {};
 
   // merge object a unto target
-  target = mergeWith(
-    {},
-    a as Record<PropertyKey, any>,
-    (objValue: TObj, srcValue: Partial<TObj>) => {
-      if (Array.isArray(srcValue) && Array.isArray(objValue)) {
-        srcValue.forEach((s) => {
-          const existing = objValue.find((o) => o === s || isEqual(o, s));
-          if (!existing) {
-            objValue.push(s);
-          }
-        });
+  target = mergeWith({}, a, (objValue: unknown, srcValue: unknown) => {
+    if (Array.isArray(srcValue) && Array.isArray(objValue)) {
+      srcValue.forEach((s) => {
+        const existing = objValue.find((o) => o === s || isEqual(o, s));
+        if (!existing) {
+          objValue.push(s);
+        }
+      });
 
-        return objValue;
-      }
-      if (Array.isArray(objValue)) {
-        logger.log(['the types mismatch, picking', objValue]);
-        return objValue;
-      }
+      return objValue;
     }
-  );
+    if (Array.isArray(objValue)) {
+      logger.log(['the types mismatch, picking', objValue]);
+      return objValue;
+    }
+  });
 
   for (const obj of b) {
     // merge object b unto target
-    target = mergeWith(target, obj, (objValue: TObj, srcValue: Partial<TObj>) => {
+    target = mergeWith(target, obj, (objValue: unknown, srcValue: unknown) => {
       if (Array.isArray(srcValue) && Array.isArray(objValue)) {
         srcValue.forEach((s) => {
           const existing = objValue.find((o) => o === s || isEqual(o, s));
@@ -52,25 +48,21 @@ export default <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   return target as TObj;
 };
 
-export const noArrayMerge = <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
+export const noArrayMerge = <TObj extends object>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   // start with empty object
   let target = {};
 
   // merge object a unto target
-  target = mergeWith(
-    {},
-    a as Record<PropertyKey, any>,
-    (objValue: TObj, srcValue: Partial<TObj>) => {
-      // Treat arrays as scalars:
-      if (Array.isArray(srcValue)) {
-        return srcValue;
-      }
+  target = mergeWith({}, a, (objValue: unknown, srcValue: unknown) => {
+    // Treat arrays as scalars:
+    if (Array.isArray(srcValue)) {
+      return srcValue;
     }
-  );
+  });
 
   for (const obj of b) {
     // merge object b unto target
-    target = mergeWith(target, obj, (objValue: TObj, srcValue: Partial<TObj>) => {
+    target = mergeWith(target, obj, (objValue: unknown, srcValue: unknown) => {
       // Treat arrays as scalars:
       if (Array.isArray(srcValue)) {
         return srcValue;

@@ -153,8 +153,10 @@ describe('shortcut', () => {
 
   describe('shortcutMatchesShortcut', () => {
     it('returns false when either shortcut is null', () => {
-      expect(shortcutMatchesShortcut(null as any, ['alt', 'K'])).toBe(false);
-      expect(shortcutMatchesShortcut(['alt', 'K'], null as any)).toBe(false);
+      // @ts-expect-error null is not a shortcut, but stored shortcuts can be null at runtime.
+      expect(shortcutMatchesShortcut(null, ['alt', 'K'])).toBe(false);
+      // @ts-expect-error null is not a shortcut, but stored shortcuts can be null at runtime.
+      expect(shortcutMatchesShortcut(['alt', 'K'], null)).toBe(false);
     });
 
     it('handles shift/ shortcuts correctly', () => {

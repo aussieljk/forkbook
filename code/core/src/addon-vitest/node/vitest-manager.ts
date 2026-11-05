@@ -43,7 +43,7 @@ export class VitestManager {
 
   vitestRestartPromise: Promise<void> | null = null;
 
-  runningPromise: Promise<any> | null = null;
+  runningPromise: Promise<unknown> | null = null;
 
   constructor(private testManager: TestManager) {}
 
@@ -134,9 +134,9 @@ export class VitestManager {
         reporters: ['default', new ForkbookReporter(this.testManager)],
         coverage: coverageOptions,
       });
-    } catch (err: any) {
-      const originalMessage = String(err.message);
-      if (originalMessage.includes('Found multiple projects')) {
+    } catch (err) {
+      const originalMessage = err instanceof Error ? err.message : '';
+      if (err instanceof Error && originalMessage.includes('Found multiple projects')) {
         const custom = [
           'Forkbook was unable to start the test run because you have multiple Vitest projects (or browsers) in headed mode.',
           'Please set `headless: true` in your Forkbook vitest config.\n\n',
@@ -162,13 +162,14 @@ export class VitestManager {
       } else {
         await this.vitest.init();
       }
-    } catch (e: any) {
+    } catch (e) {
       let message = 'Failed to initialize Vitest';
-      const isV8 = e.message?.includes('@vitest/coverage-v8');
-      const isIstanbul = e.message?.includes('@vitest/coverage-istanbul');
+      const errorMessage = e instanceof Error ? e.message : '';
+      const isV8 = errorMessage.includes('@vitest/coverage-v8');
+      const isIstanbul = errorMessage.includes('@vitest/coverage-istanbul');
 
       if (
-        (e.message?.includes('Failed to load url') && (isIstanbul || isV8)) ||
+        (errorMessage.includes('Failed to load url') && (isIstanbul || isV8)) ||
         // Vitest will sometimes not throw the correct missing-package-detection error, so we have to check for this as well
         (e instanceof TypeError &&
           e?.message === "Cannot read properties of undefined (reading 'name')")

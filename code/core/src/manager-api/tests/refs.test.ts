@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
+import type { API_StoryEntry, StoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../shared/global.ts';
 
 import { transformStoryIndexToStoriesHash } from '../lib/stories.ts';
 import { getSourceType, init as initRefs } from '../modules/refs.ts';
+import type { ModuleArgs } from '../lib/types.tsx';
 import type { State } from '../root.tsx';
 import type Store from '../store.ts';
 
@@ -57,7 +58,7 @@ const store = {
       },
     },
   }),
-  setState: vi.fn((a: any) => {}),
+  setState: vi.fn((_: State) => {}),
 };
 
 function createMockStore(initialState: Partial<State> = {}) {
@@ -68,7 +69,7 @@ function createMockStore(initialState: Partial<State> = {}) {
       state = { ...state, ...s };
       return Promise.resolve(state);
     }),
-  } as any as Store;
+  } as unknown as Store;
 }
 
 interface ResponseResult {
@@ -176,7 +177,7 @@ describe('Refs API', () => {
   describe('checkRef', () => {
     it('on initialization it checks refs', async () => {
       // given
-      initRefs({ provider, store } as any);
+      initRefs({ provider, store } as unknown as ModuleArgs);
 
       // the `runCheck` is async, so we need to wait for it to finish
       await vi.waitFor(() => fetchMock.mock.calls.length > 0);
@@ -215,7 +216,7 @@ describe('Refs API', () => {
           version: '2.1.3-rc.2',
         },
       };
-      initRefs({ provider, store } as any);
+      initRefs({ provider, store } as unknown as ModuleArgs);
 
       // the `runCheck` is async, so we need to wait for it to finish
       await vi.waitFor(() => fetchMock.mock.calls.length > 0);
@@ -246,7 +247,7 @@ describe('Refs API', () => {
 
     it('checks refs (all fail)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -322,7 +323,7 @@ describe('Refs API', () => {
 
     it('checks refs (all throw)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -392,7 +393,7 @@ describe('Refs API', () => {
 
     it('checks refs (index throws)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -452,7 +453,7 @@ describe('Refs API', () => {
 
     it('checks refs (metadata throws)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -548,7 +549,7 @@ describe('Refs API', () => {
 
     it('checks refs (success)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -635,7 +636,7 @@ describe('Refs API', () => {
       });
 
       const checkRedirectedRef = async (indexUrl: string) => {
-        const { api } = initRefs({ provider, store } as any, { runCheck: false });
+        const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
         setupResponses({
           indexPrivate: {
             ok: true,
@@ -678,7 +679,7 @@ describe('Refs API', () => {
 
     it('checks refs (not replace versions)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -763,7 +764,7 @@ describe('Refs API', () => {
 
     it('checks refs (auth)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -839,7 +840,7 @@ describe('Refs API', () => {
 
     it('checks refs (auth with 401)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -885,7 +886,7 @@ describe('Refs API', () => {
 
     it('checks refs (basic-auth)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -947,7 +948,7 @@ describe('Refs API', () => {
 
     it('checks refs (mixed)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       fetchMock.mockClear();
       store.setState.mockClear();
@@ -1032,7 +1033,7 @@ describe('Refs API', () => {
 
     it('checks refs (serverside-success)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPublic: {
@@ -1114,7 +1115,7 @@ describe('Refs API', () => {
 
     it('checks refs (serverside-fail)', async () => {
       // given
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       setupResponses({
         indexPrivate: {
@@ -1197,7 +1198,7 @@ describe('Refs API', () => {
     describe('v3 compatibility', () => {
       it('infers docs only if there is only one story and it has the name "Page"', async () => {
         // given
-        const { api } = initRefs({ provider, store } as any, { runCheck: false });
+        const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
         const index = {
           v: 3,
@@ -1250,7 +1251,7 @@ describe('Refs API', () => {
         });
 
         const { refs } = store.setState.mock.calls[0][0];
-        const hash = refs.fake.index;
+        const hash = refs.fake.index!;
 
         // We need exact key ordering, even if in theory JS doesn't guarantee it
         expect(Object.keys(hash)).toEqual([
@@ -1269,7 +1270,7 @@ describe('Refs API', () => {
       });
 
       it('prefers parameters.docsOnly to inferred docsOnly status', async () => {
-        const { api } = initRefs({ provider, store } as any, { runCheck: false });
+        const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
         const index = {
           v: 3,
@@ -1306,7 +1307,7 @@ describe('Refs API', () => {
         });
 
         const { refs } = store.setState.mock.calls[0][0];
-        const hash = refs.fake.index;
+        const hash = refs.fake.index!;
 
         // We need exact key ordering, even if in theory JS doesn't guarantee it
         expect(Object.keys(hash)).toEqual(['component-a', 'component-a--docs']);
@@ -1340,7 +1341,7 @@ describe('Refs API', () => {
       };
 
       const transformOptions = {
-        provider: provider as any,
+        provider: provider as unknown as ModuleArgs['provider'],
         docsOptions: {},
         filters: {},
         allStatuses: {},
@@ -1359,7 +1360,7 @@ describe('Refs API', () => {
       };
 
       const store = createMockStore(initialState);
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       await expect(api.getRefs().fake.index).toEqual(
         expect.objectContaining({ 'a--2': expect.anything() })
@@ -1408,19 +1409,19 @@ describe('Refs API', () => {
             url: 'https://example.com',
             previewInitialized: true,
             storyUpdates: {
-              'a--1': { prepared: true, argTypes: { label: { name: 'label' } } as any },
+              'a--1': { prepared: true, argTypes: { label: { name: 'label' } } },
             },
           },
         },
       };
 
       const store = createMockStore(initialState);
-      const { api } = initRefs({ provider, store } as any, { runCheck: false });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
       // The incoming static index has no argTypes; the cached enrichment must survive the rebuild.
       await api.setRef('fake', { storyIndex: index });
 
-      const rebuilt = api.getRefs().fake.index?.['a--1'] as any;
+      const rebuilt = api.getRefs().fake.index?.['a--1'] as API_StoryEntry;
       expect(rebuilt.argTypes).toEqual({ label: { name: 'label' } });
       expect(rebuilt.prepared).toBe(true);
     });
@@ -1428,7 +1429,7 @@ describe('Refs API', () => {
 
   it('errors on unknown version', async () => {
     // given
-    const { api } = initRefs({ provider, store } as any, { runCheck: false });
+    const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
 
     setupResponses({
       indexPrivate: {

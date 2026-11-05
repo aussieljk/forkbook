@@ -63,7 +63,7 @@ const startForkbookIfNotRunning = async () => {
       throw error;
     });
   } catch (error: unknown) {
-    logger.verbose('Failed to start Forkbook:' + (error as any).message);
+    logger.verbose('Failed to start Forkbook:' + (error instanceof Error ? error.message : error));
     throw error;
   }
 };

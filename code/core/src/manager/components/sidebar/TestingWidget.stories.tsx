@@ -17,6 +17,9 @@ import { expect, fireEvent, fn, waitFor } from '@aussieljk/forkbook/test';
 import { internal_fullTestProviderStore } from '../../manager-stores.mock.ts';
 import { TestingWidget } from './TestingWidget.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div
     style={
@@ -60,7 +63,7 @@ const testProviderStates: TestProviderStateByProviderId = {
 };
 
 const channel = new Channel({});
-const managerContext: any = {
+const managerContext = {
   api: {
     on: (eventName: string, listener: Listener) => {
       return channel.on(eventName, listener);
@@ -91,7 +94,7 @@ const meta = {
   },
   decorators: [
     (StoryFn) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <Wrapper>
           <StoryFn />
         </Wrapper>

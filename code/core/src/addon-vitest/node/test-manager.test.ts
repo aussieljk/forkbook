@@ -304,7 +304,7 @@ describe('TestManager', () => {
           transformRequest: vi.fn(),
         },
       },
-    ] as any;
+    ];
 
     const testManager = await startWithIndex();
 
@@ -322,7 +322,11 @@ describe('TestManager', () => {
       config: { coverage: false, a11y: true },
     }));
 
-    vi.spyOn(testManager.vitestManager as any, 'getTestDependencies').mockResolvedValue(new Set());
+    // `getTestDependencies` is private, so the spy needs a view of the manager that shows it.
+    vi.spyOn(
+      testManager.vitestManager as unknown as { getTestDependencies: () => Promise<Set<string>> },
+      'getTestDependencies'
+    ).mockResolvedValue(new Set());
 
     await testManager.vitestManager.runAffectedTestsAfterChange(tests[0].moduleId, 'change');
 

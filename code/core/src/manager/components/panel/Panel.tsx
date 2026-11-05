@@ -80,7 +80,11 @@ const PreRenderAddons = ({ panels }: { panels: Record<string, Addon_BaseType> })
 
 export const AddonPanel = React.memo<{
   selectedPanel?: string;
-  actions: { onSelect: (id: string) => void } & Record<string, any>;
+  actions: {
+    onSelect: (id: string) => void;
+    toggleVisibility: () => void;
+    togglePosition: () => void;
+  };
   panels: Record<string, Addon_BaseType>;
   shortcuts: State['shortcuts'];
   panelPosition?: 'bottom' | 'right';

@@ -8,8 +8,11 @@ import { fn } from '@aussieljk/forkbook/test';
 import { CallStates } from '../../instrumenter/types.ts';
 import { TestDiscrepancyMessage } from './TestDiscrepancyMessage.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 type Story = StoryObj<typeof TestDiscrepancyMessage>;
-const managerContext: any = {
+const managerContext = {
   state: {},
   api: {
     getDocsUrl: fn().mockName('api::getDocsUrl'),
@@ -25,7 +28,9 @@ export default {
   },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={managerContext}>{storyFn()}</ManagerContext.Provider>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
+        {storyFn()}
+      </ManagerContext.Provider>
     ),
   ],
 } satisfies Meta<typeof TestDiscrepancyMessage>;

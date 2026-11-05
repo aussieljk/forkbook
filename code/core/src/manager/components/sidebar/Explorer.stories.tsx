@@ -1,9 +1,11 @@
 import React from 'react';
 
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
+
 import { Explorer } from './Explorer.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
 import * as RefStories from './Refs.stories.tsx';
-import { mockDataset } from './mockdata.ts';
+import { mockIndexes } from './mockdata.ts';
 import type { RefType } from './types.ts';
 
 export default {
@@ -13,7 +15,7 @@ export default {
   parameters: { layout: 'fullscreen' },
   decorators: [
     RefStories.default.decorators[0],
-    (storyFn: any) => (
+    (storyFn: Parameters<Decorator>[0]) => (
       <div style={{ padding: '0 20px', maxWidth: '230px' }}>
         <IconSymbols />
         {storyFn()}
@@ -28,8 +30,7 @@ const simple: Record<string, RefType> = {
     id: 'storybook_internal',
     url: 'iframe.html',
     previewInitialized: true,
-    // @ts-expect-error (invalid input)
-    filteredIndex: mockDataset.withRoot,
+    filteredIndex: mockIndexes.withRoot,
   },
 };
 
@@ -41,8 +42,7 @@ const withRefs: Record<string, RefType> = {
     url: 'https://example.com',
     previewInitialized: true,
     type: 'auto-inject',
-    // @ts-expect-error (invalid input)
-    filteredIndex: mockDataset.noRoot,
+    filteredIndex: mockIndexes.noRoot,
   },
   injected: {
     id: 'injected',
@@ -50,8 +50,7 @@ const withRefs: Record<string, RefType> = {
     url: 'https://example.com',
     previewInitialized: false,
     type: 'auto-inject',
-    // @ts-expect-error (invalid input)
-    filteredIndex: mockDataset.noRoot,
+    filteredIndex: mockIndexes.noRoot,
   },
   unknown: {
     id: 'unknown',
@@ -59,8 +58,7 @@ const withRefs: Record<string, RefType> = {
     url: 'https://example.com',
     previewInitialized: true,
     type: 'unknown',
-    // @ts-expect-error (invalid input)
-    filteredIndex: mockDataset.noRoot,
+    filteredIndex: mockIndexes.noRoot,
   },
   lazy: {
     id: 'lazy',
@@ -68,8 +66,7 @@ const withRefs: Record<string, RefType> = {
     url: 'https://example.com',
     previewInitialized: false,
     type: 'lazy',
-    // @ts-expect-error (invalid input)
-    filteredIndex: mockDataset.withRoot,
+    filteredIndex: mockIndexes.withRoot,
   },
 };
 

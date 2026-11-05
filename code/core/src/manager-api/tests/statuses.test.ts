@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { API_PreparedIndexEntry } from '@aussieljk/forkbook/internal/types';
+import type { API_FilterFunction } from '@aussieljk/forkbook/internal/types';
 
 import {
   computeStatusFilterFn,
@@ -16,7 +16,8 @@ vi.mock('../stores/status.ts', () => ({
 
 import { fullStatusStore } from '../stores/status.ts';
 
-const entry = (id: string): API_PreparedIndexEntry => ({ id }) as unknown as API_PreparedIndexEntry;
+type FilterEntry = Parameters<API_FilterFunction>[0];
+const entry = (id: string): FilterEntry => ({ id }) as unknown as FilterEntry;
 
 describe('parseStatusesParam', () => {
   it('returns empty arrays for undefined', () => {
@@ -127,7 +128,7 @@ describe('serializeStatusesParam', () => {
 describe('computeStatusFilterFn', () => {
   it('returns true for all entries when both filters are empty', () => {
     const fn = computeStatusFilterFn([], []);
-    expect(fn(entry('story-1') as any)).toBe(true);
+    expect(fn(entry('story-1'))).toBe(true);
   });
 
   it('includes entries matching an included status (OR logic)', () => {
@@ -153,8 +154,8 @@ describe('computeStatusFilterFn', () => {
     });
 
     const fn = computeStatusFilterFn(['status-value:new', 'status-value:modified'], []);
-    expect(fn(entry('story-1') as any)).toBe(true); // has 'new'
-    expect(fn(entry('story-2') as any)).toBe(false); // has 'error', not in include list
+    expect(fn(entry('story-1'))).toBe(true); // has 'new'
+    expect(fn(entry('story-2'))).toBe(false); // has 'error', not in include list
   });
 
   it('excludes entries matching an excluded status (AND logic)', () => {
@@ -180,8 +181,8 @@ describe('computeStatusFilterFn', () => {
     });
 
     const fn = computeStatusFilterFn([], ['status-value:error']);
-    expect(fn(entry('story-1') as any)).toBe(false); // has 'error', excluded
-    expect(fn(entry('story-2') as any)).toBe(true); // has 'success', not excluded
+    expect(fn(entry('story-1'))).toBe(false); // has 'error', excluded
+    expect(fn(entry('story-2'))).toBe(true); // has 'success', not excluded
   });
 
   it('applies both include and exclude filters together', () => {
@@ -223,23 +224,23 @@ describe('computeStatusFilterFn', () => {
     });
 
     const fn = computeStatusFilterFn(['status-value:new'], ['status-value:error']);
-    expect(fn(entry('story-1') as any)).toBe(true); // included via 'new', no excluded match
-    expect(fn(entry('story-2') as any)).toBe(false); // included via 'new' BUT excluded via 'error'
-    expect(fn(entry('story-3') as any)).toBe(false); // not included (no 'new')
+    expect(fn(entry('story-1'))).toBe(true); // included via 'new', no excluded match
+    expect(fn(entry('story-2'))).toBe(false); // included via 'new' BUT excluded via 'error'
+    expect(fn(entry('story-3'))).toBe(false); // not included (no 'new')
   });
 
   it('excludes entries with no statuses when include filters are active', () => {
     vi.mocked(fullStatusStore.getAll).mockReturnValue({});
 
     const fn = computeStatusFilterFn(['status-value:new'], []);
-    expect(fn(entry('story-no-status') as any)).toBe(false);
+    expect(fn(entry('story-no-status'))).toBe(false);
   });
 
   it('includes entries with no statuses when only exclude filters are active', () => {
     vi.mocked(fullStatusStore.getAll).mockReturnValue({});
 
     const fn = computeStatusFilterFn([], ['status-value:error']);
-    expect(fn(entry('story-no-status') as any)).toBe(true);
+    expect(fn(entry('story-no-status'))).toBe(true);
   });
 
   it('handles entry not present in status store', () => {
@@ -256,7 +257,7 @@ describe('computeStatusFilterFn', () => {
     });
 
     const fn = computeStatusFilterFn(['status-value:new'], []);
-    expect(fn(entry('missing-story') as any)).toBe(false);
+    expect(fn(entry('missing-story'))).toBe(false);
   });
 
   it('handles entry with multiple statuses from different addons', () => {
@@ -280,13 +281,16 @@ describe('computeStatusFilterFn', () => {
     });
 
     const fn = computeStatusFilterFn(['status-value:new'], []);
-    expect(fn(entry('story-1') as any)).toBe(true); // one of its statuses matches
+    expect(fn(entry('story-1'))).toBe(true); // one of its statuses matches
   });
 
   it('handles null return from getAll', () => {
-    vi.mocked(fullStatusStore.getAll).mockReturnValue(null as any);
+    // The store can return null before it is ready, although its type says otherwise.
+    vi.mocked(fullStatusStore.getAll).mockReturnValue(
+      null as unknown as ReturnType<typeof fullStatusStore.getAll>
+    );
 
     const fn = computeStatusFilterFn(['status-value:new'], []);
-    expect(fn(entry('story-1') as any)).toBe(false);
+    expect(fn(entry('story-1'))).toBe(false);
   });
 });

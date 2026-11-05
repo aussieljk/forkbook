@@ -33,8 +33,8 @@ const statusSchema = v.looseObject({
  * so the service contract stays stable across a11y/report shape tweaks.
  */
 const testRunResultSchema = v.object({
-  triggeredBy: v.optional(v.any()),
-  config: v.record(v.string(), v.any()),
+  triggeredBy: v.optional(v.unknown()),
+  config: v.record(v.string(), v.unknown()),
   componentTestStatuses: v.array(statusSchema),
   a11yStatuses: v.array(statusSchema),
   componentTestCount: v.object({
@@ -46,13 +46,13 @@ const testRunResultSchema = v.object({
     warning: v.number(),
     error: v.number(),
   }),
-  a11yReports: v.record(v.string(), v.array(v.any())),
-  reports: v.record(v.string(), v.array(v.any())),
+  a11yReports: v.record(v.string(), v.array(v.unknown())),
+  reports: v.record(v.string(), v.array(v.unknown())),
   totalTestCount: v.optional(v.number()),
   storyIds: v.optional(v.array(v.string())),
   startedAt: v.optional(v.number()),
   finishedAt: v.optional(v.number()),
-  unhandledErrors: v.array(v.any()),
+  unhandledErrors: v.array(v.unknown()),
   coverageSummary: v.optional(
     v.object({
       status: v.union([

@@ -18,6 +18,7 @@ import { Explorer } from './Explorer.tsx';
 import { Filter } from './Filter.tsx';
 import type { HeadingProps } from './Heading.tsx';
 import { Heading } from './Heading.tsx';
+import type { MenuList } from './Menu.tsx';
 import { PageLinks } from './PageLinks.tsx';
 import { IconSymbols } from './IconSymbols.tsx';
 import ReviewWidget, { useActiveReviewStoryCount } from './ReviewWidget.tsx';
@@ -54,14 +55,13 @@ const useCombination = (
     }),
     [refs, index, indexError, previewInitialized, allStatuses]
   );
-  // @ts-expect-error (non strict)
   return useMemo(() => ({ hash, entries: Object.entries(hash) }), [hash]);
 };
 
 export interface SidebarProps extends API_LoadedRefData {
   refs: State['refs'];
   allStatuses: StatusesByStoryIdAndTypeId;
-  menu: any[];
+  menu: MenuList;
   storyId?: string;
   refId?: string;
   anchor?: string;
@@ -72,8 +72,7 @@ export interface SidebarProps extends API_LoadedRefData {
   isDevelopment?: boolean;
 }
 export const Sidebar = React.memo(function Sidebar({
-  // @ts-expect-error (non strict)
-  storyId = null,
+  storyId,
   refId = DEFAULT_REF_ID,
   anchor,
   index,

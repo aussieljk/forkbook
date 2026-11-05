@@ -4,9 +4,10 @@ import type { API_ProviderData } from '@aussieljk/forkbook/internal/types';
 import type { API, State } from '../root.tsx';
 import type Store from '../store.ts';
 
-export type ModuleFn<APIType = unknown, StateType = unknown> = (
+/** `Options` are extra init options that only tests pass, for example `runCheck` for refs. */
+export type ModuleFn<APIType = unknown, StateType = unknown, Options = object> = (
   m: ModuleArgs,
-  options?: any
+  options?: Options
 ) => {
   init?: () => void | Promise<void>;
   api: APIType;

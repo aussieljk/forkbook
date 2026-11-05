@@ -168,14 +168,19 @@ export const useMenu = ({
 
   const getAddonsShortcuts = useCallback(() => {
     const addonsShortcuts = api.getAddonsShortcuts();
-    const keys = shortcutKeys as any;
+    // Addon shortcuts are stored next to the built-in ones, under their action names.
+    const getKeys = (actionName: string) =>
+      actionName in shortcutKeys
+        ? shortcutKeys[actionName as keyof typeof shortcutKeys]
+        : undefined;
     return Object.entries(addonsShortcuts)
       .filter(([_, { showInMenu }]) => showInMenu)
       .map(([actionName, { label, action }]) => ({
         id: actionName,
         title: label,
         onClick: () => action(),
-        right: enableShortcuts && keys[actionName] ? <Shortcut keys={keys[actionName]} /> : null,
+        right:
+          enableShortcuts && getKeys(actionName) ? <Shortcut keys={getKeys(actionName)} /> : null,
       }));
   }, [api, enableShortcuts, shortcutKeys]);
 

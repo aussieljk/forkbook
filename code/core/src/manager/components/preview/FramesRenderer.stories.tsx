@@ -1,8 +1,14 @@
-import { ManagerContext } from '@aussieljk/forkbook/manager-api';
+import type { ComponentProps } from 'react';
+
+import type { API_LeafEntry, API_Refs } from '@aussieljk/forkbook/internal/types';
+import { type API, ManagerContext } from '@aussieljk/forkbook/manager-api';
 import { expect, fn } from '@aussieljk/forkbook/test';
 
 import preview from '../../../../../.forkbook/preview.tsx';
 import { FramesRenderer } from './FramesRenderer.tsx';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = ComponentProps<typeof ManagerContext.Provider>['value'];
 
 // Use the `Icons` composed ref that this Forkbook already references, so the active ref frame
 // renders a real story instead of a non-existent URL.
@@ -19,7 +25,7 @@ const getStoryHrefs = fn((id: string, opts?: { refId?: string }) => ({
     : `iframe.html?id=${id}`,
 })).mockName('api::getStoryHrefs');
 
-const api: any = {
+const api = {
   getStoryHrefs,
   getIsFullscreen: fn(() => false),
   getIsNavShown: fn(() => true),
@@ -36,7 +42,7 @@ const api: any = {
   emit: fn(),
 };
 
-const managerContext: any = {
+const managerContext = {
   state: { storyId },
   api,
 };
@@ -44,21 +50,26 @@ const managerContext: any = {
 const meta = preview.meta({
   component: FramesRenderer,
   args: {
-    api,
+    api: api as unknown as API,
     refId,
     storyId,
     viewMode: 'story',
     scale: 1,
-    baseUrl: 'iframe.html',
     queryParams: {},
-    entry: { type: 'story', id: storyId } as any,
+    entry: { type: 'story', id: storyId } as API_LeafEntry,
     refs: {
-      [refId]: { id: refId, url: refUrl, type: 'lazy', title: 'Icons' },
-    } as any,
+      [refId]: {
+        id: refId,
+        url: refUrl,
+        type: 'lazy',
+        title: 'Icons',
+        previewInitialized: false,
+      },
+    } satisfies API_Refs,
   },
   decorators: [
     (Story) => (
-      <ManagerContext.Provider value={managerContext}>
+      <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
         <Story />
       </ManagerContext.Provider>
     ),

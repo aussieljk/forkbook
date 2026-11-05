@@ -123,16 +123,13 @@ export const transformStoryIndexV3toV4 = (index: StoryIndexV3): API_PreparedStor
         ) {
           type = 'docs';
         }
+        // Drop the v3 `story` and `kind` fields, which a v4 entry does not have.
+        const { story: _story, kind: _kind, ...entryWithoutV3Fields } = entry;
         acc[entry.id] = {
           type,
           ...(type === 'docs' && { tags: ['stories-mdx'], storiesImports: [] }),
-          ...entry,
+          ...entryWithoutV3Fields,
         } as API_PreparedIndexEntry;
-
-        // @ts-expect-error (we're removing something that should not be there)
-        delete acc[entry.id].story;
-        // @ts-expect-error (we're removing something that should not be there)
-        delete acc[entry.id].kind;
 
         return acc;
       },
@@ -182,10 +179,11 @@ export const transformStoryIndexToStoriesHash = (
     throw new Error('Composition: Missing stories.json version');
   }
 
+  // `v` is a plain number in the index types, so the version checks cannot narrow them.
   let index = input;
-  index = index.v === 2 ? transformStoryIndexV2toV3(index as any) : index;
-  index = index.v === 3 ? transformStoryIndexV3toV4(index as any) : index;
-  index = index.v === 4 ? transformStoryIndexV4toV5(index as any) : index;
+  index = index.v === 2 ? transformStoryIndexV2toV3(index as StoryIndexV2) : index;
+  index = index.v === 3 ? transformStoryIndexV3toV4(index as StoryIndexV3) : index;
+  index = index.v === 4 ? transformStoryIndexV4toV5(index as API_PreparedStoryIndex) : index;
   index = index as API_PreparedStoryIndex;
 
   const indexEntries = Object.values(index.entries);

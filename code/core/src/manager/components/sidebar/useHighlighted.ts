@@ -1,4 +1,4 @@
-import type { Dispatch, MutableRefObject, RefObject, SetStateAction } from 'react';
+import type { MutableRefObject, RefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { PRELOAD_ENTRIES } from '@aussieljk/forkbook/internal/core-events';
@@ -47,11 +47,7 @@ export const useHighlighted = ({
   isLoading,
   isBrowsing,
   selected,
-}: HighlightedProps): [
-  Highlight,
-  Dispatch<SetStateAction<Highlight>>,
-  MutableRefObject<Highlight>,
-] => {
+}: HighlightedProps): [Highlight, (highlight: Highlight) => void, MutableRefObject<Highlight>] => {
   const initialHighlight = fromSelection(selected);
   const highlightedRef = useRef<Highlight>(initialHighlight);
   const [highlighted, setHighlighted] = useState<Highlight>(initialHighlight);
@@ -119,7 +115,6 @@ export const useHighlighted = ({
 
         const target = event.target as Element;
 
-        // @ts-expect-error (non strict)
         if (!isAncestor(menuElement, target) && !isAncestor(target, menuElement)) {
           return;
         }
@@ -140,8 +135,10 @@ export const useHighlighted = ({
         const didRunAround = isArrowUp ? nextIndex === highlightable.length - 1 : nextIndex === 0;
         highlightElement(highlightable[nextIndex], didRunAround);
 
-        if (highlightable[nextIndex].getAttribute('data-nodetype') === 'component') {
-          // @ts-expect-error (non strict)
+        if (
+          highlightable[nextIndex].getAttribute('data-nodetype') === 'component' &&
+          highlightedRef.current
+        ) {
           const { itemId, refId } = highlightedRef.current;
           const item = api.resolveStory(itemId, refId === 'storybook_internal' ? undefined : refId);
           if (item?.type === 'component') {
@@ -158,6 +155,5 @@ export const useHighlighted = ({
     return () => document.removeEventListener('keydown', navigateTree);
   }, [api, containerRef, isLoading, isBrowsing, highlightedRef, highlightElement]);
 
-  // @ts-expect-error (non strict)
   return [highlighted, updateHighlighted, highlightedRef];
 };

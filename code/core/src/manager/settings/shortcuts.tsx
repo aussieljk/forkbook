@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, KeyboardEvent } from 'react';
 import React, { Component } from 'react';
 
 import { Button, Form, Tooltip, TooltipProvider } from '@aussieljk/forkbook/internal/components';
@@ -56,7 +56,12 @@ const shortcutLabels = {
 
 export type Feature = keyof typeof shortcutLabels;
 
-type ConfiguredShortcut = { shortcut: API_KeyCollection; error: boolean; hardcoded?: boolean };
+/** The shortcut is null while the user types a new one. */
+type ConfiguredShortcut = {
+  shortcut: API_KeyCollection | null;
+  error: boolean;
+  hardcoded?: boolean;
+};
 
 // Shortcuts that cannot be changed by the user (imposed by third-party libraries).
 const hardcodedShortcuts = ['goToPreviousLandmark', 'goToNextLandmark'];
@@ -76,14 +81,14 @@ function toShortcutState(
 }
 
 export interface ShortcutsScreenState {
-  activeFeature: Feature;
-  successField: Feature;
-  shortcutKeys: Record<Feature, any>;
+  activeFeature: Feature | undefined;
+  successField: Feature | undefined;
+  shortcutKeys: Record<Feature, ConfiguredShortcut>;
   addonsShortcutLabels?: Record<string, string>;
 }
 
 export interface ShortcutsScreenProps {
-  shortcutKeys: Record<Feature, any>;
+  shortcutKeys: Record<Feature, API_KeyCollection>;
   addonsShortcutLabels?: Record<string, string>;
   setShortcut: Function;
   restoreDefaultShortcut: Function;
@@ -94,9 +99,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   constructor(props: ShortcutsScreenProps) {
     super(props);
     this.state = {
-      // @ts-expect-error (non strict)
       activeFeature: undefined,
-      // @ts-expect-error (non strict)
       successField: undefined,
       // The initial shortcutKeys that come from props are the defaults/what was saved
       // As the user interacts with the page, the state stores the temporary, unsaved shortcuts
@@ -108,6 +111,10 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
 
   onKeyDown = (e: KeyboardEvent) => {
     const { activeFeature, shortcutKeys } = this.state;
+    // Only a focused input gets key presses, and focus sets the active feature.
+    if (!activeFeature) {
+      return false;
+    }
 
     if (e.key === 'Backspace') {
       return this.restoreDefault();
@@ -159,7 +166,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   onBlur = async () => {
     const { shortcutKeys, activeFeature } = this.state;
 
-    if (shortcutKeys[activeFeature]) {
+    if (activeFeature && shortcutKeys[activeFeature]) {
       const { shortcut, error } = shortcutKeys[activeFeature];
       if (!shortcut || error) {
         return this.restoreDefault();
@@ -173,6 +180,9 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     const { activeFeature, shortcutKeys } = this.state;
 
     const { setShortcut } = this.props;
+    if (!activeFeature) {
+      return;
+    }
     await setShortcut(activeFeature, shortcutKeys[activeFeature].shortcut);
     this.setState({ successField: activeFeature });
   };
@@ -188,12 +198,18 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
     const { activeFeature, shortcutKeys } = this.state;
 
     const { restoreDefaultShortcut } = this.props;
+    if (!activeFeature) {
+      return;
+    }
 
     const defaultShortcut = await restoreDefaultShortcut(activeFeature);
     return this.setState({
       shortcutKeys: {
         ...shortcutKeys,
-        ...toShortcutState({ [activeFeature]: defaultShortcut } as Record<Feature, any>),
+        ...toShortcutState({ [activeFeature]: defaultShortcut } as Record<
+          Feature,
+          API_KeyCollection
+        >),
       },
     });
   };
@@ -215,8 +231,10 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
   renderKeyInput = () => {
     const { shortcutKeys, addonsShortcutLabels } = this.state;
     // Filter out keyboard shortcuts from localStorage that no longer exist in code
-    const availableShortcuts = (Object.entries(shortcutKeys) as [Feature, any][]).filter(
-      ([feature]: [Feature, any]) =>
+    const availableShortcuts = (
+      Object.entries(shortcutKeys) as [Feature, ConfiguredShortcut][]
+    ).filter(
+      ([feature]) =>
         shortcutLabels[feature] !== undefined ||
         (addonsShortcutLabels && addonsShortcutLabels[feature])
     );
@@ -225,8 +243,7 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
       ([feature, { shortcut, hardcoded }]: [Feature, ConfiguredShortcut]) => (
         <div className={styles.row} key={feature}>
           <div className={styles.description}>
-            {/* @ts-expect-error (non strict) */}
-            {shortcutLabels[feature] || addonsShortcutLabels[feature]}
+            {shortcutLabels[feature] || addonsShortcutLabels?.[feature]}
           </div>
 
           {hardcoded ? (
@@ -250,7 +267,6 @@ class ShortcutsScreen extends Component<ShortcutsScreenProps, ShortcutsScreenSta
               className="modalInput"
               onBlur={this.onBlur}
               onFocus={this.onFocus(feature)}
-              // @ts-expect-error (Converted from ts-ignore)
               onKeyDown={this.onKeyDown}
               value={shortcut ? shortcutToHumanString(shortcut) : ''}
               placeholder="Type keys"

@@ -1,4 +1,4 @@
-import type { Dispatch, MutableRefObject } from 'react';
+import type { Dispatch, MutableRefObject, RefObject } from 'react';
 import { useCallback, useEffect, useReducer } from 'react';
 
 import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from '@aussieljk/forkbook/internal/core-events';
@@ -23,7 +23,7 @@ export interface ExpandAction {
 }
 
 export interface ExpandedProps {
-  containerRef: MutableRefObject<HTMLElement>;
+  containerRef: RefObject<HTMLElement | null>;
   isBrowsing: boolean;
   refId: string;
   data: StoriesHash;
@@ -38,7 +38,7 @@ export interface ExpandedProps {
 const initializeExpanded = ({
   refId,
   data,
-  initialExpanded,
+  initialExpanded = {},
   highlightedRef,
   rootIds,
   selectedStoryId,
@@ -60,7 +60,6 @@ const initializeExpanded = ({
     candidates.push(selectedStoryId);
   }
   return candidates.reduce<ExpandedState>(
-    // @ts-expect-error (non strict)
     (acc, id) => Object.assign(acc, { [id]: id in initialExpanded ? initialExpanded[id] : true }),
     {}
   );
@@ -101,8 +100,8 @@ export const useExpanded = ({
 
   const highlightElement = useCallback(
     (element: Element) => {
-      // @ts-expect-error (non strict)
-      setHighlightedItemId(element.getAttribute('data-item-id'));
+      // Callers find the element by its `data-item-id`, so it has one.
+      setHighlightedItemId(element.getAttribute('data-item-id')!);
       scrollIntoView(element);
     },
     [setHighlightedItemId]
@@ -188,7 +187,6 @@ export const useExpanded = ({
 
       const target = event.target as Element;
 
-      // @ts-expect-error (non strict)
       if (!isAncestor(menuElement, target) && !isAncestor(target, menuElement)) {
         return;
       }

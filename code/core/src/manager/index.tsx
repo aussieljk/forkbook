@@ -21,10 +21,8 @@ import { LayoutProvider } from './components/layout/LayoutProvider.tsx';
 import Provider from './provider.ts';
 import { settingsPageAddon } from './settings/index.tsx';
 
-// @ts-expect-error (Converted from ts-ignore)
-ThemeProvider.displayName = 'ThemeProvider';
-// @ts-expect-error (Converted from ts-ignore)
-HelmetProvider.displayName = 'HelmetProvider';
+Object.assign(ThemeProvider, { displayName: 'ThemeProvider' });
+Object.assign(HelmetProvider, { displayName: 'HelmetProvider' });
 
 // Forkbook icons are 14 px unless a component gives another size. The addons get the same
 // LucideProvider through the 'lucide-react' manager global.

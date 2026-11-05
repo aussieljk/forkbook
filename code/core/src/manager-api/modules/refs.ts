@@ -215,7 +215,7 @@ const map = (
   return input;
 };
 
-export const init: ModuleFn<SubAPI, SubState> = (
+export const init: ModuleFn<SubAPI, SubState, { runCheck?: boolean }> = (
   { store, provider, singleStory, docsOptions = {} },
   { runCheck = true } = {}
 ) => {
@@ -363,15 +363,14 @@ export const init: ModuleFn<SubAPI, SubState> = (
             )
           : storyIndex;
 
-        // @ts-expect-error (could be undefined)
-        filteredIndex = transformStoryIndexToStoriesHash(storyIndex, {
+        // With only `setStoriesData`, `storyIndex` is undefined and this throws, as before.
+        filteredIndex = transformStoryIndexToStoriesHash(storyIndex!, {
           provider,
           docsOptions,
           filters,
           allStatuses: {},
         });
-        // @ts-expect-error (could be undefined)
-        index = transformStoryIndexToStoriesHash(storyIndex, {
+        index = transformStoryIndexToStoriesHash(storyIndex!, {
           provider,
           docsOptions,
           filters: {},

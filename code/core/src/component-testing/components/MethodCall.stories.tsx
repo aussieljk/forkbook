@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { Decorator } from '@aussieljk/forkbook/react-vite';
+
 import type { Call } from '../../instrumenter/types.ts';
 import { MethodCall, Node } from './MethodCall.tsx';
 
@@ -16,7 +18,7 @@ export default {
   title: 'MethodCall',
   component: MethodCall,
   decorators: [
-    (Story: any) => (
+    (Story: Parameters<Decorator>[0]) => (
       <div style={wrapperStyle}>
         <Story />
       </div>

@@ -23,7 +23,7 @@ import type {
   SearchChildrenFn,
   SearchItem,
   SearchResult,
-  Selection,
+  StoryRef,
 } from './types.ts';
 import { isExpandType, isSearchResult } from './types.ts';
 import styles from './Search.module.css';
@@ -54,7 +54,7 @@ export type SearchProps = {
   children: SearchChildrenFn;
   dataset: CombinedDataset;
   enableShortcuts?: boolean;
-  getLastViewed: () => Selection[];
+  getLastViewed: () => StoryRef[];
   initialQuery?: string;
   searchFieldContent?: ReactNode;
   belowSearchContent?: ReactNode;
@@ -182,8 +182,7 @@ export const Search = React.memo<SearchProps>(function Search({
           resultIds.add(item.id);
           return true;
         }
-        // @ts-expect-error (non strict)
-        if (resultIds.has(item.parent)) {
+        if ('parent' in item && item.parent && resultIds.has(item.parent)) {
           return false;
         }
         resultIds.add(item.id);
@@ -219,13 +218,11 @@ export const Search = React.memo<SearchProps>(function Search({
         const [storyId, anchor] = rawId.split('#');
 
         api?.selectStory(storyId, undefined, {
-          // @ts-expect-error (non strict)
-          ref: refId !== DEFAULT_REF_ID && refId,
+          ref: refId !== DEFAULT_REF_ID ? refId : undefined,
           scrollTo: anchor,
         });
 
-        // @ts-expect-error (non strict)
-        inputRef.current.blur();
+        inputRef.current?.blur();
         showAllComponents(false);
         return;
       }
@@ -236,7 +233,7 @@ export const Search = React.memo<SearchProps>(function Search({
     [api]
   );
 
-  const onInputValueChange = useCallback((inputValue: string, stateAndHelpers: any) => {
+  const onInputValueChange = useCallback(() => {
     showAllComponents(false);
   }, []);
 
@@ -296,8 +293,7 @@ export const Search = React.memo<SearchProps>(function Search({
     <Downshift<DownshiftItem>
       initialInputValue={initialQuery}
       stateReducer={stateReducer}
-      // @ts-expect-error (Converted from ts-ignore)
-      itemToString={(result) => result?.item?.name || ''}
+      itemToString={(result) => (isSearchResult(result) ? result.item.name : '')}
       scrollIntoView={(e) => scrollIntoView(e)}
       onSelect={onSelect}
       onInputValueChange={onInputValueChange}
@@ -320,15 +316,13 @@ export const Search = React.memo<SearchProps>(function Search({
 
         const lastViewed = !input && getLastViewed();
         if (lastViewed && lastViewed.length) {
-          // @ts-expect-error (non strict)
-          results = lastViewed.reduce((acc, { storyId, refId, anchor }) => {
+          results = lastViewed.reduce<SearchResult[]>((acc, { storyId, refId, anchor }) => {
             const data = dataset.hash[refId];
             if (data && data.index && data.index[storyId]) {
               const story = data.index[storyId];
               const item = story.type === 'story' ? data.index[story.parent] : story;
               const entryId = anchor ? `${item.id}#${anchor}` : item.id;
               // prevent duplicates
-              // @ts-expect-error (non strict)
               if (!acc.some((res) => res.item.refId === refId && res.item.id === entryId)) {
                 const baseItem = searchItem(item, dataset.hash[refId]);
                 let resultItem = baseItem;
@@ -346,7 +340,6 @@ export const Search = React.memo<SearchProps>(function Search({
                     };
                   }
                 }
-                // @ts-expect-error (non strict)
                 acc.push({ item: resultItem, matches: [], score: 0 });
               }
             }
@@ -367,12 +360,10 @@ export const Search = React.memo<SearchProps>(function Search({
           },
           onBlur: () => setPlaceholder('Find components'),
           onKeyDown: (e) => {
-            // @ts-expect-error (non strict)
-            if (e.key === 'Escape' && inputValue.length === 0) {
+            if (e.key === 'Escape' && !inputValue) {
               // When pressing escape while the input is empty, blur the input
               // The stateReducer will handle returning to the tree view
-              // @ts-expect-error (non strict)
-              inputRef.current.blur();
+              inputRef.current?.blur();
             }
           },
         });

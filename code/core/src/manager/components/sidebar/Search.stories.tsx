@@ -12,7 +12,9 @@ import { SearchResults } from './SearchResults.tsx';
 import { noResults } from './SearchResults.stories.tsx';
 import { DEFAULT_REF_ID } from './Sidebar.tsx';
 import { index } from './mockdata.large.ts';
-import type { Selection } from './types.ts';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
 
 const refId = DEFAULT_REF_ID;
 const data = { [refId]: { id: refId, url: '/', index, previewInitialized: true, allStatuses: {} } };
@@ -28,7 +30,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   globals: { sb_theme: 'side-by-side' },
   decorators: [
-    (storyFn: any) => (
+    (storyFn) => (
       <div
         style={{
           display: 'flex',
@@ -48,7 +50,7 @@ export default meta;
 
 const baseProps: Omit<SearchProps, 'children'> = {
   dataset,
-  getLastViewed: () => [] as Selection[],
+  getLastViewed: () => [],
 };
 
 export const Simple: StoryFn = () => <Search {...baseProps}>{() => null}</Search>;
@@ -92,7 +94,7 @@ CustomShortcuts.decorators = [
           api: {
             getShortcutKeys: () => ({ search: ['control', 'shift', 's'] }),
           } as API,
-        } as any
+        } as unknown as ManagerContextValue
       }
     >
       {storyFn()}

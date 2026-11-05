@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, beforeEach, inject, vi } from 'vitest';
-import type { RunnerTask } from 'vitest';
+import type { RunnerTask, TaskMeta } from 'vitest';
 
 import { Channel } from '@aussieljk/forkbook/internal/channels';
 import { getChannel, setChannel } from '@aussieljk/forkbook/internal/channels';
@@ -13,14 +13,8 @@ if (features) {
   beforeEach(() => vi.stubGlobal('FEATURES', features));
 }
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore - The module is augmented elsewhere but we need to duplicate it to avoid issues in no-link mode.
-  var __FORKBOOK_ADDONS_CHANNEL__: Channel;
-}
-
 export type Task = Partial<RunnerTask> & {
-  meta: Record<string, any>;
+  meta: TaskMeta & { storyId?: string };
 };
 
 let defaultChannel: Channel | null = null;

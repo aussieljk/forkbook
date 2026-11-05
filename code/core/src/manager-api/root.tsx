@@ -109,6 +109,8 @@ export type API = addons.SubAPI &
   openInEditor.SubAPI &
   Other;
 
+// Addons and other areas (addon-a11y, the React Native UI) read state and API members that these
+// types do not declare. `unknown` here breaks them, so this stays `any` until they are typed.
 interface Other {
   [key: string]: any;
 }
@@ -154,15 +156,12 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
 
     const store = new Store({
       getState: () => this.state,
-      setState: (stateChange: Partial<State>, callback) => {
+      setState: (stateChange, callback) => {
         if (!this.mounted) {
           // Before mount (e.g. during addon registration in the constructor) React's setState is a
           // no-op, so apply the patch directly to this.state and resolve synchronously. This ensures
           // register-time writes (like setFilters) land in the first render.
-          const patch =
-            typeof stateChange === 'function'
-              ? (stateChange as (s: State) => Partial<State>)(this.state)
-              : stateChange;
+          const patch = typeof stateChange === 'function' ? stateChange(this.state) : stateChange;
           this.state = { ...this.state, ...patch };
           callback?.(this.state);
 

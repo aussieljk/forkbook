@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { LocationProvider } from '@aussieljk/forkbook/internal/router';
+import type { API_Notification } from '@aussieljk/forkbook/internal/types';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -29,11 +30,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-type ItemStories = typeof itemStories & { [key: string]: any };
+// Every story in NotificationItem.stories has a `notification` arg.
+type ItemStory = { args: { notification: API_Notification } };
 
-const items = Array.from(Object.keys(itemStories as ItemStories))
-  .filter((key) => !['default', '__namedExportsOrder'].includes(key))
-  .map((key) => (itemStories as ItemStories)[key].args.notification);
+const items = Object.entries(itemStories)
+  .filter(([key]) => !['default', '__namedExportsOrder'].includes(key))
+  .map(([, story]) => (story as ItemStory).args.notification);
 
 export const Single: Story = {
   args: {

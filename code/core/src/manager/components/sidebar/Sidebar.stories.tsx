@@ -21,7 +21,11 @@ import { LayoutProvider } from '../layout/LayoutProvider.tsx';
 import { standardData as standardHeaderData } from './Heading.stories.tsx';
 import { DEFAULT_REF_ID, Sidebar } from './Sidebar.tsx';
 import { mockDataset } from './mockdata.ts';
-import type { RefType } from './types.ts';
+import type { Refs } from './types.ts';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
 
 const wait = (ms: number) =>
   new Promise<void>((resolve) => {
@@ -35,7 +39,7 @@ const storyId = 'root-1-child-a2--grandchild-a1-1';
 export const simpleData = { menu, index, storyId };
 export const loadingData = { menu };
 
-const managerContext: any = (
+const managerContext = (
   args: Meta<typeof Sidebar>['args'],
   options: {
     includedStatusFilters?: StatusValue[];
@@ -111,7 +115,11 @@ const meta = {
   },
   decorators: [
     (storyFn, { args, globals, title, parameters }) => (
-      <ManagerContext.Provider value={managerContext(args, parameters?.contextOptions ?? {})}>
+      <ManagerContext.Provider
+        value={
+          managerContext(args, parameters?.contextOptions ?? {}) as unknown as ManagerContextValue
+        }
+      >
         <LayoutProvider
           forceDesktop={
             globals.viewport?.value === 'desktop' ||
@@ -135,7 +143,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const mobileLayoutDecorator: DecoratorFunction = (storyFn, { args, globals, title }) => (
-  <ManagerContext.Provider value={managerContext(args)}>
+  <ManagerContext.Provider value={managerContext(args) as unknown as ManagerContextValue}>
     <LayoutProvider
       forceDesktop={
         globals.viewport?.value === 'desktop' ||
@@ -148,7 +156,7 @@ const mobileLayoutDecorator: DecoratorFunction = (storyFn, { args, globals, titl
   </ManagerContext.Provider>
 );
 
-const refs: Record<string, RefType> = {
+const refs: Refs = {
   optimized: {
     id: 'optimized',
     title: 'This is a ref',
@@ -156,17 +164,15 @@ const refs: Record<string, RefType> = {
     type: 'lazy',
     filteredIndex: index,
     previewInitialized: true,
-    allStatuses: {},
   },
 };
 
 const indexError = new Error('Failed to load index');
 
-const refsError = {
+const refsError: Refs = {
   optimized: {
     ...refs.optimized,
-    // @ts-expect-error (non strict)
-    filteredIndex: undefined as IndexHash,
+    filteredIndex: undefined,
     indexError,
   },
 };
@@ -228,7 +234,7 @@ export const EmptyWithFilters: Story = {
       const context = managerContext(args);
       return (
         <ManagerContext.Provider
-          value={{
+          value={asManagerContext({
             ...context,
             state: {
               ...context.state,
@@ -237,7 +243,7 @@ export const EmptyWithFilters: Story = {
               includedStatusFilters: [],
               excludedStatusFilters: [],
             },
-          }}
+          })}
         >
           <LayoutProvider
             forceDesktop={
@@ -500,14 +506,13 @@ export const Scrolled: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = await within(canvasElement);
     // The viewport of the Base UI scroll area.
-    const scrollable = await canvasElement.querySelector('.base-ui-disable-scrollbar');
+    const scrollable = canvasElement.querySelector('.base-ui-disable-scrollbar')!;
     await step('expand component', async () => {
       const componentNode = await canvas.queryAllByText('Child A2')[1];
       await userEvent.click(componentNode);
     });
     await wait(100);
     await step('scroll to bottom', async () => {
-      // @ts-expect-error (non strict)
       scrollable.scrollTo(0, scrollable.scrollHeight);
     });
     await step('toggle parent state', async () => {
@@ -517,7 +522,6 @@ export const Scrolled: Story = {
     await wait(100);
 
     // expect the scrollable to be scrolled to the bottom
-    // @ts-expect-error (non strict)
     await expect(scrollable.scrollTop).toBe(scrollable.scrollHeight - scrollable.clientHeight);
   },
 };

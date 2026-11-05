@@ -248,7 +248,7 @@ export const Panel = memo<{ refId?: string; storyId: string; storyUrl: string }>
     });
 
     // local state
-    const [scrollTarget, setScrollTarget] = useState<HTMLElement | undefined>(undefined);
+    const [scrollTarget, setScrollTarget] = useState<Element | undefined>(undefined);
     const [collapsed, setCollapsed] = useState<Set<Call['id']>>(new Set());
     const [hasResultMismatch, setResultMismatch] = useState(false);
 
@@ -273,7 +273,8 @@ export const Panel = memo<{ refId?: string; storyId: string; storyUrl: string }>
       let observer: IntersectionObserver;
       if (global.IntersectionObserver) {
         observer = new global.IntersectionObserver(
-          ([end]: any) => setScrollTarget(end.isIntersecting ? undefined : end.target),
+          ([end]: IntersectionObserverEntry[]) =>
+            setScrollTarget(end.isIntersecting ? undefined : end.target),
           { root: global.document.querySelector('#storybook-panel-root [role="tabpanel"]') }
         );
 

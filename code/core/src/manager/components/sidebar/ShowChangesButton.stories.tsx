@@ -1,3 +1,4 @@
+import type { StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 import React from 'react';
 
 import { CHANGE_DETECTION_STATUS_TYPE_ID } from '@aussieljk/forkbook/internal/types';
@@ -12,6 +13,10 @@ import { ReviewProvider } from '../review/components/ReviewProvider.tsx';
 import { reviewServiceForStories as reviewService } from '../review/review-service-story-helpers.ts';
 import { IconSymbols } from './IconSymbols.tsx';
 import { ShowChangesButton } from './ShowChangesButton.tsx';
+
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
 
 type ChangeStatusValue = 'status-value:new' | 'status-value:modified';
 
@@ -29,7 +34,7 @@ const setChangeStatuses = (entries: Record<string, ChangeStatusValue>) => {
 };
 
 const buildIndexEntries = (storyIds: string[], extraTags: Record<string, string[]> = {}) =>
-  storyIds.reduce<Record<string, any>>((acc, id) => {
+  storyIds.reduce<Record<string, Partial<StoryIndexEntry>>>((acc, id) => {
     acc[id] = {
       type: 'story',
       id,
@@ -51,7 +56,7 @@ const makeManagerContext = (
     extraTags?: Record<string, string[]>;
     setAllStatusFilters?: ReturnType<typeof fn>;
   } = {}
-): any => ({
+): object => ({
   state: {
     path: '/',
     viewMode: 'story',
@@ -104,7 +109,9 @@ const meta = {
       );
       return (
         <MemoryRouter initialEntries={['/']}>
-          <ManagerContext.Provider value={makeManagerContext(parameters?.contextOptions ?? {})}>
+          <ManagerContext.Provider
+            value={asManagerContext(makeManagerContext(parameters?.contextOptions ?? {}))}
+          >
             <ReviewProvider>{content}</ReviewProvider>
           </ManagerContext.Provider>
         </MemoryRouter>

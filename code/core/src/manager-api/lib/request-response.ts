@@ -1,7 +1,7 @@
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type { RequestData, ResponseData } from '@aussieljk/forkbook/internal/core-events';
 
-export class RequestResponseError<Payload extends Record<string, any> | void> extends Error {
+export class RequestResponseError<Payload extends Record<string, unknown> | void> extends Error {
   payload: Payload | undefined = undefined;
 
   constructor(message: string, payload?: Payload) {
@@ -13,7 +13,7 @@ export class RequestResponseError<Payload extends Record<string, any> | void> ex
 export const experimental_requestResponse = <
   RequestPayload,
   ResponsePayload = void,
-  ErrorPayload extends Record<string, any> | void = void,
+  ErrorPayload extends Record<string, unknown> | void = void,
 >(
   channel: Channel,
   requestEvent: string,

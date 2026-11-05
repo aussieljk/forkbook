@@ -47,6 +47,15 @@ export type NavAvailability = 'shown' | 'hidden' | 'unavailable';
 export const isPagesViewMode = (viewMode: API_ViewMode): boolean =>
   viewMode !== undefined && viewMode !== 'story' && viewMode !== 'docs' && viewMode !== 'review';
 
+/** The UI options that `setOptions` applies: the `options` parameter or the initial options. */
+export interface LayoutOptions {
+  layout?: Partial<API_Layout>;
+  ui?: Partial<API_UI>;
+  selectedPanel?: string;
+  theme?: Partial<ThemeVars>;
+  [key: string]: unknown;
+}
+
 export interface SubAPI {
   /**
    * Toggles the fullscreen mode of the Forkbook UI.
@@ -97,7 +106,7 @@ export interface SubAPI {
    *
    * @param options - An object containing the options to set.
    */
-  setOptions: (options: any) => void;
+  setOptions: (options: LayoutOptions | undefined) => void;
   /** Sets the sizes of the resizable elements in the layout. */
   setSizes: (
     options: Partial<Pick<API_Layout, 'navSize' | 'bottomPanelHeight' | 'rightPanelWidth'>>
@@ -490,7 +499,9 @@ export const init: ModuleFn<SubAPI, SubState> = ({ store, provider, singleStory 
         }
 
         if (select) {
-          (element as any).select?.();
+          if ('select' in element && typeof element.select === 'function') {
+            element.select();
+          }
         }
         return true;
       };
@@ -597,7 +608,7 @@ export const init: ModuleFn<SubAPI, SubState> = ({ store, provider, singleStory 
       return navSize;
     },
 
-    setOptions: (options: any) => {
+    setOptions: (options: LayoutOptions | undefined) => {
       const { layout, ui, selectedPanel, theme } = store.getState();
 
       if (!options) {

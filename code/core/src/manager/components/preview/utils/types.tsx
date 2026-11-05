@@ -43,15 +43,14 @@ export type CustomCanvasRenderer = (
   id: string,
   baseUrl: string,
   scale: number,
-  queryParams: Record<string, any>
-) => ReactElement<any, any> | null;
+  queryParams: State['customQueryParams']
+) => ReactElement | null;
 
 export interface FramesRendererProps {
   api: API;
   entry: LeafEntry;
-  storyId: StoryId;
-  refId: string;
-  baseUrl: string;
+  storyId?: StoryId;
+  refId?: string;
   scale: number;
   viewMode: API_ViewMode;
   queryParams: State['customQueryParams'];

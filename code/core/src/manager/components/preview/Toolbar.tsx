@@ -109,9 +109,8 @@ export const ToolbarComp = React.memo<ToolData>(function ToolbarComp({
 export const Tools = React.memo<{ list: Addon_BaseType[] }>(function Tools({ list }) {
   return (
     <div className={styles.toolGroup}>
-      {list.filter(Boolean).map(({ render: Render, id, ...t }, index) => (
-        // @ts-expect-error (Converted from ts-ignore)
-        <Render key={id || t.key || `f-${index}`} />
+      {list.filter(Boolean).map(({ render: Render, id }, index) => (
+        <Render key={id || `f-${index}`} />
       ))}
     </div>
   );

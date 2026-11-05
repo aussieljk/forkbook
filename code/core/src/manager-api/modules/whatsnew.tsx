@@ -108,7 +108,7 @@ export const init: ModuleFn = ({ fullAPI, store, provider }) => {
           subHeadline: "Learn what's new in Forkbook",
         },
         icon: <ForkbookIcon />,
-        onClear({ dismissed }: any) {
+        onClear({ dismissed }) {
           if (dismissed) {
             setWhatsNewCache({ lastDismissedPost: whatsNewData.url });
           }

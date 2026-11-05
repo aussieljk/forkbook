@@ -1,13 +1,17 @@
-import type { API_StoryEntry } from '@aussieljk/forkbook/internal/types';
-
 import Filter from 'ansi-to-html';
 import { type StorybookTheme, useTheme } from '@aussieljk/forkbook/theming';
 import stripAnsi from 'strip-ansi';
 
 import { PARAM_KEY } from './constants.ts';
 
-export function isInteractionsDisabled(parameters: API_StoryEntry['parameters']): boolean {
-  return !!parameters?.[PARAM_KEY]?.disable;
+export function isInteractionsDisabled(parameters: { [PARAM_KEY]?: unknown } | undefined): boolean {
+  const interactions = parameters?.[PARAM_KEY];
+  return (
+    typeof interactions === 'object' &&
+    interactions !== null &&
+    'disable' in interactions &&
+    !!interactions.disable
+  );
 }
 
 export function isTestAssertionError(error: unknown) {

@@ -9,9 +9,12 @@ import { dedent } from 'ts-dedent';
 import { storeOptions } from '../constants.ts';
 import { GlobalErrorContext, GlobalErrorModal } from './GlobalErrorModal.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+
 type Story = StoryObj<typeof meta>;
 
-const managerContext: any = {
+const managerContext = {
   state: {},
   api: {
     getDocsUrl: fn(({ subpath }) => `https://forkbook.ljk.dev/docs/${subpath}`).mockName(
@@ -26,7 +29,7 @@ const meta = {
     (storyFn) => {
       const [isModalOpen, setModalOpen] = useState(false);
       return (
-        <ManagerContext.Provider value={managerContext}>
+        <ManagerContext.Provider value={managerContext as unknown as ManagerContextValue}>
           <GlobalErrorContext.Provider value={{ isModalOpen, setModalOpen }}>
             <div
               style={{

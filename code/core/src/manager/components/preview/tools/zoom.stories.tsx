@@ -7,7 +7,7 @@ import { expect, fireEvent, fn, screen, waitFor, within } from '@aussieljk/forkb
 import preview from '../../../../../../.forkbook/preview.tsx';
 import { Zoom } from './zoom.tsx';
 
-const openDialog = async (context: StoryContext<typeof Zoom>) => {
+const openDialog = async (context: Pick<StoryContext<typeof Zoom>, 'canvas' | 'userEvent'>) => {
   const zoom = await context.canvas.findByRole('switch', { name: 'Change zoom level' });
   await context.userEvent.click(zoom);
   return screen.findByRole('dialog');
@@ -37,7 +37,7 @@ const meta = preview.meta({
     );
   },
   play: async (context) => {
-    await openDialog(context as any);
+    await openDialog(context);
   },
 });
 
@@ -47,7 +47,7 @@ export const Default = meta.story({});
 
 export const ZoomIn = meta.story({
   play: async (context) => {
-    const dialog = await openDialog(context as any);
+    const dialog = await openDialog(context);
     const zoomIn = await within(dialog).findByRole('button', { name: 'Zoom in' });
     await context.userEvent.click(zoomIn);
   },
@@ -55,7 +55,7 @@ export const ZoomIn = meta.story({
 
 export const ZoomOut = meta.story({
   play: async (context) => {
-    const dialog = await openDialog(context as any);
+    const dialog = await openDialog(context);
     const zoomOut = await within(dialog).findByRole('button', { name: 'Zoom out' });
     await context.userEvent.click(zoomOut);
   },
@@ -63,7 +63,7 @@ export const ZoomOut = meta.story({
 
 export const Undo = meta.story({
   play: async (context) => {
-    const dialog = await openDialog(context as any);
+    const dialog = await openDialog(context);
     const zoomIn = await within(dialog).findByRole('button', { name: 'Zoom in' });
     await context.userEvent.click(zoomIn);
     const undo = await within(dialog).findByRole('button', { name: 'Reset zoom' });

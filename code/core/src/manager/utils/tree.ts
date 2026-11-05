@@ -56,8 +56,7 @@ export const getDescendantIds = memoize(1000)((
 });
 
 export function getPath(item: Item, ref: Pick<RefType, 'id' | 'title' | 'index'>): string[] {
-  // @ts-expect-error (non strict)
-  const parent = item.type !== 'root' && item.parent ? ref.index[item.parent] : null;
+  const parent = item.type !== 'root' && item.parent ? ref.index?.[item.parent] : null;
 
   if (parent) {
     return [...getPath(parent, ref), parent.name];
@@ -122,7 +121,7 @@ export const getStateType = (
   }
 };
 
-export const isAncestor = (element?: Element, maybeAncestor?: Element): boolean => {
+export const isAncestor = (element?: Element | null, maybeAncestor?: Element | null): boolean => {
   if (!element || !maybeAncestor) {
     return false;
   }

@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import React from 'react';
 
 import { Link } from '@aussieljk/forkbook/internal/components';
@@ -7,7 +7,7 @@ import { clsx } from 'clsx';
 
 import styles from './SettingsFooter.module.css';
 
-const SettingsFooter: FC<any> = ({ className, ...props }) => (
+const SettingsFooter: FC<ComponentProps<'div'>> = ({ className, ...props }) => (
   <div className={clsx(styles.footer, className)} {...props}>
     <Link secondary href="https://forkbook.ljk.dev" cancel={false} target="_blank">
       Docs

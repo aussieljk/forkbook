@@ -19,6 +19,10 @@ import {
 import { Layout } from './Layout.tsx';
 import { LayoutProvider } from './LayoutProvider.tsx';
 
+/** A manager context with only the state and API that these stories use. */
+type ManagerContextValue = React.ComponentProps<typeof ManagerContext.Provider>['value'];
+const asManagerContext = (value: object) => value as ManagerContextValue;
+
 const PlaceholderBlock: FC<PropsWithChildren> = ({ children }) => (
   <div
     style={{
@@ -56,13 +60,13 @@ const PlaceholderClock: FC<{ id: string } & PropsWithChildren> = ({ children, id
   );
 };
 
-const MockSidebar: FC<any> = () => <PlaceholderClock id="sidebar" />;
+const MockSidebar: FC = () => <PlaceholderClock id="sidebar" />;
 
-const MockPreview: FC<any> = () => <PlaceholderClock id="preview" />;
+const MockPreview: FC = () => <PlaceholderClock id="preview" />;
 
-const MockPanel: FC<any> = () => <PlaceholderClock id="panel" />;
+const MockPanel: FC = () => <PlaceholderClock id="panel" />;
 
-const MockPage: FC<any> = () => <PlaceholderClock id="page" />;
+const MockPage: FC = () => <PlaceholderClock id="page" />;
 
 const defaultState = {
   navSize: 150,
@@ -74,7 +78,7 @@ const defaultState = {
 
 const renderLabel = ({ name }: { name: string }) => startCase(name);
 
-const mockManagerStore: any = {
+const mockManagerStore = {
   state: {
     index: {
       someRootId: {
@@ -130,7 +134,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   decorators: [
     (storyFn) => (
-      <ManagerContext.Provider value={mockManagerStore}>
+      <ManagerContext.Provider value={mockManagerStore as unknown as ManagerContextValue}>
         <LocationProvider>
           <LayoutProvider>{storyFn()}</LayoutProvider>
         </LocationProvider>
@@ -548,7 +552,7 @@ export const MobileReview: Story = {
   decorators: [
     (Story) => (
       <ManagerContext.Provider
-        value={{
+        value={asManagerContext({
           ...mockManagerStore,
           state: {
             ...mockManagerStore.state,
@@ -560,7 +564,7 @@ export const MobileReview: Story = {
             ...mockManagerStore.api,
             getNavAvailability: fn(() => 'unavailable'),
           },
-        }}
+        })}
       >
         <Story />
       </ManagerContext.Provider>

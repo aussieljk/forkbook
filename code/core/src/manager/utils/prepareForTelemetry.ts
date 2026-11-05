@@ -35,9 +35,9 @@ export function prepareForTelemetry(
   originalError: Error & {
     fromStorybook?: boolean;
     category?: string;
-    target?: any;
-    currentTarget?: any;
-    srcElement?: any;
+    target?: unknown;
+    currentTarget?: unknown;
+    srcElement?: unknown;
     browserInfo?: BrowserInfo;
   }
 ) {

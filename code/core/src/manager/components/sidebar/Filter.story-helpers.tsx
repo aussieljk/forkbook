@@ -48,8 +48,6 @@ export class MockAPIWrapper<SubAPI, SubState> extends React.Component<{
     const provider: API_Provider<API> = {
       getConfig: () => ({}),
       handleAPI: () => {},
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - TSC in CI fails to recognise this is the right Channel type.
       channel: this.channel,
     };
 

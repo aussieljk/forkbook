@@ -90,7 +90,7 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
             onClick={handleClick}
           >
             <CollapseIcon isExpanded={isExpanded} />
-            <div className={styles.refTitle} title={title}>
+            <div className={styles.refTitle} title={title ?? undefined}>
               {title}
             </div>
           </button>
@@ -99,10 +99,8 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
       )}
       {isExpanded && (
         <div className={styles.wrapper} data-title={title} data-main={isMain || undefined}>
-          {/* @ts-expect-error (non strict) */}
-          {state === 'auth' && <AuthBlock id={refId} loginUrl={loginUrl} />}
-          {/* @ts-expect-error (non strict) */}
-          {state === 'error' && <ErrorBlock error={indexError} />}
+          {state === 'auth' && loginUrl && <AuthBlock id={refId} loginUrl={loginUrl} />}
+          {state === 'error' && indexError && <ErrorBlock error={indexError} />}
           {state === 'loading' && <LoaderBlock isMain={isMain} />}
           {state === 'empty' && (
             <EmptyBlock
@@ -111,16 +109,14 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
               activeFilterCount={activeFilterCount}
             />
           )}
-          {state === 'ready' && (
+          {state === 'ready' && index && (
             <Tree
               allStatuses={allStatuses}
               isBrowsing={isBrowsing}
               isMain={isMain}
               refId={refId}
-              // @ts-expect-error (non strict)
               data={index}
-              // @ts-expect-error (non strict)
-              docsMode={managerState.docsOptions.docsMode}
+              docsMode={!!managerState.docsOptions.docsMode}
               selectedStoryId={selectedStoryId}
               onSelectStoryId={onSelectStoryId}
               highlightedRef={highlightedRef}

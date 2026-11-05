@@ -55,29 +55,34 @@ vi.mock('./preview-api', () => {
 });
 
 class HTMLElement {
-  constructor(props: any) {
+  constructor(props: object) {
     Object.assign(this, props);
   }
 }
 
-// @ts-expect-error (global scope type conflicts)
-delete global.location;
-// @ts-expect-error (global scope type conflicts)
-global.location = { reload: vi.fn() };
-// @ts-expect-error (global scope type conflicts)
-global.HTMLElement = HTMLElement;
+vi.stubGlobal('location', { reload: vi.fn() });
+vi.stubGlobal('HTMLElement', HTMLElement);
 
 const storyId = 'kind--story';
 global.window.__FORKBOOK_PREVIEW__ = {
   selectionStore: { selection: { storyId, viewMode: 'story' } },
-} as any;
+} as unknown as typeof global.__FORKBOOK_PREVIEW__;
 
 const setRenderPhase = (newPhase: string) =>
   addons.getChannel().emit(STORY_RENDER_PHASE_CHANGED, { newPhase, storyId });
 
 let instrumenter: Instrumenter;
-const instrument = <TObj extends Record<string, any>>(obj: TObj, options: Options = {}) =>
-  instrumenter.instrument(obj, options);
+/** What `instrument` returns, typed deeply: each function and its result are instrumented too. */
+type Instrumented<T> = T extends (...args: infer A) => infer R
+  ? ((...args: A) => Instrumented<R>) & { __originalFn__: T } & {
+      [K in keyof T]: Instrumented<T[K]>;
+    }
+  : T extends object
+    ? { [K in keyof T]: Instrumented<T[K]> }
+    : T;
+
+const instrument = <TObj extends object>(obj: TObj, options: Options = {}) =>
+  instrumenter.instrument(obj, options) as Instrumented<TObj>;
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -107,8 +112,8 @@ describe('Instrumenter', () => {
   });
 
   it('patches nested methods', () => {
-    const fn1: any = () => {};
-    const fn2: any = () => {};
+    const fn1 = () => {};
+    const fn2 = () => {};
     const result = instrument({ foo: { fn1, bar: { fn2 } } });
     expect(result).toStrictEqual({
       foo: {
@@ -121,24 +126,23 @@ describe('Instrumenter', () => {
   });
 
   it('does not patch already patched functions', () => {
-    const fn: any = () => {};
+    const fn = () => {};
     const result = instrument(instrument({ fn }));
     expect(result.fn.__originalFn__).toBe(fn);
-    expect(result.fn.__originalFn__.__originalFn__).not.toBeDefined();
+    expect(result.fn.__originalFn__).not.toHaveProperty('__originalFn__');
   });
 
   it('does not traverse into arrays', () => {
-    const fn1: any = () => {};
-    const fn2: any = () => {};
-    const result = instrument({ arr: [fn1, { fn2 }] });
+    const fn1 = () => {};
+    const fn2 = () => {};
+    const result = instrument({ arr: [fn1, { fn2 }] as const });
     expect(result).toStrictEqual({ arr: [fn1, { fn2 }] });
     expect(result.arr[0].__originalFn__).not.toBeDefined();
     expect(result.arr[1].fn2.__originalFn__).not.toBeDefined();
   });
 
   it('patches function properties on functions', () => {
-    const fn1: any = () => {};
-    fn1.fn2 = () => {};
+    const fn1 = Object.assign(() => {}, { fn2: () => {} });
     const result = instrument({ fn1 });
     expect(result.fn1).toEqual(expect.any(Function));
     expect(result.fn1.fn2).toEqual(expect.any(Function));
@@ -194,7 +198,7 @@ describe('Instrumenter', () => {
   });
 
   it('emits a "call" event every time a patched function is invoked', async () => {
-    const { fn } = instrument({ fn: (...args: any) => {} });
+    const { fn } = instrument({ fn: (...args: unknown[]) => {} });
 
     fn('foo', 'bar');
     fn('baz');
@@ -213,8 +217,8 @@ describe('Instrumenter', () => {
   });
 
   it('handles circular references', () => {
-    const { fn } = instrument({ fn: (...args: any) => {} });
-    const obj = { key: 'value', obj: {}, array: [] as any[] };
+    const { fn } = instrument({ fn: (...args: unknown[]) => {} });
+    const obj = { key: 'value', obj: {}, array: [] as unknown[] };
     obj.obj = obj;
     obj.array = [obj];
 
@@ -249,8 +253,8 @@ describe('Instrumenter', () => {
 
   it('maps event args which originate from an earlier call to a call ref', () => {
     const { fn1, fn2 } = instrument({
-      fn1: (arg: any) => arg,
-      fn2: (arg: any) => {},
+      fn1: (arg: unknown) => arg,
+      fn2: (arg: unknown) => {},
     });
     fn2(fn1({}));
     expect(mocks.callSpy).toHaveBeenLastCalledWith(
@@ -263,8 +267,8 @@ describe('Instrumenter', () => {
 
   it('does not map primitive event args which originate from an earlier call', () => {
     const { fn1, fn2 } = instrument({
-      fn1: (...args: any) => args[0],
-      fn2: (...args: any) => {},
+      fn1: (...args: unknown[]) => args[0],
+      fn2: (...args: unknown[]) => {},
     });
     fn2(
       fn1(undefined),
@@ -300,7 +304,7 @@ describe('Instrumenter', () => {
   });
 
   it('maps HTML Elements in event args to an element ref', () => {
-    const { fn } = instrument({ fn: (...args: any) => {} });
+    const { fn } = instrument({ fn: (...args: unknown[]) => {} });
     fn(new HTMLElement({ prefix: '', localName: 'div', id: 'root', classList: [] }));
     expect(mocks.callSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
@@ -436,7 +440,7 @@ describe('Instrumenter', () => {
       expect.objectContaining({ method: 'step', ancestors: [] })
     );
     // fn1 inside step callback should have ancestors: [step_id]
-    const stepCall = mocks.callSpy.mock.calls.find((c: any) => c[0].method === 'step');
+    const stepCall = mocks.callSpy.mock.calls.find((c) => c[0].method === 'step');
     const stepCallId = stepCall![0].id;
     expect(mocks.callSpy).toHaveBeenCalledWith(
       expect.objectContaining({ method: 'fn1', ancestors: [stepCallId] })
@@ -446,7 +450,7 @@ describe('Instrumenter', () => {
       expect.objectContaining({ method: 'waitFor', ancestors: [] })
     );
     // fn2 inside waitFor callback should have ancestors: [waitFor_id] only
-    const waitForCall = mocks.callSpy.mock.calls.find((c: any) => c[0].method === 'waitFor');
+    const waitForCall = mocks.callSpy.mock.calls.find((c) => c[0].method === 'waitFor');
     const waitForCallId = waitForCall![0].id;
     expect(mocks.callSpy).toHaveBeenCalledWith(
       expect.objectContaining({ method: 'fn2', ancestors: [waitForCallId] })
@@ -506,7 +510,7 @@ describe('Instrumenter', () => {
   });
 
   it('emits a "sync" event with debounce after a patched function is invoked', () => {
-    const { fn } = instrument({ fn: (...args: any) => {} }, { intercept: true });
+    const { fn } = instrument({ fn: (...args: unknown[]) => {} }, { intercept: true });
     vi.useFakeTimers();
     mocks.syncSpy.mockClear();
     fn('foo');
@@ -516,7 +520,10 @@ describe('Instrumenter', () => {
   });
 
   it('sends a folded log with the "sync" event', () => {
-    const { fn } = instrument({ fn: (...args: any) => ({ fn2: () => {} }) }, { intercept: true });
+    const { fn } = instrument(
+      { fn: (...args: unknown[]) => ({ fn2: () => {} }) },
+      { intercept: true }
+    );
     vi.useFakeTimers();
     mocks.syncSpy.mockClear();
     fn('foo', fn('bar')).fn2();
@@ -534,7 +541,7 @@ describe('Instrumenter', () => {
   });
 
   it('sends control states with the "sync" event', () => {
-    const { fn } = instrument({ fn: (...args: any) => {} }, { intercept: true });
+    const { fn } = instrument({ fn: (...args: unknown[]) => {} }, { intercept: true });
     vi.useFakeTimers();
     mocks.syncSpy.mockClear();
     fn('foo');
@@ -564,7 +571,7 @@ describe('Instrumenter', () => {
 
   it('catches nested exceptions and rethrows', () => {
     const { fn1, fn2 } = instrument({
-      fn1: (_: any) => {},
+      fn1: (_: unknown) => {},
       fn2: () => {
         throw new Error('Boom!');
       },
@@ -594,8 +601,7 @@ describe('Instrumenter', () => {
 
     expect(fn1).toHaveBeenCalled();
     expect(error).toEqual(new Error('Boom!'));
-    // @ts-expect-error callId is what is tested
-    expect(error.callId).toBe('kind--story [0] fn1 [0] fn2');
+    expect(error).toHaveProperty('callId', 'kind--story [0] fn1 [0] fn2');
   });
 
   it("re-throws anything that isn't an error", () => {
@@ -630,7 +636,7 @@ describe('Instrumenter', () => {
         syncTimeout: 123,
         forwardedException: new Error('Oops'),
       },
-    } as any;
+    } as unknown as Instrumenter['state'];
     addons.getChannel().emit(SET_CURRENT_STORY);
     expect(instrumenter.state).toStrictEqual({});
   });
@@ -726,10 +732,7 @@ describe('Instrumenter', () => {
     });
 
     it('does not defer calls to intercepted functions that are chained upon', () => {
-      const { fn1 } = instrument(
-        { fn1: vi.fn(() => ({ fn2: vi.fn() as any })) },
-        { intercept: true }
-      );
+      const { fn1 } = instrument({ fn1: vi.fn(() => ({ fn2: vi.fn() })) }, { intercept: true });
       fn1().fn2();
       addons.getChannel().emit(EVENTS.START, { storyId });
       const res1 = fn1();
@@ -739,7 +742,7 @@ describe('Instrumenter', () => {
     });
 
     it.skip('starts debugging at the first non-nested interceptable call', () => {
-      const fn = (...args: any[]) => args;
+      const fn = (...args: unknown[]) => args;
       const { fn1, fn2, fn3 } = instrument({ fn1: fn, fn2: fn, fn3: fn }, { intercept: true });
       fn3(fn1(), fn2()); // setup the dependencies
       addons.getChannel().emit(EVENTS.START, { storyId });
@@ -800,13 +803,15 @@ describe('Instrumenter', () => {
         get __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__() {
           throw new Error('Blocked');
         },
-        set __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__(_: unknown) {},
+        set __FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__(
+          _: Window['__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__']
+        ) {},
       };
       instrumenter = new Instrumenter();
     });
 
     it('disables control states', async () => {
-      const { fn } = instrument({ fn: (...args: any) => {} }, { intercept: true });
+      const { fn } = instrument({ fn: (...args: unknown[]) => {} }, { intercept: true });
       vi.useFakeTimers();
       mocks.syncSpy.mockClear();
       fn('foo');
