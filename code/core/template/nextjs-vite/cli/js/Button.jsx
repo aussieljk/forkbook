@@ -4,11 +4,11 @@ import './button.css';
 
 /** Primary UI component for user interaction */
 export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+  const mode = primary ? 'forkbook-button--primary' : 'forkbook-button--secondary';
   return (
     <button
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
+      className={['forkbook-button', `forkbook-button--${size}`, mode].join(' ')}
       {...props}
     >
       {label}

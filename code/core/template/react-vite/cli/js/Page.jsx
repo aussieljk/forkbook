@@ -15,7 +15,7 @@ export const Page = () => {
         onCreateAccount={() => setUser({ name: 'Jane Doe' })}
       />
 
-      <section className="storybook-page">
+      <section className="forkbook-page">
         <h2>Pages in Forkbook</h2>
         <p>
           We recommend building UIs with a{' '}
