@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -48,5 +48,27 @@ describe('generate', () => {
     const file = readFileSync(join(configPath, 'forkbook.requires.ts'), 'utf8');
     expect(file).toContain('import "@aussieljk/forkbook/addon-ondevice-controls/register";');
     expect(file).toContain('import "@aussieljk/forkbook/addon-ondevice-actions/register";');
+  });
+
+  it('writes the story folders from the app folder, whatever folder it runs in', async () => {
+    const app = mkdtempSync(join(tmpdir(), 'rnforkbook-app-'));
+    const config = join(app, '.rnforkbook');
+    mkdirSync(config);
+    mkdirSync(join(app, 'src', 'stories'), { recursive: true });
+    writeFileSync(join(config, 'preview.tsx'), 'export default {};\n');
+    writeFileSync(
+      join(config, 'main.ts'),
+      "export default { stories: ['../src/stories/**/*.stories.tsx'], deviceAddons: [] };\n"
+    );
+
+    try {
+      await generate({ configPath: config });
+
+      const file = readFileSync(join(config, 'forkbook.requires.ts'), 'utf8');
+      expect(file).toContain('directory: "./src/stories"');
+      expect(file).toContain("'../src/stories'");
+    } finally {
+      rmSync(app, { recursive: true, force: true });
+    }
   });
 });

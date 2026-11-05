@@ -58,7 +58,8 @@ export function resolveAddonFile(
   if (!addon || typeof addon !== 'string') return null;
   addon = RENAMED_ADDONS[addon] ?? addon;
 
-  const resolvePaths = { paths: [cwd] };
+  // Resolve packages from the app folder (the config folder's parent), not the folder the command ran in.
+  const resolvePaths = { paths: [path.dirname(path.resolve(cwd, configPath))] };
 
   try {
     const basePath = `${addon}/${file}`;

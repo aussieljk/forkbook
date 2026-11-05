@@ -77,22 +77,23 @@ export async function generate({
   disableUI = false,
 }: GenerateOptions) {
   const channelHost = host === 'auto' ? getLocalIPAddress() : host;
-  const forkbookRequiresLocation = path.resolve(
-    cwd,
-    configPath,
-    `forkbook.requires.${useJs ? 'js' : 'ts'}`
-  );
+  const configDir = path.resolve(cwd, configPath);
+  // The app folder (the config folder's parent), not the folder the command ran in: Metro runs in
+  // the app and a script can run from a monorepo's root, and both must write the same file.
+  const projectRoot = path.dirname(configDir);
+  const configFromRoot = ensureRelativePathHasDot(path.relative(projectRoot, configDir));
+  const forkbookRequiresLocation = path.join(configDir, `forkbook.requires.${useJs ? 'js' : 'ts'}`);
 
   const main = (await loadMainConfig({
-    configDir: path.resolve(cwd, configPath),
-    cwd,
+    configDir,
+    cwd: projectRoot,
   })) as unknown as ForkbookConfig;
 
   warnDeprecatedMainAddonsField(main, configPath);
 
   const storiesSpecifiers = normalizeStories(main.stories as StoriesEntry[], {
-    configDir: configPath,
-    workingDir: cwd,
+    configDir,
+    workingDir: projectRoot,
   });
 
   const normalizedStories = storiesSpecifiers.map((specifier) => {
@@ -100,7 +101,7 @@ export async function generate({
 
     const { path: p, recursive: r, match: m } = toRequireContext(specifier);
 
-    const pathToStory = ensureRelativePathHasDot(path.posix.relative(configPath, p));
+    const pathToStory = ensureRelativePathHasDot(path.posix.relative(configFromRoot, p));
     return `{
     titlePrefix: "${specifier.titlePrefix}",
     directory: "${specifier.directory}",
@@ -122,7 +123,7 @@ export async function generate({
 
   const registeredAddons: string[] = [];
   for (const addon of allAddons) {
-    const registerPath = resolveAddonFile(getAddonName(addon), 'register', extensions, configPath);
+    const registerPath = resolveAddonFile(getAddonName(addon), 'register', extensions, configDir);
     if (registerPath) {
       registeredAddons.push(`import "${registerPath}";`);
     }
@@ -135,7 +136,7 @@ export async function generate({
   }
 
   for (const addon of allAddons) {
-    const previewPath = resolveAddonFile(getAddonName(addon), 'preview', extensions, configPath);
+    const previewPath = resolveAddonFile(getAddonName(addon), 'preview', extensions, configDir);
     if (previewPath) {
       enhancers.push(`require('${previewPath}')`);
     }
@@ -160,7 +161,7 @@ export async function generate({
     .map(([key, value]) => `globalThis.FEATURES.${key} = ${value};`)
     .join('\n');
 
-  if (getPreviewExists({ configPath })) {
+  if (getPreviewExists({ configPath: configDir })) {
     enhancers.unshift("require('./preview')");
   }
 
