@@ -32,7 +32,7 @@ const Sidebar = React.memo(function Sideber({ onMenuClick }: SidebarProps) {
     } = state;
 
     const whatsNewNotificationsEnabled =
-      state.whatsNewData?.status === 'SUCCESS' && !state.disableWhatsNewNotifications;
+      state.whatsNewData?.status === 'SUCCESS' && !state.whatsNewData.disableWhatsNewNotifications;
 
     return {
       api,

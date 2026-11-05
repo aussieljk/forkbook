@@ -776,12 +776,8 @@ export function instrument<TObj extends object>(obj: TObj, options: Options = {}
     }
 
     // Only create an instance if we don't have one (singleton) yet.
-    if (global.window && !global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__) {
-      global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ = new Instrumenter();
-    }
-
-    const instrumenter: Instrumenter = global.window?.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__;
-    return instrumenter.instrument(obj, options);
+    global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__ ??= new Instrumenter();
+    return global.window.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER__.instrument(obj, options);
   } catch (e) {
     // Access to the parent window might fail due to CORS restrictions.
     once.warn(e);

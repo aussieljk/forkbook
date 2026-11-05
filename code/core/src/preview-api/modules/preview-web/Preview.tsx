@@ -140,6 +140,14 @@ export class Preview<TRenderer extends Renderer> {
     return this.storeInitializationPromise;
   }
 
+  /**
+   * Uses another channel, for example the WebSocket channel of a React Native view. Call
+   * `setupListeners()` after it, so that the preview listens on the new channel.
+   */
+  setChannel(channel: Channel) {
+    this.channel = channel;
+  }
+
   setupListeners() {
     this.channel.on(STORY_INDEX_INVALIDATED, this.onStoryIndexChanged.bind(this));
     this.channel.on(UPDATE_GLOBALS, this.onUpdateGlobals.bind(this));

@@ -38,7 +38,7 @@ export const extractArgTypes: ArgTypesExtractor = (component): StrictArgTypes | 
       {
         name,
         description,
-        type: { required, ...sbType },
+        type: sbType && { required, ...sbType },
         table: {
           type: type ?? undefined,
           jsDocTags,

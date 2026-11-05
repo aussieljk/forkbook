@@ -20,7 +20,7 @@ function setInert(inert: boolean) {
 
 function errorListener(event: ErrorEvent) {
   // `event.error` is whatever was thrown; it is not always an Error.
-  const error: { fromStorybook?: boolean } = event.error || event;
+  const error: Error & { fromStorybook?: boolean } = event.error || event;
   if (error.fromStorybook) {
     global.sendTelemetryError(error);
   }

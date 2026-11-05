@@ -10,7 +10,7 @@ export async function getBuilderOptions<T extends Record<string, unknown>>(
   const framework = await options.presets.apply('framework', {}, options);
 
   if (typeof framework !== 'string' && framework?.options?.builder) {
-    return framework.options.builder;
+    return framework.options.builder as T;
   }
 
   const { builder } = await options.presets.apply('core', {}, options);

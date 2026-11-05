@@ -34,27 +34,27 @@ export const updateCheck = async (version: string): Promise<VersionCheck> => {
 };
 
 export function createUpdateMessage(updateInfo: VersionCheck, version: string): string {
-  let updateMessage;
+  const latestVersion = updateInfo.data?.latest?.version;
+  if (!updateInfo.success || !latestVersion) {
+    return '';
+  }
 
   try {
-    const isPrerelease = semver.prerelease(updateInfo.data.latest.version);
+    if (!semver.lt(version, latestVersion)) {
+      return '';
+    }
+    const isPrerelease = semver.prerelease(latestVersion);
     const upgradeCommand = `npx @aussieljk/forkbook@${isPrerelease ? 'next' : 'latest'} upgrade`;
-    updateMessage =
-      updateInfo.success && semver.lt(version, updateInfo.data.latest.version)
-        ? dedent`
-          ${colors.orange(
-            `A new version (${picocolors.bold(updateInfo.data.latest.version)}) is available!`
-          )}
+    return dedent`
+      ${colors.orange(`A new version (${picocolors.bold(latestVersion)}) is available!`)}
 
-          ${picocolors.gray('Upgrade now:')} ${colors.green(upgradeCommand)}
+      ${picocolors.gray('Upgrade now:')} ${colors.green(upgradeCommand)}
 
-          ${picocolors.gray('Read full changelog:')} ${picocolors.gray(
-            picocolors.underline('https://github.com/aussieljk/forkbook/commits/master')
-          )}
-        `
-        : '';
-  } catch (e) {
-    updateMessage = '';
+      ${picocolors.gray('Read full changelog:')} ${picocolors.gray(
+        picocolors.underline('https://github.com/aussieljk/forkbook/commits/master')
+      )}
+    `;
+  } catch {
+    return '';
   }
-  return updateMessage;
 }

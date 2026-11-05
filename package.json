@@ -58,6 +58,7 @@
   "patchedDependencies": {
     "@7rulnik/react-element-to-jsx-string@15.0.1": "patches/@7rulnik%2Freact-element-to-jsx-string@15.0.1.patch",
     "@types/babel__traverse@7.28.0": "patches/@types%2Fbabel__traverse@7.28.0.patch",
-    "@testing-library/user-event@14.6.3": "patches/@testing-library%2Fuser-event@14.6.3.patch"
+    "@testing-library/user-event@14.6.3": "patches/@testing-library%2Fuser-event@14.6.3.patch",
+    "react-inspector@9.0.0": "patches/react-inspector@9.0.0.patch"
   }
 }

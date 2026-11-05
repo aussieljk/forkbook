@@ -1,4 +1,5 @@
 import type { API } from '@aussieljk/forkbook/manager-api';
+import { getOnDeviceStore } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type { Args, StoryContextForLoaders } from '@aussieljk/forkbook/internal/csf';
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
@@ -35,6 +36,10 @@ export interface ReactNativeFramework extends Renderer {
   storyResult: ReactElement<unknown>;
 }
 
+/**
+ * The on-device store, as this panel reads it: it renders only once a story is selected, and it
+ * reads the argTypes with its own control types.
+ */
 type ApiStore = {
   fromId: (id: string) => Omit<StoryContextForLoaders<ReactNativeFramework, Args>, 'viewMode'>;
   getSelection: () => Selection;
@@ -42,7 +47,7 @@ type ApiStore = {
 };
 
 const ControlsPanel = ({ api }: { api: API }) => {
-  const store: ApiStore = api.store();
+  const store = getOnDeviceStore(api) as unknown as ApiStore;
 
   const storyId = store.getSelection()?.storyId;
 

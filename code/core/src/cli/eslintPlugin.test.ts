@@ -97,7 +97,7 @@ describe('extractEslintInfo', () => {
       packageJson: {
         devDependencies: {},
         dependencies: {},
-        eslintConfig: '.eslintrc.js',
+        eslintConfig: {},
       },
       packageJsonPath: '/some/path',
       operationDir: '/some/path',

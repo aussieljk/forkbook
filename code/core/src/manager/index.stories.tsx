@@ -1,7 +1,7 @@
 import { Channel } from '@aussieljk/forkbook/internal/channels';
 import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
 import { MemoryRouter } from '@aussieljk/forkbook/internal/router';
-import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
+import type { Addon_Config } from '@aussieljk/forkbook/internal/types';
 import type { API_PreparedStoryIndex } from '@aussieljk/forkbook/internal/types';
 
 import { CircleXIcon } from 'lucide-react';
@@ -58,9 +58,7 @@ class ReactProvider extends Provider {
     this.channel = channel;
   }
 
-  getElements(type: Addon_Types) {
-    return this.addons.getElements(type);
-  }
+  getElements: AddonStore['getElements'] = (type) => this.addons.getElements(type);
 
   getConfig(): Addon_Config {
     return this.addons.getConfig();

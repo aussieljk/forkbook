@@ -232,7 +232,8 @@ function getHooksContextOrNull<
   TRenderer extends Renderer,
   TArgs extends Args = Args,
 >(): HooksContext<TRenderer, TArgs> | null {
-  return global.FORKBOOK_HOOKS_CONTEXT || null;
+  // The global holds the context of the decorator that runs now, for the renderer that runs.
+  return (global.FORKBOOK_HOOKS_CONTEXT as HooksContext<TRenderer, TArgs> | undefined) || null;
 }
 
 function getHooksContextOrThrow<

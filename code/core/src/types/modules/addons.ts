@@ -66,7 +66,7 @@ export interface Addon_OptionsParameter extends Object {
     base: string;
     brandTitle?: string;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface Addon_OptionsParameterV7 extends Object {
@@ -107,7 +107,7 @@ export type Addon_LoaderFunction = LoaderFunctionForFramework<Addon_ReturnTypeFr
 export interface Addon_WrapperSettings {
   options: object;
   parameters: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -117,44 +117,10 @@ export type Addon_StoryWrapper = (
   settings: Addon_WrapperSettings
 ) => unknown;
 
+// The result is a decorator or a function that makes one, and each renderer gives a decorator its
+// own story result type, so only `any` fits every use.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Addon_MakeDecoratorResult = (...args: any) => any;
-
-export interface Addon_AddStoryArgs<StoryFnReturnType = unknown> {
-  id: StoryId;
-  kind: StoryKind;
-  name: StoryName;
-  storyFn: Addon_StoryFn<StoryFnReturnType>;
-  parameters: Parameters;
-}
-
-export type Addon_ClientApiAddon<StoryFnReturnType = unknown> = Addon_Type & {
-  apply: (a: Addon_StoryApi<StoryFnReturnType>, b: unknown[]) => unknown;
-};
-
-export interface Addon_ClientApiAddons<StoryFnReturnType> {
-  [key: string]: Addon_ClientApiAddon<StoryFnReturnType>;
-}
-
-export type Addon_ClientApiReturnFn<StoryFnReturnType = unknown> = (
-  ...args: any[]
-) => Addon_StoryApi<StoryFnReturnType>;
-
-export interface Addon_StoryApi<StoryFnReturnType = unknown> {
-  kind: StoryKind;
-  add: (
-    storyName: StoryName,
-    storyFn: Addon_StoryFn<StoryFnReturnType>,
-    parameters?: Parameters
-  ) => Addon_StoryApi<StoryFnReturnType>;
-  addDecorator: (
-    decorator: Addon_DecoratorFunction<StoryFnReturnType>
-  ) => Addon_StoryApi<StoryFnReturnType>;
-  addLoader: (decorator: Addon_LoaderFunction) => Addon_StoryApi<StoryFnReturnType>;
-  addParameters: (parameters: Parameters) => Addon_StoryApi<StoryFnReturnType>;
-  [k: string]: string | Addon_ClientApiReturnFn<StoryFnReturnType>;
-}
-
-export interface Addon_ClientStoryApi<StoryFnReturnType = unknown> {}
 
 export type Addon_LoadFn = () => unknown;
 export type Addon_RequireContext = unknown; // FIXME

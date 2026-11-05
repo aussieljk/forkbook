@@ -47,6 +47,7 @@ export class MockAPIWrapper<SubAPI, SubState> extends React.Component<{
     this.channel = new Channel({});
     const provider: API_Provider<API> = {
       getConfig: () => ({}),
+      getElements: () => ({}),
       handleAPI: () => {},
       channel: this.channel,
     };

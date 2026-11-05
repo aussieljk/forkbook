@@ -91,7 +91,7 @@ function createMockModuleArgs({
   initialState?: Partial<State>;
 }) {
   const navigate = vi.fn();
-  const store = createMockStore({ filters: {}, status: {}, ...initialState });
+  const store = createMockStore({ filters: {}, ...initialState });
   const provider = createMockProvider();
 
   return { navigate, store, provider, fullAPI: { ...fullAPI, getRefs: () => ({}) } };

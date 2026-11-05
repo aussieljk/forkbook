@@ -6,6 +6,7 @@ import React, { useMemo } from 'react';
 import { getRouter } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
 
 import type { FlightRouterState } from 'next/dist/server/app-render/types';
+import type { LazyCacheNode } from 'next/dist/shared/lib/app-router-context.shared-runtime.js';
 import {
   AppRouterContext,
   GlobalLayoutRouterContext,
@@ -102,7 +103,7 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
     return params;
   }, [routeParams.segments]);
 
-  const newLazyCacheNode = {
+  const newLazyCacheNode: LazyCacheNode = {
     lazyData: null,
     rsc: null,
     prefetchRsc: null,
@@ -110,6 +111,8 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
     prefetchHead: null,
     parallelRoutes: new Map(),
     loading: null,
+    // A lazy cache node has no navigation yet, as in Next.js.
+    navigatedAt: -1,
   };
 
   // Fields for other Next.js versions than the installed types describe. A spread object
@@ -120,18 +123,11 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
     },
     buildId: 'forkbook',
   };
-  // The value has the fields of several Next.js versions, so it does not match the installed
-  // Next.js types (for example, it has no `parentSegmentPath` or `navigatedAt`).
-  const layoutRouterValue = {
+  const otherVersionsLayoutRouterFields = {
     // TODO Remove when dropping Next.js < v15.1.1
     childNodes: new Map(),
     tree,
     // TODO END
-
-    // START Next.js v15.2 support
-    parentTree: tree,
-    parentCacheNode: newLazyCacheNode,
-    // END
 
     // START Next.js v16.4 support
     // The route tree of the root segment. `useRouter` reads `data.bfcacheId`, and
@@ -142,9 +138,17 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
       slots: null,
     },
     // END
-    url: pathname,
     loading: null,
-  } as unknown as React.ContextType<typeof LayoutRouterContext>;
+  };
+  const layoutRouterValue: React.ContextType<typeof LayoutRouterContext> = {
+    ...otherVersionsLayoutRouterFields,
+    parentTree: tree,
+    parentCacheNode: newLazyCacheNode,
+    // The story is the root of the layout routers. Next.js's own root also gives `null`, and a
+    // `LayoutRouter` adds its segment to this path.
+    parentSegmentPath: null,
+    url: pathname,
+  };
 
   // https://github.com/vercel/next.js/blob/canary/packages/next/src/client/components/app-router.tsx#L436
   return (

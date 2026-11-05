@@ -20,11 +20,10 @@ export type EventInfo = {
 
 export type Listener<TEvent> = (event: TEvent, eventInfo: EventInfo) => void;
 
-// `any`: a custom event's `type` is any string, so a check of `type` cannot narrow an event union to
-// one payload. Internal and custom events share this base.
+// Internal and custom events share this base.
 export type BaseEvent = {
   type: string;
-  payload?: any;
+  payload?: unknown;
 };
 
 export interface SetStateEvent<TState> extends BaseEvent {

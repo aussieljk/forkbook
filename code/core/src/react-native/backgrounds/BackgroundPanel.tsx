@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useCallback } from 'react';
 import { UPDATE_GLOBALS } from '@aussieljk/forkbook/internal/core-events';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
+import { getOnDeviceStore } from '@aussieljk/forkbook/internal/react-native-ui-common';
 
 import Swatch from './Swatch.tsx';
 import { PARAM_KEY } from './constants.ts';
@@ -81,7 +82,7 @@ interface BackgroundOptions {
 }
 
 const BackgroundPanel = ({ active, api, channel }: BackgroundPanelProps) => {
-  const store = api.store();
+  const store = getOnDeviceStore(api);
   const storyId = store.getSelection()?.storyId;
   const story = storyId ? store.fromId(storyId) : null;
 

@@ -223,9 +223,13 @@ export const Panel = memo<{ refId?: string; storyId: string; storyUrl: string }>
   function PanelMemoized({ refId, storyId, storyUrl }) {
     const { statusValue, testRunId } = experimental_useStatusStore((state) => {
       const storyStatus = refId ? undefined : state[storyId]?.[STATUS_TYPE_ID_COMPONENT_TEST];
+      const data = storyStatus?.data;
       return {
         statusValue: storyStatus?.value,
-        testRunId: storyStatus?.data?.testRunId,
+        testRunId:
+          typeof data === 'object' && data !== null && 'testRunId' in data
+            ? data.testRunId
+            : undefined,
       };
     });
 

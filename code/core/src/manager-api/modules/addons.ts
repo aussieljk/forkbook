@@ -13,7 +13,8 @@ import type { Options } from '../store.ts';
 
 export interface SubState {
   selectedPanel: string | undefined;
-  addons: Record<string, never>;
+  /** The state of each addon, by addon ID. */
+  addons: Record<string, unknown>;
 }
 
 export interface SubAPI {
@@ -129,13 +130,14 @@ export const init: ModuleFn<SubAPI, SubState> = ({ provider, store, fullAPI }) =
       ) as API_StateMerger<S>;
       return store
         .setState(
-          (s) => ({ ...s, addons: { ...s.addons, [addonId]: merger(s.addons[addonId]) } }),
+          (s) => ({ ...s, addons: { ...s.addons, [addonId]: merger(s.addons[addonId] as S) } }),
           options
         )
         .then(() => api.getAddonState(addonId));
     },
-    getAddonState: (addonId) => {
-      return store.getState().addons[addonId] || globalThis?.FORKBOOK_ADDON_STATE[addonId];
+    getAddonState<S>(addonId: string) {
+      // Each addon reads back the state that it stored.
+      return (store.getState().addons[addonId] || globalThis?.FORKBOOK_ADDON_STATE[addonId]) as S;
     },
   };
 

@@ -4,6 +4,7 @@ import { darkTheme, theme } from '@aussieljk/forkbook/internal/react-native-them
 import {
   type SBUI,
   transformStoryIndexToStoriesHash,
+  type OnDeviceAPI,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { dedent } from 'ts-dedent';
 import { toMerged } from 'es-toolkit/object';
@@ -320,8 +321,7 @@ export class View {
       managerAddons.setChannel(channel);
       previewAddons.setChannel(channel);
       this._channel = channel;
-      // @ts-expect-error `channel` is protected on Preview, but the view must swap in the WebSocket channel.
-      this._preview.channel = channel;
+      this._preview.setChannel(channel);
       this._preview.setupListeners();
       channel.emit(CHANNEL_CREATED);
       this._preview.ready().then(() => this._preview.onStoryIndexChanged());
@@ -333,7 +333,7 @@ export class View {
     });
 
     // On device, the addons get only the small store API below, not the full manager API.
-    managerAddons.loadAddons({
+    const onDeviceApi: OnDeviceAPI = {
       store: () => ({
         fromId: (id: string) => {
           if (!this._ready) {
@@ -346,7 +346,9 @@ export class View {
         },
         _channel: this._channel,
       }),
-    } as unknown as API);
+    };
+    // `getOnDeviceStore` reads it back on the addon side.
+    managerAddons.loadAddons(onDeviceApi as unknown as API);
 
     return () => {
       const setContext = useSetStoryContext();
@@ -488,6 +490,7 @@ export class View {
           provider: {
             handleAPI: () => ({}),
             getConfig: () => ({}),
+            getElements: () => ({}),
           },
         });
 

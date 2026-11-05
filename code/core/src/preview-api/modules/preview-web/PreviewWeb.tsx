@@ -16,6 +16,7 @@ export class PreviewWeb<TRenderer extends Renderer> extends PreviewWithSelection
   ) {
     super(importFn, getProjectAnnotations, new UrlStore(), new WebView());
 
-    global.__FORKBOOK_PREVIEW__ = this;
+    // A preview is invariant in its renderer, so it widens to the global's `Renderer` through `unknown`.
+    global.__FORKBOOK_PREVIEW__ = this as unknown as PreviewWeb<Renderer>;
   }
 }

@@ -67,8 +67,7 @@ export interface Status {
   storyId: StoryId;
   title: string;
   description: string;
-  // `any`: readers in other areas (component-testing) read fields of `data` without a check.
-  data?: any;
+  data?: unknown;
   sidebarContextMenu?: boolean;
 }
 

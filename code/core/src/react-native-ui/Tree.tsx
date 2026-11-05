@@ -1,7 +1,6 @@
 import type {
   ComponentEntry,
   GroupEntry,
-  State,
   StoriesHash,
   StoryEntry,
 } from '@aussieljk/forkbook/manager-api';
@@ -18,6 +17,10 @@ import {
   startCase,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { ComponentNode, GroupNode, StoryNode } from './TreeNode.tsx';
+import type {
+  StatusByTypeId,
+  StatusesByStoryIdAndTypeId,
+} from '@aussieljk/forkbook/internal/types';
 import type {
   Item,
   ExpandAction,
@@ -39,7 +42,7 @@ interface NodeProps {
   setExpanded: (action: ExpandAction) => void;
   setFullyExpanded?: () => void;
   onSelectStoryId: (itemId: string) => void;
-  status: State['status'][keyof State['status']];
+  status: StatusByTypeId | undefined;
 }
 
 export const Node = React.memo<NodeProps>(function Node({
@@ -194,7 +197,7 @@ const CollapseButton = styled.TouchableOpacity(() => ({
 export const Tree = React.memo<{
   isBrowsing: boolean;
   isMain: boolean;
-  status?: State['status'];
+  status?: StatusesByStoryIdAndTypeId;
   refId: string;
   data: StoriesHash;
   docsMode: boolean;

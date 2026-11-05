@@ -17,6 +17,7 @@ import type { SupportedFramework } from './frameworks.ts';
 import type { Indexer, StoriesEntry } from './indexer.ts';
 import type { SupportedRenderer } from './renderers.ts';
 import type { Addon_StorySortParameterV7 } from './addons.ts';
+import type { API_Versions } from './api-stories.ts';
 
 export type {
   DocgenError,
@@ -100,9 +101,9 @@ export interface Presets {
   ): Promise<TypescriptOptions>;
   apply(extension: 'framework', config?: {}, args?: unknown): Promise<Preset>;
   apply(extension: 'babel', config?: {}, args?: unknown): Promise<unknown>;
-  apply(extension: 'swc', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'swc', config?: {}, args?: unknown): Promise<unknown>;
   apply(extension: 'entries', config?: [], args?: unknown): Promise<unknown>;
-  apply(extension: 'env', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'env', config?: {}, args?: unknown): Promise<Record<string, string>>;
   apply(extension: 'stories', config?: [], args?: unknown): Promise<StoriesEntry[]>;
   apply(extension: 'managerEntries', config: [], args?: unknown): Promise<string[]>;
   apply(extension: 'refs', config?: [], args?: unknown): Promise<StorybookConfigRaw['refs']>;
@@ -159,8 +160,9 @@ export interface Presets {
 
 export interface LoadedPreset {
   name: string;
-  preset: any;
-  options: any;
+  /** The preset's exports, other than `addons` and `presets`. */
+  preset: Record<string, unknown>;
+  options: Record<string, unknown>;
 }
 
 export type PresetConfig =
@@ -173,8 +175,8 @@ export type PresetConfig =
 export interface Ref {
   id: string;
   url: string;
-  title: string;
-  version: string;
+  title?: string;
+  version?: string;
   type?: string;
   disable?: boolean;
 }
@@ -182,7 +184,7 @@ export interface Ref {
 export interface VersionCheck {
   success: boolean;
   cached: boolean;
-  data?: any;
+  data?: API_Versions;
   error?: unknown;
   time: number;
 }
@@ -218,7 +220,22 @@ export interface ModuleResolveConfig {
   conditions?: string[];
 }
 
-export type PackageJson = PackageJsonFromTypeFest & Record<string, any>;
+/**
+ * A `package.json`. It has the known fields of type-fest's `PackageJson` and the fields Forkbook
+ * reads, but not type-fest's `JsonObject` index signature, because type-fest's own `overrides`
+ * type does not fit that signature.
+ */
+export type PackageJson = PackageJsonFromTypeFest.NodeJsStandard &
+  PackageJsonFromTypeFest.PackageJsonStandard &
+  PackageJsonFromTypeFest.NonStandardEntryPoints &
+  PackageJsonFromTypeFest.TypeScriptConfiguration &
+  PackageJsonFromTypeFest.YarnConfiguration &
+  PackageJsonFromTypeFest.JSPMConfiguration & {
+    /** The legacy ESLint config. */
+    eslintConfig?: { extends?: string | string[]; [key: string]: unknown };
+    /** The Forkbook that the package ships for composition. */
+    storybook?: { url?: string; title?: string };
+  } & Record<string, unknown>;
 
 // TODO: This could be exported to the outside world and used in `options.ts` file of each `@storybook/APP`
 // like it's described in docs/api/new-frameworks.md
@@ -363,7 +380,7 @@ export type Preset =
   | string
   | {
       name: string;
-      options?: any;
+      options?: Record<string, unknown>;
     };
 
 /** An additional script that gets injected into the preview or the manager, */

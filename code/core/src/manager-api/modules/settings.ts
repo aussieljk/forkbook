@@ -29,8 +29,7 @@ export interface SubAPI {
 }
 
 export interface SubState {
-  // `API_Settings` says `string`, but the ID is null until the first story is tracked.
-  settings: Omit<API_Settings, 'lastTrackedStoryId'> & { lastTrackedStoryId: StoryId | null };
+  settings: API_Settings;
 }
 
 export const init: ModuleFn<SubAPI, SubState> = ({ store, navigate, fullAPI }) => {

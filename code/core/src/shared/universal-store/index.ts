@@ -22,6 +22,17 @@ import type {
 
 const CHANNEL_EVENT_PREFIX = 'UNIVERSAL_STORE:' as const;
 
+/**
+ * Whether `event` has the type `type`. A custom event's `type` is any string, so a `switch` on
+ * `event.type` cannot narrow an event union to one payload, but this check can.
+ */
+function hasType<TEvent extends BaseEvent>(
+  event: BaseEvent,
+  type: TEvent['type']
+): event is TEvent {
+  return event.type === type;
+}
+
 const ProgressState = {
   PENDING: 'PENDING',
   RESOLVED: 'RESOLVED',
@@ -507,8 +518,10 @@ export class UniversalStore<State, CustomEvent extends BaseEvent = BaseEvent> {
     return this.subscribe(
       // `any`: inside the class, the checker resolves the generic event-type constraint to `never`.
       UniversalStore.InternalEventType.SET_STATE as any,
-      ({ payload }, eventInfo) => {
-        listener(payload.state, payload.previousState, eventInfo);
+      (event, eventInfo) => {
+        if (hasType<SetStateEvent<State>>(event, UniversalStore.InternalEventType.SET_STATE)) {
+          listener(event.payload.state, event.payload.previousState, eventInfo);
+        }
       }
     );
   }
@@ -653,36 +666,35 @@ export class UniversalStore<State, CustomEvent extends BaseEvent = BaseEvent> {
         this.emitToChannel(event, { actor: eventInfo.actor, forwardingActor: this.actor });
       }
     }
-    if (this.actor.type === UniversalStore.ActorType.FOLLOWER) {
-      switch (event.type) {
-        case UniversalStore.InternalEventType.EXISTING_STATE_RESPONSE:
-          this.debug("handleChannelEvents: Setting state from leader's existing state response", {
-            event,
-          });
-          if (this.syncing?.state !== ProgressState.PENDING) {
-            // ignore the response if this follower has already synced
-            break;
-          }
-          this.syncing!.resolve?.();
-          // notify internal listeners that the state has changed because of the sync
-          const setStateEvent: SetStateEvent<State> = {
-            type: UniversalStore.InternalEventType.SET_STATE,
-            payload: {
-              state: event.payload,
-              previousState: this.state,
-            },
-          };
-          this.state = event.payload;
-          this.emitToListeners(setStateEvent, eventInfo);
-          break;
+    if (
+      this.actor.type === UniversalStore.ActorType.FOLLOWER &&
+      hasType<ExistingStateResponseEvent<State>>(
+        event,
+        UniversalStore.InternalEventType.EXISTING_STATE_RESPONSE
+      )
+    ) {
+      this.debug("handleChannelEvents: Setting state from leader's existing state response", {
+        event,
+      });
+      // ignore the response if this follower has already synced
+      if (this.syncing?.state === ProgressState.PENDING) {
+        this.syncing.resolve?.();
+        // notify internal listeners that the state has changed because of the sync
+        const setStateEvent: SetStateEvent<State> = {
+          type: UniversalStore.InternalEventType.SET_STATE,
+          payload: {
+            state: event.payload,
+            previousState: this.state,
+          },
+        };
+        this.state = event.payload;
+        this.emitToListeners(setStateEvent, eventInfo);
       }
     }
 
-    switch (event.type) {
-      case UniversalStore.InternalEventType.SET_STATE:
-        this.debug('handleChannelEvents: Setting state', { event });
-        this.state = event.payload.state;
-        break;
+    if (hasType<SetStateEvent<State>>(event, UniversalStore.InternalEventType.SET_STATE)) {
+      this.debug('handleChannelEvents: Setting state', { event });
+      this.state = event.payload.state;
     }
 
     this.emitToListeners(event, { actor: eventInfo.actor });

@@ -3,7 +3,7 @@ import React from 'react';
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { createBrowserChannel } from '@aussieljk/forkbook/internal/channels';
 import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
-import type { Addon_Config, Addon_Types } from '@aussieljk/forkbook/internal/types';
+import type { Addon_Config } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../shared/global.ts';
 import { CircleXIcon } from 'lucide-react';
@@ -51,9 +51,7 @@ class ReactProvider extends Provider {
 
   wsDisconnected = false;
 
-  getElements(type: Addon_Types) {
-    return this.addons.getElements(type);
-  }
+  getElements: AddonStore['getElements'] = (type) => this.addons.getElements(type);
 
   getConfig(): Addon_Config {
     return this.addons.getConfig();

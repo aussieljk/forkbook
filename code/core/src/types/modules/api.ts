@@ -1,10 +1,17 @@
 import type { ReactElement } from 'react';
 
 import type { Channel } from '../../channels/index.ts';
-import type { State } from '../../manager-api/index.ts';
+import type { API as ManagerAPI, State } from '../../manager-api/index.ts';
 import type { RenderData } from '../../router/types.ts';
 import type { ThemeVars } from '../../theming/types.ts';
-import type { Addon_RenderOptions } from './addons.ts';
+import type {
+  Addon_Collection,
+  Addon_Config,
+  Addon_RenderOptions,
+  Addon_Types,
+  Addon_TypesEnum,
+  Addon_TypesMapping,
+} from './addons.ts';
 import type {
   API_FilterFunction,
   API_HashEntry,
@@ -46,14 +53,19 @@ export interface API_Provider<API> {
   channel?: Channel;
   renderPreview?: API_IframeRenderer;
   handleAPI(api: API): void;
-  getConfig(): {
+  getElements<
+    T extends
+      | Addon_Types
+      | Addon_TypesEnum.experimental_PAGE
+      | Addon_TypesEnum.experimental_TEST_PROVIDER,
+  >(
+    type: T
+  ): Addon_Collection<Addon_TypesMapping[T]>;
+  getConfig(): Addon_Config & {
     sidebar?: API_SidebarOptions<API>;
-    theme?: ThemeVars;
     selectedPanel?: string;
-    StoryMapper?: API_StoryMapper;
-    [k: string]: any;
+    storyMapper?: API_StoryMapper;
   };
-  [key: string]: any;
 }
 
 export type API_IframeRenderer = (
@@ -63,7 +75,7 @@ export type API_IframeRenderer = (
   baseUrl: string,
   scale: number,
   queryParams: Record<string, unknown>
-) => ReactElement<any, any> | null;
+) => ReactElement | null;
 
 export type FilterFunction = (entry: API_PreparedIndexEntry, excluded?: boolean) => boolean;
 
@@ -108,7 +120,7 @@ export interface API_UI {
 export type API_PanelPositions = 'bottom' | 'right';
 export type API_ActiveTabsType = 'sidebar' | 'canvas' | 'addons';
 
-export interface API_SidebarOptions<API = any> {
+export interface API_SidebarOptions<API = ManagerAPI> {
   showRoots?: boolean;
   /**
    * Do not make folders from the `/` in a title. Each component is a top level item, named by its

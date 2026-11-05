@@ -1,15 +1,16 @@
-import type { Addon_Types } from '@aussieljk/forkbook/internal/types';
+import type { API } from '@aussieljk/forkbook/manager-api';
+import type { API_Provider } from '@aussieljk/forkbook/internal/types';
 
-export default class Provider {
-  getElements(_type: Addon_Types) {
+export default class Provider implements API_Provider<API> {
+  getElements: API_Provider<API>['getElements'] = () => {
     throw new Error('Provider.getElements() is not implemented!');
-  }
+  };
 
-  handleAPI(_api: unknown) {
+  handleAPI(_api: API) {
     throw new Error('Provider.handleAPI() is not implemented!');
   }
 
-  getConfig() {
+  getConfig(): ReturnType<API_Provider<API>['getConfig']> {
     console.error('Provider.getConfig() is not implemented!');
 
     return {};

@@ -47,6 +47,17 @@ describe('RouterDecorator with parameters.nextjs.appDirectory: true', () => {
     expect(renderAppDirectoryStory(Probe)).toBe('<span>&quot;&quot; null</span>');
   });
 
+  it('gives a null parent segment path, as the root of Next.js does', () => {
+    // A `LayoutRouter` in the story adds its segment to this path with `concat`, so it must not
+    // be undefined.
+    const Probe = () => {
+      const layoutRouterContext = useContext(LayoutRouterContext);
+      return <span>{String(layoutRouterContext?.parentSegmentPath)}</span>;
+    };
+
+    expect(renderAppDirectoryStory(Probe)).toBe('<span>null</span>');
+  });
+
   // The regression requires Next.js >= 16.4; the first test guards the missing context field.
   it('supports useRouter() consumers', () => {
     const Probe = () => {

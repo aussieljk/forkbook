@@ -215,7 +215,6 @@ export interface SubAPI {
    *   path: string;
    *   viewMode?: string;
    *   storyId?: string;
-   *   url: string;
    * }}
    *   An object containing the current state of the URL.
    */
@@ -225,7 +224,6 @@ export interface SubAPI {
     hash: string;
     viewMode?: string;
     storyId?: string;
-    url: string;
   };
   /**
    * Set the query parameters for the current URL.
@@ -330,13 +328,12 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
       return customQueryParams ? customQueryParams[key] : undefined;
     },
     getUrlState() {
-      const { location, path, customQueryParams, storyId, url, viewMode } = store.getState();
+      const { location, path, customQueryParams, storyId, viewMode } = store.getState();
       return {
         path,
         hash: location?.hash ?? '',
         queryParams: customQueryParams,
         storyId,
-        url,
         viewMode,
       };
     },

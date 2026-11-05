@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import type { State } from '@aussieljk/forkbook/manager-api';
-import type { API_LoadedRefData } from '@aussieljk/forkbook/internal/types';
+import type {
+  API_LoadedRefData,
+  StatusesByStoryIdAndTypeId,
+} from '@aussieljk/forkbook/internal/types';
 import { Explorer } from './Explorer.tsx';
 import { Search } from './Search.tsx';
 import { SearchResults } from './SearchResults.tsx';
@@ -72,7 +75,7 @@ export const useCombination = (
 
 export interface SidebarProps extends API_LoadedRefData {
   refs: State['refs'];
-  status: State['status'];
+  status: StatusesByStoryIdAndTypeId;
   storyId?: string;
   refId?: string;
   menuHighlighted?: boolean;

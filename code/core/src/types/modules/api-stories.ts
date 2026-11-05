@@ -118,7 +118,8 @@ export interface API_ReleaseNotes {
 }
 
 export interface API_Settings {
-  lastTrackedStoryId: string;
+  /** The last story that the manager showed, or `null` before it showed one. */
+  lastTrackedStoryId: string | null;
 }
 
 export interface API_Version {

@@ -21,7 +21,7 @@ type ClackTaskLog = ReturnType<typeof clack.taskLog>;
 /** A task log or one of its groups. Both take messages. */
 type CurrentTaskLog = ClackTaskLog | ReturnType<ClackTaskLog['group']>;
 
-export const getCurrentTaskLog = (): ClackTaskLog | null => {
+export const getCurrentTaskLog = (): CurrentTaskLog | null => {
   if (globalThis.FORKBOOK_CURRENT_TASK_LOG) {
     return globalThis.FORKBOOK_CURRENT_TASK_LOG[globalThis.FORKBOOK_CURRENT_TASK_LOG.length - 1];
   } else {
@@ -165,7 +165,8 @@ export class ClackPromptProvider extends PromptProvider {
       },
       group(title) {
         logTracker.addLog('info', `${taskId}-group: ${title}`);
-        const group = task.group(title);
+        // A group cannot hold groups, so a task log that started inside a group writes to that group.
+        const group = 'group' in task ? task.group(title) : task;
 
         setCurrentTaskLog(group);
 

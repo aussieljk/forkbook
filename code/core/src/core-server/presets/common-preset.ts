@@ -286,7 +286,7 @@ export const frameworkOptions = async (
     return null;
   }
 
-  return config.options;
+  return config.options ?? null;
 };
 
 export const managerHead = async (_: unknown, options: Options) => {

@@ -22,25 +22,27 @@ export const getAutoRefs = async (options: Options): Promise<Record<string, Ref>
   const list = await Promise.all(
     deps.map(async (d) => {
       const manifest = await readDependencyManifest(directory, d);
+      const ref = manifest?.storybook;
 
-      if (manifest?.storybook?.url) {
-        return { id: manifest.name, ...manifest.storybook, version: manifest.version };
+      if (manifest?.name && ref?.url) {
+        return { id: manifest.name, url: ref.url, title: ref.title, version: manifest.version };
       }
       return undefined;
     })
   );
 
-  return list.filter(Boolean).reduce(
-    (acc, cur) => ({
-      ...acc,
-      [cur.id]: {
-        id: cur.id.toLowerCase(),
-        url: stripTrailingSlash(cur.url),
-        title: cur.title,
-        version: cur.version,
-      },
-    }),
-    {}
+  return Object.fromEntries(
+    list
+      .filter((ref) => ref !== undefined)
+      .map((ref) => [
+        ref.id,
+        {
+          id: ref.id.toLowerCase(),
+          url: stripTrailingSlash(ref.url),
+          title: ref.title,
+          version: ref.version,
+        },
+      ])
   );
 };
 

@@ -114,7 +114,7 @@ export default class Store {
     }
     const { persistence = 'none' } = options || {};
 
-    let patch: Patch = {};
+    let patch: InputPatch = {};
     // What did the patch actually return
     let delta: Patch = {};
     if (typeof inputPatch === 'function') {

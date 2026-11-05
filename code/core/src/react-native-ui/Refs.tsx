@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import type { State } from '@aussieljk/forkbook/manager-api';
+import type { StatusesByStoryIdAndTypeId } from '@aussieljk/forkbook/internal/types';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import { Tree } from './Tree.tsx';
 import type { RefType } from '@aussieljk/forkbook/internal/react-native-ui-common';
@@ -17,7 +17,7 @@ const Wrapper = styled.View<{ isMain: boolean }>(() => ({
   position: 'relative',
 }));
 
-export const Ref: FC<RefType & RefProps & { status?: State['status'] }> = React.memo(
+export const Ref: FC<RefType & RefProps & { status?: StatusesByStoryIdAndTypeId }> = React.memo(
   function Ref(props) {
     const {
       index,

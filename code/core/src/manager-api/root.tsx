@@ -79,7 +79,8 @@ export { ActiveTabs };
 
 export const ManagerContext = createContext({ api: undefined!, state: getInitialState({}!) });
 
-export type State = layout.SubState &
+export type State = addons.SubState &
+  layout.SubState &
   stories.SubState &
   refs.SubState &
   notifications.SubState &
@@ -90,8 +91,7 @@ export type State = layout.SubState &
   globals.SubState &
   whatsnew.SubState &
   RouterData &
-  API_OptionsData &
-  Other;
+  API_OptionsData;
 
 export type API = addons.SubAPI &
   channel.SubAPI &
@@ -107,13 +107,7 @@ export type API = addons.SubAPI &
   url.SubAPI &
   whatsnew.SubAPI &
   openInEditor.SubAPI &
-  Other;
-
-// Addons and other areas (addon-a11y, the React Native UI) read state and API members that these
-// types do not declare. `unknown` here breaks them, so this stays `any` until they are typed.
-interface Other {
-  [key: string]: any;
-}
+  Pick<RouterData, 'navigate'>;
 
 export interface Combo {
   api: API;
@@ -168,7 +162,13 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
           return this.state;
         }
 
-        this.setState(stateChange, () => callback(this.state));
+        this.setState(
+          (state) => ({
+            ...state,
+            ...(typeof stateChange === 'function' ? stateChange(state) : stateChange),
+          }),
+          () => callback(this.state)
+        );
 
         return this.state;
       },
@@ -399,11 +399,10 @@ const { FORKBOOK_ADDON_STATE } = globalThis;
 // shared state
 export function useSharedState<S>(stateId: string, defaultState?: S) {
   const api = useStorybookApi();
-  const existingState = api.getAddonState<S>(stateId) || FORKBOOK_ADDON_STATE[stateId];
-  const state = orDefault<S>(
-    existingState,
-    FORKBOOK_ADDON_STATE[stateId] ? FORKBOOK_ADDON_STATE[stateId] : defaultState
-  );
+  // The cache holds the state that this hook stored for `stateId`.
+  const getCachedState = () => FORKBOOK_ADDON_STATE[stateId] as S | undefined;
+  const existingState = api.getAddonState<S>(stateId) || getCachedState();
+  const state = orDefault<S | undefined>(existingState, getCachedState() || defaultState);
   let quicksync = false;
 
   if (state === defaultState && defaultState !== undefined) {
@@ -436,13 +435,14 @@ export function useSharedState<S>(stateId: string, defaultState?: S) {
     const stateInitializationHandlers = {
       [SET_STORIES]: async () => {
         const currentState = api.getAddonState(stateId);
+        const cachedState = getCachedState();
         if (currentState) {
           FORKBOOK_ADDON_STATE[stateId] = currentState;
           api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, currentState);
-        } else if (FORKBOOK_ADDON_STATE[stateId]) {
+        } else if (cachedState) {
           // this happens when HMR
-          await setState(FORKBOOK_ADDON_STATE[stateId]);
-          api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, FORKBOOK_ADDON_STATE[stateId]);
+          await setState(cachedState);
+          api.emit(`${SHARED_STATE_SET}-manager-${stateId}`, getCachedState());
         } else if (defaultState !== undefined) {
           // if not HMR, yet the defaults are from the manager
           await setState(defaultState);

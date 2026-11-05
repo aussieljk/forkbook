@@ -18,6 +18,9 @@ export default {
 
 // The preview sets this global before stories run.
 const preview = globalThis.__FORKBOOK_PREVIEW__;
+if (!preview) {
+  throw new Error('The Forkbook preview is not set up.');
+}
 const renderStoryToElement = preview.renderStoryToElement.bind(preview);
 
 const getPreparedStory = (docsContext: DocsContextProps, moduleExport: ModuleExport) => {

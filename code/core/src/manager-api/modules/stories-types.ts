@@ -41,6 +41,8 @@ export interface SubState extends API_LoadedRefData {
   excludedTagFilters: Tag[];
   includedStatusFilters: StatusValue[];
   excludedStatusFilters: StatusValue[];
+  /** Whether the manager has applied the options of the first prepared story. */
+  hasCalledSetOptions: boolean;
 }
 
 export interface SubAPI {

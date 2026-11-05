@@ -214,6 +214,7 @@ describe('Refs API', () => {
           url: 'https://example.com',
           title: 'Fake',
           version: '2.1.3-rc.2',
+          previewInitialized: false,
         },
       };
       initRefs({ provider, store } as unknown as ModuleArgs);
@@ -1381,6 +1382,32 @@ describe('Refs API', () => {
       );
       await expect(api.getRefs().fake.filteredIndex).not.toEqual(
         expect.objectContaining({ 'a--2': expect.anything() })
+      );
+    });
+
+    it('builds the index from only `setStoriesData`', async () => {
+      const store = createMockStore({
+        filters: {},
+        refs: { fake: { id: 'fake', url: 'https://example.com', previewInitialized: true } },
+      });
+      const { api } = initRefs({ provider, store } as unknown as ModuleArgs, { runCheck: false });
+
+      await api.setRef('fake', {
+        setStoriesData: {
+          'a--1': {
+            id: 'a--1',
+            name: '1',
+            kind: 'A',
+            parameters: { fileName: './path/to/a1.ts', options: {} },
+          },
+        },
+      });
+
+      expect(api.getRefs().fake.index).toEqual(
+        expect.objectContaining({ 'a--1': expect.anything() })
+      );
+      expect(api.getRefs().fake.filteredIndex).toEqual(
+        expect.objectContaining({ 'a--1': expect.anything() })
       );
     });
 

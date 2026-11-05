@@ -23,9 +23,12 @@ interface ParsingResult<T> {
   ast: InspectionAst;
 }
 
-const ACORN_WALK_VISITORS: acornWalk.RecursiveVisitors<unknown> = {
-  // `base` exists at runtime, but the acorn-walk 7 types do not declare it.
-  ...(Reflect.get(acornWalk, 'base') as acornWalk.RecursiveVisitors<unknown>),
+/** acorn-jsx adds JSX nodes, which the acorn-walk visitor types do not know. */
+type JsxVisitors = { JSXElement: () => void };
+
+// The walker does not go into JSX elements.
+const ACORN_WALK_VISITORS: acornWalk.RecursiveVisitors<unknown> & JsxVisitors = {
+  ...acornWalk.base,
   JSXElement: () => {},
 };
 
@@ -38,6 +41,18 @@ function toAcornNode(node: estree.Node): acorn.Node {
 }
 
 const acornParser = Parser.extend(jsx());
+
+/** Whether there is a JSX element in the tree under `node`. */
+function hasJsxElement(node: estree.Node): boolean {
+  let found = false;
+  const visitors: acornWalk.SimpleVisitors<unknown> & JsxVisitors = {
+    JSXElement() {
+      found = true;
+    },
+  };
+  acornWalk.simple(toAcornNode(node), visitors, ACORN_WALK_VISITORS);
+  return found;
+}
 
 // Cannot use "estree.Identifier" type because this function also support "JSXIdentifier".
 function extractIdentifierName(identifierNode: object | null | undefined): string | null {
@@ -89,20 +104,8 @@ function parseLiteral(literalNode: estree.Literal): ParsingResult<InspectionLite
 function parseFunction(
   funcNode: estree.FunctionExpression | estree.ArrowFunctionExpression
 ): ParsingResult<InspectionFunction | InspectionElement> {
-  let innerJsxElementNode: acorn.Node | undefined;
-
   // If there is at least a JSXElement in the body of the function, then it's a React component.
-  acornWalk.simple(
-    toAcornNode(funcNode.body),
-    {
-      JSXElement(node) {
-        innerJsxElementNode = node;
-      },
-    },
-    ACORN_WALK_VISITORS
-  );
-
-  const isJsx = innerJsxElementNode != null;
+  const isJsx = hasJsxElement(funcNode.body);
 
   const inferredType: InspectionFunction | InspectionElement = {
     type: isJsx ? InspectionType.ELEMENT : InspectionType.FUNCTION,
@@ -124,21 +127,9 @@ function parseFunction(
 function parseClass(
   classNode: estree.ClassExpression
 ): ParsingResult<InspectionClass | InspectionElement> {
-  let innerJsxElementNode: acorn.Node | undefined;
-
   // If there is at least a JSXElement in the body of the class, then it's a React component.
-  acornWalk.simple(
-    toAcornNode(classNode.body),
-    {
-      JSXElement(node) {
-        innerJsxElementNode = node;
-      },
-    },
-    ACORN_WALK_VISITORS
-  );
-
   const inferredType: InspectionClass | InspectionElement = {
-    type: innerJsxElementNode != null ? InspectionType.ELEMENT : InspectionType.CLASS,
+    type: hasJsxElement(classNode.body) ? InspectionType.ELEMENT : InspectionType.CLASS,
     // An anonymous class gives null. Callers check the identifier for null before they use it.
     identifier: extractIdentifierName(classNode.id) as string,
   };

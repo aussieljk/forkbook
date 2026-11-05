@@ -349,28 +349,26 @@ export const init: ModuleFn<SubAPI, SubState, { runCheck?: boolean }> = (
       if (singleStory) {
         return;
       }
-      let internal_index: StoryIndex | undefined;
       let index: API_IndexHash | undefined;
       let filteredIndex: API_IndexHash | undefined;
       const { filters } = store.getState();
       const { storyMapper = defaultStoryMapper } = provider.getConfig();
       const ref = api.getRefs()[id];
 
-      if (storyIndex || setStoriesData) {
-        internal_index = setStoriesData
-          ? transformSetStoriesStoryDataToPreparedStoryIndex(
-              map(setStoriesData, ref, { storyMapper })
-            )
-          : storyIndex;
+      const internal_index: StoryIndex | undefined = setStoriesData
+        ? transformSetStoriesStoryDataToPreparedStoryIndex(
+            map(setStoriesData, ref, { storyMapper })
+          )
+        : storyIndex;
 
-        // With only `setStoriesData`, `storyIndex` is undefined and this throws, as before.
-        filteredIndex = transformStoryIndexToStoriesHash(storyIndex!, {
+      if (internal_index) {
+        filteredIndex = transformStoryIndexToStoriesHash(internal_index, {
           provider,
           docsOptions,
           filters,
           allStatuses: {},
         });
-        index = transformStoryIndexToStoriesHash(storyIndex!, {
+        index = transformStoryIndexToStoriesHash(internal_index, {
           provider,
           docsOptions,
           filters: {},

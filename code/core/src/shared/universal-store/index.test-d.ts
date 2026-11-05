@@ -16,7 +16,7 @@ type CustomEvent = IncrementEvent | ToggleEvent;
 describe('UniversalStore', () => {
   it('should have any types without State or Event specified', () => {
     const store = UniversalStore.create({ id: 'test' });
-    expectTypeOf(store).toEqualTypeOf<UniversalStore<any, { type: string; payload?: any }>>();
+    expectTypeOf(store).toEqualTypeOf<UniversalStore<any, { type: string; payload?: unknown }>>();
 
     expectTypeOf(store.getState()).toEqualTypeOf<any>();
     expectTypeOf(store.setState).parameter(0).toEqualTypeOf<any | ((state: any) => any)>();
@@ -29,7 +29,7 @@ describe('UniversalStore', () => {
 
   it('should have the correct types for State', () => {
     const store = UniversalStore.create<State>({ id: 'test' });
-    expectTypeOf(store).toEqualTypeOf<UniversalStore<State, { type: string; payload?: any }>>();
+    expectTypeOf(store).toEqualTypeOf<UniversalStore<State, { type: string; payload?: unknown }>>();
 
     // Assert - get
     expectTypeOf(store.getState()).toEqualTypeOf<State>();
