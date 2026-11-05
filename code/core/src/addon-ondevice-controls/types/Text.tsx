@@ -9,7 +9,7 @@ export interface TextProps {
     value: string;
     type: string;
   };
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
   isPristine: boolean;
 }
 

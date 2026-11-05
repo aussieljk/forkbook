@@ -8,7 +8,8 @@ export const withoutVitePlugins = async <TPlugin>(
 
   for (const plugin of resolvedPlugins) {
     if (Array.isArray(plugin)) {
-      result.push(await (withoutVitePlugins(plugin, namesToRemove) as any));
+      // A nested array is itself a plugin option, so the filtered array keeps its place.
+      result.push((await withoutVitePlugins(plugin, namesToRemove)) as TPlugin);
     } else if (
       plugin &&
       typeof plugin === 'object' &&

@@ -2,6 +2,10 @@ import { describe, expect, it, vi } from 'vitest';
 import type { SelectionStore } from '@aussieljk/forkbook/internal/preview-api';
 import { View } from './View.tsx';
 
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { PreviewWithSelection } from '@aussieljk/forkbook/internal/preview-api';
+import type { ReactRenderer } from '@aussieljk/forkbook/react';
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 vi.mock('@aussieljk/forkbook/manager-api', () => ({
   addons: {
     loadAddons: vi.fn(),
@@ -32,13 +36,18 @@ describe('View story selection persistence', () => {
       }),
     };
 
-    const view = new View(preview as any, {} as any, {});
+    // The preview and the channel are mocks with only what the selection code uses.
+    const view = new View(
+      preview as unknown as PreviewWithSelection<ReactRenderer>,
+      {} as Channel,
+      {}
+    );
     view._storyIndex = {
       entries: {
         'first--story': { id: 'first--story', type: 'story' },
         'second--story': { id: 'second--story', type: 'story' },
       },
-    } as any;
+    } as unknown as StoryIndex;
 
     return { preview, selectionStore, view };
   };

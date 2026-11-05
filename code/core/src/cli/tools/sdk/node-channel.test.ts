@@ -20,7 +20,7 @@ let baseUrl: string;
 let upgradeUrls: string[];
 let originHeaders: (string | undefined)[];
 let connections: WebSocket[];
-let receivedByServer: any[];
+let receivedByServer: unknown[];
 let clients: NodeChannelConnection[];
 
 const firstConnection = async () => {
@@ -129,7 +129,7 @@ describe('createNodeChannel', () => {
       args: [{ when: new Date('2026-08-20T00:00:00.000Z'), pattern: /token/gi }],
     });
 
-    const received: any[] = [];
+    const received: unknown[] = [];
     channel.on('incoming', (payload) => received.push(payload));
     connection.send(
       stringify({
@@ -148,7 +148,7 @@ describe('createNodeChannel', () => {
 
   it('emits CHANNEL_WS_DISCONNECT and rejects with a dev server disconnected error on close', async () => {
     const { channel, disconnected } = openChannel();
-    const disconnects: any[] = [];
+    const disconnects: unknown[] = [];
     channel.on(CHANNEL_WS_DISCONNECT, (payload) => disconnects.push(payload));
     const connection = await firstConnection();
 

@@ -1,4 +1,5 @@
 import * as v from 'valibot';
+import type { McpServer } from 'tmcp';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 import type {
   DocsAccess,
@@ -92,3 +93,6 @@ export type AddonContext = DocsServingContext & {
 
   toolsets?: NonNullable<AddonOptionsOutput>['toolsets'];
 };
+
+/** The addon's MCP server: Valibot schemas and the addon context. */
+export type AddonMcpServer = McpServer<v.GenericSchema, AddonContext>;

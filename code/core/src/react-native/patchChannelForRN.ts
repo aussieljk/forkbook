@@ -71,9 +71,9 @@ export function patchChannelForRN(channel: Channel): void {
 
   const originalEmit = channel.emit.bind(channel);
 
-  channel.emit = (eventName: string, ...args: any[]) => {
+  channel.emit = (eventName: string, ...args: unknown[]) => {
     if (eventName === EVENT_ID) {
-      const actionDisplay = args[0];
+      const actionDisplay = args[0] as { data?: { args?: unknown } } | undefined;
       if (actionDisplay?.data?.args != null) {
         actionDisplay.data.args = sanitizeActionArgs(actionDisplay.data.args);
       }

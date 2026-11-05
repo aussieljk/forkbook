@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { exec, execSync } from './exec.ts';
+import { type ExecProcess, exec, execSync } from './exec.ts';
 
 import { executeCommand, executeCommandSync } from './command.ts';
 import { ExecaCommandFailedError } from '../../server-errors.ts';
@@ -29,6 +29,15 @@ vi.mock('node:fs', () => ({
 
 const mockedExeca = vi.mocked(exec);
 const mockedExecaCommandSync = vi.mocked(execSync);
+
+type ExecResult = Awaited<ExecProcess>;
+
+/** An exec result with only the output fields that `executeCommand` reads. */
+const execResult = (fields: { stdout: string; stderr: string }) => fields as ExecResult;
+
+/** A sync exec result with only the output fields that `executeCommandSync` reads. */
+const execSyncResult = (fields: { stdout: string; stderr: string }) =>
+  fields as ReturnType<typeof execSync>;
 const mockedExistsSync = vi.mocked(existsSync);
 
 describe('command', () => {
@@ -57,10 +66,12 @@ describe('command', () => {
 
     it('should use .cmd when found in PATH for pnpm', async () => {
       mockedExistsSync.mockImplementation((p) => String(p).endsWith('pnpm.cmd'));
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -79,10 +90,12 @@ describe('command', () => {
 
     it('should use .exe when .cmd not found but .exe exists in PATH', async () => {
       mockedExistsSync.mockImplementation((p) => String(p).endsWith('pnpm.exe'));
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -101,10 +114,12 @@ describe('command', () => {
 
     it('should use .ps1 when neither .cmd nor .exe found but .ps1 exists in PATH', async () => {
       mockedExistsSync.mockImplementation((p) => String(p).endsWith('pnpm.ps1'));
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -123,10 +138,12 @@ describe('command', () => {
 
     it('should fall back to bare command when no variation found in PATH', async () => {
       mockedExistsSync.mockReturnValue(false);
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -141,10 +158,12 @@ describe('command', () => {
       mockedExistsSync.mockImplementation(
         (p) => String(p).endsWith('pnpm.exe') || String(p).endsWith('pnpm.cmd')
       );
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -176,7 +195,9 @@ describe('command', () => {
     it('should preserve subprocess fields like kill after attaching categorized errors', async () => {
       const kill = vi.fn();
       mockedExeca.mockReturnValueOnce(
-        Object.assign(Promise.resolve({ stdout: 'success', stderr: '' }), { kill }) as any
+        Object.assign(Promise.resolve({ stdout: 'success', stderr: '' }), {
+          kill,
+        }) as unknown as ExecProcess
       );
 
       const process = executeCommand({
@@ -213,10 +234,12 @@ describe('command', () => {
 
     it('should work for npm command', async () => {
       mockedExistsSync.mockImplementation((p) => String(p).endsWith('npm.cmd'));
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'npm',
@@ -228,10 +251,12 @@ describe('command', () => {
 
     it('should work for yarn command', async () => {
       mockedExistsSync.mockImplementation((p) => String(p).endsWith('yarn.cmd'));
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'yarn',
@@ -242,10 +267,12 @@ describe('command', () => {
     });
 
     it('should not modify unknown commands on Windows', async () => {
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'git',
@@ -274,10 +301,12 @@ describe('command', () => {
     });
 
     it('should use command as-is for pnpm on Linux', async () => {
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'pnpm',
@@ -293,10 +322,12 @@ describe('command', () => {
         configurable: true,
       });
 
-      mockedExeca.mockResolvedValueOnce({
-        stdout: 'success',
-        stderr: '',
-      } as any);
+      mockedExeca.mockResolvedValueOnce(
+        execResult({
+          stdout: 'success',
+          stderr: '',
+        })
+      );
 
       await executeCommand({
         command: 'npm',
@@ -325,10 +356,12 @@ describe('command', () => {
     });
 
     it('should try .cmd first for pnpm and succeed', () => {
-      mockedExecaCommandSync.mockReturnValueOnce({
-        stdout: '10.0.0',
-        stderr: '',
-      } as any);
+      mockedExecaCommandSync.mockReturnValueOnce(
+        execSyncResult({
+          stdout: '10.0.0',
+          stderr: '',
+        })
+      );
 
       const result = executeCommandSync({
         command: 'pnpm',
@@ -356,10 +389,12 @@ describe('command', () => {
       });
 
       // Second call (.exe) succeeds
-      mockedExecaCommandSync.mockReturnValueOnce({
-        stdout: '10.0.0',
-        stderr: '',
-      } as any);
+      mockedExecaCommandSync.mockReturnValueOnce(
+        execSyncResult({
+          stdout: '10.0.0',
+          stderr: '',
+        })
+      );
 
       const result = executeCommandSync({
         command: 'pnpm',
@@ -420,10 +455,12 @@ describe('command', () => {
     });
 
     it('should use command as-is for pnpm on Linux', () => {
-      mockedExecaCommandSync.mockReturnValueOnce({
-        stdout: '10.0.0',
-        stderr: '',
-      } as any);
+      mockedExecaCommandSync.mockReturnValueOnce(
+        execSyncResult({
+          stdout: '10.0.0',
+          stderr: '',
+        })
+      );
 
       const result = executeCommandSync({
         command: 'pnpm',

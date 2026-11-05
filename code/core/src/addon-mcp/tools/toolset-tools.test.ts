@@ -13,8 +13,15 @@ import { getService } from '@aussieljk/forkbook/internal/core-server';
 import { collectTelemetry } from '../telemetry.ts';
 import { callToolsetMethod, getToolsetToolMetadata } from './toolset-tools.ts';
 
+import type { ToolsetCtx, ToolsetOutcome } from '@aussieljk/forkbook/open-service';
+import type { AddonMcpServer } from '../types.ts';
 vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 vi.mock('../telemetry.ts', { spy: true });
+
+/** What the stub `preview` method returns. The data may carry fields beyond the contract. */
+type PreviewOutcome = ToolsetOutcome<
+  { stories: { previewUrl: string }[] } & Record<string, unknown>
+>;
 
 /**
  * Stands in for the real `stories` toolset so these tests assert the adapter's contract — what an
@@ -22,7 +29,7 @@ vi.mock('../telemetry.ts', { spy: true });
  */
 function registerStubStoriesToolset(
   overrides: {
-    handler?: (input: any, ctx: any) => any;
+    handler?: (input: { id: string }, ctx: ToolsetCtx) => PreviewOutcome | Promise<PreviewOutcome>;
   } = {}
 ) {
   registerToolset(
@@ -48,14 +55,14 @@ function registerStubStoriesToolset(
             }),
         },
       },
-    }) as any
+    })
   );
 }
 
 function makeServer(custom: Record<string, unknown> = {}) {
   return {
     ctx: { custom: { origin: 'http://localhost:6006', ...custom }, sessionId: 'session-1' },
-  } as any;
+  } as unknown as AddonMcpServer;
 }
 
 const previewOptions = { method: 'stories.preview', mcpEventName: 'tool:previewStories' } as const;
@@ -144,7 +151,7 @@ describe('toolset-backed MCP tools', () => {
             handler: async () => ({ ok: true, data: { stories: [] }, markdown: 'no changes' }),
           },
         },
-      }) as any
+      })
     );
 
     const result = await callToolsetMethod(
@@ -259,7 +266,11 @@ describe('toolset-backed MCP tools', () => {
 
   it('includes the request subpath in the toolset origin', async () => {
     registerStubStoriesToolset({
-      handler: async (_input, ctx) => ({ ok: true, data: { stories: [] }, markdown: ctx.origin }),
+      handler: async (_input, ctx) => ({
+        ok: true,
+        data: { stories: [] },
+        markdown: ctx.origin ?? '',
+      }),
     });
 
     const result = await callToolsetMethod(

@@ -34,7 +34,7 @@ export interface FrameworkOptions {
   staticDir?: string;
   addScripts?: boolean;
   addComponents?: boolean;
-  extraMain?: any;
+  extraMain?: Record<string, unknown>;
   extensions?: string[];
   storybookConfigFolder?: string;
   componentsDestinationPath?: string;
@@ -45,7 +45,7 @@ export interface FrameworkOptions {
   frameworkPreviewParts?: FrameworkPreviewParts;
 }
 
-export type Generator<T = Record<string, any>> = (
+export type Generator<T = Record<string, unknown>> = (
   packageManagerInstance: JsPackageManager,
   npmOptions: NpmOptions,
   generatorOptions: GeneratorOptions,
@@ -120,7 +120,7 @@ export type CommandOptions = {
   storybookVersionSpecifier?: string;
   features?: Array<Feature>;
   type?: ProjectType;
-  force?: any;
+  force?: boolean;
   /** Whether this is being run via an ai agent */
   agent?: boolean;
   skipInstall?: boolean;

@@ -213,7 +213,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
         const statsOption = options.statsJson;
         if (statsOption) {
           const target = statsOption === true ? options.outputDir : statsOption;
-          await outputStats(target, previewStats);
+          await outputStats(target, previewStats || undefined);
         }
       })
       .catch((error) => {

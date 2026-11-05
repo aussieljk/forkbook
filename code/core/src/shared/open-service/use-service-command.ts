@@ -12,8 +12,8 @@
 import * as React from 'react';
 
 type CommandFn<TCommands, TKey extends keyof TCommands> = TCommands[TKey] extends (
-  ...args: any[]
-) => any
+  ...args: never[]
+) => unknown
   ? TCommands[TKey]
   : never;
 
@@ -36,9 +36,8 @@ type CommandFn<TCommands, TKey extends keyof TCommands> = TCommands[TKey] extend
  */
 export function useServiceCommand<
   // Accept any concretely-typed service: a command typed `(input: { id }) => ...` is not assignable
-  // to `(input: unknown) => ...` under contravariance, so a `Pick<RuntimeService>` constraint would
-  // reject every service whose command takes an object input.
-  TInstance extends { commands: Record<string, (input: any) => Promise<any>> },
+  // to `(input: unknown) => ...` under contravariance, but it is assignable to `(input: never)`.
+  TInstance extends { commands: Record<string, (input: never) => Promise<unknown>> },
   TKey extends keyof TInstance['commands'] & string,
 >(service: TInstance, commandName: TKey): CommandFn<TInstance['commands'], TKey> {
   return React.useMemo(

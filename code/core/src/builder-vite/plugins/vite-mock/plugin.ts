@@ -11,6 +11,7 @@ import {
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type { CoreConfig } from '@aussieljk/forkbook/internal/types';
 
+import type { Program as EstreeProgram } from 'estree';
 import { normalize } from 'pathe';
 import type { Plugin, ResolvedConfig } from 'vite';
 
@@ -144,7 +145,12 @@ export function viteMockPlugin(options: MockPluginOptions): Plugin[] {
 
             try {
               if (!call.redirectPath) {
-                const automockedCode = getAutomockCode(code, call.spy, babelParser as any);
+                // Babel's AST has the ESTree node shapes that the automocker reads.
+                const automockedCode = getAutomockCode(
+                  code,
+                  call.spy,
+                  (source) => babelParser(source) as unknown as EstreeProgram
+                );
 
                 return {
                   code: automockedCode.toString(),

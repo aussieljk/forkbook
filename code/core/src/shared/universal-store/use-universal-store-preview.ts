@@ -12,17 +12,19 @@ import type { UniversalStore } from './index.ts';
  * @remark This hook is intended for use in the preview. For use in the manager UI, import from
  * `@aussieljk/forkbook/manager-api` instead.
  */
+// `UniversalStore<any, any>`: a store is invariant in its state and event types, so only `any`
+// accepts every store.
 export const useUniversalStore: {
   <
     TUniversalStore extends UniversalStore<TState, any>,
-    TState = TUniversalStore extends UniversalStore<infer S, any> ? S : never,
+    TState = TUniversalStore extends UniversalStore<infer S, infer _CustomEvent> ? S : never,
   >(
     universalStore: TUniversalStore
   ): [TState, TUniversalStore['setState']];
   <
     TUniversalStore extends UniversalStore<any, any>,
     TSelectedState,
-    TState = TUniversalStore extends UniversalStore<infer S, any> ? S : never,
+    TState = TUniversalStore extends UniversalStore<infer S, infer _CustomEvent> ? S : never,
   >(
     universalStore: TUniversalStore,
     selector: (state: TState) => TSelectedState
@@ -30,7 +32,7 @@ export const useUniversalStore: {
 } = <
   TUniversalStore extends UniversalStore<any, any>,
   TSelectedState,
-  TState = TUniversalStore extends UniversalStore<infer S, any> ? S : never,
+  TState = TUniversalStore extends UniversalStore<infer S, infer _CustomEvent> ? S : never,
 >(
   universalStore: TUniversalStore,
   selector?: (state: TState) => TSelectedState

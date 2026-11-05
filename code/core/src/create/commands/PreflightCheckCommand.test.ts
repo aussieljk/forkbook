@@ -1,6 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  type JsPackageManager,
   JsPackageManagerFactory,
   PackageManagerName,
   resolveStorybookVersionSpecifier,
@@ -11,39 +12,49 @@ import { logger, once } from '@aussieljk/forkbook/internal/node-logger';
 import { MinimumReleaseAgeHandledError } from '@aussieljk/forkbook/internal/server-errors';
 
 import * as scaffoldModule from '../scaffold-new-project.ts';
+import type { CommandOptions } from '../generators/types.ts';
+import type { VersionService } from '../services/VersionService.ts';
 import { PreflightCheckCommand } from './PreflightCheckCommand.ts';
 
 vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('../scaffold-new-project', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
+const createMockPackageManager = () => ({
+  installDependencies: vi.fn(),
+  precheckStorybookPackageInstall: vi.fn().mockResolvedValue(undefined),
+  latestVersion: vi.fn().mockResolvedValue('8.0.0'),
+  type: PackageManagerName.NPM as PackageManagerName,
+  primaryPackageJson: { packageJson: { name: 'my-app' } },
+});
+
+const createMockVersionService = () => ({
+  getVersionInfo: vi.fn().mockResolvedValue({
+    currentVersion: '8.0.0',
+    latestVersion: '8.0.0',
+    isPrerelease: false,
+    isOutdated: false,
+  }),
+  getCurrentVersion: vi.fn().mockReturnValue('8.0.0'),
+});
+
+/** Command options with only the fields a test sets. */
+const commandOptions = (options: Partial<CommandOptions>) => options as CommandOptions;
+
 describe('PreflightCheckCommand', () => {
   let command: PreflightCheckCommand;
-  let mockPackageManager: any;
-  let mockVersionService: any;
+  let mockPackageManager: ReturnType<typeof createMockPackageManager>;
+  let mockVersionService: ReturnType<typeof createMockVersionService>;
   const originalIsTTYDescriptor = Object.getOwnPropertyDescriptor(process.stdout, 'isTTY');
 
   beforeEach(() => {
-    mockPackageManager = {
-      installDependencies: vi.fn(),
-      precheckStorybookPackageInstall: vi.fn().mockResolvedValue(undefined),
-      latestVersion: vi.fn().mockResolvedValue('8.0.0'),
-      type: PackageManagerName.NPM,
-      primaryPackageJson: { packageJson: { name: 'my-app' } },
-    };
+    mockPackageManager = createMockPackageManager();
+    mockVersionService = createMockVersionService();
+    command = new PreflightCheckCommand(mockVersionService as unknown as VersionService);
 
-    mockVersionService = {
-      getVersionInfo: vi.fn().mockResolvedValue({
-        currentVersion: '8.0.0',
-        latestVersion: '8.0.0',
-        isPrerelease: false,
-        isOutdated: false,
-      }),
-      getCurrentVersion: vi.fn().mockReturnValue('8.0.0'),
-    };
-    command = new PreflightCheckCommand(mockVersionService);
-
-    vi.mocked(JsPackageManagerFactory.getPackageManager).mockReturnValue(mockPackageManager);
+    vi.mocked(JsPackageManagerFactory.getPackageManager).mockReturnValue(
+      mockPackageManager as unknown as JsPackageManager
+    );
     vi.mocked(JsPackageManagerFactory.getPackageManagerType).mockReturnValue(
       PackageManagerName.NPM
     );
@@ -69,7 +80,7 @@ describe('PreflightCheckCommand', () => {
     it('should return package manager for non-empty directory', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
 
-      const result = await command.execute({ force: false } as any);
+      const result = await command.execute(commandOptions({ force: false }));
 
       expect(result.packageManager).toBe(mockPackageManager);
       expect(result.isEmptyProject).toBe(false);
@@ -80,7 +91,7 @@ describe('PreflightCheckCommand', () => {
     it('should scaffold new project when directory is empty', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(true);
 
-      const result = await command.execute({ force: false, skipInstall: true } as any);
+      const result = await command.execute(commandOptions({ force: false, skipInstall: true }));
 
       expect(scaffoldModule.scaffoldNewProject).toHaveBeenCalledWith('npm', expect.any(Object));
       expect(invalidateProjectRootCache).toHaveBeenCalled();
@@ -90,7 +101,7 @@ describe('PreflightCheckCommand', () => {
     it('should install dependencies for empty project when not skipping install', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(true);
 
-      await command.execute({ force: false, skipInstall: false } as any);
+      await command.execute(commandOptions({ force: false, skipInstall: false }));
 
       expect(mockPackageManager.installDependencies).toHaveBeenCalled();
     });
@@ -98,7 +109,7 @@ describe('PreflightCheckCommand', () => {
     it('should not install dependencies when skipInstall is true', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(true);
 
-      await command.execute({ force: false, skipInstall: true } as any);
+      await command.execute(commandOptions({ force: false, skipInstall: true }));
 
       expect(mockPackageManager.installDependencies).not.toHaveBeenCalled();
     });
@@ -109,7 +120,7 @@ describe('PreflightCheckCommand', () => {
         PackageManagerName.YARN1
       );
 
-      await command.execute({ force: false, skipInstall: true } as any);
+      await command.execute(commandOptions({ force: false, skipInstall: true }));
 
       expect(scaffoldModule.scaffoldNewProject).toHaveBeenCalledWith('npm', expect.any(Object));
 
@@ -127,7 +138,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.type = PackageManagerName.YARN1;
 
-      const result = await command.execute({ force: false } as any);
+      const result = await command.execute(commandOptions({ force: false }));
 
       expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
         expect.stringContaining('Yarn Classic (v1) is supported on a best-effort basis')
@@ -149,7 +160,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.type = packageManagerType;
 
-      await command.execute({ force: false } as any);
+      await command.execute(commandOptions({ force: false }));
 
       expect(vi.mocked(logger.warn)).not.toHaveBeenCalled();
     });
@@ -157,7 +168,7 @@ describe('PreflightCheckCommand', () => {
     it('should skip scaffolding when force is true', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(true);
 
-      const result = await command.execute({ force: true } as any);
+      const result = await command.execute(commandOptions({ force: true }));
 
       expect(scaffoldModule.scaffoldNewProject).not.toHaveBeenCalled();
       expect(result.isEmptyProject).toBe(false);
@@ -177,7 +188,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.type = PackageManagerName.YARN2;
 
-      await command.execute({ force: false } as any);
+      await command.execute(commandOptions({ force: false }));
 
       expect(vi.mocked(logger.info)).toHaveBeenCalledWith('Package manager: Yarn Berry');
     });
@@ -186,7 +197,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.primaryPackageJson = { packageJson: { name: '@aussieljk/forkbook' } };
 
-      await command.execute({ force: false } as any);
+      await command.execute(commandOptions({ force: false }));
 
       expect(vi.mocked(logger.warn)).toHaveBeenCalledWith(
         expect.stringContaining('Your package.json "name" field is set to "@aussieljk/forkbook"')
@@ -197,7 +208,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockPackageManager.primaryPackageJson = { packageJson: { name: 'my-project' } };
 
-      await command.execute({ force: false } as any);
+      await command.execute(commandOptions({ force: false }));
 
       expect(vi.mocked(logger.warn)).not.toHaveBeenCalledWith(
         expect.stringContaining('Your package.json "name" field is set to "@aussieljk/forkbook"')
@@ -207,9 +218,9 @@ describe('PreflightCheckCommand', () => {
     it('should keep an explicit storybookVersionSpecifier instead of overwriting it from ancestry', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       const specifier = 'https://pkg.pr.new/storybookjs/storybook/storybook@abc123';
-      const options = { force: false, storybookVersionSpecifier: specifier };
+      const options = commandOptions({ force: false, storybookVersionSpecifier: specifier });
 
-      await command.execute(options as any);
+      await command.execute(options);
 
       expect(options.storybookVersionSpecifier).toBe(specifier);
       expect(resolveStorybookVersionSpecifier).not.toHaveBeenCalled();
@@ -218,7 +229,7 @@ describe('PreflightCheckCommand', () => {
     it('should fill storybookVersionSpecifier from process ancestry when it is unset', async () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       vi.mocked(resolveStorybookVersionSpecifier).mockReturnValue('10.6.0-alpha.7');
-      const options = { force: false } as any;
+      const options = commandOptions({ force: false });
 
       await command.execute(options);
 
@@ -230,7 +241,7 @@ describe('PreflightCheckCommand', () => {
       vi.mocked(scaffoldModule.currentDirectoryIsEmpty).mockReturnValue(false);
       mockVersionService.getCurrentVersion.mockReturnValue('10.4.0-alpha.17');
 
-      await command.execute({ force: false, yes: true } as any);
+      await command.execute(commandOptions({ force: false, yes: true }));
 
       expect(mockPackageManager.precheckStorybookPackageInstall).toHaveBeenCalledWith({
         storybookVersion: '10.4.0-alpha.17',
@@ -244,7 +255,7 @@ describe('PreflightCheckCommand', () => {
         new Error('registry timeout')
       );
 
-      await expect(command.execute({ force: false, yes: true } as any)).resolves.toEqual({
+      await expect(command.execute(commandOptions({ force: false, yes: true }))).resolves.toEqual({
         packageManager: mockPackageManager,
         isEmptyProject: false,
       });
@@ -260,7 +271,7 @@ describe('PreflightCheckCommand', () => {
         new MinimumReleaseAgeHandledError({ message: 'blocked by minimum release age' })
       );
 
-      await expect(command.execute({ force: false, yes: true } as any)).rejects.toThrow(
+      await expect(command.execute(commandOptions({ force: false, yes: true }))).rejects.toThrow(
         'blocked by minimum release age'
       );
     });

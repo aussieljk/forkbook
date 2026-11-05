@@ -9,7 +9,7 @@ interface Options {
   before: CoreCommon_AddonInfo;
   after: CoreCommon_AddonInfo;
   configFile: string;
-  getConfig: (path: string) => any;
+  getConfig: (path: string) => unknown;
 }
 
 const predicateFor = (addon: string) => (entry: CoreCommon_AddonEntry) => {
@@ -38,7 +38,9 @@ const isCorrectOrder = (
 
 export const checkAddonOrder = async ({ before, after, configFile, getConfig }: Options) => {
   try {
-    const config = await getConfig(configFile);
+    const config = (await getConfig(configFile)) as
+      | { addons?: CoreCommon_AddonEntry[] }
+      | undefined;
 
     if (!config?.addons) {
       logger.warn(`Unable to find 'addons' config in main Forkbook config`);

@@ -7,12 +7,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import * as resolveUtils from '../shared/utils/module.ts';
-import { getPresets, loadPreset, resolveAddonName } from './presets.ts';
+import type { Presets } from '@aussieljk/forkbook/internal/types';
 
-function wrapPreset(basePresets: any): { babel: Function; viteFinal: Function } {
+import { type InterPresetOptions, getPresets, loadPreset, resolveAddonName } from './presets.ts';
+
+function wrapPreset(basePresets: Presets) {
   return {
-    babel: async (config: any, args: any) => basePresets.apply('babel', config, args),
-    viteFinal: async (config: any, args: any) => basePresets.apply('viteFinal', config, args),
+    babel: async (config?: object, args?: object) => basePresets.apply('babel', config, args),
+    viteFinal: async (config?: object, args?: object) =>
+      basePresets.apply('viteFinal', config, args),
   };
 }
 
@@ -66,7 +69,7 @@ describe('presets', () => {
     let presets;
 
     async function testPresets() {
-      // @ts-expect-error (invalid use)
+      // @ts-expect-error getPresets needs its arguments; the test checks that it copes without them.
       presets = wrapPreset(await getPresets());
       await presets.viteFinal();
       await presets.babel();
@@ -77,7 +80,7 @@ describe('presets', () => {
     expect(presets).toBeDefined();
   });
   it('does not throw when presets are empty', async () => {
-    // @ts-expect-error (invalid use)
+    // @ts-expect-error getPresets needs its options; the test checks that it copes without them.
     const presets = wrapPreset(await getPresets([]));
 
     async function testPresets() {
@@ -89,7 +92,7 @@ describe('presets', () => {
   });
 
   it('does not throw when preset can not be loaded', async () => {
-    // @ts-expect-error (invalid use)
+    // @ts-expect-error getPresets needs its options; the test checks that it copes without them.
     const presets = wrapPreset(await getPresets(['preset-foo']));
 
     async function testPresets() {
@@ -101,7 +104,7 @@ describe('presets', () => {
   });
 
   it('throws when preset can not be loaded and is critical', async () => {
-    // @ts-expect-error (invalid use)
+    // @ts-expect-error the options lack the required fields; the test needs only `isCritical`.
     await expect(getPresets(['preset-foo'], { isCritical: true })).rejects.toThrow();
   });
 
@@ -115,7 +118,7 @@ describe('presets', () => {
 
     await loadPreset('@aussieljk/forkbook/react-vite/preset', 0, {
       configDir: '/project/.forkbook',
-    } as any);
+    } as InterPresetOptions);
 
     expect(mockedResolveUtils.importModule).toHaveBeenCalledWith(
       '/project/node_modules/@storybook/react-vite/preset.js'
@@ -155,7 +158,7 @@ describe('presets', () => {
 
     const presets = await getPresets(
       ['preset-first', 'preset-second', 'preset-third', 'preset-fifth'],
-      {} as any
+      {} as InterPresetOptions
     );
 
     const result = await presets.apply('aProperty', []);
@@ -181,7 +184,9 @@ describe('presets', () => {
       throw new Error(`Could not resolve ${path}`);
     });
 
-    const presets = wrapPreset(await getPresets(['preset-foo', 'preset-bar'], {} as any));
+    const presets = wrapPreset(
+      await getPresets(['preset-foo', 'preset-bar'], {} as InterPresetOptions)
+    );
 
     async function testPresets() {
       await presets.viteFinal();
@@ -213,7 +218,7 @@ describe('presets', () => {
     });
 
     const presets = wrapPreset(
-      await getPresets([{ name: 'preset-foo' }, { name: 'preset-bar' }], {} as any)
+      await getPresets([{ name: 'preset-foo' }, { name: 'preset-bar' }], {} as InterPresetOptions)
     );
 
     async function testPresets() {
@@ -251,7 +256,7 @@ describe('presets', () => {
           { name: 'preset-foo', options: { foo: 1 } },
           { name: 'preset-bar', options: { bar: 'a' } },
         ],
-        {} as any
+        {} as InterPresetOptions
       )
     );
 
@@ -303,7 +308,7 @@ describe('presets', () => {
             },
           },
         ],
-        {} as any
+        {} as InterPresetOptions
       )
     );
 
@@ -326,8 +331,8 @@ describe('presets', () => {
   });
 
   it('applies presets in chain', async () => {
-    const mockPresetFooExtendVite = vi.fn((...args: any[]) => ({}));
-    const mockPresetBarExtendVite = vi.fn((...args: any[]) => ({}));
+    const mockPresetFooExtendVite = vi.fn((..._args: unknown[]) => ({}));
+    const mockPresetBarExtendVite = vi.fn((..._args: unknown[]) => ({}));
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
@@ -359,7 +364,7 @@ describe('presets', () => {
             },
           },
         ],
-        {} as any
+        {} as InterPresetOptions
       )
     );
 
@@ -383,7 +388,7 @@ describe('presets', () => {
 
   it('allows for presets to export presets array', async () => {
     const input = {};
-    const mockPresetBar = vi.fn((...args: any[]) => input);
+    const mockPresetBar = vi.fn((..._args: unknown[]) => input);
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
@@ -399,7 +404,7 @@ describe('presets', () => {
       throw new Error(`Could not resolve ${path}`);
     });
 
-    const presets = await getPresets(['preset-foo'], {} as any);
+    const presets = await getPresets(['preset-foo'], {} as InterPresetOptions);
 
     const output = await presets.apply('bar');
 
@@ -410,10 +415,11 @@ describe('presets', () => {
 
   it('allows for presets to export presets fn', async () => {
     const input = {};
-    const storybookOptions = { a: 1 };
+    // The options are passed through, so the test gives only a marker field.
+    const storybookOptions = { a: 1 } as unknown as InterPresetOptions;
     const presetOptions = { b: 2 };
-    const mockPresetBar = vi.fn((...args: any[]) => input);
-    const mockPresetFoo = vi.fn((...args: any[]) => ['preset-bar']);
+    const mockPresetBar = vi.fn((..._args: unknown[]) => input);
+    const mockPresetFoo = vi.fn((..._args: unknown[]) => ['preset-bar']);
 
     mockedResolveUtils.importModule.mockImplementation(async (path: string) => {
       if (path === 'preset-foo') {
@@ -429,10 +435,7 @@ describe('presets', () => {
       throw new Error(`Could not resolve ${path}`);
     });
 
-    const presets = await getPresets(
-      [{ name: 'preset-foo', options: { b: 2 } }],
-      storybookOptions as any
-    );
+    const presets = await getPresets([{ name: 'preset-foo', options: { b: 2 } }], storybookOptions);
 
     const output = await presets.apply('bar');
 
@@ -456,7 +459,7 @@ describe('resolveAddonName', () => {
       }
       throw new Error(`Could not resolve ${path}`);
     });
-    expect(resolveAddonName({} as any, './local/preset', {})).toEqual({
+    expect(resolveAddonName('', './local/preset', {})).toEqual({
       name: './local/preset',
       type: 'presets',
     });
@@ -471,28 +474,28 @@ describe('resolveAddonName', () => {
       }
       throw new Error(`Could not resolve ${path}`);
     });
-    expect(resolveAddonName({} as any, '/absolute/preset', {})).toEqual({
+    expect(resolveAddonName('', '/absolute/preset', {})).toEqual({
       name: '/absolute/preset',
       type: 'presets',
     });
   });
 
   it('should resolve packages without metadata', () => {
-    expect(resolveAddonName({} as any, '@storybook/preset-alpha', {})).toEqual({
+    expect(resolveAddonName('', '@storybook/preset-alpha', {})).toEqual({
       name: '@storybook/preset-alpha',
       type: 'presets',
     });
   });
 
   it('should resolve presets', () => {
-    expect(resolveAddonName({} as any, '@aussieljk/forkbook/addon-docs/preset', {})).toEqual({
+    expect(resolveAddonName('', '@aussieljk/forkbook/addon-docs/preset', {})).toEqual({
       name: '@aussieljk/forkbook/addon-docs/preset',
       type: 'presets',
     });
   });
 
   it('should resolve preset packages', () => {
-    expect(resolveAddonName({} as any, '@storybook/addon-essentials', {})).toEqual({
+    expect(resolveAddonName('', '@storybook/addon-essentials', {})).toEqual({
       name: '@storybook/addon-essentials',
       type: 'presets',
     });
@@ -511,7 +514,7 @@ describe('resolveAddonName', () => {
     it('resolves entry points declared only in the exports map', () => {
       const addonDir = join(fixtureDir, 'addon-with-exports-map');
 
-      expect(resolveAddonName({} as any, addonDir, {})).toEqual({
+      expect(resolveAddonName('', addonDir, {})).toEqual({
         type: 'virtual',
         name: addonDir,
         presets: [{ name: patheJoin(addonDir, 'lib', 'preset.js'), options: {} }],
@@ -523,7 +526,7 @@ describe('resolveAddonName', () => {
     it('resolves root-level entry points when the package has no exports map', () => {
       const addonDir = join(fixtureDir, 'addon-without-exports-map');
 
-      expect(resolveAddonName({} as any, addonDir, {})).toEqual({
+      expect(resolveAddonName('', addonDir, {})).toEqual({
         type: 'virtual',
         name: addonDir,
         presets: [{ name: patheJoin(addonDir, 'preset.js'), options: {} }],
@@ -533,7 +536,7 @@ describe('resolveAddonName', () => {
     });
 
     it('returns undefined for a directory that holds no addon', () => {
-      expect(resolveAddonName({} as any, fixtureDir, {})).toBeUndefined();
+      expect(resolveAddonName('', fixtureDir, {})).toBeUndefined();
     });
   });
 });
@@ -565,7 +568,7 @@ describe('loadPreset', () => {
     const loaded = await loadPreset(
       {
         name: '',
-        // @ts-expect-error (invalid use)
+        // @ts-expect-error a preset config has no `type`; the test checks that a virtual preset loads.
         type: 'virtual',
         framework: '@aussieljk/forkbook/react',
         presets: ['@storybook/preset-beta'],
@@ -601,7 +604,7 @@ describe('loadPreset', () => {
     const loaded = await loadPreset(
       {
         name: '',
-        // @ts-expect-error (invalid use)
+        // @ts-expect-error a preset config has no `type`; the test checks that a virtual preset loads.
         type: 'virtual',
         presets: ['@storybook/preset-beta'],
         addons: [
@@ -680,7 +683,7 @@ describe('loadPreset', () => {
     const loaded = await loadPreset(
       {
         name: '',
-        // @ts-expect-error (invalid use)
+        // @ts-expect-error a preset config has no `type`; the test checks that a virtual preset loads.
         type: 'virtual',
         framework: '@aussieljk/forkbook/react',
         presets: ['@storybook/preset-beta'],
@@ -719,7 +722,7 @@ describe('loadPreset', () => {
     const loaded = await loadPreset(
       {
         name: '',
-        // @ts-expect-error (invalid use)
+        // @ts-expect-error a preset config has no `type`; the test checks that a virtual preset loads.
         type: 'virtual',
         framework: '@aussieljk/forkbook/react',
         presets: ['@storybook/preset-beta'],

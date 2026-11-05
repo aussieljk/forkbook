@@ -233,7 +233,7 @@ export async function copyTemplateFiles({
   }
 }
 
-export async function adjustTemplate(templatePath: string, templateData: Record<string, any>) {
+export async function adjustTemplate(templatePath: string, templateData: Record<string, unknown>) {
   // for now, we're just doing a simple string replace
   // in the future we might replace this with a proper templating engine
   let template = await readFile(templatePath, { encoding: 'utf8' });

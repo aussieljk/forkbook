@@ -6,9 +6,9 @@ import { useResyncValue } from './useResyncValue.ts';
 export interface ObjectProps {
   arg: {
     name: string;
-    value: Record<string, any> | Array<any>;
+    value: Record<string, unknown> | unknown[];
   };
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
   isPristine: boolean;
 }
 

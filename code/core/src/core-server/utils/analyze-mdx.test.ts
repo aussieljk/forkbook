@@ -4,8 +4,10 @@ import { describe, expect, it } from 'vitest';
 
 import { analyzeMdx, extractImports } from './analyze-mdx.ts';
 
+import type { Program } from 'estree';
+// The `estree` plugin makes Babel give an ESTree program, which is what `extractImports` reads.
 const estreeParse = (code: string) =>
-  parse(code, { sourceType: 'module', plugins: ['jsx', 'estree'] }).program;
+  parse(code, { sourceType: 'module', plugins: ['jsx', 'estree'] }).program as unknown as Program;
 
 describe('extractImports', () => {
   it('single block', () => {
@@ -14,7 +16,7 @@ describe('extractImports', () => {
       import * as ButtonStories from './Button.stories';
     `);
 
-    expect(extractImports(ast as any)).toMatchInlineSnapshot(`
+    expect(extractImports(ast)).toMatchInlineSnapshot(`
       {
         "ButtonStories": "./Button.stories",
         "Meta": "@storybook/blocks",
@@ -29,7 +31,7 @@ describe('extractImports', () => {
       import * as ButtonStories from './Button.stories';
     `);
 
-    expect(extractImports(ast as any)).toMatchInlineSnapshot(`
+    expect(extractImports(ast)).toMatchInlineSnapshot(`
       {
         "ButtonStories": "./Button.stories",
         "Meta": "@storybook/blocks",

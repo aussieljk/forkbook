@@ -32,14 +32,17 @@ vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   },
 }));
 
+/** Process entries with only the command, which is all the check reads. */
+type Ancestry = Parameters<VersionService['getCliIntegrationFromAncestry']>[0];
+
 describe('getCliIntegrationFromAncestry', () => {
   it('returns the CLI integration if found', () => {
     const ancestry = [{ command: 'node' }, { command: 'pnpm create vike@latest' }];
-    expect(getCliIntegrationFromAncestry(ancestry as any)).toBe('vike');
+    expect(getCliIntegrationFromAncestry(ancestry as Ancestry)).toBe('vike');
   });
 
   it('returns undefined if no CLI integration found', () => {
     const ancestry = [{ command: 'node' }, { command: 'npm' }];
-    expect(getCliIntegrationFromAncestry(ancestry as any)).toBeUndefined();
+    expect(getCliIntegrationFromAncestry(ancestry as Ancestry)).toBeUndefined();
   });
 });

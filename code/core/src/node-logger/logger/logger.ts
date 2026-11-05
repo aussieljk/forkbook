@@ -6,6 +6,7 @@ import { wrapTextForClack } from '../wrap-utils.ts';
 import { CLI_COLORS } from './colors.ts';
 import { logTracker } from './log-tracker.ts';
 
+// `any[]`: the wrapper calls `clackFn` with its own arguments, which `never[]` would forbid.
 const createLogFunction =
   <T extends (...args: any[]) => any>(
     clackFn: T,
@@ -93,7 +94,7 @@ function getMinimalTrace() {
   return callStack;
 }
 
-const formatLogMessage = (args: any[]): string => {
+const formatLogMessage = (args: unknown[]): string => {
   return args
     .map((arg) => {
       if (typeof arg === 'string') {
@@ -108,7 +109,8 @@ const formatLogMessage = (args: any[]): string => {
     .join(' ');
 };
 
-// Higher-level abstraction for creating logging functions
+// Higher-level abstraction for creating logging functions. `any[]`: the wrapper calls `logFn` with
+// its own arguments, which `never[]` would forbid.
 function createLogger<T extends (...args: any[]) => void>(
   level: LogLevel | 'prompt',
   logFn: T,
@@ -144,7 +146,7 @@ export const debug = createLogger(
   '[DEBUG]'
 );
 
-type LogFunctionArgs<T extends (...args: any[]) => any> = Parameters<ReturnType<T>>;
+type LogFunctionArgs<T extends () => (...args: never[]) => unknown> = Parameters<ReturnType<T>>;
 
 /** For general information that should always be visible to the user */
 export const log = createLogger('info', (...args: LogFunctionArgs<typeof LOG_FUNCTIONS.log>) =>

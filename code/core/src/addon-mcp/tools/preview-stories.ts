@@ -1,9 +1,7 @@
 import url from 'node:url';
 import fs from 'node:fs/promises';
 
-import type { McpServer } from 'tmcp';
-
-import type { AddonContext } from '../types.ts';
+import type { AddonContext, AddonMcpServer } from '../types.ts';
 import appTemplate from './preview-stories/preview-stories-app-template.html';
 import { PREVIEW_STORIES_TOOL_NAME } from './tool-names.ts';
 
@@ -15,7 +13,7 @@ export const PREVIEW_STORIES_RESOURCE_URI = `ui://${PREVIEW_STORIES_TOOL_NAME}/p
  * The app reads the tool result's `structuredContent`, so it is bound to the preview tool's output
  * contract rather than to its implementation.
  */
-export async function addPreviewStoriesResource(server: McpServer<any, AddonContext>) {
+export async function addPreviewStoriesResource(server: AddonMcpServer) {
   const previewStoryAppScript = await fs.readFile(
     url.fileURLToPath(
       import.meta.resolve('@aussieljk/forkbook/addon-mcp/internal/preview-stories-app-script')

@@ -1,9 +1,14 @@
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 
+export interface RadioItem {
+  key: unknown;
+  label: string;
+}
+
 interface RadioProps {
-  data: Array<Record<string, any>>;
+  data: RadioItem[];
   value: string;
-  onChange: Function;
+  onChange: (item: RadioItem) => void;
   isInline: boolean;
 }
 

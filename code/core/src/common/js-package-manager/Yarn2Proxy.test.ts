@@ -8,6 +8,8 @@ import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { Yarn2Proxy } from './Yarn2Proxy.ts';
 
+import { commandResult, runTask } from './test-support/command-result.ts';
+
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
@@ -50,12 +52,12 @@ describe('Yarn 2 Proxy', () => {
   describe('installDependencies', () => {
     it('should run `yarn`', async () => {
       // sort of un-mock part of the function so executeCommand (also mocked) is called
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '',
-      } as any);
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '',
+        })
+      );
 
       await yarn2Proxy.installDependencies();
 
@@ -65,9 +67,7 @@ describe('Yarn 2 Proxy', () => {
     });
 
     it('should rethrow minimum-age-gate install errors as handled errors', async () => {
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
       const originalError = new Error(
         '➤ YN0016: │ @aussieljk/forkbook/react-vite@npm:10.4.0-alpha.17: All versions satisfying "10.4.0-alpha.17" are quarantined'
       );
@@ -87,9 +87,11 @@ describe('Yarn 2 Proxy', () => {
 
   describe('runScript', () => {
     it('should execute script `yarn compodoc -- -e json -d .`', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '7.1.0',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '7.1.0',
+        })
+      );
 
       await yarn2Proxy.runPackageCommand({ args: ['compodoc', '-e', 'json', '-d', '.'] });
 
@@ -104,9 +106,11 @@ describe('Yarn 2 Proxy', () => {
 
   describe('addDependencies', () => {
     it('with devDep it should run `yarn install -D storybook`', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '',
+        })
+      );
 
       await yarn2Proxy.addDependencies({ type: 'devDependencies' }, ['storybook']);
 
@@ -121,9 +125,11 @@ describe('Yarn 2 Proxy', () => {
 
   describe('removeDependencies', () => {
     it('skipInstall should only change package.json without running install', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '7.0.0',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '7.0.0',
+        })
+      );
       const writePackageSpy = vi.spyOn(yarn2Proxy, 'writePackageJson').mockImplementation(vi.fn());
 
       vi.spyOn(JsPackageManager, 'getPackageJson').mockImplementation(() => {
@@ -153,9 +159,11 @@ describe('Yarn 2 Proxy', () => {
 
   describe('latestVersion', () => {
     it('without constraint it returns the latest version', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '{"name":"storybook","version":"5.3.19"}',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '{"name":"storybook","version":"5.3.19"}',
+        })
+      );
 
       const version = await yarn2Proxy.latestVersion('storybook');
 
@@ -169,9 +177,11 @@ describe('Yarn 2 Proxy', () => {
     });
 
     it('with constraint it returns the latest version satisfying the constraint', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '{"name":"storybook","versions":["4.25.3","5.3.19","6.0.0-beta.23"]}',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '{"name":"storybook","versions":["4.25.3","5.3.19","6.0.0-beta.23"]}',
+        })
+      );
 
       const version = await yarn2Proxy.latestVersion('storybook', '5.X');
 
@@ -185,9 +195,11 @@ describe('Yarn 2 Proxy', () => {
     });
 
     it('throws an error if command output is not a valid JSON', async () => {
-      mockedExecuteCommand.mockResolvedValue({
-        stdout: 'NOT A JSON',
-      } as any);
+      mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: 'NOT A JSON',
+        })
+      );
 
       await expect(yarn2Proxy.latestVersion('storybook')).resolves.toBe(null);
     });
@@ -228,14 +240,16 @@ describe('Yarn 2 Proxy', () => {
   describe('mapDependencies', () => {
     it('should display duplicated dependencies based on yarn2 output', async () => {
       // yarn info --name-only --recursive "@storybook/*" "storybook"
-      mockedExecuteCommand.mockResolvedValue({
-        stdout: `
+      mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: `
             "unrelated-and-should-be-filtered@npm:1.0.0"
             "@storybook/package@npm:7.0.0-beta.12"
             "@storybook/package@npm:7.0.0-beta.19"
             "@storybook/testing-library@npm:0.0.14-next.1"
           `,
-      } as any);
+        })
+      );
 
       const metadata = await yarn2Proxy.findInstallations(['@storybook/*', 'storybook']);
 
@@ -268,24 +282,24 @@ describe('Yarn 2 Proxy', () => {
 
     it('should update npmPreapprovedPackages in non-interactive mode when npmMinimalAgeGate blocks Forkbook', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: '[]\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify({
-            name: 'storybook',
-            time: {
-              created: '2025-01-01T00:00:00.000Z',
-              modified: '2026-05-11T12:00:00.000Z',
-              '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
-              '10.3.2': '2026-05-01T00:00:00.000Z',
-            },
-          }),
-        } as any)
-        .mockResolvedValueOnce({ stdout: '[]\n' } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any);
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (factory: any) => {
-        await factory();
-      });
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '[]\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              name: 'storybook',
+              time: {
+                created: '2025-01-01T00:00:00.000Z',
+                modified: '2026-05-11T12:00:00.000Z',
+                '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
+                '10.3.2': '2026-05-01T00:00:00.000Z',
+              },
+            }),
+          })
+        )
+        .mockResolvedValueOnce(commandResult({ stdout: '[]\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '' }));
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
 
       await yarn2Proxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
@@ -313,29 +327,33 @@ describe('Yarn 2 Proxy', () => {
 
     it('should let the user update npmPreapprovedPackages interactively', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: "[\n  'foo',\n  '@storybook/preset-react-webpack',\n]\n",
-        } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify({
-            name: 'storybook',
-            time: {
-              created: '2025-01-01T00:00:00.000Z',
-              modified: '2026-05-11T12:00:00.000Z',
-              '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
-              '10.3.2': '2026-05-01T00:00:00.000Z',
-            },
-          }),
-        } as any)
-        .mockResolvedValueOnce({
-          stdout: "[\n  'foo',\n  '@storybook/preset-react-webpack',\n]\n",
-        } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: "[\n  'foo',\n  '@storybook/preset-react-webpack',\n]\n",
+          })
+        )
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              name: 'storybook',
+              time: {
+                created: '2025-01-01T00:00:00.000Z',
+                modified: '2026-05-11T12:00:00.000Z',
+                '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
+                '10.3.2': '2026-05-01T00:00:00.000Z',
+              },
+            }),
+          })
+        )
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: "[\n  'foo',\n  '@storybook/preset-react-webpack',\n]\n",
+          })
+        )
+        .mockResolvedValueOnce(commandResult({ stdout: '' }));
       vi.mocked(prompt.select).mockResolvedValue('exclude' as never);
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (factory: any) => {
-        await factory();
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
 
       await yarn2Proxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
@@ -395,19 +413,21 @@ describe('Yarn 2 Proxy', () => {
 
     it('should tell users how to rerun when they choose rerun', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: '[]\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify({
-            name: 'storybook',
-            time: {
-              created: '2025-01-01T00:00:00.000Z',
-              modified: '2026-05-11T12:00:00.000Z',
-              '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
-              '10.3.2': '2026-05-01T00:00:00.000Z',
-            },
-          }),
-        } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '[]\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              name: 'storybook',
+              time: {
+                created: '2025-01-01T00:00:00.000Z',
+                modified: '2026-05-11T12:00:00.000Z',
+                '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
+                '10.3.2': '2026-05-01T00:00:00.000Z',
+              },
+            }),
+          })
+        );
       vi.mocked(prompt.select).mockResolvedValue('rerun' as never);
 
       await expect(
@@ -422,25 +442,25 @@ describe('Yarn 2 Proxy', () => {
 
     it('should show the same rerun guidance when the prompt is cancelled', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: '[]\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify({
-            name: 'storybook',
-            time: {
-              created: '2025-01-01T00:00:00.000Z',
-              modified: '2026-05-11T12:00:00.000Z',
-              '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
-              '10.3.2': '2026-05-01T00:00:00.000Z',
-            },
-          }),
-        } as any);
-      vi.mocked(prompt.select).mockImplementationOnce(
-        async (_question: any, promptOptions: any) => {
-          promptOptions.onCancel();
-          return 'exclude';
-        }
-      );
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '[]\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              name: 'storybook',
+              time: {
+                created: '2025-01-01T00:00:00.000Z',
+                modified: '2026-05-11T12:00:00.000Z',
+                '10.4.0-alpha.17': '2026-05-11T11:59:00.000Z',
+                '10.3.2': '2026-05-01T00:00:00.000Z',
+              },
+            }),
+          })
+        );
+      vi.mocked(prompt.select).mockImplementationOnce(async (_question, promptOptions) => {
+        promptOptions?.onCancel?.();
+        return 'exclude';
+      });
 
       await expect(
         yarn2Proxy.precheckStorybookPackageInstall({
@@ -453,13 +473,18 @@ describe('Yarn 2 Proxy', () => {
     });
 
     it('should skip the precheck when Forkbook packages are already preapproved', async () => {
-      const updateSpy = vi.spyOn(yarn2Proxy as any, 'updatePreapprovedPackages');
+      const updateSpy = vi.spyOn(
+        yarn2Proxy as unknown as { updatePreapprovedPackages: () => Promise<void> },
+        'updatePreapprovedPackages'
+      );
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({
-          stdout:
-            "[\n  '@aussieljk/forkbook',\n  '@storybook/*',\n  'eslint-plugin-storybook',\n]\n",
-        } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout:
+              "[\n  '@aussieljk/forkbook',\n  '@storybook/*',\n  'eslint-plugin-storybook',\n]\n",
+          })
+        );
 
       await expect(
         yarn2Proxy.precheckStorybookPackageInstall({

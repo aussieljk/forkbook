@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from 'tmcp';
+import type { GenericSchema } from 'valibot';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { addGetDocumentationTool, GET_TOOL_NAME } from './register.ts';
 import type { Source, StorybookContext } from '../types.ts';
@@ -12,6 +13,8 @@ import {
   RequiresOwnMcpError,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
 
+/** The result of a tool call: the text blocks and the error flag. */
+type ToolResult = { content: { text: string }[]; isError?: boolean };
 /**
  * The manifests one provider serves, keyed by source id (`''` for the single-source case). Each
  * entry either resolves to the manifest JSON or rejects, which is how these tests stand in for a
@@ -46,7 +49,7 @@ function createManifestProvider(served: Record<string, ServedManifests>) {
 }
 
 describe('getDocumentationTool', () => {
-  let server: McpServer<any, StorybookContext>;
+  let server: McpServer<GenericSchema, StorybookContext>;
   let served: Record<string, ServedManifests>;
   let manifestProvider: ReturnType<typeof createManifestProvider>;
 
@@ -674,7 +677,7 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Button');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -698,11 +701,11 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).isError).toBe(true);
-      expect((response.result as any).content[0].text).toContain(
+      expect((response.result as ToolResult).isError).toBe(true);
+      expect((response.result as ToolResult).content[0].text).toContain(
         'Forkbook source not found: "nonexistent"'
       );
-      expect((response.result as any).content[0].text).toContain('local, remote');
+      expect((response.result as ToolResult).content[0].text).toContain('local, remote');
     });
 
     it('should fetch documentation with storybookId', async () => {
@@ -723,7 +726,7 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Button');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -760,7 +763,7 @@ describe('getDocumentationTool', () => {
       // The urlless local source is resolved in-process; the all-component index is never built.
       expect(resolveEntry).toHaveBeenCalledWith('button', sources[0]);
       expect(manifestProvider).not.toHaveBeenCalled();
-      expect((response.result as any).content[0].text).toContain('# Button');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button');
     });
 
     it('does not use resolveEntry for a remote source even when one is present', async () => {
@@ -808,7 +811,7 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Badge');
+      expect((response.result as ToolResult).content[0].text).toContain('# Badge');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -834,8 +837,8 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).isError).toBe(true);
-      expect((response.result as any).content[0].text).toContain('in source "local"');
+      expect((response.result as ToolResult).isError).toBe(true);
+      expect((response.result as ToolResult).content[0].text).toContain('in source "local"');
     });
 
     it('should return a routing notice when the selected source requires its own MCP', async () => {
@@ -857,8 +860,8 @@ describe('getDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).isError).toBeUndefined();
-      expect((response.result as any).content[0].text).toBe(`# Remote
+      expect((response.result as ToolResult).isError).toBeUndefined();
+      expect((response.result as ToolResult).content[0].text).toBe(`# Remote
 id: remote
 
 This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.
@@ -990,8 +993,8 @@ http://remote.example.com/mcp`);
       });
 
       // Should return the component, not the docs entry
-      expect((response.result as any).content[0].text).toContain('## Stories');
-      expect((response.result as any).content[0].text).toContain('Primary');
+      expect((response.result as ToolResult).content[0].text).toContain('## Stories');
+      expect((response.result as ToolResult).content[0].text).toContain('Primary');
     });
 
     it('should call onGetDocumentation handler with docs entry when found', async () => {
@@ -1066,8 +1069,8 @@ http://remote.example.com/mcp`);
       // The single-entry hook is used, and the all-component manifest index is never fetched.
       expect(resolveEntry).toHaveBeenCalledWith('button', undefined);
       expect(manifestProvider).not.toHaveBeenCalled();
-      expect((response.result as any).content[0].text).toContain('# Button');
-      expect((response.result as any).content[0].text).toContain('button--primary');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button');
+      expect((response.result as ToolResult).content[0].text).toContain('button--primary');
     });
 
     it('resolves a single docs entry via resolveEntry', async () => {
@@ -1090,7 +1093,7 @@ http://remote.example.com/mcp`);
 
       expect(resolveEntry).toHaveBeenCalledWith('intro', undefined);
       expect(manifestProvider).not.toHaveBeenCalled();
-      expect((response.result as any).content[0].text).toContain('# Welcome');
+      expect((response.result as ToolResult).content[0].text).toContain('# Welcome');
     });
 
     it('returns not-found when resolveEntry yields nothing', async () => {
@@ -1109,8 +1112,8 @@ http://remote.example.com/mcp`);
       });
 
       expect(manifestProvider).not.toHaveBeenCalled();
-      expect((response.result as any).isError).toBe(true);
-      expect((response.result as any).content[0].text).toContain('not found');
+      expect((response.result as ToolResult).isError).toBe(true);
+      expect((response.result as ToolResult).content[0].text).toContain('not found');
     });
   });
 });

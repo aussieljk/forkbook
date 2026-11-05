@@ -7,13 +7,13 @@ import type { Stats } from '@aussieljk/forkbook/internal/types';
 import { stringifyStream } from '@discoveryjs/json-ext';
 import picocolors from 'picocolors';
 
-export async function outputStats(directory: string, previewStats?: any, managerStats?: any) {
+export async function outputStats(directory: string, previewStats?: Stats, managerStats?: Stats) {
   if (previewStats) {
-    const filePath = await writeStats(directory, 'preview', previewStats as Stats);
+    const filePath = await writeStats(directory, 'preview', previewStats);
     logger.info(`Preview stats written to ${picocolors.cyan(filePath)}`);
   }
   if (managerStats) {
-    const filePath = await writeStats(directory, 'manager', managerStats as Stats);
+    const filePath = await writeStats(directory, 'manager', managerStats);
     logger.info(`Manager stats written to ${picocolors.cyan(filePath)}`);
   }
 }
@@ -21,12 +21,12 @@ export async function outputStats(directory: string, previewStats?: any, manager
 export const writeStats = async (directory: string, name: string, stats: Stats) => {
   const filePath = join(directory, `${name}-stats.json`);
   const { chunks, ...data } = stats.toJson(); // omit chunks, which is about half of the total data
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     stringifyStream(data, null, 2)
       .on('error', reject)
       .pipe(createWriteStream(filePath))
       .on('error', reject)
-      .on('finish', resolve as any);
+      .on('finish', resolve);
   });
   return filePath;
 };

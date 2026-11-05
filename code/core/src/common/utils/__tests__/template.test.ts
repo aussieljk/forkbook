@@ -7,9 +7,9 @@ import { vol } from 'memfs';
 import { getPreviewBodyTemplate, getPreviewHeadTemplate } from '../template.ts';
 
 vi.mock('node:fs', async () => {
-  const memfs = await vi.importActual('memfs');
+  const memfs = await vi.importActual<typeof import('memfs')>('memfs');
 
-  return { default: memfs.fs, ...(memfs as any).fs };
+  return { default: memfs.fs, ...memfs.fs };
 });
 
 const HEAD_HTML_CONTENTS = '<script>console.log("custom script!");</script>';

@@ -4,16 +4,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { UniversalStore } from './index.ts';
 import { instances as mockedInstances } from './__mocks__/instances.ts';
-import type { ChannelEvent } from './types.ts';
+import type { BaseEvent, ChannelEvent } from './types.ts';
 import { useUniversalStore as useUniversalStoreManager } from './use-universal-store-manager.ts';
 
 vi.mock('./instances');
 vi.mock('./first-party-store-ids');
 
-const mockChannelListeners = new Map<string, Set<(...args: any[]) => void>>();
+const mockChannelListeners = new Map<string, Set<(...args: unknown[]) => void>>();
 
 const mockChannel = {
-  on: vi.fn((eventType: string, listener: (...args: any[]) => void) => {
+  on: vi.fn((eventType: string, listener: (...args: unknown[]) => void) => {
     const [universalStorePrefix, environmentId, universalStoreId] = eventType.split(':');
     if (!mockChannelListeners.has(universalStoreId)) {
       mockChannelListeners.set(universalStoreId, new Set());
@@ -21,7 +21,7 @@ const mockChannel = {
     const listeners = mockChannelListeners.get(universalStoreId)!;
     listeners.add(listener);
   }),
-  off: vi.fn((eventType: string, listener: (...args: any[]) => void) => {
+  off: vi.fn((eventType: string, listener: (...args: unknown[]) => void) => {
     const universalStoreId = eventType.split(':')[2];
     if (!mockChannelListeners.has(universalStoreId)) {
       return;
@@ -29,7 +29,7 @@ const mockChannel = {
     const listeners = mockChannelListeners.get(universalStoreId)!;
     listeners.delete(listener);
   }),
-  emit: vi.fn((eventType: string, channelEvent: ChannelEvent<any, any>) => {
+  emit: vi.fn((eventType: string, channelEvent: ChannelEvent<unknown, BaseEvent>) => {
     const [universalStorePrefix, environmentId, universalStoreId] = eventType.split(':');
     if (!mockChannelListeners.has(universalStoreId)) {
       return;
@@ -137,6 +137,7 @@ describe('useUniversalStore - Manager', () => {
       leader: true,
       initialState: { count: 0, selectedCount: 10, otherValue: 5 },
     });
+    type State = ReturnType<typeof store.getState>;
     const renderCounter = vi.fn();
 
     // Initial render with a selector for selectedCount
@@ -145,7 +146,7 @@ describe('useUniversalStore - Manager', () => {
         renderCounter();
         return useUniversalStoreManager(store, selector);
       },
-      { initialProps: { selector: (state: any) => state.selectedCount } }
+      { initialProps: { selector: (state: State) => state.selectedCount } }
     );
 
     // Assert - initial render
@@ -154,7 +155,7 @@ describe('useUniversalStore - Manager', () => {
     expect(firstState).toEqual(10);
 
     // Act - change the selector to a different property
-    rerender({ selector: (state: any) => state.otherValue });
+    rerender({ selector: (state: State) => state.otherValue });
 
     // Assert - should re-render with the new selected state
     expect(renderCounter).toHaveBeenCalledTimes(2);

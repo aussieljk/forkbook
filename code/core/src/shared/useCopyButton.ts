@@ -28,8 +28,11 @@ export interface UseCopyButtonOptions<T> {
 }
 
 export interface UseCopyButtonResult<T> {
-  /** Current label/icon — switches to `childrenOnCopy` after a copy. */
-  children: T;
+  /**
+   * Current label/icon — switches to `childrenOnCopy` after a copy. A string when the matching
+   * option is not given ('Copy' or 'Copied!').
+   */
+  children: T | string;
   /** Props to spread onto the `<Button>` element. */
   buttonProps: {
     onClick: (e: SyntheticEvent) => void;
@@ -38,14 +41,17 @@ export interface UseCopyButtonResult<T> {
 }
 
 export function useCopyButton<T extends ReactNode>({
-  children = 'Copy',
-  childrenOnCopy = 'Copied!',
+  children,
+  childrenOnCopy,
   content,
   onCopy,
   ariaLabel = false,
   ariaLabelOnCopy = false,
   duration = 3000,
 }: UseCopyButtonOptions<T>): UseCopyButtonResult<T> {
+  // Defaults apply to `undefined` only, as default parameters do; `null` stays a valid child.
+  const label = children === undefined ? 'Copy' : children;
+  const labelOnCopy = childrenOnCopy === undefined ? 'Copied!' : childrenOnCopy;
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -83,8 +89,7 @@ export function useCopyButton<T extends ReactNode>({
   );
 
   return {
-    // @ts-expect-error - TypeScript is not realising T is constrained identically in both interfaces.
-    children: copied ? childrenOnCopy! : children!,
+    children: copied ? labelOnCopy : label,
     buttonProps: useMemo(
       () => ({
         onClick: handleClick,

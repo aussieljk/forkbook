@@ -77,7 +77,7 @@ function createManifestProvider() {
   });
 }
 
-async function callListTool(server: McpServer<any, StorybookContext>) {
+async function callListTool(server: McpServer<v.GenericSchema, StorybookContext>) {
   const response = await server.receive(
     {
       jsonrpc: '2.0' as const,

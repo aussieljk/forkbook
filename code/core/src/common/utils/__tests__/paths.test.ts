@@ -57,7 +57,7 @@ describe('getProjectRoot', () => {
 
   it('should return the root directory containing a .svn directory if there is no .git directory', () => {
     vi.mocked(find.up).mockImplementation((name) =>
-      name === ('.svn' as any) ? '/path/to/root' : undefined
+      name === '.svn' ? '/path/to/root' : undefined
     );
 
     expect(slash(getProjectRoot())).toBe('/path/to');
@@ -65,7 +65,7 @@ describe('getProjectRoot', () => {
 
   it('should return the root directory containing a .yarn directory if there is no .git or .svn directory', () => {
     vi.mocked(find.up).mockImplementation((name) =>
-      name === ('.yarn' as any) ? '/path/to/root' : undefined
+      name === '.yarn' ? '/path/to/root' : undefined
     );
 
     expect(slash(getProjectRoot())).toBe('/path/to');

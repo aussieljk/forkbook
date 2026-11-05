@@ -108,9 +108,12 @@ export function prepareStories({
               subtype: 'story',
             };
 
-            const importedStories = req(filename) as Record<string, Readonly<Record<string, any>>>;
+            const importedStories = req(filename) as Record<
+              string,
+              Readonly<Record<string, unknown>>
+            >;
             const stories = Object.entries(importedStories).reduce<
-              Record<string, Readonly<Record<string, any>>>
+              Record<string, Readonly<Record<string, unknown>>>
             >((carry, [storyKey, story]) => {
               if (!isExportStory(storyKey, fileExports.default)) return carry;
 

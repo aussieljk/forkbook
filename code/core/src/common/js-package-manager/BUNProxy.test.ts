@@ -11,6 +11,14 @@ import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { BUNProxy } from './BUNProxy.ts';
 
+import { commandResult, runTask } from './test-support/command-result.ts';
+
+/** The private methods of the proxy that the tests stub or call. */
+type BunProxyInternals = {
+  readBunfig: () => string | null;
+  updateMinimumReleaseAgeExcludes: () => void;
+};
+
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
@@ -62,10 +70,10 @@ describe('BUN Proxy', () => {
 
   describe('installDependencies', () => {
     it('should run `bun install`', async () => {
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '' })
+      );
 
       await bunProxy.installDependencies();
 
@@ -75,9 +83,7 @@ describe('BUN Proxy', () => {
     });
 
     it('should rethrow minimum-release-age install errors as handled errors', async () => {
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
       const originalError = new Error(
         'error: @aussieljk/forkbook/react@10.4.0-alpha.17 blocked by minimum-release-age'
       );
@@ -99,16 +105,20 @@ describe('BUN Proxy', () => {
     it('updates minimumReleaseAgeExcludes in non-interactive mode when bun would block Forkbook', async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2025-01-10T00:00:00.000Z'));
-      vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue('minimumReleaseAge = 3600\n');
+      vi.spyOn(bunProxy as unknown as BunProxyInternals, 'readBunfig').mockReturnValue(
+        'minimumReleaseAge = 3600\n'
+      );
       const updateSpy = vi
-        .spyOn(bunProxy as any, 'updateMinimumReleaseAgeExcludes')
+        .spyOn(bunProxy as unknown as BunProxyInternals, 'updateMinimumReleaseAgeExcludes')
         .mockImplementation(() => undefined);
-      mockedExecuteCommand.mockResolvedValueOnce({
-        stdout: JSON.stringify({
-          '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
-          '10.3.9': '2025-01-09T20:00:00.000Z',
-        }),
-      } as any);
+      mockedExecuteCommand.mockResolvedValueOnce(
+        commandResult({
+          stdout: JSON.stringify({
+            '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
+            '10.3.9': '2025-01-09T20:00:00.000Z',
+          }),
+        })
+      );
 
       await bunProxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
@@ -124,16 +134,20 @@ describe('BUN Proxy', () => {
     it('lets the user update minimumReleaseAgeExcludes interactively', async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2025-01-10T00:00:00.000Z'));
-      vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue('minimumReleaseAge = 3600\n');
+      vi.spyOn(bunProxy as unknown as BunProxyInternals, 'readBunfig').mockReturnValue(
+        'minimumReleaseAge = 3600\n'
+      );
       const updateSpy = vi
-        .spyOn(bunProxy as any, 'updateMinimumReleaseAgeExcludes')
+        .spyOn(bunProxy as unknown as BunProxyInternals, 'updateMinimumReleaseAgeExcludes')
         .mockImplementation(() => undefined);
-      mockedExecuteCommand.mockResolvedValueOnce({
-        stdout: JSON.stringify({
-          '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
-          '10.3.9': '2025-01-09T20:00:00.000Z',
-        }),
-      } as any);
+      mockedExecuteCommand.mockResolvedValueOnce(
+        commandResult({
+          stdout: JSON.stringify({
+            '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
+            '10.3.9': '2025-01-09T20:00:00.000Z',
+          }),
+        })
+      );
       vi.mocked(prompt.select).mockResolvedValueOnce('exclude');
 
       await bunProxy.precheckStorybookPackageInstall({
@@ -147,13 +161,17 @@ describe('BUN Proxy', () => {
     it('throws rerun guidance when the user chooses rerun', async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2025-01-10T00:00:00.000Z'));
-      vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue('minimumReleaseAge = 3600\n');
-      mockedExecuteCommand.mockResolvedValueOnce({
-        stdout: JSON.stringify({
-          '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
-          '10.3.9': '2025-01-09T20:00:00.000Z',
-        }),
-      } as any);
+      vi.spyOn(bunProxy as unknown as BunProxyInternals, 'readBunfig').mockReturnValue(
+        'minimumReleaseAge = 3600\n'
+      );
+      mockedExecuteCommand.mockResolvedValueOnce(
+        commandResult({
+          stdout: JSON.stringify({
+            '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
+            '10.3.9': '2025-01-09T20:00:00.000Z',
+          }),
+        })
+      );
       vi.mocked(prompt.select).mockResolvedValueOnce('rerun');
 
       const error = await bunProxy
@@ -171,7 +189,7 @@ describe('BUN Proxy', () => {
     });
 
     it('skips the precheck when Forkbook packages are already excluded', async () => {
-      vi.spyOn(bunProxy as any, 'readBunfig').mockReturnValue(
+      vi.spyOn(bunProxy as unknown as BunProxyInternals, 'readBunfig').mockReturnValue(
         [
           '[install]',
           'minimumReleaseAge = 3600',
@@ -179,7 +197,10 @@ describe('BUN Proxy', () => {
           '',
         ].join('\n')
       );
-      const updateSpy = vi.spyOn(bunProxy as any, 'updateMinimumReleaseAgeExcludes');
+      const updateSpy = vi.spyOn(
+        bunProxy as unknown as BunProxyInternals,
+        'updateMinimumReleaseAgeExcludes'
+      );
 
       await expect(
         bunProxy.precheckStorybookPackageInstall({
@@ -210,7 +231,7 @@ describe('BUN Proxy', () => {
       );
 
       try {
-        (tempBunProxy as any).updateMinimumReleaseAgeExcludes();
+        (tempBunProxy as unknown as BunProxyInternals).updateMinimumReleaseAgeExcludes();
 
         expect(readFileSync(bunfigPath, 'utf-8')).toBe(
           [

@@ -31,7 +31,7 @@ export interface ControlsParameters {
   hideNoControlsWarning?: boolean;
 }
 export interface ReactNativeFramework extends Renderer {
-  component: ComponentType<any>;
+  component: ComponentType<this['T']>;
   storyResult: ReactElement<unknown>;
 }
 

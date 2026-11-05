@@ -2,13 +2,14 @@ import { cp } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
+import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import picocolors from 'picocolors';
 
 import { mapStaticDir } from './server-statics.ts';
 
 export async function copyAllStaticFilesRelativeToMain(
-  staticDirs: any[] | undefined,
+  staticDirs: StorybookConfigRaw['staticDirs'],
   outputDir: string,
   configDir: string
 ) {

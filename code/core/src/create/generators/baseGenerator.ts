@@ -187,8 +187,7 @@ export async function baseGenerator(
   try {
     if (!isCI()) {
       const { hasEslint, isStorybookPluginInstalled, isFlatConfig, eslintConfigFile } =
-        // TODO: Investigate why packageManager type does not match on CI
-        await extractEslintInfo(packageManager as any);
+        await extractEslintInfo(packageManager);
 
       if (hasEslint && !isStorybookPluginInstalled) {
         eslintPluginPackage = 'eslint-plugin-storybook';
@@ -196,8 +195,7 @@ export async function baseGenerator(
         taskLog.message(`- Configuring ESLint plugin`);
         await configureEslintPlugin({
           eslintConfigFile,
-          // TODO: Investigate why packageManager type does not match on CI
-          packageManager: packageManager as any,
+          packageManager,
           isFlatConfig,
         });
       }
@@ -287,7 +285,7 @@ export async function baseGenerator(
 
     await copyTemplateFiles({
       templateLocation,
-      packageManager: packageManager as any,
+      packageManager,
       language,
       destination: componentsDestinationPath,
       commonAssetsDir: join(

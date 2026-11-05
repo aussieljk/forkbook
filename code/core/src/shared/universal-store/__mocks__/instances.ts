@@ -15,6 +15,7 @@ import invariant from 'tiny-invariant';
 import type { UniversalStore } from '../index.ts';
 
 class MockInstancesMap {
+  // `any`: a store is invariant in its state and event types, so only `any` holds every store.
   environments = new Map<string, Map<string, UniversalStore<any, any>>>();
 
   set = vi.fn((key: string, value: UniversalStore<any, any>) => {

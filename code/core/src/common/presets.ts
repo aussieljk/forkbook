@@ -293,10 +293,10 @@ async function loadPresets(
 function applyPresets(
   presets: LoadedPreset[],
   extension: string,
-  config: any,
-  args: any,
+  config: unknown,
+  args: object,
   storybookOptions: InterPresetOptions
-): Promise<any> {
+): Promise<unknown> {
   const presetResult = new Promise((res) => res(config));
 
   if (!presets.length) {
@@ -320,7 +320,7 @@ function applyPresets(
           ...options,
           presetsList: presets,
           presets: {
-            apply: async (ext: string, c: any, a = {}) =>
+            apply: async (ext: string, c: unknown, a: object = {}) =>
               applyPresets(presets, ext, c, a, storybookOptions),
           },
         },
@@ -349,10 +349,12 @@ export async function getPresets(
 ): Promise<Presets> {
   const loadedPresets: LoadedPreset[] = await loadPresets(presets, 0, storybookOptions);
 
-  return {
-    apply: async (extension: string, config?: any, args = {}) =>
-      applyPresets(loadedPresets, extension, config, args, storybookOptions),
-  };
+  const apply = async (extension: string, config?: unknown, args: object = {}) =>
+    applyPresets(loadedPresets, extension, config, args, storybookOptions);
+
+  // A preset returns whatever the user's config returns, so the typed overloads of `apply` describe
+  // the config. The loader cannot check them.
+  return { apply: apply as Presets['apply'] };
 }
 
 export async function loadAllPresets(

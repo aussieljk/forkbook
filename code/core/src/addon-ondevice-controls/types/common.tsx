@@ -1,7 +1,7 @@
 import type { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
-import type { ComponentType } from 'react';
-import type { TextInputProps, TextStyle } from 'react-native';
+import type { ComponentProps, ComponentType } from 'react';
+import type { TextStyle } from 'react-native';
 import { Platform, TextInput } from 'react-native';
 
 export function inputStyle({
@@ -48,7 +48,7 @@ export function inputStyle({
 }
 
 export const Input: ComponentType<
-  TextInputProps & { focused?: boolean; hasError?: boolean; ref?: any }
+  ComponentProps<typeof TextInput> & { focused?: boolean; hasError?: boolean }
 > = styled(TextInput)<{
   focused?: boolean;
   hasError?: boolean;

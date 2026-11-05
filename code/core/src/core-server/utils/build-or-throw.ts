@@ -3,15 +3,15 @@ import { NoMatchingExportError } from '@aussieljk/forkbook/internal/server-error
 export async function buildOrThrow<T>(callback: () => Promise<T>): Promise<T> {
   try {
     return await callback();
-  } catch (err: any) {
-    const builderErrors = err.errors as { text: string }[];
+  } catch (err) {
+    const builderErrors = (err as { errors?: { text?: string }[] }).errors;
     if (builderErrors) {
       const inconsistentVersionsError = builderErrors.find((er) =>
         er.text?.includes('No matching export')
       );
 
       if (inconsistentVersionsError) {
-        throw new NoMatchingExportError(err);
+        throw new NoMatchingExportError({ error: err });
       }
     }
 

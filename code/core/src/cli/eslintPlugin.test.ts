@@ -31,6 +31,9 @@ vi.mock(import('node:fs/promises'), async (importOriginal) => {
   };
 });
 
+/** A package manager with only the members that the ESLint helpers use. */
+const asPackageManager = (mock: Partial<JsPackageManager>) => mock as JsPackageManager;
+
 describe('extractEslintInfo', () => {
   const mockPackageManager = {
     getAllDependencies: vi.fn(),
@@ -78,7 +81,7 @@ describe('extractEslintInfo', () => {
 
     vi.mocked(find).up.mockImplementation(() => undefined);
 
-    const result = await extractEslintInfo(mockPackageManager as any);
+    const result = await extractEslintInfo(asPackageManager(mockPackageManager));
 
     expect(result.hasEslint).toBe(false);
     expect(result.isStorybookPluginInstalled).toBe(false);
@@ -104,7 +107,7 @@ describe('extractEslintInfo', () => {
       String(fileName) === '.eslintrc.js' ? String(fileName) : undefined
     );
 
-    const result = await extractEslintInfo(mockPackageManager as any);
+    const result = await extractEslintInfo(asPackageManager(mockPackageManager));
 
     expect(result.hasEslint).toBe(true);
     expect(result.isStorybookPluginInstalled).toBe(true);
@@ -128,7 +131,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: '.eslintrc.json',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: false,
       });
       expect(vi.mocked(writeFile).mock.calls).toHaveLength(0);
@@ -147,7 +150,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: '.eslintrc.json',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: false,
       });
       const [filePath, content] = vi.mocked(writeFile).mock.calls[0];
@@ -185,7 +188,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: '.eslintrc.json',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: false,
       });
 
@@ -250,7 +253,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: '.eslintrc.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: false,
       });
       expect(vi.mocked(writeFile).mock.calls).toHaveLength(0);
@@ -271,7 +274,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: '.eslintrc.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: false,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -309,7 +312,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
 
@@ -347,7 +350,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
 
@@ -373,7 +376,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
 
@@ -610,7 +613,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -638,7 +641,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.ts',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -669,7 +672,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.ts',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -700,7 +703,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -729,7 +732,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.ts',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -768,7 +771,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.mjs',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -815,7 +818,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.mjs',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -853,7 +856,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -883,7 +886,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       const [, content] = vi.mocked(writeFile).mock.calls[0];
@@ -912,7 +915,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       expect(vi.mocked(writeFile).mock.calls).toHaveLength(0);
@@ -937,7 +940,7 @@ describe('configureEslintPlugin', () => {
 
       await configureEslintPlugin({
         eslintConfigFile: 'eslint.config.js',
-        packageManager: mockPackageManager as any,
+        packageManager: asPackageManager(mockPackageManager),
         isFlatConfig: true,
       });
       expect(vi.mocked(writeFile).mock.calls).toHaveLength(0);

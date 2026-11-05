@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from 'tmcp';
+import type { GenericSchema } from 'valibot';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { addGetStoryDocumentationTool, GET_STORY_TOOL_NAME } from './register.ts';
 import type { Source, StorybookContext } from '../types.ts';
@@ -11,6 +12,8 @@ import {
   RequiresOwnMcpError,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
 
+/** The result of a tool call: the text blocks and the error flag. */
+type ToolResult = { content: { text: string }[]; isError?: boolean };
 /**
  * The manifests one provider serves, keyed by source id (`''` for the single-source case). Each
  * entry either resolves to the manifest JSON or rejects, which is how these tests stand in for a
@@ -45,7 +48,7 @@ function createManifestProvider(served: Record<string, ServedManifests>) {
 }
 
 describe('getComponentStoryDocumentationTool', () => {
-  let server: McpServer<any, StorybookContext>;
+  let server: McpServer<GenericSchema, StorybookContext>;
   let served: Record<string, ServedManifests>;
   let manifestProvider: ReturnType<typeof createManifestProvider>;
 
@@ -134,7 +137,7 @@ describe('getComponentStoryDocumentationTool', () => {
         },
         { custom: { request: new Request('https://example.com/mcp'), manifestProvider } }
       );
-      return (response.result as any).content[0].text;
+      return (response.result as ToolResult).content[0].text;
     };
 
     expect(await call({ storyId: 'button--primary' })).toBe(
@@ -153,8 +156,8 @@ describe('getComponentStoryDocumentationTool', () => {
       { custom: { request: new Request('https://example.com/mcp'), manifestProvider } }
     );
 
-    expect((response.result as any).isError).toBe(true);
-    expect((response.result as any).content[0].text).toBe(
+    expect((response.result as ToolResult).isError).toBe(true);
+    expect((response.result as ToolResult).content[0].text).toBe(
       'Story not found: "button--nope" for component "button". Available stories: Primary (button--primary)'
     );
   });
@@ -170,8 +173,8 @@ describe('getComponentStoryDocumentationTool', () => {
       { custom: { request: new Request('https://example.com/mcp'), manifestProvider } }
     );
 
-    expect((response.result as any).isError).toBe(true);
-    expect((response.result as any).content[0].text).toBe(
+    expect((response.result as ToolResult).isError).toBe(true);
+    expect((response.result as ToolResult).content[0].text).toBe(
       'Provide either `storyId`, or both `componentId` and `storyName`. Story ids are listed by the docs-list tool with `withStoryIds: true` and in docs-show output.'
     );
   });
@@ -396,7 +399,7 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Button - Primary');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button - Primary');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -420,11 +423,11 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).isError).toBe(true);
-      expect((response.result as any).content[0].text).toContain(
+      expect((response.result as ToolResult).isError).toBe(true);
+      expect((response.result as ToolResult).content[0].text).toContain(
         'Forkbook source not found: "nonexistent"'
       );
-      expect((response.result as any).content[0].text).toContain('local, remote');
+      expect((response.result as ToolResult).content[0].text).toContain('local, remote');
     });
 
     it('should fetch story documentation from a specific source', async () => {
@@ -443,7 +446,7 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Button - Primary');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button - Primary');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -467,7 +470,7 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Button - Primary');
+      expect((response.result as ToolResult).content[0].text).toContain('# Button - Primary');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -493,7 +496,7 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).content[0].text).toContain('# Badge - Default');
+      expect((response.result as ToolResult).content[0].text).toContain('# Badge - Default');
       expect(manifestProvider).toHaveBeenCalledWith(
         mockHttpRequest,
         COMPONENT_MANIFEST_PATH,
@@ -524,8 +527,8 @@ describe('getComponentStoryDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      expect((response.result as any).isError).toBeUndefined();
-      expect((response.result as any).content[0].text).toBe(`# Remote
+      expect((response.result as ToolResult).isError).toBeUndefined();
+      expect((response.result as ToolResult).content[0].text).toBe(`# Remote
 id: remote
 
 This composed Forkbook is private and cannot be read through the local Forkbook MCP proxy.

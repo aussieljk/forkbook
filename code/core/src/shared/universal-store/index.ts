@@ -5,6 +5,7 @@ import { isFirstPartyStoreId } from './first-party-store-ids.ts';
 import { instances } from './instances.ts';
 import type {
   Actor,
+  BaseEvent,
   ChannelEvent,
   ChannelLike,
   EnvironmentOverrides,
@@ -81,10 +82,7 @@ const ProgressState = {
  * @throws {Error} If a follower is created with initial state
  * @throws {Error} If a follower cannot find its leader within 1 second
  */
-export class UniversalStore<
-  State,
-  CustomEvent extends { type: string; payload?: any } = { type: string; payload?: any },
-> {
+export class UniversalStore<State, CustomEvent extends BaseEvent = BaseEvent> {
   /**
    * Defines the possible actor types in the store system
    *
@@ -250,8 +248,10 @@ export class UniversalStore<
   // Unless overridden with the environmentOverrides constructor parameter, this will be the same as the static environment
   private environment?: EnvironmentType;
 
-  // TODO: narrow type of listeners based on event type
-  private listeners: Map<string, Set<Listener<any>>> = new Map([['*', new Set()]]);
+  // Each set holds the listeners of the event type it is keyed by ('*' for every event).
+  private listeners: Map<string, Set<Listener<Event<State, CustomEvent>>>> = new Map([
+    ['*', new Set()],
+  ]);
 
   private id: string;
 
@@ -354,10 +354,10 @@ export class UniversalStore<
   }
 
   /** Creates a new instance of UniversalStore */
-  static create<
-    State = any,
-    CustomEvent extends { type: string; payload?: any } = { type: string; payload?: any },
-  >(options: StoreOptions<State>): UniversalStore<State, CustomEvent> {
+  // `State = any`: a store made without a state type takes any state (see index.test-d.ts).
+  static create<State = any, CustomEvent extends BaseEvent = BaseEvent>(
+    options: StoreOptions<State>
+  ): UniversalStore<State, CustomEvent> {
     if (!options || typeof options?.id !== 'string') {
       throw new TypeError('id is required and must be a string, when creating a UniversalStore');
     }
@@ -465,7 +465,10 @@ export class UniversalStore<
     const subscribesToAllEvents = typeof eventTypeOrListener === 'function';
 
     const eventType = subscribesToAllEvents ? '*' : eventTypeOrListener;
-    const listener = subscribesToAllEvents ? eventTypeOrListener : maybeListener;
+    // The listener is stored under its event type, so it only ever gets events of that type.
+    const listener = (subscribesToAllEvents ? eventTypeOrListener : maybeListener) as
+      | Listener<Event<State, CustomEvent>>
+      | undefined;
 
     this.debug('subscribe', { eventType, listener });
 
@@ -502,6 +505,7 @@ export class UniversalStore<
   ) {
     this.debug('onStateChange', { listener });
     return this.subscribe(
+      // `any`: inside the class, the checker resolves the generic event-type constraint to `never`.
       UniversalStore.InternalEventType.SET_STATE as any,
       ({ payload }, eventInfo) => {
         listener(payload.state, payload.previousState, eventInfo);
@@ -532,7 +536,7 @@ export class UniversalStore<
     this.emitToChannel(event, { actor: this.actor });
   };
 
-  private emitToChannel(event: any, eventInfo: EventInfo) {
+  private emitToChannel(event: BaseEvent, eventInfo: EventInfo) {
     this.debug('emitToChannel', { event, eventInfo, channel: !!this.channel });
     this.channel?.emit(this.channelEventName, {
       event,
@@ -575,7 +579,7 @@ export class UniversalStore<
     }
   }
 
-  private emitToListeners(event: any, eventInfo: EventInfo) {
+  private emitToListeners(event: Event<State, CustomEvent>, eventInfo: EventInfo) {
     const eventTypeListeners = this.listeners.get(event.type);
     const everythingListeners = this.listeners.get('*');
     this.debug('emitToListeners', {
@@ -585,8 +589,8 @@ export class UniversalStore<
       everythingListeners,
     });
 
-    [...(eventTypeListeners ?? []), ...(everythingListeners ?? [])].forEach(
-      (listener: Listener<CustomEvent>) => listener(event, eventInfo)
+    [...(eventTypeListeners ?? []), ...(everythingListeners ?? [])].forEach((listener) =>
+      listener(event, eventInfo)
     );
   }
 
@@ -684,7 +688,7 @@ export class UniversalStore<
     this.emitToListeners(event, { actor: eventInfo.actor });
   }
 
-  private debug(message: string, data?: any) {
+  private debug(message: string, data?: unknown) {
     if (this.debugging) {
       console.debug(
         dedent`[UniversalStore::${this.id}::${this.environment ?? UniversalStore.Environment.UNKNOWN}]

@@ -8,7 +8,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { buffer } from 'node:stream/consumers';
 import { collectTelemetry } from './telemetry.ts';
 import type { DocsAccess } from '@aussieljk/forkbook/internal/toolsets-docs';
-import type { AddonContext, AddonOptionsOutput } from './types.ts';
+import type { AddonContext, AddonMcpServer, AddonOptionsOutput } from './types.ts';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   getEffectiveToolAvailability,
@@ -22,7 +22,7 @@ import { registerAddonMcpTools } from './tools/tool-registry.ts';
 let transport: HttpTransport<AddonContext> | undefined;
 let origin: string | undefined;
 // Promise that ensures single initialization, even with concurrent requests
-let initialize: Promise<McpServer<any, AddonContext>> | undefined;
+let initialize: Promise<AddonMcpServer> | undefined;
 let disableTelemetry: boolean | undefined;
 let a11yEnabled: boolean | undefined;
 
@@ -38,7 +38,7 @@ const initializeMCPServer = async (options: Options, multiSource?: boolean) => {
   a11yEnabled = availability.a11yEnabled;
 
   // oxlint-disable-next-line prefer-const -- the instructions getter below may run before this is assigned
-  let server: McpServer<any, AddonContext>;
+  let server: AddonMcpServer;
 
   const serverOptions = {
     adapter: new ValibotJsonSchemaAdapter(),

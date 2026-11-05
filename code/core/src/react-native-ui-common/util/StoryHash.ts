@@ -6,6 +6,7 @@ import type {
   API_GroupEntry,
   API_HashEntry,
   API_IndexHash,
+  API_PreparedIndexEntry,
   API_PreparedStoryIndex,
   API_Provider,
   API_RootEntry,
@@ -44,35 +45,31 @@ export const intersect = <T>(a: T[], b: T[]): T[] => {
   }, []);
 };
 
-export const merge = <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
+export const merge = <TObj extends object>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   // start with empty object
   let target = {};
 
   // merge object a unto target
-  target = mergeWith(
-    {},
-    a as Record<PropertyKey, any>,
-    (objValue: TObj, srcValue: Partial<TObj>) => {
-      if (Array.isArray(srcValue) && Array.isArray(objValue)) {
-        srcValue.forEach((s) => {
-          const existing = objValue.find((o) => o === s || isEqual(o, s));
-          if (!existing) {
-            objValue.push(s);
-          }
-        });
+  target = mergeWith({}, a, (objValue: unknown, srcValue: unknown) => {
+    if (Array.isArray(srcValue) && Array.isArray(objValue)) {
+      srcValue.forEach((s) => {
+        const existing = objValue.find((o) => o === s || isEqual(o, s));
+        if (!existing) {
+          objValue.push(s);
+        }
+      });
 
-        return objValue;
-      }
-      if (Array.isArray(objValue)) {
-        logger.log(['the types mismatch, picking', objValue]);
-        return objValue;
-      }
+      return objValue;
     }
-  );
+    if (Array.isArray(objValue)) {
+      logger.log(['the types mismatch, picking', objValue]);
+      return objValue;
+    }
+  });
 
   for (const obj of b) {
     // merge object b unto target
-    target = mergeWith(target, obj, (objValue: TObj, srcValue: Partial<TObj>) => {
+    target = mergeWith(target, obj, (objValue: unknown, srcValue: unknown) => {
       if (Array.isArray(srcValue) && Array.isArray(objValue)) {
         srcValue.forEach((s) => {
           const existing = objValue.find((o) => o === s || isEqual(o, s));
@@ -93,25 +90,21 @@ export const merge = <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   return target as TObj;
 };
 
-export const noArrayMerge = <TObj = any>(a: TObj, ...b: Partial<TObj>[]): TObj => {
+export const noArrayMerge = <TObj extends object>(a: TObj, ...b: Partial<TObj>[]): TObj => {
   // start with empty object
   let target = {};
 
   // merge object a unto target
-  target = mergeWith(
-    {},
-    a as Record<PropertyKey, any>,
-    (objValue: TObj, srcValue: Partial<TObj>) => {
-      // Treat arrays as scalars:
-      if (Array.isArray(srcValue)) {
-        return srcValue;
-      }
+  target = mergeWith({}, a, (objValue: unknown, srcValue: unknown) => {
+    // Treat arrays as scalars:
+    if (Array.isArray(srcValue)) {
+      return srcValue;
     }
-  );
+  });
 
   for (const obj of b) {
     // merge object b unto target
-    target = mergeWith(target, obj, (objValue: TObj, srcValue: Partial<TObj>) => {
+    target = mergeWith(target, obj, (objValue: unknown, srcValue: unknown) => {
       // Treat arrays as scalars:
       if (Array.isArray(srcValue)) {
         return srcValue;
@@ -127,18 +120,19 @@ const TITLE_PATH_SEPARATOR = /\s*\/\s*/;
 export const transformStoryIndexToStoriesHash = (
   input: API_PreparedStoryIndex | StoryIndexV2 | StoryIndexV3,
   { provider, docsOptions, filters, allStatuses }: ToStoriesHashOptions
-): API_IndexHash | any => {
+): API_IndexHash => {
   if (!input.v) {
     throw new Error('Composition: Missing stories.json version');
   }
 
+  // `v` is a plain number on every index version, so each step names the version it has checked.
   let index = input;
-  index = index.v === 2 ? transformStoryIndexV2toV3(index as any) : index;
-  index = index.v === 3 ? transformStoryIndexV3toV4(index as any) : index;
-  index = index.v === 4 ? transformStoryIndexV4toV5(index as any) : index;
+  index = index.v === 2 ? transformStoryIndexV2toV3(index as StoryIndexV2) : index;
+  index = index.v === 3 ? transformStoryIndexV3toV4(index as StoryIndexV3) : index;
+  index = index.v === 4 ? transformStoryIndexV4toV5(index as API_PreparedStoryIndex) : index;
   index = index as API_PreparedStoryIndex;
 
-  const entryValues = Object.values(index.entries).filter((entry: any) => {
+  const entryValues = Object.values(index.entries).filter((entry) => {
     let result = true;
 
     // All stories with a failing status should always show up, regardless of the applied filters
@@ -158,11 +152,11 @@ export const transformStoryIndexToStoriesHash = (
   });
 
   const { sidebar = {} } = provider.getConfig();
-  const { showRoots, collapsedRoots = [], renderLabel }: any = sidebar;
+  const { showRoots, collapsedRoots = [], renderLabel } = sidebar;
 
   const setShowRoots = typeof showRoots !== 'undefined';
 
-  const storiesHashOutOfOrder = entryValues.reduce((acc: any, item: any) => {
+  const storiesHashOutOfOrder = entryValues.reduce((acc, item) => {
     if (docsOptions.docsMode && item.type !== 'docs') {
       return acc;
     }
@@ -178,7 +172,7 @@ export const transformStoryIndexToStoriesHash = (
       const parent = idx > 0 && list[idx - 1];
       const id = sanitize(parent ? `${parent}-${name}` : name!);
 
-      if (name.trim() === '') {
+      if (name!.trim() === '') {
         throw new Error(dedent`Invalid title ${title} ending in slash.`);
       }
 
@@ -196,7 +190,7 @@ export const transformStoryIndexToStoriesHash = (
     }, [] as string[]);
 
     // Now, let's add an entry to the hash for each path/name pair
-    paths.forEach((id: any, idx: any) => {
+    paths.forEach((id, idx) => {
       // The child is the next path, OR the story/docs entry itself
       const childId = paths[idx + 1] || item.id;
 
@@ -251,7 +245,6 @@ export const transformStoryIndexToStoriesHash = (
 
     // Finally add an entry for the docs/story itself
     acc[item.id] = {
-      type: 'story',
       tags: [],
       ...item,
       depth: paths.length,
@@ -264,7 +257,7 @@ export const transformStoryIndexToStoriesHash = (
   }, {} as API_IndexHash);
 
   // This function adds a "root" or "orphan" and all of its descendents to the hash.
-  function addItem(acc: API_IndexHash | any, item: API_HashEntry | any) {
+  function addItem(acc: API_IndexHash, item: API_HashEntry) {
     // If we were already inserted as part of a group, that's great.
     if (acc[item.id]) {
       return acc;
@@ -275,25 +268,27 @@ export const transformStoryIndexToStoriesHash = (
     // and compute tags from the children put in the accumulator afterwards, once
     // they're all known and we can compute a sound intersection.
     if (item.type === 'root' || item.type === 'group' || item.type === 'component') {
-      item.children.forEach((childId: any) => addItem(acc, storiesHashOutOfOrder[childId]));
+      item.children.forEach((childId) => addItem(acc, storiesHashOutOfOrder[childId]));
 
-      item.tags = item.children.reduce((currentTags: Tag[] | null, childId: any): Tag[] => {
-        const child = acc[childId];
+      // A parent always has at least one child, so the intersection is never left `null`.
+      item.tags =
+        item.children.reduce((currentTags: Tag[] | null, childId): Tag[] => {
+          const child = acc[childId];
 
-        // On the first child, we have nothing to intersect against so we use it as a source of data.
-        return currentTags === null ? child.tags : intersect(currentTags, child.tags);
-      }, null);
+          // On the first child, we have nothing to intersect against so we use it as a source of data.
+          return currentTags === null ? child.tags : intersect(currentTags, child.tags);
+        }, null) ?? [];
     }
     return acc;
   }
 
   // We'll do two passes over the data, adding all the orphans, then all the roots
   const orphanHash = Object.values(storiesHashOutOfOrder)
-    .filter((i: any) => i.type !== 'root' && !i.parent)
-    .reduce(addItem, {});
+    .filter((i) => i.type !== 'root' && !i.parent)
+    .reduce(addItem, {} as API_IndexHash);
 
   return Object.values(storiesHashOutOfOrder)
-    .filter((i: any) => i.type === 'root')
+    .filter((i) => i.type === 'root')
     .reduce(addItem, orphanHash);
 };
 
@@ -321,7 +316,7 @@ export const transformStoryIndexV3toV4 = (index: StoryIndexV3): API_PreparedStor
   return {
     v: 4,
     entries: Object.values(index.stories).reduce(
-      (acc, entry: any) => {
+      (acc, { story: _story, kind: _kind, ...entry }) => {
         let type: IndexEntry['type'] = 'story';
         if (
           entry.parameters?.docsOnly ||
@@ -333,12 +328,7 @@ export const transformStoryIndexV3toV4 = (index: StoryIndexV3): API_PreparedStor
           type,
           ...(type === 'docs' && { tags: ['stories-mdx'], storiesImports: [] }),
           ...entry,
-        };
-
-        // @ts-expect-error (we're removing something that should not be there)
-        delete acc[entry.id].story;
-        // @ts-expect-error (we're removing something that should not be there)
-        delete acc[entry.id].kind;
+        } as API_PreparedIndexEntry;
 
         return acc;
       },

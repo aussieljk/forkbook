@@ -9,7 +9,8 @@ import {
   setTelemetryEnabled,
   telemetry,
 } from '@aussieljk/forkbook/internal/telemetry';
-import type { StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
+import type { EventType } from '@aussieljk/forkbook/internal/telemetry';
+import type { Presets, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
 
 import { getErrorLevel, sendTelemetryError, withTelemetry } from './withTelemetry.ts';
 
@@ -18,6 +19,15 @@ vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
 const cliOptions = {};
+
+type TelemetryOptions = Parameters<typeof withTelemetry>[1];
+
+/** Preset options for the calls. The presets are mocked, so the tests give none. */
+const noPresetOptions = {} as NonNullable<TelemetryOptions['presetOptions']>;
+
+/** Mocked presets that give `core` for every key. */
+const presetsWithCore = (core: StorybookConfigRaw['core']) =>
+  ({ apply: async () => core }) as unknown as Presets;
 const originalStdoutIsTTY = process.stdout.isTTY;
 
 const setStdoutIsTTY = (value: boolean | undefined) => {
@@ -285,13 +295,13 @@ describe('withTelemetry', () => {
     });
 
     it('does not send full error message when crash reports are disabled', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({ enableCrashReports: false }) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(
+        presetsWithCore({ enableCrashReports: false })
+      );
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -305,14 +315,14 @@ describe('withTelemetry', () => {
     });
 
     it('does send error message when crash reports are enabled', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({ enableCrashReports: true }) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(
+        presetsWithCore({ enableCrashReports: true })
+      );
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -330,14 +340,12 @@ describe('withTelemetry', () => {
     });
 
     it('does not send any error message when telemetry is disabled', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({ disableTelemetry: true }) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({ disableTelemetry: true }));
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -351,14 +359,14 @@ describe('withTelemetry', () => {
     });
 
     it('does send error messages when telemetry is disabled, but crash reports are enabled', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({ disableTelemetry: true, enableCrashReports: true }) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(
+        presetsWithCore({ disableTelemetry: true, enableCrashReports: true })
+      );
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -376,15 +384,13 @@ describe('withTelemetry', () => {
     });
 
     it('does not send  full  error messages when disabled crash reports are cached', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({}) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
       vi.mocked(cache.get).mockResolvedValueOnce(false);
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -398,15 +404,13 @@ describe('withTelemetry', () => {
     });
 
     it('does send error messages when enabled crash reports are cached', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({}) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
       vi.mocked(cache.get).mockResolvedValueOnce(true);
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -424,16 +428,14 @@ describe('withTelemetry', () => {
     });
 
     it('does not send full error messages when disabled crash reports are prompted', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({}) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
       vi.mocked(cache.get).mockResolvedValueOnce(undefined);
       vi.mocked(prompt.confirm).mockResolvedValueOnce(false);
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -447,16 +449,14 @@ describe('withTelemetry', () => {
     });
 
     it('does send error messages when enabled crash reports are prompted', async () => {
-      vi.mocked(loadAllPresets).mockResolvedValueOnce({
-        apply: async () => ({}) as any,
-      });
+      vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
       vi.mocked(cache.get).mockResolvedValueOnce(undefined);
       vi.mocked(prompt.confirm).mockResolvedValueOnce(true);
 
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -481,7 +481,7 @@ describe('withTelemetry', () => {
       await expect(async () =>
         withTelemetry(
           'dev',
-          { cliOptions: {} as any, presetOptions: {} as any, printError: vi.fn() },
+          { cliOptions: {}, presetOptions: noPresetOptions, printError: vi.fn() },
           run
         )
       ).rejects.toThrow(error);
@@ -517,12 +517,12 @@ describe('sendTelemetryError', () => {
   });
 
   it('handles error instances and sends telemetry', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {},
       skipPrompt: false,
     };
     const mockError = new Error('Test error');
-    const eventType: any = 'testEventType';
+    const eventType = 'testEventType' as EventType;
 
     vi.mocked(oneWayHash).mockReturnValueOnce('some-hash');
 
@@ -542,12 +542,12 @@ describe('sendTelemetryError', () => {
   });
 
   it('handles non-error instances and sends telemetry with no-message hash', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {},
       skipPrompt: false,
     };
     const mockError = { error: new Error('Test error') };
-    const eventType: any = 'testEventType';
+    const eventType = 'testEventType' as EventType;
 
     await sendTelemetryError(mockError, eventType, options);
 
@@ -564,12 +564,12 @@ describe('sendTelemetryError', () => {
   });
 
   it('handles error with empty message and sends telemetry with empty-message hash', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {},
       skipPrompt: false,
     };
     const mockError = new Error();
-    const eventType: any = 'testEventType';
+    const eventType = 'testEventType' as EventType;
 
     await sendTelemetryError(mockError, eventType, options);
 
@@ -587,7 +587,7 @@ describe('sendTelemetryError', () => {
   });
 
   it('does not prompt for non-blocking init errors without cached consent', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {},
       skipPrompt: false,
     };
@@ -618,7 +618,7 @@ describe('sendTelemetryError', () => {
   });
 
   it('uses cached crash report consent for non-blocking init errors', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {},
       skipPrompt: false,
     };
@@ -649,7 +649,7 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "none" when cliOptions.disableTelemetry is true', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: true,
       },
@@ -663,7 +663,7 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "error" when presetOptions is not provided', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
@@ -678,7 +678,7 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "full" for init when presetOptions are not provided and prompt is accepted', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
@@ -701,7 +701,7 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "error" for init when presetOptions are not provided and prompt is rejected', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
@@ -724,17 +724,15 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "full" when core.enableCrashReports is true', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
-      presetOptions: {},
+      presetOptions: noPresetOptions,
       skipPrompt: false,
     };
 
-    vi.mocked(loadAllPresets).mockResolvedValueOnce({
-      apply: async () => ({ enableCrashReports: true }) as any,
-    });
+    vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({ enableCrashReports: true }));
     vi.mocked(cache.get).mockResolvedValueOnce(false);
 
     const errorLevel = await getErrorLevel(options);
@@ -743,17 +741,15 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "error" when core.enableCrashReports is false', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
-      presetOptions: {},
+      presetOptions: noPresetOptions,
       skipPrompt: false,
     };
 
-    vi.mocked(loadAllPresets).mockResolvedValueOnce({
-      apply: async () => ({ enableCrashReports: false }) as any,
-    });
+    vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({ enableCrashReports: false }));
     vi.mocked(cache.get).mockResolvedValueOnce(false);
 
     const errorLevel = await getErrorLevel(options);
@@ -762,17 +758,15 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "none" when core.disableTelemetry is true', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
-      presetOptions: {},
+      presetOptions: noPresetOptions,
       skipPrompt: false,
     };
 
-    vi.mocked(loadAllPresets).mockResolvedValueOnce({
-      apply: async () => ({ disableTelemetry: true }) as any,
-    });
+    vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({ disableTelemetry: true }));
     vi.mocked(cache.get).mockResolvedValueOnce(false);
 
     const errorLevel = await getErrorLevel(options);
@@ -781,18 +775,16 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "full" if cache contains crashReports true', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
-      presetOptions: {},
+      presetOptions: noPresetOptions,
       skipPrompt: false,
     };
 
     vi.mocked(cache.get).mockResolvedValueOnce(true);
-    vi.mocked(loadAllPresets).mockResolvedValueOnce({
-      apply: async () => ({}) as any,
-    });
+    vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
 
     const errorLevel = await getErrorLevel(options);
 
@@ -800,17 +792,15 @@ describe('getErrorLevel', () => {
   });
 
   it('returns "error" when skipPrompt is true', async () => {
-    const options: any = {
+    const options: TelemetryOptions = {
       cliOptions: {
         disableTelemetry: false,
       },
-      presetOptions: {},
+      presetOptions: noPresetOptions,
       skipPrompt: true,
     };
 
-    vi.mocked(loadAllPresets).mockResolvedValueOnce({
-      apply: async () => ({}) as any,
-    });
+    vi.mocked(loadAllPresets).mockResolvedValueOnce(presetsWithCore({}));
     vi.mocked(cache.get).mockResolvedValueOnce(undefined);
 
     const errorLevel = await getErrorLevel(options);

@@ -56,7 +56,7 @@ export interface TaskLogInstance {
   success: (message: string, options?: { showLog?: boolean }) => void;
   error: (message: string) => void;
   group: (title: string) => {
-    message: (text: string, options?: any) => void;
+    message: (text: string) => void;
     success: (message: string) => void;
     error: (message: string) => void;
   };

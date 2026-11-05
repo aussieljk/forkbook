@@ -163,7 +163,7 @@ export default defineGeneratorModule({
 
     // Copy React Native templates
     await copyTemplateFiles({
-      packageManager: packageManager as any,
+      packageManager,
       templateLocation: SupportedRenderer.REACT_NATIVE,
       language: SupportedLanguage.TYPESCRIPT,
       destination: RN_FORKBOOK_DIR,

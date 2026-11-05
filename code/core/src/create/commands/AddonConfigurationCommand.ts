@@ -64,7 +64,12 @@ export class AddonConfigurationCommand {
       // some addons failed
       if (hasFailures) {
         this.logManualAddonInstructions(
-          addons.filter((addon) => addonResults.get(addon)?.result === 'failed')
+          // The map holds the error of each failed addon; an error has no `result` field.
+          addons.filter(
+            (addon) =>
+              (addonResults.get(addon) as { result?: unknown } | null | undefined)?.result ===
+              'failed'
+          )
         );
       }
 
@@ -115,7 +120,7 @@ export class AddonConfigurationCommand {
     });
 
     // Track failures for each addon
-    const addonResults = new Map<string, null | any>();
+    const addonResults = new Map<string, unknown>();
 
     // Configure each addon
     for (const addon of addons) {

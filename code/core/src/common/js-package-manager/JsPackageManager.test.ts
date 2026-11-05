@@ -19,8 +19,8 @@ describe('JsPackageManager', () => {
   let mockLatestVersion: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    // @ts-expect-error Ignore abstract class error
-    jsPackageManager = new JsPackageManager();
+    // The tests use only concrete methods, so they make the abstract class directly.
+    jsPackageManager = new (JsPackageManager as unknown as new () => JsPackageManager)();
     mockLatestVersion = vi.spyOn(jsPackageManager, 'latestVersion');
 
     vi.clearAllMocks();

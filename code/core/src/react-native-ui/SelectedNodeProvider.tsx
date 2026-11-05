@@ -35,7 +35,7 @@ export const SelectedNodeProvider: FC<PropsWithChildren> = ({ children }) => {
         // im just not sure if older versions would error here,
         // since measure layout probably changed since new arch
         try {
-          nodeRef.current.measureLayout?.(scrollRef.current as any, (_x: number, y: number) => {
+          nodeRef.current.measureLayout?.(scrollRef.current, (_x: number, y: number) => {
             scrollRef.current?.scrollTo({ y: y - 100, animated: true });
           });
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -17,7 +17,11 @@ import type {
 } from './prompt-provider-base.ts';
 import { PromptProvider } from './prompt-provider-base.ts';
 
-export const getCurrentTaskLog = (): ReturnType<typeof clack.taskLog> | null => {
+type ClackTaskLog = ReturnType<typeof clack.taskLog>;
+/** A task log or one of its groups. Both take messages. */
+type CurrentTaskLog = ClackTaskLog | ReturnType<ClackTaskLog['group']>;
+
+export const getCurrentTaskLog = (): ClackTaskLog | null => {
   if (globalThis.FORKBOOK_CURRENT_TASK_LOG) {
     return globalThis.FORKBOOK_CURRENT_TASK_LOG[globalThis.FORKBOOK_CURRENT_TASK_LOG.length - 1];
   } else {
@@ -25,7 +29,7 @@ export const getCurrentTaskLog = (): ReturnType<typeof clack.taskLog> | null => 
   }
 };
 
-const setCurrentTaskLog = (taskLog: any) => {
+const setCurrentTaskLog = (taskLog: CurrentTaskLog) => {
   globalThis.FORKBOOK_CURRENT_TASK_LOG = [...(globalThis.FORKBOOK_CURRENT_TASK_LOG || []), taskLog];
 };
 

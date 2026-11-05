@@ -11,6 +11,7 @@ import type { CommandOptions } from '../generators/types.ts';
 import { ProjectTypeService } from '../services/ProjectTypeService.ts';
 import { ProjectDetectionCommand } from './ProjectDetectionCommand.ts';
 
+import type { TelemetryService } from '../services/TelemetryService.ts';
 vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 vi.mock('../services/ProjectTypeService', { spy: true });
@@ -59,8 +60,8 @@ describe('ProjectDetectionCommand', () => {
     command = new ProjectDetectionCommand(
       options,
       mockPackageManager,
-      mockProjectTypeService as any,
-      mockTelemetryService as any
+      mockProjectTypeService as unknown as ProjectTypeService,
+      mockTelemetryService as unknown as TelemetryService
     );
 
     // Mock HandledError constructor
@@ -70,7 +71,7 @@ describe('ProjectDetectionCommand', () => {
           super(message);
           this.name = 'HandledError';
         }
-      } as any
+      } as unknown as typeof HandledError
     );
 
     vi.mocked(logger.step).mockImplementation(() => {});

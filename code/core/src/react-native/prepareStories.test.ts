@@ -9,12 +9,12 @@ const textInputStories = () => ({
     parameters: {
       notes: 'Use this example to test the software keyboard related issues.',
     },
-  } as Record<string, any>,
+  } as Record<string, unknown>,
   Basic: {
     args: {
       placeholder: 'Type something',
     },
-  } as Record<string, any>,
+  } as Record<string, unknown>,
 });
 
 describe('prepareStories', () => {
@@ -69,7 +69,7 @@ describe('prepareStories', () => {
 
   test('ignores stories matching excludeStories pattern', () => {
     const req = () => {
-      const stories: Record<string, any> = textInputStories();
+      const stories: Record<string, Record<string, unknown>> = textInputStories();
       stories.Ignored = stories.Basic;
       stories.default.excludeStories = /Ignored/;
       return stories;
@@ -95,7 +95,7 @@ describe('prepareStories', () => {
 
   test('ignores stories not matching includeStories pattern', () => {
     const req = () => {
-      const stories: Record<string, any> = textInputStories();
+      const stories: Record<string, Record<string, unknown>> = textInputStories();
       stories.Ignored = stories.Basic;
       stories.default.includeStories = /Basic/;
       return stories;
@@ -121,7 +121,7 @@ describe('prepareStories', () => {
 
   test('strips play functions from stories', () => {
     const req = () => {
-      const stories: Record<string, any> = textInputStories();
+      const stories: Record<string, Record<string, unknown>> = textInputStories();
       stories.Basic.play = () => {};
       return stories;
     };

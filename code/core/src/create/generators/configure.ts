@@ -7,7 +7,9 @@ import { Feature, SupportedLanguage, SupportedRenderer } from '@aussieljk/forkbo
 import { dedent } from 'ts-dedent';
 
 interface ConfigureMainOptions {
-  addons: string[];
+  addons: Array<string | { name: string }>;
+  /** The `framework` value for main.js. */
+  framework: string;
   extensions?: string[];
   staticDirs?: string[];
   storybookConfigFolder: string;
@@ -23,7 +25,7 @@ interface ConfigureMainOptions {
    *
    * `%%` and `%%` will be replaced.
    */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface FrameworkPreviewParts {

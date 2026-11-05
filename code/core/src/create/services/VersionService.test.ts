@@ -14,6 +14,9 @@ vi.mock('@aussieljk/forkbook/internal/common', async () => {
   };
 });
 
+/** Process entries with only the command, which is all the check reads. */
+type Ancestry = Parameters<VersionService['getCliIntegrationFromAncestry']>[0];
+
 describe('VersionService', () => {
   let versionService: VersionService;
   let mockPackageManager: JsPackageManager;
@@ -22,7 +25,7 @@ describe('VersionService', () => {
     versionService = new VersionService();
     mockPackageManager = {
       latestVersion: vi.fn(),
-    } as any;
+    } as Partial<JsPackageManager> as JsPackageManager;
   });
 
   describe('getCurrentVersion', () => {
@@ -71,7 +74,7 @@ describe('VersionService', () => {
     it('should return undefined if no known command found', () => {
       const ancestry = [{ command: 'npm init' }, { command: 'node /usr/local/bin/npm' }];
 
-      const integration = versionService.getCliIntegrationFromAncestry(ancestry as any);
+      const integration = versionService.getCliIntegrationFromAncestry(ancestry as Ancestry);
 
       expect(integration).toBeUndefined();
     });
@@ -79,7 +82,7 @@ describe('VersionService', () => {
     it('should detect vike new command', () => {
       const ancestry = [{ command: 'pnpm create vike@latest --- --react --storybook' }];
 
-      const integration = versionService.getCliIntegrationFromAncestry(ancestry as any);
+      const integration = versionService.getCliIntegrationFromAncestry(ancestry as Ancestry);
 
       expect(integration).toBe('vike');
     });

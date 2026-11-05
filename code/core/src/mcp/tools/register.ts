@@ -35,7 +35,7 @@ export const LIST_TOOL_NAME = toMcpToolName('docs.list');
 export const GET_TOOL_NAME = toMcpToolName('docs.show');
 export const GET_STORY_TOOL_NAME = toMcpToolName('docs.showStory');
 
-type Server = McpServer<any, StorybookContext>;
+type Server = McpServer<GenericSchema, StorybookContext>;
 type ToolEnabled = Parameters<Server['tool']>[0]['enabled'];
 
 const ctx: ToolsetCtx = {

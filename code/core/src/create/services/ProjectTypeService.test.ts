@@ -2,22 +2,34 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ProjectType } from '@aussieljk/forkbook/internal/cli';
 import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
+import type { PackageJson } from '@aussieljk/forkbook/internal/types';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { NxProjectDetectedError } from '@aussieljk/forkbook/internal/server-errors';
 
 import { ProjectTypeService } from './ProjectTypeService.ts';
 
+/** Stubs the private Nx check of the service. */
+const stubIsNxProject = (service: ProjectTypeService, value: boolean) =>
+  vi
+    .spyOn(service as unknown as { isNxProject: () => boolean }, 'isNxProject')
+    .mockReturnValue(value);
+
 describe('ProjectTypeService', () => {
   let pm: JsPackageManager;
 
+  /** Sets the package.json that the service reads. The tests give only the fields they need. */
+  const setPackageJson = (packageJson: PackageJson) => {
+    (pm.primaryPackageJson as { packageJson: PackageJson }).packageJson = packageJson;
+  };
+
   beforeEach(() => {
     pm = {
-      getAllDependencies: vi.fn(() => ({}) as any),
-      getModulePackageJSON: vi.fn(async () => ({ version: '0.0.0' })) as any,
-      primaryPackageJson: { packageJson: {} as any },
+      getAllDependencies: vi.fn(() => ({})),
+      getModulePackageJSON: vi.fn(async () => ({ version: '0.0.0' })),
+      primaryPackageJson: { packageJson: {} },
     } as unknown as JsPackageManager;
-    vi.spyOn(logger, 'error').mockImplementation(() => undefined as any);
-    vi.spyOn(logger, 'warn').mockImplementation(() => undefined as any);
+    vi.spyOn(logger, 'error').mockImplementation(() => {});
+    vi.spyOn(logger, 'warn').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -39,29 +51,26 @@ describe('ProjectTypeService', () => {
 
     it('throws NxProjectDetectedError when NX project is detected', async () => {
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(true);
+      stubIsNxProject(service, true);
       await expect(service.autoDetectProjectType()).rejects.toBeInstanceOf(NxProjectDetectedError);
     });
 
     it('detects framework from package.json (nextjs)', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { next: '^13.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.NEXTJS);
     });
 
     it('does not detect a Vue project', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { vue: '^3.2.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
 
       await expect(service.autoDetectProjectType()).rejects.toThrowError(
         'Forkbook failed to detect your project type'
@@ -69,101 +78,92 @@ describe('ProjectTypeService', () => {
     });
 
     it('falls back to REACT for a CRA project (react-scripts no longer detected)', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { react: '^18.0.0', 'react-dom': '^18.0.0', 'react-scripts': '^5.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
     });
 
     it('detects REACT_NATIVE via react-native-scripts', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { 'react-native-scripts': '^5.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
     it('detects REACT_NATIVE via peerDependencies', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         peerDependencies: { react: '^18.0.0', 'react-native': '^0.76.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
     it('detects REACT_NATIVE via peerDependencies react-native-scripts', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         peerDependencies: { react: '^18.0.0', 'react-native-scripts': '^5.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
     it('detects REACT_NATIVE via expo dependency', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { expo: '^52.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
     it('detects REACT via peerDependencies', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         peerDependencies: { react: '^18.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
     });
 
     it('detects REACT via devDependencies', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         devDependencies: { react: '^18.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT);
     });
 
     it('prefers REACT_NATIVE over REACT when markers are split across dependency sections', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         dependencies: { 'react-native': '^0.76.0' },
         peerDependencies: { react: '^18.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
       const result = await service.autoDetectProjectType();
       expect(result).toBe(ProjectType.REACT_NATIVE);
     });
 
     it('does not detect REACT from react-dom alone', async () => {
-      (pm as any).primaryPackageJson.packageJson = {
+      setPackageJson({
         peerDependencies: { 'react-dom': '^18.0.0' },
-      };
+      });
       const service = new ProjectTypeService(pm);
-      // @ts-expect-error private method spy
-      vi.spyOn(service, 'isNxProject').mockReturnValue(false);
+      stubIsNxProject(service, false);
 
       await expect(service.autoDetectProjectType()).rejects.toThrowError(
         'Forkbook failed to detect your project type'
@@ -187,60 +187,60 @@ describe('ProjectTypeService', () => {
     // Note: FS-based language detection (jsconfig/tsconfig) is not tested here to avoid
     // mutating the real filesystem or mocking ESM builtin modules. Covered by TS tooling path.
     it('returns typescript when TS and compatible tooling are present', async () => {
-      (pm.getAllDependencies as any) = vi.fn(() => ({ typescript: '^5.0.0' }));
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getAllDependencies).mockImplementation(() => ({ typescript: '^5.0.0' }));
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.7.0',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       await expect(service.detectLanguage()).resolves.toBe('typescript');
     });
 
     it('returns javascript when TS/tooling versions are incompatible', async () => {
-      (pm.getAllDependencies as any) = vi.fn(() => ({ typescript: '^4.8.0' }));
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getAllDependencies).mockImplementation(() => ({ typescript: '^4.8.0' }));
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '4.8.4',
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
           'eslint-plugin-storybook': '0.6.7',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       await expect(service.detectLanguage()).resolves.toBe('javascript');
     });
 
     it('returns javascript when only one tool is incompatible', async () => {
-      (pm.getAllDependencies as any) = vi.fn(() => ({ typescript: '^5.0.0' }));
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getAllDependencies).mockImplementation(() => ({ typescript: '^5.0.0' }));
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
           'eslint-plugin-storybook': '0.7.0',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       await expect(service.detectLanguage()).resolves.toBe('javascript');
     });
 
     it('returns typescript with canary eslint-plugin-storybook versions', async () => {
-      (pm.getAllDependencies as any) = vi.fn(() => ({ typescript: '^5.0.0' }));
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getAllDependencies).mockImplementation(() => ({ typescript: '^5.0.0' }));
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       await expect(service.detectLanguage()).resolves.toBe('typescript');
@@ -249,14 +249,14 @@ describe('ProjectTypeService', () => {
 
   describe('detectIncompatiblePackageVersions', () => {
     it('returns empty array when all tooling is compatible', async () => {
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.7.0',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
@@ -264,14 +264,14 @@ describe('ProjectTypeService', () => {
     });
 
     it('returns specific reasons for each incompatible package', async () => {
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '4.8.4',
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
           'eslint-plugin-storybook': '0.6.7',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
@@ -279,14 +279,14 @@ describe('ProjectTypeService', () => {
     });
 
     it('returns only the specific failing package', async () => {
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
           'eslint-plugin-storybook': '0.7.0',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
@@ -296,14 +296,14 @@ describe('ProjectTypeService', () => {
     });
 
     it('treats canary eslint-plugin-storybook versions as compatible', async () => {
-      (pm.getModulePackageJSON as any) = vi.fn(async (name: string) => {
+      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
           'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',
         };
-        return { version: versions[name] } as any;
+        return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();

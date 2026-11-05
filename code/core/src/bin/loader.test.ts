@@ -15,6 +15,11 @@ import {
   resolveWithExtension,
 } from './loader.ts';
 
+import type { LoadHookContext } from 'node:module';
+
+/** Makes `readdirSync` list the given file names. */
+const mockDirectoryListing = (names: string[]) =>
+  vi.mocked(readdirSync).mockReturnValue(names as unknown as ReturnType<typeof readdirSync>);
 // Mock dependencies
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
@@ -34,13 +39,13 @@ describe('loader', () => {
       vi.mocked(transformSync).mockReturnValue({
         code: 'const x = 1;',
         errors: [],
-      } as any);
+      } as Partial<ReturnType<typeof transformSync>> as ReturnType<typeof transformSync>);
     });
 
     it('transforms a plain .ts URL with oxc', () => {
       const path =
         os.platform() === 'win32' ? 'file:///C:/project/main.ts' : 'file:///project/main.ts';
-      const result = load(path, {} as any, nextLoad);
+      const result = load(path, {} as LoadHookContext, nextLoad);
 
       expect(transformSync).toHaveBeenCalled();
       expect(nextLoad).not.toHaveBeenCalled();
@@ -56,7 +61,7 @@ describe('loader', () => {
           ? 'file:///C:/project/main.ts?1234567890'
           : 'file:///project/main.ts?1234567890';
       const expected = os.platform() === 'win32' ? 'C:\\project\\main.ts' : '/project/main.ts';
-      const result = load(path, {} as any, nextLoad);
+      const result = load(path, {} as LoadHookContext, nextLoad);
 
       expect(transformSync).toHaveBeenCalled();
       expect(nextLoad).not.toHaveBeenCalled();
@@ -68,7 +73,7 @@ describe('loader', () => {
 
       const path =
         os.platform() === 'win32' ? 'file:///C:/project/main.js' : 'file:///project/main.js';
-      load(path, {} as any, nextLoad);
+      load(path, {} as LoadHookContext, nextLoad);
 
       expect(transformSync).not.toHaveBeenCalled();
       expect(nextLoad).toHaveBeenCalledWith(path, {});
@@ -84,7 +89,7 @@ describe('loader', () => {
     });
 
     it('should resolve extensionless import to .ts extension when file exists', () => {
-      vi.mocked(readdirSync).mockReturnValue(['utils.ts'] as any);
+      mockDirectoryListing(['utils.ts']);
 
       const result = resolveWithExtension('./utils', '/project/src/file.ts');
 
@@ -95,7 +100,7 @@ describe('loader', () => {
     });
 
     it('should resolve extensionless import to .js extension when file exists', () => {
-      vi.mocked(readdirSync).mockReturnValue(['utils.js'] as any);
+      mockDirectoryListing(['utils.js']);
 
       const result = resolveWithExtension('./utils', '/project/src/file.ts');
 
@@ -106,7 +111,7 @@ describe('loader', () => {
     });
 
     it('should show deprecation message when encountering an extensionless import', () => {
-      vi.mocked(readdirSync).mockReturnValue(['utils.js'] as any);
+      mockDirectoryListing(['utils.js']);
 
       resolveWithExtension('./utils', '/project/src/file.ts');
 
@@ -119,7 +124,7 @@ describe('loader', () => {
     });
 
     it('should return original path when file cannot be resolved', () => {
-      vi.mocked(readdirSync).mockReturnValue([] as any);
+      mockDirectoryListing([]);
 
       const result = resolveWithExtension('./missing', '/project/src/file.ts');
 
@@ -130,7 +135,7 @@ describe('loader', () => {
     });
 
     it('should resolve relative to parent directory', () => {
-      vi.mocked(readdirSync).mockReturnValue(['utils.ts'] as any);
+      mockDirectoryListing(['utils.ts']);
 
       const result = resolveWithExtension('../utils', '/project/src/file.ts');
 
@@ -144,7 +149,7 @@ describe('loader', () => {
   describe('addExtensionsToRelativeImports', () => {
     beforeEach(() => {
       // Default: directory listings contain .ts versions of common test filenames
-      vi.mocked(readdirSync).mockReturnValue([
+      mockDirectoryListing([
         'utils.ts',
         'foo.ts',
         'bar.ts',
@@ -152,7 +157,7 @@ describe('loader', () => {
         'module.ts',
         'styles.ts',
         'test.ts',
-      ] as any);
+      ]);
     });
 
     it('should not modify imports that already have non-mapped extensions', () => {

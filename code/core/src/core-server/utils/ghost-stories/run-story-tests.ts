@@ -5,7 +5,7 @@ import { executeCommand, resolvePathInStorybookCache } from '@aussieljk/forkbook
 
 import { join } from 'pathe';
 
-import { parseVitestResults } from './parse-vitest-report.ts';
+import { parseVitestResults, type VitestJsonReport } from './parse-vitest-report.ts';
 import type { TestRunSummary } from './types.ts';
 
 /**
@@ -96,9 +96,7 @@ export async function runStoryTests(
       };
     }
 
-    // Type is the return Vitest JSON report structure
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let vitestReport: any;
+    let vitestReport: VitestJsonReport;
     try {
       const resultsJson = await readFile(outputFile, 'utf8');
       vitestReport = JSON.parse(resultsJson);

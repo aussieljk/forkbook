@@ -50,7 +50,7 @@ describe('getToolAvailability', () => {
     });
     vi.mocked(isAddonVitestEnabled).mockResolvedValue(true);
     vi.mocked(isAddonA11yEnabled).mockResolvedValue(true);
-    vi.mocked(getService).mockReturnValue({} as any);
+    vi.mocked(getService).mockReturnValue({});
 
     const result = await getToolAvailability(createOptions());
 
@@ -94,7 +94,7 @@ describe('getToolAvailability', () => {
   });
 
   it('probes the module-graph service', async () => {
-    vi.mocked(getService).mockReturnValue({} as any);
+    vi.mocked(getService).mockReturnValue({});
 
     const result = await getToolAvailability(createOptions());
 
@@ -131,7 +131,7 @@ describe('getEffectiveToolAvailability', () => {
 
 describe('isModuleGraphSupported', () => {
   it('returns true when the service is registered', async () => {
-    vi.mocked(getService).mockReturnValue({} as any);
+    vi.mocked(getService).mockReturnValue({});
     expect(await isModuleGraphSupported()).toBe(true);
   });
 

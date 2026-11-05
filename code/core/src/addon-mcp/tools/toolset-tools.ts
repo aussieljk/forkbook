@@ -17,21 +17,18 @@ import {
   resolveToolsetDescription,
   toMcpToolName,
   type AnyToolsetDefinition,
-  type AnyToolsetOutcome,
+  type AnyToolsetMethod,
   type ToolsetCtx,
-  type ToolsetMethod,
   type ToolsetMethodId,
   type ToolsetMethodReport,
 } from '@aussieljk/forkbook/open-service';
-import type { McpServer } from 'tmcp';
 
 import { collectTelemetry } from '../telemetry.ts';
-import type { AddonContext } from '../types.ts';
+import type { AddonContext, AddonMcpServer } from '../types.ts';
 import { errorToMCPContent } from '../utils/errors.ts';
 import { resolveToolsetOrigin } from './toolset-origin.ts';
 
-type Server = McpServer<any, AddonContext>;
-type ToolEnabled = Parameters<Server['tool']>[0]['enabled'];
+type ToolEnabled = Parameters<AddonMcpServer['tool']>[0]['enabled'];
 
 // The grouping behind the enable gate and the `X-MCP-Toolsets` header; not a telemetry field.
 export type McpToolsetGroup = keyof NonNullable<AddonContext['toolsets']>;
@@ -56,10 +53,13 @@ export type ToolsetToolOptions = {
    * provider and composed sources), so their toolset is built per call rather than registered once
    * at boot. Called without a server when only static metadata is needed.
    */
-  resolveToolset?: (server?: Server) => AnyToolsetDefinition;
+  resolveToolset?: (server?: AddonMcpServer) => AnyToolsetDefinition;
 };
 
-function resolveToolset(options: ToolsetToolOptions, server?: Server): AnyToolsetDefinition {
+function resolveToolset(
+  options: ToolsetToolOptions,
+  server?: AddonMcpServer
+): AnyToolsetDefinition {
   if (options.resolveToolset) {
     return options.resolveToolset(server);
   }
@@ -69,7 +69,7 @@ function resolveToolset(options: ToolsetToolOptions, server?: Server): AnyToolse
 function resolveMethod(
   toolset: AnyToolsetDefinition,
   options: ToolsetToolOptions
-): ToolsetMethod<any, AnyToolsetOutcome> {
+): AnyToolsetMethod {
   return toolset.methods[parseToolsetMethodId(options.method).methodName];
 }
 
@@ -98,17 +98,17 @@ async function toStructuredContent(
   return result.value as Record<string, unknown>;
 }
 
-function buildContext(server: Server): ToolsetCtx {
+function buildContext(server: AddonMcpServer): ToolsetCtx {
   return {
     transport: 'mcp',
     // The toolset origin is the complete UI base URL, including any deployment subpath.
     origin: resolveToolsetOrigin(server.ctx.custom ?? {}),
-    getService: (serviceId, serviceOptions) => getService(serviceId as any, serviceOptions) as any,
+    getService,
   };
 }
 
 async function reportToolsetTelemetry(
-  server: Server,
+  server: AddonMcpServer,
   event: string,
   report: ToolsetMethodReport | undefined
 ): Promise<void> {
@@ -127,7 +127,7 @@ type ToolCallResult = {
 
 /** Runs one toolset method and unwraps its outcome into an MCP tool result. */
 export async function callToolsetMethod(
-  server: Server,
+  server: AddonMcpServer,
   options: ToolsetToolOptions,
   input: unknown
 ): Promise<ToolCallResult> {
@@ -163,7 +163,7 @@ export function getToolsetToolMetadata(options: ToolsetToolOptions) {
   const method = resolveMethod(resolveToolset(options), options);
   const descriptionCtx: ToolsetCtx = {
     transport: 'mcp',
-    getService: (serviceId, serviceOptions) => getService(serviceId as any, serviceOptions) as any,
+    getService,
   };
 
   // A zero-input method publishes no input schema, matching the hand-written tools it replaced.
@@ -184,7 +184,7 @@ export function getToolsetToolMetadata(options: ToolsetToolOptions) {
 
 /** Registers one toolset-backed MCP tool. */
 export function registerToolsetTool(
-  server: Server,
+  server: AddonMcpServer,
   options: ToolsetToolOptions,
   enabled: ToolEnabled
 ): void {

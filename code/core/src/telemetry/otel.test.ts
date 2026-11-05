@@ -5,6 +5,13 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { toAttributes } from './otel.ts';
 
+/** The parts of an OTLP JSON trace export that the test reads. */
+type OtlpTraces = {
+  resourceSpans: {
+    scopeSpans: { spans: { name: string; spanId: string; parentSpanId?: string }[] }[];
+  }[];
+};
+
 describe('toAttributes', () => {
   it('flattens nested objects into dotted keys', () => {
     expect(
@@ -78,10 +85,12 @@ describe('with OTEL_EXPORTER_OTLP_ENDPOINT', () => {
     expect(traces.join()).toContain('forkbook.story-index');
 
     const spans = traces.flatMap((body) =>
-      JSON.parse(body).resourceSpans.flatMap((r: any) => r.scopeSpans.flatMap((s: any) => s.spans))
+      (JSON.parse(body) as OtlpTraces).resourceSpans.flatMap((r) =>
+        r.scopeSpans.flatMap((s) => s.spans)
+      )
     );
-    const parent = spans.find((span: any) => span.name === 'forkbook dev');
-    const child = spans.find((span: any) => span.name === 'forkbook.story-index');
-    expect(child.parentSpanId).toBe(parent.spanId);
+    const parent = spans.find((span) => span.name === 'forkbook dev');
+    const child = spans.find((span) => span.name === 'forkbook.story-index');
+    expect(child?.parentSpanId).toBe(parent?.spanId);
   });
 });

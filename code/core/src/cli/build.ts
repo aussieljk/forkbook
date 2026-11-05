@@ -1,10 +1,13 @@
 import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildStaticStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
+import type { CLIOptions } from '@aussieljk/forkbook/internal/types';
 
-export const build = async (cliOptions: any) => {
+export const build = async (cliOptions: CLIOptions & { outputDir?: string }) => {
   const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
     with: { type: 'json' },
   });
+  type Options = Parameters<typeof buildStaticStandalone>[0];
+
   const options = {
     ...cliOptions,
     configDir: cliOptions.configDir || defaultConfigDir(),
@@ -12,8 +15,13 @@ export const build = async (cliOptions: any) => {
     configType: 'PRODUCTION',
     cache,
     packageJson,
-  };
-  await withTelemetry('build', { cliOptions, presetOptions: options }, () =>
-    buildStaticStandalone(options)
+  } as Options;
+  await withTelemetry(
+    'build',
+    {
+      cliOptions,
+      presetOptions: options as Parameters<typeof withTelemetry>[1]['presetOptions'],
+    },
+    () => buildStaticStandalone(options)
   );
 };

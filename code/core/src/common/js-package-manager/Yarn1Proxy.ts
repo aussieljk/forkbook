@@ -108,7 +108,7 @@ export class Yarn1Proxy extends JsPackageManager {
       return null;
     }
 
-    return JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as Record<string, any>;
+    return JSON.parse(readFileSync(packageJsonPath, 'utf-8')) as PackageJson;
   }
 
   public async getRegistryURL() {

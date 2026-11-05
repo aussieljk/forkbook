@@ -18,7 +18,7 @@ describe('FeatureCompatibilityService', () => {
   beforeEach(() => {
     // Mock AddonVitestService constructor and methods
     const mockValidateCompatibility = vi.fn().mockResolvedValue({ compatible: true });
-    vi.mocked(AddonVitestService).mockImplementation(function (this: any) {
+    vi.mocked(AddonVitestService).mockImplementation(function () {
       return {
         validateCompatibility: mockValidateCompatibility,
       };

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import type { ResolvedConfig } from 'vite';
 /**
  * Unit-tests for the vite-inject-mocker plugin, focused on the `transformIndexHtml` hook which must
  * emit a **relative** `src` during production builds (so Forkbook artifacts load when hosted at
@@ -28,9 +29,13 @@ function makeHtml(headAttrs = '') {
 
 describe('vite-inject-mocker plugin — transformIndexHtml', () => {
   function createPlugin(command: 'build' | 'serve') {
-    const plugin = viteInjectMockerRuntime({ previewConfigPath: null }) as any;
+    // The plugin defines both hooks as plain functions; the tests call them as Vite does.
+    const plugin = viteInjectMockerRuntime({ previewConfigPath: null }) as unknown as {
+      configResolved: (config: Pick<ResolvedConfig, 'command'>) => void;
+      transformIndexHtml: (html: string) => string;
+    };
     // Simulate Vite calling configResolved
-    plugin.configResolved({ command } as any);
+    plugin.configResolved({ command });
     return plugin;
   }
 

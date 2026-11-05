@@ -37,7 +37,7 @@ const ArrowText = styled.Text<{ visible: boolean }>(({ theme, visible }) => ({
 
 interface InspectProps {
   name?: string;
-  value: any;
+  value: unknown;
 }
 
 const Inspect = ({ name, value }: InspectProps) => {
@@ -141,7 +141,7 @@ const Inspect = ({ name, value }: InspectProps) => {
   return <Value value={value} />;
 };
 
-function Value({ value }: { value: any }) {
+function Value({ value }: { value: unknown }) {
   if (value === null) {
     return <MutedText>null</MutedText>;
   }

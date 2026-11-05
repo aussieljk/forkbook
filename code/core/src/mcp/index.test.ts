@@ -6,6 +6,8 @@ import type { StorybookContext } from './types.ts';
 import smallManifestFixture from './fixtures/small-manifest.fixture.json' with { type: 'json' };
 import smallDocsManifestFixture from './fixtures/small-docs-manifest.fixture.json' with { type: 'json' };
 
+/** A text block of a tool-call result. */
+type TextContent = { type: string; text: string };
 /**
  * Creates a manifestProvider mock that returns component manifest for components.json
  * and throws an error for docs.json (simulating no docs manifest available)
@@ -53,7 +55,7 @@ describe('createStorybookMcpHandler', () => {
       const request = new Request(url, init);
       return await handler(request, context);
     });
-    (global as any).fetch = fetchMock;
+    globalThis.fetch = fetchMock as typeof fetch;
 
     // Create client and transport
     transport = new StreamableHTTPClientTransport(new URL('http://localhost:3000/mcp'));
@@ -161,7 +163,7 @@ describe('createStorybookMcpHandler', () => {
       undefined
     );
     expect(result.content).toHaveLength(1);
-    expect((result.content as any)[0]).toMatchObject({
+    expect((result.content as TextContent[])[0]).toMatchObject({
       type: 'text',
       text: expect.stringContaining('# Components'),
     });
@@ -302,7 +304,7 @@ describe('createStorybookMcpHandler', () => {
     });
 
     expect(result.content).toHaveLength(1);
-    expect((result.content as any)[0]).toMatchObject({
+    expect((result.content as TextContent[])[0]).toMatchObject({
       type: 'text',
       text: expect.stringContaining('Button'),
     });
@@ -318,7 +320,7 @@ describe('createStorybookMcpHandler', () => {
     });
 
     expect(result.isError).toBe(true);
-    expect((result.content as any)[0]).toMatchObject({
+    expect((result.content as TextContent[])[0]).toMatchObject({
       type: 'text',
       text: expect.stringContaining('Error'),
     });
@@ -351,7 +353,7 @@ describe('createStorybookMcpHandler', () => {
     });
 
     expect(result.content).toHaveLength(1);
-    expect((result.content as any)[0]).toMatchObject({
+    expect((result.content as TextContent[])[0]).toMatchObject({
       type: 'text',
       text: expect.stringContaining('not found'),
     });
@@ -383,7 +385,7 @@ describe('createStorybookMcpHandler', () => {
       );
 
       expect(result.content).toHaveLength(1);
-      const text = (result.content as any)[0].text;
+      const text = (result.content as TextContent[])[0].text;
       expect(text).toContain('# Components');
       expect(text).toContain('# Docs');
       expect(text).toContain('Getting Started');
@@ -448,7 +450,7 @@ describe('createStorybookMcpHandler', () => {
       });
 
       expect(result.content).toHaveLength(1);
-      expect((result.content as any)[0]).toMatchObject({
+      expect((result.content as TextContent[])[0]).toMatchObject({
         type: 'text',
         text: expect.stringContaining('Getting Started'),
       });

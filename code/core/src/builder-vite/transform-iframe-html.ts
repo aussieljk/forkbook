@@ -13,7 +13,7 @@ export type PreviewHtml = string | undefined;
 export async function transformIframeHtml(html: string, options: Options) {
   const { configType, features, presets } = options;
   const build = await presets.apply('build');
-  const frameworkOptions = await presets.apply<Record<string, any> | null>('frameworkOptions');
+  const frameworkOptions = await presets.apply<Record<string, unknown> | null>('frameworkOptions');
   const headHtmlSnippet = await presets.apply<PreviewHtml>('previewHead');
   const bodyHtmlSnippet = await presets.apply<PreviewHtml>('previewBody');
   const logLevel = await presets.apply('logLevel', undefined);

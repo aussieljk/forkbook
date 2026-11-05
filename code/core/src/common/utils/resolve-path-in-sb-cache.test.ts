@@ -110,7 +110,7 @@ describe('resolvePathInStorybookCache', () => {
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
     // Mock the versions module to return a falsy value
-    vi.mocked(versions)['@aussieljk/forkbook'] = '' as any;
+    (versions as Record<string, string>)['@aussieljk/forkbook'] = '';
 
     const result = resolvePathInStorybookCache('test-file', 'test-sub');
 

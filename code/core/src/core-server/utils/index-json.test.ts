@@ -49,7 +49,7 @@ const normalizedStories = [
 ];
 
 const getStoryIndexGeneratorPromise = async (
-  overrides: any = {},
+  overrides: Partial<StoryIndexGeneratorOptions> = {},
   inputNormalizedStories = normalizedStories
 ) => {
   const options: StoryIndexGeneratorOptions = {
@@ -66,10 +66,10 @@ const getStoryIndexGeneratorPromise = async (
 
 describe('registerIndexJsonRoute', () => {
   const use = vi.fn();
-  const app: Polka = { use } as any;
+  const app = { use } as unknown as Polka;
   const end = vi.fn();
   const write = vi.fn();
-  const response: Response = {
+  const response = {
     header: vi.fn(),
     send: vi.fn(),
     status: vi.fn(),
@@ -79,23 +79,24 @@ describe('registerIndexJsonRoute', () => {
     flush: vi.fn(),
     end,
     on: vi.fn(),
-  } as any;
+  } as unknown as Response;
 
   beforeEach(async () => {
     use.mockClear();
     end.mockClear();
     write.mockClear();
-    vi.mocked(debounce).mockImplementation((cb) => cb as any);
+    // Runs the callback at once, so the tests need no timers.
+    vi.mocked(debounce).mockImplementation((cb) => cb as ReturnType<typeof debounce>);
     vi.mocked(subscribe).mockClear();
   });
 
-  const request: Request = {
+  const request = {
     headers: { accept: 'application/json' },
-  } as any;
+  } as Request;
 
   describe('JSON endpoint', () => {
     it('scans and extracts index', async () => {
-      const mockServerChannel = { emit: vi.fn() } as any as ServerChannel;
+      const mockServerChannel = { emit: vi.fn() } as unknown as ServerChannel;
       registerIndexJsonRoute({
         app,
         channel: mockServerChannel,
@@ -494,7 +495,7 @@ describe('registerIndexJsonRoute', () => {
     }, 20_000);
 
     it('can handle simultaneous access', async () => {
-      const mockServerChannel = { emit: vi.fn() } as any as ServerChannel;
+      const mockServerChannel = { emit: vi.fn() } as unknown as ServerChannel;
 
       registerIndexJsonRoute({
         app,
@@ -526,7 +527,7 @@ describe('registerIndexJsonRoute', () => {
     });
 
     it('sends invalidate events', async () => {
-      const mockServerChannel = { emit: vi.fn() } as any as ServerChannel;
+      const mockServerChannel = { emit: vi.fn() } as unknown as ServerChannel;
       registerIndexJsonRoute({
         app,
         channel: mockServerChannel,
@@ -554,7 +555,7 @@ describe('registerIndexJsonRoute', () => {
     });
 
     it('only sends one invalidation when multiple event listeners are listening', async () => {
-      const mockServerChannel = { emit: vi.fn() } as any as ServerChannel;
+      const mockServerChannel = { emit: vi.fn() } as unknown as ServerChannel;
       registerIndexJsonRoute({
         app,
         channel: mockServerChannel,
@@ -591,7 +592,7 @@ describe('registerIndexJsonRoute', () => {
           .debounce
       );
 
-      const mockServerChannel = { emit: vi.fn() } as any as ServerChannel;
+      const mockServerChannel = { emit: vi.fn() } as unknown as ServerChannel;
       registerIndexJsonRoute({
         app,
         channel: mockServerChannel,

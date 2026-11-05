@@ -2,7 +2,7 @@ import type { WebsocketsOptions } from '../types/index.ts';
 
 export function envVariableToBoolean(
   value: string | undefined,
-  defaultValue: any = false
+  defaultValue: unknown = false
 ): boolean {
   switch (value) {
     case 'true':

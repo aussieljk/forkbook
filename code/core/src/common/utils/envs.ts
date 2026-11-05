@@ -7,7 +7,8 @@ import { nodePathsToArray } from './paths.ts';
 
 export async function loadEnvs(options: { production?: boolean } = {}): Promise<{
   stringified: Record<string, string>;
-  raw: Record<string, string>;
+  /** Every value is a string, except `NODE_PATH`, which is the list of paths. */
+  raw: Record<string, string | string[]>;
 }> {
   const { loadEnv } = await import('vite');
   const defaultNodeEnv = options.production ? 'production' : 'development';
@@ -27,8 +28,11 @@ export async function loadEnvs(options: { production?: boolean } = {}): Promise<
   // is already in process.env wins over the files.
   const envEntries = loadEnv(baseEnv['NODE_ENV'], process.cwd(), 'FORKBOOK_');
 
-  const raw: Record<string, string> = { ...baseEnv, ...envEntries };
-  (raw as any).NODE_PATH = nodePathsToArray((raw.NODE_PATH as string) || '');
+  const raw: Record<string, string | string[]> = {
+    ...baseEnv,
+    ...envEntries,
+    NODE_PATH: nodePathsToArray(envEntries.NODE_PATH ?? baseEnv.NODE_PATH ?? ''),
+  };
 
   const stringified = Object.fromEntries(
     Object.entries(raw).map(([key, value]) => [key, JSON.stringify(value)])

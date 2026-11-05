@@ -10,6 +10,8 @@ import { executeCommand } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { NPMProxy } from './NPMProxy.ts';
 
+import { commandResult, runTask } from './test-support/command-result.ts';
+
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
@@ -62,10 +64,8 @@ describe('NPM Proxy', () => {
         await writeFile(join(ignoredPackage, 'package.json'), JSON.stringify({ name: 'ignored' }));
         await writeFile(join(otherPackage, 'package.json'), JSON.stringify({ name: 'other' }));
 
-        vi.mocked(prompt.executeTaskWithSpinner).mockImplementation(async (fn: any) => {
-          await Promise.resolve(fn());
-        });
-        mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
+        vi.mocked(prompt.executeTaskWithSpinner).mockImplementation(runTask);
+        mockedExecuteCommand.mockResolvedValue(commandResult({ stdout: '' }));
 
         await new NPMProxy({ cwd: workspacePackage }).installDependencies({ force: true });
         expect(mockedExecuteCommand).toHaveBeenLastCalledWith(
@@ -101,12 +101,12 @@ describe('NPM Proxy', () => {
     describe('npm6', () => {
       it('should run `npm install`', async () => {
         // sort of un-mock part of the function so executeCommand (also mocked) is called
-        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-          await Promise.resolve(fn());
-        });
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '6.0.0',
-        } as any);
+        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '6.0.0',
+          })
+        );
 
         await npmProxy.installDependencies();
 
@@ -118,12 +118,12 @@ describe('NPM Proxy', () => {
     describe('npm7', () => {
       it('should run `npm install`', async () => {
         // sort of un-mock part of the function so executeCommand (also mocked) is called
-        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-          await Promise.resolve(fn());
-        });
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '7.1.0',
-        } as any);
+        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '7.1.0',
+          })
+        );
 
         await npmProxy.installDependencies();
 
@@ -133,9 +133,7 @@ describe('NPM Proxy', () => {
       });
 
       it('should rethrow minimum-release-age install errors as handled errors', async () => {
-        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-          await Promise.resolve(fn());
-        });
+        vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
         const originalError = new Error(
           [
             'npm error code ETARGET',
@@ -162,12 +160,16 @@ describe('NPM Proxy', () => {
     it('throws a handled error with rerun instructions when npm min-release-age blocks the requested version', async () => {
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2025-01-10T00:00:00.000Z'));
-      mockedExecuteCommand.mockResolvedValueOnce({ stdout: '1' } as any).mockResolvedValueOnce({
-        stdout: JSON.stringify({
-          '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
-          '10.3.9': '2025-01-08T20:00:00.000Z',
-        }),
-      } as any);
+      mockedExecuteCommand
+        .mockResolvedValueOnce(commandResult({ stdout: '1' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              '10.4.0-alpha.17': '2025-01-09T23:30:00.000Z',
+              '10.3.9': '2025-01-08T20:00:00.000Z',
+            }),
+          })
+        );
 
       const error = await npmProxy
         .precheckStorybookPackageInstall({
@@ -189,9 +191,11 @@ describe('NPM Proxy', () => {
   describe('runScript', () => {
     describe('npm6', () => {
       it('should execute script `npm exec -- compodoc -e json -d .`', () => {
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '6.0.0',
-        } as any);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '6.0.0',
+          })
+        );
 
         npmProxy.runPackageCommand({
           args: ['compodoc', '-e', 'json', '-d', '.'],
@@ -207,9 +211,11 @@ describe('NPM Proxy', () => {
     });
     describe('npm7', () => {
       it('should execute script `npm run compodoc -- -e json -d .`', () => {
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '7.1.0',
-        } as any);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '7.1.0',
+          })
+        );
 
         npmProxy.runPackageCommand({
           args: ['compodoc', '-e', 'json', '-d', '.'],
@@ -246,9 +252,11 @@ describe('NPM Proxy', () => {
   describe('addDependencies', () => {
     describe('npm6', () => {
       it('with devDep it should run `npm install -D storybook`', async () => {
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '6.0.0',
-        } as any);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '6.0.0',
+          })
+        );
 
         await npmProxy.addDependencies({ type: 'devDependencies' }, ['storybook']);
 
@@ -262,9 +270,11 @@ describe('NPM Proxy', () => {
     });
     describe('npm7', () => {
       it('with devDep it should run `npm install -D storybook`', async () => {
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '7.0.0',
-        } as any);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '7.0.0',
+          })
+        );
 
         await npmProxy.addDependencies({ type: 'devDependencies' }, ['storybook']);
 
@@ -281,9 +291,11 @@ describe('NPM Proxy', () => {
   describe('removeDependencies', () => {
     describe('skipInstall', () => {
       it('should only change package.json without running install', async () => {
-        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-          stdout: '7.0.0',
-        } as any);
+        const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+          commandResult({
+            stdout: '7.0.0',
+          })
+        );
 
         vi.spyOn(npmProxy, 'packageJsonPaths', 'get').mockImplementation(() => ['package.json']);
 
@@ -316,15 +328,17 @@ describe('NPM Proxy', () => {
 
   describe('findInstallations', () => {
     it('parses stdout JSON and ignores npm warnings written to stderr', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: JSON.stringify({
-          dependencies: {
-            '@storybook/react': { version: '1.2.3' },
-          },
-        }),
-        // npm routinely emits peer-dependency / deprecation warnings on stderr
-        stderr: 'npm warn ERESOLVE overriding peer dependency\nnpm warn deprecated foo@1.0.0',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: JSON.stringify({
+            dependencies: {
+              '@storybook/react': { version: '1.2.3' },
+            },
+          }),
+          // npm routinely emits peer-dependency / deprecation warnings on stderr
+          stderr: 'npm warn ERESOLVE overriding peer dependency\nnpm warn deprecated foo@1.0.0',
+        })
+      );
 
       const installations = await npmProxy.findInstallations(['@storybook/*']);
 
@@ -347,13 +361,15 @@ describe('NPM Proxy', () => {
       mockedExecuteCommand.mockReset();
       mockedExecuteCommand
         .mockRejectedValueOnce(new Error('npm error code ELSPROBLEMS'))
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify({
-            dependencies: {
-              '@storybook/react': { version: '1.2.3' },
-            },
-          }),
-        } as any);
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify({
+              dependencies: {
+                '@storybook/react': { version: '1.2.3' },
+              },
+            }),
+          })
+        );
 
       const installations = await npmProxy.findInstallations(['@storybook/*']);
 
@@ -378,7 +394,9 @@ describe('NPM Proxy', () => {
       const stderrJson = JSON.stringify({
         dependencies: { '@storybook/react': { version: '9.9.9' } },
       });
-      mockedExecuteCommand.mockResolvedValue({ stdout: undefined, stderr: stderrJson } as any);
+      mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: undefined, stderr: stderrJson })
+      );
 
       const installations = await npmProxy.findInstallations(['@storybook/*']);
 
@@ -388,7 +406,9 @@ describe('NPM Proxy', () => {
 
   describe('latestVersion', () => {
     it('without constraint it returns the latest version', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '5.3.19' })
+      );
 
       const version = await npmProxy.latestVersion('storybook');
 
@@ -402,9 +422,11 @@ describe('NPM Proxy', () => {
     });
 
     it('with constraint it returns the latest version satisfying the constraint', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '["4.25.3","5.3.19","6.0.0-beta.23"]',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '["4.25.3","5.3.19","6.0.0-beta.23"]',
+        })
+      );
 
       const version = await npmProxy.latestVersion('storybook', '5.X');
 
@@ -418,7 +440,7 @@ describe('NPM Proxy', () => {
     });
 
     it('with constraint it throws an error if command output is not a valid JSON', async () => {
-      mockedExecuteCommand.mockResolvedValue({ stdout: 'NOT A JSON' } as any);
+      mockedExecuteCommand.mockResolvedValue(commandResult({ stdout: 'NOT A JSON' }));
 
       await expect(npmProxy.latestVersion('storybook', '5.X')).resolves.toBe(null);
     });
@@ -429,7 +451,9 @@ describe('NPM Proxy', () => {
       const storybookReactViteVersion = (await import('../versions.ts')).default[
         '@aussieljk/forkbook'
       ];
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '0.0.0' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '0.0.0' })
+      );
 
       const version = await npmProxy.getVersion('@aussieljk/forkbook');
 
@@ -444,9 +468,11 @@ describe('NPM Proxy', () => {
 
     it('with a Forkbook package not listed in versions.json it returns the latest version', async () => {
       const packageVersion = '5.3.19';
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: `${packageVersion}`,
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: `${packageVersion}`,
+        })
+      );
 
       const version = await npmProxy.getVersion('@storybook/react-native');
 
@@ -494,8 +520,9 @@ describe('NPM Proxy', () => {
   describe('mapDependencies', () => {
     it('should display duplicated dependencies based on npm output', async () => {
       // npm ls --depth 10 --json
-      mockedExecuteCommand.mockResolvedValue({
-        stdout: `
+      mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: `
         {
           "dependencies": {
             "unrelated-and-should-be-filtered": {
@@ -530,7 +557,8 @@ describe('NPM Proxy', () => {
           }
         }      
       `,
-      } as any);
+        })
+      );
 
       const installations = await npmProxy.findInstallations(['@storybook/*']);
 

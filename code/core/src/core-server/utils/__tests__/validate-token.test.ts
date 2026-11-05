@@ -18,7 +18,8 @@ describe('isValidToken', () => {
   });
 
   it('returns false for undefined token', () => {
-    expect(isValidToken(undefined as any, validToken)).toBe(false);
+    // @ts-expect-error undefined is not a valid token; the test checks a JavaScript caller.
+    expect(isValidToken(undefined, validToken)).toBe(false);
   });
 
   it('returns false for empty token', () => {
@@ -26,11 +27,13 @@ describe('isValidToken', () => {
   });
 
   it('returns false when expected token is null', () => {
-    expect(isValidToken(validToken, null as any)).toBe(false);
+    // @ts-expect-error null is not a valid expected token; the test checks a JavaScript caller.
+    expect(isValidToken(validToken, null)).toBe(false);
   });
 
   it('returns false when expected token is undefined', () => {
-    expect(isValidToken(validToken, undefined as any)).toBe(false);
+    // @ts-expect-error undefined is not a valid expected token; the test checks a JavaScript caller.
+    expect(isValidToken(validToken, undefined)).toBe(false);
   });
 
   it('returns false for empty expected token', () => {

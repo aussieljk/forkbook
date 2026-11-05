@@ -1,10 +1,18 @@
-import { type Args, includeConditionalArg } from '@aussieljk/forkbook/internal/csf';
+import { type Args, type InputType, includeConditionalArg } from '@aussieljk/forkbook/internal/csf';
+import type { ControlTypes } from './sharedTypes.ts';
 
 export interface ArgType {
   name?: string;
   description?: string;
-  defaultValue?: any;
-  [key: string]: any;
+  defaultValue?: unknown;
+  /** The control type, set by {@link getControlArgTypes}. */
+  type?: ControlTypes;
+  /** The current arg value, set by {@link getControlArgTypes}. */
+  value?: unknown;
+  control?: { type?: ControlTypes; disable?: boolean; [key: string]: unknown };
+  table?: { disable?: boolean; [key: string]: unknown };
+  if?: InputType['if'];
+  [key: string]: unknown;
 }
 
 export interface ArgTypes {
@@ -44,7 +52,7 @@ export function hasEnabledControl(argType: ArgType | undefined): boolean {
 
 function shouldIncludeArg(argType: ArgType, args: Args) {
   try {
-    return includeConditionalArg(argType, args, {});
+    return includeConditionalArg({ if: argType.if }, args, {});
   } catch {
     return true;
   }
@@ -65,7 +73,7 @@ export function getControlArgTypes(argTypes: ArgTypes, args: Args): ArgTypes {
       [key]: {
         ...argType,
         name: key,
-        type: argType.control.type,
+        type: argType.control?.type,
         value: args[key],
       },
     };

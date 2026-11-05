@@ -1,12 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { McpServer } from 'tmcp';
-import type { AddonContext } from './types.ts';
+import type { AddonContext, AddonMcpServer } from './types.ts';
 import { collectTelemetry } from './telemetry.ts';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
 
 describe('collectTelemetry', () => {
-  let mockServer: McpServer<any, AddonContext>;
+  let mockServer: AddonMcpServer;
 
   beforeEach(() => {
     mockServer = {
@@ -23,7 +22,7 @@ describe('collectTelemetry', () => {
           },
         },
       },
-    } as any;
+    } as unknown as AddonMcpServer;
   });
 
   it('should call telemetry with correct parameters', async () => {
@@ -93,9 +92,9 @@ describe('collectTelemetry', () => {
   it('should handle missing session ID gracefully', async () => {
     vi.mocked(telemetry).mockResolvedValue(undefined);
 
-    const serverWithoutSession = Object.assign(Object.create(mockServer), {
+    const serverWithoutSession: AddonMcpServer = Object.assign(Object.create(mockServer), {
       ctx: {},
-    }) as any;
+    });
 
     await collectTelemetry({
       event: 'test-event',

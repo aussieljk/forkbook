@@ -14,7 +14,13 @@ vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
   };
 });
 
-const checkMonorepoType = ({ monorepoConfigFile, isYarnWorkspace = false }: any) => {
+const checkMonorepoType = ({
+  monorepoConfigFile,
+  isYarnWorkspace = false,
+}: {
+  monorepoConfigFile?: string;
+  isYarnWorkspace?: boolean;
+}) => {
   const mockFiles = {
     [join('root', 'package.json')]: isYarnWorkspace ? '{ "workspaces": [] }' : '{}',
   };
@@ -23,7 +29,8 @@ const checkMonorepoType = ({ monorepoConfigFile, isYarnWorkspace = false }: any)
     mockFiles[join('root', monorepoConfigFile)] = '{}';
   }
 
-  vi.mocked<typeof import('../../../../__mocks__/fs.ts')>(fs as any).__setMockFiles(mockFiles);
+  // node:fs is the mock module, which adds `__setMockFiles`.
+  (fs as unknown as typeof import('../../../../__mocks__/fs.ts')).__setMockFiles(mockFiles);
 
   return getMonorepoType();
 };

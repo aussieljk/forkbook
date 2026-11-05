@@ -10,6 +10,9 @@ import { TelemetryService } from './TelemetryService.ts';
 
 const viteConfigFiles = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'];
 
+const isSupportedFramework = (value: string): value is SupportedFramework =>
+  (Object.values(SupportedFramework) as string[]).includes(value);
+
 export class FrameworkDetectionService {
   constructor(
     private jsPackageManager: JsPackageManager,
@@ -17,14 +20,14 @@ export class FrameworkDetectionService {
   ) {}
 
   detectFramework(renderer: SupportedRenderer, builder: SupportedBuilder): SupportedFramework {
-    if (Object.values(SupportedFramework).includes(renderer as any)) {
-      return renderer as any as SupportedFramework;
+    if (isSupportedFramework(renderer)) {
+      return renderer;
     }
 
     const maybeFramework = `${renderer}-${builder}`;
 
-    if (Object.values(SupportedFramework).includes(maybeFramework as SupportedFramework)) {
-      return maybeFramework as SupportedFramework;
+    if (isSupportedFramework(maybeFramework)) {
+      return maybeFramework;
     }
 
     throw new Error(`Could not find framework for renderer: ${renderer} and builder: ${builder}`);

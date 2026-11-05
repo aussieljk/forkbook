@@ -1,5 +1,5 @@
 import React from 'react';
-import RadioSelect from '../components/RadioSelect.tsx';
+import RadioSelect, { type RadioItem } from '../components/RadioSelect.tsx';
 import type { ControlTypes } from '../sharedTypes.ts';
 
 export interface RadioProps {
@@ -7,13 +7,13 @@ export interface RadioProps {
     type: ControlTypes;
     name: string;
     value: string;
-    options?: Array<any> | Record<string, any>;
+    options?: unknown[] | Record<string, unknown>;
     control?: {
-      options?: Array<any> | Record<string, any>;
+      options?: unknown[] | Record<string, unknown>;
       labels?: Array<string>;
     };
   };
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
 }
 
 const getOptions = (arg: RadioProps['arg']) => {
@@ -34,9 +34,12 @@ const RadioType = ({ onChange, arg }: RadioProps) => {
 
     if (Array.isArray(options)) {
       if (arg.control?.labels && Array.isArray(arg.control.labels)) {
-        return options.map((val, i) => ({ key: val, label: arg.control?.labels?.at(i) ?? val }));
+        return options.map((val, i) => ({
+          key: val,
+          label: String(arg.control?.labels?.at(i) ?? val),
+        }));
       }
-      return options.map((val) => ({ key: val, label: val }));
+      return options.map((val) => ({ key: val, label: String(val) }));
     }
 
     return Object.keys(options).map((key) => ({
@@ -44,7 +47,7 @@ const RadioType = ({ onChange, arg }: RadioProps) => {
       key: options[key],
     }));
   }, [arg]);
-  const onChangeOption = React.useCallback((option: any) => onChange(option.key), [onChange]);
+  const onChangeOption = React.useCallback((option: RadioItem) => onChange(option.key), [onChange]);
 
   return (
     <RadioSelect

@@ -1,16 +1,18 @@
 import { Channel } from '@aussieljk/forkbook/internal/channels';
 import { cache, defaultConfigDir } from '@aussieljk/forkbook/internal/common';
 import { buildIndexStandalone, withTelemetry } from '@aussieljk/forkbook/internal/core-server';
-import type { BuilderOptions, CLIBaseOptions } from '@aussieljk/forkbook/internal/types';
+import type {
+  BuilderOptions,
+  CLIBaseOptions,
+  PackageJson,
+} from '@aussieljk/forkbook/internal/types';
 
 export interface CLIIndexOptions extends CLIBaseOptions {
   configDir?: string;
   outputFile?: string;
 }
 
-export const buildIndex = async (
-  cliOptions: CLIIndexOptions & { packageJson?: Record<string, any> }
-) => {
+export const buildIndex = async (cliOptions: CLIIndexOptions & { packageJson?: PackageJson }) => {
   const options = {
     ...cliOptions,
     configDir: cliOptions.configDir || defaultConfigDir(),

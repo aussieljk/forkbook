@@ -12,14 +12,14 @@ describe(`Errors Helpers`, () => {
   describe(`sanitizeError`, () => {
     it(`Sanitizes ansi codes in error`, () => {
       const errorMessage = `\u001B[4mStorybook\u001B[0m`;
-      let e: any;
+      let e: Error | undefined;
       try {
         throw new Error(errorMessage);
       } catch (error) {
-        e = error;
+        e = error as Error;
       }
 
-      const sanitizedError = sanitizeError(e);
+      const sanitizedError = sanitizeError(e!);
 
       expect(sanitizedError.message).toEqual('Storybook');
       expect(sanitizedError.stack).toContain('Error: Storybook');

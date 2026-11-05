@@ -12,6 +12,7 @@ import { generateReactNativeEntrypoint } from './generateEntrypoint.ts';
 import { runMetroCodemodOrFallback } from './metroConfig.ts';
 import { detectReactNativeEntrypointTemplateVariant } from './index.ts';
 
+import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 vi.mock('@aussieljk/forkbook/internal/cli', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
@@ -34,7 +35,7 @@ describe('REACT_NATIVE generator module', () => {
           scripts,
         },
       },
-    }) as any;
+    }) as unknown as JsPackageManager;
 
   beforeEach(() => {
     vi.mocked(copyTemplateFiles).mockResolvedValue();
@@ -59,7 +60,7 @@ describe('REACT_NATIVE generator module', () => {
     await reactNativeGenerator.configure(packageManager, {
       framework: null,
       renderer: reactNativeGenerator.metadata.renderer,
-      builder: reactNativeGenerator.metadata.builderOverride as any,
+      builder: reactNativeGenerator.metadata.builderOverride!,
       language: SupportedLanguage.JAVASCRIPT,
       telemetryService,
       features: new Set(),
@@ -100,7 +101,7 @@ describe('REACT_NATIVE generator module', () => {
     await reactNativeGenerator.configure(packageManager, {
       framework: null,
       renderer: reactNativeGenerator.metadata.renderer,
-      builder: reactNativeGenerator.metadata.builderOverride as any,
+      builder: reactNativeGenerator.metadata.builderOverride!,
       language: SupportedLanguage.TYPESCRIPT,
       telemetryService,
       features: new Set(),
@@ -125,7 +126,7 @@ describe('REACT_NATIVE generator module', () => {
     await reactNativeGenerator.configure(packageManager, {
       framework: null,
       renderer: reactNativeGenerator.metadata.renderer,
-      builder: reactNativeGenerator.metadata.builderOverride as any,
+      builder: reactNativeGenerator.metadata.builderOverride!,
       language: SupportedLanguage.JAVASCRIPT,
       telemetryService,
       features: new Set(),
@@ -148,7 +149,7 @@ describe('REACT_NATIVE generator module', () => {
     await reactNativeGenerator.configure(packageManager, {
       framework: null,
       renderer: reactNativeGenerator.metadata.renderer,
-      builder: reactNativeGenerator.metadata.builderOverride as any,
+      builder: reactNativeGenerator.metadata.builderOverride!,
       language: SupportedLanguage.JAVASCRIPT,
       telemetryService,
       features: new Set(),
@@ -180,7 +181,7 @@ describe('REACT_NATIVE generator module', () => {
     await reactNativeGenerator.configure(packageManager, {
       framework: null,
       renderer: reactNativeGenerator.metadata.renderer,
-      builder: reactNativeGenerator.metadata.builderOverride as any,
+      builder: reactNativeGenerator.metadata.builderOverride!,
       language: SupportedLanguage.JAVASCRIPT,
       telemetryService,
       features: new Set(),
@@ -199,7 +200,7 @@ describe('REACT_NATIVE generator postInstall', () => {
   const createPackageManagerWithDeps = (allDependencies: Record<string, string>) =>
     ({
       getAllDependencies: vi.fn().mockReturnValue(allDependencies),
-    }) as any;
+    }) as unknown as JsPackageManager;
 
   beforeEach(() => {
     vi.mocked(prompt.taskLog).mockReturnValue({

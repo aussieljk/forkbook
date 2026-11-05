@@ -25,7 +25,7 @@ import { duplicateStoryWithNewName } from './duplicate-story-with-new-name.ts';
 import { updateArgsInCsfFile } from './update-args-in-csf-file.ts';
 import { SaveStoryError } from './utils.ts';
 
-const parseArgs = (args: string): Record<string, any> =>
+const parseArgs = (args: string): Record<string, unknown> =>
   JSON.parse(args, (_, value) => {
     if (value === '__fb_empty_function_arg__') {
       return () => {};
@@ -142,16 +142,15 @@ export function initializeSaveStory(channel: Channel, options: Options) {
           success: true,
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       channel.emit(SAVE_STORY_RESPONSE, {
         id,
         success: false,
         error: error instanceof SaveStoryError ? error.message : 'Unknown error',
       } satisfies ResponseData<SaveStoryResponsePayload>);
 
-      logger.error(
-        `Error writing to ${sourceFilePath}:\n${error.stack || error.message || error.toString()}`
-      );
+      const { stack, message } = error as Partial<Error>;
+      logger.error(`Error writing to ${sourceFilePath}:\n${stack || message || String(error)}`);
 
       if (!(error instanceof SaveStoryError)) {
         await telemetry('save-story', {

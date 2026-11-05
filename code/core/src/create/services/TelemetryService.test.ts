@@ -116,7 +116,7 @@ describe('TelemetryService', () => {
 
       vi.mocked(getProcessAncestry).mockReturnValue([
         { command: 'npx @aussieljk/forkbook@8.0.5 init' },
-      ] as any);
+      ] as ReturnType<typeof getProcessAncestry>);
 
       await telemetryService.trackInitWithContext(ProjectType.REACT, selectedFeatures);
 
@@ -163,7 +163,7 @@ describe('TelemetryService', () => {
 
       vi.mocked(getProcessAncestry).mockReturnValue([
         { command: 'pnpm create vike@latest' },
-      ] as any);
+      ] as ReturnType<typeof getProcessAncestry>);
 
       await telemetryService.trackInitWithContext(ProjectType.NEXTJS, selectedFeatures);
 

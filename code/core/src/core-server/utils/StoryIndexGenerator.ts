@@ -640,7 +640,7 @@ export class StoryIndexGenerator {
       };
       return docsEntry;
     } catch (err) {
-      if (err && (err as { source: any }).source?.match(/mdast-util-mdx-jsx/g)) {
+      if (err && (err as { source?: string }).source?.match(/mdast-util-mdx-jsx/g)) {
         logger.warn(
           `💡 This seems to be an MDX2 syntax error. Please refer to the MDX section in the following resource for assistance on how to fix this: ${picocolors.yellow(
             'https://forkbook.ljk.dev/docs/migration#mdx2-upgrade'
@@ -728,7 +728,10 @@ export class StoryIndexGenerator {
     return betterEntry;
   }
 
-  async sortStories(entries: StoryIndex['entries'], storySortParameter: any) {
+  async sortStories(
+    entries: StoryIndex['entries'],
+    storySortParameter: Parameters<typeof sortStoriesV7>[1]
+  ) {
     const sortableStories = Object.values(entries);
     const fileNameOrder = StoryIndexGenerator.storyFileNames(this.specifierToCache);
     sortStoriesV7(sortableStories, storySortParameter, fileNameOrder);

@@ -325,7 +325,7 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
   });
 
   it('tries Expo command to create metro config when expo is detected', async () => {
-    vi.mocked(packageManager.getDependencyVersion as any).mockImplementation((dep: string) =>
+    vi.mocked(packageManager.getDependencyVersion).mockImplementation((dep: string) =>
       dep === 'expo' ? '^52.0.0' : null
     );
 
@@ -342,10 +342,10 @@ export default async function makeMetroConfig<T = string>(): Promise<MetroConfig
   });
 
   it('warns when Expo metro config creation command fails', async () => {
-    vi.mocked(packageManager.getDependencyVersion as any).mockImplementation((dep: string) =>
+    vi.mocked(packageManager.getDependencyVersion).mockImplementation((dep: string) =>
       dep === 'expo' ? '^52.0.0' : null
     );
-    vi.mocked(packageManager.runPackageCommand as any).mockRejectedValue(new Error('boom'));
+    vi.mocked(packageManager.runPackageCommand).mockRejectedValue(new Error('boom'));
 
     await runMetroCodemodOrFallback({ packageManager, yes: true });
 

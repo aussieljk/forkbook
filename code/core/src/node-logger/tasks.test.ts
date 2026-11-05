@@ -1,8 +1,20 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import type { Readable } from 'node:stream';
+
 import type { ExecProcess } from '../common/utils/exec.ts';
 
 import { executeTaskWithSpinner } from './tasks.ts';
+
+/** Makes `child` settle as `promise` does: it inherits from it and binds its methods. */
+const settleLike = (child: object, promise: Promise<unknown>) => {
+  Object.setPrototypeOf(child, promise);
+  Object.assign(child, {
+    then: promise.then.bind(promise),
+    catch: promise.catch.bind(promise),
+    finally: promise.finally.bind(promise),
+  });
+};
 
 // Create a minimal fake ExecProcess
 const makeChild = (onStart?: (cp: Partial<ExecProcess>) => void): ExecProcess => {
@@ -12,20 +24,16 @@ const makeChild = (onStart?: (cp: Partial<ExecProcess>) => void): ExecProcess =>
       listeners[event] ||= [];
       listeners[event].push(cb);
     }),
-  } as any;
+  } as unknown as Readable;
 
   const cp: Partial<ExecProcess> = {
-    stdout: stdout as any,
-    then: undefined as any,
-    catch: undefined as any,
-    finally: undefined as any,
+    stdout,
+    then: undefined,
+    catch: undefined,
+    finally: undefined,
   };
 
-  const promise = Promise.resolve() as any;
-  Object.setPrototypeOf(cp, promise);
-  (cp as any).then = promise.then.bind(promise);
-  (cp as any).catch = promise.catch.bind(promise);
-  (cp as any).finally = promise.finally.bind(promise);
+  settleLike(cp, Promise.resolve());
 
   onStart?.(cp);
   return cp as ExecProcess;
@@ -51,13 +59,9 @@ describe('executeTaskWithSpinner', () => {
         const p = Promise.reject(err);
         // Avoid unhandled rejection warnings
         p.catch(() => {});
-        const cp: any = makeChild();
+        const cp = makeChild();
         // Make the thenable reject
-        const rejected = p as any;
-        Object.setPrototypeOf(cp, rejected);
-        cp.then = rejected.then.bind(rejected);
-        cp.catch = rejected.catch.bind(rejected);
-        cp.finally = rejected.finally.bind(rejected);
+        settleLike(cp, p);
         return cp;
       },
       {

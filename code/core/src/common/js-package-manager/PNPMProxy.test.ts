@@ -7,6 +7,8 @@ import { executeCommand, executeCommandSync } from '../utils/command.ts';
 import { JsPackageManager } from './JsPackageManager.ts';
 import { PNPMProxy } from './PNPMProxy.ts';
 
+import { commandResult, runTask } from './test-support/command-result.ts';
+
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   prompt: {
     executeTaskWithSpinner: vi.fn(),
@@ -75,10 +77,10 @@ describe('PNPM Proxy', () => {
   describe('installDependencies', () => {
     it('should run `pnpm install`', async () => {
       // sort of un-mock part of the function so executeCommand (also mocked) is called
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '7.1.0' } as any);
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '7.1.0' })
+      );
 
       await pnpmProxy.installDependencies();
 
@@ -88,11 +90,11 @@ describe('PNPM Proxy', () => {
     });
 
     it('installs every workspace project from the workspace root', async () => {
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
       vi.spyOn(pnpmProxy, 'detectWorkspaceRoot').mockReturnValue(true);
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '12.4.2' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '12.4.2' })
+      );
 
       await pnpmProxy.installDependencies();
 
@@ -102,9 +104,7 @@ describe('PNPM Proxy', () => {
     });
 
     it('should rethrow minimum-release-age install errors as handled errors', async () => {
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (fn: any) => {
-        await Promise.resolve(fn());
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
       const originalError = new Error(
         'ERR_PNPM_NO_MATURE_MATCHING_VERSION Version 10.4.0-alpha.17 (released 1 minute ago) of storybook does not meet the minimumReleaseAge constraint'
       );
@@ -124,7 +124,9 @@ describe('PNPM Proxy', () => {
 
   describe('runScript', () => {
     it('should execute script `pnpm exec compodoc -- -e json -d .`', () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '7.1.0' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '7.1.0' })
+      );
 
       pnpmProxy.runPackageCommand({ args: ['compodoc', '-e', 'json', '-d', '.'] });
 
@@ -144,7 +146,9 @@ describe('PNPM Proxy', () => {
         });
 
         it('should pass --allow-build=esbuild before dlx', () => {
-          const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
+          const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+            commandResult({ stdout: '' })
+          );
 
           pnpmProxy.runPackageCommand({
             args: ['storybook@10.5.5', '-y'],
@@ -173,7 +177,9 @@ describe('PNPM Proxy', () => {
         });
 
         it('should not pass --allow-build on dlx', () => {
-          const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '' } as any);
+          const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+            commandResult({ stdout: '' })
+          );
 
           pnpmProxy.runPackageCommand({
             args: ['storybook@10.5.5', '-y'],
@@ -199,7 +205,9 @@ describe('PNPM Proxy', () => {
 
   describe('addDependencies', () => {
     it('with devDep it should run `pnpm add -D storybook`', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '6.0.0' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '6.0.0' })
+      );
 
       await pnpmProxy.addDependencies({ type: 'devDependencies' }, ['storybook']);
 
@@ -213,7 +221,9 @@ describe('PNPM Proxy', () => {
 
     it('adds to the root project from the workspace root', async () => {
       vi.spyOn(pnpmProxy, 'detectWorkspaceRoot').mockReturnValue(true);
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '9.15.9' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '9.15.9' })
+      );
 
       await pnpmProxy.addDependencies({ type: 'devDependencies' }, ['storybook']);
 
@@ -228,7 +238,9 @@ describe('PNPM Proxy', () => {
 
   describe('removeDependencies', () => {
     it('should only change package.json without running install', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '7.0.0' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '7.0.0' })
+      );
       const writePackageSpy = vi.spyOn(pnpmProxy, 'writePackageJson').mockImplementation(vi.fn());
 
       vi.spyOn(JsPackageManager, 'getPackageJson').mockImplementation((args) => {
@@ -258,7 +270,9 @@ describe('PNPM Proxy', () => {
 
   describe('latestVersion', () => {
     it('without constraint it returns the latest version', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '5.3.19' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '5.3.19' })
+      );
 
       const version = await pnpmProxy.latestVersion('storybook');
 
@@ -272,9 +286,11 @@ describe('PNPM Proxy', () => {
     });
 
     it('with constraint it returns the latest version satisfying the constraint', async () => {
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: '["4.25.3","5.3.19","6.0.0-beta.23"]',
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: '["4.25.3","5.3.19","6.0.0-beta.23"]',
+        })
+      );
 
       const version = await pnpmProxy.latestVersion('storybook', '5.X');
 
@@ -288,7 +304,7 @@ describe('PNPM Proxy', () => {
     });
 
     it('with constraint it throws an error if command output is not a valid JSON', async () => {
-      mockedExecuteCommand.mockResolvedValue({ stdout: 'NOT A JSON' } as any);
+      mockedExecuteCommand.mockResolvedValue(commandResult({ stdout: 'NOT A JSON' }));
 
       await expect(pnpmProxy.latestVersion('storybook', '5.X')).resolves.toBe(null);
     });
@@ -299,7 +315,9 @@ describe('PNPM Proxy', () => {
       const storybookReactViteVersion = (await import('../versions.ts')).default[
         '@aussieljk/forkbook'
       ];
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({ stdout: '0.0.0' } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({ stdout: '0.0.0' })
+      );
 
       const version = await pnpmProxy.getVersion('@aussieljk/forkbook');
 
@@ -314,9 +332,11 @@ describe('PNPM Proxy', () => {
 
     it('with a Forkbook package not listed in versions.json it returns the latest version', async () => {
       const packageVersion = '5.3.19';
-      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue({
-        stdout: `${packageVersion}`,
-      } as any);
+      const executeCommandSpy = mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: `${packageVersion}`,
+        })
+      );
 
       const version = await pnpmProxy.getVersion('@storybook/react-native');
 
@@ -368,8 +388,9 @@ describe('PNPM Proxy', () => {
   describe('mapDependencies', () => {
     it('should display duplicated dependencies based on pnpm output', async () => {
       // pnpm list "@storybook/*" "storybook" --depth 10 --json
-      mockedExecuteCommand.mockResolvedValue({
-        stdout: `
+      mockedExecuteCommand.mockResolvedValue(
+        commandResult({
+          stdout: `
         [
           {
             "peerDependencies": {
@@ -441,7 +462,8 @@ describe('PNPM Proxy', () => {
           }
         ]      
       `,
-      } as any);
+        })
+      );
 
       const installations = await pnpmProxy.findInstallations(['@storybook/*']);
 
@@ -527,15 +549,13 @@ describe('PNPM Proxy', () => {
 
     it('should update minimumReleaseAgeExclude in non-interactive mode when minimumReleaseAge blocks Forkbook', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(['react', 'webpack']) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(['react', 'webpack']) } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any);
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (factory: any) => {
-        await factory();
-      });
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(['react', 'webpack']) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(['react', 'webpack']) }))
+        .mockResolvedValueOnce(commandResult({ stdout: '' }));
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
 
       await pnpmProxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
@@ -559,18 +579,18 @@ describe('PNPM Proxy', () => {
 
     it('should let the user update minimumReleaseAgeExclude interactively', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify(['react', '@storybook/preset-react-webpack']),
-        } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(['react', 'webpack']) } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify(['react', '@storybook/preset-react-webpack']),
+          })
+        )
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(['react', 'webpack']) }))
+        .mockResolvedValueOnce(commandResult({ stdout: '' }));
       vi.mocked(prompt.select).mockResolvedValue('exclude' as never);
-      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(async (factory: any) => {
-        await factory();
-      });
+      vi.mocked(prompt.executeTaskWithSpinner).mockImplementationOnce(runTask);
 
       await pnpmProxy.precheckStorybookPackageInstall({
         storybookVersion: '10.4.0-alpha.17',
@@ -618,10 +638,10 @@ describe('PNPM Proxy', () => {
 
     it('should tell users how to rerun when they choose rerun', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: '[]' } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify([packageTimeMap]) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify([packageTimeMap]) } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '[]' }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify([packageTimeMap]) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify([packageTimeMap]) }));
       vi.mocked(prompt.select).mockResolvedValue('rerun' as never);
 
       const rerunPromise = pnpmProxy.precheckStorybookPackageInstall({
@@ -640,12 +660,12 @@ describe('PNPM Proxy', () => {
 
     it('should show the same rerun guidance when the prompt is cancelled', async () => {
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({ stdout: '[]' } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any)
-        .mockResolvedValueOnce({ stdout: JSON.stringify(packageTimeMap) } as any);
-      vi.mocked(prompt.select).mockImplementationOnce(async (_options: any, promptOptions: any) => {
-        promptOptions.onCancel();
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(commandResult({ stdout: '[]' }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }))
+        .mockResolvedValueOnce(commandResult({ stdout: JSON.stringify(packageTimeMap) }));
+      vi.mocked(prompt.select).mockImplementationOnce(async (_options, promptOptions) => {
+        promptOptions?.onCancel?.();
         return 'exclude';
       });
 
@@ -705,16 +725,21 @@ describe('PNPM Proxy', () => {
     });
 
     it('should skip the precheck when Forkbook packages are already excluded', async () => {
-      const updateSpy = vi.spyOn(pnpmProxy as any, 'updateMinimumReleaseAgeExclude');
+      const updateSpy = vi.spyOn(
+        pnpmProxy as unknown as { updateMinimumReleaseAgeExclude: () => Promise<void> },
+        'updateMinimumReleaseAgeExclude'
+      );
       mockedExecuteCommand
-        .mockResolvedValueOnce({ stdout: '1440\n' } as any)
-        .mockResolvedValueOnce({
-          stdout: JSON.stringify([
-            '@aussieljk/forkbook',
-            '@storybook/*',
-            'eslint-plugin-storybook',
-          ]),
-        } as any);
+        .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
+        .mockResolvedValueOnce(
+          commandResult({
+            stdout: JSON.stringify([
+              '@aussieljk/forkbook',
+              '@storybook/*',
+              'eslint-plugin-storybook',
+            ]),
+          })
+        );
 
       await expect(
         pnpmProxy.precheckStorybookPackageInstall({

@@ -14,7 +14,9 @@ import { dedent } from 'ts-dedent';
 
 import { storySort } from './storySort.ts';
 
-const toComparator = (storySortParameter: Addon_StorySortParameterV7): Addon_Comparator<any> =>
+const toComparator = (
+  storySortParameter: Addon_StorySortParameterV7
+): Addon_Comparator<IndexEntry> =>
   typeof storySortParameter === 'function'
     ? storySortParameter
     : storySort(
@@ -78,9 +80,23 @@ export const sortStoriesV7 = (
   }
 };
 
-const toIndexEntry = (story: any): StoryIndexEntry => {
+// A legacy V6 story may carry index fields; when it does not, they stay undefined.
+type LegacyStory<TRenderer extends Renderer> = PreparedStory<TRenderer> &
+  Partial<Pick<StoryIndexEntry, 'type' | 'subtype' | 'parent'>>;
+
+const toIndexEntry = <TRenderer extends Renderer>(
+  story: LegacyStory<TRenderer>
+): StoryIndexEntry => {
   const { id, title, name, parameters, type, subtype, parent } = story;
-  return { id, title, name, importPath: parameters.fileName, type, subtype, parent };
+  return {
+    id,
+    title,
+    name,
+    importPath: parameters.fileName,
+    type,
+    subtype,
+    parent,
+  } as StoryIndexEntry;
 };
 
 export const sortStoriesV6 = <TRenderer extends Renderer>(

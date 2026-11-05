@@ -5,7 +5,9 @@ import {
   addGetUIBuildingInstructionsTool,
   buildStorybookStoryInstructions,
 } from './get-storybook-story-instructions.ts';
-import type { AddonContext } from '../types.ts';
+import type { Options } from '@aussieljk/forkbook/internal/types';
+
+import type { AddonContext, AddonMcpServer } from '../types.ts';
 import {
   PREVIEW_STORIES_TOOL_NAME,
   GET_CHANGED_STORIES_TOOL_NAME,
@@ -16,8 +18,11 @@ import {
 // `buildStorybookStoryInstructions`'s adapter), so tests below drive them through the
 // `options.presets` fixture or the `addonVitestAvailable` override instead of mocking an
 // addon-local probe.
+/** Forkbook options with only the presets that the instructions read. */
+const asOptions = (options: { presets: { apply: unknown } }) => options as unknown as Options;
+
 describe('getUIBuildingInstructionsTool', () => {
-  let server: McpServer<any, AddonContext>;
+  let server: AddonMcpServer;
 
   beforeEach(async () => {
     const adapter = new ValibotJsonSchemaAdapter();
@@ -71,7 +76,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const tools = response.result?.tools ?? [];
     const instructionsTool = tools.find(
-      (tool: any) => tool.name === GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME
+      (tool: { name: string }) => tool.name === GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME
     );
     return instructionsTool?.description as string;
   }
@@ -85,7 +90,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const description = await getToolDescription({
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: true,
       a11yEnabled: true,
       toolsets: {
@@ -111,7 +116,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const description = await getToolDescription({
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: true,
       a11yEnabled: true,
       toolsets: {
@@ -137,7 +142,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const description = await getToolDescription({
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: true,
       a11yEnabled: false,
       toolsets: {
@@ -167,7 +172,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const testContext: AddonContext = {
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: true,
     };
 
@@ -217,7 +222,7 @@ describe('getUIBuildingInstructionsTool', () => {
       },
     };
 
-    const instructions = await buildStorybookStoryInstructions(mockOptions as any, {
+    const instructions = await buildStorybookStoryInstructions(asOptions(mockOptions), {
       docsEnabled: true,
     });
 
@@ -238,7 +243,7 @@ describe('getUIBuildingInstructionsTool', () => {
       },
     };
 
-    const instructions = await buildStorybookStoryInstructions(mockOptions as any, {
+    const instructions = await buildStorybookStoryInstructions(asOptions(mockOptions), {
       docsEnabled: true,
       toolsets: { dev: true, docs: false, test: true },
     });
@@ -272,7 +277,7 @@ describe('getUIBuildingInstructionsTool', () => {
         sessionId: 'test-session',
         custom: {
           origin: 'http://localhost:6006',
-          options: mockOptions as any,
+          options: asOptions(mockOptions),
           disableTelemetry: true,
         },
       }
@@ -309,7 +314,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const testContext: AddonContext = {
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: true,
     };
 
@@ -345,7 +350,7 @@ describe('getUIBuildingInstructionsTool', () => {
 
     const testContext: AddonContext = {
       origin: 'http://localhost:6006',
-      options: mockOptions as any,
+      options: asOptions(mockOptions),
       disableTelemetry: false,
     };
 
@@ -375,10 +380,11 @@ describe('getUIBuildingInstructionsTool', () => {
   });
 
   it('should handle missing options in context', async () => {
+    // The context lacks `options` on purpose.
     const testContext = {
       origin: 'http://localhost:6006',
       disableTelemetry: true,
-    } as any;
+    } as AddonContext;
 
     const request = {
       jsonrpc: '2.0' as const,
@@ -407,13 +413,13 @@ describe('getUIBuildingInstructionsTool', () => {
   });
 
   it('carries the docs steering exactly when the docs tools are available', async () => {
-    const mockOptions = {
+    const mockOptions = asOptions({
       presets: {
         apply: vi.fn(async (presetName: string) =>
           presetName === 'framework' ? '@aussieljk/forkbook/react-vite' : undefined
         ),
       },
-    } as any;
+    });
 
     const withDocs = await buildStorybookStoryInstructions(mockOptions, { docsEnabled: true });
     expect(withDocs).toContain('## Using library components');

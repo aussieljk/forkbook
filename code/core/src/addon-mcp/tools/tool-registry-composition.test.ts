@@ -12,6 +12,7 @@ import { collectTelemetry } from '../telemetry.ts';
 import { registerCoreToolsetsForTest } from '../test-support/register-core-toolsets.ts';
 import { getAddonToolMetadata, registerAddonMcpTools } from './tool-registry.ts';
 
+import type { AddonMcpServer } from '../types.ts';
 vi.mock('../telemetry.ts', { spy: true });
 
 const SOURCES = [
@@ -46,8 +47,15 @@ function manifestProvider(readable: string[]) {
   };
 }
 
+/** The result of a tool call that the tests read. */
+type ToolCallResult = {
+  content: { type: string; text: string }[];
+  structuredContent?: Record<string, unknown>;
+  isError?: boolean;
+};
+
 function makeServer(readable: string[]) {
-  const tools = new Map<string, (input: unknown) => Promise<any>>();
+  const tools = new Map<string, (input: unknown) => Promise<ToolCallResult>>();
   const server = {
     ctx: {
       custom: {
@@ -57,11 +65,11 @@ function makeServer(readable: string[]) {
       },
       sessionId: 'session-1',
     },
-    tool: (metadata: { name: string }, handler: (input: unknown) => Promise<any>) => {
+    tool: (metadata: { name: string }, handler: (input: unknown) => Promise<ToolCallResult>) => {
       tools.set(metadata.name, handler);
     },
     resource: () => {},
-  } as any;
+  } as unknown as AddonMcpServer;
 
   return { server, tools };
 }
@@ -79,7 +87,9 @@ describe('docs tools in a composition', () => {
     const metadata = getAddonToolMetadata(context);
     const show = metadata.find((tool) => tool.name === 'docs-show');
 
-    expect((show?.schema as any).entries).toHaveProperty('storybookId');
+    expect((show?.schema as { entries: Record<string, unknown> }).entries).toHaveProperty(
+      'storybookId'
+    );
   });
 
   it('groups the listing per source and reports the readable one', async () => {

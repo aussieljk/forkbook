@@ -208,7 +208,7 @@ export class BUNProxy extends JsPackageManager {
   protected getResolutions(
     packageJson: PackageJson,
     versions: Record<string, string>
-  ): Record<string, any> {
+  ): Partial<PackageJson> {
     return {
       overrides: {
         ...packageJson.overrides,

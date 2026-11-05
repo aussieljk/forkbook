@@ -1,9 +1,8 @@
 import { resolveSkillInputs } from '@aussieljk/forkbook/internal/core-server';
 import { buildStoryInstructions } from '@aussieljk/forkbook/internal/skills';
 import type { Options } from '@aussieljk/forkbook/internal/types';
-import type { McpServer } from 'tmcp';
 import { collectTelemetry } from '../telemetry.ts';
-import type { AddonContext } from '../types.ts';
+import type { AddonContext, AddonMcpServer } from '../types.ts';
 import { errorToMCPContent } from '../utils/errors.ts';
 import { GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME } from './tool-names.ts';
 
@@ -16,8 +15,8 @@ type BuildStorybookStoryInstructionsOptions = {
 };
 
 export async function addGetUIBuildingInstructionsTool(
-  server: McpServer<any, AddonContext>,
-  enabled: Parameters<McpServer<any, AddonContext>['tool']>[0]['enabled'] = () =>
+  server: AddonMcpServer,
+  enabled: Parameters<AddonMcpServer['tool']>[0]['enabled'] = () =>
     server.ctx.custom?.toolsets?.dev ?? true,
   {
     docsEnabled = false,

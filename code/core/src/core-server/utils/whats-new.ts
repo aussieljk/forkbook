@@ -33,7 +33,7 @@ const WHATS_NEW_URL = 'https://forkbook.ljk.dev/whats-new/v1';
 
 export function initializeWhatsNew(channel: Channel, options: OptionsWithRequiredCache) {
   channel.on(SET_WHATS_NEW_CACHE, async (data: WhatsNewCache) => {
-    const cache: WhatsNewCache = await options.cache.get(WHATS_NEW_CACHE).catch((e) => {
+    const cache = await options.cache.get<WhatsNewCache>(WHATS_NEW_CACHE).catch((e) => {
       logger.verbose(e);
       return {};
     });

@@ -112,7 +112,7 @@ command('add <addon>')
   .option('--skip-install', 'Skip installing deps')
   .option('-s --skip-postinstall', 'Skip package specific postinstall config modifications')
   .option('-y --yes', 'Skip prompting the user')
-  .action((addonName: string, options: any) => {
+  .action((addonName: string, options: Parameters<typeof add>[1]) => {
     withTelemetry('add', { cliOptions: options }, async () => {
       logger.intro(`Setting up your project for ${addonName}`);
 
@@ -123,6 +123,13 @@ command('add <addon>')
     }).catch(handleCommandFailure);
   });
 
+type RemoveCommandOptions = {
+  packageManager?: PackageManagerName;
+  configDir?: string;
+  skipInstall?: boolean;
+  logfile?: string | boolean;
+};
+
 command('remove <addon>')
   .description('Remove an addon from your Forkbook')
   .addOption(
@@ -132,7 +139,7 @@ command('remove <addon>')
   )
   .option('-c, --config-dir <dir-name>', 'Directory where to load Forkbook configurations from')
   .option('-s --skip-install', 'Skip installing deps')
-  .action((addonName: string, options: any) =>
+  .action((addonName: string, options: RemoveCommandOptions) =>
     withTelemetry('remove', { cliOptions: options }, async () => {
       logger.intro(`Removing ${addonName} from your Forkbook`);
       const packageManager = JsPackageManagerFactory.getPackageManager({

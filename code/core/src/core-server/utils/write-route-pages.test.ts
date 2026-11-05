@@ -5,6 +5,8 @@ import { afterEach, expect, it } from 'vitest';
 
 import { join } from 'pathe';
 
+import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
+
 import { writeRoutePages } from './write-route-pages.ts';
 
 let dir: string;
@@ -13,6 +15,7 @@ afterEach(() => rm(dir, { recursive: true, force: true }));
 it('writes a manager page for each story URL with its depth', async () => {
   dir = await mkdtemp(join(tmpdir(), 'route-pages-'));
   await writeFile(join(dir, 'index.html'), 'depth=/*FORKBOOK_ROUTE_DEPTH*/ 0;');
+  // The entries have only the fields that the page writer reads.
   const index = {
     v: 5,
     entries: {
@@ -24,7 +27,7 @@ it('writes a manager page for each story URL with its depth', async () => {
         importPath: './Button.stories.tsx',
       },
     },
-  } as any;
+  } as unknown as StoryIndex;
 
   await writeRoutePages(dir, index);
 

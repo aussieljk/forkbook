@@ -155,11 +155,12 @@ const sirvWorkaround: typeof sirv =
   (req, res, next) => {
     // polka+sirv will modify the request URL, so we need to restore it after sirv is done
     // req._parsedUrl is an internal construct used by both polka and sirv
-    const originalParsedUrl = (req as any)._parsedUrl;
+    const polkaReq = req as typeof req & { _parsedUrl?: unknown };
+    const originalParsedUrl = polkaReq._parsedUrl;
 
     const maybeNext = next
       ? () => {
-          (req as any)._parsedUrl = originalParsedUrl;
+          polkaReq._parsedUrl = originalParsedUrl;
           next();
         }
       : undefined;

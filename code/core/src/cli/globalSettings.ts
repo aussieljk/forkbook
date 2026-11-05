@@ -28,7 +28,7 @@ export async function globalSettings(filePath = DEFAULT_SETTINGS_PATH) {
     const content = await fs.readFile(filePath, 'utf8');
     const settingsValue = v.parse(userSettingSchema, JSON.parse(content));
     settings = new Settings(filePath, settingsValue);
-  } catch (err: any) {
+  } catch {
     // We don't currently log the issue we have loading the setting file here, but if it doesn't
     // yet exist we'll get err.code = 'ENOENT'
 

@@ -1,3 +1,4 @@
+import type { StandardSchemaV1 } from '@standard-schema/spec';
 import { describe, expect, it } from 'vitest';
 import * as v from 'valibot';
 import { withFriendlyErrors } from './format-validation-issues.ts';
@@ -14,7 +15,8 @@ const ReviewState = v.object({
   collections: v.array(Collection),
 });
 
-function runValidate(schema: any, input: unknown) {
+/** Runs a sync validation. The friendly wrapper rewrites the issues, so callers name their shape. */
+function runValidate(schema: StandardSchemaV1, input: unknown): unknown {
   const result = schema['~standard'].validate(input);
   if (result instanceof Promise) throw new Error('not async in these tests');
   return result;
@@ -28,9 +30,9 @@ describe('withFriendlyErrors', () => {
       title: 'x',
       description: 'y',
       collections: [{ title: 'a', rationale: 'b', storyIds: ['c'] }],
-    });
-    expect((ok as any).value).toBeTruthy();
-    expect((ok as any).issues).toBeUndefined();
+    }) as { value?: unknown; issues?: unknown };
+    expect(ok.value).toBeTruthy();
+    expect(ok.issues).toBeUndefined();
   });
 
   it('rewrites missing-required-field issues to a short message', () => {

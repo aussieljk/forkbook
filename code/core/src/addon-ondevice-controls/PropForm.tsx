@@ -1,3 +1,4 @@
+import type { Args } from '@aussieljk/forkbook/internal/csf';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import { transparentize } from 'polished';
 import type { ArgTypes } from './ControlsPanel.tsx';
@@ -7,7 +8,7 @@ import { Image, TouchableOpacity, View } from 'react-native';
 interface FormProps {
   args: ArgTypes;
   isPristine: boolean;
-  onFieldChange: (value: any) => void;
+  onFieldChange: (value: Args) => void;
   onReset: () => void;
 }
 
@@ -39,7 +40,7 @@ const TableRow = styled.View<{ hasBottomBorder?: boolean }>(({ theme, hasBottomB
 
 const PropForm = ({ args, isPristine, onFieldChange, onReset }: FormProps) => {
   const makeChangeHandler = (name: string) => {
-    return (value: any) => {
+    return (value: unknown) => {
       onFieldChange({ [name]: value });
     };
   };

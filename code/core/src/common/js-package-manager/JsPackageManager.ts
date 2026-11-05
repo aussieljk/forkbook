@@ -34,7 +34,7 @@ type StorybookPackage = keyof typeof storybookPackagesVersions;
 const indentSymbol = Symbol('indent');
 
 type PackageJsonWithIndent = PackageJsonWithDepsAndDevDeps & {
-  [indentSymbol]?: any;
+  [indentSymbol]?: string | number;
 };
 
 /** Human-friendly labels for each package manager type */
@@ -266,7 +266,7 @@ export abstract class JsPackageManager {
     return result;
   }
 
-  #getIndent(filePath: string): string | number {
+  #getIndent(filePath: string): string | number | undefined {
     try {
       const packageJson = JsPackageManager.getPackageJson(filePath);
       return packageJson[indentSymbol];
@@ -409,10 +409,10 @@ export abstract class JsPackageManager {
         this.clearInstalledVersionCache();
 
         return result;
-      } catch (e: any) {
+      } catch (e) {
         logger.error('\nAn error occurred while adding dependencies to your package.json:');
         logger.log(String(e));
-        if (e?.fromStorybook) {
+        if (typeof e === 'object' && e !== null && 'fromStorybook' in e && e.fromStorybook) {
           throw e;
         }
         throw new HandledError(e);
@@ -704,7 +704,7 @@ export abstract class JsPackageManager {
   protected abstract getResolutions(
     packageJson: PackageJson,
     versions: Record<string, string>
-  ): Record<string, any>;
+  ): Partial<PackageJson>;
 
   /**
    * Get the latest or all versions of the input package available on npmjs.com

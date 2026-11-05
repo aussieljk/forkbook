@@ -53,7 +53,7 @@ const isInteractiveTerminal = () => {
 const patchConsoleLog = () => {
   if (!originalConsoleLog) {
     originalConsoleLog = console.log;
-    console.log = (...args: any[]) => {
+    console.log = (...args: unknown[]) => {
       const message = args
         .map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg)))
         .join(' ');

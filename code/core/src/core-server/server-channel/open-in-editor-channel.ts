@@ -46,8 +46,8 @@ export async function initOpenInEditorChannel(channel: Channel) {
       } satisfies OpenInEditorResponsePayload);
 
       sendTelemetry({ success: true });
-    } catch (e: any) {
-      const error = e?.message || 'Failed to open in editor';
+    } catch (e) {
+      const error = (e as { message?: string } | undefined)?.message || 'Failed to open in editor';
       channel.emit(OPEN_IN_EDITOR_RESPONSE, {
         error,
         ...payload,

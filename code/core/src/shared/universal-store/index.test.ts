@@ -5,16 +5,16 @@ import { dedent } from 'ts-dedent';
 import { UniversalStore } from './index.ts';
 import { instances as mockedInstances } from './__mocks__/instances.ts';
 import { MockUniversalStore } from './mock.ts';
-import type { ChannelEvent } from './types.ts';
+import type { BaseEvent, ChannelEvent } from './types.ts';
 import { UniversalStoreFollowerTimeoutError } from '../../manager-errors.ts';
 
 vi.mock('./instances');
 vi.mock('./first-party-store-ids');
 
-const mockChannelListeners = new Map<string, Set<(...args: any[]) => void>>();
+const mockChannelListeners = new Map<string, Set<(...args: unknown[]) => void>>();
 
 const mockChannel = {
-  on: vi.fn((eventType: string, listener: (...args: any[]) => void) => {
+  on: vi.fn((eventType: string, listener: (...args: unknown[]) => void) => {
     const [universalStorePrefix, environmentId, universalStoreId] = eventType.split(':');
     if (!mockChannelListeners.has(universalStoreId)) {
       mockChannelListeners.set(universalStoreId, new Set());
@@ -22,7 +22,7 @@ const mockChannel = {
     const listeners = mockChannelListeners.get(universalStoreId)!;
     listeners.add(listener);
   }),
-  off: vi.fn((eventType: string, listener: (...args: any[]) => void) => {
+  off: vi.fn((eventType: string, listener: (...args: unknown[]) => void) => {
     const universalStoreId = eventType.split(':')[2];
     if (!mockChannelListeners.has(universalStoreId)) {
       return;
@@ -30,7 +30,7 @@ const mockChannel = {
     const listeners = mockChannelListeners.get(universalStoreId)!;
     listeners.delete(listener);
   }),
-  emit: vi.fn((eventType: string, channelEvent: ChannelEvent<any, any>) => {
+  emit: vi.fn((eventType: string, channelEvent: ChannelEvent<unknown, BaseEvent>) => {
     const [universalStorePrefix, environmentId, universalStoreId] = eventType.split(':');
     if (!mockChannelListeners.has(universalStoreId)) {
       return;
@@ -89,7 +89,8 @@ describe('UniversalStore', () => {
         // Act, Assert - creating an instance with the constructor and expect it to throw
         expect(
           () =>
-            new (UniversalStore as any)({
+            // @ts-expect-error the constructor is private; the test checks that it throws.
+            new UniversalStore({
               id: 'env1:test',
               leader: true,
             })
@@ -100,7 +101,8 @@ describe('UniversalStore', () => {
 
       it('should throw when id is not provided', () => {
         // Arrange, Act, Assert - creating an instance without an id and expect it to throw
-        expect(() => (UniversalStore as any).create()).toThrowErrorMatchingInlineSnapshot(
+        // @ts-expect-error create needs options; the test checks that it throws without them.
+        expect(() => UniversalStore.create()).toThrowErrorMatchingInlineSnapshot(
           `[TypeError: id is required and must be a string, when creating a UniversalStore]`
         );
       });

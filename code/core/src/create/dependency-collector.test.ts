@@ -2,6 +2,12 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { DependencyCollector } from './dependency-collector.ts';
 
+/** The private dependency map of the collector, which the tests corrupt on purpose. */
+const dependencyMap = (collector: DependencyCollector) =>
+  (collector as unknown as { packages: Map<string, Map<string, string>> }).packages.get(
+    'dependencies'
+  )!;
+
 describe('DependencyCollector', () => {
   let collector: DependencyCollector;
 
@@ -166,7 +172,7 @@ describe('DependencyCollector', () => {
     });
 
     it('should detect empty package names', () => {
-      const typeMap = (collector as any).packages.get('dependencies');
+      const typeMap = dependencyMap(collector);
       typeMap.set('', '1.0.0');
 
       const result = collector.validate();
@@ -177,7 +183,7 @@ describe('DependencyCollector', () => {
     });
 
     it('should detect empty versions', () => {
-      const typeMap = (collector as any).packages.get('dependencies');
+      const typeMap = dependencyMap(collector);
       typeMap.set('react', '');
 
       const result = collector.validate();
@@ -187,7 +193,7 @@ describe('DependencyCollector', () => {
     });
 
     it('should return multiple errors', () => {
-      const typeMap = (collector as any).packages.get('dependencies');
+      const typeMap = dependencyMap(collector);
       typeMap.set('', '1.0.0');
       typeMap.set('react', '');
 

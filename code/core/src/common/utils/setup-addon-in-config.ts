@@ -29,9 +29,10 @@ export async function setupAddonInConfig({
 }: SetupAddonInConfigOptions): Promise<void> {
   const mainConfigAddons = mainConfigCSFFile.getFieldNode(['addons']);
   if (mainConfigAddons && getAbsolutePathWrapperName(mainConfigCSFFile) !== null) {
-    const addonNode = mainConfigCSFFile.valueToNode(addonName);
-    mainConfigCSFFile.appendNodeToArray(['addons'], addonNode as any);
-    wrapValueWithGetAbsolutePathWrapper(mainConfigCSFFile, addonNode as any);
+    // A string value always gives a node.
+    const addonNode = mainConfigCSFFile.valueToNode(addonName)!;
+    mainConfigCSFFile.appendNodeToArray(['addons'], addonNode);
+    wrapValueWithGetAbsolutePathWrapper(mainConfigCSFFile, addonNode);
   } else {
     mainConfigCSFFile.appendValueToArray(['addons'], addonName);
   }

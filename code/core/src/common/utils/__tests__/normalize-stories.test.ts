@@ -12,15 +12,15 @@ import {
 } from '../normalize-stories.ts';
 
 expect.addSnapshotSerializer({
-  print: (val: any) => JSON.stringify(val, null, 2),
+  print: (val: unknown) => JSON.stringify(val, null, 2),
   test: (val) => typeof val !== 'string',
 });
 
 vi.mock('node:fs', () => {
   const mockStat = (
     path: string,
-    options: Record<string, any>,
-    cb: (error?: Error, stats?: Record<string, any>) => void
+    options: Record<string, unknown>,
+    cb: (error?: Error, stats?: Record<string, unknown>) => void
   ) => {
     cb(undefined, {
       isDirectory: () => !path.match(/\.[a-z]+$/),

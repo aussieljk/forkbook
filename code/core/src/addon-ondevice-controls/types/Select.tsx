@@ -5,17 +5,20 @@ import { SelectModal } from '../components/SelectModal.tsx';
 import { Input, inputStyle } from './common.tsx';
 import type { ControlTypes } from '../sharedTypes.ts';
 
+/** A select option value. The web `<select>` and the labels both key options by string. */
+type OptionKey = string | number;
+
 export interface SelectProps {
   arg: {
     name: string;
-    value: any;
-    options: Array<any> | Record<string, any>;
+    value: OptionKey | OptionKey[] | undefined;
+    options: OptionKey[] | Record<string, OptionKey>;
     control: {
       labels?: Record<string, string>;
     };
     type: ControlTypes;
   };
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
 }
 
 const getOptions = (options: SelectProps['arg']['options'], labels?: Record<string, string>) => {
@@ -59,7 +62,7 @@ const SelectType = ({ arg, onChange }: SelectProps) => {
 
     return (
       <select
-        value={value}
+        value={Array.isArray(value) ? value.map(String) : value}
         onChange={handleChange}
         multiple={arg.type === 'multi-select'}
         // React Native Web accepts the React Native style on a DOM element.

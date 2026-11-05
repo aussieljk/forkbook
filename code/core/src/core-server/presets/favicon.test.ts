@@ -33,17 +33,17 @@ const createPath = (...p: string[]) => join(process.cwd(), ...p);
 const createOptions = (locations: string[]): Parameters<typeof m.favicon>[1] => ({
   configDir: '',
   presets: {
-    apply: async (extension: string, config: any) => {
+    apply: async (extension: string, config: unknown) => {
       switch (extension) {
         case 'staticDirs': {
           return locations.map((location) => ({ from: location, to: '/' }));
         }
         default: {
-          return config as any;
+          return config;
         }
       }
     },
-  } as Presets,
+  } as unknown as Presets,
 });
 
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => {
@@ -82,7 +82,7 @@ it('with staticDirs referencing a favicon.ico directly should return the found f
   statSyncMock.mockImplementation((p) => {
     return {
       isFile: () => normalize(String(p)) === normalize(createPath('favicon.ico')),
-    } as any;
+    } as fs.Stats;
   });
   const options = createOptions([location]);
 

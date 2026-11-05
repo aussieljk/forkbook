@@ -16,10 +16,10 @@ export const updateCheck = async (version: string): Promise<VersionCheck> => {
 
     // if last check was more then 24h ago
     if (time - 86400000 > fromCache.time && !CI) {
-      const fromFetch: any = await Promise.race([
+      const fromFetch = await Promise.race([
         fetch(`${FORKBOOK_VERSION_BASE}/versions.json?current=${version}`),
         // if fetch is too slow, we won't wait for it
-        new Promise((res, rej) => global.setTimeout(rej, 1500)),
+        new Promise<never>((res, rej) => global.setTimeout(rej, 1500)),
       ]);
       const data = await fromFetch.json();
       result = { success: true, cached: false, data, time };

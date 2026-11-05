@@ -10,7 +10,7 @@ interface ActionLoggerProps {
   active?: boolean;
 }
 
-const safeDeepEqual = (a: any, b: any): boolean => {
+const safeDeepEqual = (a: unknown, b: unknown): boolean => {
   try {
     return deepEqual(a, b);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

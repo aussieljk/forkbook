@@ -131,7 +131,7 @@ describe('withForkbook', () => {
 });
 
 describe('withForkbook resolution', () => {
-  const resolveRequest = vi.fn((_ctx: any, name: string) => ({
+  const resolveRequest = vi.fn((_ctx: unknown, name: string) => ({
     filePath: `/node_modules/${name}/index.js`,
     type: 'sourceFile',
   }));
@@ -141,8 +141,10 @@ describe('withForkbook resolution', () => {
     transformer: {},
   } as unknown as MetroConfig;
 
-  const resolve = (result: MetroConfig, ...args: [any, string, string]) =>
-    (result.resolver as any).resolveRequest(...args);
+  type Resolve = (context: unknown, moduleName: string, platform: string) => unknown;
+
+  const resolve = (result: MetroConfig, ...args: [unknown, string, string]) =>
+    (result.resolver?.resolveRequest as Resolve)(...args);
 
   test.each(['os', 'tty'])('replaces %s with empty on native platforms', (mod) => {
     const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: true });

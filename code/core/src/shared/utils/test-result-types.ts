@@ -18,8 +18,8 @@ export interface StoryTestResultHistoryEntry extends StoryTestResult {
 
 export type StoryTestResultHistory = Record<string, StoryTestResultHistoryEntry>;
 
+/** The errors of one category. The record that holds it is keyed by the category. */
 export interface CategorizedError {
-  category: string;
   count: number;
   uniqueCount: number;
   matchedDependencies: string[];

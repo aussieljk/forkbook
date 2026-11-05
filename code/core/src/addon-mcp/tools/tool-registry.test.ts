@@ -23,6 +23,7 @@ import {
   registerAddonMcpTools,
 } from './tool-registry.ts';
 
+import type { AddonMcpServer } from '../types.ts';
 vi.mock('../telemetry.ts', { spy: true });
 vi.mock('@aussieljk/forkbook/internal/node-logger', { spy: true });
 
@@ -49,7 +50,7 @@ function registerTestToolsetThrowing(error: Error) {
           handler: async () => ({ ok: true, data: {}, markdown: '' }),
         },
       },
-    }) as any
+    })
   );
 }
 
@@ -68,15 +69,22 @@ function availabilityWith(overrides: Partial<ToolAvailability> = {}): ToolAvaila
   };
 }
 
+/** The result of a tool call that the tests read. */
+type ToolCallResult = {
+  content: { type: string; text: string }[];
+  structuredContent?: Record<string, unknown>;
+  isError?: boolean;
+};
+
 function makeServer() {
-  const tools = new Map<string, (input: unknown) => Promise<any>>();
+  const tools = new Map<string, (input: unknown) => Promise<ToolCallResult>>();
   const server = {
     ctx: { custom: { origin: 'http://localhost:6006' }, sessionId: 'session-1' },
-    tool: (metadata: { name: string }, handler: (input: unknown) => Promise<any>) => {
+    tool: (metadata: { name: string }, handler: (input: unknown) => Promise<ToolCallResult>) => {
       tools.set(metadata.name, handler);
     },
     resource: () => {},
-  } as any;
+  } as unknown as AddonMcpServer;
 
   return { server, tools };
 }
@@ -177,7 +185,7 @@ describe('test-run over the registry', () => {
             }),
           },
         },
-      }) as any
+      })
     );
     const { server, tools } = makeServer();
     await registerAddonMcpTools(server, context);

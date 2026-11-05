@@ -39,7 +39,7 @@ export function extractCategorizedErrors(
     data.uniqueErrors.add(r.error!);
   }
 
-  const categorizedErrors = Array.from(map.entries()).reduce<Record<string, any>>(
+  const categorizedErrors = Array.from(map.entries()).reduce<Record<string, CategorizedError>>(
     (acc, [category, data]) => {
       acc[category] = {
         uniqueCount: data.uniqueErrors.size,

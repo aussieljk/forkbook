@@ -15,6 +15,7 @@ export {
 } from './toolset-definition.ts';
 export type {
   AnyToolsetDefinition,
+  AnyToolsetMethod,
   AnyToolsetOutcome,
   InvokedToolsetOutcome,
   ToolsetCtx,

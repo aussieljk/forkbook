@@ -2,7 +2,7 @@ import { getPackageDetails } from '@aussieljk/forkbook/internal/common';
 import { Feature } from '@aussieljk/forkbook/internal/types';
 
 export interface AddonConfiguration {
-  addonsForMain: Array<string | { name: string; [key: string]: any }>;
+  addonsForMain: Array<string | { name: string; [key: string]: unknown }>;
   addonPackages: string[];
 }
 

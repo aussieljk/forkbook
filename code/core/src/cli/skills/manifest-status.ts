@@ -32,7 +32,7 @@ export const getManifestStatus = async (options: Options): Promise<ManifestStatu
     // Should be removed once support for Forkbook version < 10.2.0 is dropped
     legacyComponentManifestGenerator,
   ] = await Promise.all([
-    options.presets.apply('features') as any,
+    options.presets.apply<ManifestFeatures | undefined>('features'),
     options.presets.apply('experimental_manifests', undefined, {
       manifestEntries: [],
     }),

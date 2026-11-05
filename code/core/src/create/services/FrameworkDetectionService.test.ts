@@ -12,6 +12,7 @@ import * as find from 'empathic/find';
 
 import { FrameworkDetectionService } from './FrameworkDetectionService.ts';
 
+import type { TelemetryService } from './TelemetryService.ts';
 vi.mock('empathic/find', () => ({
   any: vi.fn(),
 }));
@@ -45,7 +46,10 @@ describe('FrameworkDetectionService', () => {
     mockTelemetryService = {
       trackPromptCancel: vi.fn().mockResolvedValue(undefined),
     };
-    service = new FrameworkDetectionService(mockPackageManager, mockTelemetryService as any);
+    service = new FrameworkDetectionService(
+      mockPackageManager,
+      mockTelemetryService as unknown as TelemetryService
+    );
   });
 
   describe('detectFramework', () => {

@@ -12,15 +12,15 @@ import {
 import { ModalPortal } from './ModalPortal.tsx';
 
 export interface SelectOptionItem {
-  key: any;
+  key: unknown;
   label: string;
 }
 
 interface SelectModalProps {
   options: SelectOptionItem[];
-  value: any;
+  value: unknown;
   multiple?: boolean;
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
   children: ReactNode;
 }
 
@@ -130,7 +130,7 @@ const FooterButtonText = styled.Text<{ primary?: boolean }>(({ theme, primary })
 
 const optionKey = (option: SelectOptionItem) => String(option.key);
 
-const valueKeys = (value: any, multiple: boolean) => {
+const valueKeys = (value: unknown, multiple: boolean) => {
   if (multiple) {
     return Array.isArray(value) ? value.map(String) : [];
   }

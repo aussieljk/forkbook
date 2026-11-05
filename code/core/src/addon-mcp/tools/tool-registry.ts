@@ -5,8 +5,7 @@ import {
   createDocsToolset,
   type DocsToolset,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
-import type { McpServer } from 'tmcp';
-import type { AddonContext } from '../types.ts';
+import type { AddonContext, AddonMcpServer } from '../types.ts';
 import { withFriendlyErrors } from '../utils/format-validation-issues.ts';
 import {
   addGetUIBuildingInstructionsTool,
@@ -40,7 +39,7 @@ export type AddonToolRegistryContext = {
   toolsets?: AddonContext['toolsets'];
 };
 
-type ToolEnabled = Parameters<McpServer<any, AddonContext>['tool']>[0]['enabled'];
+type ToolEnabled = Parameters<AddonMcpServer['tool']>[0]['enabled'];
 
 type AddonToolDefinition = {
   name: string;
@@ -48,7 +47,7 @@ type AddonToolDefinition = {
   available?: (context: AddonToolRegistryContext) => boolean;
   getMetadata: (context: AddonToolRegistryContext) => ToolMetadata;
   register: (
-    server: McpServer<any, AddonContext>,
+    server: AddonMcpServer,
     context: AddonToolRegistryContext,
     enabled: ToolEnabled
   ) => Promise<void>;
@@ -68,7 +67,7 @@ const isMetadataToolEnabled = (
 ) => isToolsetEnabled(definition.toolset, context.toolsets) && isToolAvailable(definition, context);
 
 const createToolsetEnabled =
-  (server: McpServer<any, AddonContext>, toolset: McpToolsetGroup): ToolEnabled =>
+  (server: AddonMcpServer, toolset: McpToolsetGroup): ToolEnabled =>
   () =>
     server.ctx.custom?.toolsets?.[toolset] ?? true;
 
@@ -109,7 +108,7 @@ function fromToolset(
  * the request, so this cannot be the toolset registered once at boot. Called
  * without a server for metadata only, where the sources shape the schemas but nothing is fetched.
  */
-function compositionDocsToolset(server?: McpServer<any, AddonContext>): DocsToolset {
+function compositionDocsToolset(server?: AddonMcpServer): DocsToolset {
   const custom = server?.ctx.custom;
   return createDocsToolset({
     sources: createCompositionDocsSources({
@@ -241,7 +240,7 @@ export function getAddonToolMetadata(context: AddonToolRegistryContext): ToolMet
 }
 
 export async function registerAddonMcpTools(
-  server: McpServer<any, AddonContext>,
+  server: AddonMcpServer,
   context: AddonToolRegistryContext
 ) {
   // The preview app resource ships with the preview tool: when the dev toolset is disabled the

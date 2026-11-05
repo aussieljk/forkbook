@@ -77,9 +77,8 @@ export type ToolsetOutcome<
       readonly telemetry?: TReport;
     };
 
-// `any` permits heterogeneous outcome maps. Each individual method remains typed by `defineToolset`.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyToolsetOutcome = ToolsetOutcome<any, any>;
+// `unknown` permits heterogeneous outcome maps. Each individual method remains typed by `defineToolset`.
+export type AnyToolsetOutcome = ToolsetOutcome<unknown, unknown>;
 
 /** Output schema for a published toolset method. Must describe a JSON object. */
 export type ToolsetObjectOutputSchema = StandardSchemaV1<
@@ -228,15 +227,29 @@ export type ToolsetMethodReport = ToolsetTelemetryReport & {
   event: string;
 };
 
-// `any` for the same reason as {@link AnyToolsetOutcome}: surfaces dispatch over every method.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type InvokedToolsetOutcome = ToolsetOutcome<any, any, ToolsetMethodReport>;
+/** A method's outcome after {@link invokeToolsetMethod} names its usage report. */
+export type InvokedToolsetOutcome<TOutcome extends AnyToolsetOutcome = AnyToolsetOutcome> =
+  TOutcome extends ToolsetOutcome<infer TSuccess, infer TFailure>
+    ? ToolsetOutcome<TSuccess, TFailure, ToolsetMethodReport>
+    : never;
+
+type MethodOutcome<TMethod> =
+  TMethod extends ToolsetMethod<AnySchema, infer TOutcome> ? TOutcome : AnyToolsetOutcome;
 
 /**
  * Runs one method the way every surface does. The report is named after the registration, never
  * by the handler, so a method cannot report a toolset that disagrees with where it lives. Every
  * surface forwards the report as is and adds only its own fields.
  */
+export async function invokeToolsetMethod<
+  TToolset extends AnyToolsetDefinition,
+  TName extends keyof TToolset['methods'] & string,
+>(
+  toolset: TToolset,
+  methodName: TName,
+  input: unknown,
+  context: ToolsetCtx
+): Promise<InvokedToolsetOutcome<MethodOutcome<TToolset['methods'][TName]>>>;
 export async function invokeToolsetMethod(
   toolset: AnyToolsetDefinition,
   methodName: string,

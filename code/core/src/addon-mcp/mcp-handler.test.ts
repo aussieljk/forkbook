@@ -6,6 +6,8 @@ import {
   getToolsets,
 } from './mcp-handler.ts';
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { Options } from '@aussieljk/forkbook/internal/types';
+import type { Source } from '@aussieljk/forkbook/internal/toolsets-docs';
 import { PassThrough } from 'node:stream';
 import { CompositionAuth } from './auth/index.ts';
 
@@ -201,7 +203,7 @@ describe('mcp-handler conversion utilities', () => {
 });
 
 describe('mcpServerHandler', () => {
-  let mcpServerHandler: any;
+  let mcpServerHandler: typeof import('./mcp-handler.ts').mcpServerHandler;
 
   beforeEach(async () => {
     // Reset modules and get fresh handler for each test to avoid state pollution
@@ -212,14 +214,15 @@ describe('mcpServerHandler', () => {
     mcpServerHandler = handler.mcpServerHandler;
   });
 
-  function createMockOptions(overrides = {}) {
+  /** Forkbook options with only the port and the presets that the handler reads. */
+  function createMockOptions(overrides: Record<string, unknown> = {}) {
     return {
       port: 6006,
       presets: {
         apply: vi.fn().mockResolvedValue({ disableTelemetry: false }),
       },
       ...overrides,
-    };
+    } as unknown as Options;
   }
 
   function createMCPInitializeRequest() {
@@ -237,12 +240,12 @@ describe('mcpServerHandler', () => {
 
   // Initializes the server then asks for `tools/list`, returning the registered tool names.
   async function getRegisteredToolNames(
-    mockOptions: any,
+    mockOptions: Options,
     port: number,
-    handlerOptions: { sources?: any[] } = {}
+    handlerOptions: { sources?: Source[] } = {}
   ): Promise<string[]> {
     const host = `localhost:${port}`;
-    const addonOptions = { toolsets: { dev: true, docs: true } };
+    const addonOptions = { toolsets: { dev: true, docs: true, test: true } };
 
     const initReq = createMockIncomingMessage({
       method: 'POST',
@@ -277,7 +280,7 @@ describe('mcpServerHandler', () => {
     const { body } = getResponseData();
     const dataLine = body.split('\n').find((line) => line.startsWith('data: '));
     const parsed = JSON.parse(dataLine!.replace(/^data: /, '').trim());
-    return parsed.result.tools.map((t: any) => t.name);
+    return parsed.result.tools.map((t: { name: string }) => t.name);
   }
 
   it('should initialize MCP server and handle requests', async () => {
@@ -292,11 +295,12 @@ describe('mcpServerHandler', () => {
     await mcpServerHandler({
       req: mockReq,
       res: response,
-      options: mockOptions as any,
+      options: mockOptions,
       addonOptions: {
         toolsets: {
           dev: true,
           docs: true,
+          test: true,
         },
       },
       compositionAuth: new CompositionAuth(),
@@ -337,7 +341,7 @@ describe('mcpServerHandler', () => {
   });
 
   it('should include docs-style instructions when docs toolset is selected and manifest is available', async () => {
-    const applyMock = vi.fn(async (key: string, defaultValue?: any) => {
+    const applyMock = vi.fn(async (key: string, defaultValue?: unknown) => {
       if (key === 'core') {
         return { disableTelemetry: false };
       }
@@ -368,7 +372,7 @@ describe('mcpServerHandler', () => {
     await mcpServerHandler({
       req: mockReq,
       res: response,
-      options: mockOptions as any,
+      options: mockOptions,
       addonOptions: {
         toolsets: {
           dev: true,
@@ -426,11 +430,12 @@ describe('mcpServerHandler', () => {
     await mcpServerHandler({
       req: mockReq,
       res: response,
-      options: mockOptions as any,
+      options: mockOptions,
       addonOptions: {
         toolsets: {
           dev: true,
           docs: true,
+          test: true,
         },
       },
       compositionAuth: new CompositionAuth(),
@@ -444,7 +449,7 @@ describe('mcpServerHandler', () => {
   });
 
   it('should register the docs tools when feature flag and generator are enabled', async () => {
-    const applyMock = vi.fn(async (key: string, defaultValue?: any) => {
+    const applyMock = vi.fn(async (key: string, defaultValue?: unknown) => {
       if (key === 'core') {
         return { disableTelemetry: false };
       }
@@ -473,9 +478,9 @@ describe('mcpServerHandler', () => {
     await mcpServerHandler({
       req: initReq,
       res: initResponse,
-      options: mockOptions as any,
+      options: mockOptions,
       addonOptions: {
-        toolsets: { dev: true, docs: true },
+        toolsets: { dev: true, docs: true, test: true },
       },
       compositionAuth: new CompositionAuth(),
     });
@@ -496,9 +501,9 @@ describe('mcpServerHandler', () => {
     await mcpServerHandler({
       req: listToolsReq,
       res: listResponse,
-      options: mockOptions as any,
+      options: mockOptions,
       addonOptions: {
-        toolsets: { dev: true, docs: true },
+        toolsets: { dev: true, docs: true, test: true },
       },
       compositionAuth: new CompositionAuth(),
     });
@@ -510,7 +515,7 @@ describe('mcpServerHandler', () => {
     const parsedResponse = JSON.parse(responseText);
 
     // Verify component manifest tools are included
-    const toolNames = parsedResponse.result.tools.map((t: any) => t.name);
+    const toolNames = parsedResponse.result.tools.map((t: { name: string }) => t.name);
     expect(toolNames).toContain('docs-list');
     expect(toolNames).toContain('docs-show');
     expect(toolNames).toContain('docs-show-story');
@@ -520,7 +525,7 @@ describe('mcpServerHandler', () => {
     const mockOptions = createMockOptions({
       port: 6012,
       presets: {
-        apply: vi.fn(async (key: string, defaultValue?: any) => {
+        apply: vi.fn(async (key: string, defaultValue?: unknown) => {
           if (key === 'core') return { disableTelemetry: false };
           if (key === 'features') return { componentsManifest: true };
           return defaultValue;

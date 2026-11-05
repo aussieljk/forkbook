@@ -8,7 +8,7 @@ import type { ControlTypes } from './sharedTypes.ts';
 export interface Knob {
   name: string;
   label: string;
-  value: any;
+  value: unknown;
   hideLabel: boolean;
   type: ControlTypes;
   groupId?: string;
@@ -23,12 +23,13 @@ const InvalidType = ({ arg }: { arg: ArgType }) => (
 );
 
 interface PropFieldProps {
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
   arg: ArgType;
   isPristine: boolean;
 }
 
 const PropField = ({ onChange, arg, isPristine }: PropFieldProps) => {
+  // `any`: each control declares its own narrow `arg` shape, so no single props type fits them all.
   const InputType: ComponentType<any> = TypeMap[arg.type as keyof typeof TypeMap];
   return InputType ? (
     <InputType arg={arg} isPristine={isPristine} onChange={onChange} />

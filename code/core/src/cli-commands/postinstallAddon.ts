@@ -61,7 +61,7 @@ export const postinstallAddon = async (addonName: string, options: PostinstallOp
   // runs from a different tree than the project, e.g. via npx or in a monorepo.
   const moduleFilePath = modulePath.startsWith('file:') ? fileURLToPath(modulePath) : modulePath;
 
-  let moduledLoaded: any;
+  let moduledLoaded: { default?: unknown; postinstall?: unknown } | undefined;
   try {
     moduledLoaded = await import(pathToFileURL(moduleFilePath).href)
       .catch(() => importModule(moduleFilePath))

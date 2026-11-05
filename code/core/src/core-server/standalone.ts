@@ -1,8 +1,18 @@
+import type { PresetConfig } from '@aussieljk/forkbook/internal/types';
+
 import { buildDevStandalone } from './build-dev.ts';
 import { buildIndexStandalone } from './build-index.ts';
 import { buildStaticStandalone } from './build-static.ts';
 
-async function build(options: any = {}, frameworkOptions: any = {}) {
+type BuildOptions = Parameters<typeof buildStaticStandalone>[0] &
+  Parameters<typeof buildIndexStandalone>[0];
+
+type StandaloneOptions = Partial<BuildOptions> & {
+  mode?: 'dev' | 'static' | 'index';
+  frameworkPresets?: PresetConfig[];
+};
+
+async function build(options: StandaloneOptions = {}, frameworkOptions: StandaloneOptions = {}) {
   const { mode = 'dev' } = options;
 
   const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
@@ -17,7 +27,7 @@ async function build(options: any = {}, frameworkOptions: any = {}) {
       ...(frameworkOptions.frameworkPresets || []),
     ],
     packageJson,
-  };
+  } as BuildOptions;
 
   if (mode === 'dev') {
     return buildDevStandalone(commonOptions);

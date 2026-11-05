@@ -35,7 +35,8 @@ export interface WithForkbookOptions {
   liteMode?: boolean;
 }
 
-type ResolveRequestFunction = (context: any, moduleName: string, platform: string | null) => any;
+type ResolveRequestFunction = NonNullable<NonNullable<MetroConfig['resolver']>['resolveRequest']>;
+type ResolutionContext = Parameters<ResolveRequestFunction>[0];
 
 // Forkbook, and the Storybook packages it is compatible with.
 const isForkbookModule = (moduleName: string) =>
@@ -77,7 +78,11 @@ export function withForkbook(config: MetroConfig, options: WithForkbookOptions =
       ...config,
       resolver: {
         ...config.resolver,
-        resolveRequest: (context: any, moduleName: string, platform: string | null) => {
+        resolveRequest: (
+          context: ResolutionContext,
+          moduleName: string,
+          platform: string | null
+        ) => {
           const resolveFunction: ResolveRequestFunction =
             config?.resolver?.resolveRequest ?? context.resolveRequest;
 
@@ -91,14 +96,15 @@ export function withForkbook(config: MetroConfig, options: WithForkbookOptions =
           }
 
           const resolved = resolveFunction(context, moduleName, platform);
+          const filePath = 'filePath' in resolved ? resolved.filePath : undefined;
 
           // Match the config folder's index file regardless of extension (ts, tsx, js, jsx)
           const configIndexRegex = new RegExp(`${configPath}/index\\.(tsx?|jsx?)$`);
-          if (resolved.filePath && configIndexRegex.test(resolved.filePath)) {
+          if (filePath && configIndexRegex.test(filePath)) {
             return { filePath: stubPath(), type: 'sourceFile' };
           }
 
-          if (resolved.filePath?.includes?.(configPath)) {
+          if (filePath?.includes?.(configPath)) {
             return { type: 'empty' };
           }
 
@@ -155,7 +161,7 @@ export function withForkbook(config: MetroConfig, options: WithForkbookOptions =
     },
     resolver: {
       ...config.resolver,
-      resolveRequest: (context: any, moduleName: string, platform: string | null) => {
+      resolveRequest: (context: ResolutionContext, moduleName: string, platform: string | null) => {
         const resolveFunction: ResolveRequestFunction =
           config?.resolver?.resolveRequest ?? context.resolveRequest;
 

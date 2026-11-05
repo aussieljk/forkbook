@@ -46,7 +46,7 @@ const MockedConsole = {
   log: vi.fn(),
   warn: vi.fn(),
   error: vi.fn(),
-} as any as Console;
+} as Partial<Console> as Console;
 
 const MockedStorybookInfo = vi.hoisted(() => {
   return {

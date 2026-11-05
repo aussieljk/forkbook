@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { McpServer } from 'tmcp';
+import type { GenericSchema } from 'valibot';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { addListAllDocumentationTool, LIST_TOOL_NAME } from './register.ts';
 import type { ComponentManifestMap, DocsManifestMap, Source, StorybookContext } from '../types.ts';
@@ -12,6 +13,8 @@ import {
   RequiresOwnMcpError,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
 
+/** The result of a tool call: the text blocks and the error flag. */
+type ToolResult = { content: { text: string }[]; isError?: boolean };
 // JSON imports widen the `v` literal to `number`, so re-type the fixtures against
 // the discriminated-union schema for use in strongly-typed mocks.
 const smallManifestFixture = smallManifestFixtureRaw as unknown as ComponentManifestMap;
@@ -51,7 +54,7 @@ function createManifestProvider(served: Record<string, ServedManifests>) {
 }
 
 describe('listAllDocumentationTool', () => {
-  let server: McpServer<any, StorybookContext>;
+  let server: McpServer<GenericSchema, StorybookContext>;
   let served: Record<string, ServedManifests>;
   let manifestProvider: ReturnType<typeof createManifestProvider>;
 
@@ -142,7 +145,7 @@ describe('listAllDocumentationTool', () => {
       custom: { request: mockHttpRequest, manifestProvider },
     });
 
-    const text = (response.result as any).content[0].text;
+    const text = (response.result as ToolResult).content[0].text;
     expect(text).toContain('Button (button): A simple button component');
     expect(text).toContain('  - Primary (button--primary)');
   });
@@ -186,7 +189,7 @@ describe('listAllDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      const text = (response.result as any).content[0].text;
+      const text = (response.result as ToolResult).content[0].text;
       expect(text).toContain('# Local');
       expect(text).toContain('id: local');
       expect(text).toContain('Button (button)');
@@ -292,7 +295,7 @@ describe('listAllDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources },
       });
 
-      const text = (response.result as any).content[0].text;
+      const text = (response.result as ToolResult).content[0].text;
       expect(text).toContain('# Local');
       expect(text).toContain('Button (button)');
       expect(text).toContain('# Remote');
@@ -330,7 +333,7 @@ describe('listAllDocumentationTool', () => {
         custom: { request: mockHttpRequest, manifestProvider, sources: composedSources },
       });
 
-      const text = (response.result as any).content[0].text;
+      const text = (response.result as ToolResult).content[0].text;
       expect(text).toContain('# Local');
       expect(text).toContain('Button (button)');
       expect(text).toContain('# Tetra Design System');

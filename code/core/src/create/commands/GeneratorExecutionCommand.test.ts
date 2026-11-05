@@ -71,7 +71,9 @@ describe('GeneratorExecutionCommand', () => {
       }),
     };
 
-    vi.mocked(generatorRegistry.get).mockReturnValue(mockGenerator as any);
+    vi.mocked(generatorRegistry.get).mockReturnValue(
+      mockGenerator as unknown as ReturnType<typeof generatorRegistry.get>
+    );
     vi.mocked(logger.warn).mockImplementation(() => {});
     vi.mocked(baseGenerator).mockResolvedValue({
       configDir: '.forkbook',

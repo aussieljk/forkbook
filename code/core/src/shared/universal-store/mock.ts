@@ -3,7 +3,13 @@ import { Channel } from '@aussieljk/forkbook/internal/channels';
 import { dedent } from 'ts-dedent';
 
 import { UniversalStore } from './index.ts';
-import type { StoreOptions } from './types.ts';
+import type { BaseEvent, StoreOptions } from './types.ts';
+
+/** The spy factory of a test library, such as `vi` from Vitest or `@aussieljk/forkbook/test`. */
+type TestUtils = { fn: (implementation: (...args: never[]) => unknown) => unknown };
+
+/** A method that `TestUtils.fn` has wrapped: it records the result of each call. */
+type SpiedMethod = { mock?: { results: { value: unknown }[] } };
 
 /**
  * A mock universal store that can be used when testing code that relies on a universal store. It
@@ -39,11 +45,11 @@ import type { StoreOptions } from './types.ts';
  */
 export class MockUniversalStore<
   State,
-  CustomEvent extends { type: string; payload?: any } = { type: string; payload?: any },
+  CustomEvent extends BaseEvent = BaseEvent,
 > extends UniversalStore<State, CustomEvent> {
-  private testUtils;
+  private testUtils?: TestUtils;
 
-  public constructor(options: StoreOptions<State>, testUtils?: any) {
+  public constructor(options: StoreOptions<State>, testUtils?: TestUtils) {
     UniversalStore.isInternalConstructing = true;
     super(
       { ...options, leader: true },
@@ -56,18 +62,20 @@ export class MockUniversalStore<
     }
 
     this.testUtils = testUtils;
-    this.getState = testUtils.fn(this.getState);
-    this.setState = testUtils.fn(this.setState);
-    this.subscribe = testUtils.fn(this.subscribe);
-    this.onStateChange = testUtils.fn(this.onStateChange);
-    this.send = testUtils.fn(this.send);
+    // Each spy calls the method it wraps, so it keeps the method's type.
+    this.getState = testUtils.fn(this.getState) as this['getState'];
+    this.setState = testUtils.fn(this.setState) as this['setState'];
+    this.subscribe = testUtils.fn(this.subscribe) as this['subscribe'];
+    this.onStateChange = testUtils.fn(this.onStateChange) as this['onStateChange'];
+    this.send = testUtils.fn(this.send) as this['send'];
   }
 
   /** Create a mock universal store. This is just an alias for the constructor */
-  static create<
-    State = any,
-    CustomEvent extends { type: string; payload?: any } = { type: string; payload?: any },
-  >(options: StoreOptions<State>, testUtils?: any): MockUniversalStore<State, CustomEvent> {
+  // `State = any`: as in `UniversalStore.create`, a store made without a state type takes any state.
+  static create<State = any, CustomEvent extends BaseEvent = BaseEvent>(
+    options: StoreOptions<State>,
+    testUtils?: TestUtils
+  ): MockUniversalStore<State, CustomEvent> {
     return new MockUniversalStore(options, testUtils);
   }
 
@@ -80,16 +88,15 @@ export class MockUniversalStore<
       );
     }
     // unsubscribe all listeners by calling the unsubscribe methods returned from the calls
-    const callReturnedUnsubscribeFn = (result: any) => {
+    const callReturnedUnsubscribeFn = (result: { value: unknown }) => {
       try {
-        result.value();
+        (result.value as () => void)();
       } catch (e) {
         // ignore
       }
     };
-    //@ts-expect-error - TS doesn't know that it's a mock
-    this.subscribe.mock?.results.forEach(callReturnedUnsubscribeFn);
-    //@ts-expect-error - TS doesn't know that it's a mock
-    this.onStateChange.mock?.results.forEach(callReturnedUnsubscribeFn);
+    // With testUtils, the constructor wrapped both methods in spies.
+    (this.subscribe as SpiedMethod).mock?.results.forEach(callReturnedUnsubscribeFn);
+    (this.onStateChange as SpiedMethod).mock?.results.forEach(callReturnedUnsubscribeFn);
   }
 }

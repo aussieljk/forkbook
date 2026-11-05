@@ -1,7 +1,6 @@
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
-import type { McpServer } from 'tmcp';
-import type { AddonContext } from './types.ts';
+import type { AddonContext, AddonMcpServer } from './types.ts';
 
 export async function collectTelemetry({
   event,
@@ -9,7 +8,7 @@ export async function collectTelemetry({
   ...payload
 }: {
   event: string;
-  server: McpServer<any, AddonContext>;
+  server: AddonMcpServer;
   [key: string]: unknown;
 }) {
   try {

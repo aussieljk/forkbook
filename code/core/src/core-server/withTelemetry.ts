@@ -117,7 +117,7 @@ export async function sendTelemetryError(
       // If this throws, eg. due to main.js breaking, we fall back to 'error'
     }
     if (errorLevel !== 'none') {
-      const error = _error as Error & Record<string, any>;
+      const error = _error as Error & Partial<StorybookError>;
 
       let errorHash;
       if ('message' in error) {
@@ -146,7 +146,7 @@ export async function sendTelemetryError(
       );
 
       // If this is a StorybookError with sub-errors, send telemetry for each sub-error separately
-      if (error && 'subErrors' in error && error.subErrors.length > 0) {
+      if (error && error.subErrors && error.subErrors.length > 0) {
         for (const subError of error.subErrors) {
           await sendTelemetryError(subError, eventType, options, blocking, error as StorybookError);
         }

@@ -17,8 +17,8 @@ interface FileSystemCacheOptions {
 
 interface CacheItem {
   key: string;
-  content?: any;
-  value?: any;
+  content?: unknown;
+  value?: unknown;
 }
 
 interface CacheSetOptions {
@@ -63,7 +63,7 @@ export class FileSystemCache {
     return JSON.stringify({ key, content: data, ...(ttl && { ttl: Date.now() + ttl * 1000 }) });
   }
 
-  public async get<T = any>(name: string, fallback?: T): Promise<T> {
+  public async get<T = unknown>(name: string, fallback?: T): Promise<T> {
     try {
       const data = await readFile(this.generateHash(name), 'utf8');
       return this.parseCacheData(data, fallback) as T;

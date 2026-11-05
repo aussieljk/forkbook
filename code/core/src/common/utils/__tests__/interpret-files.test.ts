@@ -5,9 +5,9 @@ import { vol } from 'memfs';
 import { getInterpretedFile } from '../interpret-files.ts';
 
 vi.mock('fs', async () => {
-  const memfs = await vi.importActual('memfs');
+  const memfs = await vi.importActual<typeof import('memfs')>('memfs');
 
-  return { default: memfs.fs, ...(memfs as any).fs };
+  return { default: memfs.fs, ...memfs.fs };
 });
 
 describe('interpret-files', () => {

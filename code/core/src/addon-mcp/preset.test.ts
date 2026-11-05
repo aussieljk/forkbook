@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 import { getToolAvailability } from '@aussieljk/forkbook/internal/core-server';
 import { experimental_devServer } from './preset.ts';
@@ -10,10 +10,25 @@ import { registerCoreToolsetsForTest } from './test-support/register-core-toolse
 // composed result at this seam rather than an addon-local probe.
 vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 
+/** A route handler the preset registers. The tests call it with partial requests and responses. */
+type RouteHandler = (req: unknown, res: unknown) => unknown;
+
+interface MockApp {
+  post: Mock<(path: string, handler: RouteHandler) => void>;
+  get: Mock<(path: string, handler: RouteHandler) => void>;
+}
+
+/** Runs the preset hook. The mock app has only the two route methods that the preset uses. */
+const runDevServer = (app: MockApp, options: Options) =>
+  experimental_devServer(
+    app as unknown as Parameters<typeof experimental_devServer>[0],
+    options as Parameters<typeof experimental_devServer>[1]
+  );
+
 describe('experimental_devServer', () => {
-  let mockApp: any;
+  let mockApp: MockApp;
   let mockOptions: Options;
-  let mcpHandler: any;
+  let mcpHandler: RouteHandler;
 
   beforeEach(() => {
     // The `services` preset hook does this in a real Forkbook before the dev server mounts /mcp.
@@ -96,7 +111,7 @@ describe('experimental_devServer', () => {
     }) as unknown as Options;
 
   it('should register /mcp POST endpoint', async () => {
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     expect(mockApp.post).toHaveBeenCalledWith('/mcp', expect.any(Function));
     expect(mcpHandler).toBeDefined();
@@ -112,13 +127,13 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, optionsWithReview);
+    await runDevServer(mockApp, optionsWithReview);
 
     expect(channel.on).not.toHaveBeenCalled();
   });
 
   it('should register /mcp GET endpoint', async () => {
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     expect(mockApp.get).toHaveBeenCalledWith('/mcp', expect.any(Function));
   });
@@ -129,15 +144,15 @@ describe('experimental_devServer', () => {
       endpoint: '/custom-mcp',
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, customOptions);
+    await runDevServer(mockApp, customOptions);
 
     expect(mockApp.post).toHaveBeenCalledWith('/custom-mcp', expect.any(Function));
     expect(mockApp.get).toHaveBeenCalledWith('/custom-mcp', expect.any(Function));
   });
 
   it('should leave manifest fetching on the core default provider for the default endpoint', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
@@ -150,7 +165,7 @@ describe('experimental_devServer', () => {
       port: 6006,
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, options);
+    await runDevServer(mockApp, options);
     await handlers['/mcp'](
       {
         headers: { accept: 'application/json' },
@@ -167,8 +182,8 @@ describe('experimental_devServer', () => {
   });
 
   it('should leave manifest fetching on the core default provider for a custom endpoint without refs', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
@@ -182,7 +197,7 @@ describe('experimental_devServer', () => {
       endpoint: '/custom-mcp',
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, customOptions);
+    await runDevServer(mockApp, customOptions);
     await handlers['/custom-mcp'](
       {
         headers: { accept: 'application/json' },
@@ -202,8 +217,8 @@ describe('experimental_devServer', () => {
   });
 
   it('should use localhost manifests for the local source when refs are configured', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
@@ -238,7 +253,7 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, optionsWithRefs);
+    await runDevServer(mockApp, optionsWithRefs);
     await handlers['/custom-mcp'](
       {
         headers: { accept: 'application/json' },
@@ -277,9 +292,9 @@ describe('experimental_devServer', () => {
       .mockResolvedValue(undefined);
     stubPrivateRefDiscovery();
 
-    await (experimental_devServer as any)(mockApp, createOptionsWithPrivateRef());
+    await runDevServer(mockApp, createOptionsWithPrivateRef());
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
     await mcpHandler(
       {
         headers: {},
@@ -298,25 +313,25 @@ describe('experimental_devServer', () => {
   });
 
   it('should serve HTML for browser GET requests', async () => {
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((path, handler) => {
       getHandler = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     const mockReq = {
       headers: {
         accept: 'text/html',
       },
-    } as any;
+    };
 
     const mockRes = {
       writeHead: vi.fn(),
       end: vi.fn(),
-    } as any;
+    };
 
-    await getHandler(mockReq, mockRes);
+    await getHandler!(mockReq, mockRes);
 
     expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'text/html',
@@ -325,15 +340,15 @@ describe('experimental_devServer', () => {
   });
 
   it('should list the change-detection and review tools in the landing page', async () => {
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((_path, handler) => {
       getHandler = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
-    await getHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
+    await getHandler!({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0] as string;
     for (const tool of [
@@ -364,7 +379,7 @@ describe('experimental_devServer', () => {
       docgenServer: false,
     });
 
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((_path, handler) => {
       getHandler = handler;
     });
@@ -374,10 +389,10 @@ describe('experimental_devServer', () => {
       toolsets: { dev: false },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, devOffOptions);
+    await runDevServer(mockApp, devOffOptions);
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
-    await getHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
+    await getHandler!({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0] as string;
 
@@ -391,15 +406,15 @@ describe('experimental_devServer', () => {
   it('names the missing manifest prerequisite instead of claiming the framework is unsupported', async () => {
     // `mockOptions` has no manifests and `componentsManifest: false`, which is what a project
     // that only forgot a feature flag looks like.
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((_path, handler) => {
       getHandler = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
-    await getHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
+    await getHandler!({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0] as string;
     expect(html).toContain('This toolset requires a components manifest,');
@@ -422,15 +437,15 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((_path, handler) => {
       getHandler = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, featureOnNoManifestOptions);
+    await runDevServer(mockApp, featureOnNoManifestOptions);
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
-    await getHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
+    await getHandler!({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0] as string;
     expect(html).toContain('which your framework does not generate');
@@ -457,15 +472,15 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    let getHandler: any;
+    let getHandler: RouteHandler | undefined;
     mockApp.get = vi.fn((_path, handler) => {
       getHandler = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, manifestsNoFlagOptions);
+    await runDevServer(mockApp, manifestsNoFlagOptions);
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
-    await getHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
+    await getHandler!({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0] as string;
     expect(html).toContain('This toolset requires enabling the component manifest feature.');
@@ -490,12 +505,12 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, manifestEnabledOptions);
+    await runDevServer(mockApp, manifestEnabledOptions);
     const getMcpHandler = handlers['/mcp'];
     expect(getMcpHandler).toBeDefined();
 
@@ -503,11 +518,11 @@ describe('experimental_devServer', () => {
       headers: {
         accept: 'text/html',
       },
-    } as any;
+    };
     const mockRes = {
       writeHead: vi.fn(),
       end: vi.fn(),
-    } as any;
+    };
 
     await getMcpHandler(mockReq, mockRes);
 
@@ -522,8 +537,8 @@ describe('experimental_devServer', () => {
   });
 
   it('does not show the local manifest debugger link when docs only come from composed refs', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
     vi.stubGlobal(
@@ -552,16 +567,16 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, remoteDocsOptions);
+    await runDevServer(mockApp, remoteDocsOptions);
     const getMcpHandler = handlers['/mcp'];
     expect(getMcpHandler).toBeDefined();
 
     const mockRes = {
       writeHead: vi.fn(),
       end: vi.fn(),
-    } as any;
+    };
 
-    await getMcpHandler({ headers: { accept: 'text/html' } } as any, mockRes);
+    await getMcpHandler({ headers: { accept: 'text/html' } }, mockRes);
 
     const html = mockRes.end.mock.calls[0][0];
     expect(html).not.toContain('{{MANIFEST_DEBUGGER_LINK}}');
@@ -570,7 +585,7 @@ describe('experimental_devServer', () => {
   });
 
   it('should handle POST requests as MCP protocol', async () => {
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     const initializeRequest = JSON.stringify({
       jsonrpc: '2.0',
@@ -598,7 +613,7 @@ describe('experimental_devServer', () => {
       [Symbol.asyncIterator]: async function* () {
         yield Buffer.from(initializeRequest);
       },
-    } as any;
+    };
 
     const mockRes = {
       writeHead: vi.fn(),
@@ -606,7 +621,7 @@ describe('experimental_devServer', () => {
       end: vi.fn(),
       setHeader: vi.fn(),
       statusCode: 0,
-    } as any;
+    };
 
     await mcpHandler(mockReq, mockRes);
 
@@ -617,7 +632,7 @@ describe('experimental_devServer', () => {
   });
 
   it('should return the app instance', async () => {
-    const result = await (experimental_devServer as any)(mockApp, mockOptions);
+    const result = await runDevServer(mockApp, mockOptions);
     expect(result).toBe(mockApp);
   });
 
@@ -633,30 +648,28 @@ describe('experimental_devServer', () => {
       },
     });
 
-    const createRequest = (headers: Record<string, string>) =>
-      ({
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          host: 'localhost:6006',
-          ...headers,
-        },
-        socket: { encrypted: false },
-        url: '/mcp',
-        [Symbol.asyncIterator]: async function* () {
-          yield Buffer.from(initializeRequest);
-        },
-      }) as any;
+    const createRequest = (headers: Record<string, string>) => ({
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        host: 'localhost:6006',
+        ...headers,
+      },
+      socket: { encrypted: false },
+      url: '/mcp',
+      [Symbol.asyncIterator]: async function* () {
+        yield Buffer.from(initializeRequest);
+      },
+    });
 
-    const createResponse = () =>
-      ({
-        writeHead: vi.fn(),
-        write: vi.fn(),
-        end: vi.fn(),
-        setHeader: vi.fn(),
-        statusCode: 0,
-      }) as any;
+    const createResponse = () => ({
+      writeHead: vi.fn(),
+      write: vi.fn(),
+      end: vi.fn(),
+      setHeader: vi.fn(),
+      statusCode: 0,
+    });
 
     const createOptionsWithCore = (core: Record<string, unknown>) =>
       ({
@@ -676,7 +689,7 @@ describe('experimental_devServer', () => {
 
     it('rejects a POST whose Origin is not an allowed host', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'http://malicious-site.com' }), res);
@@ -688,11 +701,11 @@ describe('experimental_devServer', () => {
 
     it('rejects a non-HTML GET whose Origin is not an allowed host', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      const handlers: Record<string, any> = {};
-      mockApp.get = vi.fn((path: string, routeHandler: any) => {
+      const handlers: Record<string, RouteHandler> = {};
+      mockApp.get = vi.fn((path: string, routeHandler: RouteHandler) => {
         handlers[path] = routeHandler;
       });
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await handlers['/mcp'](createRequest({ origin: 'http://malicious-site.com' }), res);
@@ -703,7 +716,7 @@ describe('experimental_devServer', () => {
 
     it('rejects a POST whose Origin is not a URL', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'null' }), res);
@@ -714,7 +727,7 @@ describe('experimental_devServer', () => {
 
     it('rejects a POST whose Origin is an IP address that is not a known address', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'http://203.0.113.5' }), res);
@@ -725,7 +738,7 @@ describe('experimental_devServer', () => {
 
     it('accepts a POST without an Origin header', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest({}), res);
@@ -736,7 +749,7 @@ describe('experimental_devServer', () => {
 
     it('accepts a POST from a localhost Origin', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'http://localhost:6006' }), res);
@@ -747,10 +760,7 @@ describe('experimental_devServer', () => {
 
     it('accepts a POST from an Origin listed in core.allowedHosts', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(
-        mockApp,
-        createOptionsWithCore({ allowedHosts: ['my-app.example.com'] })
-      );
+      await runDevServer(mockApp, createOptionsWithCore({ allowedHosts: ['my-app.example.com'] }));
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'https://my-app.example.com' }), res);
@@ -761,7 +771,7 @@ describe('experimental_devServer', () => {
 
     it('accepts any Origin when core.allowedHosts is true', async () => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, createOptionsWithCore({ allowedHosts: true }));
+      await runDevServer(mockApp, createOptionsWithCore({ allowedHosts: true }));
       const res = createResponse();
 
       await mcpHandler(createRequest({ origin: 'http://malicious-site.com' }), res);
@@ -772,29 +782,27 @@ describe('experimental_devServer', () => {
   });
 
   describe('media type validation', () => {
-    const createRequest = (contentType: string | undefined) =>
-      ({
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-          host: 'localhost:6006',
-          ...(contentType === undefined ? {} : { 'content-type': contentType }),
-        },
-        socket: { encrypted: false },
-        url: '/mcp',
-        [Symbol.asyncIterator]: async function* () {
-          yield Buffer.from('{}');
-        },
-      }) as any;
+    const createRequest = (contentType: string | undefined) => ({
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        host: 'localhost:6006',
+        ...(contentType === undefined ? {} : { 'content-type': contentType }),
+      },
+      socket: { encrypted: false },
+      url: '/mcp',
+      [Symbol.asyncIterator]: async function* () {
+        yield Buffer.from('{}');
+      },
+    });
 
-    const createResponse = () =>
-      ({
-        writeHead: vi.fn(),
-        write: vi.fn(),
-        end: vi.fn(),
-        setHeader: vi.fn(),
-        statusCode: 0,
-      }) as any;
+    const createResponse = () => ({
+      writeHead: vi.fn(),
+      write: vi.fn(),
+      end: vi.fn(),
+      setHeader: vi.fn(),
+      statusCode: 0,
+    });
 
     it.each([
       undefined,
@@ -803,7 +811,7 @@ describe('experimental_devServer', () => {
       'application/x-www-form-urlencoded',
     ])('rejects a POST whose Content-Type is %s', async (contentType) => {
       const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-      await (experimental_devServer as any)(mockApp, mockOptions);
+      await runDevServer(mockApp, mockOptions);
       const res = createResponse();
 
       await mcpHandler(createRequest(contentType), res);
@@ -816,7 +824,7 @@ describe('experimental_devServer', () => {
       'accepts a POST whose Content-Type is %s',
       async (contentType) => {
         const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
-        await (experimental_devServer as any)(mockApp, mockOptions);
+        await runDevServer(mockApp, mockOptions);
         const res = createResponse();
 
         await mcpHandler(createRequest(contentType), res);
@@ -842,24 +850,24 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, partialOptions);
+    await runDevServer(mockApp, partialOptions);
 
     expect(mockApp.post).toHaveBeenCalledWith('/mcp', expect.any(Function));
     expect(mockApp.get).toHaveBeenCalledWith('/mcp', expect.any(Function));
   });
 
   it('should register .well-known endpoint that returns 404 when no auth required', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     const wellKnownHandler = handlers['/.well-known/oauth-protected-resource'];
     expect(wellKnownHandler).toBeDefined();
 
-    const mockRes = { writeHead: vi.fn(), end: vi.fn() } as any;
+    const mockRes = { writeHead: vi.fn(), end: vi.fn() };
     wellKnownHandler({}, mockRes);
 
     expect(mockRes.writeHead).toHaveBeenCalledWith(404);
@@ -867,12 +875,12 @@ describe('experimental_devServer', () => {
   });
 
   it('should forward non-HTML GET /mcp requests to MCP handler', async () => {
-    const handlers: Record<string, any> = {};
-    mockApp.get = vi.fn((path: string, handler: any) => {
+    const handlers: Record<string, RouteHandler> = {};
+    mockApp.get = vi.fn((path: string, handler: RouteHandler) => {
       handlers[path] = handler;
     });
 
-    await (experimental_devServer as any)(mockApp, mockOptions);
+    await runDevServer(mockApp, mockOptions);
 
     const getMcpHandler = handlers['/mcp'];
     expect(getMcpHandler).toBeDefined();
@@ -897,7 +905,7 @@ describe('experimental_devServer', () => {
           })
         );
       },
-    } as any;
+    };
 
     const mockRes = {
       writeHead: vi.fn(),
@@ -905,7 +913,7 @@ describe('experimental_devServer', () => {
       end: vi.fn(),
       setHeader: vi.fn(),
       statusCode: 0,
-    } as any;
+    };
 
     await getMcpHandler(mockReq, mockRes);
 
@@ -941,7 +949,7 @@ describe('experimental_devServer', () => {
       presets: { apply },
     } as unknown as Options;
 
-    await (experimental_devServer as any)(mockApp, optionsWithRefs);
+    await runDevServer(mockApp, optionsWithRefs);
 
     expect(apply).toHaveBeenCalledWith('refs', {});
   });
@@ -961,7 +969,7 @@ describe('experimental_devServer', () => {
     } as unknown as Options;
 
     // Should not throw
-    const result = await (experimental_devServer as any)(mockApp, optionsWithBadRefs);
+    const result = await runDevServer(mockApp, optionsWithBadRefs);
     expect(result).toBe(mockApp);
   });
 
@@ -979,7 +987,7 @@ describe('experimental_devServer', () => {
       },
     } as unknown as Options;
 
-    const result = await (experimental_devServer as any)(mockApp, optionsWithThrowingRefs);
+    const result = await runDevServer(mockApp, optionsWithThrowingRefs);
     expect(result).toBe(mockApp);
   });
 });

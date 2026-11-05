@@ -3,6 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { DocgenProviderDescriptor } from '../types.ts';
 import type { DocgenWorkerRequest, DocgenWorkerResponse } from './protocol.ts';
 
+import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
+
+/** An index entry with only the fields the worker client reads. */
+const indexEntry = (fields: Pick<IndexEntry, 'id'> & Partial<IndexEntry>) => fields as IndexEntry;
 interface FakeWorker {
   posted: DocgenWorkerRequest[];
   postMessage: ReturnType<typeof vi.fn>;
@@ -94,7 +98,7 @@ describe('createDocgenWorkerClient', () => {
 
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
-    client.extract({ id: 'button--primary' } as any).catch(() => undefined);
+    client.extract(indexEntry({ id: 'button--primary' })).catch(() => undefined);
 
     expect(fakeWorkers[0].posted[0]).toEqual({
       type: 'init',
@@ -107,7 +111,7 @@ describe('createDocgenWorkerClient', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const promise = client.extract({ id: 'button--primary' } as any);
+    const promise = client.extract(indexEntry({ id: 'button--primary' }));
     const worker = fakeWorkers[0];
 
     expect(fakeWorkers).toHaveLength(1);
@@ -139,7 +143,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const entry = { id: 'button--primary', importPath: './button.stories.tsx' } as any;
+    const entry = indexEntry({ id: 'button--primary', importPath: './button.stories.tsx' });
     const promise = client.extract(entry);
     const worker = fakeWorkers[0];
 
@@ -163,7 +167,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const promise = client.extract({ id: 'x' } as any);
+    const promise = client.extract(indexEntry({ id: 'x' }));
     const worker = fakeWorkers[0];
     ackInit(worker, { name: 'Error', message: 'boom' });
 
@@ -174,7 +178,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const promise = client.extract({ id: 'x' } as any);
+    const promise = client.extract(indexEntry({ id: 'x' }));
     const worker = fakeWorkers[0];
     worker.emit('exit', 1);
 
@@ -185,7 +189,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const promise = client.extract({ id: 'x' } as any);
+    const promise = client.extract(indexEntry({ id: 'x' }));
     const worker = fakeWorkers[0];
     ackInit(worker);
     await Promise.resolve();
@@ -206,7 +210,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const promise = client.extract({ id: 'x' } as any);
+    const promise = client.extract(indexEntry({ id: 'x' }));
     const worker = fakeWorkers[0];
     ackInit(worker);
     await Promise.resolve();
@@ -220,7 +224,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const first = client.extract({ id: 'x' } as any);
+    const first = client.extract(indexEntry({ id: 'x' }));
     ackInit(fakeWorkers[0]);
     await Promise.resolve();
     fakeWorkers[0].emit('error', new Error('worker ran out of memory'));
@@ -228,7 +232,7 @@ describe('DocgenWorkerClient.extract', () => {
 
     // Never served a request, so the next extract reuses the corpse rather than respawning into
     // the same failure - and says what that failure was.
-    await expect(client.extract({ id: 'y' } as any)).rejects.toThrow(
+    await expect(client.extract(indexEntry({ id: 'y' }))).rejects.toThrow(
       'docgen worker is no longer running: worker ran out of memory'
     );
     expect(fakeWorkers).toHaveLength(1);
@@ -238,7 +242,7 @@ describe('DocgenWorkerClient.extract', () => {
     const { createDocgenWorkerClient } = await loadModule();
     const client = createDocgenWorkerClient(DESCRIPTORS)!;
 
-    const first = client.extract({ id: 'x' } as any);
+    const first = client.extract(indexEntry({ id: 'x' }));
     ackInit(fakeWorkers[0]);
     await Promise.resolve();
     const extractMsg = fakeWorkers[0].posted.find((m) => m.type === 'extract') as { id: number };
@@ -251,7 +255,7 @@ describe('DocgenWorkerClient.extract', () => {
 
     fakeWorkers[0].emit('error', new Error('worker ran out of memory'));
 
-    const second = client.extract({ id: 'y' } as any);
+    const second = client.extract(indexEntry({ id: 'y' }));
     expect(fakeWorkers).toHaveLength(2);
     ackInit(fakeWorkers[1]);
     await Promise.resolve();

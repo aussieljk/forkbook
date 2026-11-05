@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { SBType } from '../../types/index.ts';
+import type { ArgTypes, SBType } from '../../types/index.ts';
 import {
   generateDummyArgsFromArgTypes,
   generateDummyValueFromSBType,
@@ -140,7 +140,7 @@ describe('new-story-docgen', () => {
         websiteUrl: {
           type: { name: 'string' },
         },
-      } as any;
+      } as ArgTypes;
 
       // With skipUrlGeneration: false (default behavior)
       const resultWithUrls = generateDummyArgsFromArgTypes(argTypes, { skipUrlGeneration: false });

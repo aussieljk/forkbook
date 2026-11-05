@@ -8,6 +8,7 @@ import {
 import { REVIEW_EVENTS } from '../../shared/review/events.ts';
 import { initTelemetryChannel } from './telemetry-channel.ts';
 
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 vi.mock('@aussieljk/forkbook/internal/telemetry', () => ({
   telemetry: vi.fn(),
 }));
@@ -21,7 +22,7 @@ describe('telemetry-channel', () => {
       on: (event: string, listener: Function) => {
         listeners[event] = listener;
       },
-    } as any;
+    } as unknown as Channel;
 
     initTelemetryChannel(channel);
     listeners[PREVIEW_INITIALIZED]({ userAgent: 'Mozilla/5.0' });
@@ -38,7 +39,7 @@ describe('telemetry-channel', () => {
         on: (event: string, listener: Function) => {
           listeners[event] = listener;
         },
-      } as any;
+      } as unknown as Channel;
 
       initTelemetryChannel(channel);
 
@@ -66,7 +67,7 @@ describe('telemetry-channel', () => {
         on: (event: string, listener: Function) => {
           listeners[event] = listener;
         },
-      } as any;
+      } as unknown as Channel;
 
       initTelemetryChannel(channel);
 
@@ -85,7 +86,7 @@ describe('telemetry-channel', () => {
         on: (event: string, listener: Function) => {
           listeners[event] = listener;
         },
-      } as any;
+      } as unknown as Channel;
 
       initTelemetryChannel(channel);
 

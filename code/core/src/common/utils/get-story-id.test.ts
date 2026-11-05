@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getStoryId } from './get-story-id.ts';
 
+import type { Options } from '@aussieljk/forkbook/internal/types';
 describe('getStoryId', () => {
   it('should return the storyId', async () => {
     const cwd = process.cwd();
@@ -16,7 +17,7 @@ describe('getStoryId', () => {
           }
         },
       },
-    } as any;
+    } as unknown as Options;
     const storyFilePath = join(cwd, 'src', 'components', 'stories', 'Page1.stories.ts');
     const exportedStoryName = 'Default';
 
@@ -37,7 +38,7 @@ describe('getStoryId', () => {
           }
         },
       },
-    } as any;
+    } as unknown as Options;
     const storyFilePath = join(cwd, 'not-covered-path', 'stories', 'Page1.stories.ts');
     const exportedStoryName = 'Default';
 

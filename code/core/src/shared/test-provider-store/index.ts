@@ -457,7 +457,12 @@ export function createTestProviderStore({
       universalTestProviderStore,
       useTestProviderStore: <T = TestProviderStateByProviderId>(
         selector?: (testProviders: TestProviderStateByProviderId) => T
-      ) => useUniversalStore(universalTestProviderStore, selector as any)[0] as T,
+      ) =>
+        // The hook also runs without a selector and then returns the whole state.
+        useUniversalStore(
+          universalTestProviderStore,
+          selector as (testProviders: TestProviderStateByProviderId) => T
+        )[0],
     };
   }
 

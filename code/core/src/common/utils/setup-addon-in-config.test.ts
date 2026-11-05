@@ -26,11 +26,11 @@ describe('setupAddonInConfig', () => {
       valueToNode: vi.fn(),
       appendNodeToArray: vi.fn(),
       appendValueToArray: vi.fn(),
-    } as any;
+    } as unknown as ConfigFile;
 
     mockMainConfig = {
       addons: [],
-    } as any;
+    } as unknown as StorybookConfigRaw;
 
     vi.mocked(csfTools.writeConfig).mockResolvedValue();
     vi.mocked(syncModule.syncStorybookAddons).mockResolvedValue();
@@ -38,7 +38,7 @@ describe('setupAddonInConfig', () => {
   });
 
   it('should add addon to main config when no getAbsolutePath wrapper exists', async () => {
-    vi.mocked(mockMain.getFieldNode).mockReturnValue({} as any);
+    vi.mocked(mockMain.getFieldNode).mockReturnValue({} as ReturnType<ConfigFile['getFieldNode']>);
     vi.mocked(wrapUtils.getAbsolutePathWrapperName).mockReturnValue(null);
 
     await setupAddonInConfig({
@@ -67,9 +67,9 @@ describe('setupAddonInConfig', () => {
   });
 
   it('should add addon with getAbsolutePath wrapper when wrapper exists', async () => {
-    const mockAddonNode = { type: 'StringLiteral' } as any;
+    const mockAddonNode = { type: 'StringLiteral' } as ReturnType<ConfigFile['valueToNode']>;
 
-    vi.mocked(mockMain.getFieldNode).mockReturnValue({} as any);
+    vi.mocked(mockMain.getFieldNode).mockReturnValue({} as ReturnType<ConfigFile['getFieldNode']>);
     vi.mocked(mockMain.valueToNode).mockReturnValue(mockAddonNode);
     vi.mocked(wrapUtils.getAbsolutePathWrapperName).mockReturnValue('getAbsolutePath');
     vi.mocked(wrapUtils.wrapValueWithGetAbsolutePathWrapper).mockImplementation(() => {});

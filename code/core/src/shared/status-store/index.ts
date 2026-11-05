@@ -67,6 +67,7 @@ export interface Status {
   storyId: StoryId;
   title: string;
   description: string;
+  // `any`: readers in other areas (component-testing) read fields of `data` without a check.
   data?: any;
   sidebarContextMenu?: boolean;
 }
@@ -294,6 +295,11 @@ export function createStatusStore({
     universalStatusStore,
     useStatusStore: <T = StatusesByStoryIdAndTypeId>(
       selector?: (statuses: StatusesByStoryIdAndTypeId) => T
-    ) => useUniversalStore(universalStatusStore, selector as any)[0] as T,
+    ) =>
+      // The hook also runs without a selector and then returns the whole state.
+      useUniversalStore(
+        universalStatusStore,
+        selector as (statuses: StatusesByStoryIdAndTypeId) => T
+      )[0],
   };
 }

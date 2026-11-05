@@ -137,10 +137,10 @@ export const favicon = async (
 
 export const babel = async (_: unknown, options: Options) => {
   const { presets } = options;
-  const babelDefault = ((await presets.apply('babelDefault', {}, options)) ?? {}) as Record<
-    string,
-    any
-  >;
+  const babelDefault = ((await presets.apply('babelDefault', {}, options)) ?? {}) as {
+    overrides?: unknown[];
+    [key: string]: unknown;
+  };
 
   const presetConfig: Record<string, unknown> = {
     targets: {

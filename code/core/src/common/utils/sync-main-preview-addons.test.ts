@@ -12,7 +12,7 @@ import { syncPreviewAddonsWithMainConfig } from './sync-main-preview-addons.ts';
 vi.mock('./get-addon-annotations');
 
 expect.addSnapshotSerializer({
-  serialize: (val: any) => (typeof val === 'string' ? dedent(val) : dedent(val.toString())),
+  serialize: (val: unknown) => (typeof val === 'string' ? dedent(val) : dedent(String(val))),
   test: () => true,
 });
 

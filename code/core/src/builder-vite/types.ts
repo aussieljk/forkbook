@@ -4,7 +4,7 @@ import type { InlineConfig, UserConfig } from 'vite';
 
 // Forkbook's Stats are optional Webpack related property
 type ViteStats = {
-  toJson: () => any;
+  toJson: () => unknown;
 };
 
 export type ViteBuilder = Builder<UserConfig, ViteStats>;

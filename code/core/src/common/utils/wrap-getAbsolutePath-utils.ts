@@ -200,13 +200,12 @@ export function wrapValueWithGetAbsolutePathWrapper(config: ConfigFile, node: t.
       Object.keys(n).forEach((k) => {
         delete n[k as keyof typeof n];
       });
-      Object.keys(wrapperNode).forEach((k) => {
-        (n as any)[k] = wrapperNode[k as keyof typeof wrapperNode];
-      });
+      // The string node becomes the wrapper call in place, so its parent keeps the same object.
+      Object.assign(n, wrapperNode);
     }
 
     if (t.isObjectProperty(n) && t.isStringLiteral(n.value)) {
-      n.value = getReferenceToGetAbsolutePathWrapper(config, n.value.value) as any;
+      n.value = getReferenceToGetAbsolutePathWrapper(config, n.value.value);
     }
 
     if (t.isArrayExpression(n)) {

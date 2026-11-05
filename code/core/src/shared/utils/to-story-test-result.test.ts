@@ -76,9 +76,7 @@ describe('detectEmptyRender', () => {
   });
 
   it('ignores non-render-analysis reports', () => {
-    expect(detectEmptyRender([{ type: 'other', result: { emptyRender: true } as any }])).toBe(
-      false
-    );
+    expect(detectEmptyRender([{ type: 'other', result: { emptyRender: true } }])).toBe(false);
   });
 });
 

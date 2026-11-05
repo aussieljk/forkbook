@@ -163,5 +163,5 @@ export const safeResolveModule = ({
     if (statSync(resolvedPath).isFile()) {
       return resolvedPath;
     }
-  } catch (e: any) {}
+  } catch {}
 };

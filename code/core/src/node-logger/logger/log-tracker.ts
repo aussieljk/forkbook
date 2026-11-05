@@ -4,8 +4,7 @@ import { stripVTControlCharacters } from 'node:util';
 
 import type { LogLevel } from './logger.ts';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Metadata = Record<string, any>;
+type Metadata = Record<string, unknown>;
 export interface LogEntry {
   timestamp: Date;
   level: LogLevel | 'prompt';
