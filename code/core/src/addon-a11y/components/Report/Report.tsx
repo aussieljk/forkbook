@@ -52,6 +52,8 @@ export const Report: FC<ReportProps> = ({
         const title = getTitleForAxeResult(item);
         return (
           <div key={id} className={styles.wrapper}>
+            {/* The Button below gives keyboard access. A click on the bar is a mouse shortcut. */}
+            {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             <div
               className={styles.headerBar}
               onClick={(event) => toggleOpen(event, type, item)}

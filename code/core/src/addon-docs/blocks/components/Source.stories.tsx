@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Source, SourceError } from './Source';
+import { Source, SourceError } from './Source.tsx';
 
 const meta = {
   component: Source,

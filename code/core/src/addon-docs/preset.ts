@@ -9,10 +9,18 @@ import type {
   StorybookConfigRaw,
 } from '@aussieljk/forkbook/internal/types';
 
-import { resolvePackageDir } from '../shared/utils/module';
+import type { InlineConfig, Plugin } from 'vite';
+
+import { resolvePackageDir } from '../shared/utils/module.ts';
 import { csfPlugin } from './csf-plugin/index.ts';
-import type { CompileOptions } from './compiler';
+import type { CompileOptions } from './compiler/index.ts';
 import { registerMdxService } from './mdx-service/server.ts';
+
+interface ResolvedReact {
+  react?: string;
+  reactDom?: string;
+  mdx?: string;
+}
 
 type DocsOptions = Options & {
   csfPluginOptions?: EnrichCsfOptions | null;
@@ -24,7 +32,7 @@ type DocsOptions = Options & {
  * dependencies shipped with addon-docs if the user has not installed react explicitly.
  */
 const getResolvedReact = async (options: Options) => {
-  const resolvedReact = (await options.presets.apply('resolvedReact', {})) as any;
+  const resolvedReact = await options.presets.apply<ResolvedReact>('resolvedReact', {});
   // resolvedReact should always be set by the time we get here, but just in case, we'll default to addon-docs's react dependencies
   return {
     react: resolvedReact.react ?? resolvePackageDir('react'),
@@ -51,17 +59,17 @@ const docs: PresetProperty<'docs'> = (input = {}, options) => {
   return result;
 };
 
-export const viteFinal = async (config: any, options: DocsOptions) => {
+export const viteFinal = async (config: InlineConfig, options: DocsOptions) => {
   const { plugins = [] } = config;
   const { csfPluginOptions = {} } = options;
 
-  const { mdxPlugin } = await import('./mdx-plugin');
+  const { mdxPlugin } = await import('./mdx-plugin.ts');
   const enrichCsf = await options.presets.apply('experimental_enrichCsf');
 
   // Use the resolvedReact preset to alias react and react-dom to either the users version or the version shipped with addon-docs
   const { react, reactDom, mdx } = await getResolvedReact(options);
 
-  const packageDeduplicationPlugin = {
+  const packageDeduplicationPlugin: Plugin = {
     name: 'storybook:package-deduplication',
     enforce: 'pre',
     config: () => ({
@@ -109,7 +117,7 @@ const docsX = docs as any;
  * exists. This is just a fallback that never overrides the existing preset, but ensures that there
  * is always a resolved react.
  */
-export const resolvedReact = async (existing: any) => ({
+export const resolvedReact = async (existing?: ResolvedReact) => ({
   react: existing?.react ?? resolvePackageDir('react'),
   reactDom: existing?.reactDom ?? resolvePackageDir('react-dom'),
   mdx: existing?.mdx ?? fileURLToPath(import.meta.resolve('@mdx-js/react')),
@@ -138,4 +146,4 @@ const optimizeViteDeps = [
 ];
 
 export { docsX as docs, optimizeViteDeps };
-export { manifests as experimental_manifests } from './manifest';
+export { manifests as experimental_manifests } from './manifest.ts';

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
-import { SNIPPET_WARNING_LABEL, SnippetWarning } from './SnippetWarning';
+import { SNIPPET_WARNING_LABEL, SnippetWarning } from './SnippetWarning.tsx';
 
 const meta = {
   component: SnippetWarning,

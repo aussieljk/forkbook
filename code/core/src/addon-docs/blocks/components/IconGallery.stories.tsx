@@ -9,7 +9,7 @@ import {
   TriangleAlertIcon,
 } from 'lucide-react';
 
-import { IconGallery, IconItem } from './IconGallery';
+import { IconGallery, IconItem } from './IconGallery.tsx';
 
 export default {
   component: IconGallery,

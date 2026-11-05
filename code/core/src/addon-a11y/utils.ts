@@ -1,17 +1,10 @@
+/** `import.meta.env` exists only when Vite or Vitest runs this file. */
+type ViteImportMeta = ImportMeta & { env?: Record<string, string | undefined> };
+
 export function getIsVitestStandaloneRun() {
-  try {
-    // @ts-expect-error Suppress TypeScript warning about wrong setting. Doesn't matter, because we don't use tsc for bundling.
-    return import.meta.env.VITEST_STORYBOOK === 'false';
-  } catch (e) {
-    return false;
-  }
+  return (import.meta as ViteImportMeta).env?.VITEST_STORYBOOK === 'false';
 }
 
 export function getIsVitestRunning() {
-  try {
-    // @ts-expect-error Suppress TypeScript warning about wrong setting. Doesn't matter, because we don't use tsc for bundling.
-    return import.meta.env.MODE === 'test';
-  } catch (e) {
-    return false;
-  }
+  return (import.meta as ViteImportMeta).env?.MODE === 'test';
 }

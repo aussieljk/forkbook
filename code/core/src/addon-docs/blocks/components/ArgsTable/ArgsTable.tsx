@@ -10,12 +10,12 @@ import { RotateCcwIcon, FileTextIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 import { pickBy } from 'es-toolkit/object';
 
-import { EmptyBlock } from '../EmptyBlock';
-import { ArgRow } from './ArgRow';
-import { Empty } from './Empty';
-import { SectionRow } from './SectionRow';
-import { Skeleton } from './Skeleton';
-import type { ArgType, ArgTypes, Args, Globals } from './types';
+import { EmptyBlock } from '../EmptyBlock.tsx';
+import { ArgRow } from './ArgRow.tsx';
+import { Empty } from './Empty.tsx';
+import { SectionRow } from './SectionRow.tsx';
+import { Skeleton } from './Skeleton.tsx';
+import type { ArgType, ArgTypes, Args, Globals } from './types.ts';
 import styles from './ArgsTable.module.css';
 
 export const TableWrapper = ({

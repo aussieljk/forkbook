@@ -5,7 +5,7 @@ import {
   mergeServiceArgTypes,
 } from '@aussieljk/forkbook/internal/docs-tools';
 
-import { ArgsTableError } from '../components';
+import { ArgsTableError } from '../components/index.ts';
 import { useServiceDocgen } from './use-service-docgen.ts';
 
 /** Runs the renderer's docgen extractor against a component, throwing when it is unavailable. */

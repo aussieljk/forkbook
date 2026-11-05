@@ -24,8 +24,7 @@ export const SectionRow: FC<SectionRowProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(initialExpanded);
   const levelClassName = level === 'subsection' ? styles.subsection : styles.section;
-  // @ts-expect-error (Converted from ts-ignore)
-  const itemCount = children?.length || 0;
+  const itemCount = Array.isArray(children) ? children.length : 0;
   const caption = level === 'subsection' ? `${itemCount} item${itemCount !== 1 ? 's' : ''}` : '';
 
   const helperText = `${expanded ? 'Hide' : 'Show'} ${

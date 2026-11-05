@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EmptyBlock } from './EmptyBlock';
+import { EmptyBlock } from './EmptyBlock.tsx';
 
 export default {
   component: EmptyBlock,

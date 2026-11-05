@@ -1,5 +1,5 @@
-export * from './types';
+export * from './types.ts';
 
-export * from './ArgsTable';
+export * from './ArgsTable.tsx';
 
-export * from './TabbedArgsTable';
+export * from './TabbedArgsTable.tsx';

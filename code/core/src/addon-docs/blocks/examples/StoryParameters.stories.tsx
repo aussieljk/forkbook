@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { SimpleSizeTest } from './SimpleSizeTest';
+import { SimpleSizeTest } from './SimpleSizeTest.tsx';
 
 const meta = {
   title: 'examples/Stories for the Story Block',

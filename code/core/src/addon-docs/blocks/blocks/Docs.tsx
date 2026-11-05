@@ -5,9 +5,9 @@ import type { Parameters, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import type { ThemeVars } from '@aussieljk/forkbook/theming';
 
-import { DocsContainer } from './DocsContainer';
-import type { DocsContextProps } from './DocsContext';
-import { DocsPage } from './DocsPage';
+import { DocsContainer } from './DocsContainer.tsx';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsPage } from './DocsPage.tsx';
 
 export type DocsProps<TRenderer extends Renderer = Renderer> = {
   docsParameter: Parameters;

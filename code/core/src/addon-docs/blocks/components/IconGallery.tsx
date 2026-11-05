@@ -5,7 +5,7 @@ import { ResetWrapper } from '@aussieljk/forkbook/internal/components';
 
 import { clsx } from 'clsx';
 
-import { blockBackground } from './BlockBackgroundStyles';
+import { blockBackground } from './BlockBackgroundStyles.tsx';
 import styles from './IconGallery.module.css';
 
 interface IconItemProps {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ArgTypesParameters, SubcomponentA, SubcomponentB } from './ArgTypesParameters';
+import { ArgTypesParameters, SubcomponentA, SubcomponentB } from './ArgTypesParameters.tsx';
 
 /** Reference stories to be used by the ArgTypes stories */
 const meta = {

@@ -3,10 +3,10 @@ import React from 'react';
 
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 
-import { Subtitle as PureSubtitle } from '../components';
-import type { Of } from './useOf';
-import { useOf } from './useOf';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { Subtitle as PureSubtitle } from '../components/index.ts';
+import type { Of } from './useOf.ts';
+import { useOf } from './useOf.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 interface SubtitleProps {
   children?: ReactNode;

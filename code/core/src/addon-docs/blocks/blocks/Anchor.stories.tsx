@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Anchor } from './Anchor';
+import { Anchor } from './Anchor.tsx';
 
 const meta = {
   component: Anchor,

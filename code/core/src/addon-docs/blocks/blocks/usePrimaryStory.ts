@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Tag } from '@aussieljk/forkbook/internal/preview-api';
 import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
-import { DocsContext } from './DocsContext';
+import { DocsContext } from './DocsContext.ts';
 
 /**
  * Returns the primary story for the current docs page. Autodocs pages pick the first story tagged

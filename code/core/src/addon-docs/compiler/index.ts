@@ -1,7 +1,7 @@
 import { compile as mdxCompile, compileSync as mdxCompileSync } from '@mdx-js/mdx';
 import remarkGfm from 'remark-gfm';
 
-import type { CompileOptions, MdxCompileOptions } from './types';
+import type { CompileOptions, MdxCompileOptions } from './types.ts';
 
 export type { CompileOptions, MdxCompileOptions };
 

@@ -4,10 +4,10 @@ import React from 'react';
 import { Button } from '@aussieljk/forkbook/internal/components';
 import type { DocsContextProps, ModuleExport } from '@aussieljk/forkbook/internal/types';
 
-import * as ButtonStories from '../examples/Button.stories';
-import { Preview, PreviewSkeleton } from './Preview';
-import * as sourceStories from './Source.stories';
-import { Story } from './Story';
+import * as ButtonStories from '../examples/Button.stories.tsx';
+import { Preview, PreviewSkeleton } from './Preview.tsx';
+import * as sourceStories from './Source.stories.tsx';
+import { Story } from './Story.tsx';
 
 export default {
   component: Preview,

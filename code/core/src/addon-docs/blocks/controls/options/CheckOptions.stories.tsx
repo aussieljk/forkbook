@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { fn } from '@aussieljk/forkbook/test';
 
-import { OptionsControl } from './Options';
+import { OptionsControl } from './Options.tsx';
 
 const arrayOptions = ['Bat', 'Cat', 'Rat'];
 const labels = {

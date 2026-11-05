@@ -43,7 +43,7 @@ export const withVisionSimulator: DecoratorFunction = (StoryFn, { globals }) => 
     document.body.insertAdjacentHTML('beforeend', filterDefs);
 
     return () => {
-      const filterDefsElement = document.getElementById('storybook-a11y-vision-filters');
+      const filterDefsElement = document.getElementById('forkbook-a11y-vision-filters');
       filterDefsElement?.parentElement?.removeChild(filterDefsElement);
     };
   }, []);

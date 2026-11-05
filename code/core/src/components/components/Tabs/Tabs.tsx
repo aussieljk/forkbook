@@ -1,4 +1,3 @@
-/* oxlint-disable react-classic/destructuring-assignment */
 import type { FC, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent } from 'react';
 import React, { Component, forwardRef, memo, useMemo } from 'react';
 
@@ -175,8 +174,7 @@ function TabsImpl({
                 textColor={color}
                 onClick={(e: SyntheticEvent) => {
                   e.preventDefault();
-                  // @ts-expect-error (non strict)
-                  actions.onSelect(id);
+                  actions?.onSelect(id);
                 }}
                 role="tab"
                 aria-selected={active}
@@ -214,27 +212,23 @@ Tabs.displayName = 'Tabs';
 
 export interface TabsStateProps {
   children: TabsProps['children'];
-  initial: string;
+  initial?: string;
   absolute: boolean;
   bordered: boolean;
   backgroundColor: string;
-  menuName: string;
+  menuName?: string;
 }
 
 export interface TabsStateState {
-  selected: string;
+  selected?: string;
 }
 
 export class TabsState extends Component<TabsStateProps, TabsStateState> {
   static defaultProps: TabsStateProps = {
     children: [],
-    // @ts-expect-error (non strict)
-    initial: null,
     absolute: false,
     bordered: false,
     backgroundColor: '',
-    // @ts-expect-error (non strict)
-    menuName: undefined,
   };
 
   constructor(props: TabsStateProps) {

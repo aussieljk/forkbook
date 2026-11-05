@@ -6,7 +6,7 @@ import { Button, Toolbar as SharedToolbar } from '@aussieljk/forkbook/internal/c
 import { RotateCcwIcon, RefreshCwIcon, ZoomOutIcon, ZoomInIcon, Share2Icon } from 'lucide-react';
 import { clsx } from 'clsx';
 
-import { getStoryHref } from '../getStoryHref';
+import { getStoryHref } from '../getStoryHref.ts';
 import styles from './Toolbar.module.css';
 
 interface ZoomProps {

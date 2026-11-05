@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 
 import { clsx } from 'clsx';
 
-import { parse } from './Number';
-import { getControlId } from './helpers';
-import type { ControlProps, NumberValue, RangeConfig } from './types';
+import { parse } from './Number.tsx';
+import { getControlId } from './helpers.ts';
+import type { ControlProps, NumberValue, RangeConfig } from './types.ts';
 import styles from './Range.module.css';
 
 type RangeProps = ControlProps<NumberValue | null> & RangeConfig;
@@ -35,7 +35,6 @@ export const RangeControl: FC<RangeProps> = ({
   onBlur,
   onFocus,
   argType,
-  required,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(parse(event.target.value));
@@ -64,7 +63,6 @@ export const RangeControl: FC<RangeProps> = ({
         type="range"
         disabled={readonly}
         onChange={handleChange}
-        aria-required={required || undefined}
         {...{ name, min, max, step, onFocus, onBlur }}
         value={current}
       />

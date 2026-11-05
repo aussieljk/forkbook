@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 
 import { Button, Form } from '@aussieljk/forkbook/internal/components';
 
-import { getControlId, getControlSetterButtonId } from './helpers';
-import type { ControlProps, TextConfig, TextValue } from './types';
+import { getControlId, getControlSetterButtonId } from './helpers.ts';
+import type { ControlProps, TextConfig, TextValue } from './types.ts';
 import styles from './Text.module.css';
 
 export type TextProps = ControlProps<TextValue | undefined> & TextConfig;

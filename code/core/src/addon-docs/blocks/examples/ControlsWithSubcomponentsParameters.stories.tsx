@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { ControlsParameters, SubcomponentA, SubcomponentB } from './ControlsParameters';
+import { ControlsParameters, SubcomponentA, SubcomponentB } from './ControlsParameters.tsx';
 
 /** Reference stories to be used by the Controls stories */
 const meta = {

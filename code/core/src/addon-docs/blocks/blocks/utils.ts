@@ -1,4 +1,4 @@
-import type { Component } from './types';
+import type { Component } from './types.ts';
 
 const titleCase = (str: string): string =>
   str

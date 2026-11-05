@@ -7,10 +7,10 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 
-import * as ExampleStories from '../examples/ControlsParameters.stories';
-import * as SubcomponentsExampleStories from '../examples/ControlsWithSubcomponentsParameters.stories';
-import * as EmptyArgTypesStories from '../examples/EmptyArgTypes.stories';
-import { Controls } from './Controls';
+import * as ExampleStories from '../examples/ControlsParameters.stories.tsx';
+import * as SubcomponentsExampleStories from '../examples/ControlsWithSubcomponentsParameters.stories.tsx';
+import * as EmptyArgTypesStories from '../examples/EmptyArgTypes.stories.tsx';
+import { Controls } from './Controls.tsx';
 
 const meta = {
   component: Controls,

@@ -11,8 +11,8 @@ import convert from 'color-convert';
 import { debounce } from 'es-toolkit/function';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
 
-import { getControlId } from './helpers';
-import type { ColorConfig, ColorValue, ControlProps, PresetColor } from './types';
+import { getControlId } from './helpers.ts';
+import type { ColorConfig, ColorValue, ControlProps, PresetColor } from './types.ts';
 import styles from './Color.module.css';
 
 const swatchStyle = (color: string) => ({ '--fb-swatch-color': color }) as CSSProperties;

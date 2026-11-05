@@ -8,13 +8,17 @@ import type { ModuleExports } from '@aussieljk/forkbook/internal/types';
 import type { PropDescriptor } from '@aussieljk/forkbook/preview-api';
 import { filterArgTypes } from '@aussieljk/forkbook/preview-api';
 
-import type { SortType } from '../components';
-import { ArgsTableError, ArgsTable as PureArgsTable, TabbedArgsTable } from '../components';
+import type { SortType } from '../components/index.ts';
+import {
+  ArgsTableError,
+  ArgsTable as PureArgsTable,
+  TabbedArgsTable,
+} from '../components/index.ts';
 import {
   extractComponentArgTypes,
   extractSubcomponentArgTypes,
   useDocgenServiceRows,
-} from './argTypesShared';
+} from './argTypesShared.ts';
 import { DocsContext } from './DocsContext.ts';
 import { useOf } from './useOf.ts';
 import { getComponentName } from './utils.ts';

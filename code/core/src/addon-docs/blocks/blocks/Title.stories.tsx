@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import * as DefaultButtonStories from '../examples/Button.stories';
-import { Title } from './Title';
+import * as DefaultButtonStories from '../examples/Button.stories.tsx';
+import { Title } from './Title.tsx';
 
 const meta = {
   component: Title,

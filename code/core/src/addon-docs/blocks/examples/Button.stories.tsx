@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, fireEvent, within } from '@aussieljk/forkbook/test';
 
-import { Button } from './Button';
+import { Button } from './Button.tsx';
 
 const meta = {
   title: 'examples/Button',

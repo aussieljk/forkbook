@@ -208,7 +208,7 @@ export const Menu = meta.story({
     await clickAt(canvasElement.querySelector('#inner')!);
 
     const menu = await waitFor(() => {
-      const element = document.getElementById('storybook-highlights-menu')!;
+      const element = document.getElementById('forkbook-highlights-menu')!;
       expect(element.querySelector('.element-list button')).not.toBeNull();
       return element;
     });

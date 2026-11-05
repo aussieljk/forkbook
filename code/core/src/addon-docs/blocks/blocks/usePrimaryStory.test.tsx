@@ -8,9 +8,9 @@ import type { FC, PropsWithChildren } from 'react';
 import { Tag } from '@aussieljk/forkbook/internal/core-server';
 import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
-import type { DocsContextProps } from './DocsContext';
-import { DocsContext } from './DocsContext';
-import { usePrimaryStory } from './usePrimaryStory';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsContext } from './DocsContext.ts';
+import { usePrimaryStory } from './usePrimaryStory.ts';
 
 const stories: Record<string, Partial<PreparedStory>> = {
   story1: { name: 'Story One', tags: [`!${Tag.AUTODOCS}`] },

@@ -23,7 +23,7 @@ const isColorString = (color: string) => {
 
 // Passing arguments that can't be converted to RGB such as linear-gradient
 // to library polished's functions such as lighten or darken throws the error
-// that crashes the entire storybook. It needs to be guarded when arguments
+// that crashes the entire Forkbook UI. It needs to be guarded when arguments
 // of those functions are from user input.
 const isValidColorForPolished = (color: string) => {
   return !/(gradient|var|calc)/.test(color);

@@ -55,8 +55,7 @@ export function useList(list: ChildrenListComplete) {
                     active,
                     onClick: (e) => {
                       e.preventDefault();
-                      // @ts-expect-error (non strict)
-                      actions.onSelect(id);
+                      actions?.onSelect(id);
                     },
                   } as Link;
                 })}

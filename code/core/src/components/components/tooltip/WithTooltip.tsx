@@ -272,14 +272,12 @@ const WithToolTipState = ({
     iframes.forEach((iframe) => {
       const bind = () => {
         try {
-          // @ts-expect-error (non strict)
-          if (iframe.contentWindow.document) {
-            // @ts-expect-error (non strict)
-            iframe.contentWindow.document.addEventListener('click', hide);
+          const iframeDocument = iframe.contentWindow?.document;
+          if (iframeDocument) {
+            iframeDocument.addEventListener('click', hide);
             unbinders.push(() => {
               try {
-                // @ts-expect-error (non strict)
-                iframe.contentWindow.document.removeEventListener('click', hide);
+                iframeDocument.removeEventListener('click', hide);
               } catch (e) {
                 // logger.debug('Removing a click listener from iframe failed: ', e);
               }

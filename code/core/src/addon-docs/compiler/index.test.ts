@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { dedent } from 'ts-dedent';
 
-import { compile, compileSync } from './index';
+import { compile, compileSync } from './index.ts';
 
 expect.addSnapshotSerializer({
   serialize: (val: any) => (typeof val === 'string' ? val : val.toString()),

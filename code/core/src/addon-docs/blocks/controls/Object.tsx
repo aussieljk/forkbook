@@ -8,9 +8,9 @@ import { MinusIcon, PencilIcon, PlusIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 import { cloneDeep } from 'es-toolkit/object';
 
-import { getControlId, getControlSetterButtonId } from './helpers';
-import { JsonTree } from './react-editable-json-tree';
-import type { ControlProps, ObjectConfig, ObjectValue } from './types';
+import { getControlId, getControlSetterButtonId } from './helpers.ts';
+import { JsonTree } from './react-editable-json-tree/index.tsx';
+import type { ControlProps, ObjectConfig, ObjectValue } from './types.ts';
 import styles from './Object.module.css';
 
 const { window: globalWindow } = globalThis;

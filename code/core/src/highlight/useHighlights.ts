@@ -29,8 +29,8 @@ import {
   useStore,
 } from './utils.ts';
 
-const menuId = 'storybook-highlights-menu';
-const rootId = 'storybook-highlights-root';
+const menuId = 'forkbook-highlights-menu';
+const rootId = 'forkbook-highlights-root';
 const storybookRootId = 'storybook-root';
 
 export const useHighlights = (channel: Channel) => {

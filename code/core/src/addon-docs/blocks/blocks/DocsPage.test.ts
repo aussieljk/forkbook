@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from 'vitest';
 
-import { extractTitle } from './Title';
+import { extractTitle } from './Title.tsx';
 
 describe('defaultTitleSlot', () => {
   it('splits on last /', () => {

@@ -13,13 +13,13 @@ import {
   themes,
 } from '@aussieljk/forkbook/theming';
 
-import { DocsPageWrapper } from '../components';
-import { TableOfContents } from '../components/TableOfContents';
-import type { DocsContextProps } from './DocsContext';
-import { DocsContext } from './DocsContext';
-import { createDocsSlugger, DocsSluggerContext } from './DocsSluggerContext';
-import { SourceContainer } from './SourceContainer';
-import { scrollToElement } from './utils';
+import { DocsPageWrapper } from '../components/index.ts';
+import { TableOfContents } from '../components/TableOfContents.tsx';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsContext } from './DocsContext.ts';
+import { createDocsSlugger, DocsSluggerContext } from './DocsSluggerContext.ts';
+import { SourceContainer } from './SourceContainer.tsx';
+import { scrollToElement } from './utils.ts';
 
 const { document, window: globalWindow } = globalThis;
 

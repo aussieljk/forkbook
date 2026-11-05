@@ -3,11 +3,11 @@ import React from 'react';
 
 import Markdown from 'markdown-to-jsx';
 
-import type { ArgControlProps } from './ArgControl';
-import { ArgControl } from './ArgControl';
-import { ArgJsDoc } from './ArgJsDoc';
-import { ArgValue } from './ArgValue';
-import type { ArgType, Args, TableAnnotation } from './types';
+import type { ArgControlProps } from './ArgControl.tsx';
+import { ArgControl } from './ArgControl.tsx';
+import { ArgJsDoc } from './ArgJsDoc.tsx';
+import { ArgValue } from './ArgValue.tsx';
+import type { ArgType, Args, TableAnnotation } from './types.ts';
 import styles from './ArgRow.module.css';
 
 interface ArgRowProps {

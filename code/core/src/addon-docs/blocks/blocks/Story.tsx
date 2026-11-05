@@ -5,16 +5,15 @@ import type {
   ModuleExport,
   ModuleExports,
   PreparedStory,
-  Renderer,
   StoryId,
 } from '@aussieljk/forkbook/internal/types';
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 
-import { Story as PureStory, StorySkeleton } from '../components';
-import type { DocsContextProps } from './DocsContext';
-import { DocsContext } from './DocsContext';
-import { useStory } from './useStory';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { Story as PureStory, StorySkeleton } from '../components/index.ts';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsContext } from './DocsContext.ts';
+import { useStory } from './useStory.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 type PureStoryProps = ComponentProps<typeof PureStory>;
 
@@ -73,17 +72,17 @@ export const getStoryId = (props: StoryProps, context: DocsContextProps): StoryI
   return resolved.story.id;
 };
 
-export const getStoryProps = <TFramework extends Renderer>(
+export const getStoryProps = (
   props: StoryParameters,
-  story: PreparedStory<TFramework>,
-  context: DocsContextProps<TFramework>
-): PureStoryProps => {
+  story: PreparedStory,
+  context: DocsContextProps
+): PureStoryProps | null => {
   const { parameters = {} } = story || {};
   const { docs = {} } = parameters;
   const storyParameters = (docs.story || {}) as StoryParameters & { iframeHeight?: string };
 
   if (docs.disable) {
-    return null as any;
+    return null;
   }
 
   // prefer block props, then story parameters defined by the framework-specific settings
@@ -95,19 +94,19 @@ export const getStoryProps = <TFramework extends Renderer>(
     const height = props.height ?? storyParameters.height;
     const autoplay = props.autoplay ?? storyParameters.autoplay ?? false;
     return {
-      story: story as any,
+      story,
       inline: true,
       height,
       autoplay,
       forceInitialArgs: !!props.__forceInitialArgs,
       primary: !!props.__primary,
-      renderStoryToElement: context.renderStoryToElement as any,
+      renderStoryToElement: context.renderStoryToElement,
     };
   }
 
   const height = props.height ?? storyParameters.height ?? storyParameters.iframeHeight ?? '100px';
   return {
-    story: story as any,
+    story,
     inline: false,
     height,
 

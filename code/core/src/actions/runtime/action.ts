@@ -82,7 +82,7 @@ export function action(name: string, options: ActionOptions = {}): HandlerFuncti
     // TODO react native doesn't have the crypto module, we should figure out a better way to generate these ids.
     // pseudo random id, example response lo1e7zm4832bkr7yfl7
     const id = Date.now().toString(36) + Math.random().toString(36).substring(2);
-    const minDepth = 5; // anything less is really just storybook internals
+    const minDepth = 5; // anything less is really just Forkbook internals
     const serializedArgs = args.map(serializeArg);
     const normalizedArgs = args.length > 1 ? serializedArgs : serializedArgs[0];
 

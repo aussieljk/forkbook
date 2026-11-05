@@ -9,15 +9,15 @@ import { CodeIcon, CopyIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
 
-import type { SourceProps } from '.';
-import { Source } from '.';
-import { DocsContext } from '../blocks/DocsContext';
-import { getStoryId } from '../blocks/Story';
-import { blockBackground } from './BlockBackgroundStyles';
-import { SnippetWarning } from './SnippetWarning';
-import { StorySkeleton } from './Story';
-import { Toolbar } from './Toolbar';
-import { ZoomContext } from './ZoomContext';
+import type { SourceProps } from './index.ts';
+import { Source } from './index.ts';
+import { DocsContext } from '../blocks/DocsContext.ts';
+import { getStoryId } from '../blocks/Story.tsx';
+import { blockBackground } from './BlockBackgroundStyles.tsx';
+import { SnippetWarning } from './SnippetWarning.tsx';
+import { StorySkeleton } from './Story.tsx';
+import { Toolbar } from './Toolbar.tsx';
+import { ZoomContext } from './ZoomContext.tsx';
 import styles from './Preview.module.css';
 
 export type PreviewProps = PropsWithChildren<{

@@ -97,7 +97,7 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
 
   const context: ContextSpec = {
     include: document?.body,
-    exclude: ['.fb-wrapper', '#storybook-docs', '#storybook-highlights-root'], // Internal Forkbook elements that are always in the document
+    exclude: ['.fb-wrapper', '#storybook-docs', '#forkbook-highlights-root'], // Internal Forkbook elements that are always in the document
   };
 
   if (input.context) {
@@ -136,7 +136,7 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
   const optionsWithDisabledRules = mergeDisabledRulesIntoRunOptions(options, configWithDefault);
 
   return new Promise<AxeResults>((resolve, reject) => {
-    const highlightsRoot = document?.getElementById('storybook-highlights-root');
+    const highlightsRoot = document?.getElementById('forkbook-highlights-root');
     if (highlightsRoot) {
       highlightsRoot.style.display = 'none';
     }

@@ -1,13 +1,13 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { Anchor } from './Anchor';
-import { Canvas } from './Canvas';
-import { Description } from './Description';
-import { Subheading } from './Subheading';
-import type { DocsStoryProps } from './types';
-import { useOf } from './useOf';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { Anchor } from './Anchor.tsx';
+import { Canvas } from './Canvas.tsx';
+import { Description } from './Description.tsx';
+import { Subheading } from './Subheading.tsx';
+import type { DocsStoryProps } from './types.ts';
+import { useOf } from './useOf.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 const DocsStoryImpl: FC<DocsStoryProps> = ({
   of,

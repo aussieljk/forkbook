@@ -7,10 +7,12 @@ import { clsx } from 'clsx';
 
 import styles from './DocsPage.module.css';
 
-export { Title } from './Title';
+export { Title } from './Title.tsx';
 
-export const Subtitle = ({ className, ...props }: ComponentProps<'h2'>) => (
-  <h2 className={clsx(withReset, styles.subtitle, className)} {...props} />
+export const Subtitle = ({ className, children, ...props }: ComponentProps<'h2'>) => (
+  <h2 className={clsx(withReset, styles.subtitle, className)} {...props}>
+    {children}
+  </h2>
 );
 
 /** Styles the raw elements (headings, paragraphs, lists, tables, ...) of a docs page. */

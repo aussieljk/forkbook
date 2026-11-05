@@ -1,15 +1,15 @@
 import type { ComponentProps } from 'react';
 import React, { Suspense, lazy } from 'react';
 
-import type { ColorControlProps } from './Color';
+import type { ColorControlProps } from './Color.tsx';
 
-export * from './types';
+export * from './types.ts';
 
-export * from './Boolean';
+export * from './Boolean.tsx';
 
 export type ColorProps = ColorControlProps;
 
-const LazyColorControl = lazy(() => import('./Color'));
+const LazyColorControl = lazy(() => import('./Color.tsx'));
 
 export const ColorControl = (props: ComponentProps<typeof LazyColorControl>) => (
   <Suspense fallback={<div />}>
@@ -17,15 +17,15 @@ export const ColorControl = (props: ComponentProps<typeof LazyColorControl>) => 
   </Suspense>
 );
 
-export * from './Date';
+export * from './Date.tsx';
 
-export * from './Number';
+export * from './Number.tsx';
 
-export * from './options';
-export * from './Object';
+export * from './options/index.ts';
+export * from './Object.tsx';
 
-export * from './Range';
+export * from './Range.tsx';
 
-export * from './Text';
+export * from './Text.tsx';
 
-export * from './Files';
+export * from './Files.tsx';

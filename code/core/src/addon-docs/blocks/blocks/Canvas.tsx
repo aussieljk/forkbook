@@ -1,4 +1,3 @@
-/* oxlint-disable react-classic/destructuring-assignment */
 import React, { useCallback, useContext } from 'react';
 import type { FC } from 'react';
 
@@ -6,16 +5,16 @@ import { FORCE_REMOUNT } from '@aussieljk/forkbook/internal/core-events';
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 import type { ModuleExport, ModuleExports } from '@aussieljk/forkbook/internal/types';
 
-import type { Layout, PreviewProps as PurePreviewProps } from '../components';
-import { Preview as PurePreview } from '../components';
-import { DocsContext } from './DocsContext';
-import type { SourceProps } from './Source';
-import { useSourceProps } from './Source';
-import { SourceContext } from './SourceContainer';
-import type { StoryProps } from './Story';
-import { Story } from './Story';
-import { useOf } from './useOf';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import type { Layout, PreviewProps as PurePreviewProps } from '../components/index.ts';
+import { Preview as PurePreview } from '../components/index.ts';
+import { DocsContext } from './DocsContext.ts';
+import type { SourceProps } from './Source.tsx';
+import { useSourceProps } from './Source.tsx';
+import { SourceContext } from './SourceContainer.tsx';
+import type { StoryProps } from './Story.tsx';
+import { Story } from './Story.tsx';
+import { useOf } from './useOf.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 type CanvasProps = Pick<PurePreviewProps, 'withToolbar' | 'additionalActions' | 'className'> & {
   /**

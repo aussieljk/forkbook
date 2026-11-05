@@ -24,7 +24,7 @@ function getDocumentWidthAndHeight() {
 
 function createCanvas(): CanvasState {
   const canvas = global.document.createElement('canvas');
-  canvas.id = 'storybook-addon-measure';
+  canvas.id = 'forkbook-addon-measure';
   const context = canvas.getContext('2d');
   invariant(context != null);
   // Set canvas width & height

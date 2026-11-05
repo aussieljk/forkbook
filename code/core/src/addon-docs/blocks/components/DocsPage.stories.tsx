@@ -3,14 +3,14 @@ import React from 'react';
 
 import { expect, within } from '@aussieljk/forkbook/test';
 
-import { ArgsTable, Source } from '.';
-import { Markdown as MarkdownComponent } from '../blocks/Markdown';
-import * as markdown from '../blocks/Markdown.stories';
-import { Unstyled } from '../blocks/Unstyled';
-import * as argsTable from './ArgsTable/ArgsTable.stories';
-import { DocsPageWrapper, Subtitle, Title } from './DocsPage';
-import * as Preview from './Preview.stories';
-import * as source from './Source.stories';
+import { ArgsTable, Source } from './index.ts';
+import { Markdown as MarkdownComponent } from '../blocks/Markdown.tsx';
+import * as markdown from '../blocks/Markdown.stories.tsx';
+import { Unstyled } from '../blocks/Unstyled.tsx';
+import * as argsTable from './ArgsTable/ArgsTable.stories.tsx';
+import { DocsPageWrapper, Subtitle, Title } from './DocsPage.tsx';
+import * as Preview from './Preview.stories.tsx';
+import * as source from './Source.stories.tsx';
 
 export default {
   component: DocsPageWrapper,

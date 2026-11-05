@@ -6,8 +6,8 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, screen, within } from '@aussieljk/forkbook/test';
 
-import { ArgRow } from './ArgRow';
-import { TableWrapper } from './ArgsTable';
+import { ArgRow } from './ArgRow.tsx';
+import { TableWrapper } from './ArgsTable.tsx';
 
 export default {
   component: ArgRow,
@@ -437,7 +437,7 @@ export const Markdown = {
       key: 'someString',
       name: 'Some String',
       description:
-        'A `prop` can *support* __markdown__ syntax. This was ship in ~~5.2~~ 5.3. [Find more info in the storybook docs.](https://forkbook.ljk.dev)',
+        'A `prop` can *support* __markdown__ syntax. This was ship in ~~5.2~~ 5.3. [Find more info in the Forkbook docs.](https://forkbook.ljk.dev)',
       table: {
         type: {
           summary: 'string',

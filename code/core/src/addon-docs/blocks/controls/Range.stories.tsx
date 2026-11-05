@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { fn } from '@aussieljk/forkbook/test';
 
-import { RangeControl } from './Range';
+import { RangeControl } from './Range.tsx';
 
 const meta = {
   component: RangeControl,

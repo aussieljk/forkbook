@@ -12,9 +12,9 @@ import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 
 import { LinkIcon } from 'lucide-react';
 
-import { Source } from '../components';
-import type { DocsContextProps } from './DocsContext';
-import { DocsContext } from './DocsContext';
+import { Source } from '../components/index.ts';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsContext } from './DocsContext.ts';
 import styles from './mdx.module.css';
 
 const { document } = globalThis;
@@ -213,11 +213,11 @@ export const HeaderMdx: FC<PropsWithChildren<HeaderMdxProps>> = (props) => {
   return <Component {...nameSpaceClassNames(withoutAs, as)} />;
 };
 
-export const HeadersMdx = SUPPORTED_MDX_HEADERS.reduce(
-  (acc, headerType) => ({
-    ...acc,
-    // @ts-expect-error (Converted from ts-ignore)
-    [headerType]: (props: object) => <HeaderMdx as={headerType} {...props} />,
-  }),
-  {}
+export const HeadersMdx = Object.fromEntries(
+  SUPPORTED_MDX_HEADERS.map((headerType) => [
+    headerType,
+    (props: Omit<HeaderMdxProps, 'as'> & { children?: React.ReactNode }) => (
+      <HeaderMdx as={headerType} {...props} />
+    ),
+  ])
 );

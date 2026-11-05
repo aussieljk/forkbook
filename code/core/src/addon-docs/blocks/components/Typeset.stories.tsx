@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typeset } from './Typeset';
+import { Typeset } from './Typeset.tsx';
 
 export default {
   component: Typeset,

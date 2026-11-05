@@ -3,8 +3,8 @@ import React from 'react';
 
 import { ResetWrapper } from '@aussieljk/forkbook/internal/components';
 
-import { TableWrapper } from './ArgsTable';
-import { SectionRow } from './SectionRow';
+import { TableWrapper } from './ArgsTable.tsx';
+import { SectionRow } from './SectionRow.tsx';
 
 export default {
   component: SectionRow,

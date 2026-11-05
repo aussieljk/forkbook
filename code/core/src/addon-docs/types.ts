@@ -11,8 +11,8 @@ import type {
 
 import type { ThemeVars } from '@aussieljk/forkbook/theming';
 
-import type { DocsContainerProps } from './blocks/blocks';
-import type { TocParameters } from './blocks/components';
+import type { DocsContainerProps } from './blocks/blocks/index.ts';
+import type { TocParameters } from './blocks/components/index.ts';
 
 type StoryBlockParameters = {
   /** Whether a story's play function runs when shown in docs page */

@@ -2,10 +2,10 @@ import type React from 'react';
 
 import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
 
-import * as addonAnnotations from './preview';
-import type { DocsTypes } from './types';
+import * as addonAnnotations from './preview.ts';
+import type { DocsTypes } from './types.ts';
 
-export { DocsRenderer } from './DocsRenderer';
+export { DocsRenderer } from './DocsRenderer.tsx';
 export type { DocsTypes };
 
 declare module 'mdx/types' {

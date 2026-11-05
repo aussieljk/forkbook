@@ -154,8 +154,10 @@ export const Header = ({
 );
 
 export const Title = forwardRef<HTMLHeadingElement, ComponentProps<'h2'>>(
-  ({ className, ...props }, ref) => (
-    <h2 ref={ref} className={clsx(styles.title, className)} {...props} />
+  ({ className, children, ...props }, ref) => (
+    <h2 ref={ref} className={clsx(styles.title, className)} {...props}>
+      {children}
+    </h2>
   )
 );
 Title.displayName = 'Title';

@@ -8,7 +8,7 @@ Forkbook Viewport Addon allows your stories to be displayed in different sizes a
 
 ## Installation
 
-Viewport is part of [essentials](https://forkbook.ljk.dev/docs/essentials) and so is installed in all new Storybooks by default. If you need to add it to your Forkbook, you can run:
+Viewport is part of [essentials](https://forkbook.ljk.dev/docs/essentials) and so is installed in all new Forkbook projects by default. If you need to add it to your Forkbook, you can run:
 
 ```sh
 npm i -D @aussieljk/forkbook/viewport

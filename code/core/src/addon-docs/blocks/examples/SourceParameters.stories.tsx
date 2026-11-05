@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { dedent } from 'ts-dedent';
 
-import { EmptyExample } from './EmptyExample';
+import { EmptyExample } from './EmptyExample.tsx';
 
 const code = `query HeroNameAndFriends($episode: Episode) {
           hero(episode: $episode) {

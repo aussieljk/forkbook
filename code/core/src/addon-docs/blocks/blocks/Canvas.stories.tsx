@@ -4,11 +4,11 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { dedent } from 'ts-dedent';
 
-import * as ButtonStories from '../examples/Button.stories';
-import * as ParameterStories from '../examples/CanvasParameters.stories';
-import * as SourceParameterStories from '../examples/SourceParameters.stories';
-import { Canvas } from './Canvas';
-import SourceStoriesMeta from './Source.stories';
+import * as ButtonStories from '../examples/Button.stories.tsx';
+import * as ParameterStories from '../examples/CanvasParameters.stories.tsx';
+import * as SourceParameterStories from '../examples/SourceParameters.stories.tsx';
+import { Canvas } from './Canvas.tsx';
+import SourceStoriesMeta from './Source.stories.tsx';
 
 const meta = {
   component: Canvas,

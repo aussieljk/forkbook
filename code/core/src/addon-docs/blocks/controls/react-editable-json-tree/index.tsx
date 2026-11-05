@@ -1,19 +1,46 @@
 import type { ReactElement } from 'react';
 import React, { Component } from 'react';
 
-import { type ClickableElement, JsonNode } from './JsonNodes';
-import * as DATA_TYPES from './types/dataTypes';
-import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/deltaTypes';
-import * as INPUT_USAGE_TYPES from './types/inputUsageTypes';
-import { getObjectType } from './utils/objectTypes';
-import { parse } from './utils/parse';
-import { array, object, value } from './utils/styles';
+import { JsonNode } from './JsonNode.tsx';
+import type { ClickableElement } from './types/ClickableElement.ts';
+import * as DATA_TYPES from './types/dataTypes.ts';
+import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/deltaTypes.ts';
+import * as INPUT_USAGE_TYPES from './types/inputUsageTypes.ts';
+import { getObjectType } from './utils/objectTypes.ts';
+import { parse } from './utils/parse.ts';
+import { array, object, value } from './utils/styles.ts';
+
+type ElementOrGenerator = ReactElement | ((...args: any) => ReactElement);
+
+const toGenerator = (element?: ElementOrGenerator) =>
+  typeof element === 'function' ? element : () => element;
 
 interface JsonTreeState {
   data: JsonTreeProps['data'];
   rootName: JsonTreeProps['rootName'];
 }
 export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
+  static defaultProps: Partial<JsonTreeProps> = {
+    rootName: 'root',
+    isCollapsed: (_keyPath: string[], deep: number) => deep !== -1,
+    readOnly: () => false,
+    onFullyUpdate: () => {},
+    onDeltaUpdate: () => {},
+    beforeRemoveAction: () => Promise.resolve(),
+    beforeAddAction: () => Promise.resolve(),
+    beforeUpdateAction: () => Promise.resolve(),
+    logger: { error: () => {} },
+    onSubmitValueParser: (
+      _isEditMode: boolean,
+      _keyPath: string[],
+      _deep: number,
+      _name: string,
+      rawValue: string
+    ) => parse(rawValue),
+    inputElement: () => <input />,
+    textareaElement: () => <textarea />,
+  };
+
   constructor(props: JsonTreeProps) {
     super(props);
     this.state = {
@@ -67,20 +94,9 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
     // Node type
     const dataType = getObjectType(data);
 
-    let readOnlyFunction = readOnly;
-    if (getObjectType(readOnly) === 'Boolean') {
-      readOnlyFunction = () => readOnly;
-    }
-    let inputElementFunction = inputElement;
-    if (inputElement && getObjectType(inputElement) !== 'Function') {
-      // @ts-expect-error (Converted from ts-ignore)
-      inputElementFunction = () => inputElement;
-    }
-    let textareaElementFunction = textareaElement;
-    if (textareaElement && getObjectType(textareaElement) !== 'Function') {
-      // @ts-expect-error (Converted from ts-ignore)
-      textareaElementFunction = () => textareaElement;
-    }
+    const readOnlyFunction = typeof readOnly === 'function' ? readOnly : () => readOnly;
+    const inputElementFunction = toGenerator(inputElement);
+    const textareaElementFunction = toGenerator(textareaElement);
 
     if (dataType === 'Object' || dataType === 'Array') {
       return (
@@ -92,11 +108,11 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
             isCollapsed={isCollapsed ?? (() => false)}
             onUpdate={this.onUpdate}
             onDeltaUpdate={onDeltaUpdate ?? (() => {})}
-            readOnly={readOnlyFunction as (...args: any) => any}
+            readOnly={readOnlyFunction}
             addButtonElement={addButtonElement}
             cancelButtonElement={cancelButtonElement}
-            inputElementGenerator={inputElementFunction as (...args: any) => any}
-            textareaElementGenerator={textareaElementFunction as (...args: any) => any}
+            inputElementGenerator={inputElementFunction}
+            textareaElementGenerator={textareaElementFunction}
             minusMenuElement={minusMenuElement}
             plusMenuElement={plusMenuElement}
             handleRemove={this.removeRoot}
@@ -123,8 +139,8 @@ interface JsonTreeProps {
   readOnly?: boolean | ((...args: any) => any);
   addButtonElement?: ClickableElement;
   cancelButtonElement?: ClickableElement;
-  inputElement?: ReactElement | ((...args: any) => ReactElement);
-  textareaElement?: ReactElement | ((...args: any) => ReactElement);
+  inputElement?: ElementOrGenerator;
+  textareaElement?: ElementOrGenerator;
   minusMenuElement?: ClickableElement;
   plusMenuElement?: ClickableElement;
   fallback?: ReactElement;
@@ -134,23 +150,6 @@ interface JsonTreeProps {
   logger?: object;
   onSubmitValueParser?: (...args: any) => any;
 }
-
-// @ts-expect-error (Converted from ts-ignore)
-JsonTree.defaultProps = {
-  rootName: 'root',
-  isCollapsed: (keyPath, deep) => deep !== -1,
-  readOnly: () => false,
-  onFullyUpdate: () => {},
-  onDeltaUpdate: () => {},
-  beforeRemoveAction: () => Promise.resolve(),
-  beforeAddAction: () => Promise.resolve(),
-  beforeUpdateAction: () => Promise.resolve(),
-  logger: { error: () => {} },
-  onSubmitValueParser: (isEditMode, keyPath, deep, name, rawValue) => parse(rawValue),
-  inputElement: () => <input />,
-  textareaElement: () => <textarea />,
-  fallback: null,
-} as Partial<JsonTreeProps>;
 
 export {
   getObjectType,

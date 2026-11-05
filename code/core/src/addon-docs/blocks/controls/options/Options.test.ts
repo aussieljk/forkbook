@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeOptions } from './Options';
+import { normalizeOptions } from './Options.tsx';
 
 describe('normalizeOptions', () => {
   it('uses String(item) as label when no labels map is provided', () => {

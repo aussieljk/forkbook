@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 import { addons } from '@aussieljk/forkbook/preview-api';
 import { expect, fireEvent, fn, waitFor, within } from '@aussieljk/forkbook/test';
 
-import { BooleanControl } from './Boolean';
+import { BooleanControl } from './Boolean.tsx';
 
 const meta = {
   component: BooleanControl,

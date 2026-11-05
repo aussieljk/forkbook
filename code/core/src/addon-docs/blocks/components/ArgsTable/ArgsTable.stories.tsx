@@ -5,8 +5,8 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 import { action } from '@aussieljk/forkbook/actions';
 import { expect, within } from '@aussieljk/forkbook/test';
 
-import * as ArgRow from './ArgRow.stories';
-import { ArgsTable, ArgsTableError } from './ArgsTable';
+import * as ArgRow from './ArgRow.stories.tsx';
+import { ArgsTable, ArgsTableError } from './ArgsTable.tsx';
 
 const meta = {
   component: ArgsTable,

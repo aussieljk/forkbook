@@ -3,8 +3,8 @@ import type { ChangeEvent, FC } from 'react';
 
 import { Form } from '@aussieljk/forkbook/internal/components';
 
-import { getControlId } from './helpers';
-import type { ControlProps } from './types';
+import { getControlId } from './helpers.ts';
+import type { ControlProps } from './types.ts';
 import styles from './Files.module.css';
 
 export interface FilesControlProps extends ControlProps<string[]> {

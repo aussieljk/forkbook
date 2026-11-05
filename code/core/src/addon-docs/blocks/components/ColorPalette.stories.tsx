@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColorItem, ColorPalette } from './ColorPalette';
+import { ColorItem, ColorPalette } from './ColorPalette.tsx';
 
 export default {
   component: ColorPalette,

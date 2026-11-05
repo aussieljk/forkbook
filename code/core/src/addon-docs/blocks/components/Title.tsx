@@ -7,6 +7,8 @@ import { clsx } from 'clsx';
 
 import styles from './Title.module.css';
 
-export const Title = ({ className, ...props }: ComponentProps<'h1'>) => (
-  <h1 className={clsx(withReset, styles.title, className)} {...props} />
+export const Title = ({ className, children, ...props }: ComponentProps<'h1'>) => (
+  <h1 className={clsx(withReset, styles.title, className)} {...props}>
+    {children}
+  </h1>
 );

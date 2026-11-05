@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getControlId, getControlSetterButtonId } from './helpers';
+import { getControlId, getControlSetterButtonId } from './helpers.ts';
 
 describe('getControlId', () => {
   it.each([

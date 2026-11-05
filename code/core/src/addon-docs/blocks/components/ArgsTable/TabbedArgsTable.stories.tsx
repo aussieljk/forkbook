@@ -6,12 +6,12 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, userEvent, within } from '@aussieljk/forkbook/test';
 
-import * as ArgRow from './ArgRow.stories';
-import { ArgsTable } from './ArgsTable';
-import { Compact, Normal, Sections } from './ArgsTable.stories';
-import type { TabbedArgsTableProps } from './TabbedArgsTable';
-import { TabbedArgsTable } from './TabbedArgsTable';
-import type { Args } from './types';
+import * as ArgRow from './ArgRow.stories.tsx';
+import { ArgsTable } from './ArgsTable.tsx';
+import { Compact, Normal, Sections } from './ArgsTable.stories.tsx';
+import type { TabbedArgsTableProps } from './TabbedArgsTable.tsx';
+import { TabbedArgsTable } from './TabbedArgsTable.tsx';
+import type { Args } from './types.ts';
 
 const meta = {
   component: TabbedArgsTable,

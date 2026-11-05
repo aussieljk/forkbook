@@ -6,8 +6,8 @@ import React from 'react';
 
 import { ThemeProvider, convert, themes } from '@aussieljk/forkbook/theming';
 
-import * as ArgRow from './ArgRow.stories';
-import { ArgsTable } from './ArgsTable';
+import * as ArgRow from './ArgRow.stories.tsx';
+import { ArgsTable } from './ArgsTable.tsx';
 
 const renderTable = (docsLang?: string) =>
   render(

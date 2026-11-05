@@ -13,8 +13,8 @@ import {
   OptionsControl,
   RangeControl,
   TextControl,
-} from '../../controls';
-import type { ArgType, Args } from './types';
+} from '../../controls/index.tsx';
+import type { ArgType, Args } from './types.ts';
 
 export interface ArgControlProps {
   row: ArgType;

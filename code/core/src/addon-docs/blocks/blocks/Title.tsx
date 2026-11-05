@@ -4,10 +4,10 @@ import React from 'react';
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 import type { ComponentTitle } from '@aussieljk/forkbook/internal/types';
 
-import { Title as PureTitle } from '../components';
-import type { Of } from './useOf';
-import { useOf } from './useOf';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { Title as PureTitle } from '../components/index.ts';
+import type { Of } from './useOf.ts';
+import { useOf } from './useOf.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 interface TitleProps {
   /**

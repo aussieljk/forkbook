@@ -10,8 +10,8 @@ import { SyntaxHighlighter } from '@aussieljk/forkbook/internal/components';
 import { clsx } from 'clsx';
 import { ThemeProvider, convert, themes, useTheme } from '@aussieljk/forkbook/theming';
 
-import { EmptyBlock } from './EmptyBlock';
-import { SnippetWarning } from './SnippetWarning';
+import { EmptyBlock } from './EmptyBlock.tsx';
+import { SnippetWarning } from './SnippetWarning.tsx';
 import styles from './Source.module.css';
 
 const StyledSyntaxHighlighter: FunctionComponent<SyntaxHighlighterProps> = ({

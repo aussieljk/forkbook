@@ -1,4 +1,4 @@
-import { Title } from './Title';
+import { Title } from './Title.tsx';
 
 export default { component: Title };
 

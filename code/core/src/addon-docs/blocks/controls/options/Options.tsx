@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import type { ControlProps, Options, OptionsConfig, OptionsSelection } from '../types';
-import { CheckboxControl } from './Checkbox';
-import { RadioControl } from './Radio';
-import { SelectControl } from './Select';
+import type { ControlProps, Options, OptionsConfig, OptionsSelection } from '../types.ts';
+import { CheckboxControl } from './Checkbox.tsx';
+import { RadioControl } from './Radio.tsx';
+import { SelectControl } from './Select.tsx';
 
 /**
  * Options can accept `options` in two formats:

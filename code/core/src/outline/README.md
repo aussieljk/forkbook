@@ -6,7 +6,7 @@ Forkbook Addon Outline can be used for visually debugging CSS layout and alignme
 
 ## Usage
 
-Requires Forkbook 6.1 or later. Outline is part of [essentials](https://forkbook.ljk.dev/docs/essentials) and so is installed in all new Storybooks by default. If you need to add it to your Forkbook, you can run:
+Requires Forkbook 6.1 or later. Outline is part of [essentials](https://forkbook.ljk.dev/docs/essentials) and so is installed in all new Forkbook projects by default. If you need to add it to your Forkbook, you can run:
 
 ```sh
 npm i -D @storybook/addon-outline

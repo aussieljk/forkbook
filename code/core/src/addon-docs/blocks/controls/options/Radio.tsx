@@ -3,9 +3,9 @@ import React from 'react';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { getControlId } from '../helpers';
-import type { ControlProps, NormalizedOptionsConfig, OptionsSingleSelection } from '../types';
-import { selectedKey } from './helpers';
+import { getControlId } from '../helpers.ts';
+import type { ControlProps, NormalizedOptionsConfig, OptionsSingleSelection } from '../types.ts';
+import { selectedKey } from './helpers.ts';
 import styles from './Options.module.css';
 
 type RadioConfig = NormalizedOptionsConfig & { isInline: boolean };

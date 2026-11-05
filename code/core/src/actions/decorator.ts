@@ -3,52 +3,40 @@ import type { PartialStoryFn, Renderer } from '@aussieljk/forkbook/internal/type
 import { makeDecorator, useEffect } from '@aussieljk/forkbook/preview-api';
 
 import { PARAM_KEY } from './constants.ts';
+import type { ActionsMap } from './models/ActionsMap.ts';
 import { actions } from './runtime/actions.ts';
 
 const delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
-const isIE = Element != null && !Element.prototype.matches;
-const matchesMethod = isIE ? 'msMatchesSelector' : 'matches';
+/** `actions` has typed overloads; `parameters.actions.handles` can hold any of their inputs. */
+const callActions = actions as (...handles: unknown[]) => ActionsMap;
 
-const hasMatchInAncestry = (element: any, selector: any): boolean => {
-  if (element[matchesMethod](selector)) {
-    return true;
-  }
-  const parent = element.parentElement;
-  if (!parent) {
-    return false;
-  }
-  return hasMatchInAncestry(parent, selector);
-};
-
-const createHandlers = (actionsFn: (...arg: any[]) => object, ...handles: any[]) => {
-  const actionsObject = actionsFn(...handles);
-  return Object.entries(actionsObject).map(([key, action]) => {
-    const [_, eventName, selector] = key.match(delegateEventSplitter) || [];
+const createHandlers = (...handles: unknown[]) =>
+  Object.entries(callActions(...handles)).map(([key, action]) => {
+    const [, eventName, selector] = key.match(delegateEventSplitter) || [];
     return {
       eventName,
-      handler: (e: { target: any }) => {
-        if (!selector || hasMatchInAncestry(e.target, selector)) {
-          action(e);
+      handler: (event: Event) => {
+        if (!selector || (event.target instanceof Element && event.target.closest(selector))) {
+          action(event);
         }
       },
     };
   });
-};
 
-const applyEventHandlers = (actionsFn: any, ...handles: any[]) => {
+const applyEventHandlers = (...handles: unknown[]) => {
   const root =
     typeof globalThis.document !== 'undefined' &&
     globalThis.document.getElementById('storybook-root');
   useEffect(() => {
     if (root) {
-      const handlers = createHandlers(actionsFn, ...handles);
+      const handlers = createHandlers(...handles);
       handlers.forEach(({ eventName, handler }) => root.addEventListener(eventName, handler));
       return () =>
         handlers.forEach(({ eventName, handler }) => root.removeEventListener(eventName, handler));
     }
     return undefined;
-  }, [root, actionsFn, handles]);
+  }, [root, handles]);
 };
 
 // This type is basically the same as DecoratorFunction from @aussieljk/forkbook/internal/types.
@@ -63,7 +51,7 @@ export const withActions: <T extends Renderer>(storyFn: PartialStoryFn<T>) => T[
     skipIfNoParametersOrOptions: true,
     wrapper: (getStory, context, { parameters }) => {
       if (parameters?.handles) {
-        applyEventHandlers(actions, ...parameters.handles);
+        applyEventHandlers(...parameters.handles);
       }
 
       return getStory(context);

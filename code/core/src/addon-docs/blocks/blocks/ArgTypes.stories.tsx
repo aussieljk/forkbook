@@ -5,9 +5,9 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect } from '@aussieljk/forkbook/test';
 
-import * as ExampleStories from '../examples/ArgTypesParameters.stories';
-import * as SubcomponentsExampleStories from '../examples/ArgTypesWithSubcomponentsParameters.stories';
-import { ArgTypes } from './ArgTypes';
+import * as ExampleStories from '../examples/ArgTypesParameters.stories.tsx';
+import * as SubcomponentsExampleStories from '../examples/ArgTypesWithSubcomponentsParameters.stories.tsx';
+import { ArgTypes } from './ArgTypes.tsx';
 
 /** Stands in for a component that documentation names but no story file declares. */
 const NeverStoried = () => null;

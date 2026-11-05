@@ -47,10 +47,6 @@ abstract class Rule {
 }
 
 class StyleRule extends Rule {
-  __processed = false;
-
-  __pseudoStatesRewrittenCount = 0;
-
   constructor(cssText: string) {
     super(cssText);
     if (cssText.trim().startsWith('@')) {

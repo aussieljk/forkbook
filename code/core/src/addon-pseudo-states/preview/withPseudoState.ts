@@ -209,12 +209,10 @@ channel.on(DOCS_RENDERED, () => rewriteStyleSheets());
 // IE doesn't support shadow DOM
 if (Element.prototype.attachShadow) {
   // Monkeypatch the attachShadow method so we can handle pseudo styles inside shadow DOM
-  // @ts-expect-error (Monkeypatch)
-  Element.prototype._attachShadow = Element.prototype.attachShadow;
+  const originalAttachShadow = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function attachShadow(init) {
     // Force "open" mode, so we can access the shadowRoot
-    // @ts-expect-error (Monkeypatch)
-    const shadowRoot = this._attachShadow({ ...init, mode: 'open' });
+    const shadowRoot = originalAttachShadow.call(this, { ...init, mode: 'open' });
     // Wait for it to render and apply its styles before rewriting them
     requestAnimationFrame(() => {
       rewriteStyleSheets(shadowRoot);

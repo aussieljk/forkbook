@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Button } from './Button';
+import { Button } from './Button.tsx';
 
 /**
  * These are the stories for the Button component

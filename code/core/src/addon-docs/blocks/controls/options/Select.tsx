@@ -5,9 +5,9 @@ import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
 import { ChevronDownIcon } from 'lucide-react';
 
-import { getControlId } from '../helpers';
-import type { ControlProps, NormalizedOptionsConfig, OptionsSelection } from '../types';
-import { selectedKey, selectedKeys, selectedValues } from './helpers';
+import { getControlId } from '../helpers.ts';
+import type { ControlProps, NormalizedOptionsConfig, OptionsSelection } from '../types.ts';
+import { selectedKey, selectedKeys, selectedValues } from './helpers.ts';
 import styles from './Select.module.css';
 
 type SelectConfig = NormalizedOptionsConfig & { isMulti: boolean };
@@ -112,6 +112,5 @@ export const SelectControl: FC<SelectProps> = (props) => {
     return <>-</>;
   }
 
-  // oxlint-disable-next-line react-classic/destructuring-assignment
   return props.isMulti ? <MultiSelect {...props} /> : <SingleSelect {...props} />;
 };

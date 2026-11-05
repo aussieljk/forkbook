@@ -5,9 +5,9 @@ import { H2 } from '@aussieljk/forkbook/internal/components';
 
 import GithubSlugger from 'github-slugger';
 
-import { DocsSluggerContext } from './DocsSluggerContext';
-import { HeaderMdx } from './mdx';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { DocsSluggerContext } from './DocsSluggerContext.ts';
+import { HeaderMdx } from './mdx.tsx';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 export interface HeadingProps {
   disableAnchor?: boolean;

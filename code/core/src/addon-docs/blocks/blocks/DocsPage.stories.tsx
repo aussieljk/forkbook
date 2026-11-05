@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { DocsPage } from './DocsPage';
+import { DocsPage } from './DocsPage.tsx';
 
 const meta = {
   component: DocsPage,

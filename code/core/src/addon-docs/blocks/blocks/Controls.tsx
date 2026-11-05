@@ -11,15 +11,15 @@ import type {
 import type { PropDescriptor } from '@aussieljk/forkbook/preview-api';
 import { filterArgTypes } from '@aussieljk/forkbook/preview-api';
 
-import type { SortType } from '../components';
-import { ArgsTable as PureArgsTable, TabbedArgsTable } from '../components';
-import { extractSubcomponentArgTypes, useDocgenServiceRows } from './argTypesShared';
-import { DocsContext } from './DocsContext';
-import { useArgs } from './useArgs';
-import { useGlobals } from './useGlobals';
-import { usePrimaryStory } from './usePrimaryStory';
-import { getComponentName } from './utils';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import type { SortType } from '../components/index.ts';
+import { ArgsTable as PureArgsTable, TabbedArgsTable } from '../components/index.ts';
+import { extractSubcomponentArgTypes, useDocgenServiceRows } from './argTypesShared.ts';
+import { DocsContext } from './DocsContext.ts';
+import { useArgs } from './useArgs.ts';
+import { useGlobals } from './useGlobals.ts';
+import { usePrimaryStory } from './usePrimaryStory.ts';
+import { getComponentName } from './utils.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 type ControlsParameters = {
   include?: PropDescriptor;

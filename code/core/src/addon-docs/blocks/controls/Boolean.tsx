@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
 
-import { getControlId, getControlSetterButtonId } from './helpers';
-import type { BooleanConfig, BooleanValue, ControlProps } from './types';
+import { getControlId, getControlSetterButtonId } from './helpers.ts';
+import type { BooleanConfig, BooleanValue, ControlProps } from './types.ts';
 import styles from './Boolean.module.css';
 
 const parse = (value: string | null): boolean => value === 'true';

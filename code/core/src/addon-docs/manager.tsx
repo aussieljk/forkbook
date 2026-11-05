@@ -17,9 +17,9 @@ import {
   SNIPPET_RENDERED,
 } from '@aussieljk/forkbook/internal/docs-tools';
 import type { StoryId } from '@aussieljk/forkbook/internal/types';
-import type { SourceParameters } from './blocks/blocks';
-import { SnippetWarning } from './blocks/components/SnippetWarning';
-import { Source } from './blocks/components/Source';
+import type { SourceParameters } from './blocks/blocks/index.ts';
+import { SnippetWarning } from './blocks/components/SnippetWarning.tsx';
+import { Source } from './blocks/components/Source.tsx';
 import styles from './manager.module.css';
 
 /** Payload emitted on the `SNIPPET_RENDERED` channel event (see `emitTransformCode`). */

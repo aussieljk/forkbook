@@ -5,8 +5,8 @@ import type { DocsIndexEntry, IndexEntry } from '@aussieljk/forkbook/internal/ty
 
 import { vol } from 'memfs';
 
-import type { DocsManifestEntry } from './manifest';
-import { manifests } from './manifest';
+import type { DocsManifestEntry } from './manifest.ts';
+import { manifests } from './manifest.ts';
 
 vi.mock('node:fs/promises', async () => {
   const memfs = await vi.importActual<typeof import('memfs')>('memfs');

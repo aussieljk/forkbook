@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, Form } from '@aussieljk/forkbook/internal/components';
 
-import { getControlId, getControlSetterButtonId } from './helpers';
-import type { ControlProps, NumberConfig, NumberValue } from './types';
+import { getControlId, getControlSetterButtonId } from './helpers.ts';
+import type { ControlProps, NumberConfig, NumberValue } from './types.ts';
 import styles from './Number.module.css';
 
 type NumberProps = ControlProps<NumberValue | null> & NumberConfig;
@@ -106,7 +106,7 @@ export const NumberControl: FC<NumberProps> = ({
   }
 
   return (
-    <label className={styles.wrapper}>
+    <div className={styles.wrapper}>
       <Form.Input
         className={styles.input}
         ref={htmlElRef}
@@ -122,6 +122,6 @@ export const NumberControl: FC<NumberProps> = ({
         readOnly={readonly}
         {...{ name, min, max, step, onFocus, onBlur }}
       />
-    </label>
+    </div>
   );
 };

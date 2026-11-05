@@ -5,15 +5,15 @@ import { SourceType } from '@aussieljk/forkbook/internal/docs-tools';
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 import type { Args, ModuleExport, StoryId } from '@aussieljk/forkbook/internal/types';
 
-import type { SourceCodeProps } from '../components/Source';
-import { Source as PureSource, SourceError } from '../components/Source';
-import type { DocsContextProps } from './DocsContext';
-import { DocsContext } from './DocsContext';
-import type { SourceContextProps, SourceItem } from './SourceContainer';
-import { SourceContext, UNKNOWN_ARGS_HASH, argsHash } from './SourceContainer';
+import type { SourceCodeProps } from '../components/Source.tsx';
+import { Source as PureSource, SourceError } from '../components/Source.tsx';
+import type { DocsContextProps } from './DocsContext.ts';
+import { DocsContext } from './DocsContext.ts';
+import type { SourceContextProps, SourceItem } from './SourceContainer.tsx';
+import { SourceContext, UNKNOWN_ARGS_HASH, argsHash } from './SourceContainer.tsx';
 import { useServiceStorySnippet, useServiceStoryWarning } from './use-service-story-docs.ts';
-import { useTransformCode } from './useTransformCode';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { useTransformCode } from './useTransformCode.tsx';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 export type SourceParameters = SourceCodeProps & {
   /** Where to read the source code from, see `SourceType` */

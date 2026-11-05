@@ -6,7 +6,7 @@ import React from 'react';
 
 import { ThemeProvider, convert, themes } from '@aussieljk/forkbook/theming';
 
-import { DocsContent } from './DocsPage';
+import { DocsContent } from './DocsPage.tsx';
 
 function ThemedDocsContent({ children }: { children: React.ReactNode }) {
   return (

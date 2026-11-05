@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { getControlId } from '../helpers';
-import type { ControlProps, NormalizedOptionsConfig, OptionsMultiSelection } from '../types';
-import { selectedKeys, selectedValues } from './helpers';
+import { getControlId } from '../helpers.ts';
+import type { ControlProps, NormalizedOptionsConfig, OptionsMultiSelection } from '../types.ts';
+import { selectedKeys, selectedValues } from './helpers.ts';
 import styles from './Options.module.css';
 
 type CheckboxConfig = NormalizedOptionsConfig & { isInline: boolean };

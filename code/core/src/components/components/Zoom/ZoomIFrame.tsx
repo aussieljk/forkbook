@@ -35,8 +35,7 @@ export class ZoomIFrame extends Component<IZoomIFrameProps> {
 
   setIframeInnerZoom(scale: number) {
     try {
-      // @ts-expect-error (non strict)
-      Object.assign(this.iframe.contentDocument.body.style, {
+      Object.assign(this.iframe?.contentDocument?.body.style ?? {}, {
         width: `${(1 / scale) * 100}%`,
         height: `${(1 / scale) * 100}%`,
         transform: `scale(${scale})`,

@@ -12,7 +12,7 @@ import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 import { uniq } from 'es-toolkit/array';
 
-import type { PropSummaryValue } from './types';
+import type { PropSummaryValue } from './types.ts';
 import styles from './ArgValue.module.css';
 
 interface ArgValueProps {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import type { ControlsParameters } from './ControlsParameters';
+import type { ControlsParameters } from './ControlsParameters.tsx';
 
 const meta = {
   title: 'examples/Empty ArgTypes for Control blocks',

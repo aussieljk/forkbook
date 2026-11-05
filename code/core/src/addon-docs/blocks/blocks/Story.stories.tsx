@@ -4,10 +4,10 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, waitFor } from '@aussieljk/forkbook/test';
 
-import * as StoryComponentStories from '../components/Story.stories';
-import * as ButtonStories from '../examples/Button.stories';
-import * as StoryParametersStories from '../examples/StoryParameters.stories';
-import { Story as StoryBlock } from './Story';
+import * as StoryComponentStories from '../components/Story.stories.tsx';
+import * as ButtonStories from '../examples/Button.stories.tsx';
+import * as StoryParametersStories from '../examples/StoryParameters.stories.tsx';
+import { Story as StoryBlock } from './Story.tsx';
 
 const meta = {
   component: StoryBlock,

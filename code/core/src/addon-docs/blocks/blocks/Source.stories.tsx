@@ -16,9 +16,9 @@ import { expect, userEvent, waitFor, within } from '@aussieljk/forkbook/test';
 import { dedent } from 'ts-dedent';
 import invariant from 'tiny-invariant';
 
-import * as ParametersStories from '../examples/SourceParameters.stories';
-import { Source } from './Source';
-import { SourceContext, argsHash } from './SourceContainer';
+import * as ParametersStories from '../examples/SourceParameters.stories.tsx';
+import { Source } from './Source.tsx';
+import { SourceContext, argsHash } from './SourceContainer.tsx';
 import type { DocsContextProps } from './DocsContext.ts';
 import { storyDocsServiceDef } from '../../../shared/open-service/services/story-docs/definition.ts';
 import { unregisterService } from '../../../shared/open-service/service-registry.ts';

@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { DocsStory } from './DocsStory';
-import { usePrimaryStory } from './usePrimaryStory';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { DocsStory } from './DocsStory.tsx';
+import { usePrimaryStory } from './usePrimaryStory.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 const PrimaryImpl: FC = () => {
   const primaryStory = usePrimaryStory();

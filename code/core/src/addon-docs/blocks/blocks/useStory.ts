@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { PreparedStory, Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
 
-import type { DocsContextProps } from './DocsContext';
+import type { DocsContextProps } from './DocsContext.ts';
 
 export function useStory<TRenderer extends Renderer = Renderer>(
   storyId: StoryId,

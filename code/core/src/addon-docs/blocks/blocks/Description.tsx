@@ -3,13 +3,13 @@ import React, { useContext } from 'react';
 
 import { InvalidBlockOfPropError } from '@aussieljk/forkbook/internal/preview-errors';
 
-import { DocsContext } from './DocsContext';
-import { Markdown } from './Markdown';
+import { DocsContext } from './DocsContext.ts';
+import { Markdown } from './Markdown.tsx';
 import { useServiceDocgen } from './use-service-docgen.ts';
 import { useServiceStoryDoc } from './use-service-story-docs.ts';
-import type { Of } from './useOf';
-import { useOf } from './useOf';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import type { Of } from './useOf.ts';
+import { useOf } from './useOf.ts';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 export enum DescriptionType {
   INFO = 'info',

@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import * as DefaultButtonStories from '../examples/Button.stories';
-import * as ButtonStoriesWithMetaSubtitleAsDocsSubtitle from '../examples/ButtonWithMetaSubtitleAsDocsSubtitle.stories';
-import { Subtitle } from './Subtitle';
+import * as DefaultButtonStories from '../examples/Button.stories.tsx';
+import * as ButtonStoriesWithMetaSubtitleAsDocsSubtitle from '../examples/ButtonWithMetaSubtitleAsDocsSubtitle.stories.tsx';
+import { Subtitle } from './Subtitle.tsx';
 
 const meta = {
   component: Subtitle,

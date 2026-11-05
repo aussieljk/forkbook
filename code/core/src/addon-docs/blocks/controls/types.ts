@@ -1,4 +1,6 @@
-import type { ArgType } from '../components/ArgsTable/types';
+import type { FocusEvent } from 'react';
+
+import type { ArgType } from '../components/ArgsTable/types.ts';
 
 export interface ControlProps<T> {
   name: string;
@@ -10,8 +12,8 @@ export interface ControlProps<T> {
   /** Whether the underlying arg is required; surfaced as `aria-required` on the control's input. */
   required?: boolean;
   onChange: (value?: T) => T | void;
-  onFocus?: (evt: any) => void;
-  onBlur?: (evt: any) => void;
+  onFocus?: (evt: FocusEvent<HTMLElement>) => void;
+  onBlur?: (evt: FocusEvent<HTMLElement>) => void;
 }
 
 export type BooleanValue = boolean;
@@ -67,7 +69,7 @@ export type OptionsControlType =
   | 'multi-select';
 
 export interface OptionsConfig {
-  labels?: Record<any, string>;
+  labels?: Record<PropertyKey, string>;
   type: OptionsControlType;
 }
 

@@ -293,6 +293,9 @@ export const rewriteStyleSheet = (sheet: CSSStyleSheet, forShadowDOM = false): b
   }
 };
 
+/** Rules already processed, with the number of rewrites counted for each one. */
+const rewrittenCountByRule = new WeakMap<CSSRule, number>();
+
 const rewriteRuleContainer = (
   ruleContainer: CSSStyleSheet | CSSGroupingRule,
   rewriteLimit: number,
@@ -304,10 +307,9 @@ const rewriteRuleContainer = (
     index++;
     let numRewritten = 0;
 
-    // @ts-expect-error We're adding this nonstandard property below
-    if (cssRule.__processed) {
-      // @ts-expect-error We're adding this nonstandard property below
-      numRewritten = cssRule.__pseudoStatesRewrittenCount;
+    const processedCount = rewrittenCountByRule.get(cssRule);
+    if (processedCount !== undefined) {
+      numRewritten = processedCount;
     } else {
       let styleRules = [cssRule as CSSStyleRule];
 
@@ -338,16 +340,12 @@ const rewriteRuleContainer = (
             forShadowDOM
           );
         }
-
-        // @ts-expect-error We're adding this nonstandard property
-        styleRule.__processed = true;
       });
       numRewritten = rewrittenCounts.reduce((sum, value) => sum + value, 0);
       styleRules.forEach((styleRule, styleRuleIndex) => {
         // Store the total on the first rule so split replacements aren't counted again as the
         // live CSSRuleList iterator advances through them.
-        // @ts-expect-error We're adding this nonstandard property
-        styleRule.__pseudoStatesRewrittenCount = styleRuleIndex === 0 ? numRewritten : 0;
+        rewrittenCountByRule.set(styleRule, styleRuleIndex === 0 ? numRewritten : 0);
       });
     }
     count += numRewritten;

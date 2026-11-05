@@ -14,10 +14,10 @@ import type { Meta, ReactRenderer, StoryObj } from '@aussieljk/forkbook/react-vi
 import type { PreviewWeb } from '@aussieljk/forkbook/preview-api';
 import { within } from '@aussieljk/forkbook/test';
 
-import type { DocsContextProps } from '../blocks';
-import * as ButtonStories from '../examples/Button.stories';
-import type { StoryProps } from './Story';
-import { Story as StoryComponent, StorySkeleton } from './Story';
+import type { DocsContextProps } from '../blocks/index.ts';
+import * as ButtonStories from '../examples/Button.stories.tsx';
+import type { StoryProps } from './Story.tsx';
+import { Story as StoryComponent, StorySkeleton } from './Story.tsx';
 
 const preview = (window as any).__FORKBOOK_PREVIEW__ as PreviewWeb<ReactRenderer>;
 const channel = (window as any).__FORKBOOK_ADDONS_CHANNEL__ as Channel;

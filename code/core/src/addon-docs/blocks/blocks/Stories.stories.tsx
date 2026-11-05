@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Stories } from './Stories';
+import { Stories } from './Stories.tsx';
 
 const meta = {
   component: Stories,

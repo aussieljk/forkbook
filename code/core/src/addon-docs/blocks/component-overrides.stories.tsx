@@ -13,7 +13,7 @@ import { Title as DocsTitle } from '@aussieljk/forkbook/addon-docs/blocks';
 import { MDXProvider } from '@mdx-js/react';
 import { expect } from '@aussieljk/forkbook/test';
 
-import { withMdxComponentOverride } from './blocks/with-mdx-component-override';
+import { withMdxComponentOverride } from './blocks/with-mdx-component-override.tsx';
 
 type OverrideProps = {
   children?: ReactNode;

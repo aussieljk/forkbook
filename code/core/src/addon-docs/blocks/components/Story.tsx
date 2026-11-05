@@ -1,13 +1,12 @@
-/* oxlint-disable react-classic/destructuring-assignment */
 import type { FunctionComponent } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { ErrorFormatter, Loader } from '@aussieljk/forkbook/internal/components';
 import type { DocsContextProps, PreparedStory } from '@aussieljk/forkbook/internal/types';
 
-import { getStoryHref } from '../getStoryHref';
-import { IFrame } from './IFrame';
-import { ZoomContext } from './ZoomContext';
+import { getStoryHref } from '../getStoryHref.ts';
+import { IFrame } from './IFrame.tsx';
+import { ZoomContext } from './ZoomContext.tsx';
 
 interface CommonProps {
   story: PreparedStory;

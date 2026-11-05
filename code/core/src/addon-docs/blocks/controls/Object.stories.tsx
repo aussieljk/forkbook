@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, fn, waitFor } from '@aussieljk/forkbook/test';
 
-import { ObjectControl } from './Object';
+import { ObjectControl } from './Object.tsx';
 
 const meta = {
   component: ObjectControl,

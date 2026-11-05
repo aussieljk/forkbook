@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { fn } from '@aussieljk/forkbook/test';
 
-import { DateControl } from './Date';
+import { DateControl } from './Date.tsx';
 
 const meta = {
   component: DateControl,

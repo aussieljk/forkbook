@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Form } from '@aussieljk/forkbook/internal/components';
 
-import { getControlId } from './helpers';
-import type { ControlProps, DateConfig, DateValue } from './types';
+import { getControlId } from './helpers.ts';
+import type { ControlProps, DateConfig, DateValue } from './types.ts';
 import styles from './Date.module.css';
 
 export const parseDate = (value: string) => {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { fn } from '@aussieljk/forkbook/test';
 
-import { FilesControl } from './Files';
+import { FilesControl } from './Files.tsx';
 
 const meta = {
   component: FilesControl,

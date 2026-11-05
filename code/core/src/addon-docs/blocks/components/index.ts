@@ -1,13 +1,13 @@
-export * from './Source';
-export * from './EmptyBlock';
-export * from './DocsPage';
+export * from './Source.tsx';
+export * from './EmptyBlock.tsx';
+export * from './DocsPage.tsx';
 
-export * from './Preview';
+export * from './Preview.tsx';
 
-export * from './ArgsTable';
-export * from './Story';
-export * from './IFrame';
-export * from './Typeset';
-export * from './ColorPalette';
-export * from './IconGallery';
-export * from './TableOfContents';
+export * from './ArgsTable/index.ts';
+export * from './Story.tsx';
+export * from './IFrame.tsx';
+export * from './Typeset.tsx';
+export * from './ColorPalette.tsx';
+export * from './IconGallery.tsx';
+export * from './TableOfContents.tsx';

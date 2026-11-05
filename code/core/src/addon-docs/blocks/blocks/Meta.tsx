@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 
 import type { BaseAnnotations, ModuleExports } from '@aussieljk/forkbook/internal/types';
 
-import { Anchor } from './Anchor';
-import { DocsContext } from './DocsContext';
+import { Anchor } from './Anchor.tsx';
+import { DocsContext } from './DocsContext.ts';
 
 type MetaProps = BaseAnnotations & { of?: ModuleExports; title?: string };
 

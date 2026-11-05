@@ -4,8 +4,8 @@ import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import { type Plugin, createFilter } from 'vite';
 
-import type { CompileOptions } from './compiler';
-import { compile } from './compiler';
+import type { CompileOptions } from './compiler/index.ts';
+import { compile } from './compiler/index.ts';
 
 /**
  * Forkbook uses a single loader when dealing with MDX:

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import * as DefaultButtonStories from '../examples/Button.stories';
-import * as ButtonNoAutodocsStories from '../examples/ButtonNoAutodocs.stories';
-import * as ButtonSomeAutodocsStories from '../examples/ButtonSomeAutodocs.stories';
-import * as StoriesParametersStories from '../examples/StoriesParameters.stories';
-import { Primary } from './Primary';
+import * as DefaultButtonStories from '../examples/Button.stories.tsx';
+import * as ButtonNoAutodocsStories from '../examples/ButtonNoAutodocs.stories.tsx';
+import * as ButtonSomeAutodocsStories from '../examples/ButtonSomeAutodocs.stories.tsx';
+import * as StoriesParametersStories from '../examples/StoriesParameters.stories.tsx';
+import { Primary } from './Primary.tsx';
 
 const meta = {
   component: Primary,

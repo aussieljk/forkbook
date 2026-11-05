@@ -6,7 +6,7 @@ import type {
   ResolvedModuleExportType,
 } from '@aussieljk/forkbook/internal/types';
 
-import { DocsContext } from './DocsContext';
+import { DocsContext } from './DocsContext.ts';
 
 export type Of = Parameters<DocsContextProps['resolveOf']>[0];
 

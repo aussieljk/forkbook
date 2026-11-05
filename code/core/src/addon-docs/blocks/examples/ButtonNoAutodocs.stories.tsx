@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
-import { Button } from './Button';
+import { Button } from './Button.tsx';
 
 const meta = {
   title: 'examples/ButtonNoAutodocs',

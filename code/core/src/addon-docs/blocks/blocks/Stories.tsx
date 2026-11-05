@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 
 import { Tag } from '@aussieljk/forkbook/internal/preview-api';
 
-import { DocsContext } from './DocsContext';
-import { DocsStory } from './DocsStory';
-import { Heading } from './Heading';
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { DocsContext } from './DocsContext.ts';
+import { DocsStory } from './DocsStory.tsx';
+import { Heading } from './Heading.tsx';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 import type { DocsParameters } from '../../types.ts';
 
 interface StoriesProps {

@@ -4,8 +4,8 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { expect, within } from '@aussieljk/forkbook/test';
 
-import { Heading } from '../blocks/Heading';
-import { TableOfContents } from './TableOfContents';
+import { Heading } from '../blocks/Heading.tsx';
+import { TableOfContents } from './TableOfContents.tsx';
 
 const meta = {
   component: TableOfContents,

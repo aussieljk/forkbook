@@ -4,7 +4,7 @@ import React from 'react';
 import { clsx } from 'clsx';
 import Markdown from 'markdown-to-jsx';
 
-import type { JsDocTags } from './types';
+import type { JsDocTags } from './types.ts';
 import styles from './ArgJsDoc.module.css';
 
 interface ArgJsDocArgs {

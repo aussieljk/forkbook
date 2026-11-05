@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { fn } from '@aussieljk/forkbook/test';
 
-import { TextControl } from './Text';
+import { TextControl } from './Text.tsx';
 
 const meta = {
   component: TextControl,

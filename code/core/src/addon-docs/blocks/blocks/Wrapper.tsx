@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { withMdxComponentOverride } from './with-mdx-component-override';
+import { withMdxComponentOverride } from './with-mdx-component-override.tsx';
 
 const WrapperImpl: FC<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
