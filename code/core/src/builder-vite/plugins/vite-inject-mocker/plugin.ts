@@ -15,7 +15,7 @@ export const viteInjectMockerRuntime = (options: {
   let viteConfig: ResolvedConfig;
 
   return {
-    name: 'vite:storybook-inject-mocker-runtime',
+    name: 'vite:forkbook-inject-mocker-runtime',
     enforce: 'pre',
     buildStart() {
       if (viteConfig.command === 'build') {

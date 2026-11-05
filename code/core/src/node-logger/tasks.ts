@@ -11,6 +11,14 @@ interface SetupAbortControllerResult {
   cleanup: () => void;
 }
 
+function isAbortError(err: unknown): boolean {
+  const message = err instanceof Error ? err.message : '';
+  return (
+    message.includes('Command was killed with SIGINT') ||
+    message.includes('The operation was aborted')
+  );
+}
+
 function setupAbortController(): SetupAbortControllerResult {
   const abortController = new AbortController();
   let isRawMode = false;
@@ -89,11 +97,8 @@ export const executeTask = async (
     }
     logTracker.addLog('info', success);
     log(CLI_COLORS.success(success));
-  } catch (err: any) {
-    const isAborted =
-      abortController?.signal.aborted ||
-      err.message?.includes('Command was killed with SIGINT') ||
-      err.message?.includes('The operation was aborted');
+  } catch (err) {
+    const isAborted = abortController?.signal.aborted || isAbortError(err);
 
     if (isAborted) {
       logTracker.addLog('info', `${intro} aborted`);
@@ -102,7 +107,7 @@ export const executeTask = async (
     }
     const errorMessage = err instanceof Error ? (err.stack ?? err.message) : String(err);
     logTracker.addLog('error', error, { error: errorMessage });
-    log(CLI_COLORS.error(String((err as any).message ?? err)));
+    log(CLI_COLORS.error(err instanceof Error ? err.message : String(err)));
     throw err;
   } finally {
     cleanup?.();
@@ -150,11 +155,8 @@ export const executeTaskWithSpinner = async (
     }
     logTracker.addLog('info', success);
     task.stop(success);
-  } catch (err: any) {
-    const isAborted =
-      abortController?.signal.aborted ||
-      err.message?.includes('Command was killed with SIGINT') ||
-      err.message?.includes('The operation was aborted');
+  } catch (err) {
+    const isAborted = abortController?.signal.aborted || isAbortError(err);
 
     if (isAborted) {
       logTracker.addLog('info', `${intro} aborted`);

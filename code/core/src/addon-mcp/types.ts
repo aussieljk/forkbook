@@ -42,7 +42,7 @@ export type AddonOptionsOutput = v.InferOutput<typeof AddonOptions>;
 /**
  * What serving the docs tools needs from the request being handled.
  *
- * Only a composition uses these: it reads several Storybooks, each through its own provider, and
+ * Only a composition uses these: it reads several Forkbooks, each through its own provider, and
  * the local one through its own access when docgen-server mode is on. A single Forkbook is served
  * by the docs toolset registered at boot and needs none of it.
  */
@@ -51,7 +51,7 @@ export type DocsServingContext = {
   request?: Request;
   /** Fetches one manifest file, per source. */
   manifestProvider?: ManifestProvider;
-  /** The composed Storybooks, when `refs` are configured. */
+  /** The composed Forkbooks, when `refs` are configured. */
   sources?: Source[];
   /** Reads the local Forkbook directly, in docgen-server mode. */
   localAccess?: DocsAccess;

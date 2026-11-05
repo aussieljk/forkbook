@@ -4,7 +4,6 @@ import { basename, join, relative, resolve, sep } from 'node:path';
 import { commonGlobOptions } from '@aussieljk/forkbook/internal/common';
 import type { NormalizedStoriesSpecifier, Path } from '@aussieljk/forkbook/internal/types';
 
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 import { type Event, subscribe } from '@parcel/watcher';
 
@@ -87,7 +86,6 @@ export function watchStorySpecifiers(
             );
 
             // Dynamically import globby because it is a pure ESM module
-            // eslint-disable-next-line depend/ban-dependencies
             const { glob } = await import('tinyglobby');
 
             // glob only supports forward slashes

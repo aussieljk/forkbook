@@ -47,7 +47,7 @@ export async function build(options: Options) {
   // by framework plugins like Nitro or Adonis. We run in `enforce: 'post'`
   // both for `config` and `configEnvironment` to ensure we run last.
   finalConfig.plugins?.push({
-    name: 'storybook:enforce-build-options',
+    name: 'forkbook:enforce-build-options',
     enforce: 'post',
     config: () => ({
       build: {
@@ -70,7 +70,7 @@ export async function build(options: Options) {
 
   if (options.features?.developmentModeForBuild) {
     finalConfig.plugins?.push({
-      name: 'storybook:define-env',
+      name: 'forkbook:define-env',
       config: () => {
         return {
           define: {
@@ -99,7 +99,7 @@ export async function build(options: Options) {
 
   const statsPlugin = findPlugin(
     finalConfig,
-    'storybook:rollup-plugin-webpack-stats'
+    'forkbook:rollup-plugin-webpack-stats'
   ) as WebpackStatsPlugin;
   return statsPlugin?.storybookGetStats();
 }

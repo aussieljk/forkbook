@@ -30,15 +30,15 @@ export type InterPresetOptions = Omit<
   'frameworkPresets'
 >;
 
-const isObject = (val: unknown): val is Record<string, any> =>
+const isObject = (val: unknown): val is Record<string, unknown> =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
 const isFunction = (val: unknown): val is Function => typeof val === 'function';
 
-function resolvePresetFunction<T = any>(
-  input: T[] | Function,
-  presetOptions: any,
+function resolvePresetFunction(
+  input: unknown,
+  presetOptions: Record<string, unknown>,
   storybookOptions: InterPresetOptions
-): T[] {
+): PresetConfig[] {
   if (isFunction(input)) {
     return [...input({ ...storybookOptions, ...presetOptions })];
   }
@@ -48,6 +48,9 @@ function resolvePresetFunction<T = any>(
 
   return [];
 }
+
+const presetNameOf = (preset: PresetConfig): string =>
+  typeof preset === 'string' ? preset : preset.name;
 
 function readAddonManifest(dir: string): { name?: string; exports?: unknown } | undefined {
   try {
@@ -71,7 +74,7 @@ function readAddonManifest(dir: string): { name?: string; exports?: unknown } | 
 export const resolveAddonName = (
   configDir: string,
   name: string,
-  options: any
+  options: unknown
 ): CoreCommon_ResolvedAddonPreset | CoreCommon_ResolvedAddonVirtual | undefined => {
   const resolved = safeResolveModule({ specifier: name, parent: configDir });
 
@@ -132,9 +135,9 @@ export const resolveAddonName = (
 
 const map =
   ({ configDir }: InterPresetOptions) =>
-  (item: any) => {
-    const options = isObject(item) ? item['options'] || undefined : undefined;
-    const name = isObject(item) ? item['name'] : item;
+  (item: PresetConfig) => {
+    const options = typeof item === 'string' ? undefined : item.options || undefined;
+    const name = presetNameOf(item);
 
     let resolved;
 
@@ -167,12 +170,12 @@ const map =
     };
   };
 
-async function getContent(input: any, configDir: string) {
-  if (input.type === 'virtual') {
+async function getContent(input: PresetConfig, configDir: string) {
+  if (typeof input === 'object' && 'type' in input && input.type === 'virtual') {
     const { type, name, ...rest } = input;
     return rest;
   }
-  const name = input.name ? input.name : input;
+  const name = presetNameOf(input);
 
   return importModule(safeResolveModule({ specifier: name, parent: configDir }) ?? name);
 }
@@ -182,12 +185,14 @@ export async function loadPreset(
   level: number,
   storybookOptions: InterPresetOptions
 ): Promise<LoadedPreset[]> {
-  // @ts-expect-error (Converted from ts-ignore)
-  const presetName: string = input.name ? input.name : input;
+  const presetName = presetNameOf(input);
 
   try {
-    // @ts-expect-error (Converted from ts-ignore)
-    const presetOptions = input.options ? input.options : {};
+    // Preset options are whatever object the user passed.
+    const presetOptions = ((typeof input === 'string' ? undefined : input.options) ?? {}) as Record<
+      string,
+      unknown
+    >;
 
     let contents = await getContent(input, storybookOptions.configDir);
 
@@ -213,8 +218,7 @@ export async function loadPreset(
         (storybookOptions.build?.test?.disabledAddons?.length || 0) > 0
       ) {
         filter = (i: PresetConfig) => {
-          // @ts-expect-error (Converted from ts-ignore)
-          const name = i.name ? i.name : i;
+          const name = presetNameOf(i);
 
           return !storybookOptions.build?.test?.disabledAddons?.find((n) => name.includes(n));
         };
@@ -247,10 +251,10 @@ export async function loadPreset(
     throw new Error(dedent`
       ${input} is not a valid preset
     `);
-  } catch (error: any) {
+  } catch (error) {
     if (storybookOptions?.isCritical) {
       throw new CriticalPresetLoadError({
-        error,
+        error: error as Error,
         presetName,
       });
     }

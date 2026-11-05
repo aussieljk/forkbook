@@ -228,7 +228,7 @@ export const StorybookIdField = {
   storybookId: v.pipe(
     v.string(),
     v.description(
-      'The Forkbook source ID (e.g., "local", "tetra"). Required when multiple Storybooks are composed. See docs-list for available sources.'
+      'The Forkbook source ID (e.g., "local", "tetra"). Required when multiple Forkbooks are composed. See docs-list for available sources.'
     )
   ),
 };

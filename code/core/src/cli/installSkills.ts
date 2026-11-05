@@ -5,11 +5,8 @@ import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 import { getProjectRoot, isCI } from '@aussieljk/forkbook/internal/common';
 import { CLI_COLORS, logger } from '@aussieljk/forkbook/internal/node-logger';
 import { isTelemetryModuleEnabled } from '@aussieljk/forkbook/internal/telemetry';
-import {
-  SupportedBuilder,
-  SupportedFramework,
-  SupportedRenderer,
-} from '@aussieljk/forkbook/internal/types';
+import type { SupportedFramework } from '@aussieljk/forkbook/internal/types';
+import { SupportedBuilder, SupportedRenderer } from '@aussieljk/forkbook/internal/types';
 
 // Forkbook uses the upstream Storybook skills, at the tag of the Storybook version it forks from.
 const SKILLS_REPO = 'storybookjs/skills';

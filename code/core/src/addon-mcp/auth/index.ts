@@ -1,5 +1,5 @@
 /**
- * Auth module for handling OAuth with composed Storybooks.
+ * Auth module for handling OAuth with composed Forkbooks.
  */
 
 export {

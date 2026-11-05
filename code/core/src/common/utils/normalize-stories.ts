@@ -5,7 +5,6 @@ import { InvalidStoriesEntryError } from '@aussieljk/forkbook/internal/server-er
 import type { NormalizedStoriesSpecifier, StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
 import * as pico from 'picomatch';
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
 import { globToRegexp } from './glob-to-regexp.ts';

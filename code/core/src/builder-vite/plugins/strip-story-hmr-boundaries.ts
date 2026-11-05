@@ -12,7 +12,7 @@ export async function stripStoryHMRBoundary() {
   const include = /\.stories\.(tsx?|jsx?)$/;
   const filter = createFilter(include);
   return {
-    name: 'storybook:strip-hmr-boundary-plugin',
+    name: 'forkbook:strip-hmr-boundary-plugin',
     enforce: 'post',
     transform: {
       filter: { id: include },

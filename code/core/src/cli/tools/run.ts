@@ -99,7 +99,7 @@ export type ToolsInvocation = {
 
 /** Identifies this CLI to the tools SDK that hosts its run. */
 const CLI_CLIENT_INFO: ToolsClientInfo = {
-  name: 'storybook-cli',
+  name: 'forkbook-cli',
   version: versions['@aussieljk/forkbook'],
   kind: 'cli',
 };

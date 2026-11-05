@@ -67,7 +67,6 @@ export function useCopyButton<T extends ReactNode>({
       const announcement =
         typeof ariaLabelOnCopy === 'string' ? ariaLabelOnCopy : 'Copied to clipboard';
 
-      // eslint-disable-next-line compat/compat
       navigator.clipboard?.writeText(content).then(() => {
         onCopy?.(e);
         setCopied(true);

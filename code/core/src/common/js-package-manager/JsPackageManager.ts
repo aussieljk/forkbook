@@ -5,9 +5,7 @@ import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 
 import detectIndent from 'detect-indent';
 import * as find from 'empathic/find';
-// eslint-disable-next-line depend/ban-dependencies
 import type { ExecProcess } from '../utils/exec.ts';
-// eslint-disable-next-line depend/ban-dependencies
 import { globSync } from 'tinyglobby';
 import picocolors from 'picocolors';
 import { coerce, gt, satisfies, validRange } from 'semver';

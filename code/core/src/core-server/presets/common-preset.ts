@@ -177,9 +177,10 @@ export const babel = async (_: unknown, options: Options) => {
 export const title = (previous: string, options: Options) =>
   previous || options.packageJson?.name || false;
 
-export const logLevel = (previous: any, options: Options) => previous || options.loglevel || 'info';
+export const logLevel = (previous: string | undefined, options: Options) =>
+  previous || options.loglevel || 'info';
 
-export const previewHead = async (base: any, { configDir, presets }: Options) => {
+export const previewHead = async (_base: unknown, { configDir, presets }: Options) => {
   const interpolations = await presets.apply<Record<string, string>>('env');
   return getPreviewHeadTemplate(configDir, interpolations);
 };
@@ -189,7 +190,7 @@ export const env = async () => {
   return raw;
 };
 
-export const previewBody = async (base: any, { configDir, presets }: Options) => {
+export const previewBody = async (_base: unknown, { configDir, presets }: Options) => {
   const interpolations = await presets.apply<Record<string, string>>('env');
   return getPreviewBodyTemplate(configDir, interpolations);
 };
@@ -274,7 +275,7 @@ export const experimental_indexers: PresetProperty<'experimental_indexers'> = (e
 export const frameworkOptions = async (
   _: never,
   options: Options
-): Promise<Record<string, any> | null> => {
+): Promise<Record<string, unknown> | null> => {
   const config = await options.presets.apply('framework');
 
   if (typeof config === 'string') {
@@ -288,7 +289,7 @@ export const frameworkOptions = async (
   return config.options;
 };
 
-export const managerHead = async (_: any, options: Options) => {
+export const managerHead = async (_: unknown, options: Options) => {
   const location = join(options.configDir, 'manager-head.html');
   if (existsSync(location)) {
     const contents = readFile(location, { encoding: 'utf8' });
@@ -322,7 +323,7 @@ export const experimental_serverChannel = async (
  * explicit dependency on react this will return the existing values Which will be the versions
  * shipped with addon-docs
  */
-export const resolvedReact = async (existing: any) => {
+export const resolvedReact = async (existing: Record<string, string | undefined> = {}) => {
   try {
     return {
       ...existing,
@@ -334,13 +335,13 @@ export const resolvedReact = async (existing: any) => {
   }
 };
 
-export const managerEntries = async (existing: any) => {
+export const managerEntries = async (existing: string[] = []) => {
   return [
     pathe.join(
       resolvePackageDir('@aussieljk/forkbook'),
       'dist/core-server/presets/common-manager.js'
     ),
-    ...(existing || []),
+    ...existing,
   ];
 };
 

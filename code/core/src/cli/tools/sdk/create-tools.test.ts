@@ -131,7 +131,7 @@ describe('createTools', () => {
       mode: 'local' as const,
       requestedMode: 'local' as const,
       host: 'child' as const,
-      clientInfo: { name: 'storybook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
+      clientInfo: { name: 'forkbook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
       storybook: { version: '0.0.0', configDir: CONFIG_DIR },
       runtime: makeRuntime(),
       describe: async () => ({ configDir: CONFIG_DIR, toolsets: [] }),
@@ -188,11 +188,11 @@ describe('createTools', () => {
     const defaulted = await createTools({ mode: 'local' });
     const named = await createTools({
       mode: 'local',
-      clientInfo: { name: 'storybook-cli', version: '1.2.3', kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: '1.2.3', kind: 'cli' },
     });
 
     expect(defaulted.clientInfo.kind).toBe('sdk');
-    expect(named.clientInfo).toEqual({ name: 'storybook-cli', version: '1.2.3', kind: 'cli' });
+    expect(named.clientInfo).toEqual({ name: 'forkbook-cli', version: '1.2.3', kind: 'cli' });
   });
 
   it('joins a running Forkbook in attached mode without loading the local runtime', async () => {
@@ -355,7 +355,7 @@ describe('createTools', () => {
       mode: 'attached' as const,
       requestedMode: 'attached' as const,
       host: 'child' as const,
-      clientInfo: { name: 'storybook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
+      clientInfo: { name: 'forkbook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
       storybook: { version: '10.2.0', configDir: CONFIG_DIR, url: record.url, pid: record.pid },
       runtime: makeRuntime(),
       describe: async () => ({ configDir: CONFIG_DIR, toolsets: [] }),
@@ -451,7 +451,7 @@ describe('createTools', () => {
       mode: 'local' as const,
       requestedMode: 'auto' as const,
       host: 'child' as const,
-      clientInfo: { name: 'storybook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
+      clientInfo: { name: 'forkbook-tools-sdk', version: '0.0.0', kind: 'sdk' as const },
       storybook: { version: '0.0.0', configDir: CONFIG_DIR },
       runtime: makeRuntime(),
       describe: async () => ({ configDir: CONFIG_DIR, toolsets: [] }),
@@ -798,7 +798,7 @@ describe('call', () => {
     const sdk = await createTools({ mode: 'local' });
     const cli = await createTools({
       mode: 'local',
-      clientInfo: { name: 'storybook-cli', version: '1.2.3', kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: '1.2.3', kind: 'cli' },
     });
 
     const sdkCatalog = await sdk.describe();
@@ -921,7 +921,7 @@ describe('tools-command telemetry', () => {
   it('does not emit an SDK invocation when the client is the CLI', async () => {
     const tools = await createTools({
       mode: 'local',
-      clientInfo: { name: 'storybook-cli', version: '1.2.3', kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: '1.2.3', kind: 'cli' },
     });
 
     await tools.call('echo.ok', { value: 'hello' });
@@ -1004,7 +1004,7 @@ describe('tools-command telemetry', () => {
       createTools(
         {
           mode: 'attached',
-          clientInfo: { name: 'storybook-cli', version: '1.2.3', kind: 'cli' },
+          clientInfo: { name: 'forkbook-cli', version: '1.2.3', kind: 'cli' },
         },
         { attach }
       )

@@ -587,17 +587,7 @@ describe('loadPreset', () => {
           "preset": {},
         },
         {
-          "name": {
-            "addons": [
-              "@aussieljk/forkbook/addon-docs/preset",
-            ],
-            "framework": "@aussieljk/forkbook/react",
-            "name": "",
-            "presets": [
-              "@storybook/preset-beta",
-            ],
-            "type": "virtual",
-          },
+          "name": "",
           "options": {},
           "preset": {
             "framework": "@aussieljk/forkbook/react",
@@ -715,18 +705,7 @@ describe('loadPreset', () => {
           "preset": {},
         },
         {
-          "name": {
-            "addons": [
-              "@aussieljk/forkbook/addon-docs/preset",
-              "uninstalled-addon",
-            ],
-            "framework": "@aussieljk/forkbook/react",
-            "name": "",
-            "presets": [
-              "@storybook/preset-beta",
-            ],
-            "type": "virtual",
-          },
+          "name": "",
           "options": {},
           "preset": {
             "framework": "@aussieljk/forkbook/react",
@@ -775,18 +754,7 @@ describe('loadPreset', () => {
           "preset": {},
         },
         {
-          "name": {
-            "addons": [
-              "@aussieljk/forkbook/addon-docs",
-              "addon-bar",
-            ],
-            "framework": "@aussieljk/forkbook/react",
-            "name": "",
-            "presets": [
-              "@storybook/preset-beta",
-            ],
-            "type": "virtual",
-          },
+          "name": "",
           "options": {},
           "preset": {
             "framework": "@aussieljk/forkbook/react",

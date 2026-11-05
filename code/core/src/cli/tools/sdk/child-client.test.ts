@@ -29,7 +29,7 @@ const RECORD: StorybookInstanceRecord = {
 const OPTIONS: CreateToolsOptions = { mode: 'attached', configDir: '/repo/.forkbook' };
 const LOCAL_OPTIONS: CreateToolsOptions = { mode: 'local', configDir: '/repo/.forkbook' };
 const CLIENT: Required<ToolsClientInfo> = {
-  name: 'storybook-tools-sdk',
+  name: 'forkbook-tools-sdk',
   version: '10.3.0',
   kind: 'sdk',
 };

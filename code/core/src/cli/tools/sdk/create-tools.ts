@@ -106,7 +106,7 @@ export async function createTools(
 ): Promise<Tools> {
   const mode: ToolsMode = options.mode ?? 'auto';
   const clientInfo: Required<ToolsClientInfo> = {
-    name: options.clientInfo?.name ?? 'storybook-tools-sdk',
+    name: options.clientInfo?.name ?? 'forkbook-tools-sdk',
     version: options.clientInfo?.version ?? versions['@aussieljk/forkbook'],
     kind: options.clientInfo?.kind ?? 'sdk',
   };

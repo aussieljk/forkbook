@@ -62,7 +62,7 @@ const command = (name: string) =>
     )
     .option(
       '--logfile [path]',
-      'Write all debug logs to the specified file at the end of the run. Defaults to debug-storybook.log when [path] is not provided'
+      'Write all debug logs to the specified file at the end of the run. Defaults to debug-forkbook.log when [path] is not provided'
     )
     .hook('preAction', async (self) => {
       try {

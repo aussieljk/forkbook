@@ -101,7 +101,7 @@ function makeLocalTools(runtimeOverrides: Partial<ToolsRuntime> = {}): LocalTool
     mode: 'local',
     requestedMode: 'local',
     host: 'in-process',
-    clientInfo: { name: 'storybook-cli', version: '0.0.0', kind: 'cli' },
+    clientInfo: { name: 'forkbook-cli', version: '0.0.0', kind: 'cli' },
     runtime,
     storybook,
     describe: async (options) => {
@@ -345,7 +345,7 @@ describe('local tools', () => {
       cwd: '/repo',
       configDir: '.forkbook',
       mode: 'auto',
-      clientInfo: { name: 'storybook-cli', version: expect.any(String), kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: expect.any(String), kind: 'cli' },
     });
   });
 

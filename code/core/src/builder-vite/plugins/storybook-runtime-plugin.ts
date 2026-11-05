@@ -17,7 +17,7 @@ export async function storybookSanitizeEnvs(options: Options): Promise<Plugin[]>
 
   if (envs && Object.keys(envs).length > 0) {
     plugins.push({
-      name: 'storybook:env-plugin',
+      name: 'forkbook:env-plugin',
       config(config) {
         const envDefines = stringifyProcessEnvs(envs, config.envPrefix);
         return {

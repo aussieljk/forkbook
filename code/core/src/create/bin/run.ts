@@ -76,7 +76,7 @@ const createStorybookProgram = program
   .option('--no-agent', 'Force disable agent mode even when an AI agent is detected')
   .option(
     '--logfile [path]',
-    'Write all debug logs to the specified file at the end of the run. Defaults to debug-storybook.log when [path] is not provided'
+    'Write all debug logs to the specified file at the end of the run. Defaults to debug-forkbook.log when [path] is not provided'
   )
   .addOption(
     new Option('--loglevel <level>', 'Define log level').choices([

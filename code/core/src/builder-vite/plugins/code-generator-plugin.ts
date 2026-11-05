@@ -27,7 +27,7 @@ export function codeGeneratorPlugin(options: Options) {
     options.presets.apply<StoryIndexGenerator>('storyIndexGenerator');
 
   return {
-    name: 'storybook:code-generator-plugin',
+    name: 'forkbook:code-generator-plugin',
     enforce: 'pre',
     async configureServer(server) {
       (await storyIndexGeneratorPromise).onInvalidated(() => {

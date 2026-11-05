@@ -45,7 +45,7 @@ describe('FinalizationCommand', () => {
 
       expect(fs.appendFile).toHaveBeenCalledWith(
         '/test/project/.gitignore',
-        '\n*storybook.log\nforkbook-static\n'
+        '\n*forkbook.log\nforkbook-static\n'
       );
       expect(logger.step).toHaveBeenCalledWith(expect.stringContaining('successfully installed'));
       expect(logger.log).toHaveBeenCalledWith(expect.stringContaining('npm run forkbook'));
@@ -78,7 +78,7 @@ describe('FinalizationCommand', () => {
 
     it('should not add entries that already exist in gitignore', async () => {
       vi.mocked(find.up).mockReturnValue('/test/project/.gitignore');
-      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*storybook.log\nforkbook-static\n');
+      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*forkbook.log\nforkbook-static\n');
 
       await command.execute({
         storybookCommand: 'npm run forkbook',
@@ -89,7 +89,7 @@ describe('FinalizationCommand', () => {
 
     it('should add only missing entries to gitignore', async () => {
       vi.mocked(find.up).mockReturnValue('/test/project/.gitignore');
-      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*storybook.log\n');
+      vi.mocked(fs.readFile).mockResolvedValue('node_modules/\n*forkbook.log\n');
       vi.mocked(fs.appendFile).mockResolvedValue(undefined);
 
       await command.execute({

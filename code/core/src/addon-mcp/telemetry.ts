@@ -10,10 +10,10 @@ export async function collectTelemetry({
 }: {
   event: string;
   server: McpServer<any, AddonContext>;
-  [key: string]: any;
+  [key: string]: unknown;
 }) {
   try {
-    return await telemetry('addon-mcp' as any, {
+    return await telemetry('addon-mcp', {
       event,
       mcpSessionId: server.ctx.sessionId,
       clientInfo: server.ctx.sessionInfo?.clientInfo,

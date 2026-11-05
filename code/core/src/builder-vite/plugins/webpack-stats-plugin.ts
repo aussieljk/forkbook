@@ -3,7 +3,6 @@ import { relative } from 'node:path';
 
 import type { BuilderStats } from '@aussieljk/forkbook/internal/types';
 
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 import type { Plugin } from 'vite';
 
@@ -107,7 +106,7 @@ export function pluginWebpackStats({ workingDir }: WebpackStatsPluginOptions): W
   const statsMap = new Map<string, Module>();
 
   return {
-    name: 'storybook:rollup-plugin-webpack-stats',
+    name: 'forkbook:rollup-plugin-webpack-stats',
     // We want this to run after the vite build plugins (https://vitejs.dev/guide/api-plugin.html#plugin-ordering)
     enforce: 'post',
     moduleParsed: function (mod) {

@@ -130,7 +130,7 @@ export const getStorybookInfo = async (
       React Native on-device Forkbook historically omitted `framework` from main.ts.
       When the config lives in `.rnforkbook`, infer the framework so telemetry
       `metadata.framework.name` is populated for existing projects (scoped to the
-      RN config dir to avoid mis-attributing web Storybooks in the same monorepo).
+      RN config dir to avoid mis-attributing web Forkbooks in the same monorepo).
     */
     if (basename(configInfo.configDir) === RN_FORKBOOK_DIR) {
       return {

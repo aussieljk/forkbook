@@ -23,7 +23,7 @@ vi.mock('@aussieljk/forkbook/internal/core-server', () => ({
 
 vi.mock('@aussieljk/forkbook/internal/node-logger', () => ({
   logTracker: {
-    writeToFile: vi.fn().mockResolvedValue('/tmp/debug-storybook.log'),
+    writeToFile: vi.fn().mockResolvedValue('/tmp/debug-forkbook.log'),
   },
   logger: {
     error: vi.fn(),

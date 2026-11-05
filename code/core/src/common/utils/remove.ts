@@ -35,7 +35,7 @@ export async function removeAddon(addon: string, options: RemoveAddonOptions) {
   }
 
   if (!mainConfigPath) {
-    logger.error('Unable to find storybook main.js config');
+    logger.error('Unable to find the Forkbook main config');
     return;
   }
   const main = await readConfig(mainConfigPath);

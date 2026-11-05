@@ -5,7 +5,7 @@ import type { Options, Ref } from '@aussieljk/forkbook/internal/types';
 import type { SourceWithUrl } from '../../shared/open-service/toolsets/docs/sources.ts';
 
 /**
- * Reads the composed Storybooks from the project's `refs` as docs sources, in config order.
+ * Reads the composed Forkbooks from the project's `refs` as docs sources, in config order.
  *
  * Only the configured `refs` count, not auto-refs from package dependencies; a function-form
  * `refs` receives an empty object instead of them. Disabled refs and refs without a string `url`
@@ -22,7 +22,7 @@ export async function getRefsFromConfig(options: Options): Promise<SourceWithUrl
     refs = (await options.presets.apply<Record<string, Ref>>('refs', {})) ?? {};
   } catch (error) {
     logger.warn(
-      `Composed Storybooks are left out of the docs toolset: reading "refs" failed. ${error instanceof Error ? error.message : String(error)}`
+      `Composed Forkbooks are left out of the docs toolset: reading "refs" failed. ${error instanceof Error ? error.message : String(error)}`
     );
     return [];
   }

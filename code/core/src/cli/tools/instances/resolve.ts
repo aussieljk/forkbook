@@ -44,7 +44,7 @@ export type InstanceSelection =
 // by prefix. A record matches when its cwd equals `target.cwd` or its configDir equals
 // `target.configDir`, so a dev server started at a monorepo root with `-c packages/ui/.forkbook`
 // is found from `packages/ui` and vice versa. An explicit `--config-dir` matches on configDir
-// only, which records from older Storybooks lack.
+// only, which records from older Forkbooks lack.
 //
 // `target.port` is a complete address: records match on port across all projects, still
 // restricted by an explicit `--config-dir`. Nothing on the port → `port-mismatch`.
@@ -105,7 +105,7 @@ function selectCompetingBucket(
   matches: StorybookInstanceRecord[],
   currentAgent: string | undefined
 ) {
-  // std-env reports Claude CLI as `claude`; preview-launched Storybooks record `claude-preview`.
+  // std-env reports Claude CLI as `claude`; preview-launched Forkbooks record `claude-preview`.
   const agentBuckets =
     currentAgent === CLAUDE_AGENT_NAME
       ? [CLAUDE_PREVIEW_AGENT_NAME, CLAUDE_AGENT_NAME]

@@ -39,7 +39,7 @@ describe('runChildHost', () => {
       mode: 'attached',
       requestedMode: 'attached',
       host: 'in-process',
-      clientInfo: { name: 'storybook-tools-sdk', version: '10.2.0', kind: 'sdk' },
+      clientInfo: { name: 'forkbook-tools-sdk', version: '10.2.0', kind: 'sdk' },
       storybook: { version: '10.2.0', configDir: '/repo/.forkbook', url: 'http://localhost:6006' },
       runtime: {
         configDir: '/repo/.forkbook',
@@ -72,7 +72,7 @@ describe('runChildHost', () => {
     vi.mocked(createTools).mockResolvedValue({
       mode: 'local',
       host: 'in-process',
-      clientInfo: { name: 'storybook-tools-sdk', version: '10.2.0', kind: 'sdk' },
+      clientInfo: { name: 'forkbook-tools-sdk', version: '10.2.0', kind: 'sdk' },
       storybook: { version: '10.2.0', configDir: '/repo/.forkbook' },
       runtime: {
         configDir: '/repo/.forkbook',
@@ -98,12 +98,12 @@ describe('runChildHost', () => {
       type: 'init',
       options: {
         mode: 'local',
-        clientInfo: { name: 'storybook-cli', version: '1.0.0', kind: 'cli' },
+        clientInfo: { name: 'forkbook-cli', version: '1.0.0', kind: 'cli' },
       },
     });
     await vi.waitFor(() => expect(createTools).toHaveBeenCalled());
     expect(createTools).toHaveBeenCalledWith({
-      clientInfo: { name: 'storybook-cli', version: '1.0.0', kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: '1.0.0', kind: 'cli' },
       cwd: '/repo',
       mode: 'local',
       autoSpawn: false,
@@ -123,11 +123,11 @@ describe('runChildHost', () => {
 
     handlers[0]({
       type: 'init',
-      options: { clientInfo: { name: 'storybook-cli', version: '1.0.0', kind: 'cli' } },
+      options: { clientInfo: { name: 'forkbook-cli', version: '1.0.0', kind: 'cli' } },
     });
     await vi.waitFor(() => expect(createTools).toHaveBeenCalled());
     expect(createTools).toHaveBeenCalledWith({
-      clientInfo: { name: 'storybook-cli', version: '1.0.0', kind: 'cli' },
+      clientInfo: { name: 'forkbook-cli', version: '1.0.0', kind: 'cli' },
       cwd: '/repo',
       mode: 'attached',
       autoSpawn: false,

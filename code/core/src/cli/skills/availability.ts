@@ -31,7 +31,7 @@ export interface ToolAvailability {
 }
 
 /**
- * Composed Storybooks with component manifests can back docs tools even when the
+ * Composed Forkbooks with component manifests can back docs tools even when the
  * local Forkbook has no component manifest. Use this before feeding
  * availability into the shared tool registry.
  */

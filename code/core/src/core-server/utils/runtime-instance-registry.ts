@@ -59,7 +59,7 @@ export type RuntimeInstanceRecord = {
   /**
    * Resolved config directory of the running Forkbook. Lets `forkbook tools` find this instance
    * from a different cwd in a monorepo (storybookjs/storybook#35359). Optional because records
-   * written by older Storybooks lack it.
+   * written by older Forkbooks lack it.
    */
   configDir?: string;
   url: string;

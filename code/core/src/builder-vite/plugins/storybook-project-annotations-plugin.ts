@@ -21,7 +21,7 @@ export function storybookProjectAnnotationsPlugin(options: Options): Plugin {
   let projectRoot: string;
 
   return {
-    name: 'storybook:project-annotations-plugin',
+    name: 'forkbook:project-annotations-plugin',
     enforce: 'pre',
     configResolved(config) {
       projectRoot = config.root;

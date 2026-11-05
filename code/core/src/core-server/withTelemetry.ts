@@ -23,7 +23,7 @@ import { StorybookError } from '../storybook-error.ts';
 type TelemetryOptions = {
   cliOptions: CLIOptions;
   presetOptions?: Parameters<typeof loadAllPresets>[0];
-  printError?: (err: any) => void;
+  printError?: (err: unknown) => void;
   skipPrompt?: boolean;
   eventType?: EventType;
   fallbackTelemetryState?: boolean;

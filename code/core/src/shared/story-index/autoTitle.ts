@@ -1,6 +1,5 @@
 import type { NormalizedStoriesSpecifier } from '@aussieljk/forkbook/internal/types';
 
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
 // FIXME: types duplicated type from `core-common', to be

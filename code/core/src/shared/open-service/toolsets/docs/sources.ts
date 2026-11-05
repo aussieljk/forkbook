@@ -1,7 +1,7 @@
 /**
  * Composed Forkbook sources.
  *
- * A composition serves several Storybooks through one MCP endpoint: the local one plus every
+ * A composition serves several Forkbooks through one MCP endpoint: the local one plus every
  * `refs` entry. Each source is read independently, so one unreachable or private source degrades
  * to a message in its own section rather than failing the whole listing.
  */

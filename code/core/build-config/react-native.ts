@@ -14,7 +14,7 @@ const config: BuildEntries = {
         entryPoint: './src/react-native/preview.ts',
       },
       {
-        // Takes the place of the config folder when Storybook is disabled (metro/withForkbook).
+        // Takes the place of the config folder when Forkbook is disabled (metro/withForkbook).
         exportEntries: ['./react-native/stub'],
         entryPoint: './src/react-native/stub.tsx',
         dts: false,

@@ -18,7 +18,7 @@ export type ToolsTarget = {
 export type InstanceDiscovery = {
   /** The running instance serving the targeted project, if any. */
   currentRecord: StorybookInstanceRecord | undefined;
-  /** All live records, so callers can point at Storybooks running for other projects. */
+  /** All live records, so callers can point at Forkbooks running for other projects. */
   records: StorybookInstanceRecord[];
 };
 

@@ -40,12 +40,12 @@ class ConsoleLogger implements Console {
     return (text: string) => text;
   }
 
-  protected formatMessage(...data: any[]): string {
+  protected formatMessage(...data: unknown[]): string {
     const message = data.join(' ');
     return this.prefix ? `${this.color(this.prefix)} ${message}` : message;
   }
 
-  assert(condition?: boolean, ...data: any[]): void {
+  assert(condition?: boolean, ...data: unknown[]): void {
     if (!condition) {
       error(this.formatMessage('Assertion failed:', ...data));
     }
@@ -54,7 +54,7 @@ class ConsoleLogger implements Console {
   // Needs some proper implementation
   // Take a look at https://github.com/webpack/webpack/blob/5f898719ae47b89bee3c126bf5d2e0081ea8c91f/lib/node/nodeConsole.js#L4
   // for some inspiration
-  // status(...data: any[]): void {
+  // status(...data: unknown[]): void {
   //   const message = this.formatMessage(...data);
 
   //   // If we have a previous status line, we need to clear it
@@ -128,7 +128,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/debug_static)
    */
-  debug(...data: any[]): void {
+  debug(...data: unknown[]): void {
     process.stdout.write('\n'); // Add newline after clearing status
     debug(this.formatMessage(...data));
   }
@@ -139,7 +139,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/dir_static)
    */
-  dir(item?: any, options?: any): void {
+  dir(item?: unknown, options?: unknown): void {
     // TODO: Implement this with our own logger
     console.dir(item, options);
   }
@@ -150,7 +150,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/dirxml_static)
    */
-  dirxml(...data: any[]): void {
+  dirxml(...data: unknown[]): void {
     // TODO: Implement this with our own logger
     console.dirxml(...data);
   }
@@ -161,19 +161,19 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/error_static)
    */
-  error(...data: any[]): void {
+  error(...data: unknown[]): void {
     process.stdout.write('\n'); // Add newline after clearing status
     error(this.formatMessage(...data));
   }
 
   /**
    * The **`console.group()`** static method creates a new inline group in the Web console log,
-   * causing any subsequent console messages to be indented by an additional level, until
+   * causing unknown subsequent console messages to be indented by an additional level, until
    * console/groupEnd_static is called.
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/group_static)
    */
-  group(...data: any[]): void {
+  group(...data: unknown[]): void {
     // TODO: Implement this with our own logger
     console.group(...data);
   }
@@ -183,7 +183,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/groupCollapsed_static)
    */
-  groupCollapsed(...data: any[]): void {
+  groupCollapsed(...data: unknown[]): void {
     // TODO: Implement this with our own logger
     console.groupCollapsed(...data);
   }
@@ -204,7 +204,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/info_static)
    */
-  info(...data: any[]): void {
+  info(...data: unknown[]): void {
     process.stdout.write('\n'); // Add newline after clearing status
     // "info" logger shouldn't be used in the console logger, because info should be reserved for important messages
     log(this.formatMessage(...data));
@@ -215,7 +215,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/log_static)
    */
-  log(...data: any[]): void {
+  log(...data: unknown[]): void {
     process.stdout.write('\n'); // Add newline after clearing status
     log(this.formatMessage(...data));
   }
@@ -225,7 +225,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/table_static)
    */
-  table(tabularData?: any, properties?: string[]): void {
+  table(tabularData?: unknown, properties?: string[]): void {
     // TODO: Implement this with our own logger
     console.table(tabularData, properties);
   }
@@ -266,7 +266,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/timeLog_static)
    */
-  timeLog(label?: string, ...data: any[]): void {
+  timeLog(label?: string, ...data: unknown[]): void {
     const key = label || 'default';
     const startTime = this.timers.get(key);
     if (startTime) {
@@ -287,7 +287,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/trace_static)
    */
-  trace(...data: any[]): void {
+  trace(...data: unknown[]): void {
     // TODO: Implement this with our own logger
     console.trace(...data);
   }
@@ -298,7 +298,7 @@ class ConsoleLogger implements Console {
    *
    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console/warn_static)
    */
-  warn(...data: any[]): void {
+  warn(...data: unknown[]): void {
     process.stdout.write('\n'); // Add newline after clearing status
     warn(this.formatMessage(...data));
   }

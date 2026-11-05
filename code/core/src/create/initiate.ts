@@ -238,7 +238,9 @@ export async function initiate(options: CommandOptions): Promise<void> {
     'init',
     {
       cliOptions: options,
-      printError: (err) => !err.handled && logger.error(err),
+      printError: (err) =>
+        !(typeof err === 'object' && err !== null && 'handled' in err && err.handled) &&
+        logger.error(err),
       // enable telemetry if nothing else specified in env var or CLI options
       fallbackTelemetryState: true,
     },

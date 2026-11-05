@@ -51,7 +51,7 @@ const command = (name: string) =>
     .option('--enable-crash-reports', 'Enable sending crash reports to telemetry data')
     .option(
       '--logfile [path]',
-      'Write all debug logs to the specified file at the end of the run. Defaults to debug-storybook.log when [path] is not provided'
+      'Write all debug logs to the specified file at the end of the run. Defaults to debug-forkbook.log when [path] is not provided'
     )
     .option('--loglevel <trace | debug | info | warn | error | silent>', 'Define log level', 'info')
     .hook('preAction', async (self) => {

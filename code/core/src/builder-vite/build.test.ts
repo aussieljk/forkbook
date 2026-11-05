@@ -64,7 +64,7 @@ it("re-asserts Forkbook's build options when a user plugin's config hook overrid
   const finalConfig = vi.mocked(viteBuild).mock.lastCall?.[0] as InlineConfig;
   const guardPlugins = (finalConfig.plugins ?? []).filter(
     (p): p is Plugin =>
-      !!p && !Array.isArray(p) && 'name' in p && p.name === 'storybook:enforce-build-options'
+      !!p && !Array.isArray(p) && 'name' in p && p.name === 'forkbook:enforce-build-options'
   );
 
   const resolved = await resolveConfig(

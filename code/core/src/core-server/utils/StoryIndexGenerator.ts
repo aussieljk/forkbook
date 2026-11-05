@@ -29,7 +29,6 @@ import type {
 
 import * as find from 'empathic/find';
 import picocolors from 'picocolors';
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 import invariant from 'tiny-invariant';
 import { dedent } from 'ts-dedent';
@@ -169,7 +168,6 @@ export class StoryIndexGenerator {
     const globPattern = specifier.files.startsWith('!') ? `./${specifier.files}` : specifier.files;
 
     // Dynamically import globby because it is a pure ESM module
-    // eslint-disable-next-line depend/ban-dependencies
     const { glob } = await import('tinyglobby');
 
     const files = await glob(globPattern, {

@@ -49,7 +49,7 @@ export function viteMockPlugin(options: MockPluginOptions): Plugin[] {
   // --- Plugin Definition ---
   return [
     {
-      name: 'storybook:mock-loader',
+      name: 'forkbook:mock-loader',
 
       configResolved(config) {
         viteConfig = config;
@@ -161,7 +161,7 @@ export function viteMockPlugin(options: MockPluginOptions): Plugin[] {
       },
     },
     {
-      name: 'storybook:mock-loader-preview',
+      name: 'forkbook:mock-loader-preview',
       transform: {
         filter: { id: normalizedPreviewConfigPath },
         handler(code, id) {

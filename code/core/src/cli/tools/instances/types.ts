@@ -33,7 +33,7 @@ export const StorybookInstanceRecordSchema = v.object({
   port: v.pipe(v.number(), v.minValue(1), v.maxValue(65535), v.integer()),
   /**
    * Token authenticating clients against the instance's WebSocket channel. Optional: records
-   * written by older Storybooks lack it.
+   * written by older Forkbooks lack it.
    */
   token: v.optional(v.string()),
   agent: v.optional(v.string()),
@@ -42,7 +42,7 @@ export const StorybookInstanceRecordSchema = v.object({
    * Realpathed root of the `storybook` package the dev server actually runs, recorded by the
    * server from its own module location. The caller attaches in-process when this equals its own
    * root, and spawns its child host from this root otherwise. Optional: records written by older
-   * Storybooks lack it, which makes attach refuse.
+   * Forkbooks lack it, which makes attach refuse.
    */
   storybookPath: v.optional(v.string()),
   startedAt: v.optional(v.string()),

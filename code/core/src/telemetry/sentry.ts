@@ -42,8 +42,8 @@ function parseStack(stack: string | undefined) {
 }
 
 export async function sendErrorToSentry(
-  payload: Record<string, any>,
-  context: Record<string, any>
+  payload: Record<string, unknown>,
+  context: Record<string, unknown>
 ) {
   const dsn = process.env.FORKBOOK_SENTRY_DSN ?? DEFAULT_DSN;
   if (!dsn) {

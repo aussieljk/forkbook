@@ -5,24 +5,15 @@ import type { CLIOptions, PackageJson } from '@aussieljk/forkbook/internal/types
 
 import { dedent } from 'ts-dedent';
 
-function printError(error: any) {
-  if (error instanceof Error) {
-    if ((error as any).error) {
-      logger.error((error as any).error);
-    } else if ((error as any).stats && (error as any).stats.compilation.errors) {
-      (error as any).stats.compilation.errors.forEach((e: any) => logger.log(e));
-    } else {
-      logger.error(error as any);
-    }
-  } else if (error.compilation?.errors) {
-    error.compilation.errors.forEach((e: any) => logger.log(e));
-  }
+function printError(error: unknown) {
+  logger.error(error instanceof Error && 'error' in error ? error.error : error);
 
+  const fatal = typeof error === 'object' && error !== null && 'close' in error && !!error.close;
   logger.warn(
-    error.close
+    fatal
       ? dedent`
           FATAL broken build!, will close the process,
-          Fix the error below and restart storybook.
+          Fix the error below and restart Forkbook.
         `
       : dedent`
           Broken build, fix the error above.
@@ -44,7 +35,7 @@ export const dev = async (cliOptions: CLIOptions) => {
     ...cliOptions,
     configDir: cliOptions.configDir || defaultConfigDir(),
     configType: 'DEVELOPMENT',
-    cache: cache as any,
+    cache,
     packageJson: packageJson,
   } as Options;
 

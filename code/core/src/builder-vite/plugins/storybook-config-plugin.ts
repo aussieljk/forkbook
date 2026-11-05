@@ -19,7 +19,7 @@ export interface StorybookConfigPluginOptions {
 export function storybookConfigPlugin(options: StorybookConfigPluginOptions): Plugin[] {
   return [
     {
-      name: 'storybook:config-plugin',
+      name: 'forkbook:config-plugin',
       enforce: 'pre',
       async config(config) {
         const { defaultClientConditions = [] } = await import('vite');
@@ -46,7 +46,7 @@ export function storybookConfigPlugin(options: StorybookConfigPluginOptions): Pl
       },
     },
     {
-      name: 'storybook:allow-storybook-dir',
+      name: 'forkbook:allow-storybook-dir',
       enforce: 'post',
       config(config) {
         // If there is NO allow list then Vite allows anything in the root directory.

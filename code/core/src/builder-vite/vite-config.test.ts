@@ -103,7 +103,7 @@ describe('commonConfig', () => {
 describe('storybookConfigPlugin', () => {
   it('should set default envPrefix when no user envPrefix is set', async () => {
     const plugins = storybookConfigPlugin({ configDir: '/test/.forkbook' });
-    const configPlugin = plugins.find((p) => p.name === 'storybook:config-plugin')!;
+    const configPlugin = plugins.find((p) => p.name === 'forkbook:config-plugin')!;
 
     // The config hook receives the current Vite config and returns partial config to merge
     const result = await (configPlugin.config as Function)({}, {});
@@ -112,7 +112,7 @@ describe('storybookConfigPlugin', () => {
 
   it('should include storybook resolve conditions', async () => {
     const plugins = storybookConfigPlugin({ configDir: '/test/.forkbook' });
-    const configPlugin = plugins.find((p) => p.name === 'storybook:config-plugin')!;
+    const configPlugin = plugins.find((p) => p.name === 'forkbook:config-plugin')!;
 
     const result = await (configPlugin.config as Function)({}, {});
     expect(result.resolve.conditions).toContain('storybook');
@@ -122,7 +122,7 @@ describe('storybookConfigPlugin', () => {
 
   it('should not set base when not provided', async () => {
     const plugins = storybookConfigPlugin({ configDir: '/test/.forkbook' });
-    const configPlugin = plugins.find((p) => p.name === 'storybook:config-plugin')!;
+    const configPlugin = plugins.find((p) => p.name === 'forkbook:config-plugin')!;
 
     const result = await (configPlugin.config as Function)({}, {});
     expect(result.base).toBeUndefined();
@@ -130,7 +130,7 @@ describe('storybookConfigPlugin', () => {
 
   it('should allow storybook dir when server fs allow list exists', () => {
     const plugins = storybookConfigPlugin({ configDir: '/test/.forkbook' });
-    const allowPlugin = plugins.find((p) => p.name === 'storybook:allow-storybook-dir')!;
+    const allowPlugin = plugins.find((p) => p.name === 'forkbook:allow-storybook-dir')!;
 
     const config = { server: { fs: { allow: ['/some/path'] } } };
     (allowPlugin.config as Function)(config);

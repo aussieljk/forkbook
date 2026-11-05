@@ -13,7 +13,7 @@ export interface LogEntry {
   metadata?: Metadata;
 }
 
-const DEBUG_LOG_FILE_NAME = 'debug-storybook.log';
+const DEBUG_LOG_FILE_NAME = 'debug-forkbook.log';
 const DEFAULT_LOG_FILE_PATH = join(process.cwd(), DEBUG_LOG_FILE_NAME);
 
 /**
@@ -69,7 +69,7 @@ class LogTracker {
    * Writes all stored logs to a file and clears the log store.
    *
    * @param filePath - Optional custom file path to write logs to
-   * @returns The path where logs were written, by default is debug-storybook.log in current working
+   * @returns The path where logs were written, by default is debug-forkbook.log in current working
    *   directory
    */
   async writeToFile(filePath: string | boolean | undefined): Promise<string> {

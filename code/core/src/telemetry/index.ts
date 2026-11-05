@@ -1,8 +1,9 @@
 /**
  * Forkbook telemetry. Nothing goes to Storybook. Events go only to:
  *
+ * - The Forkbook Sentry project, for `error` events only (see `sentry.ts`). This is on by default;
+ *   an empty `FORKBOOK_SENTRY_DSN` stops it.
  * - Your own OpenTelemetry server, when `OTEL_EXPORTER_OTLP_ENDPOINT` is set (see `otel.ts`).
- * - The Forkbook Sentry project, for `error` events only (see `sentry.ts`).
  *
  * `core.disableTelemetry` (or `--disable-telemetry`) turns off both. Until a command calls
  * `setTelemetryEnabled`, events are dropped.
@@ -55,9 +56,10 @@ export type EventType =
   | 'ai-init-opt-in'
   | 'ai-prompt-nudge'
   | 'ai-setup'
-  | 'ai-setup-self-healing-scoring';
+  | 'ai-setup-self-healing-scoring'
+  | 'addon-mcp';
 
-export type Payload = Record<string, any>;
+export type Payload = Record<string, unknown>;
 
 export type TelemetryOptions = {
   /** Send even when telemetry is off or not yet set. Used for error reports. */
@@ -116,7 +118,7 @@ export async function telemetry(
     const body = typeof payload === 'function' ? await payload() : { ...payload };
     if (body.error) {
       // Remove user paths from the error.
-      body.error = sanitizeError(body.error);
+      body.error = sanitizeError(body.error as Error);
     }
 
     if (process.env.FORKBOOK_TELEMETRY_DEBUG) {

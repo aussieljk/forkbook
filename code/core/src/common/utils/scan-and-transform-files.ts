@@ -39,7 +39,6 @@ export async function scanAndTransformFiles<T extends Record<string, unknown>>({
 
   logger.log('Scanning for affected files...');
 
-  // eslint-disable-next-line depend/ban-dependencies
   const { glob: globFiles } = await import('tinyglobby');
 
   const sourceFiles = await globFiles([glob], {

@@ -62,7 +62,7 @@ export async function storybookExternalGlobalsPlugin(options: Options): Promise<
   const globalsCodeFilter = new RegExp(globalsList.map(escapeKeys).join('|'));
 
   return {
-    name: 'storybook:external-globals-plugin',
+    name: 'forkbook:external-globals-plugin',
     enforce: 'post',
     // In dev (serve), we set up aliases to files that we write into node_modules/.cache.
     async config(config, { command }) {

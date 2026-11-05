@@ -3,9 +3,7 @@ import { resolve } from 'node:path';
 import { once } from '@aussieljk/forkbook/internal/node-logger';
 import { MainFileMissingError } from '@aussieljk/forkbook/internal/server-errors';
 
-// eslint-disable-next-line depend/ban-dependencies
 import { glob } from 'tinyglobby';
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 import { dedent } from 'ts-dedent';
 

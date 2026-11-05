@@ -16,7 +16,7 @@ export function validateFrameworkName(
   frameworkName: string | undefined
 ): asserts frameworkName is string {
   // Throw error if there is no framework field
-  // TODO: maybe this error should not be thrown if we allow empty Storybooks that only use "refs" for composition
+  // TODO: maybe this error should not be thrown if we allow empty Forkbooks that only use "refs" for composition
   if (!frameworkName) {
     throw new MissingFrameworkFieldError();
   }

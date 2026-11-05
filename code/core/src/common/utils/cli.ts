@@ -111,7 +111,7 @@ export function getEnvConfig(program: Record<string, any>, configEnv: Record<str
  * ```
  */
 export const createLogStream = async (
-  logFileName = 'storybook.log'
+  logFileName = 'forkbook.log'
 ): Promise<{
   moveLogFile: () => Promise<void>;
   removeLogFile: () => Promise<void>;

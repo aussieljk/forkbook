@@ -40,7 +40,7 @@ export function getMockRedirectIncludeEntries(
 /** A Vite plugin that configures dependency optimization for Forkbook's dev server. */
 export function storybookOptimizeDepsPlugin(options: Options): Plugin {
   return {
-    name: 'storybook:optimize-deps-plugin',
+    name: 'forkbook:optimize-deps-plugin',
     async config(config, { command }) {
       // optimizeDeps only applies to the dev server, not production builds
       if (command !== 'serve') {

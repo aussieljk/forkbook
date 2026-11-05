@@ -9,7 +9,7 @@ export async function injectExportOrderPlugin() {
   const filter = createFilter(include);
 
   return {
-    name: 'storybook:inject-export-order-plugin',
+    name: 'forkbook:inject-export-order-plugin',
     // This should only run after the typescript has been transpiled
     enforce: 'post',
     transform: {

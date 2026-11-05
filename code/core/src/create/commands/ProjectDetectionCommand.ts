@@ -1,4 +1,4 @@
-import { ProjectType } from '@aussieljk/forkbook/internal/cli';
+import type { ProjectType } from '@aussieljk/forkbook/internal/cli';
 import type { JsPackageManager } from '@aussieljk/forkbook/internal/common';
 import { logger, prompt } from '@aussieljk/forkbook/internal/node-logger';
 import { telemetry } from '@aussieljk/forkbook/internal/telemetry';

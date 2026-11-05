@@ -114,17 +114,18 @@ export function executeNodeCommand({
  * @param error - The error to check
  * @returns True if the error is a "command not found" error
  */
-function isCommandNotFoundError(error: any): boolean {
-  if (!error) {
+function isCommandNotFoundError(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null || !('stderr' in error)) {
     return false;
   }
 
-  const stderr = error.stderr || '';
-  return stderr.includes('is not recognized as an internal or external command');
+  return String(error.stderr ?? '').includes(
+    'is not recognized as an internal or external command'
+  );
 }
 
 /** Helper to check if we should continue trying command variations. */
-function shouldRetry(error: any, isLastVariation: boolean): boolean {
+function shouldRetry(error: unknown, isLastVariation: boolean): boolean {
   return isCommandNotFoundError(error) && !isLastVariation;
 }
 
@@ -171,13 +172,13 @@ function tryCommandVariationsSync(
   args: string[],
   options: ExecOptions
 ): string {
-  let lastError: any;
+  let lastError: unknown;
 
   for (let i = 0; i < commandVariations.length; i++) {
     const cmd = commandVariations[i];
     try {
       return execSync(cmd, args, options).stdout ?? '';
-    } catch (error: any) {
+    } catch (error) {
       lastError = error;
 
       if (!shouldRetry(error, i === commandVariations.length - 1)) {

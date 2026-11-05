@@ -29,7 +29,7 @@ const DOCS_METHOD_REFS = {
 } as const satisfies Record<'list' | 'show' | 'showStory', ToolsetMethodId>;
 
 /**
- * Which Storybooks these tools serve — exactly one of the two.
+ * Which Forkbooks these tools serve — exactly one of the two.
  *
  * Modelled as an exclusive union so neither "no access at all" nor "both, one silently winning" can
  * be constructed: a composition takes a `storybookId` on every lookup and a single Forkbook must
@@ -42,7 +42,7 @@ export type CreateDocsToolsetOptions =
       sources?: never;
     }
   | {
-      /** The composed Storybooks these tools serve; ids are only unique within a source. */
+      /** The composed Forkbooks these tools serve; ids are only unique within a source. */
       sources: DocsSource[];
       docsAccess?: never;
     };

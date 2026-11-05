@@ -1,8 +1,8 @@
 /**
- * Composition authentication for fetching manifests from private Storybooks.
+ * Composition authentication for fetching manifests from private Forkbooks.
  *
  * This class handles OAuth discovery and token-based manifest fetching for
- * composed Storybooks (refs). It acts as a proxy for OAuth metadata, allowing
+ * composed Forkbooks (refs). It acts as a proxy for OAuth metadata, allowing
  * MCP clients like VS Code to handle the OAuth flow with Chromatic.
  */
 
@@ -147,7 +147,7 @@ export class CompositionAuth {
 
   /** Build WWW-Authenticate header for 401 responses */
   buildWwwAuthenticate(origin: string): string {
-    return `Bearer error="unauthorized", error_description="Authorization needed for composed Storybooks", resource_metadata="${origin}/.well-known/oauth-protected-resource"`;
+    return `Bearer error="unauthorized", error_description="Authorization needed for composed Forkbooks", resource_metadata="${origin}/.well-known/oauth-protected-resource"`;
   }
 
   /** Build sources configuration: local first, then refs that have manifests. */

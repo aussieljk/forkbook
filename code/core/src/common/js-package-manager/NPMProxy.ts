@@ -9,7 +9,6 @@ import {
 
 import * as find from 'empathic/find';
 import type { ExecProcess } from '../utils/exec.ts';
-// eslint-disable-next-line depend/ban-dependencies
 import { globSync } from 'tinyglobby';
 import sort from 'semver/functions/sort.js';
 import { dedent } from 'ts-dedent';

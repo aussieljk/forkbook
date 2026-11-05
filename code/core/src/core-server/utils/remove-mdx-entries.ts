@@ -3,9 +3,7 @@ import { isAbsolute, join, relative } from 'node:path';
 import { commonGlobOptions, normalizeStories } from '@aussieljk/forkbook/internal/common';
 import type { Options, StoriesEntry } from '@aussieljk/forkbook/internal/types';
 
-// eslint-disable-next-line depend/ban-dependencies
 import { glob } from 'tinyglobby';
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
 export async function removeMDXEntries(
