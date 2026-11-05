@@ -29,7 +29,7 @@ export default {
   storybook: { entry: ['**/*.@(mdx|stories.@(mdx|js|jsx|mjs|ts|tsx))'] },
   workspaces: {
     '.': {
-      entry: ['.forkbook/*.{ts,tsx}', 'vitest.config.storybook.ts'],
+      entry: ['.forkbook/*.{ts,tsx}', 'vitest.config.forkbook.ts'],
       project: ['.forkbook/**/*.{ts,tsx}', '*.ts'],
     },
     core: {

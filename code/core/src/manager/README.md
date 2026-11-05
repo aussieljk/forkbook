@@ -84,7 +84,7 @@ class ReactProvider extends Provider {
 
 ## .setStories()
 
-This API is used to pass the`kind` and `stories` list to storybook-ui.
+This API is used to pass the`kind` and `stories` list to the manager UI.
 
 ```js
 import { Provider } from '@storybook/manager';

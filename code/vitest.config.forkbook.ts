@@ -32,7 +32,7 @@ export default defineProject({
     ...extraPlugins,
   ],
   test: {
-    name: 'storybook-ui',
+    name: 'forkbook-ui',
     // Playwright occasionally misses the vitest-iframe frame within 1s under full-suite load.
     retry: process.env.CI ? 2 : 1,
     exclude: [
@@ -56,7 +56,7 @@ export default defineProject({
       headless: true,
       screenshotFailures: false,
     },
-    setupFiles: ['./.forkbook/storybook.setup.ts'],
+    setupFiles: ['./.forkbook/forkbook.setup.ts'],
     environment: 'happy-dom',
   },
 });

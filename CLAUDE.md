@@ -16,7 +16,7 @@ Run these from the repo root.
 | `bun run typecheck` | `bun check` on all projects. Do not use `tsc`. | 5 to 25 s |
 | `bun run test:changed` | Vitest, only the tests for changed files. | |
 | `bun run test:unit` | All tests except the browser project. | |
-| `bun run test:ui` | Only the browser project (`storybook-ui`, Playwright Chromium). | about 1 min |
+| `bun run test:ui` | Only the browser project (`forkbook-ui`, Playwright Chromium). | about 1 min |
 | `bun x vitest run --project core path/to/file.test.ts` | One test file. | |
 | `bun run merge-agent <branch>` | Merges an agent branch into master, fixes a `bun.lock` conflict, and removes the worktree and the branch. A fast-forward to a tree that passed verify skips verify. Other merges run `verify --changed=<old master>`. | seconds to 1 min |
 | `bun run browsers` | Installs the Playwright browsers (`pw-browsers`). | |
@@ -51,7 +51,7 @@ Data goes to `https://signoz.ljk.dev` when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 - `code/core/build-config.ts` merges the entry lists in `code/core/build-config/<area>.ts`.
 - An area with its own `src/<area>/vitest.config.ts` is its own Vitest project. The `core` project skips it.
 - Next.js code has its own TypeScript project (`code/core/tsconfig.nextjs.json`), so the global Next.js types do not leak into the rest.
-- `code/.forkbook`: the internal Forkbook. Its stories run as browser tests in the `storybook-ui` Vitest project.
+- `code/.forkbook`: the internal Forkbook. Its stories run as browser tests in the `forkbook-ui` Vitest project.
 - `scripts/`: build (`build-package.ts`, `build/`), `verify.ts`, `merge-agent.ts`.
 - The build configs list the entries. `scripts/build/utils/generate-package-json.ts` writes the `exports` field. Each export has a `code` condition that points to the source. TypeScript uses it (`customConditions: ["code"]`), so the type check does not need a build.
 

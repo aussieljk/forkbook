@@ -23,7 +23,7 @@ const projects = [
  * these tests, that need browser-mode cannot be run/added
  */
 if (shouldRunStorybookTests) {
-  projects.push('code/vitest.config.storybook.ts');
+  projects.push('code/vitest.config.forkbook.ts');
 }
 
 export default defineConfig({
