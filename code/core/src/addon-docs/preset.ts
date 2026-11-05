@@ -59,7 +59,10 @@ const docs: PresetProperty<'docs'> = (input = {}, options) => {
   return result;
 };
 
-export const viteFinal = async (config: InlineConfig, options: DocsOptions) => {
+export const viteFinal = async (
+  config: InlineConfig,
+  options: DocsOptions
+): Promise<InlineConfig> => {
   const { plugins = [] } = config;
   const { csfPluginOptions = {} } = options;
 
