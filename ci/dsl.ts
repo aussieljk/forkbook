@@ -55,7 +55,6 @@ const ACTIONS = {
   checkout: 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd', // v6
   setupBun: 'oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6', // v2.2.0
   setupNode: 'actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e', // v6
-  actionlint: 'raven-actions/actionlint@205b530c5d9fa8f44ae9ed59f341a0db994aa6f8', // v2.1.2
   zizmor: 'zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d', // v0.5.6
 };
 
@@ -96,9 +95,14 @@ export const setupNode = (version: string): Step => ({
 
 export const install = (): Step => sh('Install', 'bun install --frozen-lockfile');
 
+/**
+ * The official actionlint image. The raven-actions wrapper ran `npm install` in the repo, and npm
+ * fails on the Bun `workspace:*` versions.
+ */
 export const actionlint = (): Step => ({
   name: 'actionlint',
-  uses: ACTIONS.actionlint,
+  uses: 'docker://rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667',
+  with: { args: '-color' },
 });
 
 export const zizmor = (): Step => ({
