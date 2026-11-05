@@ -57,7 +57,7 @@ Data goes to `https://signoz.ljk.dev` when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 
 ## Known traps
 
-- Some browser stories (Tabs, Popover) can fail once under full-suite load and pass alone. Run the one story file again before you change code.
+- Some browser stories (Tabs, Popover, Modal) can fail once under full-suite load and pass alone. Run the one story file again before you change code.
 - The browser tests use the built `dist` files, not the source. Build first. The build removes `node_modules/.cache/storybook`, because Vite does not see a new build in its pre-bundle cache.
 - Do not run `playwright install`. Under Node 26 it can hang. Use `pw-browsers` (`bun run browsers`).
 - `code/tsconfig.json` must keep `"jsx": "react-jsx"`. Vite 8 follows it, and `preserve` breaks every JSX test.
