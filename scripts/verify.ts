@@ -1,5 +1,5 @@
 /**
- * Build, type check and test, then print a short summary. Full logs go to
+ * Build, type check, lint, format check and test, then print a short summary. Full logs go to
  * node_modules/.cache/verify.
  *
  *   bun run verify                  build what changed, typecheck, all tests
@@ -82,7 +82,10 @@ const ok = await withSpan(
     );
     setAttributes({ 'build.dist_kb': distKb });
 
-    // The type check and the tests do not depend on each other, so they run at the same time.
+    // The type check, the lint, the format check and the tests do not depend on each other, so
+    // they run at the same time.
+    const lintRun = step('lint', ['bun', 'run', 'lint']);
+    const formatRun = step('format', ['bun', 'run', 'fmt:check']);
     const typecheckRun = step('typecheck', [
       'bun',
       'check',
@@ -101,7 +104,24 @@ const ok = await withSpan(
       ...(otelEnabled ? ['--reporter=./scripts/vitest-otel-reporter.ts'] : []),
       ...vitestArgs,
     ]);
-    const [typecheck, tests] = await Promise.all([typecheckRun, testsRun]);
+    const [lint, format, typecheck, tests] = await Promise.all([
+      lintRun,
+      formatRun,
+      typecheckRun,
+      testsRun,
+    ]);
+    if (!lint.ok) {
+      console.log(
+        lint.output
+          .split('\n')
+          .filter((line) => /error/.test(line))
+          .slice(0, 20)
+          .join('\n')
+      );
+    }
+    if (!format.ok) {
+      console.log(format.output.split('\n').slice(0, 20).join('\n'));
+    }
     if (!typecheck.ok) {
       console.log(
         typecheck.output
@@ -135,12 +155,13 @@ const ok = await withSpan(
       'verify.tests.failed': Number(totals?.[1] ?? 0),
       'verify.tests.passed': Number(totals?.[2] ?? 0),
     });
-    if (!(typecheck.ok && tests.ok)) {
+    const allOk = lint.ok && format.ok && typecheck.ok && tests.ok;
+    if (!allOk) {
       markFailed('verify failed');
     } else if (tree) {
       appendFileSync(VERIFIED_TREES, `${tree}\n`);
     }
-    return typecheck.ok && tests.ok;
+    return allOk;
   }
 );
 await flushOtel();

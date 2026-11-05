@@ -63,30 +63,22 @@
     {
       "url": "https://forkbook.ljk.dev/addons/@storybook/addon-interactions",
       "note": "Site page: addons > @storybook > addon interactions",
-      "uses": [
-        "code/core/src/test/README.md:8"
-      ]
+      "uses": ["code/core/src/test/README.md:8"]
     },
     {
       "url": "https://forkbook.ljk.dev/addons/storybook-addon-pseudo-states",
       "note": "Site page: addons > storybook addon pseudo states",
-      "uses": [
-        "code/core/src/addon-pseudo-states/types.ts:17"
-      ]
+      "uses": ["code/core/src/addon-pseudo-states/types.ts:17"]
     },
     {
       "url": "https://forkbook.ljk.dev/blog",
       "note": "Site page: blog",
-      "uses": [
-        "code/core/src/manager/settings/whats_new_footer.stories.tsx:16"
-      ]
+      "uses": ["code/core/src/manager/settings/whats_new_footer.stories.tsx:16"]
     },
     {
       "url": "https://forkbook.ljk.dev/community#support",
       "note": "Site page: community, section \"support\"",
-      "uses": [
-        "code/core/src/manager/settings/SettingsFooter.tsx:20"
-      ]
+      "uses": ["code/core/src/manager/settings/SettingsFooter.tsx:20"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs",
@@ -130,31 +122,22 @@
     {
       "url": "https://forkbook.ljk.dev/docs/addons/writing-presets",
       "note": "Docs page: addons > writing presets",
-      "uses": [
-        "code/core/src/common/presets.ts:146"
-      ]
+      "uses": ["code/core/src/common/presets.ts:146"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview",
       "note": "Docs page: ai > mcp > overview",
-      "uses": [
-        "code/core/src/addon-mcp/preset.ts:225"
-      ]
+      "uses": ["code/core/src/addon-mcp/preset.ts:225"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview#3-add-the-mcp-server-to-your-agent",
       "note": "Docs page: ai > mcp > overview, section \"3 add the mcp server to your agent\"",
-      "uses": [
-        "code/core/src/addon-mcp/template.html:192"
-      ]
+      "uses": ["code/core/src/addon-mcp/template.html:192"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/ai/mcp/overview#framework-support",
       "note": "Docs page: ai > mcp > overview, section \"framework support\"",
-      "uses": [
-        "code/core/src/addon-mcp/preset.ts:216",
-        "code/core/src/addon-mcp/preset.ts:220"
-      ]
+      "uses": ["code/core/src/addon-mcp/preset.ts:216", "code/core/src/addon-mcp/preset.ts:220"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types",
@@ -174,178 +157,127 @@
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#argtypes",
       "note": "Docs page: api > arg types, section \"argtypes\"",
-      "uses": [
-        "code/core/src/csf/story.ts:164"
-      ]
+      "uses": ["code/core/src/csf/story.ts:164"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#control",
       "note": "Docs page: api > arg types, section \"control\"",
-      "uses": [
-        "code/core/src/csf/story.ts:115"
-      ]
+      "uses": ["code/core/src/csf/story.ts:115"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlaccept",
       "note": "Docs page: api > arg types, section \"controlaccept\"",
-      "uses": [
-        "code/core/src/csf/story.ts:95"
-      ]
+      "uses": ["code/core/src/csf/story.ts:95"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controllabels",
       "note": "Docs page: api > arg types, section \"controllabels\"",
-      "uses": [
-        "code/core/src/csf/story.ts:100"
-      ]
+      "uses": ["code/core/src/csf/story.ts:100"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlmax",
       "note": "Docs page: api > arg types, section \"controlmax\"",
-      "uses": [
-        "code/core/src/csf/story.ts:105"
-      ]
+      "uses": ["code/core/src/csf/story.ts:105"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlmin",
       "note": "Docs page: api > arg types, section \"controlmin\"",
-      "uses": [
-        "code/core/src/csf/story.ts:107"
-      ]
+      "uses": ["code/core/src/csf/story.ts:107"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlpresetcolors",
       "note": "Docs page: api > arg types, section \"controlpresetcolors\"",
-      "uses": [
-        "code/core/src/csf/story.ts:90"
-      ]
+      "uses": ["code/core/src/csf/story.ts:90"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controlstep",
       "note": "Docs page: api > arg types, section \"controlstep\"",
-      "uses": [
-        "code/core/src/csf/story.ts:109"
-      ]
+      "uses": ["code/core/src/csf/story.ts:109"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#controltype",
       "note": "Docs page: api > arg types, section \"controltype\"",
-      "uses": [
-        "code/core/src/csf/story.ts:65"
-      ]
+      "uses": ["code/core/src/csf/story.ts:65"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#description",
       "note": "Docs page: api > arg types, section \"description\"",
-      "uses": [
-        "code/core/src/csf/story.ts:117"
-      ]
+      "uses": ["code/core/src/csf/story.ts:117"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#if",
       "note": "Docs page: api > arg types, section \"if\"",
-      "uses": [
-        "code/core/src/csf/story.ts:119"
-      ]
+      "uses": ["code/core/src/csf/story.ts:119"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#mapping",
       "note": "Docs page: api > arg types, section \"mapping\"",
-      "uses": [
-        "code/core/src/csf/story.ts:121"
-      ]
+      "uses": ["code/core/src/csf/story.ts:121"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#name",
       "note": "Docs page: api > arg types, section \"name\"",
-      "uses": [
-        "code/core/src/csf/story.ts:123"
-      ]
+      "uses": ["code/core/src/csf/story.ts:123"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#options",
       "note": "Docs page: api > arg types, section \"options\"",
-      "uses": [
-        "code/core/src/csf/story.ts:125"
-      ]
+      "uses": ["code/core/src/csf/story.ts:125"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#table",
       "note": "Docs page: api > arg types, section \"table\"",
-      "uses": [
-        "code/core/src/csf/story.ts:127"
-      ]
+      "uses": ["code/core/src/csf/story.ts:127"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#tablecategory",
       "note": "Docs page: api > arg types, section \"tablecategory\"",
-      "uses": [
-        "code/core/src/csf/story.ts:130"
-      ]
+      "uses": ["code/core/src/csf/story.ts:130"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabledefaultvalue",
       "note": "Docs page: api > arg types, section \"tabledefaultvalue\"",
-      "uses": [
-        "code/core/src/csf/story.ts:132"
-      ]
+      "uses": ["code/core/src/csf/story.ts:132"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabledisable",
       "note": "Docs page: api > arg types, section \"tabledisable\"",
-      "uses": [
-        "code/core/src/csf/story.ts:134"
-      ]
+      "uses": ["code/core/src/csf/story.ts:134"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#tablesubcategory",
       "note": "Docs page: api > arg types, section \"tablesubcategory\"",
-      "uses": [
-        "code/core/src/csf/story.ts:136"
-      ]
+      "uses": ["code/core/src/csf/story.ts:136"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#tabletype",
       "note": "Docs page: api > arg types, section \"tabletype\"",
-      "uses": [
-        "code/core/src/csf/story.ts:138"
-      ]
+      "uses": ["code/core/src/csf/story.ts:138"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/arg-types#type",
       "note": "Docs page: api > arg types, section \"type\"",
-      "uses": [
-        "code/core/src/csf/story.ts:141"
-      ]
+      "uses": ["code/core/src/csf/story.ts:141"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/cli-options#dev",
       "note": "Docs page: api > cli options, section \"dev\"",
-      "uses": [
-        "code/core/assets/builder-vite/iframe.html:78"
-      ]
+      "uses": ["code/core/assets/builder-vite/iframe.html:78"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/csf#args-story-inputs",
       "note": "Docs page: api > csf, section \"args story inputs\"",
-      "uses": [
-        "code/core/src/types/modules/addons.ts:177"
-      ]
+      "uses": ["code/core/src/types/modules/addons.ts:177"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/csf#default-export",
       "note": "Docs page: api > csf, section \"default export\"",
-      "uses": [
-        "code/core/src/react/public-types.ts:27"
-      ]
+      "uses": ["code/core/src/react/public-types.ts:27"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/csf#named-story-exports",
       "note": "Docs page: api > csf, section \"named story exports\"",
-      "uses": [
-        "code/core/src/react/public-types.ts:36",
-        "code/core/src/react/public-types.ts:45"
-      ]
+      "uses": ["code/core/src/react/public-types.ts:36", "code/core/src/react/public-types.ts:45"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/csf#non-story-exports",
@@ -360,151 +292,107 @@
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes",
       "note": "Docs page: api > doc blocks > doc block argtypes",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:179"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:179"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-argtypes#sort",
       "note": "Docs page: api > doc blocks > doc block argtypes, section \"sort\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:78"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:78"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas",
       "note": "Docs page: api > doc blocks > doc block canvas",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:186"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:186"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#layout",
       "note": "Docs page: api > doc blocks > doc block canvas, section \"layout\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:100"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:100"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-canvas#story",
       "note": "Docs page: api > doc blocks > doc block canvas, section \"story\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:110"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:110"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-controls",
       "note": "Docs page: api > doc blocks > doc block controls",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:200"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:200"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-description#writing-descriptions",
       "note": "Docs page: api > doc blocks > doc block description, section \"writing descriptions\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:214"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:214"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source",
       "note": "Docs page: api > doc blocks > doc block source",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:231"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:231"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-source#type",
       "note": "Docs page: api > doc blocks > doc block source, section \"type\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:164"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:164"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-stories",
       "note": "Docs page: api > doc blocks > doc block stories",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:245"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:245"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story",
       "note": "Docs page: api > doc blocks > doc block story",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:238"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:238"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-story#autoplay",
       "note": "Docs page: api > doc blocks > doc block story, section \"autoplay\"",
-      "uses": [
-        "code/core/src/addon-docs/blocks/components/Story.tsx:126"
-      ]
+      "uses": ["code/core/src/addon-docs/blocks/components/Story.tsx:126"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-subtitle",
       "note": "Docs page: api > doc blocks > doc block subtitle",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:252"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:252"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/doc-blocks/doc-block-title",
       "note": "Docs page: api > doc blocks > doc block title",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:277"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:277"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-core#allowedhosts",
       "note": "Docs page: api > main config > main config core, section \"allowedhosts\"",
-      "uses": [
-        "code/core/src/core-server/utils/host-validation-warning.ts:7"
-      ]
+      "uses": ["code/core/src/core-server/utils/host-validation-warning.ts:7"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-features#experimentaltestsyntax",
       "note": "Docs page: api > main config > main config features, section \"experimentaltestsyntax\"",
-      "uses": [
-        "code/core/src/react-vite/types.ts:35",
-        "code/core/src/react/entry-preview.tsx:38"
-      ]
+      "uses": ["code/core/src/react-vite/types.ts:35", "code/core/src/react/entry-preview.tsx:38"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-stories",
       "note": "Docs page: api > main config > main config stories",
-      "uses": [
-        "code/core/src/manager/components/sidebar/RefBlocks.tsx:161"
-      ]
+      "uses": ["code/core/src/manager/components/sidebar/RefBlocks.tsx:161"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/api/main-config/main-config-vite-final",
       "note": "Docs page: api > main config > main config vite final",
-      "uses": [
-        "code/core/assets/builder-vite/iframe.html:79"
-      ]
+      "uses": ["code/core/assets/builder-vite/iframe.html:79"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/builders/vite",
       "note": "Docs page: builders > vite",
-      "uses": [
-        "code/core/assets/server/base-preview-body.html:103"
-      ]
+      "uses": ["code/core/assets/server/base-preview-body.html:103"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure",
       "note": "Docs page: configure",
-      "uses": [
-        "code/core/src/server-errors.ts:591",
-        "code/core/src/server-errors.ts:597"
-      ]
+      "uses": ["code/core/src/server-errors.ts:591", "code/core/src/server-errors.ts:597"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/environment-variables",
       "note": "Docs page: configure > environment variables",
-      "uses": [
-        "code/core/assets/server/base-preview-body.html:109"
-      ]
+      "uses": ["code/core/assets/server/base-preview-body.html:109"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/images-and-assets",
@@ -527,30 +415,22 @@
     {
       "url": "https://forkbook.ljk.dev/docs/configure/integration/frameworks-feature-support",
       "note": "Docs page: configure > integration > frameworks feature support",
-      "uses": [
-        "code/core/src/viewport/README.md:5"
-      ]
+      "uses": ["code/core/src/viewport/README.md:5"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/integration/images-and-assets#serving-static-files-via-storybook-configuration",
       "note": "Docs page: configure > integration > images and assets, section \"serving static files via storybook configuration\"",
-      "uses": [
-        "code/core/src/server-errors.ts:107"
-      ]
+      "uses": ["code/core/src/server-errors.ts:107"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/integration/typescript",
       "note": "Docs page: configure > integration > typescript",
-      "uses": [
-        "code/core/src/cli-commands/warn.ts:23"
-      ]
+      "uses": ["code/core/src/cli-commands/warn.ts:23"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/sidebar-and-urls#permalink-to-stories",
       "note": "Docs page: configure > sidebar and urls, section \"permalink to stories\"",
-      "uses": [
-        "code/core/src/csf/story.ts:500"
-      ]
+      "uses": ["code/core/src/csf/story.ts:500"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/story-layout",
@@ -589,9 +469,7 @@
     {
       "url": "https://forkbook.ljk.dev/docs/configure/telemetry",
       "note": "Docs page: configure > telemetry",
-      "uses": [
-        "code/core/src/telemetry/README.md:5"
-      ]
+      "uses": ["code/core/src/telemetry/README.md:5"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure/theming",
@@ -605,17 +483,12 @@
     {
       "url": "https://forkbook.ljk.dev/docs/configure/user-interface/sidebar-and-urls#permalink-to-stories",
       "note": "Docs page: configure > user interface > sidebar and urls, section \"permalink to stories\"",
-      "uses": [
-        "code/core/src/types/modules/addons.ts:275"
-      ]
+      "uses": ["code/core/src/types/modules/addons.ts:275"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/configure#configure-your-storybook-project",
       "note": "Docs page: configure, section \"configure your storybook project\"",
-      "uses": [
-        "code/core/src/outline/README.md:15",
-        "code/core/src/viewport/README.md:17"
-      ]
+      "uses": ["code/core/src/outline/README.md:15", "code/core/src/viewport/README.md:17"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials",
@@ -629,23 +502,17 @@
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/actions",
       "note": "Docs page: essentials > actions",
-      "uses": [
-        "code/core/src/actions/README.md:3"
-      ]
+      "uses": ["code/core/src/actions/README.md:3"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/actions#disable",
       "note": "Docs page: essentials > actions, section \"disable\"",
-      "uses": [
-        "code/core/src/actions/types.ts:27"
-      ]
+      "uses": ["code/core/src/actions/types.ts:27"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/actions#parameters",
       "note": "Docs page: essentials > actions, section \"parameters\"",
-      "uses": [
-        "code/core/src/actions/types.ts:5"
-      ]
+      "uses": ["code/core/src/actions/types.ts:5"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/actions#story-args",
@@ -662,23 +529,17 @@
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#disable",
       "note": "Docs page: essentials > backgrounds, section \"disable\"",
-      "uses": [
-        "code/core/src/backgrounds/types.ts:35"
-      ]
+      "uses": ["code/core/src/backgrounds/types.ts:35"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#globals",
       "note": "Docs page: essentials > backgrounds, section \"globals\"",
-      "uses": [
-        "code/core/src/backgrounds/types.ts:51"
-      ]
+      "uses": ["code/core/src/backgrounds/types.ts:51"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/backgrounds#parameters",
       "note": "Docs page: essentials > backgrounds, section \"parameters\"",
-      "uses": [
-        "code/core/src/backgrounds/types.ts:25"
-      ]
+      "uses": ["code/core/src/backgrounds/types.ts:25"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/controls",
@@ -700,95 +561,67 @@
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/controls#custom-control-type-matchers",
       "note": "Docs page: essentials > controls, section \"custom control type matchers\"",
-      "uses": [
-        "code/core/src/controls/types.ts:35"
-      ]
+      "uses": ["code/core/src/controls/types.ts:35"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/controls#disable",
       "note": "Docs page: essentials > controls, section \"disable\"",
-      "uses": [
-        "code/core/src/controls/types.ts:13"
-      ]
+      "uses": ["code/core/src/controls/types.ts:13"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/controls#fully-custom-args",
       "note": "Docs page: essentials > controls, section \"fully custom args\"",
-      "uses": [
-        "code/core/src/preview-api/modules/store/inferArgTypes.ts:50"
-      ]
+      "uses": ["code/core/src/preview-api/modules/store/inferArgTypes.ts:50"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/controls#parameters-1",
       "note": "Docs page: essentials > controls, section \"parameters 1\"",
-      "uses": [
-        "code/core/src/controls/types.ts:5"
-      ]
+      "uses": ["code/core/src/controls/types.ts:5"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/highlight#disable",
       "note": "Docs page: essentials > highlight, section \"disable\"",
-      "uses": [
-        "code/core/src/highlight/types.ts:18"
-      ]
+      "uses": ["code/core/src/highlight/types.ts:18"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/highlight#parameters",
       "note": "Docs page: essentials > highlight, section \"parameters\"",
-      "uses": [
-        "code/core/src/highlight/types.ts:11"
-      ]
+      "uses": ["code/core/src/highlight/types.ts:11"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/measure-and-outline#disable",
       "note": "Docs page: essentials > measure and outline, section \"disable\"",
-      "uses": [
-        "code/core/src/measure/types.ts:12",
-        "code/core/src/outline/types.ts:12"
-      ]
+      "uses": ["code/core/src/measure/types.ts:12", "code/core/src/outline/types.ts:12"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/measure-and-outline#parameters",
       "note": "Docs page: essentials > measure and outline, section \"parameters\"",
-      "uses": [
-        "code/core/src/measure/types.ts:5",
-        "code/core/src/outline/types.ts:5"
-      ]
+      "uses": ["code/core/src/measure/types.ts:5", "code/core/src/outline/types.ts:5"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/themes",
       "note": "Docs page: essentials > themes",
-      "uses": [
-        "code/core/src/addon-themes/types.ts:10"
-      ]
+      "uses": ["code/core/src/addon-themes/types.ts:10"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/viewport",
       "note": "Docs page: essentials > viewport",
-      "uses": [
-        "code/core/src/viewport/README.md:29"
-      ]
+      "uses": ["code/core/src/viewport/README.md:29"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/viewport#disable",
       "note": "Docs page: essentials > viewport, section \"disable\"",
-      "uses": [
-        "code/core/src/viewport/types.ts:44"
-      ]
+      "uses": ["code/core/src/viewport/types.ts:44"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/viewport#globals",
       "note": "Docs page: essentials > viewport, section \"globals\"",
-      "uses": [
-        "code/core/src/viewport/types.ts:60"
-      ]
+      "uses": ["code/core/src/viewport/types.ts:60"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/essentials/viewport#parameters",
       "note": "Docs page: essentials > viewport, section \"parameters\"",
-      "uses": [
-        "code/core/src/viewport/types.ts:37"
-      ]
+      "uses": ["code/core/src/viewport/types.ts:37"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/faq#can-i-have-a-storybook-with-no-local-stories",
@@ -801,16 +634,12 @@
     {
       "url": "https://forkbook.ljk.dev/docs/faq#extensionless-imports-in-storybookmaints-and-required-ts-extensions",
       "note": "Docs page: faq, section \"extensionless imports in storybookmaints and required ts extensions\"",
-      "uses": [
-        "code/core/src/bin/loader.ts:93"
-      ]
+      "uses": ["code/core/src/bin/loader.ts:93"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite",
       "note": "Docs page: get started > frameworks > nextjs vite",
-      "uses": [
-        "code/core/src/nextjs-vite/types.ts:46"
-      ]
+      "uses": ["code/core/src/nextjs-vite/types.ts:46"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs-vite#faq-includingexcluding-images",
@@ -823,24 +652,17 @@
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#error-you-are-importing-avif-images-but-you-dont-have-sharp-installed-you-have-to-install-sharp-in-order-to-use-image-optimization-features-in-nextjs",
       "note": "Docs page: get started > frameworks > nextjs, section \"error you are importing avif images but you dont have sharp installed you have to install sharp in order to use image optimization features in nextjs\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:343"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:343"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#nextjs-font-optimization",
       "note": "Docs page: get started > frameworks > nextjs, section \"nextjs font optimization\"",
-      "uses": [
-        "code/core/src/server-errors.ts:542",
-        "code/core/src/server-errors.ts:556"
-      ]
+      "uses": ["code/core/src/server-errors.ts:542", "code/core/src/server-errors.ts:556"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/frameworks/nextjs#react-server-components-rsc",
       "note": "Docs page: get started > frameworks > nextjs, section \"react server components rsc\"",
-      "uses": [
-        "code/core/src/react/types.ts:25"
-      ]
+      "uses": ["code/core/src/react/types.ts:25"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/get-started/install",
@@ -855,44 +677,32 @@
     {
       "url": "https://forkbook.ljk.dev/docs/migration#a11y-addon-replace-element-parameter-with-context-parameter",
       "note": "Migration note: what changed and how to update, section \"a11y addon replace element parameter with context parameter\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:444"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:444"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#addon-test-indexing-behavior-of-storybookaddon-test-is-changed",
       "note": "Migration note: what changed and how to update, section \"addon test indexing behavior of storybookaddon test is changed\"",
-      "uses": [
-        "code/core/src/addon-vitest/vitest-plugin/index.ts:489"
-      ]
+      "uses": ["code/core/src/addon-vitest/vitest-plugin/index.ts:489"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#argtypes-removed-from-loaders-beforeeach-play-and-aftereach",
       "note": "Migration note: what changed and how to update, section \"argtypes removed from loaders beforeeach play and aftereach\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:323"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:323"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#commonjs-with-vite-is-deprecated",
       "note": "Migration note: what changed and how to update, section \"commonjs with vite is deprecated\"",
-      "uses": [
-        "code/core/src/core-server/build-dev.ts:190"
-      ]
+      "uses": ["code/core/src/core-server/build-dev.ts:190"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#dropped-addon-docs-manual-babel-configuration",
       "note": "Migration note: what changed and how to update, section \"dropped addon docs manual babel configuration\"",
-      "uses": [
-        "code/core/src/ERRORS.md:126"
-      ]
+      "uses": ["code/core/src/ERRORS.md:126"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#framework-field-mandatory",
       "note": "Migration note: what changed and how to update, section \"framework field mandatory\"",
-      "uses": [
-        "code/core/src/common/utils/get-framework-name.ts:16"
-      ]
+      "uses": ["code/core/src/common/utils/get-framework-name.ts:16"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#icons-is-deprecated",
@@ -913,73 +723,52 @@
     {
       "url": "https://forkbook.ljk.dev/docs/migration#mdx2-upgrade",
       "note": "Migration note: what changed and how to update, section \"mdx2 upgrade\"",
-      "uses": [
-        "code/core/src/core-server/utils/StoryIndexGenerator.ts:642"
-      ]
+      "uses": ["code/core/src/core-server/utils/StoryIndexGenerator.ts:642"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#new-framework-api",
       "note": "Migration note: what changed and how to update, section \"new framework api\"",
-      "uses": [
-        "code/core/src/server-errors.ts:58",
-        "code/core/src/server-errors.ts:73"
-      ]
+      "uses": ["code/core/src/server-errors.ts:58", "code/core/src/server-errors.ts:73"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#string-literal-titles",
       "note": "Migration note: what changed and how to update, section \"string literal titles\"",
-      "uses": [
-        "code/core/src/csf-tools/CsfFile.ts:423"
-      ]
+      "uses": ["code/core/src/csf-tools/CsfFile.ts:423"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#turbosnap-vite-plugin-is-no-longer-needed",
       "note": "Migration note: what changed and how to update, section \"turbosnap vite plugin is no longer needed\"",
-      "uses": [
-        "code/core/src/builder-vite/build.ts:91"
-      ]
+      "uses": ["code/core/src/builder-vite/build.ts:91"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#using-implicit-actions-during-rendering-is-deprecated-for-example-in-the-play-function",
       "note": "Migration note: what changed and how to update, section \"using implicit actions during rendering is deprecated for example in the play function\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:67"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:67"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#v7-style-story-sort",
       "note": "Migration note: what changed and how to update, section \"v7 style story sort\"",
-      "uses": [
-        "code/core/src/shared/story-index/sortStories.ts:76"
-      ]
+      "uses": ["code/core/src/shared/story-index/sortStories.ts:76"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/migration#vitest-addon-setprojectannotations-must-not-be-called-in-setup-files",
       "note": "Migration note: what changed and how to update, section \"vitest addon setprojectannotations must not be called in setup files\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:424"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:424"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/react/addons/writing-presets",
       "note": "Docs page: react > addons > writing presets",
-      "uses": [
-        "code/core/src/nextjs-vite/preset.ts:1"
-      ]
+      "uses": ["code/core/src/nextjs-vite/preset.ts:1"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/react/configure/features-and-behavior",
       "note": "Docs page: react > configure > features and behavior",
-      "uses": [
-        "code/core/src/manager/README.md:79"
-      ]
+      "uses": ["code/core/src/manager/README.md:79"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/react/essentials/controls",
       "note": "Docs page: react > essentials > controls",
-      "uses": [
-        "code/core/src/addon-ondevice-controls/NoControlsWarning.tsx:20"
-      ]
+      "uses": ["code/core/src/addon-ondevice-controls/NoControlsWarning.tsx:20"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/second-error",
@@ -1018,16 +807,12 @@
     {
       "url": "https://forkbook.ljk.dev/docs/sharing/storybook-composition#improve-your-storybook-composition",
       "note": "Docs page: sharing > storybook composition, section \"improve your storybook composition\"",
-      "uses": [
-        "code/core/src/manager/components/sidebar/RefIndicator.tsx:278"
-      ]
+      "uses": ["code/core/src/manager/components/sidebar/RefIndicator.tsx:278"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs",
       "note": "Docs page: writing docs",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:173"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:173"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs",
@@ -1054,37 +839,27 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#configure-the-table-of-contents",
       "note": "Docs page: writing docs > autodocs, section \"configure the table of contents\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:284"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:284"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#customize-the-docs-container",
       "note": "Docs page: writing docs > autodocs, section \"customize the docs container\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:207"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:207"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#override-the-default-theme",
       "note": "Docs page: writing docs > autodocs, section \"override the default theme\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:270"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:270"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/autodocs#write-a-custom-template",
       "note": "Docs page: writing docs > autodocs, section \"write a custom template\"",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:224"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:224"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-docs/code-panel",
       "note": "Docs page: writing docs > code panel",
-      "uses": [
-        "code/core/src/addon-docs/types.ts:193"
-      ]
+      "uses": ["code/core/src/addon-docs/types.ts:193"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories",
@@ -1122,9 +897,7 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/args.md",
       "note": "Markdown copy (for agents) of docs page: writing stories > args",
-      "uses": [
-        "code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:38"
-      ]
+      "uses": ["code/core/src/cli/skills/content/setup-prompts/pattern-copy-play.ts:38"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/args#mapping-to-complex-arg-values",
@@ -1174,31 +947,22 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/loaders",
       "note": "Docs page: writing stories > loaders",
-      "uses": [
-        "code/core/src/csf/story.ts:411"
-      ]
+      "uses": ["code/core/src/csf/story.ts:411"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy",
       "note": "Docs page: writing stories > naming components and hierarchy",
-      "uses": [
-        "code/core/src/types/modules/addons.ts:264"
-      ]
+      "uses": ["code/core/src/types/modules/addons.ts:264"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/naming-components-and-hierarchy#structure-and-hierarchy",
       "note": "Docs page: writing stories > naming components and hierarchy, section \"structure and hierarchy\"",
-      "uses": [
-        "code/core/src/csf/story.ts:491"
-      ]
+      "uses": ["code/core/src/csf/story.ts:491"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/parameters",
       "note": "Docs page: writing stories > parameters",
-      "uses": [
-        "code/core/src/csf/story.ts:388",
-        "code/core/src/types/modules/addons.ts:192"
-      ]
+      "uses": ["code/core/src/csf/story.ts:388", "code/core/src/types/modules/addons.ts:192"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/play-function.md",
@@ -1222,9 +986,7 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories/tags#custom-tags",
       "note": "Docs page: writing stories > tags, section \"custom tags\"",
-      "uses": [
-        "code/core/src/manager/components/sidebar/FilterPanel.tsx:258"
-      ]
+      "uses": ["code/core/src/manager/components/sidebar/FilterPanel.tsx:258"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-stories#default-export",
@@ -1273,9 +1035,7 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/accessibility-testing#disable-automated-checks",
       "note": "Docs page: writing tests > accessibility testing, section \"disable automated checks\"",
-      "uses": [
-        "code/core/src/addon-a11y/types.ts:27"
-      ]
+      "uses": ["code/core/src/addon-a11y/types.ts:27"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon",
@@ -1326,9 +1086,7 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#install-and-set-up",
       "note": "Docs page: writing tests > integrations > vitest addon, section \"install and set up\"",
-      "uses": [
-        "code/core/src/addon-mcp/preset.ts:231"
-      ]
+      "uses": ["code/core/src/addon-mcp/preset.ts:231"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/integrations/vitest-addon#manual-setup-advanced",
@@ -1390,51 +1148,37 @@
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#disable",
       "note": "Docs page: writing tests > interaction testing, section \"disable\"",
-      "uses": [
-        "code/core/src/component-testing/types.ts:13"
-      ]
+      "uses": ["code/core/src/component-testing/types.ts:13"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#querying-the-canvas",
       "note": "Docs page: writing tests > interaction testing, section \"querying the canvas\"",
-      "uses": [
-        "code/core/src/test/testing-library.ts:32"
-      ]
+      "uses": ["code/core/src/test/testing-library.ts:32"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#run-code-before-each-story-in-a-file",
       "note": "Docs page: writing tests > interaction testing, section \"run code before each story in a file\"",
-      "uses": [
-        "code/core/src/core-server/presets/common-preset.ts:167"
-      ]
+      "uses": ["code/core/src/core-server/presets/common-preset.ts:167"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/writing-tests/interaction-testing#run-code-before-the-component-gets-rendered",
       "note": "Docs page: writing tests > interaction testing, section \"run code before the component gets rendered\"",
-      "uses": [
-        "code/core/src/preview-errors.ts:249"
-      ]
+      "uses": ["code/core/src/preview-errors.ts:249"]
     },
     {
       "url": "https://forkbook.ljk.dev/error/FB_TEST_CATEGORY_0123",
       "note": "Error page for code FB_TEST_CATEGORY_0123",
-      "uses": [
-        "code/core/src/__tests/storybook-error.test.ts:32"
-      ]
+      "uses": ["code/core/src/__tests/storybook-error.test.ts:32"]
     },
     {
       "url": "https://forkbook.ljk.dev/images/placeholders/100x150.png",
       "note": "Image file used in stories and tests: placeholders/100x150.png",
-      "uses": [
-        "code/core/src/manager/components/sidebar/Heading.stories.tsx:180"
-      ]
+      "uses": ["code/core/src/manager/components/sidebar/Heading.stories.tsx:180"]
     },
     {
       "url": "https://forkbook.ljk.dev/images/placeholders/150x22.png",
       "note": "Image file used in stories and tests: placeholders/150x22.png",
-      "uses": [
-        "code/core/src/manager/components/sidebar/Heading.stories.tsx:161"
-      ]
+      "uses": ["code/core/src/manager/components/sidebar/Heading.stories.tsx:161"]
     },
     {
       "url": "https://forkbook.ljk.dev/images/placeholders/350x150.png",
@@ -1516,18 +1260,14 @@
     {
       "url": "https://forkbook.ljk.dev/whats-new/v1",
       "note": "Site page: whats new > v1",
-      "uses": [
-        "code/core/src/core-server/utils/whats-new.ts:32"
-      ]
+      "uses": ["code/core/src/core-server/utils/whats-new.ts:32"]
     }
   ],
   "dynamic": [
     {
       "url": "https://forkbook.ljk.dev/${asset ? 'docs-assets' : 'docs'}",
       "note": "Built at run time; see the expanded targets with the same base",
-      "uses": [
-        "code/core/src/manager-api/modules/versions.ts:102"
-      ]
+      "uses": ["code/core/src/manager-api/modules/versions.ts:102"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}",
@@ -1540,16 +1280,12 @@
     {
       "url": "https://forkbook.ljk.dev/docs/${DOCUMENTATION_LINK}#manual-setup-advanced",
       "note": "Built at run time; see the expanded targets with the same base",
-      "uses": [
-        "code/core/src/addon-vitest/postinstall.ts:256"
-      ]
+      "uses": ["code/core/src/addon-vitest/postinstall.ts:256"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/${path}.md",
       "note": "Built at run time; see the expanded targets with the same base",
-      "uses": [
-        "code/core/src/cli/skills/content/setup-utils/docs-markdown-url.ts:11"
-      ]
+      "uses": ["code/core/src/cli/skills/content/setup-utils/docs-markdown-url.ts:11"]
     },
     {
       "url": "https://forkbook.ljk.dev/docs/${subpath}",
@@ -1563,9 +1299,7 @@
     {
       "url": "https://forkbook.ljk.dev/error/${parseErrorCode({ code, category }",
       "note": "Built at run time; see the expanded targets with the same base",
-      "uses": [
-        "code/core/src/storybook-error.ts:125"
-      ]
+      "uses": ["code/core/src/storybook-error.ts:125"]
     }
   ]
 }

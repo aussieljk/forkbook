@@ -1,17 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "jsx-a11y", "typescript", "react"],
-  "jsPlugins": [
-    "eslint-plugin-depend",
-    "eslint-plugin-eslint-comments",
-    { "name": "react-classic", "specifier": "eslint-plugin-react" }
-  ],
   "categories": {
     "correctness": "off"
   },
   "settings": {
     "react": {
-      "version": "18.2.0"
+      "version": "19.3.0"
     }
   },
   "env": {
@@ -25,30 +20,9 @@
     "**/node_modules",
     "*.bundle.js",
     "*.js.map",
-    ".yarn",
-    ".nx",
-    "**/agent-eval/.eval-cache/**",
-    "**/agent-eval/results/**",
-    "**/agent-eval/.agentic-ref/**",
-    "docs",
-    "test-storybooks",
-    "storybook-static",
-    "built-storybooks",
-    "ember-output",
-    "**/*.vue",
-    "**/*.svelte"
+    "docs"
   ],
   "rules": {
-    "depend/ban-dependencies": [
-      "error",
-      {
-        "modules": ["lodash", "lodash-es", "chalk", "qs", "handlebars", "fs-extra"]
-      }
-    ],
-    "eslint-comments/disable-enable-pair": ["error", { "allowWholeFile": true }],
-    "eslint-comments/no-aggregating-enable": "error",
-    "eslint-comments/no-duplicate-disable": "error",
-    "eslint-comments/no-unused-enable": "error",
     "jsx-a11y/alt-text": "error",
     "jsx-a11y/anchor-has-content": "error",
     "jsx-a11y/anchor-is-valid": "error",
@@ -140,11 +114,9 @@
     "prefer-const": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
-    "react-classic/no-deprecated": "error",
-    "react-classic/prop-types": "error",
     "react/display-name": "error",
     "react/exhaustive-deps": "warn",
-    "react/react-in-jsx-scope": "error",
+    "react/react-in-jsx-scope": "off",
     "react/require-render-return": "error",
     "react/jsx-key": "error",
     "react/jsx-no-comment-textnodes": "error",
@@ -213,8 +185,7 @@
         "**/docs/**",
         "**/template/**",
         "**/templates/**",
-        "**/__testfixtures__/**",
-        "**/__mocks-ng-workspace__/**"
+        "**/__testfixtures__/**"
       ],
       "rules": {
         "import/extensions": "off"

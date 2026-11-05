@@ -1,26 +1,17 @@
-import { join, relative } from 'node:path';
-import { pathToFileURL } from 'node:url';
-
-// eslint-disable-next-line depend/ban-dependencies
-import { glob } from 'tinyglobby';
 import type { KnipConfig } from 'knip';
-import { match } from 'minimatch';
 
-import type { BuildEntries } from './build/utils/entry-utils.ts';
+import coreBuildConfig from '../code/core/build-config.ts';
 
-// Files we want to exclude from analysis should be negated project patterns, not `ignores`
+// Files we want to exclude from analysis are negated project patterns, not `ignores`.
 // docs: https://knip.dev/guides/configuring-project-files
 const project = [
   'src/**/*.{js,jsx,ts,tsx,mdx}',
   '!**/__testfixtures__/**',
-  '!**/__mocks-ng-workspace__/**',
   '!**/__mockdata__/**',
   '!**/__mocks__/**',
-  '!**/__for-testing__/**',
 ];
 
-// Adding an explicit MDX "compiler", as the dependency knip looks for isn't listed (@mdx-js/mdx or astro)
-// Alternatively, we could ignore a few false positives
+// An explicit MDX "compiler", as the dependency knip looks for (@mdx-js/mdx or astro) is not listed.
 // docs: https://knip.dev/features/compilers
 const importMatcher = /import[^'"]+['"]([^'"]+)['"]/g;
 const fencedCodeBlockMatcher = /```[\s\S]*?```/g;
@@ -29,75 +20,27 @@ const mdx = (text: string) =>
     .map(([statement]) => statement)
     .join(';\n');
 
-const buildEntries = (config: BuildEntries) =>
-  Object.values(config.entries).flatMap((entries) => entries.map(({ entryPoint }) => entryPoint));
+// Each source file that the build bundles. Some of them (bins, runtimes) are not package exports.
+const coreEntries = Object.values(coreBuildConfig.entries).flatMap((entries) =>
+  entries.map(({ entryPoint }) => entryPoint)
+);
 
-const baseConfig = {
-  // storybook itself configured (only) in root
+export default {
   storybook: { entry: ['**/*.@(mdx|stories.@(mdx|js|jsx|mjs|ts|tsx))'] },
-
   workspaces: {
     '.': {
-      project,
+      entry: ['.forkbook/*.{ts,tsx}', 'vitest.config.storybook.ts'],
+      project: ['.forkbook/**/*.{ts,tsx}', '*.ts'],
     },
     core: {
       entry: [
+        ...coreEntries,
         'src/manager-api/index.mock.ts',
-        'src/shared/preview/csf4.ts',
-        // with srcDir → outDir in tsconfig.json we could omit all of these:
-        'src/index.ts',
-        'src/cli/bin/index.ts',
-        'src/*/{globals*,index,decorator,manager,preview,runtime}.{ts,tsx}',
         'src/core-server/presets/*.ts',
+        'src/*/vitest.{config,setup}.ts',
       ],
       project,
     },
   },
-  compilers: {
-    mdx,
-  },
+  compilers: { mdx },
 } satisfies KnipConfig;
-
-// Adds package.json#bundler.entries etc. to each workspace config `entry: []`
-// Knip maps package.json#export to source files but the entries are incomplete
-export const addBundlerEntries = async (config: KnipConfig) => {
-  // Type guard: ensure config is an object, not a function
-  if (typeof config === 'function') {
-    throw new Error('addBundlerEntries expects a config object, not a function');
-  }
-  const { workspaces } = config;
-  if (!workspaces) {
-    return config;
-  }
-  const baseDir = join(__dirname, '..');
-  const rootManifest = await import(pathToFileURL(join(baseDir, 'package.json')).href, {
-    with: { type: 'json' },
-  });
-  const workspaceDirs = await glob(rootManifest.workspaces.packages, {
-    cwd: baseDir,
-    onlyDirectories: true,
-  });
-  const workspaceDirectories = workspaceDirs.map((dir) => relative(baseDir, join(baseDir, dir)));
-  for (const wsDir of workspaceDirectories) {
-    for (const configKey of Object.keys(baseConfig.workspaces)) {
-      if (match([wsDir], configKey)) {
-        const manifest = await import(pathToFileURL(join(baseDir, wsDir, 'package.json')).href, {
-          with: { type: 'json' },
-        });
-        const configEntries = (workspaces[configKey].entry as string[]) ?? [];
-        const bundler = manifest?.bundler;
-        for (const value of Object.values(bundler ?? {})) {
-          if (Array.isArray(value)) {
-            configEntries.push(
-              ...value.map((entry) => (typeof entry === 'string' ? entry : entry.file))
-            );
-          }
-        }
-        workspaces[configKey].entry = Array.from(new Set(configEntries));
-      }
-    }
-  }
-  return config;
-};
-
-export default addBundlerEntries(baseConfig);

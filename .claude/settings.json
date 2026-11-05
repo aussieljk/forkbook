@@ -5,10 +5,21 @@
   },
   "hooks": {
     "SubagentStop": [
-      { "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" subagent-stop" }] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" subagent-stop"
+          }
+        ]
+      }
     ],
     "Stop": [
-      { "hooks": [{ "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" stop" }] }
+      {
+        "hooks": [
+          { "type": "command", "command": "bun \"$CLAUDE_PROJECT_DIR/scripts/otel-hook.ts\" stop" }
+        ]
+      }
     ]
   }
 }

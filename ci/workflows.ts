@@ -47,8 +47,13 @@ const check: Step[] = [
   sh('Workflows in sync', 'bun run workflows:check'),
   sh('Build', 'bun run build'),
   sh('Typecheck', 'bun run typecheck'),
+  sh('Lint', 'bun run lint'),
+  sh('Format', 'bun run fmt:check'),
   // The manager layout test opens the built manager in headless Chromium.
-  sh('Install Chromium', 'node node_modules/playwright-core/cli.js install --with-deps chromium-headless-shell'),
+  sh(
+    'Install Chromium',
+    'node node_modules/playwright-core/cli.js install --with-deps chromium-headless-shell'
+  ),
   sh('Unit tests', 'bun run test:unit'),
 ];
 
