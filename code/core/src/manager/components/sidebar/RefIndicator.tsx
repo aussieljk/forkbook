@@ -50,6 +50,7 @@ const Message: FC<{
       className={styles.message}
       href={href}
       target={blank ? '_blank' : undefined}
+      rel={blank ? 'noreferrer' : undefined}
       onClick={onClick}
     >
       {children}
@@ -241,7 +242,7 @@ const ReadDocsMessage: FC = () => {
       <FileTextIcon color={theme.color.green} />
       <div>
         <MessageTitle>Read Composition docs</MessageTitle>
-        <div>Learn how to combine multiple Storybooks into one.</div>
+        <div>Learn how to combine multiple Forkbooks into one.</div>
       </div>
     </Message>
   );

@@ -11,7 +11,7 @@ const CACHE_KEY = 'agent-self-healing-story-history';
 
 const historyCache = createFileSystemCache({
   basePath: resolvePathInStorybookCache('agent-self-healing'),
-  ns: 'storybook',
+  ns: 'forkbook',
 });
 
 export async function readStoryHistory(): Promise<StoryTestResultHistory> {

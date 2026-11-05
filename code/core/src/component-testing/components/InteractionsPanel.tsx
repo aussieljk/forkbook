@@ -15,12 +15,12 @@ import { Toolbar } from './Toolbar.tsx';
 import styles from './InteractionsPanel.module.css';
 
 export interface Controls {
-  start: (args?: any) => void;
-  back: (args?: any) => void;
-  goto: (args?: any) => void;
-  next: (args?: any) => void;
-  end: (args?: any) => void;
-  rerun: (args?: any) => void;
+  start: () => void;
+  back: () => void;
+  goto: (callId: Call['id']) => void;
+  next: () => void;
+  end: () => void;
+  rerun: () => void;
 }
 
 interface InteractionsPanelProps {
@@ -40,7 +40,7 @@ interface InteractionsPanelProps {
   caughtException?: Error;
   unhandledErrors?: SerializedError[];
   pausedAt?: Call['id'];
-  calls: Map<string, any>;
+  calls: Map<string, Call>;
   endRef?: React.Ref<HTMLDivElement>;
   onScrollToEnd?: () => void;
   hasResultMismatch?: boolean;

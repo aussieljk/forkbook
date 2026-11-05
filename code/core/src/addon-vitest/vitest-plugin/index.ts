@@ -55,7 +55,7 @@ import {
 } from '../constants.ts';
 import type { InternalOptions, UserOptions } from './types.ts';
 import { AgentTelemetryReporter } from './agent-telemetry-reporter.ts';
-import { isStorybookInternalFrame } from './stack-frames.ts';
+import { isForkbookInternalFrame } from './stack-frames.ts';
 
 const WORKING_DIR = process.cwd();
 
@@ -143,19 +143,19 @@ const getComponentTestPaths = (): string[] => {
 };
 
 const createComponentTestTransformPlugin = (presets: Presets, configDir: string): Plugin => {
-  const storybookComponentTestPaths: string[] = getComponentTestPaths();
+  const forkbookComponentTestPaths: string[] = getComponentTestPaths();
 
   return {
     name: 'storybook:component-test-transform-plugin',
     transform: {
       order: 'pre',
       async handler(code, id) {
-        if (!optionalEnvToBoolean(process.env.VITEST) || storybookComponentTestPaths.length === 0) {
+        if (!optionalEnvToBoolean(process.env.VITEST) || forkbookComponentTestPaths.length === 0) {
           return code;
         }
 
         const resolvedId = path.resolve(id);
-        const matches = storybookComponentTestPaths.some(
+        const matches = forkbookComponentTestPaths.some(
           (testPath) =>
             resolvedId === testPath ||
             resolvedId.startsWith(testPath + path.sep) ||
@@ -229,7 +229,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
   // We signal the test runner that we are not running it via Forkbook
   // We are overriding the environment variable to 'true' if vitest runs via @aussieljk/forkbook/addon-vitest's backend
-  const isVitestStorybook = optionalEnvToBoolean(process.env.VITEST_STORYBOOK);
+  const isVitestForkbook = optionalEnvToBoolean(process.env.VITEST_STORYBOOK);
 
   const directories = {
     configDir: finalOptions.configDir,
@@ -249,7 +249,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
     corePlugins,
     { storiesGlobs },
     framework,
-    viteConfigFromStorybook,
+    viteConfigFromForkbook,
     staticDirs,
     previewLevelTags,
     core,
@@ -274,7 +274,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
   // filter out plugins that we know are unnecesary for tests, eg. docgen plugins
   const plugins: Plugin[] = [
     ...(corePlugins as Plugin[]),
-    ...(await withoutVitePlugins(viteConfigFromStorybook.plugins ?? [], pluginsToIgnore)),
+    ...(await withoutVitePlugins(viteConfigFromForkbook.plugins ?? [], pluginsToIgnore)),
   ];
 
   if (finalOptions.disableAddonDocs) {
@@ -286,7 +286,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
 
   let userApiPermissions: ApiPermissions = {};
 
-  const storybookTestPlugin: Plugin = {
+  const forkbookTestPlugin: Plugin = {
     name: 'vite-plugin-storybook-test',
     async transformIndexHtml(html) {
       const [frameworkOptions, headHtmlSnippet, bodyHtmlSnippet] = await Promise.all([
@@ -339,7 +339,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
       finalOptions.vitestRoot =
         testConfig?.dir ||
         testConfig?.root ||
-        viteConfigFromStorybook.root ||
+        viteConfigFromForkbook.root ||
         nonMutableInputConfig.root ||
         process.cwd();
 
@@ -371,7 +371,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
           expect: { requireAssertions: false },
 
           onStackTrace: (error, frame) => {
-            if (isStorybookInternalFrame(frame.file)) {
+            if (isForkbookInternalFrame(frame.file)) {
               return false;
             }
             return nonMutableInputConfig.test?.onStackTrace?.(error, frame) ?? true;
@@ -409,7 +409,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
             // To be accessed by the setup file
             __FORKBOOK_URL__: finalOptions.storybookUrl,
 
-            VITEST_STORYBOOK: isVitestStorybook ? 'true' : 'false',
+            VITEST_STORYBOOK: isVitestForkbook ? 'true' : 'false',
             __VITEST_INCLUDE_TAGS__: finalOptions.tags.include.join(','),
             __VITEST_EXCLUDE_TAGS__: finalOptions.tags.exclude.join(','),
             __VITEST_SKIP_TAGS__: finalOptions.tags.skip.join(','),
@@ -474,7 +474,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
         },
       };
 
-      const config = mergeConfig(baseConfig, viteConfigFromStorybook);
+      const config = mergeConfig(baseConfig, viteConfigFromForkbook);
 
       // alert the user of problems
       if ((nonMutableInputConfig.test?.include?.length ?? 0) > 0) {
@@ -591,12 +591,12 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
     plugins.push(createComponentTestTransformPlugin(presets, finalOptions.configDir));
   }
 
-  plugins.push(storybookTestPlugin);
+  plugins.push(forkbookTestPlugin);
 
   // When running tests via the Forkbook UI, we need
   // to find the right project to run, thus we override
   // with a unique identifier using the path to the config dir
-  if (isVitestStorybook) {
+  if (isVitestForkbook) {
     const projectName = `storybook:${normalize(finalOptions.configDir)}`;
     plugins.push({
       name: 'storybook:workspace-name-override',

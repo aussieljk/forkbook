@@ -4,14 +4,14 @@ import { ReportBase } from 'istanbul-lib-report';
 import type { StoreState } from '../types.ts';
 import type { TestManager } from './test-manager.ts';
 
-export type StorybookCoverageReporterOptions = {
+export type ForkbookCoverageReporterOptions = {
   testManager: TestManager;
 };
 
-class StorybookCoverageReporter extends ReportBase implements Partial<Visitor> {
-  #testManager: StorybookCoverageReporterOptions['testManager'];
+class ForkbookCoverageReporter extends ReportBase implements Partial<Visitor> {
+  #testManager: ForkbookCoverageReporterOptions['testManager'];
 
-  constructor(opts: StorybookCoverageReporterOptions) {
+  constructor(opts: ForkbookCoverageReporterOptions) {
     super();
     this.#testManager = opts.testManager;
   }
@@ -41,7 +41,7 @@ class StorybookCoverageReporter extends ReportBase implements Partial<Visitor> {
   }
 }
 
-export default StorybookCoverageReporter;
+export default ForkbookCoverageReporter;
 
 // Vitest 4 load custom coverage reporters with require(name).
-export { StorybookCoverageReporter as 'module.exports' };
+export { ForkbookCoverageReporter as 'module.exports' };

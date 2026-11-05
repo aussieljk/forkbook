@@ -11,7 +11,13 @@ import {
   queryFromLocation,
 } from '@aussieljk/forkbook/internal/router';
 import type { NavigateOptions } from '@aussieljk/forkbook/internal/router';
-import type { API_Layout, API_UI, API_ViewMode, Args } from '@aussieljk/forkbook/internal/types';
+import type {
+  API_Layout,
+  API_UI,
+  API_ViewMode,
+  Args,
+  GlobalsUpdatedPayload,
+} from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../shared/global.ts';
 
@@ -84,7 +90,7 @@ export const getCustomQueryParams = (
 //     - panel: bottom/right/0 -- set addons panel position (or hide)
 //     - nav: 0/1 -- show or hide the story list
 //
-//   We also support legacy URLs from storybook <5
+//   We also support legacy URLs from Storybook <5
 let prevParams: QueryParams;
 const initialUrlSupport = ({
   state: { location, path, viewMode, storyId: storyIdFromUrl },
@@ -171,7 +177,7 @@ export interface SubAPI {
    * @param {boolean} [options.inheritGlobals] - Inherit globals from the current URL. Defaults to
    *   true.
    * @param {QueryParams} [options.queryParams] - Query params to add to the URL.
-   * @param {string} [options.refId] - ID of the ref to get the URL for (for composed Storybooks)
+   * @param {string} [options.refId] - ID of the ref to get the URL for (for composed Forkbooks)
    * @param {string} [options.viewMode] - The view mode to use, defaults to 'story'.
    * @param {boolean} [options.embed] - Append `embed=true` so the preview broadcasts
    *   content dimensions to an embedding parent via `iframe.resize` postMessage. Affects
@@ -385,7 +391,7 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
 
   provider.channel?.on(SET_CURRENT_STORY, () => updateArgsParam());
 
-  let handleOrId: any;
+  let handleOrId: number | undefined;
   provider.channel?.on(STORY_ARGS_UPDATED, () => {
     if ('requestIdleCallback' in global.window) {
       if (handleOrId) {
@@ -400,16 +406,19 @@ export const init: ModuleFn<SubAPI, SubState> = (moduleArgs) => {
     }
   });
 
-  provider.channel?.on(GLOBALS_UPDATED, ({ userGlobals, initialGlobals }: any) => {
-    const { path, hash = '', queryParams } = api.getUrlState();
-    const globalsString = buildArgsParam(initialGlobals, merge(initialGlobals, userGlobals));
-    navigateTo(
-      `${path}${hash}`,
-      { ...queryParams, globals: globalsString || null },
-      { replace: true }
-    );
-    api.setQueryParams({ globals: globalsString || null });
-  });
+  provider.channel?.on(
+    GLOBALS_UPDATED,
+    ({ userGlobals, initialGlobals }: GlobalsUpdatedPayload) => {
+      const { path, hash = '', queryParams } = api.getUrlState();
+      const globalsString = buildArgsParam(initialGlobals, merge(initialGlobals, userGlobals));
+      navigateTo(
+        `${path}${hash}`,
+        { ...queryParams, globals: globalsString || null },
+        { replace: true }
+      );
+      api.setQueryParams({ globals: globalsString || null });
+    }
+  );
 
   provider.channel?.on(NAVIGATE_URL, (url: string, options: NavigateOptions) => {
     api.navigateUrl(url, options);

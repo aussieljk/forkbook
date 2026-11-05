@@ -13,7 +13,7 @@ import type {
 
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
 
-import { getEventMetadata } from '../lib/events.ts';
+import { type EventMeta, getEventMetadata } from '../lib/events.ts';
 import type { ModuleFn } from '../lib/types.tsx';
 
 export interface SubState {
@@ -114,7 +114,7 @@ export const init: ModuleFn<SubAPI, SubState> = ({ store, fullAPI, provider }) =
   provider.channel?.on(
     GLOBALS_UPDATED,
     function handleGlobalsUpdated(
-      this: any,
+      this: EventMeta,
       { globals, storyGlobals, userGlobals }: GlobalsUpdatedPayload
     ) {
       const { ref } = getEventMetadata(this, fullAPI)!;
@@ -132,7 +132,7 @@ export const init: ModuleFn<SubAPI, SubState> = ({ store, fullAPI, provider }) =
   // Emitted by the preview on initialization
   provider.channel?.on(
     SET_GLOBALS,
-    function handleSetGlobals(this: any, { globals, globalTypes }: SetGlobalsPayload) {
+    function handleSetGlobals(this: EventMeta, { globals, globalTypes }: SetGlobalsPayload) {
       const { ref } = getEventMetadata(this, fullAPI)!;
       const currentUserGlobals = store.getState()?.userGlobals;
 

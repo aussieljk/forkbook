@@ -7,7 +7,7 @@ import { expect, it, vi } from 'vitest';
 
 import type { ReportNode } from 'istanbul-lib-report';
 
-import StorybookCoverageReporter from './coverage-reporter.ts';
+import ForkbookCoverageReporter from './coverage-reporter.ts';
 import type { TestManager } from './test-manager.ts';
 
 const BUILT = existsSync(
@@ -71,7 +71,7 @@ it.each([
         vitest: { config: { coverage: { watermarks: { statements: watermarks } } } },
       },
     } as unknown as TestManager;
-    const reporter = new StorybookCoverageReporter({ testManager });
+    const reporter = new ForkbookCoverageReporter({ testManager });
     reporter.onSummary({
       isRoot: () => true,
       getCoverageSummary: () => ({ data: { statements: { pct: percentage } } }),
@@ -82,7 +82,7 @@ it.each([
 
 it('ignores nested coverage summaries', () => {
   const onCoverageCollected = vi.fn();
-  const reporter = new StorybookCoverageReporter({
+  const reporter = new ForkbookCoverageReporter({
     testManager: { onCoverageCollected } as unknown as TestManager,
   });
   reporter.onSummary({ isRoot: () => false } as ReportNode);

@@ -101,7 +101,7 @@ const isProjectsArrayProp = (
   p.value.type === 'ArrayExpression';
 
 /**
- * Appends storybook project(s) from template into an existing `test.projects` array, then merges
+ * Appends Forkbook project(s) from template into an existing `test.projects` array, then merges
  * any additional test-level options (e.g. coverage) that don't already exist.
  */
 const appendToExistingProjectRefs = (

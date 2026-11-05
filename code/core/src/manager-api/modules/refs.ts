@@ -33,7 +33,7 @@ export interface SubAPI {
    * @param {string} source - The source/URL of the composed ref.
    * @returns {API_ComposedRef} - The composed ref object.
    */
-  findRef: (source: string) => API_ComposedRef;
+  findRef: (source: string) => API_ComposedRef | undefined;
   /**
    * Sets a composed ref by its ID and data.
    *
@@ -94,7 +94,7 @@ export const getSourceType = (source: string, refId?: string) => {
   return [null, null];
 };
 
-export const defaultStoryMapper: API_StoryMapper = (b: any, a: any) => {
+export const defaultStoryMapper: API_StoryMapper = (_ref, a) => {
   return { ...a, kind: a.kind.replace('|', '/') };
 };
 
@@ -159,8 +159,8 @@ async function handleRequest(
     }
 
     return json as API_SetRefData;
-  } catch (err: any) {
-    return { indexError: err };
+  } catch (err) {
+    return { indexError: err as Error };
   }
 }
 
@@ -220,10 +220,10 @@ export const init: ModuleFn<SubAPI, SubState> = (
   { runCheck = true } = {}
 ) => {
   const api: SubAPI = {
-    findRef: (source): any => {
+    findRef: (source) => {
       const refs = api.getRefs();
 
-      return Object.values(refs).find(({ url }: any) => url.match(source));
+      return Object.values(refs).find(({ url }) => url.match(source));
     },
     changeRefVersion: async (id, url) => {
       const { versions, title } = api.getRefs()[id];
@@ -254,12 +254,12 @@ export const init: ModuleFn<SubAPI, SubState> = (
       const isPublic = type === 'server-checked';
 
       // ref's type starts as either 'unknown' or 'server-checked'
-      // "server-checked" happens when we were able to verify the storybook is accessible from node (without cookies)
-      // "unknown" happens if the request was declined of failed (this can happen because the storybook doesn't exists or authentication is required)
+      // "server-checked" happens when we were able to verify the Forkbook is accessible from node (without cookies)
+      // "unknown" happens if the request was declined of failed (this can happen because the Forkbook does not exist or authentication is required)
       //
       // we then make a request for stories.json
       //
-      // if this request fails when storybook is server-checked we mark the ref as "auto-inject", this is a fallback mechanism for local storybook, legacy storybooks, and storybooks that lack stories.json
+      // if this request fails when storybook is server-checked we mark the ref as "auto-inject", this is a fallback mechanism for local Forkbooks, legacy Forkbooks, and Forkbooks that lack stories.json
       // if the request fails with type "unknown" we give up and show an error
       // if the request succeeds we set the ref to 'lazy' type, and show the stories in the sidebar without injecting the iframe first
       //
@@ -395,10 +395,9 @@ export const init: ModuleFn<SubAPI, SubState> = (
 
       updated[id] = { ...ref, ...data };
 
-      const ordered = Object.keys(initialState).reduce((obj: any, key) => {
-        obj[key] = updated[key];
-        return obj;
-      }, {});
+      const ordered = Object.fromEntries(
+        Object.keys(initialState).map((key) => [key, updated[key]])
+      );
 
       await store.setState({
         refs: ordered,

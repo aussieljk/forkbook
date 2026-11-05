@@ -49,8 +49,10 @@ const BranchNode = ({
   />
 );
 
-const LeafNode = ({ depth, className, style, ...props }: LeafNodeProps) => (
-  <a tabIndex={-1} rel="canonical" {...nodeProps(depth, className, style)} {...props} />
+const LeafNode = ({ depth, className, style, children, ...props }: LeafNodeProps) => (
+  <a tabIndex={-1} rel="canonical" {...nodeProps(depth, className, style)} {...props}>
+    {children}
+  </a>
 );
 
 export const RootNode = ({ className, ...props }: ComponentProps<'div'>) => (

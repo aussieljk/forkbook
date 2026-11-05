@@ -8,7 +8,7 @@ import styles from './DetachedDebuggerMessage.module.css';
 export const DetachedDebuggerMessage = ({ storyUrl }: { storyUrl: string }) => {
   return (
     <div className={styles.message}>
-      Debugger controls are not available on composed Storybooks.{' '}
+      Debugger controls are not available on composed Forkbooks.{' '}
       <Link
         href={`${storyUrl}&addonPanel=${PANEL_ID}`}
         target="_blank"

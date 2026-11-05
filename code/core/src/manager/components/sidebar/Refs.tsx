@@ -23,7 +23,7 @@ export interface RefProps {
 }
 
 export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
-  const storybookState = useStorybookState();
+  const managerState = useStorybookState();
   const api = useStorybookApi();
   const {
     filteredIndex: index,
@@ -53,7 +53,7 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
   const isError = !!indexError;
   const isEmpty = !isLoading && length === 0;
   const isAuthRequired = !!loginUrl && length === 0;
-  const activeFilterCount = getActiveFilterCount(storybookState);
+  const activeFilterCount = getActiveFilterCount(managerState);
 
   const state = getStateType(isLoading, isAuthRequired, isError, isEmpty);
   const [isExpanded, setExpanded] = useState<boolean>(expanded);
@@ -120,7 +120,7 @@ export const Ref: FC<RefType & RefProps> = React.memo(function Ref(props) {
               // @ts-expect-error (non strict)
               data={index}
               // @ts-expect-error (non strict)
-              docsMode={storybookState.docsOptions.docsMode}
+              docsMode={managerState.docsOptions.docsMode}
               selectedStoryId={selectedStoryId}
               onSelectStoryId={onSelectStoryId}
               highlightedRef={highlightedRef}

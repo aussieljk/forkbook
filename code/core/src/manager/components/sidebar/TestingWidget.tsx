@@ -195,6 +195,7 @@ export const TestingWidget = ({
       <h2 id="storybook-testing-widget-heading" className="fb-sr-only">
         Component tests
       </h2>
+      {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- mouse shortcut; the toggle button inside handles the keyboard */}
       <div
         className={styles.bar}
         data-clickable={hasTestProviders || undefined}

@@ -12,7 +12,7 @@ import type { ModuleFn } from '../lib/types.tsx';
 import type { Options } from '../store.ts';
 
 export interface SubState {
-  selectedPanel: string;
+  selectedPanel: string | undefined;
   addons: Record<string, never>;
 }
 
@@ -24,7 +24,7 @@ export interface SubAPI {
    * @param {Addon_Types | Addon_TypesEnum.experimental_PAGE} type - The type of the elements to
    *   retrieve.
    * @returns {Addon_Collection<T>} - A collection of elements of the specified type.
-   * @protected This is used internally in storybook's manager.
+   * @protected This is used internally in the Forkbook manager.
    */
   getElements: <
     T extends
@@ -43,7 +43,7 @@ export interface SubAPI {
    *
    * @returns {string} - The ID of the currently selected panel.
    */
-  getSelectedPanel: () => string;
+  getSelectedPanel: () => string | undefined;
   /**
    * Sets the currently selected panel via it's ID.
    *
@@ -95,7 +95,7 @@ export function ensurePanel(
   return currentPanel;
 }
 
-export const init: ModuleFn<SubAPI, SubState> = ({ provider, store, fullAPI }): any => {
+export const init: ModuleFn<SubAPI, SubState> = ({ provider, store, fullAPI }) => {
   const api: SubAPI = {
     getElements: (type) => provider.getElements(type),
     clearStatuses: () => {
@@ -112,7 +112,7 @@ export const init: ModuleFn<SubAPI, SubState> = ({ provider, store, fullAPI }): 
         }
       });
     },
-    getSelectedPanel: (): any => {
+    getSelectedPanel: () => {
       const { selectedPanel } = store.getState();
       return ensurePanel(api.getElements(Addon_TypesEnum.PANEL), selectedPanel, selectedPanel);
     },

@@ -64,7 +64,7 @@ export interface LogItem {
 }
 
 export interface SyncPayload {
-  /** Absent when the whole log is reset, and in payloads from composed Storybooks that predate it. */
+  /** Absent when the whole log is reset, and in payloads from composed Forkbooks that predate it. */
   storyId?: StoryId;
   controlStates: ControlStates;
   logItems: LogItem[];

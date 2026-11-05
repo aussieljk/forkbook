@@ -63,7 +63,7 @@ const createTestRunnerStore = async ({ channel, options }: ResponderOptions): Pr
 
   const fsCache = createFileSystemCache({
     basePath: resolvePathInStorybookCache(ADDON_ID.replace('/', '-')),
-    ns: 'storybook',
+    ns: 'forkbook',
     ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
   });
   const cachedState: CachedState = await fsCache.get<CachedState>('state', {

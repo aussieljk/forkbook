@@ -4,7 +4,7 @@ import type { API_ComposedRef } from '@aussieljk/forkbook/internal/types';
 import { getSourceType } from '../modules/refs.ts';
 import type { API } from '../root.tsx';
 
-interface Meta {
+export interface EventMeta {
   ref?: API_ComposedRef;
   source?: string;
   sourceType?: 'local' | 'external';
@@ -14,7 +14,7 @@ interface Meta {
   type: string;
 }
 
-export const getEventMetadata = (context: Meta, fullAPI: API) => {
+export const getEventMetadata = (context: EventMeta, fullAPI: API) => {
   const { source, refId, type } = context;
   const [sourceType, sourceLocation] = getSourceType(source!, refId);
 

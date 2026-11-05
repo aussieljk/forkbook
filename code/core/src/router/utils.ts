@@ -117,7 +117,7 @@ const validateArgs = (key = '', value: unknown): boolean => {
   }
 
   if (isPlainObject(value)) {
-    return Object.entries(value as Record<string, any>).every(([k, v]) => validateArgs(k, v));
+    return Object.entries(value).every(([k, v]) => validateArgs(k, v));
   }
   return false;
 };
@@ -125,7 +125,7 @@ const validateArgs = (key = '', value: unknown): boolean => {
 // Note this isn't a picoquery serializer because pq will turn any object
 // into a nested key internally. So we need to deal witth things like `Date`
 // up front.
-const encodeSpecialValues = (value: unknown): any => {
+const encodeSpecialValues = (value: unknown): unknown => {
   if (value === undefined) {
     return '!undefined';
   }
@@ -157,7 +157,7 @@ const encodeSpecialValues = (value: unknown): any => {
   }
 
   if (isPlainObject(value)) {
-    return Object.entries(value as Record<string, any>).reduce(
+    return Object.entries(value).reduce(
       (acc, [key, val]) => Object.assign(acc, { [key]: encodeSpecialValues(val) }),
       {}
     );

@@ -40,8 +40,7 @@ export const fullScreenTool: Addon_BaseType = {
   title: 'fullscreen',
   id: 'fullscreen',
   type: types.TOOL,
-  // @ts-expect-error (non strict)
-  match: (p) => ['story', 'docs'].includes(p.viewMode),
+  match: (p) => p.viewMode === 'story' || p.viewMode === 'docs',
   render: () => {
     const { isMobile } = useLayout();
 
@@ -119,8 +118,7 @@ export const Tools = React.memo<{ list: Addon_BaseType[] }>(function Tools({ lis
 });
 
 function toolbarItemHasBeenExcluded(item: Partial<Addon_BaseType>, entry: LeafEntry | undefined) {
-  const parameters = entry?.type === 'story' && entry?.prepared ? entry?.parameters : {};
-  // @ts-expect-error (non strict)
+  const parameters = (entry?.type === 'story' && entry?.prepared ? entry?.parameters : {}) ?? {};
   const toolbarItemsFromStoryParameters = 'toolbar' in parameters ? parameters.toolbar : undefined;
   const { toolbar: toolbarItemsFromAddonsConfig } = addons.getConfig();
 
@@ -129,8 +127,7 @@ function toolbarItemHasBeenExcluded(item: Partial<Addon_BaseType>, entry: LeafEn
     toolbarItemsFromStoryParameters || {}
   );
 
-  // @ts-expect-error (non strict)
-  return toolbarItems ? !!toolbarItems[item?.id]?.hidden : false;
+  return toolbarItems && item.id ? !!toolbarItems[item.id]?.hidden : false;
 }
 
 export function filterToolsSide(

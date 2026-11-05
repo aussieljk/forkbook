@@ -18,7 +18,7 @@ import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import {
   getChannel as readInstalledChannel,
-  setChannel as installStorybookChannel,
+  setChannel as installChannel,
 } from '../../channels/channel-slot.ts';
 import { mockChannel } from '../../channels/mock-channel.ts';
 import type { API } from '../root.tsx';
@@ -32,9 +32,9 @@ export function isSupportedType(type: Addon_Types): boolean {
 
 export class AddonStore {
   constructor() {
-    this.promise = new Promise((res) => {
+    this.promise = new Promise<Channel>((res) => {
       this.resolve = () => res(this.getChannel());
-    }) as Promise<Channel>;
+    });
   }
 
   private loaders: Addon_Loaders<API> = {};
@@ -45,9 +45,9 @@ export class AddonStore {
 
   private channel: Channel | undefined;
 
-  private promise: any;
+  private promise: Promise<Channel>;
 
-  private resolve: any;
+  private resolve!: () => void;
 
   getChannel = (): Channel => {
     if (this.channel) {
@@ -74,7 +74,7 @@ export class AddonStore {
 
   setChannel = (channel: Channel): void => {
     this.channel = channel;
-    installStorybookChannel(channel);
+    installChannel(channel);
     this.resolve();
   };
 
@@ -137,8 +137,8 @@ export class AddonStore {
     this.loaders[id] = callback;
   };
 
-  loadAddons = (api: any) => {
-    Object.values(this.loaders).forEach((value: any) => value(api));
+  loadAddons = (api: API) => {
+    Object.values(this.loaders).forEach((value) => value(api));
   };
 
   experimental_getRegisteredAddons<

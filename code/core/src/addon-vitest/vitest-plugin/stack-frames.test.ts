@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { isStorybookInternalFrame } from './stack-frames.ts';
+import { isForkbookInternalFrame } from './stack-frames.ts';
 
-describe('isStorybookInternalFrame', () => {
+describe('isForkbookInternalFrame', () => {
   it.each([
     '/project/node_modules/storybook/dist/test/index.js',
     '/project/node_modules/storybook/dist/instrumenter/index.js',
@@ -12,7 +12,7 @@ describe('isStorybookInternalFrame', () => {
     '/project/node_modules/.cache/storybook/10.6.0/hash/fb-vitest/deps/storybook_test.js',
     '/project/node_modules/.cache/storybook/10.6.0/hash/fb-vitest/deps/@storybook_addon-vitest_internal_test-utils.js?v=777b44a5',
   ])('filters out %s', (file) => {
-    expect(isStorybookInternalFrame(file)).toBe(true);
+    expect(isForkbookInternalFrame(file)).toBe(true);
   });
 
   it.each([
@@ -23,6 +23,6 @@ describe('isStorybookInternalFrame', () => {
     '/project/node_modules/.cache/storybook/10.6.0/hash/fb-vitest/deps/react-dom_client.js',
     undefined,
   ])('keeps %s', (file) => {
-    expect(isStorybookInternalFrame(file)).toBe(false);
+    expect(isForkbookInternalFrame(file)).toBe(false);
   });
 });

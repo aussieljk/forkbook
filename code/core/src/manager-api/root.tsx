@@ -1,4 +1,4 @@
-import type { FC, ReactElement, ReactNode } from 'react';
+import type { DependencyList, FC, ReactElement, ReactNode } from 'react';
 import React, {
   Component,
   Fragment,
@@ -253,10 +253,8 @@ class ManagerProvider extends Component<ManagerProviderProps, State> {
   initModules = () => {
     // Now every module has had a chance to set its API, call init on each module which gives it
     // a chance to do things that call other modules' APIs.
-    this.modules.forEach((module: any) => {
-      if ('init' in module) {
-        module.init();
-      }
+    this.modules.forEach((module) => {
+      module.init?.();
     });
   };
 
@@ -298,8 +296,7 @@ interface ManagerConsumerProps<P = unknown> {
 const defaultFilter = (c: Combo) => c;
 
 function ManagerConsumer<P = Combo>({
-  // @ts-expect-error (Converted from ts-ignore)
-  filter = defaultFilter,
+  filter = defaultFilter as (combo: Combo) => P,
   children,
 }: ManagerConsumerProps<P>): ReactElement {
   const managerContext = useContext(ManagerContext);
@@ -313,14 +310,13 @@ function ManagerConsumer<P = Combo>({
   const comboData = filterer.current(managerContext);
 
   const comboDataArray = useMemo(() => {
-    // @ts-expect-error (No overload matches this call)
-    return [...Object.entries(comboData).reduce((acc, keyval) => acc.concat(keyval), [])];
+    return Object.entries(comboData as object).flat();
   }, [managerContext.state]);
 
   return useMemo(() => {
-    const Child: any = renderer.current as FC<P>;
+    const Child = renderer.current as FC<P & object>;
 
-    return <Child {...comboData} />;
+    return <Child {...(comboData as P & object)} />;
   }, comboDataArray);
 }
 
@@ -360,7 +356,7 @@ function orDefault<S>(fromStore: S, defaultState: S): S {
   return fromStore;
 }
 
-export const useChannel = (eventMap: API_EventMap, deps: any[] = []) => {
+export const useChannel = (eventMap: API_EventMap, deps: DependencyList = []) => {
   const api = useStorybookApi();
   useEffect(() => {
     Object.entries(eventMap).forEach(([type, listener]) => api.on(type, listener));
@@ -417,8 +413,7 @@ export function useSharedState<S>(stateId: string, defaultState?: S) {
   }
 
   useEffect(() => {
-    if (quicksync) {
-      // @ts-expect-error (Argument of type 'S | undefined' is not assignable)
+    if (quicksync && defaultState !== undefined) {
       api.setAddonState<S>(stateId, defaultState);
     }
   }, [quicksync]);

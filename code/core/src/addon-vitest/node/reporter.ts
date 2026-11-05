@@ -6,7 +6,7 @@ import type { Report } from '@aussieljk/forkbook/preview-api';
 import type { VitestError } from '../types.ts';
 import type { TestManager } from './test-manager.ts';
 
-export class StorybookReporter implements Reporter {
+export class ForkbookReporter implements Reporter {
   ctx!: Vitest;
 
   constructor(public testManager: TestManager) {}

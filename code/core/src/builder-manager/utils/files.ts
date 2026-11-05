@@ -2,7 +2,6 @@ import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, normalize, relative } from 'node:path';
 
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
 import type { Compilation, OutputFile } from '../types.ts';

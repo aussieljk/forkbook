@@ -26,12 +26,12 @@ export { isMockFunction, mocks };
  * The automock code generation registers spies here so they can be properly cleared between
  * stories.
  */
-interface StorybookMockGlobals {
+interface ForkbookMockGlobals {
   __FORKBOOK_MODULE_MOCK_SPIES__?: Set<MockInstance>;
 }
 
 const moduleMockSpies: Set<MockInstance> = ((
-  globalThis as typeof globalThis & StorybookMockGlobals
+  globalThis as typeof globalThis & ForkbookMockGlobals
 ).__FORKBOOK_MODULE_MOCK_SPIES__ ??= new Set<MockInstance>());
 
 type Listener = (mock: MockInstance, args: unknown[]) => void;

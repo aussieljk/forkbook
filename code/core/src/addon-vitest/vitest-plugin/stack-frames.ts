@@ -14,6 +14,6 @@ const INTERNAL_FRAME_PATTERNS = [
   /[\\/]deps[\\/]@?storybook[@_]/,
 ];
 
-export function isStorybookInternalFrame(file: string | undefined): boolean {
+export function isForkbookInternalFrame(file: string | undefined): boolean {
   return !!file && INTERNAL_FRAME_PATTERNS.some((pattern) => pattern.test(file));
 }

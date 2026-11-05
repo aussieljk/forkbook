@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import React from 'react';
 
-import type { StatusValue } from '@aussieljk/forkbook/internal/types';
+import type { API_IndexHash, StatusValue } from '@aussieljk/forkbook/internal/types';
 import {
   CHANGE_DETECTION_STATUS_TYPE_ID,
   NON_AGGREGATED_STATUS_TYPE_IDS,
@@ -243,9 +243,8 @@ export function getGroupStatus(
   allStatuses: StatusesByStoryIdAndTypeId
 ): Record<string, StatusValue> {
   return Object.values(collapsedData).reduce<Record<string, StatusValue>>((acc, item) => {
-    if (item.type === 'group' || item.type === 'component' || item.type === 'story') {
-      // @ts-expect-error (non strict)
-      const leafs = getDescendantIds(collapsedData as any, item.id, false)
+    if (item.id && (item.type === 'group' || item.type === 'component' || item.type === 'story')) {
+      const leafs = getDescendantIds(collapsedData as API_IndexHash, item.id, false)
         .map((id) => collapsedData[id])
         .filter((i) => i.type === 'story');
 
@@ -262,7 +261,6 @@ export function getGroupStatus(
       );
 
       if (combinedStatus) {
-        // @ts-expect-error (non strict)
         acc[item.id] = combinedStatus;
       }
     }
@@ -279,9 +277,8 @@ export function getGroupDualStatus(
   return Object.values(collapsedData).reduce<
     Record<string, { change: StatusValue; test: StatusValue }>
   >((acc, item) => {
-    if (item.type === 'group' || item.type === 'component' || item.type === 'story') {
-      // @ts-expect-error (non strict)
-      const leafs = getDescendantIds(collapsedData as any, item.id, false)
+    if (item.id && (item.type === 'group' || item.type === 'component' || item.type === 'story')) {
+      const leafs = getDescendantIds(collapsedData as API_IndexHash, item.id, false)
         .map((id) => collapsedData[id])
         .filter((i) => i.type === 'story');
 
@@ -300,7 +297,6 @@ export function getGroupDualStatus(
         .filter(isAggregatedTestStatus)
         .map((s: { value: StatusValue }) => s.value);
 
-      // @ts-expect-error (non strict)
       acc[item.id] = {
         change: getMostCriticalStatusValue(changeValues),
         test: getMostCriticalStatusValue(testValues),

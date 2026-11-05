@@ -70,6 +70,10 @@
   height: 40px;
   width: 100%;
   padding: 0 10px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: start;
   cursor: pointer;
   font-size: var(--fb-size-s2);
   font-weight: var(--fb-weight-bold);

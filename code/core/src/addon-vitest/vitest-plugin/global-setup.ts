@@ -6,12 +6,12 @@ import { logger } from '@aussieljk/forkbook/internal/node-logger';
 
 import treeKill from 'tree-kill';
 
-let storybookProcess: ChildProcess | null = null;
+let forkbookProcess: ChildProcess | null = null;
 
 const getIsVitestStandaloneRun = () => {
   try {
-    // @ts-expect-error Suppress TypeScript warning about wrong setting. Doesn't matter, because we don't use tsc for bundling.
-    return (import.meta.env || process?.env).STORYBOOK !== 'true';
+    const env = (import.meta.env || process?.env) as Record<string, string | undefined>;
+    return env.STORYBOOK !== 'true';
   } catch (e) {
     return false;
   }
@@ -20,45 +20,45 @@ const getIsVitestStandaloneRun = () => {
 const isVitestStandaloneRun = getIsVitestStandaloneRun();
 
 // TODO: Not run when executed via Forkbook
-const checkStorybookRunning = async (storybookUrl: string): Promise<boolean> => {
+const checkForkbookRunning = async (forkbookUrl: string): Promise<boolean> => {
   try {
-    const response = await fetch(`${storybookUrl}/iframe.html`, {
+    const response = await fetch(`${forkbookUrl}/iframe.html`, {
       method: 'HEAD',
       signal: AbortSignal.timeout(5000),
     });
     return response.ok;
   } catch (error) {
     logger.verbose(
-      `Failed to get response from ${storybookUrl}: ${error instanceof Error ? error.message : String(error)}`
+      `Failed to get response from ${forkbookUrl}: ${error instanceof Error ? error.message : String(error)}`
     );
     return false;
   }
 };
 
-const startStorybookIfNotRunning = async () => {
-  const storybookScript = process.env.__FORKBOOK_SCRIPT__ as string;
-  const storybookUrl = process.env.__FORKBOOK_URL__ as string;
+const startForkbookIfNotRunning = async () => {
+  const forkbookScript = process.env.__FORKBOOK_SCRIPT__ as string;
+  const forkbookUrl = process.env.__FORKBOOK_URL__ as string;
 
-  const isRunning = await checkStorybookRunning(storybookUrl);
+  const isRunning = await checkForkbookRunning(forkbookUrl);
 
   if (isRunning) {
     logger.verbose('Forkbook is already running');
     return;
   }
 
-  logger.verbose(`Starting Forkbook with command: ${storybookScript}`);
+  logger.verbose(`Starting Forkbook with command: ${forkbookScript}`);
 
   try {
     // We don't await the process because we don't want Vitest to hang while Forkbook is starting
     // Use shell so commands like `yarn forkbook` or `npm run forkbook -- --quiet`
     // are interpreted correctly across platforms.
-    storybookProcess = spawn(storybookScript, {
+    forkbookProcess = spawn(forkbookScript, {
       shell: true,
       stdio: process.env.DEBUG === 'storybook' ? 'pipe' : 'ignore',
       cwd: process.cwd(),
     });
 
-    storybookProcess.on('error', (error) => {
+    forkbookProcess.on('error', (error) => {
       logger.verbose('Failed to start Forkbook:' + error.message);
       throw error;
     });
@@ -70,19 +70,19 @@ const startStorybookIfNotRunning = async () => {
 
 export const setup = async ({ config }: TestProject) => {
   if (config.watch && isVitestStandaloneRun) {
-    await startStorybookIfNotRunning();
+    await startForkbookIfNotRunning();
   }
 };
 
 export const teardown = async () => {
-  if (!storybookProcess) {
+  if (!forkbookProcess) {
     return;
   }
   logger.verbose('Stopping Forkbook process');
   await new Promise<void>((resolve, reject) => {
     // Forkbook starts multiple child processes, so we need to kill the whole tree
-    if (storybookProcess?.pid) {
-      const pid = storybookProcess.pid;
+    if (forkbookProcess?.pid) {
+      const pid = forkbookProcess.pid;
       treeKill(pid, 'SIGTERM', (error) => {
         if (error) {
           // On Windows, tree-kill shells out to `taskkill`, which exits with code 128 when the

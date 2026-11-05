@@ -289,7 +289,7 @@ export class Instrumenter {
     try {
       this.state = global.window?.parent?.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ || {};
     } catch {
-      // This happens when window.parent is not on the same origin (e.g. for a composed storybook)
+      // This happens when window.parent is not on the same origin (e.g. for a composed Forkbook)
       this.detached = true;
     }
   };
@@ -298,7 +298,7 @@ export class Instrumenter {
     try {
       global.window.parent.__FORKBOOK_ADDON_INTERACTIONS_INSTRUMENTER_STATE__ = this.state;
     } catch {
-      // This happens when window.parent is not on the same origin (e.g. for a composed storybook)
+      // This happens when window.parent is not on the same origin (e.g. for a composed Forkbook)
       this.detached = true;
     }
   };
@@ -556,15 +556,15 @@ export class Instrumenter {
     };
 
     // Mark any ancestor calls as "chained upon" so we won't attempt to defer it later.
-    call.path.forEach((ref: any) => {
-      if (ref?.__callId__) {
+    call.path.forEach((ref) => {
+      if (typeof ref === 'object' && ref?.__callId__) {
         this.setState(call.storyId, ({ chainedCallIds }) => ({
           chainedCallIds: new Set(Array.from(chainedCallIds).concat(ref.__callId__)),
         }));
       }
     });
 
-    const handleException = (e: any) => {
+    const handleException = (e: unknown) => {
       if (e instanceof Error) {
         const { name, message, stack, callId = call.id } = e as Error & { callId: Call['id'] };
 
@@ -610,7 +610,7 @@ export class Instrumenter {
 
       // Wrap any callback functions to provide a way to access their "parent" call.
       // This is picked up in the `track` function and used for call metadata.
-      const finalArgs = actualArgs.map((arg: any) => {
+      const finalArgs = actualArgs.map((arg: unknown) => {
         // We only want to wrap plain functions, not objects.
 
         // We only want to wrap plain functions, not objects or classes.
@@ -618,7 +618,7 @@ export class Instrumenter {
           return arg;
         }
 
-        return (...args: any) => {
+        return (...args: unknown[]) => {
           // Set the cursor and ancestors for calls that happen inside the callback.
           const { cursor, ancestors } = this.getState(call.storyId);
           this.setState(call.storyId, { cursor: 0, ancestors: [...ancestors, call.id] });

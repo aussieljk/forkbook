@@ -133,7 +133,12 @@ export function GlobalErrorModal({ onRerun, storeState }: GlobalErrorModalProps)
         <br />
         <br />
         Troubleshoot:{' '}
-        <a className={styles.troubleshootLink} target="_blank" href={troubleshootURL}>
+        <a
+          className={styles.troubleshootLink}
+          target="_blank"
+          rel="noreferrer"
+          href={troubleshootURL}
+        >
           {troubleshootURL}
         </a>
       </pre>

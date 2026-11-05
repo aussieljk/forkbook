@@ -10,14 +10,13 @@ import * as find from 'empathic/find';
 import * as walk from 'empathic/walk';
 import { escapeRegExp } from 'es-toolkit/string';
 import path, { dirname, join, normalize, resolve } from 'pathe';
-// eslint-disable-next-line depend/ban-dependencies
 import slash from 'slash';
 
 import { COVERAGE_DIRECTORY, FORKBOOK_TEST_PROVIDE_KEY } from '../constants.ts';
 import { log } from '../logger.ts';
 import type { TriggerRunEvent } from '../types.ts';
-import type { StorybookCoverageReporterOptions } from './coverage-reporter.ts';
-import { StorybookReporter } from './reporter.ts';
+import type { ForkbookCoverageReporterOptions } from './coverage-reporter.ts';
+import { ForkbookReporter } from './reporter.ts';
 import type { TestManager } from './test-manager.ts';
 
 const VITEST_CONFIG_FILE_EXTENSIONS = ['mts', 'mjs', 'cts', 'cjs', 'ts', 'tsx', 'js', 'jsx'];
@@ -52,7 +51,7 @@ export class VitestManager {
     const { createVitest, version } = await import('vitest/node');
     this.testNameSeparator = Number.parseInt(version, 10) >= 5 ? ' > ' : ' ';
 
-    const storybookCoverageReporter: [string, StorybookCoverageReporterOptions] = [
+    const forkbookCoverageReporter: [string, ForkbookCoverageReporterOptions] = [
       '@aussieljk/forkbook/addon-vitest/internal/coverage-reporter',
       {
         testManager: this.testManager,
@@ -65,7 +64,7 @@ export class VitestManager {
             clean: true,
             cleanOnRerun: true,
             reportOnFailure: true,
-            reporter: [['html', {}], storybookCoverageReporter],
+            reporter: [['html', {}], forkbookCoverageReporter],
             reportsDirectory: resolvePathInStorybookCache(COVERAGE_DIRECTORY),
           }
         : { enabled: false }
@@ -132,7 +131,7 @@ export class VitestManager {
         // The output in the terminal might be too spamy and it might be better to
         // find a way to just show errors and warnings for example
         // Otherwise it might be hard for the user to discover Forkbook related logs
-        reporters: ['default', new StorybookReporter(this.testManager)],
+        reporters: ['default', new ForkbookReporter(this.testManager)],
         coverage: coverageOptions,
       });
     } catch (err: any) {
@@ -358,7 +357,7 @@ export class VitestManager {
       filteredTestSpecifications.push(testSpecification);
       filteredStoryIds.push(
         ...filteredStories
-          // Don't count skipped stories, because StorybookReporter doesn't include them either
+          // Don't count skipped stories, because ForkbookReporter doesn't include them either
           .filter((story) => !skip.some((tag) => story.tags?.includes(tag)))
           .map((story) => story.id)
       );
@@ -396,7 +395,7 @@ export class VitestManager {
 
     await this.cancelCurrentRun();
 
-    const testSpecifications = await this.getStorybookTestSpecifications();
+    const testSpecifications = await this.getForkbookTestSpecifications();
     const allStories = this.getStories();
 
     const filteredStories = runPayload.storyIds
@@ -432,11 +431,11 @@ export class VitestManager {
     await this.runningPromise;
   }
 
-  async getStorybookTestSpecifications() {
+  async getForkbookTestSpecifications() {
     const globTestSpecifications = (await this.vitest?.globTestSpecifications()) ?? [];
     return (
       globTestSpecifications.filter((workspaceSpec) =>
-        this.isStorybookProject(workspaceSpec.project)
+        this.isForkbookProject(workspaceSpec.project)
       ) ?? []
     );
   }
@@ -447,7 +446,7 @@ export class VitestManager {
     this.updateLastChanged(id);
 
     if (event === 'add') {
-      const project = this.vitest?.projects.find(this.isStorybookProject.bind(this));
+      const project = this.vitest?.projects.find(this.isForkbookProject.bind(this));
       // This function not only tests whether a file matches the test globs, but it also
       // adds the file to the project's internal testFilesList
       project?.matchesTestGlob(id);
@@ -463,12 +462,12 @@ export class VitestManager {
     }
     this.resetGlobalTestNamePattern();
 
-    const storybookProject = this.vitest!.projects.find((p) => this.isStorybookProject(p));
+    const forkbookProject = this.vitest!.projects.find((p) => this.isForkbookProject(p));
     // we create synthetic TestSpecifications for the preview annotations and setup files, so that we can analyze their dependencies
     const previewAnnotationSpecifications = this.testManager.previewAnnotations.map(
       (previewAnnotation) => {
         return {
-          project: storybookProject ?? this.vitest!.projects[0],
+          project: forkbookProject ?? this.vitest!.projects[0],
           moduleId:
             typeof previewAnnotation === 'string' ? previewAnnotation : previewAnnotation.absolute,
         };
@@ -483,7 +482,7 @@ export class VitestManager {
     const syntheticGlobalTestSpecifications =
       previewAnnotationSpecifications.concat(setupFilesSpecifications);
 
-    const testSpecifications = await this.getStorybookTestSpecifications();
+    const testSpecifications = await this.getForkbookTestSpecifications();
     const allStories = this.getStories();
 
     let affectsGlobalFiles = false;
@@ -603,7 +602,7 @@ export class VitestManager {
     this.registerVitestConfigListener();
   }
 
-  isStorybookProject(project: TestProject) {
+  isForkbookProject(project: TestProject) {
     return !!project.config.env?.__FORKBOOK_URL__;
   }
 }

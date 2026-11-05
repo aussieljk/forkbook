@@ -383,7 +383,7 @@ export const Search = React.memo<SearchProps>(function Search({
 
         return (
           <>
-            <label className={styles.screenReaderLabel} {...labelProps}>
+            <label className={styles.screenReaderLabel} {...labelProps} htmlFor={inputId}>
               Search for components
             </label>
             <div className={styles.searchBar} ref={searchLandmarkRef} {...landmarkProps}>
@@ -420,6 +420,7 @@ export const Search = React.memo<SearchProps>(function Search({
               </div>
             </div>
             {!isOpen && belowSearchContent}
+            {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the explorer is a keyboard focus target for the tree inside it */}
             <div className={styles.focusContainer} tabIndex={0} id="storybook-explorer-menu">
               {children({
                 query: input,

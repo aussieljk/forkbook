@@ -110,7 +110,7 @@ export const useContextMenu = (
     return [];
   }, [api, context, hoverCount]);
 
-  // We just don't want to render the context menu for composed storybook stories
+  // We just don't want to render the context menu for composed Forkbook stories
   const shouldRender =
     !context.refId && (providerLinks.length > 0 || links.length > 0 || topLinks.length > 0);
 
@@ -154,7 +154,7 @@ export const useContextMenu = (
 };
 
 /**
- * This component re-subscribes to storybook's core state, hence the Live prefix. It is used to
+ * This component re-subscribes to the Forkbook core state, hence the Live prefix. It is used to
  * render the context menu for the sidebar. it self is a tooltip link list that renders the links
  * provided to it. In addition to the links, it also renders the test providers.
  */

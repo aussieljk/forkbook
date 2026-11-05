@@ -38,10 +38,10 @@ const ErrorFallback = ({ error, errorInfo }: ErrorFallbackProps) => {
           <Collapsible
             collapsed={true}
             summary={({ isCollapsed, toggleCollapsed }) => (
-              <div className={styles.collapseToggle} onClick={toggleCollapsed}>
+              <button type="button" className={styles.collapseToggle} onClick={toggleCollapsed}>
                 <UnfoldVerticalIcon />
                 {isCollapsed ? 'Expand error' : 'Collapse error'}
-              </div>
+              </button>
             )}
           >
             {(error.stack || errorInfo?.componentStack) && (

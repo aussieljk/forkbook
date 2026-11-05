@@ -108,7 +108,18 @@ const NotificationItem: FC<{
       <div
         {...props}
         className={clsx(styles.notification, styles.interactive)}
+        role="button"
+        tabIndex={0}
         onClick={() => onClick({ onDismiss })}
+        onKeyDown={(event) => {
+          if (
+            event.target === event.currentTarget &&
+            (event.key === 'Enter' || event.key === ' ')
+          ) {
+            event.preventDefault();
+            onClick({ onDismiss });
+          }
+        }}
       >
         {children}
       </div>

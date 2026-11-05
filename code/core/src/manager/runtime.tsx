@@ -14,7 +14,7 @@ import { color } from '@aussieljk/forkbook/theming';
 
 import { ToolbarManager } from '../toolbar/components/ToolbarManager.tsx';
 import { TOOLBAR_ID } from '../toolbar/constants.ts';
-import { renderStorybookUI } from './index.tsx';
+import { renderForkbookUI } from './index.tsx';
 import { getRootPage } from './utils/root-page.ts';
 import Provider from './provider.ts';
 
@@ -85,5 +85,5 @@ const rootEl = document.getElementById('root');
 // to be run by Webkit before rendering the UI. This is fine in most browsers.
 setTimeout(() => {
   // @ts-expect-error (non strict)
-  renderStorybookUI(rootEl, new ReactProvider());
+  renderForkbookUI(rootEl, new ReactProvider());
 }, 0);

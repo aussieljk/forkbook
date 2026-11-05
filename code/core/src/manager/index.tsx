@@ -100,7 +100,7 @@ export const Main: FC<{ provider: Provider }> = ({ provider }) => {
   );
 };
 
-export function renderStorybookUI(domNode: HTMLElement, provider: Provider) {
+export function renderForkbookUI(domNode: HTMLElement, provider: Provider) {
   if (!(provider instanceof Provider)) {
     throw new ProviderDoesNotExtendBaseProviderError();
   }

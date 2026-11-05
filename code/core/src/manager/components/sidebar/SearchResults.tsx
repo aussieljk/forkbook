@@ -96,6 +96,7 @@ const Result: FC<
   const thumbnail = useResultThumbnail(item);
 
   return (
+    // oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- Downshift handles the keyboard from the search input
     <li
       className={clsx(styles.resultRow, className)}
       data-highlighted={isHighlighted || undefined}

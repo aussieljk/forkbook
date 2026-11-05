@@ -59,8 +59,8 @@ export const modifyErrorMessage = ({ task }: { task: Task }) => {
     task.result.errors?.[0]
   ) {
     const currentError = task.result.errors[0];
-    const storybookUrl = import.meta.env.__FORKBOOK_URL__;
-    const storyUrl = `${storybookUrl}/_story/${meta.storyId}?addonPanel=${COMPONENT_TESTING_PANEL_ID}`;
+    const forkbookUrl = import.meta.env.__FORKBOOK_URL__;
+    const storyUrl = `${forkbookUrl}/_story/${meta.storyId}?addonPanel=${COMPONENT_TESTING_PANEL_ID}`;
     currentError.message = `\n\x1B[34mClick to debug the error directly in Forkbook: ${storyUrl}\x1B[39m\n\n${currentError.message}`;
   }
 };

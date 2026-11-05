@@ -80,7 +80,7 @@ export const init: ModuleFn = ({ fullAPI, store, provider }) => {
   }
 
   const initModule = async () => {
-    // The server channel doesn't exist in production, and we don't want to show what's new in production storybooks.
+    // The server channel doesn't exist in production, and we don't want to show what's new in production Forkbooks.
     if (global.CONFIG_TYPE !== 'DEVELOPMENT') {
       return;
     }
