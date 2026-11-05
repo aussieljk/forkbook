@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { isEqual as deepEqual } from 'es-toolkit/predicate';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import { SET_CURRENT_STORY } from '@aussieljk/forkbook/internal/core-events';
-import { ActionDisplay, EVENT_ID } from '@aussieljk/forkbook/actions';
+import type { ActionDisplay } from '@aussieljk/forkbook/actions';
+import { EVENT_ID } from '@aussieljk/forkbook/actions';
 import { ActionLogger as ActionLoggerComponent } from '../../components/ActionLogger/index.tsx';
 
 interface ActionLoggerProps {

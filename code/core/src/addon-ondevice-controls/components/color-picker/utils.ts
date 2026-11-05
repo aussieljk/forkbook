@@ -1,10 +1,7 @@
-import tinycolor, { ColorFormats } from 'tinycolor2';
-import {
-  PanResponder,
-  GestureResponderEvent,
-  PanResponderGestureState,
-  type PanResponderInstance,
-} from 'react-native';
+import type { ColorFormats } from 'tinycolor2';
+import tinycolor from 'tinycolor2';
+import type { GestureResponderEvent, PanResponderGestureState } from 'react-native';
+import { PanResponder, type PanResponderInstance } from 'react-native';
 
 type Point = { x: number; y: number };
 

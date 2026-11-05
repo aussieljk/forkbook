@@ -7,11 +7,9 @@ import type {
 } from '@aussieljk/forkbook/manager-api';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import React, { type ComponentRef, useCallback, useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import type { View } from 'react-native';
 import {
   IconButton,
-  ExpandAction,
-  ExpandedState,
   useExpanded,
   createId,
   getAncestorIds,
@@ -20,7 +18,11 @@ import {
   startCase,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { ComponentNode, GroupNode, StoryNode } from './TreeNode.tsx';
-import type { Item } from '@aussieljk/forkbook/internal/react-native-ui-common';
+import type {
+  Item,
+  ExpandAction,
+  ExpandedState,
+} from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { useSelectedNode } from './SelectedNodeProvider.tsx';
 import { CollapseAllIcon, CollapseIcon, ExpandAllIcon } from './icon/index.tsx';
 

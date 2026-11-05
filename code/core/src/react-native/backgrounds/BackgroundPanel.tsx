@@ -8,7 +8,7 @@ import Swatch from './Swatch.tsx';
 import { PARAM_KEY } from './constants.ts';
 
 const codeSample = `
-// In your preview config (.storybook/preview.tsx):
+// In your preview config (.rnforkbook/preview.tsx):
 import type { Preview } from '@aussieljk/forkbook/react-native';
 
 const preview: Preview = {

@@ -12,8 +12,8 @@
     "build": "NODE_ENV=production bun --cwd ../scripts build-package",
     "knip": "knip --config ../scripts/knip.config.ts",
     "lint": "oxlint --report-unused-disable-directives-severity=error . --quiet",
-    "storybook:ui": "NODE_OPTIONS=\"--max_old_space_size=4096\" core/dist/bin/dispatcher.js dev --port 6006 --config-dir ./.forkbook",
-    "storybook:ui:build": "NODE_OPTIONS=\"--max_old_space_size=5120\" core/dist/bin/dispatcher.js build --config-dir ./.forkbook"
+    "forkbook:ui": "NODE_OPTIONS=\"--max_old_space_size=4096\" core/dist/bin/dispatcher.js dev --port 6006 --config-dir ./.forkbook",
+    "forkbook:ui:build": "NODE_OPTIONS=\"--max_old_space_size=5120\" core/dist/bin/dispatcher.js build --config-dir ./.forkbook"
   },
   "browserslist": [
     "chrome >= 147",

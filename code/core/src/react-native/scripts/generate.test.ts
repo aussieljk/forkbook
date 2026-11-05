@@ -10,7 +10,7 @@ describe('generate', () => {
   let configPath: string;
 
   beforeEach(() => {
-    configPath = mkdtempSync(join(tmpdir(), 'rnstorybook-'));
+    configPath = mkdtempSync(join(tmpdir(), 'rnforkbook-'));
     writeFileSync(join(configPath, 'preview.tsx'), 'export default {};\n');
   });
 

@@ -5,6 +5,7 @@ import {
 import { isExportStory, storyNameFromExport, toId } from '@aussieljk/forkbook/internal/csf';
 import type {
   Addon_StorySortParameterV7,
+  ModuleExports,
   NormalizedStoriesSpecifier,
   StoryIndex,
 } from '@aussieljk/forkbook/internal/types';
@@ -15,23 +16,33 @@ export interface ReactNativeOptions {
    * Note that this is for future and play functions are not yet fully supported on native.
    */
   playFn?: boolean;
+  /** Hide the on-device UI and show only the story. */
+  disableUI?: boolean;
 }
+
+/** A `stories` entry from `main.ts` with the `require.context` that loads its files. */
+export type StoryEntry = NormalizedStoriesSpecifier & {
+  req: {
+    keys(): string[];
+    (id: string): ModuleExports;
+  };
+};
 
 export function prepareStories({
   storyEntries,
   options,
   storySort,
 }: {
-  storyEntries: (NormalizedStoriesSpecifier & { req: any })[];
+  storyEntries: StoryEntry[];
   options?: ReactNativeOptions;
   storySort?: Addon_StorySortParameterV7;
 }) {
-  let index: StoryIndex = {
+  const index: StoryIndex = {
     v: 5,
     entries: {},
   };
 
-  let importMap: Record<string, any> = {};
+  const importMap: Record<string, ModuleExports> = {};
 
   const makeTitle = (
     fileName: string,

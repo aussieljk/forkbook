@@ -1,6 +1,7 @@
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { ReactElement, forwardRef, useEffect, useMemo, useState } from 'react';
-import type { TouchableOpacityProps } from 'react-native';
+import type { ComponentRef, ReactElement } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
+import type { TouchableOpacityProps, View } from 'react-native';
 
 export interface ButtonProps extends TouchableOpacityProps {
   asChild?: boolean;
@@ -14,8 +15,7 @@ export interface ButtonProps extends TouchableOpacityProps {
   Icon?: (props: { color: string }) => ReactElement;
 }
 
-// TODO fix this type
-export const Button = forwardRef<any, ButtonProps>(
+export const Button = forwardRef<ComponentRef<typeof View>, ButtonProps>(
   (
     {
       Icon,

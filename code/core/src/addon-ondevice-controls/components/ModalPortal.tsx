@@ -1,5 +1,6 @@
 import { Portal } from '@gorhom/portal';
-import { Modal, ModalProps, Platform, View } from 'react-native';
+import type { ModalProps } from 'react-native';
+import { Modal, Platform, View } from 'react-native';
 
 const modalSupported = Platform.OS !== 'macos';
 

@@ -11,7 +11,8 @@ import {
   Button,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
 
-import { PressableProps, View } from 'react-native';
+import type { PressableProps } from 'react-native';
+import { View } from 'react-native';
 import { ComponentIcon, StoryIcon } from './icon/index.tsx';
 
 // Microfuzz highlight types

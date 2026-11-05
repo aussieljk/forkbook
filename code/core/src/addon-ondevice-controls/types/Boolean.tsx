@@ -19,8 +19,4 @@ const BooleanType = ({ arg, onChange }: BooleanProps) => (
   </Container>
 );
 
-BooleanType.serialize = (value: any) => (value ? String(value) : null);
-
-BooleanType.deserialize = (value: any) => value === 'true';
-
 export default BooleanType;

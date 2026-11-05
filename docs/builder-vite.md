@@ -134,4 +134,4 @@ feel free to create an issue or send a pull request!
 
 Please read the [How to contribute](/CONTRIBUTING.md) guide.
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

@@ -1,7 +1,7 @@
 /**
  * This is the entrypoint for when you run:
  *
- * @example `nr build storybook --watch`
+ * @example `bun run build-package @aussieljk/forkbook --watch`
  *
  * You can pass a list of package names to build, or use the `--all` flag to build all packages.
  *
@@ -185,7 +185,7 @@ async function run() {
           message: 'Select the packages to build',
           name: 'todo',
           min: 1,
-          hint: 'You can also run directly with package name like `bun run build-package storybook`, or `bun run build-package --all` for all packages!',
+          hint: 'You can also run directly with package name like `bun run build-package @aussieljk/forkbook`, or `bun run build-package --all` for all packages!',
           // @ts-expect-error @types incomplete
           optionsPerPage: (process.stdout.rows ?? 24) - 3, // 3 lines for extra info
           choices: buildablePackages.map(({ name: key }) => ({

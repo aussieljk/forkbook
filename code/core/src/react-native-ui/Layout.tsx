@@ -11,8 +11,10 @@ import {
   type SBUI,
   type Selection,
 } from '@aussieljk/forkbook/internal/react-native-ui-common';
-import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import type { ReactNode } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { ViewStyle } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SET_CURRENT_STORY } from '@aussieljk/forkbook/internal/core-events';
 import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
@@ -24,8 +26,10 @@ import {
 } from '@aussieljk/forkbook/internal/types';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import { DEFAULT_REF_ID } from './constants.ts';
-import { AddonsTabs, MobileAddonsPanel, MobileAddonsPanelRef } from './MobileAddonsPanel.tsx';
-import { MobileMenuDrawer, MobileMenuDrawerRef } from './MobileMenuDrawer.tsx';
+import type { MobileAddonsPanelRef } from './MobileAddonsPanel.tsx';
+import { AddonsTabs, MobileAddonsPanel } from './MobileAddonsPanel.tsx';
+import type { MobileMenuDrawerRef } from './MobileMenuDrawer.tsx';
+import { MobileMenuDrawer } from './MobileMenuDrawer.tsx';
 import { SelectedNodeProvider } from './SelectedNodeProvider.tsx';
 import { Sidebar } from './Sidebar.tsx';
 import { ForkbookLogo } from './ForkbookLogo.tsx';
@@ -132,7 +136,6 @@ export const Layout = ({
   const [uiHidden, setUiHidden] = useState(false);
 
   useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUiHidden(story?.parameters?.storybookUIVisibility === 'hidden');
   }, [story?.parameters?.storybookUIVisibility]);
 

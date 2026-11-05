@@ -1,6 +1,6 @@
 # @aussieljk/forkbook/addon-themes
 
-Forkbook Addon Themes can be used to switch between multiple themes for components inside the preview in [Forkbook](https://storybook.js.org?ref=readme).
+Forkbook Addon Themes can be used to switch between multiple themes for components inside the preview in [Forkbook](https://forkbook.ljk.dev).
 
 ![React Forkbook Screenshot](https://user-images.githubusercontent.com/18172605/274302488-77a39112-cdbe-4d16-9966-0d8e9e7e3399.gif)
 
@@ -65,4 +65,4 @@ export const PrimaryDark = {
 };
 ```
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

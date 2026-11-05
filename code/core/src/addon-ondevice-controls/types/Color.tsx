@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { View, TouchableWithoutFeedback, StyleSheet, Platform, Dimensions } from 'react-native';
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { ColorPicker, fromHsv, HsvColor, toHsv } from '../components/color-picker/index.ts';
+import type { HsvColor } from '../components/color-picker/index.ts';
+import { ColorPicker, fromHsv, toHsv } from '../components/color-picker/index.ts';
 import { ModalPortal } from '../components/ModalPortal.tsx';
 
 export interface ColorProps {
@@ -180,7 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-ColorType.serialize = (value: any) => value;
-
-ColorType.deserialize = (value: any) => value;
 export default ColorType;

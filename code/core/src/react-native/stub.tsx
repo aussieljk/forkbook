@@ -10,7 +10,7 @@ const Stub = () => (
     }}
   >
     <Text style={{ fontSize: 20, textAlign: 'center' }}>
-      Storybook is disabled in the withForkbook metro wrapper.
+      Forkbook is disabled in the withForkbook Metro wrapper.
     </Text>
   </View>
 );

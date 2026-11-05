@@ -77,7 +77,7 @@ export async function generate({
   disableUI = false,
 }: GenerateOptions) {
   const channelHost = host === 'auto' ? getLocalIPAddress() : host;
-  const storybookRequiresLocation = path.resolve(
+  const forkbookRequiresLocation = path.resolve(
     cwd,
     configPath,
     `forkbook.requires.${useJs ? 'js' : 'ts'}`
@@ -231,5 +231,5 @@ ${options ? `    ${options},` : ''}
 export const view${useJs ? '' : ': View'} = globalThis.view;
 `;
 
-  writeFileSync(storybookRequiresLocation, fileContent, { encoding: 'utf8', flag: 'w' });
+  writeFileSync(forkbookRequiresLocation, fileContent, { encoding: 'utf8', flag: 'w' });
 }

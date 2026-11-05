@@ -27,8 +27,4 @@ const DateType = ({ onChange, arg: { name, value } }: DateProps) => {
   );
 };
 
-DateType.serialize = (value: any) => String(value);
-
-DateType.deserialize = (value: any) => parseFloat(value);
-
 export default DateType;

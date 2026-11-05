@@ -1,4 +1,3 @@
-/* eslint-disable @aussieljk/forkbook/prefer-pascal-case */
 import { expect } from '@aussieljk/forkbook/test';
 
 const meta = {

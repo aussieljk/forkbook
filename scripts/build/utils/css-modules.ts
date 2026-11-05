@@ -50,16 +50,16 @@ export async function cssToJs(file: string) {
 }
 
 export const esbuildCssPlugin = (): esbuild.Plugin => ({
-  name: 'storybook-css',
+  name: 'forkbook-css',
   setup(build) {
     build.onResolve({ filter: CSS_FILTER }, (args) => {
       if (!args.path.startsWith('.')) {
         return undefined;
       }
       const path = resolve(args.resolveDir, args.path);
-      return isOwnCss(path) ? { path, namespace: 'storybook-css', sideEffects: true } : undefined;
+      return isOwnCss(path) ? { path, namespace: 'forkbook-css', sideEffects: true } : undefined;
     });
-    build.onLoad({ filter: CSS_FILTER, namespace: 'storybook-css' }, async (args) => ({
+    build.onLoad({ filter: CSS_FILTER, namespace: 'forkbook-css' }, async (args) => ({
       contents: await cssToJs(args.path),
       loader: 'js',
       watchFiles: [args.path],
@@ -68,7 +68,7 @@ export const esbuildCssPlugin = (): esbuild.Plugin => ({
 });
 
 export const rolldownCssPlugin = (): RolldownPlugin => ({
-  name: 'storybook-css',
+  name: 'forkbook-css',
   async load(id) {
     if (!CSS_FILTER.test(id) || !isOwnCss(id)) {
       return null;

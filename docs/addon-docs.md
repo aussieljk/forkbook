@@ -16,7 +16,7 @@ Docs supports React with Vite and Next.js with Vite.
 
 Read on to learn more:
 
-- [Forkbook Docs](#storybook-docs)
+- [Forkbook Docs](#forkbook-docs)
   - [DocsPage](#docspage)
   - [MDX](#mdx)
   - [Framework support](#framework-support)
@@ -136,6 +136,6 @@ Want to learn more? Here are some more articles on Forkbook Docs:
 
 - References: [DocsPage](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/docspage.md) / [MDX](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/mdx.md) / [FAQ](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/faq.md) / [Recipes](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/recipes.md) / [Theming](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/theming.md) / [Props](https://github.com/storybookjs/storybook/tree/next/code/addons/docs/docs/props-tables.md)
 - Announcements: [Vision](https://medium.com/storybookjs/storybook-docs-sneak-peak-5be78445094a) / [DocsPage](https://medium.com/storybookjs/storybook-docspage-e185bc3622bf) / [MDX](https://medium.com/storybookjs/rich-docs-with-storybook-mdx-61bc145ae7bc) / [Framework support](https://medium.com/storybookjs/storybook-docs-for-new-frameworks-b1f6090ee0ea)
-- Example: [Forkbook Design System](https://github.com/storybookjs/design-system)
+- Example: [Storybook Design System](https://github.com/storybookjs/design-system)
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

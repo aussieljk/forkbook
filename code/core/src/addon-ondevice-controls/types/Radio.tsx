@@ -1,6 +1,6 @@
 import React from 'react';
 import RadioSelect from '../components/RadioSelect.tsx';
-import { ControlTypes } from '../sharedTypes.ts';
+import type { ControlTypes } from '../sharedTypes.ts';
 
 export interface RadioProps {
   arg: {
@@ -55,9 +55,5 @@ const RadioType = ({ onChange, arg }: RadioProps) => {
     />
   );
 };
-
-RadioType.serialize = (value: any) => value;
-
-RadioType.deserialize = (value: any) => value;
 
 export default RadioType;

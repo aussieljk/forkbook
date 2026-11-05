@@ -7,7 +7,7 @@ import SelectType from './Select.tsx';
 import DateType from './Date.tsx';
 import ArrayType from './Array.tsx';
 import RadioType from './Radio.tsx';
-import { ControlTypes } from '../sharedTypes.ts';
+import type { ControlTypes } from '../sharedTypes.ts';
 
 export default {
   text: TextType,

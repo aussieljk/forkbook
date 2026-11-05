@@ -12,4 +12,4 @@ npx forkbook add @aussieljk/forkbook/addon-a11y
 
 [More on getting started with the accessibility addon](https://storybook.js.org/docs/writing-tests/accessibility-testing#accessibility-checks-with-a11y-addon?ref=readme)
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

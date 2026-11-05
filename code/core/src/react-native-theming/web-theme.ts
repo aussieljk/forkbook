@@ -1,6 +1,6 @@
 import type { ImageProps, ImageSourcePropType, TextStyle } from 'react-native';
 import { transparentize } from 'polished';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 export const color = {
   // Forkbook palette: the iOS system colours
@@ -172,11 +172,11 @@ export type Typography = typeof typography;
 
 export type TextSize = number | string;
 export interface Brand {
-  // Will replace the storybook logo with this title
+  // Will replace the Forkbook logo with this title
   title?: string | undefined;
   // This url we be opened when clicking the branded logo or title
   url?: string | null | undefined;
-  // Define a an image source to replace storybook logo with
+  // Define a an image source to replace the Forkbook logo with
   image?: ImageSourcePropType | ReactElement | null | undefined;
   resizeMode?: ImageProps['resizeMode'] | null | undefined;
   target?: string | null | undefined;

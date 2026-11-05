@@ -44,4 +44,4 @@ This export contains the API that is available in the manager iframe.
 
 This export exposes a lot of TypeScript interfaces used throughout storybook, including for storybook configuration, addons etc.
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

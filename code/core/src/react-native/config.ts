@@ -1,4 +1,4 @@
-import type { ForkbookConfig as StorybookConfigBase } from '@aussieljk/forkbook/internal/types';
+import type { ForkbookConfig as ForkbookConfigBase } from '@aussieljk/forkbook/internal/types';
 
 import type { ReactNativeOptions } from './prepareStories.ts';
 
@@ -10,10 +10,10 @@ export type Features = {
   ondeviceBackgrounds?: boolean;
 };
 
-export type Addon = string | { name: string; options?: Record<string, any> };
+export type Addon = string | { name: string; options?: Record<string, unknown> };
 
 export interface ForkbookConfig {
-  stories: StorybookConfigBase['stories'];
+  stories: ForkbookConfigBase['stories'];
   /** @deprecated Use `deviceAddons`. This field will be removed in a future version. */
   addons?: Addon[];
   /**

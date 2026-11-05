@@ -38,8 +38,9 @@ function isSyntheticEvent(value: unknown): boolean {
   return (
     value !== null &&
     typeof value === 'object' &&
-    typeof (value as any).persist === 'function' &&
-    'nativeEvent' in (value as any)
+    'persist' in value &&
+    typeof value.persist === 'function' &&
+    'nativeEvent' in value
   );
 }
 

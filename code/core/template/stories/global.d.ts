@@ -6,5 +6,5 @@ declare global {
     emit: any;
     on: any;
   };
-  var storybookRenderer: string;
+  var forkbookRenderer: string;
 }

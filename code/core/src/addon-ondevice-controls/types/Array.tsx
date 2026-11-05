@@ -47,16 +47,4 @@ const ArrayType = ({
   );
 };
 
-ArrayType.serialize = (value: any) => value;
-
-ArrayType.deserialize = (value: any) => {
-  if (Array.isArray(value)) {
-    return value;
-  }
-
-  return Object.keys(value)
-    .sort()
-    .reduce<any[]>((array, key) => [...array, value[key]], []);
-};
-
 export default ArrayType;

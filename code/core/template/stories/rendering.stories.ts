@@ -94,7 +94,7 @@ export const ChangeArgs = {
     // Web-components: https://github.com/storybookjs/storybook/issues/19415
     // Preact: https://github.com/storybookjs/storybook/issues/19504
 
-    if (['web-components', 'html', 'preact'].includes(globalThis.storybookRenderer)) {
+    if (['web-components', 'html', 'preact'].includes(globalThis.forkbookRenderer)) {
       return;
     }
 

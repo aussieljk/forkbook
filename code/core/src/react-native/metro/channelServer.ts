@@ -1,5 +1,7 @@
-import { WebSocketServer, WebSocket, Data } from 'ws';
-import { createServer as createHttpServer, IncomingMessage, ServerResponse } from 'node:http';
+import type { Data } from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import { createServer as createHttpServer } from 'node:http';
 import { createServer as createHttpsServer } from 'node:https';
 import { buildIndex } from './buildIndex.ts';
 import {
@@ -59,7 +61,7 @@ interface ChannelServerOptions {
 }
 
 /**
- * Creates a channel server for syncing storybook instances and sending events.
+ * Creates a channel server for syncing Forkbook instances and sending events.
  * The server provides both WebSocket and REST endpoints:
  * - WebSocket: broadcasts all received messages to all connected clients
  * - POST /send-event: sends an event to all WebSocket clients

@@ -1,6 +1,8 @@
-import { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { FC, isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import { Image, Linking, StyleProp, Text, TextStyle, TouchableOpacity } from 'react-native';
+import type { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import type { FC, ReactElement } from 'react';
+import { isValidElement, useEffect, useMemo } from 'react';
+import type { StyleProp, TextStyle } from 'react-native';
+import { Image, Linking, Text, TouchableOpacity } from 'react-native';
 
 const WIDTH = 125;
 const HEIGHT = 25;

@@ -1,4 +1,3 @@
-/* eslint-disable local-rules/no-uncategorized-errors */
 export default {
   component: globalThis.__TEMPLATE_COMPONENTS__.Button,
   tags: ['autodocs', '!test', '!vitest'],

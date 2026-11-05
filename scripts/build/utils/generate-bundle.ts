@@ -28,10 +28,10 @@ import { tiePreviewRuntimeSetup } from './preview-runtime-entry.ts';
 export const DIR_CODE = join(import.meta.dirname, '..', '..', '..', 'code');
 
 function rolldownGlobalExternalsPlugin(): RolldownPlugin {
-  const prefix = '\0storybook-global:';
+  const prefix = '\0forkbook-global:';
 
   return {
-    name: 'storybook-global-externals',
+    name: 'forkbook-global-externals',
     resolveId(id) {
       return id in globalsModuleInfoMap ? `${prefix}${id}` : null;
     },
@@ -250,7 +250,7 @@ export async function generateBundle({
 
           We're adding unique names to the imports to avoid collisions
           when one of our packages bundles in another of our packages,
-          like @aussieljk/forkbook/internal/create bundling in parts of storybook core.
+          like @aussieljk/forkbook/internal/create bundling in parts of Forkbook core.
           Similarly we're using var definitions as they can be redefined
           without causing errors.
           */

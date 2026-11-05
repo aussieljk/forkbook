@@ -84,7 +84,7 @@ export function resolveAddonFile(
   return null;
 }
 
-export type Addon = string | { name: string; options?: Record<string, any> };
+export type Addon = string | { name: string; options?: Record<string, unknown> };
 
 export function getAddonName(addon: Addon) {
   if (typeof addon === 'string') return addon;

@@ -1,8 +1,9 @@
 import type { API } from '@aussieljk/forkbook/manager-api';
-import { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type { Args, StoryContextForLoaders } from '@aussieljk/forkbook/internal/csf';
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
-import React, { ComponentType, ReactElement, useCallback, useState } from 'react';
+import type { ComponentType, ReactElement } from 'react';
+import React, { useCallback, useState } from 'react';
 import NoControlsWarning from './NoControlsWarning.tsx';
 import PropForm from './PropForm.tsx';
 import { getControlArgTypes } from './controlArgTypes.ts';
@@ -35,7 +36,7 @@ export interface ReactNativeFramework extends Renderer {
 }
 
 type ApiStore = {
-  fromId: (id: any) => Omit<StoryContextForLoaders<ReactNativeFramework, Args>, 'viewMode'>;
+  fromId: (id: string) => Omit<StoryContextForLoaders<ReactNativeFramework, Args>, 'viewMode'>;
   getSelection: () => Selection;
   _channel: Channel;
 };

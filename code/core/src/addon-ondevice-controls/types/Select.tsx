@@ -1,9 +1,9 @@
 import { useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { useMemo } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import { Platform, View } from 'react-native';
 import { SelectModal } from '../components/SelectModal.tsx';
 import { Input, inputStyle } from './common.tsx';
-import { ControlTypes } from '../sharedTypes.ts';
+import type { ControlTypes } from '../sharedTypes.ts';
 
 export interface SelectProps {
   arg: {
@@ -62,8 +62,8 @@ const SelectType = ({ arg, onChange }: SelectProps) => {
         value={value}
         onChange={handleChange}
         multiple={arg.type === 'multi-select'}
-        // @ts-ignore
-        style={inputStyle({ theme })}
+        // React Native Web accepts the React Native style on a DOM element.
+        style={inputStyle({ theme }) as CSSProperties}
       >
         {options.map(({ label, key }) => (
           <option key={`${label}-${key}`} value={key}>

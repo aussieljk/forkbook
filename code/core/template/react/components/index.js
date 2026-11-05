@@ -6,4 +6,4 @@ import { Html } from './Html.jsx';
 import { Pre } from './Pre.jsx';
 
 globalThis.__TEMPLATE_COMPONENTS__ = { Button, Pre, Form, Html };
-globalThis.storybookRenderer = 'react';
+globalThis.forkbookRenderer = 'react';

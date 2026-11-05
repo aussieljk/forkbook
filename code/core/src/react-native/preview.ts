@@ -9,10 +9,12 @@ import { type Preview } from '@aussieljk/forkbook/react';
 // Without these, the actions panel crashes with:
 // "ProgressTransitionRegister is not available on non-native platform"
 if (Platform.OS === 'web') {
-  // @ts-ignore
-  globalThis.ProgressTransitionRegister = {};
-  // @ts-ignore
-  globalThis.UpdatePropsManager = {};
+  const reanimatedGlobals = globalThis as typeof globalThis & {
+    ProgressTransitionRegister?: object;
+    UpdatePropsManager?: object;
+  };
+  reanimatedGlobals.ProgressTransitionRegister = {};
+  reanimatedGlobals.UpdatePropsManager = {};
 }
 
 const preview: Preview = {

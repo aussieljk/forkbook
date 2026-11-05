@@ -2,7 +2,8 @@ import { normalizeStories, loadMainConfig } from '@aussieljk/forkbook/internal/c
 import { readFileSync } from 'node:fs';
 import { globSync } from 'tinyglobby';
 import path from 'path';
-import { CsfFile, loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
+import type { CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
+import { loadCsf } from '@aussieljk/forkbook/internal/csf-tools';
 import { toId } from '@aussieljk/forkbook/internal/csf';
 import {
   type StoryIndex,

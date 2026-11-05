@@ -1,15 +1,15 @@
-import type { LoaderFunction } from '@aussieljk/forkbook/internal/types';
+import type { LoaderFunction, ModuleExports } from '@aussieljk/forkbook/internal/types';
 
 export interface RequireContext {
   keys: () => string[];
-  (id: string): any;
+  (id: string): ModuleExports;
   resolve(id: string): string;
 }
 
 export type Loadable = RequireContext | RequireContext[] | LoaderFunction;
 
 /**
- * Options for configuring WebSockets used for syncing storybook instances or sending events to storybook.
+ * Options for configuring WebSockets used for syncing Forkbook instances or sending events to Forkbook.
  */
 export interface WebsocketsOptions {
   /**

@@ -99,7 +99,7 @@ describe('withForkbook', () => {
     );
   });
 
-  test('does not generate when storybook is disabled', () => {
+  test('does not generate when Forkbook is disabled', () => {
     expect(() =>
       withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false })
     ).not.toThrow();
@@ -156,7 +156,7 @@ describe('withForkbook resolution', () => {
     expect(resolve(result, {}, mod, 'web')).not.toEqual({ type: 'empty' });
   });
 
-  test.each(['os', 'tty'])('also replaces %s when storybook is disabled', (mod) => {
+  test.each(['os', 'tty'])('also replaces %s when Forkbook is disabled', (mod) => {
     const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false });
     const ctx = { resolveRequest };
 
@@ -181,7 +181,7 @@ describe('withForkbook resolution', () => {
     );
   });
 
-  test('removes Storybook modules when storybook is disabled', () => {
+  test('removes Forkbook modules when Forkbook is disabled', () => {
     const result = withForkbook(config, { configPath: '/tmp/.rnforkbook', enabled: false });
 
     expect(resolve(result, {}, '@aussieljk/forkbook/react-native', 'ios')).toEqual({

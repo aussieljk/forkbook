@@ -1,5 +1,6 @@
 import type { TextStyle } from 'react-native';
-import { StorybookThemeWeb, background, color, dark, light } from './web-theme.ts';
+import type { StorybookThemeWeb } from './web-theme.ts';
+import { background, color, dark, light } from './web-theme.ts';
 
 export type StorybookTheme = StorybookThemeWeb;
 

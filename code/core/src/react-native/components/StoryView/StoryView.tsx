@@ -1,6 +1,7 @@
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
 import React, { useCallback, useMemo } from 'react';
-import { Keyboard, View, ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { useStoryContext } from '../../hooks.tsx';
 import { ErrorBoundary } from './ErrorBoundary.tsx';
 

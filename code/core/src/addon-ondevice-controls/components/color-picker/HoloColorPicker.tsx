@@ -1,14 +1,8 @@
 import { type ComponentRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  I18nManager,
-  Image,
-  LayoutChangeEvent,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native';
-import tinycolor, { ColorFormats } from 'tinycolor2';
+import type { LayoutChangeEvent, ViewStyle } from 'react-native';
+import { I18nManager, Image, StyleSheet, Text, View } from 'react-native';
+import type { ColorFormats } from 'tinycolor2';
+import tinycolor from 'tinycolor2';
 import SliderWrapper from '../SliderWrapper.tsx';
 import { colorCircle } from './color-circle.ts';
 import { createPanResponder } from './utils.ts';
@@ -38,7 +32,6 @@ export function HoloColorPicker({
   useEffect(() => {
     const nextColor = getHsv(defaultColor);
     colorRef.current = nextColor;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setColor(nextColor);
   }, [defaultColor]);
 
@@ -68,7 +61,6 @@ export function HoloColorPicker({
 
   const pickerResponder = useMemo(
     () =>
-      // eslint-disable-next-line react-hooks/refs
       createPanResponder({
         onStart: handleHueChange,
         onMove: handleHueChange,

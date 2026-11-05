@@ -1,8 +1,9 @@
-import React, { ComponentType } from 'react';
+import type { ComponentType } from 'react';
+import React from 'react';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import TypeMap from './types/index.ts';
-import { ArgType } from './ControlsPanel.tsx';
-import { ControlTypes } from './sharedTypes.ts';
+import type { ArgType } from './ControlsPanel.tsx';
+import type { ControlTypes } from './sharedTypes.ts';
 
 export interface Knob {
   name: string;

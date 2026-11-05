@@ -1,5 +1,6 @@
 import type { ReactRenderer } from '@aussieljk/forkbook/react';
-import { Theme, darkTheme, theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import type { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import { darkTheme, theme } from '@aussieljk/forkbook/internal/react-native-theming';
 import {
   type SBUI,
   transformStoryIndexToStoriesHash,
@@ -10,9 +11,10 @@ import { useEffect, useMemo, useReducer, useState } from 'react';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Channel, WebsocketTransport } from '@aussieljk/forkbook/internal/channels';
 import { CHANNEL_CREATED, SET_CURRENT_STORY } from '@aussieljk/forkbook/internal/core-events';
-import { StoryContext, toId } from '@aussieljk/forkbook/internal/csf';
+import type { StoryContext } from '@aussieljk/forkbook/internal/csf';
+import { toId } from '@aussieljk/forkbook/internal/csf';
+import type { PreviewWithSelection } from '@aussieljk/forkbook/internal/preview-api';
 import {
-  PreviewWithSelection,
   type SelectionStore,
   addons as previewAddons,
 } from '@aussieljk/forkbook/internal/preview-api';
@@ -22,9 +24,10 @@ import type {
   StoryId,
   StoryIndex,
 } from '@aussieljk/forkbook/internal/types';
-import { addons as managerAddons } from '@aussieljk/forkbook/manager-api';
+import { type API, addons as managerAddons } from '@aussieljk/forkbook/manager-api';
 import { FullUI as DeviceUI } from '@aussieljk/forkbook/react-native-ui';
 import type { Features } from './config.ts';
+import type { ReactNativeOptions } from './prepareStories.ts';
 import { patchChannelForRN } from './patchChannelForRN.ts';
 
 import {
@@ -103,7 +106,7 @@ export type Params = {
    */
   hasStoryWrapper?: boolean;
   /**
-   * Enable websockets for the storybook server to remotely control the storybook
+   * Enable WebSockets so the Forkbook server can control Forkbook remotely
    * default: automatically enabled when a websocket config is injected via forkbook.requires (i.e. when FORKBOOK_WS_HOST is set), otherwise false
    */
   enableWebsockets?: boolean;
@@ -134,10 +137,14 @@ export class View {
   _webUrl?: string;
   _storage!: Storage;
   _channel: Channel;
-  _options: any;
+  _options: ReactNativeOptions;
   _idToPrepared: Record<string, PreparedStory<ReactRenderer>> = {};
 
-  constructor(preview: PreviewWithSelection<ReactRenderer>, channel: Channel, options: any) {
+  constructor(
+    preview: PreviewWithSelection<ReactRenderer>,
+    channel: Channel,
+    options?: ReactNativeOptions
+  ) {
     this._preview = preview;
     this._channel = channel;
     this._options = options ?? {};
@@ -202,7 +209,7 @@ export class View {
 
         return { storySpecifier: persistedStoryId ?? '*', viewMode: 'story' };
       } catch (e) {
-        console.warn('storybook-log: error reading from async storage', e);
+        console.warn('forkbook-log: error reading from async storage', e);
       }
     }
 
@@ -313,7 +320,7 @@ export class View {
       managerAddons.setChannel(channel);
       previewAddons.setChannel(channel);
       this._channel = channel;
-      // @ts-ignore FIXME
+      // @ts-expect-error `channel` is protected on Preview, but the view must swap in the WebSocket channel.
       this._preview.channel = channel;
       this._preview.setupListeners();
       channel.emit(CHANNEL_CREATED);
@@ -325,6 +332,7 @@ export class View {
       this._channel.emit(RN_FORKBOOK_EVENTS.RN_GET_INDEX_RESPONSE, { index: this._storyIndex });
     });
 
+    // On device, the addons get only the small store API below, not the full manager API.
     managerAddons.loadAddons({
       store: () => ({
         fromId: (id: string) => {
@@ -338,11 +346,8 @@ export class View {
         },
         _channel: this._channel,
       }),
-    });
+    } as unknown as API);
 
-    const self = this;
-
-    // eslint-disable-next-line react/display-name
     return () => {
       const setContext = useSetStoryContext();
       const story = useStoryContext();
@@ -363,17 +368,15 @@ export class View {
             const storyId = urlObj.searchParams.get(FORKBOOK_STORY_ID_PARAM);
 
             const hasStoryId = storyId && typeof storyId === 'string';
-            const storyExists = hasStoryId && self._storyIdExists(storyId);
+            const storyExists = hasStoryId && this._storyIdExists(storyId);
 
-            if (storyExists && self._ready) {
-              console.log(`STORYBOOK: Linking event received, navigating to story: ${storyId}`);
-              self._channel.emit(SET_CURRENT_STORY, { storyId });
+            if (storyExists && this._ready) {
+              console.log(`FORKBOOK: Linking event received, navigating to story: ${storyId}`);
+              this._channel.emit(SET_CURRENT_STORY, { storyId });
             }
 
             if (hasStoryId && !storyExists) {
-              console.log(
-                `STORYBOOK: Linking event received, but story does not exist: ${storyId}`
-              );
+              console.log(`FORKBOOK: Linking event received, but story does not exist: ${storyId}`);
             }
           }
         });
@@ -384,8 +387,7 @@ export class View {
       }, []);
 
       useEffect(() => {
-        self
-          .createPreparedStoryMapping()
+        this.createPreparedStoryMapping()
           .then(() =>
             Linking.getInitialURL().then((url) => {
               if (url && typeof url === 'string') {
@@ -393,11 +395,11 @@ export class View {
                 const storyId = urlObj.searchParams.get(FORKBOOK_STORY_ID_PARAM);
 
                 const hasStoryId = typeof storyId === 'string';
-                const storyExists = hasStoryId && self._storyIdExists(storyId);
+                const storyExists = hasStoryId && this._storyIdExists(storyId);
 
                 if (hasStoryId && !storyExists) {
                   console.log(
-                    `STORYBOOK: Initial Linking event received, but story does not exist: ${storyId}`
+                    `FORKBOOK: Initial Linking event received, but story does not exist: ${storyId}`
                   );
                 }
 
@@ -410,37 +412,37 @@ export class View {
             })
           )
           .then((initialStoryIdFromUrl) =>
-            self._getInitialStory(params).then((st) => {
+            this._getInitialStory(params).then((st) => {
               if (initialStoryIdFromUrl) {
                 console.log(
-                  `STORYBOOK: Setting initial story from Linking event, storyId: ${initialStoryIdFromUrl}`
+                  `FORKBOOK: Setting initial story from Linking event, storyId: ${initialStoryIdFromUrl}`
                 );
               }
 
-              return self._selectInitialStory({
+              return this._selectInitialStory({
                 selectionSpecifier: st,
                 storyIdFromUrl: initialStoryIdFromUrl,
               });
             })
           )
           .then(() => {
-            const currentStoryId = self._preview.currentSelection?.storyId;
-            const preparedStory = currentStoryId ? self._idToPrepared[currentStoryId] : undefined;
+            const currentStoryId = this._preview.currentSelection?.storyId;
+            const preparedStory = currentStoryId ? this._idToPrepared[currentStoryId] : undefined;
 
             if (preparedStory) {
               setContext(
-                self._preview.getStoryContext(
+                this._preview.getStoryContext(
                   preparedStory
                 ) as unknown as StoryContext<ReactRenderer>
               );
             }
 
-            self._ready = true;
+            this._ready = true;
             setReady(true);
           })
           .catch((e) => console.error(e));
 
-        self._setStory = (newStory: StoryContext<ReactRenderer>) => {
+        this._setStory = (newStory: StoryContext<ReactRenderer>) => {
           setContext(newStory);
 
           if (shouldPersistSelection && !params.storage) {
@@ -454,22 +456,22 @@ export class View {
             `);
           }
 
-          if (shouldPersistSelection && !!self._storage && self._ready) {
+          if (shouldPersistSelection && !!this._storage && this._ready) {
             try {
-              self._asyncStorageStoryId = newStory.id;
-              const ret = self._storage.setItem(RN_FORKBOOK_STORAGE_KEY, newStory.id);
+              this._asyncStorageStoryId = newStory.id;
+              const ret = this._storage.setItem(RN_FORKBOOK_STORAGE_KEY, newStory.id);
               if (ret && typeof (ret as Promise<void>).then === 'function') {
                 (ret as Promise<void>).catch((e) => {
-                  console.warn('storybook-log: error writing to async storage', e);
+                  console.warn('forkbook-log: error writing to async storage', e);
                 });
               }
             } catch (e) {
-              console.warn('storybook-log: error writing to async storage', e);
+              console.warn('forkbook-log: error writing to async storage', e);
             }
           }
         };
 
-        self._forceRerender = () => forceUpdate();
+        this._forceRerender = () => forceUpdate();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
@@ -479,7 +481,7 @@ export class View {
           return {};
         }
 
-        return transformStoryIndexToStoriesHash(self._storyIndex, {
+        return transformStoryIndexToStoriesHash(this._storyIndex, {
           docsOptions: { docsMode: false, defaultName: '' },
           filters: {},
           allStatuses: {},
@@ -522,7 +524,7 @@ export class View {
               story={story as Parameters<SBUI>[0]['story']}
               storyHash={storyHash}
               setStory={(newStoryId) =>
-                self._channel.emit(SET_CURRENT_STORY, { storyId: newStoryId })
+                this._channel.emit(SET_CURRENT_STORY, { storyId: newStoryId })
               }
               storage={storage}
               theme={appliedTheme as Theme}
@@ -543,7 +545,7 @@ export class View {
             storyHash={storyHash}
             story={story as Parameters<SBUI>[0]['story']}
             setStory={(newStoryId) =>
-              self._channel.emit(SET_CURRENT_STORY, { storyId: newStoryId })
+              this._channel.emit(SET_CURRENT_STORY, { storyId: newStoryId })
             }
             storyBackgroundColor={storyBackgroundColor}
           >

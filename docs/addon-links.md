@@ -1,6 +1,6 @@
 # Story Links Addon
 
-The Forkbook Links addon can be used to create links that navigate between stories in [Forkbook](https://storybook.js.org?ref=readme).
+The Forkbook Links addon can be used to create links that navigate between stories in [Forkbook](https://forkbook.ljk.dev).
 
 [Framework Support](https://storybook.js.org/docs/configure/integration/frameworks-feature-support?ref=readme)
 
@@ -163,4 +163,4 @@ It accepts all the props the `a` element does, plus `story` and `kind`. It the `
 
 To implement such a component for another framework, you need to add special handling for `click` event on native `a` element. See [`RoutedLink` sources](https://github.com/storybookjs/storybook/blob/next/code/addons/links/src/react/components/RoutedLink.tsx) for reference.
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

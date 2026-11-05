@@ -2,7 +2,7 @@
 
 Reusable MCP package for Forkbook component and docs knowledge.
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).
 
 ## Self-hosting `@aussieljk/forkbook/mcp`
 

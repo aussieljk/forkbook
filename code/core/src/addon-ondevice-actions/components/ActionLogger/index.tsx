@@ -1,4 +1,4 @@
-import { ActionDisplay } from '@aussieljk/forkbook/actions';
+import type { ActionDisplay } from '@aussieljk/forkbook/actions';
 import { Button, ScrollView, StyleSheet, View } from 'react-native';
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import Inspect from './Inspect.tsx';

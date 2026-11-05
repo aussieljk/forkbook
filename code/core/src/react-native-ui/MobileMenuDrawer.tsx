@@ -1,14 +1,7 @@
 import BottomSheet from '@expo/ui/community/bottom-sheet';
 import { useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import {
-  forwardRef,
-  memo,
-  ReactNode,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from 'react';
+import type { ReactNode } from 'react';
+import { forwardRef, memo, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import { Keyboard, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelectedNode } from './SelectedNodeProvider.tsx';

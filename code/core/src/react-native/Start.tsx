@@ -1,9 +1,8 @@
+import type { View as PreviewView, SelectionStore } from '@aussieljk/forkbook/internal/preview-api';
 import {
   composeConfigs,
   addons as previewAddons,
-  View as PreviewView,
   PreviewWithSelection,
-  SelectionStore,
 } from '@aussieljk/forkbook/internal/preview-api';
 import { addons as managerAddons } from '@aussieljk/forkbook/manager-api';
 
@@ -17,17 +16,10 @@ import type {
   ProjectAnnotations,
 } from '@aussieljk/forkbook/internal/types';
 import { View } from './View.tsx';
-import { prepareStories, type ReactNativeOptions } from './prepareStories.ts';
+import { prepareStories, type ReactNativeOptions, type StoryEntry } from './prepareStories.ts';
 import { registerBackgroundsAddon } from './backgrounds/register.tsx';
 import type { Features } from './config.ts';
 export { prepareStories, type ReactNativeOptions } from './prepareStories.ts';
-
-type StoryEntry = NormalizedStoriesSpecifier & {
-  req: {
-    keys(): string[];
-    (id: string): unknown;
-  };
-};
 
 const createPreviewRoot = (): ReactRenderer['canvasElement'] =>
   ({
@@ -161,6 +153,7 @@ export function start({
     },
   } satisfies SelectionStore;
 
+  // oxlint-disable-next-line prefer-const -- set after the preview is made, which needs this closure
   let view: View;
 
   const getProjectAnnotationsInitial = async (): Promise<
@@ -178,13 +171,13 @@ export function start({
   view = new View(preview, channel, options);
 
   if (global) {
-    const storybookGlobal = global as typeof globalThis & {
+    const forkbookGlobal = global as typeof globalThis & {
       __FORKBOOK_ADDONS_CHANNEL__?: Channel;
       __FORKBOOK_PREVIEW__?: PreviewWithSelection<ReactRenderer>;
     };
 
-    storybookGlobal.__FORKBOOK_ADDONS_CHANNEL__ = channel;
-    storybookGlobal.__FORKBOOK_PREVIEW__ = preview;
+    forkbookGlobal.__FORKBOOK_ADDONS_CHANNEL__ = channel;
+    forkbookGlobal.__FORKBOOK_PREVIEW__ = preview;
   }
 
   view._storyIndex = index;

@@ -9,4 +9,4 @@ This framework borrows heavily from these Forkbook addons:
 - [storybook-addon-next](https://github.com/RyanClementsHax/storybook-addon-next) by [RyanClementsHax](https://github.com/RyanClementsHax/)
 - [storybook-addon-next-router](https://github.com/lifeiscontent/storybook-addon-next-router) by [lifeiscontent](https://github.com/lifeiscontent)
 
-Learn more about Forkbook at [storybook.js.org](https://storybook.js.org/?ref=readme).
+Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

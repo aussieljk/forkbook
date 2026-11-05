@@ -109,7 +109,7 @@ export const UserEventSetup = {
       await userEvent.type(input, 'Typing ...');
     });
     await step('Tab and press enter on submit button', async () => {
-      // Vitest's userEvent does not support pointer events, so we use storybook's
+      // Vitest's userEvent does not support pointer events, so we use Forkbook's
       await testUserEvent.pointer([
         { keys: '[TouchA>]', target: canvas.getByRole('textbox') },
         { keys: '[/TouchA]' },

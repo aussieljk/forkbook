@@ -8,7 +8,8 @@ import {
   type Addon_Collection,
 } from '@aussieljk/forkbook/internal/types';
 import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { ScrollView, StyleProp, Text, View, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IconButton, useStyle } from '@aussieljk/forkbook/internal/react-native-ui-common';
 import { CloseIcon } from './icon/index.tsx';

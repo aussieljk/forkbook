@@ -1,8 +1,11 @@
 import { styled, useTheme } from '@aussieljk/forkbook/internal/react-native-theming';
-import React, { FC, forwardRef, type Ref, useMemo } from 'react';
+import type { ComponentRef, FC } from 'react';
+import React, { forwardRef, type Ref, useMemo } from 'react';
 import { transparentize } from 'polished';
-import type { TouchableOpacityProps } from 'react-native';
+import type { TouchableOpacityProps, View } from 'react-native';
 import { CollapseIcon, ComponentIcon, GroupIcon, StoryIcon } from './icon/index.tsx';
+
+type ViewRef = ComponentRef<typeof View>;
 
 type BranchNodeProps = TouchableOpacityProps & {
   depth?: number;
@@ -133,8 +136,8 @@ export const ComponentNode: FC<BranchNodeProps> = React.memo(function ComponentN
   );
 });
 
-export const StoryNode: FC<LeafNodeProps & { ref?: Ref<any> }> = React.memo(
-  forwardRef<any, LeafNodeProps>(function StoryNode({ children, ...props }, ref) {
+export const StoryNode: FC<LeafNodeProps & { ref?: Ref<ViewRef> }> = React.memo(
+  forwardRef<ViewRef, LeafNodeProps>(function StoryNode({ children, ...props }, ref) {
     const theme = useTheme();
 
     const color = useMemo(() => {

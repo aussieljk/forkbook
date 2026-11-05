@@ -1,6 +1,8 @@
-import { styled, Theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import type { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import type { ComponentType } from 'react';
-import { Platform, TextInput, TextInputProps, TextStyle } from 'react-native';
+import type { TextInputProps, TextStyle } from 'react-native';
+import { Platform, TextInput } from 'react-native';
 
 export function inputStyle({
   theme,

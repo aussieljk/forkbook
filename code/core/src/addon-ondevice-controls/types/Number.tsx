@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { useResyncValue } from './useResyncValue.ts';
 import { Input } from './common.tsx';
-import { ControlTypes } from '../sharedTypes.ts';
+import type { ControlTypes } from '../sharedTypes.ts';
 import SliderWrapper from '../components/SliderWrapper.tsx';
 
 const ValueContainer = styled.View({ flexDirection: 'row' });

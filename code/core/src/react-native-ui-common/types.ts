@@ -1,9 +1,9 @@
 import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
 import type { ReactRenderer } from '@aussieljk/forkbook/react';
-import { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
-import { Storage } from './StorageProvider.tsx';
-import { ReactElement, ReactNode } from 'react';
-import { PressableProps } from 'react-native';
+import type { Theme } from '@aussieljk/forkbook/internal/react-native-theming';
+import type { Storage } from './StorageProvider.tsx';
+import type { ReactElement, ReactNode } from 'react';
+import type { PressableProps } from 'react-native';
 import type { State, StoriesHash } from '@aussieljk/forkbook/manager-api';
 import type {
   API_IndexHash,
@@ -38,8 +38,8 @@ export interface StoryRef {
 export type Highlight = ItemRef | null;
 export type Selection = StoryRef | null;
 
-export function isExpandType(x: any): x is ExpandType {
-  return !!(x && x.showAll);
+export function isExpandType(x: unknown): x is ExpandType {
+  return typeof x === 'object' && x !== null && 'showAll' in x && !!x.showAll;
 }
 
 export interface ExpandType {

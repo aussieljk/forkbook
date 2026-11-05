@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ViewStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import { Input } from './common.tsx';
 import { useResyncValue } from './useResyncValue.ts';
 
@@ -67,9 +67,5 @@ const ObjectType = ({ arg, onChange, isPristine }: ObjectProps) => {
     />
   );
 };
-
-ObjectType.serialize = (object: any) => JSON.stringify(object);
-
-ObjectType.deserialize = (value: any) => (value ? JSON.parse(value) : {});
 
 export default ObjectType;

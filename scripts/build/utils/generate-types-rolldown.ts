@@ -90,7 +90,7 @@ function createTypesFallbackResolverPlugin(isExternal: (id: string) => boolean):
   };
 
   return {
-    name: 'storybook:dts-types-fallback-resolver',
+    name: 'forkbook:dts-types-fallback-resolver',
     resolveId: {
       order: 'pre',
       handler(id, importer) {

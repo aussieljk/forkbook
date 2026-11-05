@@ -1,4 +1,3 @@
-/* oxlint-disable react-classic/destructuring-assignment */
 import React from 'react';
 
 interface IAProps {

@@ -1,4 +1,5 @@
 import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { useState, useEffect, useCallback } from 'react';
 import {
   UPDATE_STORY_ARGS,
@@ -17,12 +18,12 @@ const getControlArgs = (story: PreparedStoryContext): Args => story.unmappedArgs
 
 export const useArgs = (
   storyId: string,
-  storyStore: any
+  storyStore: { fromId: (id: string) => unknown; _channel: Channel }
 ): [Args, (args: Args) => void, (argNames?: string[]) => void] => {
   // Reading a story runs `prepareContext` (arg mapping, conditional filtering),
   // so only do it when the args state needs (re)initializing, not every render.
   const getStoryControlArgs = useCallback(() => {
-    const story: PreparedStoryContext | undefined = storyStore.fromId(storyId);
+    const story = storyStore.fromId(storyId) as PreparedStoryContext | undefined;
     if (!story) {
       throw new Error(`Unknown story: ${storyId}`);
     }
@@ -33,7 +34,6 @@ export const useArgs = (
   useEffect(() => {
     // Sync the args up with the initial args of the story, since the story ID
     // must have changed for this effect to run.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setArgs(getStoryControlArgs());
     const cb = (changed: { storyId: string; args: Args }) => {
       if (changed.storyId === storyId) {

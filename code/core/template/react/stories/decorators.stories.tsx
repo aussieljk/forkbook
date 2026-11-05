@@ -57,7 +57,7 @@ export const Context: StoryObj<typeof Component> = {
  * This story demonstrates is a regression test for this issue with React hooks in Forkbook
  * (https://github.com/storybookjs/storybook/issues/29189)
  *
- * Which happened when a decorator was using storybook hooks, and the render react hooks.
+ * Which happened when a decorator was using Forkbook hooks, and the render React hooks.
  */
 export const AllowUseStateInRender: StoryObj = {
   render: () => {

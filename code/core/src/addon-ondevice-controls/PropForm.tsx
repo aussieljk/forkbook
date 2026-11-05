@@ -1,6 +1,6 @@
 import { styled } from '@aussieljk/forkbook/internal/react-native-theming';
 import { transparentize } from 'polished';
-import { ArgTypes } from './ControlsPanel.tsx';
+import type { ArgTypes } from './ControlsPanel.tsx';
 import PropField from './PropField.tsx';
 import { Image, TouchableOpacity, View } from 'react-native';
 

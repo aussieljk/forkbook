@@ -11,18 +11,18 @@ import { createChannelServer } from './channelServer.ts';
 /** The package name. Metro gives each import of it the custom resolve options below. */
 const PACKAGE = '@aussieljk/forkbook';
 
-/** Options for configuring Storybook with React Native. */
+/** Options for configuring Forkbook with React Native. */
 export interface WithForkbookOptions {
-  /** The path to the Storybook config folder. Defaults to './.rnforkbook'. */
+  /** The path to the Forkbook config folder. Defaults to './.rnforkbook'. */
   configPath?: string;
 
-  /** WebSocket configuration for syncing storybook instances or sending events to storybook. */
+  /** WebSocket configuration for syncing Forkbook instances or sending events to Forkbook. */
   websockets?: WebsocketsOptions | 'auto';
 
   /** Whether to write forkbook.requires.js instead of forkbook.requires.ts. Defaults to false. */
   useJs?: boolean;
 
-  /** If false, Storybook is removed from the JS bundle. Defaults to true. */
+  /** If false, Forkbook is removed from the JS bundle. Defaults to true. */
   enabled?: boolean;
 
   /** Whether to include doc tools in the forkbook.requires file. Defaults to true. */
@@ -37,16 +37,17 @@ export interface WithForkbookOptions {
 
 type ResolveRequestFunction = (context: any, moduleName: string, platform: string | null) => any;
 
-const isStorybookModule = (moduleName: string) =>
+// Forkbook, and the Storybook packages it is compatible with.
+const isForkbookModule = (moduleName: string) =>
   moduleName.startsWith('storybook') ||
   moduleName.startsWith('@storybook') ||
   moduleName.startsWith(PACKAGE);
 
-/** The module that takes the place of the config folder's index file when Storybook is disabled. */
+/** The module that takes the place of the config folder's index file when Forkbook is disabled. */
 const stubPath = () => createRequire(import.meta.url).resolve(`${PACKAGE}/react-native/stub`);
 
 /**
- * Configures Metro to work with Storybook in React Native.
+ * Configures Metro to work with Forkbook in React Native.
  *
  * @example
  *
@@ -80,11 +81,11 @@ export function withForkbook(config: MetroConfig, options: WithForkbookOptions =
           const resolveFunction: ResolveRequestFunction =
             config?.resolver?.resolveRequest ?? context.resolveRequest;
 
-          if (isStorybookModule(moduleName)) {
+          if (isForkbookModule(moduleName)) {
             return { type: 'empty' };
           }
 
-          // Node imports in the instrumenter crash Metro, even with Storybook disabled.
+          // Node imports in the instrumenter crash Metro, even with Forkbook disabled.
           if (platform !== 'web' && (moduleName === 'tty' || moduleName === 'os')) {
             return { type: 'empty' };
           }
@@ -170,7 +171,7 @@ export function withForkbook(config: MetroConfig, options: WithForkbookOptions =
         }
 
         const theContext =
-          isStorybookModule(moduleName) || moduleName.startsWith('uuid')
+          isForkbookModule(moduleName) || moduleName.startsWith('uuid')
             ? {
                 ...context,
                 unstable_enablePackageExports: true,
