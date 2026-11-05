@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from 'react';
 import { ScrollArea } from '../ScrollArea/ScrollArea.tsx';
 import styles from './addon-panel.module.css';
 
-const usePrevious = (value: any) => {
-  const ref = useRef();
+const usePrevious = <T,>(value: T) => {
+  const ref = useRef<T>(undefined);
 
   useEffect(() => {
     // happens after return

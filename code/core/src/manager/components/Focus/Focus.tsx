@@ -43,7 +43,7 @@ const FocusRing = ({
   ...props
 }: FocusOutlineProps & {
   highlightDuration?: number;
-  nodeRef?: React.RefObject<HTMLDivElement>;
+  nodeRef?: React.RefObject<HTMLDivElement | null>;
 }) => {
   const [visible, setVisible] = useState(active);
 

@@ -3,7 +3,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
 import { sanitize } from '@aussieljk/forkbook/internal/csf';
 
-import useResizeObserver from 'use-resize-observer';
+import { useResizeObserver } from 'use-resize-observer';
 
 import { PopoverProvider } from '../Popover/PopoverProvider.tsx';
 import { TooltipLinkList } from '../tooltip/TooltipLinkList.tsx';
@@ -15,11 +15,10 @@ import styles from './Tabs.hooks.module.css';
 export function useList(list: ChildrenListComplete) {
   deprecate('The `useList` tabs hook is deprecated. Use `TabsView` instead.');
 
-  const tabBarRef = useRef<HTMLDivElement>();
-  const addonsRef = useRef<HTMLButtonElement>();
+  const tabBarRef = useRef<HTMLDivElement>(null);
+  const addonsRef = useRef<HTMLButtonElement>(null);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
   const { width: tabBarWidth = 1 } = useResizeObserver<HTMLDivElement>({
-    // @ts-expect-error (non strict)
     ref: tabBarRef,
   });
 
@@ -66,7 +65,6 @@ export function useList(list: ChildrenListComplete) {
           >
             <TabButton
               id="addons-menu-button"
-              // @ts-expect-error (non strict)
               ref={addonsRef}
               active={isAddonsActive}
               data-pre-active={isTooltipVisible || undefined}

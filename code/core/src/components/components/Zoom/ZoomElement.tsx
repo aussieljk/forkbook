@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { ResizeHandler } from 'use-resize-observer';
-import useResizeObserver from 'use-resize-observer';
+import { useResizeObserver } from 'use-resize-observer';
 
 type ZoomProps = {
   centered?: boolean;

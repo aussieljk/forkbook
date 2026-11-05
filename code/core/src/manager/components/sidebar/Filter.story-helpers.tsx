@@ -102,7 +102,7 @@ export class MockAPIWrapper<SubAPI, SubState> extends React.Component<{
     const { children, args } = this.props;
     return (
       <>
-        {React.cloneElement(children as React.ReactElement, {
+        {React.cloneElement(children as React.ReactElement<{ args: object }>, {
           args: {
             ...args,
             api: {

@@ -1,4 +1,4 @@
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, type Stats, statSync } from 'node:fs';
 import { cp } from 'node:fs/promises';
 
 import * as memfs from 'memfs';
@@ -16,7 +16,8 @@ const outputDir = '/project/forkbook-static';
 beforeEach(async () => {
   memfs.vol.reset();
   vi.mocked(existsSync).mockImplementation(memfs.fs.existsSync);
-  vi.mocked(statSync).mockImplementation(memfs.fs.statSync);
+  // memfs `Stats` differ from the node types, but the code under test only calls `isFile()`.
+  vi.mocked(statSync).mockImplementation((path) => memfs.fs.statSync(path) as unknown as Stats);
   vi.mocked(cp).mockImplementation(memfs.fs.promises.cp as typeof cp);
   vi.spyOn(process, 'cwd').mockReturnValue('/project');
 });

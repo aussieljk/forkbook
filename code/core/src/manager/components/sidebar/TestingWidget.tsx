@@ -102,7 +102,7 @@ export const TestingWidget = ({
   const [isCollapsed, setCollapsed] = useState(true);
   const [isChangingCollapse, setChangingCollapse] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
-  const settingsUpdatedTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const settingsUpdatedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const unsubscribe = internal_fullTestProviderStore.onSettingsChanged(() => {
@@ -295,7 +295,7 @@ export const TestingWidget = ({
         <div
           className={styles.collapsible}
           data-testid="collapse"
-          {...(isCollapsed && { inert: '' })}
+          inert={isCollapsed}
           style={{
             transition: isChangingCollapse ? 'max-height 250ms' : 'max-height 0ms',
             display: hasTestProviders ? 'block' : 'none',

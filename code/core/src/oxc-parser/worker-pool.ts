@@ -81,7 +81,9 @@ export class OxcWorkerPool implements OxcParsePool {
         const worker = new Worker(scriptPath);
         const slot: WorkerSlot = { worker, busy: false };
         worker.on('message', (msg: WorkerResponse) => this.handleMessage(slot, msg));
-        worker.on('error', (error) => this.handleWorkerFailure(error));
+        worker.on('error', (error) =>
+          this.handleWorkerFailure(error instanceof Error ? error : new Error(String(error)))
+        );
         worker.on('exit', (code) => {
           if (!this.disposed) {
             this.handleWorkerFailure(new Error(`oxc-worker exited unexpectedly with code ${code}`));

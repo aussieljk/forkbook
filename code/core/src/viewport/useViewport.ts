@@ -36,7 +36,7 @@ export const useViewport = () => {
   const api = useStorybookApi();
   const { viewMode } = api.getUrlState();
 
-  const lastSelectedOption = useRef<string | undefined>();
+  const lastSelectedOption = useRef<string | undefined>(undefined);
 
   const parameter = useParameter<ViewportParameters['viewport']>(PARAM_KEY);
   const [globals, updateGlobals, storyGlobals, userGlobals] = useGlobals();

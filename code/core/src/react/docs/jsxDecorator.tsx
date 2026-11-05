@@ -57,7 +57,7 @@ export const getReactSymbolName = (elementType: any): string => {
 // Recursively remove "_owner" property from elements to avoid crash on docs page when passing components as an array prop (#17482)
 // Note: It may be better to use this function only in development environment.
 function simplifyNodeForStringify(node: ReactNode): ReactNode {
-  if (isValidElement(node)) {
+  if (isValidElement<Record<string, ReactNode>>(node)) {
     const props = Object.keys(node.props).reduce<{ [key: string]: any }>((acc, cur) => {
       acc[cur] = simplifyNodeForStringify(node.props[cur]);
       return acc;
@@ -95,7 +95,8 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
     return null;
   }
 
-  let renderedJSX = code;
+  // Story elements can have any props, so the skip loop reads them without a type.
+  let renderedJSX: React.ReactElement<any> = code;
   const Type = renderedJSX.type;
 
   // @ts-expect-error (Converted from ts-ignore)

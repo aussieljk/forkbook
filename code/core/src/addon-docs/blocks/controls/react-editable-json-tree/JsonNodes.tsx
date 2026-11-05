@@ -1,5 +1,5 @@
 /* eslint-disable react/no-direct-mutation-state */
-import type { ReactElement } from 'react';
+import type { HTMLAttributes, ReactElement } from 'react';
 import React, { Component, cloneElement } from 'react';
 
 import { JsonNodeAccordion } from './JsonNodeAccordion';
@@ -7,6 +7,9 @@ import * as dataTypes from './types/dataTypes';
 import * as deltaTypes from './types/deltaTypes';
 import * as inputUsageTypes from './types/inputUsageTypes';
 import { getObjectType, isComponentWillChange } from './utils/objectTypes';
+
+/** A button or menu element that the tree clones with an `onClick` handler. */
+export type ClickableElement = ReactElement<HTMLAttributes<HTMLElement>>;
 
 interface JsonAddValueState {
   inputRefKey: any;
@@ -142,8 +145,8 @@ interface JsonAddValueProps {
   handleAdd: (...args: any) => any;
   handleCancel: (...args: any) => any;
   onlyValue?: boolean;
-  addButtonElement?: ReactElement;
-  cancelButtonElement?: ReactElement;
+  addButtonElement?: ClickableElement;
+  cancelButtonElement?: ClickableElement;
   inputElementGenerator: (...args: any) => any;
   keyPath?: string[];
   deep?: number;
@@ -470,12 +473,12 @@ interface JsonArrayProps {
   onDeltaUpdate: (...args: any) => any;
   readOnly: (...args: any) => any;
   dataType?: string;
-  addButtonElement?: ReactElement;
-  cancelButtonElement?: ReactElement;
+  addButtonElement?: ClickableElement;
+  cancelButtonElement?: ClickableElement;
   inputElementGenerator: (...args: any) => any;
   textareaElementGenerator: (...args: any) => any;
-  minusMenuElement?: ReactElement;
-  plusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
+  plusMenuElement?: ClickableElement;
   beforeRemoveAction?: (...args: any) => any;
   beforeAddAction?: (...args: any) => any;
   beforeUpdateAction?: (...args: any) => any;
@@ -675,9 +678,9 @@ interface JsonFunctionValueProps {
   handleUpdateValue?: (...args: any) => any;
   readOnly: (...args: any) => any;
   dataType?: string;
-  cancelButtonElement?: ReactElement;
+  cancelButtonElement?: ClickableElement;
   textareaElementGenerator: (...args: any) => any;
-  minusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
   logger: any;
   onSubmitValueParser: (...args: any) => any;
 }
@@ -985,12 +988,12 @@ interface JsonNodeProps {
   onUpdate: (...args: any) => any;
   onDeltaUpdate: (...args: any) => any;
   readOnly: (...args: any) => any;
-  addButtonElement?: ReactElement;
-  cancelButtonElement?: ReactElement;
+  addButtonElement?: ClickableElement;
+  cancelButtonElement?: ClickableElement;
   inputElementGenerator: (...args: any) => any;
   textareaElementGenerator: (...args: any) => any;
-  minusMenuElement?: ReactElement;
-  plusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
+  plusMenuElement?: ClickableElement;
   beforeRemoveAction?: (...args: any) => any;
   beforeAddAction?: (...args: any) => any;
   beforeUpdateAction?: (...args: any) => any;
@@ -1319,12 +1322,12 @@ interface JsonObjectProps {
   onDeltaUpdate: (...args: any) => any;
   readOnly: (...args: any) => any;
   dataType?: string;
-  addButtonElement?: ReactElement;
-  cancelButtonElement?: ReactElement;
+  addButtonElement?: ClickableElement;
+  cancelButtonElement?: ClickableElement;
   inputElementGenerator: (...args: any) => any;
   textareaElementGenerator: (...args: any) => any;
-  minusMenuElement?: ReactElement;
-  plusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
+  plusMenuElement?: ClickableElement;
   beforeRemoveAction?: (...args: any) => any;
   beforeAddAction?: (...args: any) => any;
   beforeUpdateAction?: (...args: any) => any;
@@ -1519,9 +1522,9 @@ interface JsonValueProps {
   handleUpdateValue?: (...args: any) => any;
   readOnly: (...args: any) => any;
   dataType?: string;
-  cancelButtonElement?: ReactElement;
+  cancelButtonElement?: ClickableElement;
   inputElementGenerator: (...args: any) => any;
-  minusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
   logger: any;
   onSubmitValueParser: (...args: any) => any;
 }

@@ -34,9 +34,7 @@ export const ActionLogger = ({ actions, expandLevel, onClear }: ActionLoggerProp
 
   useEffect(() => {
     // Scroll to bottom, when the action panel was already scrolled down
-
-    // Scroll to bottom, when the action panel was already scrolled down
-    if (wasAtBottom) {
+    if (wasAtBottom && wrapperRef.current) {
       wrapperRef.current.scrollTop = wrapperRef.current.scrollHeight;
     }
   }, [wasAtBottom, actions.length]);

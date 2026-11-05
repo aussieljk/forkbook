@@ -18,7 +18,7 @@ const WithCallback: React.FC<{ callback: () => void; children: ReactElement }> =
   callback,
   children,
 }) => {
-  const once = React.useRef<() => void>();
+  const once = React.useRef<() => void>(undefined);
   React.useLayoutEffect(() => {
     if (once.current === callback) {
       return;

@@ -57,8 +57,8 @@ export type UsePreviewThumbnailOptions = {
 };
 
 export type UsePreviewThumbnailResult = {
-  cellRef: RefObject<HTMLDivElement>;
-  iframeRef: RefObject<HTMLIFrameElement>;
+  cellRef: RefObject<HTMLDivElement | null>;
+  iframeRef: RefObject<HTMLIFrameElement | null>;
   src: string | undefined;
   /** True until iframe.resize arrives and the measured scale has painted. */
   isPreviewLoading: boolean;

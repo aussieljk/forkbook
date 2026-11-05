@@ -385,7 +385,7 @@ it('Args in play are typed as the component declares them, mocked() gives the mo
   type Props = {
     label: string;
     onClick: () => void;
-    onRender: () => JSX.Element;
+    onRender: () => React.JSX.Element;
     getUsers: () => Promise<string[]>;
   };
   const TestButton = (props: Props) => <></>;
@@ -400,7 +400,7 @@ it('Args in play are typed as the component declares them, mocked() gives the mo
       const canvas = await mount(<TestButton {...args} />);
       expectTypeOf(canvas).toEqualTypeOf<Canvas>();
       expectTypeOf(args.onClick).toEqualTypeOf<() => void>();
-      expectTypeOf(args.onRender).toEqualTypeOf<() => JSX.Element>();
+      expectTypeOf(args.onRender).toEqualTypeOf<() => React.JSX.Element>();
       mocked(args.getUsers).mockResolvedValue(['Ada']);
       expect(args.onClick).toHaveBeenCalled();
     },
@@ -411,7 +411,7 @@ describe('Composed getters', () => {
   type Props = {
     label: string;
     onClick: () => void;
-    onRender: () => JSX.Element;
+    onRender: () => React.JSX.Element;
   };
   const TestButton = (props: Props) => <></>;
 

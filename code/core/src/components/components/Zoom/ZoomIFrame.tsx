@@ -4,17 +4,15 @@ import React, { Component } from 'react';
 export type IZoomIFrameProps = {
   scale: number;
   children: ReactElement<HTMLIFrameElement>;
-  iFrameRef: RefObject<HTMLIFrameElement>;
+  iFrameRef: RefObject<HTMLIFrameElement | null>;
   active?: boolean;
 };
 
 export class ZoomIFrame extends Component<IZoomIFrameProps> {
-  // @ts-expect-error (non strict)
-  iframe: HTMLIFrameElement = null;
+  iframe: HTMLIFrameElement | null = null;
 
   componentDidMount() {
     const { iFrameRef } = this.props;
-    // @ts-expect-error (non strict)
     this.iframe = iFrameRef.current;
   }
 
@@ -26,7 +24,7 @@ export class ZoomIFrame extends Component<IZoomIFrameProps> {
     }
 
     if (active !== nextProps.active) {
-      this.iframe.setAttribute('data-is-storybook', nextProps.active ? 'true' : 'false');
+      this.iframe?.setAttribute('data-is-storybook', nextProps.active ? 'true' : 'false');
     }
 
     // this component renders an iframe, which gets updates via post-messages
@@ -50,6 +48,9 @@ export class ZoomIFrame extends Component<IZoomIFrameProps> {
   }
 
   setIframeZoom(scale: number) {
+    if (!this.iframe) {
+      return;
+    }
     Object.assign(this.iframe.style, {
       width: `${(1 / scale) * 100}%`,
       height: `${(1 / scale) * 100}%`,

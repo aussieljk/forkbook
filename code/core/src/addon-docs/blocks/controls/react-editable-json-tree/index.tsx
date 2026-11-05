@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import React, { Component } from 'react';
 
-import { JsonNode } from './JsonNodes';
+import { type ClickableElement, JsonNode } from './JsonNodes';
 import * as DATA_TYPES from './types/dataTypes';
 import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/deltaTypes';
 import * as INPUT_USAGE_TYPES from './types/inputUsageTypes';
@@ -121,12 +121,12 @@ interface JsonTreeProps {
   onFullyUpdate?: (...args: any) => any;
   onDeltaUpdate?: (...args: any) => any;
   readOnly?: boolean | ((...args: any) => any);
-  addButtonElement?: ReactElement;
-  cancelButtonElement?: ReactElement;
+  addButtonElement?: ClickableElement;
+  cancelButtonElement?: ClickableElement;
   inputElement?: ReactElement | ((...args: any) => ReactElement);
   textareaElement?: ReactElement | ((...args: any) => ReactElement);
-  minusMenuElement?: ReactElement;
-  plusMenuElement?: ReactElement;
+  minusMenuElement?: ClickableElement;
+  plusMenuElement?: ClickableElement;
   fallback?: ReactElement;
   beforeRemoveAction?: (...args: any) => Promise<any>;
   beforeAddAction?: (...args: any) => Promise<any>;

@@ -1,4 +1,4 @@
-import type { Dispatch, MutableRefObject, Reducer } from 'react';
+import type { Dispatch, MutableRefObject } from 'react';
 import { useCallback, useEffect, useReducer } from 'react';
 
 import { STORIES_COLLAPSE_ALL, STORIES_EXPAND_ALL } from '@aussieljk/forkbook/internal/core-events';
@@ -87,19 +87,9 @@ export const useExpanded = ({
 
   // Track the set of currently expanded nodes within this tree.
   // Root nodes are expanded by default.
-  const [expanded, setExpanded] = useReducer<
-    Reducer<ExpandedState, ExpandAction>,
-    {
-      refId: string;
-      data: StoriesHash;
-      highlightedRef: MutableRefObject<Highlight>;
-      rootIds: string[];
-      initialExpanded: ExpandedState;
-    }
-  >(
-    (state, { ids, value }) =>
+  const [expanded, setExpanded] = useReducer(
+    (state: ExpandedState, { ids, value }: ExpandAction) =>
       ids.reduce((acc, id) => Object.assign(acc, { [id]: value }), { ...state }),
-    // @ts-expect-error (non strict)
     { refId, data, highlightedRef, rootIds, initialExpanded, selectedStoryId },
     initializeExpanded
   );
@@ -120,7 +110,6 @@ export const useExpanded = ({
 
   const updateExpanded = useCallback(
     ({ ids, value }: ExpandAction) => {
-      // @ts-expect-error (non strict)
       setExpanded({ ids, value });
       if (ids.length === 1) {
         const element = containerRef.current?.querySelector(
@@ -137,18 +126,17 @@ export const useExpanded = ({
 
   // Expand the whole ancestry of the currently selected story whenever it changes.
   useEffect(() => {
-    // @ts-expect-error (non strict)
-    setExpanded({ ids: getAncestorIds(data, selectedStoryId), value: true });
+    if (selectedStoryId) {
+      setExpanded({ ids: getAncestorIds(data, selectedStoryId), value: true });
+    }
   }, [data, selectedStoryId]);
 
   const collapseAll = useCallback(() => {
     const ids = Object.keys(data).filter((id) => !rootIds.includes(id));
-    // @ts-expect-error (non strict)
     setExpanded({ ids, value: false });
   }, [data, rootIds]);
 
   const expandAll = useCallback(() => {
-    // @ts-expect-error (non strict)
     setExpanded({ ids: Object.keys(data), value: true });
   }, [data]);
 
@@ -225,7 +213,6 @@ export const useExpanded = ({
       if (isArrowLeft) {
         if (isExpanded === 'true') {
           // The highlighted node is expanded, so we collapse it.
-          // @ts-expect-error (non strict)
           setExpanded({ ids: [highlightedItemId], value: false });
           return;
         }
@@ -240,7 +227,6 @@ export const useExpanded = ({
 
         // The parent can't be highlighted, which means it must be a root.
         // The highlighted node is already collapsed, so we collapse its descendants.
-        // @ts-expect-error (non strict)
         setExpanded({ ids: getDescendantIds(data, highlightedItemId, true), value: false });
         return;
       }

@@ -69,7 +69,7 @@ export const useTestProvider = (
   const [storeState, setStoreState] = internal_useUniversalStore(store);
 
   const [isSettingsUpdated, setIsSettingsUpdated] = useState(false);
-  const settingsUpdatedTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const settingsUpdatedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => {
     const unsubscribe = store.onStateChange((state, previousState) => {
       if (!isEqual(state.config, previousState.config)) {

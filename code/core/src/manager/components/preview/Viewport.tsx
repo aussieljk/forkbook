@@ -35,7 +35,7 @@ export const Viewport = ({
   const dragRefY = useRef<HTMLDivElement>(null);
   const dragRefXY = useRef<HTMLDivElement>(null);
   const dragSide = useRef<DragSide>('none');
-  const dragStart = useRef<[number, number] | undefined>();
+  const dragStart = useRef<[number, number] | undefined>(undefined);
   const dragScrollTarget = useRef<Element | null | undefined>(null);
 
   useEffect(() => {

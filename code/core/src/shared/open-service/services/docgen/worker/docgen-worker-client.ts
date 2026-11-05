@@ -54,7 +54,9 @@ class DocgenWorker implements DocgenWorkerClient {
   ) {
     this.worker = new Worker(scriptPath);
     this.worker.on('message', (msg: DocgenWorkerResponse) => this.handleMessage(msg));
-    this.worker.on('error', (error) => this.fail(error));
+    this.worker.on('error', (error) =>
+      this.fail(error instanceof Error ? error : new Error(String(error)))
+    );
     this.worker.on('exit', (code) => {
       if (!this.death) {
         this.fail(new Error(`docgen worker exited unexpectedly with code ${code}`));

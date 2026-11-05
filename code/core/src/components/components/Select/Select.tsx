@@ -123,7 +123,7 @@ function setSelectedFromDefault(
 const MinimalistPopover: FC<{
   children: React.ReactNode;
   handleClose: () => void;
-  triggerRef: React.RefObject<HTMLElement>;
+  triggerRef: React.RefObject<HTMLElement | null>;
 }> = ({ children, handleClose, triggerRef }) => {
   const portalContainer = useContext(PortalContainerContext);
 

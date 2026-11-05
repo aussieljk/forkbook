@@ -6,13 +6,9 @@ import { dedent } from 'ts-dedent';
 import './core/src/shared/utils/toHaveLiveRegion.ts';
 import { toHaveLiveRegion } from './core/src/shared/utils/toHaveLiveRegion.ts';
 
-const ALLOWED_CONSOLE_PREDICATES: ((...args: any[]) => boolean)[] = [
+const ALLOWED_CONSOLE_PREDICATES: ((message: string) => boolean)[] = [
   (message) => message.includes('":nth-child" is potentially unsafe'),
   (message) => message.includes('":first-child" is potentially unsafe'),
-  (message) =>
-    message.includes(
-      `Support for defaultProps will be removed from function components in a future major release`
-    ),
   (message) => /^Browserslist: .* Please run:/.test(message),
   (message) => message.includes('Consider adding an error boundary'),
   // React will log this error even if you catch an error with a boundary. I guess it's to
@@ -34,10 +30,12 @@ const ALLOWED_CONSOLE_PREDICATES: ((...args: any[]) => boolean)[] = [
 
 (['warn', 'error'] as const).forEach((type) => {
   const failOnConsole = vi.defineHelper((...args) => {
-    if (ALLOWED_CONSOLE_PREDICATES.some((predicate) => predicate(...args))) {
+    // React 19 logs a format string first (`%o\n\n%s`), so match against every argument.
+    const message = args.join('\n');
+    if (ALLOWED_CONSOLE_PREDICATES.some((predicate) => predicate(message))) {
       return;
     }
-    expect.fail(`Unexpected console.${type} call with arguments:\n${args.join('\n')}`);
+    expect.fail(`Unexpected console.${type} call with arguments:\n${message}`);
   });
   vi.spyOn(console, type).mockImplementation(failOnConsole);
 });

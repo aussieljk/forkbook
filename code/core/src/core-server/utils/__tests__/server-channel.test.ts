@@ -68,7 +68,7 @@ function connectClient(server: Server, transport: ServerChannelTransport, page?:
   );
   const query = page ? `&page=${page}` : '';
   const request = { url: `/storybook-server-channel?token=${mockToken}${query}`, headers: {} };
-  server.listeners('upgrade')[0](request, { end: vi.fn() }, Buffer.from(''));
+  server.emit('upgrade', request, { end: vi.fn() }, Buffer.from(''));
   return client;
 }
 
@@ -86,7 +86,7 @@ async function readRejectedUpgrade(requestLines: string[]): Promise<string> {
   try {
     return await new Promise<string>((resolve, reject) => {
       const chunks: Buffer[] = [];
-      client.on('data', (chunk) => chunks.push(chunk));
+      client.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
       client.on('error', reject);
       client.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
       client.on('connect', () => {

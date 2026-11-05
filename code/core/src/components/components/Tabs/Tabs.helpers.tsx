@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren, ReactChild, ReactElement, ReactNode } from 'react';
+import type { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React, { Children, forwardRef } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
@@ -24,8 +24,8 @@ export const childrenToList = (children: TabsProps['children']) => {
     ({
       props: { title, id, color, children: childrenOfChild },
     }: ReactElement<{
-      children: FC<Addon_RenderOptions & PropsWithChildren> | ReactChild | null;
-      title: ReactChild | null | FC;
+      children: FC<Addon_RenderOptions & PropsWithChildren> | ReactElement | string | number | null;
+      title: ReactElement | string | number | null | FC;
       id: string;
       color?: string;
     }>) => {

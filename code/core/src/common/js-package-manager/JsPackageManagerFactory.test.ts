@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, type PathOrFileDescriptor, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -29,7 +29,9 @@ vi.mock('../utils/paths', { spy: true });
 const getProjectRootMock = vi.mocked(getProjectRoot);
 
 vi.mock('node:fs', { spy: true });
-const readFileSyncMock = vi.mocked(readFileSync);
+/** The `readFileSync(path, encoding)` overload that the package manager code uses. */
+type ReadTextFile = (path: PathOrFileDescriptor, encoding: BufferEncoding) => string;
+const readFileSyncMock = vi.mocked(readFileSync as ReadTextFile);
 const existsSyncMock = vi.mocked(existsSync);
 
 describe('CLASS: JsPackageManagerFactory', () => {

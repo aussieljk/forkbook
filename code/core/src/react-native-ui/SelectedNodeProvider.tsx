@@ -9,7 +9,7 @@ type SelectedNodeContextType = {
   nodeRef: React.RefObject<ViewInstance | null>;
   setNodeRef: (node: ViewInstance | null) => void;
   scrollToSelectedNode: () => void;
-  scrollRef: React.RefObject<ScrollViewInstance>;
+  scrollRef: React.RefObject<ScrollViewInstance | null>;
 };
 
 const SelectedNodeContext = createContext<SelectedNodeContextType>({

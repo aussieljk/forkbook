@@ -136,7 +136,7 @@ describe('prop extraction', () => {
       expect(entry.component?.reactComponentMeta).toMatchObject({
         props: {
           children: { type: { name: 'ReactNode' } },
-          icon: { type: { name: 'ReactElement<any, string | JSXElementConstructor<any>>' } },
+          icon: { type: { name: 'ReactElement<unknown, string | JSXElementConstructor<any>>' } },
           header: { type: { name: 'ReactNode' } },
         },
       });

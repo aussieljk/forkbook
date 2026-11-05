@@ -158,7 +158,6 @@ function TabsImpl({
       id={htmlId}
     >
       <FlexBar scrollable={false} border backgroundColor={backgroundColor}>
-        {/* @ts-expect-error (non strict) */}
         <TabBar style={{ whiteSpace: 'normal' }} ref={tabBarRef} role="tablist">
           {visibleList.map(({ title, id, active, color }, index) => {
             const indexId = `index-${index}`;

@@ -1,4 +1,4 @@
-import type { ComponentProps, FunctionComponent } from 'react';
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import type { StoryObj } from '@aussieljk/forkbook/react-vite';
@@ -55,7 +55,7 @@ interface TooltipProps {
   onHide?: () => void;
 }
 
-const Tooltip: FunctionComponent<TooltipProps> = ({ onHide }) => (
+const Tooltip = ({ onHide }: TooltipProps) => (
   <TooltipMessage
     title="Lorem ipsum dolor sit"
     desc="Amet consectatur vestibulum concet durum politu coret weirom"

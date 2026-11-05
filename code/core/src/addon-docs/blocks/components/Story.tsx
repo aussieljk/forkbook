@@ -34,7 +34,7 @@ export const storyBlockIdFromId = ({ story, primary }: StoryProps) =>
   `story--${story.id}${primary ? '--primary' : ''}`;
 
 const InlineStory: FunctionComponent<InlineStoryProps> = (props) => {
-  const storyRef = useRef();
+  const storyRef = useRef<HTMLDivElement>(null);
   const [showLoader, setShowLoader] = useState(true);
   const [error, setError] = useState<Error>();
 
@@ -44,7 +44,7 @@ const InlineStory: FunctionComponent<InlineStoryProps> = (props) => {
     if (!(story && storyRef.current)) {
       return () => {};
     }
-    const element = storyRef.current as HTMLElement;
+    const element = storyRef.current;
     const cleanup = renderStoryToElement(
       story,
       element,
@@ -81,7 +81,7 @@ const InlineStory: FunctionComponent<InlineStoryProps> = (props) => {
       ) : null}
       {showLoader && <StorySkeleton />}
       <div
-        ref={storyRef as any}
+        ref={storyRef}
         id={`${storyBlockIdFromId(props)}-inner`}
         data-name={story.name}
         lang={story.parameters?.htmlLang || 'en'}

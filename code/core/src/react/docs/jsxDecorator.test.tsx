@@ -281,21 +281,25 @@ describe('renderJsx', () => {
   });
 
   it('should not add default props to string if the prop value has not changed', () => {
-    const Container = ({ className, children }: { className: string; children: string }) => {
-      return <div className={className}>{children}</div>;
-    };
+    // React 19 resolves `defaultProps` at render time, so the element keeps only the props the story set.
+    class Container extends React.Component<{ className?: string; children: string }> {
+      static propTypes = {
+        children: PropTypes.string.isRequired,
+        className: PropTypes.string,
+      };
 
-    Container.propTypes = {
-      children: PropTypes.string.isRequired,
-      className: PropTypes.string,
-    };
+      static defaultProps = {
+        className: 'super-container',
+      };
 
-    Container.defaultProps = {
-      className: 'super-container',
-    };
+      render() {
+        const { className, children } = this.props;
+        return <div className={className}>{children}</div>;
+      }
+    }
 
     expect(renderJsx(<Container>yo dude</Container>, {})).toMatchInlineSnapshot(`
-      <Container className="super-container">
+      <Container>
         yo dude
       </Container>
     `);

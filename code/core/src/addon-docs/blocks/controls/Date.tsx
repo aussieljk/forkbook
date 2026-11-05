@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC, RefObject } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Form } from '@aussieljk/forkbook/internal/components';
@@ -50,8 +50,8 @@ export const DateControl: FC<DateProps> = ({
   required,
 }) => {
   const [valid, setValid] = useState(true);
-  const dateRef = useRef<HTMLInputElement>();
-  const timeRef = useRef<HTMLInputElement>();
+  const dateRef = useRef<HTMLInputElement>(null);
+  const timeRef = useRef<HTMLInputElement>(null);
   const readonly = !!argType?.table?.readonly;
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export const DateControl: FC<DateProps> = ({
         className={styles.input}
         type="date"
         max="9999-12-31" // I do this because of a rendering bug in chrome
-        ref={dateRef as RefObject<HTMLInputElement>}
+        ref={dateRef}
         id={`${controlId}-date`}
         name={`${controlId}-date`}
         readOnly={readonly}
@@ -124,7 +124,7 @@ export const DateControl: FC<DateProps> = ({
         type="time"
         id={`${controlId}-time`}
         name={`${controlId}-time`}
-        ref={timeRef as RefObject<HTMLInputElement>}
+        ref={timeRef}
         onChange={onTimeChange}
         readOnly={readonly}
         aria-required={required || undefined}

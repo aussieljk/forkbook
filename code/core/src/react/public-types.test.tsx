@@ -304,7 +304,7 @@ it('Meta is broken when using discriminating types, issue #23629', () => {
 });
 
 it('Infer mock function given to args in meta.', () => {
-  type Props = { label: string; onClick: () => void; onRender: () => JSX.Element };
+  type Props = { label: string; onClick: () => void; onRender: () => React.JSX.Element };
   const TestButton = (props: Props) => <></>;
 
   const meta = {
@@ -319,7 +319,7 @@ it('Infer mock function given to args in meta.', () => {
       const canvas = await mount(<TestButton {...args} />);
       expectTypeOf(canvas).toEqualTypeOf<Canvas>();
       expectTypeOf(args.onClick).toEqualTypeOf<Mock>();
-      expectTypeOf(args.onRender).toEqualTypeOf<() => JSX.Element>();
+      expectTypeOf(args.onRender).toEqualTypeOf<() => React.JSX.Element>();
     },
   };
   type Expected = StoryAnnotations<ReactRenderer, Props & { onClick: Mock }, Partial<Props>>;

@@ -98,9 +98,9 @@ const Pages: FC<{
             tabs={tabs}
             tools={
               <>
-                <div className={styles.sidebarToggle}>{menuTool.render({})}</div>
+                <div className={styles.sidebarToggle}><menuTool.render /></div>
                 {toolsExtra.map((item) => (
-                  <React.Fragment key={item.id}>{item.render({})}</React.Fragment>
+                  <item.render key={item.id} />
                 ))}
                 <Button
                   padding="small"
