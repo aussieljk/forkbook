@@ -63,8 +63,9 @@ export function initOtel(serviceName: string) {
   }
 }
 
+/** Sends the buffered data. A failed export (for example, SigNoz is down) must not fail the build. */
 export async function flushOtel() {
-  await Promise.all([
+  await Promise.allSettled([
     providers?.tracerProvider.forceFlush(),
     providers?.loggerProvider.forceFlush(),
   ]);
