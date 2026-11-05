@@ -67,7 +67,7 @@ const getDescriptionFromResolvedOf = (
     }
     default: {
       throw new Error(
-        `Unrecognized module type resolved from 'useOf', got: ${(resolvedOf as any).type}`
+        `Unrecognized module type resolved from 'useOf', got: ${(resolvedOf as { type: string }).type}`
       );
     }
   }

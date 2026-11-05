@@ -2,28 +2,34 @@ import type { MockInstance } from 'vitest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
-import type { StoryContextForEnhancers } from '@aussieljk/forkbook/internal/types';
+import type { Parameters, StoryContextForEnhancers } from '@aussieljk/forkbook/internal/types';
 
 import { argTypesEnhancers } from './inferControls.ts';
 
-const getStoryContext = (overrides: any = {}): StoryContextForEnhancers => ({
-  id: '',
-  title: '',
-  kind: '',
-  name: '',
-  story: '',
-  initialArgs: {},
-  argTypes: {
-    label: { control: 'text' },
-    labelName: { control: 'text' },
-    borderWidth: { control: { type: 'number', min: 0, max: 10 } },
-  },
-  ...overrides,
-  parameters: {
-    __isArgsStory: true,
-    ...overrides.parameters,
-  },
-});
+/** The test arg types are partial, so the context is built as a plain object. */
+const asContext = (value: object) => value as StoryContextForEnhancers;
+
+const getStoryContext = (
+  overrides: Record<string, unknown> & { parameters?: Parameters } = {}
+): StoryContextForEnhancers =>
+  asContext({
+    id: '',
+    title: '',
+    kind: '',
+    name: '',
+    story: '',
+    initialArgs: {},
+    argTypes: {
+      label: { control: 'text' },
+      labelName: { control: 'text' },
+      borderWidth: { control: { type: 'number', min: 0, max: 10 } },
+    },
+    ...overrides,
+    parameters: {
+      __isArgsStory: true,
+      ...overrides.parameters,
+    },
+  });
 
 const [inferControls] = argTypesEnhancers;
 describe('inferControls', () => {

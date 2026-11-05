@@ -67,15 +67,16 @@ export const hrefToSync = (title: ComponentTitle | undefined, name: StoryName): 
   return generateStoryUrl(title, name);
 };
 
-const valueOrCall = (args: string[]) => (value: string | ((...args: string[]) => string)) =>
+// A resolver gets the arguments of the handler, so its parameters can have any type.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Resolver = string | ((...args: any[]) => string);
+
+const valueOrCall = (args: unknown[]) => (value: Resolver) =>
   typeof value === 'function' ? value(...args) : value;
 
 export const linkTo =
-  (
-    idOrTitle: string | ((...args: any[]) => string),
-    nameInput?: string | ((...args: any[]) => string)
-  ) =>
-  (...args: any[]) => {
+  (idOrTitle: Resolver, nameInput?: Resolver) =>
+  (...args: unknown[]) => {
     const resolver = valueOrCall(args);
     const title = resolver(idOrTitle);
     const name = nameInput ? resolver(nameInput) : false;

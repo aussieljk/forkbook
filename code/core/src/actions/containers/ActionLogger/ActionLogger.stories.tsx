@@ -25,19 +25,19 @@ const wrapperStyle: React.CSSProperties = {
  * `api.emit(EVENT_ID, action)` to drive the container's state.
  */
 function createMockApi(): API {
-  const listeners: Record<string, Set<(...args: any[]) => void>> = {};
+  const listeners: Record<string, Set<(...args: unknown[]) => void>> = {};
 
   const api = {
-    on(event: string, handler: (...args: any[]) => void) {
+    on(event: string, handler: (...args: unknown[]) => void) {
       if (!listeners[event]) {
         listeners[event] = new Set();
       }
       listeners[event].add(handler);
     },
-    off(event: string, handler: (...args: any[]) => void) {
+    off(event: string, handler: (...args: unknown[]) => void) {
       listeners[event]?.delete(handler);
     },
-    emit(event: string, ...args: any[]) {
+    emit(event: string, ...args: unknown[]) {
       listeners[event]?.forEach((h) => h(...args));
     },
     getCurrentParameter: fn().mockName('api::getCurrentParameter').mockReturnValue(undefined),
@@ -48,7 +48,7 @@ function createMockApi(): API {
   return api as unknown as API;
 }
 
-function makeAction(name: string, args: any[], id: string, limit: number = 50): ActionDisplay {
+function makeAction(name: string, args: unknown, id: string, limit: number = 50): ActionDisplay {
   return {
     id,
     data: { name, args },

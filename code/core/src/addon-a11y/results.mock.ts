@@ -1,3 +1,7 @@
+import type { EnhancedResults } from './types.ts';
+
+// Captured axe output. Some of its node fields are plain strings where `EnhancedResults` has unions
+// (for example `impact`), so it is cast once here for the stories that read it.
 export const results = {
   testEngine: {
     name: 'axe-core',
@@ -803,4 +807,4 @@ export const results = {
       ],
     },
   ],
-} as any;
+} as unknown as EnhancedResults;

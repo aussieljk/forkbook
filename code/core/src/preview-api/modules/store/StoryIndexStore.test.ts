@@ -36,11 +36,12 @@ const storyIndex: StoryIndex = {
   },
 };
 
-const makeStoryIndex = (titlesAndNames: any) => {
+const makeStoryIndex = (titlesAndNames: [string, string][]): StoryIndex => {
   return {
     v: 5,
+    // The store reads only these fields of an entry.
     entries: Object.fromEntries(
-      titlesAndNames.map(([title, name]: [any, any]) => {
+      titlesAndNames.map(([title, name]) => {
         const id = `${title}--${name}`.replace('/', '-');
         return [
           id,
@@ -52,7 +53,7 @@ const makeStoryIndex = (titlesAndNames: any) => {
           },
         ];
       })
-    ),
+    ) as StoryIndex['entries'],
   };
 };
 

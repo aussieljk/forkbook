@@ -18,8 +18,8 @@ export async function mdxPlugin(options: Options): Promise<Plugin> {
   const include = /\.mdx$/;
   const filter = createFilter(include);
   const { presets } = options;
-  const presetOptions = await presets.apply<Record<string, any>>('options', {});
-  const mdxPluginOptions = presetOptions?.mdxPluginOptions as CompileOptions;
+  const presetOptions = await presets.apply<{ mdxPluginOptions?: CompileOptions }>('options', {});
+  const mdxPluginOptions = presetOptions?.mdxPluginOptions;
 
   const rehypeSlug = (await import('rehype-slug')).default;
   const rehypeExternalLinks = (await import('rehype-external-links')).default;

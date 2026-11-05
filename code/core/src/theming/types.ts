@@ -84,6 +84,16 @@ export interface StorybookTheme {
     borderRadius: number;
   };
 
+  button: {
+    background: string;
+    border: string;
+  };
+
+  boolean: {
+    background: string;
+    selectedBackground: string;
+  };
+
   // UI
   layoutMargin: number;
   appBorderColor: string;
@@ -101,5 +111,5 @@ export interface StorybookTheme {
     [key: string]: string | object;
   };
 
-  [key: string]: any;
+  [key: string]: unknown;
 }

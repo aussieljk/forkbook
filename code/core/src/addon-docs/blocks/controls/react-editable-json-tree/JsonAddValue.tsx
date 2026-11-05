@@ -1,6 +1,8 @@
+import type { KeyboardEvent } from 'react';
 import React, { Component, cloneElement } from 'react';
 
 import type { ClickableElement } from './types/ClickableElement.ts';
+import type { AddedValue, ElementGenerator, SubmitValueParser } from './types/callbacks.ts';
 import * as inputUsageTypes from './types/inputUsageTypes.ts';
 
 export class JsonAddValue extends Component<JsonAddValueProps> {
@@ -71,7 +73,7 @@ export class JsonAddValue extends Component<JsonAddValueProps> {
 
       result.key = inputRefKey.value;
     }
-    result.newValue = onSubmitValueParser(false, keyPath, deep, result.key, inputRefValue?.value);
+    result.newValue = onSubmitValueParser(false, keyPath, deep, result.key, inputRefValue!.value);
     handleAdd(result);
   }
 
@@ -132,13 +134,13 @@ export class JsonAddValue extends Component<JsonAddValueProps> {
 }
 
 interface JsonAddValueProps {
-  handleAdd: (...args: any) => any;
-  handleCancel: (...args: any) => any;
+  handleAdd: (added: AddedValue) => void;
+  handleCancel: () => void;
   onlyValue?: boolean;
   addButtonElement?: ClickableElement;
   cancelButtonElement?: ClickableElement;
-  inputElementGenerator: (...args: any) => any;
-  keyPath?: string[];
-  deep?: number;
-  onSubmitValueParser: (...args: any) => any;
+  inputElementGenerator: ElementGenerator;
+  keyPath: string[];
+  deep: number;
+  onSubmitValueParser: SubmitValueParser;
 }

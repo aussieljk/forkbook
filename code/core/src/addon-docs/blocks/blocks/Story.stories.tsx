@@ -1,4 +1,7 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
+
+import type { ModuleExport } from '@aussieljk/forkbook/internal/types';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
@@ -52,7 +55,7 @@ export const OfError: Story = {
 
 export const OfUndefined: Story = {
   args: {
-    // @ts-expect-error this is supposed to be undefined
+    // @ts-expect-error `NotDefined` is not an export, so `of` is undefined on purpose
     of: ButtonStories.NotDefined,
   },
   parameters: { chromatic: { disableSnapshot: true } },
@@ -185,7 +188,10 @@ export const WithInteractionsAutoplayInParameters: Story = {
   },
 };
 
-export const ForceInitialArgs: Story = {
+// The play function of the spread story reads `storyExport`, so the args add it.
+export const ForceInitialArgs: StoryObj<
+  Meta<ComponentProps<typeof StoryBlock> & { storyExport: ModuleExport }>
+> = {
   ...StoryComponentStories.ForceInitialArgs,
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -194,5 +200,5 @@ export const ForceInitialArgs: Story = {
     of: ButtonStories.Primary,
     storyExport: ButtonStories.Primary,
     __forceInitialArgs: true,
-  } as any,
+  },
 };

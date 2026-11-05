@@ -10,8 +10,11 @@ import { EVENT_ID } from '../constants.ts';
 import type { ActionDisplay, ActionOptions, HandlerFunction } from '../models/index.ts';
 import { config } from './configureActions.ts';
 
-type SyntheticEvent = any; // import('react').SyntheticEvent;
-const findProto = (obj: unknown, callback: (proto: any) => boolean): Function | null => {
+/** The part of a React `SyntheticEvent` that this file uses. */
+interface SyntheticEvent {
+  persist: () => void;
+}
+const findProto = (obj: unknown, callback: (proto: object) => boolean): object | null => {
   const proto = Object.getPrototypeOf(obj);
 
   if (!proto || callback(proto)) {
@@ -26,7 +29,7 @@ const isReactSyntheticEvent = (e: unknown): e is SyntheticEvent =>
     findProto(e, (proto) => /^Synthetic(?:Base)?Event$/.test(proto.constructor.name)) &&
     typeof (e as SyntheticEvent).persist === 'function'
   );
-const serializeArg = <T extends object>(a: T) => {
+const serializeArg = (a: unknown) => {
   if (isReactSyntheticEvent(a)) {
     const e: SyntheticEvent = Object.create(
       a.constructor.prototype,
@@ -53,7 +56,7 @@ export function action(name: string, options: ActionOptions = {}): HandlerFuncti
     ...options,
   };
 
-  const handler = function actionHandler(...args: any[]) {
+  const handler = function actionHandler(...args: unknown[]) {
     if (options.implicit) {
       const preview =
         '__FORKBOOK_PREVIEW__' in global

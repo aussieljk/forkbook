@@ -15,7 +15,7 @@ const usePrevious = <T,>(value: T) => {
   return ref.current;
 };
 
-const useUpdate = (update: boolean, value: any) => {
+const useUpdate = <T,>(update: boolean, value: T) => {
   const previousValue = usePrevious(value);
 
   return update ? value : previousValue;

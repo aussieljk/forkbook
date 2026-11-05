@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import { expect } from '@aussieljk/forkbook/test';
@@ -6,7 +7,7 @@ import { DocumentWrapper } from './DocumentWrapper.tsx';
 
 export default {
   component: DocumentWrapper,
-  decorators: [(storyFn: any) => <div style={{ width: '600px' }}>{storyFn()}</div>],
+  decorators: [(storyFn: () => ReactNode) => <div style={{ width: '600px' }}>{storyFn()}</div>],
 };
 
 export const WithDOM = () => (

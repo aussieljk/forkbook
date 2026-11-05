@@ -46,7 +46,7 @@ export const OfStoryUnattached: Story = {
 
 export const OfUndefined: Story = {
   args: {
-    // @ts-expect-error this is supposed to be undefined
+    // @ts-expect-error `NotDefined` is not an export, so `of` is undefined on purpose
     of: ExampleStories.NotDefined,
   },
   parameters: { chromatic: { disableSnapshot: true } },

@@ -1,11 +1,11 @@
 import type { OptionsObject } from '../types.ts';
 
-export const selectedKey = (value: any, options: OptionsObject) => {
+export const selectedKey = (value: unknown, options: OptionsObject) => {
   const entry = options && Object.entries(options).find(([_key, val]) => val === value);
   return entry ? entry[0] : undefined;
 };
 
-export const selectedKeys = (value: any[], options: OptionsObject) =>
+export const selectedKeys = (value: unknown[] | undefined, options: OptionsObject) =>
   value && options
     ? Object.entries(options)
         .filter((entry) => value.includes(entry[1]))

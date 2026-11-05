@@ -4,6 +4,8 @@ import type {
   Addon_StoryWrapper,
 } from '@aussieljk/forkbook/internal/types';
 
+// The result is a decorator or a function that makes one, so callers can use it either way.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type MakeDecoratorResult = (...args: any) => any;
 
 export interface MakeDecoratorOptions {
@@ -47,8 +49,8 @@ export const makeDecorator = ({
   wrapper,
   skipIfNoParametersOrOptions = false,
 }: MakeDecoratorOptions): MakeDecoratorResult => {
-  const decorator: any =
-    (options: object) => (storyFn: Addon_LegacyStoryFn, context: Addon_StoryContext) => {
+  const decorator =
+    (options?: object) => (storyFn: Addon_LegacyStoryFn, context: Addon_StoryContext) => {
       const parameters = context.parameters && context.parameters[parameterName];
 
       if (parameters && parameters.disable) {
@@ -60,25 +62,27 @@ export const makeDecorator = ({
       }
 
       return wrapper(storyFn, context, {
-        options,
+        options: options as object,
         parameters,
       });
     };
 
-  return (...args: any) => {
+  return (...args: unknown[]) => {
     // Used without options as .addDecorator(decorator)
     if (typeof args[0] === 'function') {
-      return decorator()(...args);
+      return decorator()(args[0] as Addon_LegacyStoryFn, args[1] as Addon_StoryContext);
     }
 
-    return (...innerArgs: any): any => {
+    return (...innerArgs: unknown[]) => {
+      const storyFn = innerArgs[0] as Addon_LegacyStoryFn;
+      const context = innerArgs[1] as Addon_StoryContext;
       // Used as [.]addDecorator(decorator(options))
       if (innerArgs.length > 1) {
         // Used as [.]addDecorator(decorator(option1, option2))
         if (args.length > 1) {
-          return decorator(args)(...innerArgs);
+          return decorator(args)(storyFn, context);
         }
-        return decorator(...args)(...innerArgs);
+        return decorator(args[0] as object | undefined)(storyFn, context);
       }
 
       throw new Error(

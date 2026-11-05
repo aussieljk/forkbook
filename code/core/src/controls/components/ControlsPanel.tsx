@@ -28,7 +28,7 @@ import { SaveStory } from './SaveStory.tsx';
 import styles from './ControlsPanel.module.css';
 
 // Remove undefined values (top-level only)
-const clean = (obj: { [key: string]: any }) =>
+const clean = (obj: Record<string, unknown>) =>
   Object.entries(obj).reduce(
     (acc, [key, value]) => (value !== undefined ? Object.assign(acc, { [key]: value }) : acc),
     {} as typeof obj

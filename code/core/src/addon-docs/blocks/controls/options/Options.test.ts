@@ -26,7 +26,7 @@ describe('normalizeOptions', () => {
   it('falls back to String(item) when a label key exists but its value is undefined', () => {
     // Regression guard: { reverse: undefined } previously printed "undefined" as the label
     // because Object.hasOwn found the key before we checked the value type.
-    const labels = { Bat: undefined as any, Cat: 'Catwoman' };
+    const labels = { Bat: undefined, Cat: 'Catwoman' };
     expect(normalizeOptions(['Bat', 'Cat'], labels)).toEqual({
       Bat: 'Bat',
       Catwoman: 'Cat',
@@ -37,7 +37,7 @@ describe('normalizeOptions', () => {
     // When Svelte docgen incorrectly passes an array as `labels`, items whose name
     // matches an Array prototype method (e.g. 'reverse') must NOT resolve to the
     // native function — they should fall back to String(item).
-    const labelsAsArray: any = ['first', 'second', 'third'];
+    const labelsAsArray = ['first', 'second', 'third'];
     const options = ['reverse', 'map', 'filter'];
     const result = normalizeOptions(options, labelsAsArray);
     expect(result).toEqual({ reverse: 'reverse', map: 'map', filter: 'filter' });
@@ -46,6 +46,6 @@ describe('normalizeOptions', () => {
 
   it('returns the options object unchanged when options is not an array', () => {
     const obj = { 'Option A': 'a', 'Option B': 'b' };
-    expect(normalizeOptions(obj as any)).toBe(obj);
+    expect(normalizeOptions(obj)).toBe(obj);
   });
 });

@@ -109,13 +109,14 @@ addons.register(ADDON_ID, (api) => {
     title: 'Code',
     type: types.PANEL,
     paramKey: PARAM_KEY,
-    disabled: (parameters) => parameters?.docs?.codePanel === false,
+    disabled: (parameters) =>
+      (parameters?.docs as { codePanel?: boolean } | undefined)?.codePanel === false,
     match: ({ viewMode }) => viewMode === 'story',
     render: ({ active }) => {
       const channel = api.getChannel();
       const currentStory = api.getCurrentStoryData();
 
-      const lastEvent = channel?.last(SNIPPET_RENDERED)?.[0];
+      const lastEvent = channel?.last(SNIPPET_RENDERED)?.[0] as SnippetRenderedEvent | undefined;
 
       return (
         <CodePanel

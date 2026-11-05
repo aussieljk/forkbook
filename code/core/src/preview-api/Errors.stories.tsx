@@ -21,7 +21,7 @@ const StyleDecorator: DecoratorFunction = (Story) => (
   </>
 );
 
-const Component = ({ id, header, detail }: any) => {
+const Component = ({ id, header, detail }: { id: string; header?: string; detail?: string }) => {
   const element = document.querySelector('.' + id);
   if (!element) {
     throw new Error('Element not found');

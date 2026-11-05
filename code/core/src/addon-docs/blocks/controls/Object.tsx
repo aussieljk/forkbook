@@ -177,7 +177,7 @@ export const ObjectControl: FC<ObjectProps> = ({
               <MinusIcon />
             </ActionButton>
           }
-          inputElement={(_: unknown, __: unknown, ___: unknown, key: string) =>
+          inputElement={(_: unknown, __: unknown, ___: unknown, key?: string) =>
             key ? (
               <input className={styles.input} onFocus={selectValue} onBlur={dispatchEnterKey} />
             ) : (

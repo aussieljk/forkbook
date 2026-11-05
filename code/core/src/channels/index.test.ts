@@ -10,9 +10,9 @@ const MockedWebsocket = vi.hoisted(() => {
 
     onmessage: (event: { data: string }) => void;
 
-    onerror: (e: any) => void;
+    onerror: (e: unknown) => void;
 
-    onclose: (event: any) => void;
+    onclose: (event: { code: number; reason?: string }) => void;
 
     constructor(url: string) {
       this.onopen = vi.fn();
@@ -127,14 +127,13 @@ describe('Channel', () => {
     it('should be callable with options on the event', () => {
       const eventName = 'event1';
       const listenerInputData = [{ event: {}, options: { depth: 1 } }];
-      let listenerOutputData: any = null;
+      let listenerOutputData: unknown = null;
 
       channel.addListener(eventName, (...data) => {
         listenerOutputData = data;
       });
       const sendSpy = vi.fn();
-      // @ts-expect-error (access private property for testing purposes)
-      channel.transports.forEach((t) => {
+      channel['transports'].forEach((t) => {
         t.send = sendSpy;
       });
       channel.emit(eventName, ...listenerInputData);

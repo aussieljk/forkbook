@@ -2,9 +2,12 @@ import type { ModuleExport } from '@aussieljk/forkbook/internal/types';
 
 export const PRIMARY_STORY = '^';
 
-// TODO
-
-export type Component = any;
+/** A component, or the tag name of a custom element. */
+export type Component =
+  | string
+  | { name?: string; __docgenInfo?: { displayName?: string } }
+  | null
+  | undefined;
 
 export type DocsStoryProps = {
   of: ModuleExport;

@@ -30,10 +30,12 @@ export interface ChannelTransport {
 export interface ChannelEvent {
   type: string; // eventName
   from: string;
-  args: any[];
+  args: unknown[];
 }
 
 export interface Listener {
+  // Listeners declare their own parameter types, so `any` lets each one fit.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (...args: any[]): void;
 }
 
@@ -49,8 +51,8 @@ export interface ChannelLike {
   readonly isAsync: boolean;
   readonly hasTransport: boolean;
   addListener(eventName: string, listener: Listener): void;
-  emit(eventName: string, ...args: any): void;
-  last(eventName: string): any;
+  emit(eventName: string, ...args: unknown[]): void;
+  last(eventName: string): unknown[] | undefined;
   eventNames(): string[];
   listenerCount(eventName: string): number;
   listeners(eventName: string): Listener[] | undefined;

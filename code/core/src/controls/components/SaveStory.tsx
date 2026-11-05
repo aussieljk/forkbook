@@ -17,7 +17,7 @@ export const SaveStory = ({ saveStory, createStory, resetArgs }: SaveStoryProps)
   const [saving, setSaving] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [storyName, setStoryName] = React.useState('');
-  const [errorMessage, setErrorMessage] = React.useState(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const onSaveStory = async () => {
     if (saving) {
@@ -52,8 +52,8 @@ export const SaveStory = ({ saveStory, createStory, resetArgs }: SaveStoryProps)
       await createStory(storyName.replace(/^[^a-z]/i, '').replaceAll(/[^a-z0-9]/gi, ''));
       setCreating(false);
       setSaving(false);
-    } catch (e: any) {
-      setErrorMessage(e.message);
+    } catch (e) {
+      setErrorMessage((e as Error).message);
       setSaving(false);
     }
   };

@@ -11,8 +11,8 @@ import styles from './index.module.css';
 interface InspectorProps {
   sortObjectKeys: boolean;
   showNonenumerable: boolean;
-  name: any;
-  data: any;
+  name: string;
+  data: unknown;
   expandLevel?: number;
 }
 

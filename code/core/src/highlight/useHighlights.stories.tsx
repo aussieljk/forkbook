@@ -55,8 +55,12 @@ const meta = preview.meta({
   title: 'Highlight',
   decorators: [
     (storyFn, { parameters }) => {
-      // @ts-expect-error Parameters are not inferred
-      parameters.highlights.forEach(({ selectors, options }) => highlight(selectors, options));
+      // Each story sets `parameters.highlights` to the highlights to show.
+      const highlights = parameters.highlights as {
+        selectors: string[];
+        options?: Parameters<typeof highlight>[1];
+      }[];
+      highlights.forEach(({ selectors, options }) => highlight(selectors, options));
       return storyFn();
     },
   ],

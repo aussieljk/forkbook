@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import React, { Component } from 'react';
 
 const { window: globalWindow } = globalThis;
@@ -9,7 +10,7 @@ interface IFrameProps {
   src: string;
   allowFullScreen: boolean;
   scale: number;
-  style?: any;
+  style?: CSSProperties;
 }
 
 interface BodyStyle {
@@ -20,11 +21,11 @@ interface BodyStyle {
 }
 
 export class IFrame extends Component<IFrameProps> {
-  iframe: any = null;
+  iframe: HTMLIFrameElement | null = null;
 
   componentDidMount() {
     const { id } = this.props;
-    this.iframe = globalWindow.document.getElementById(id);
+    this.iframe = globalWindow.document.getElementById(id) as HTMLIFrameElement | null;
   }
 
   shouldComponentUpdate(nextProps: IFrameProps) {
@@ -41,7 +42,7 @@ export class IFrame extends Component<IFrameProps> {
   }
 
   setIframeBodyStyle(style: BodyStyle) {
-    return Object.assign(this.iframe.contentDocument.body.style, style);
+    return Object.assign(this.iframe!.contentDocument!.body.style, style);
   }
 
   render() {

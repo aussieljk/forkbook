@@ -2,7 +2,10 @@ import type { PreparedStory } from '@aussieljk/forkbook/internal/types';
 
 export interface View<TRoot> {
   // Get ready to render a story, returning the element to render to
-  prepareForStory(story: PreparedStory<any>, options?: { scrollReset?: boolean }): TRoot;
+  prepareForStory(
+    story: Pick<PreparedStory, 'parameters'>,
+    options?: { scrollReset?: boolean }
+  ): TRoot;
 
   prepareForDocs(options?: { scrollReset?: boolean }): TRoot;
 

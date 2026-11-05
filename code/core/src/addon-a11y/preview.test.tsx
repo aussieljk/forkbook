@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { AxeResults } from 'axe-core';
 import type { StoryContext } from '@aussieljk/forkbook/internal/csf';
 
 import { run } from './a11yRunner.ts';
@@ -25,6 +26,9 @@ vi.mock(import('./utils.ts'), async (importOriginal) => {
 });
 
 const mockedRun = vi.mocked(run);
+
+/** Axe results with only the fields that the tests check. */
+const asAxeResults = (value: object) => value as AxeResults;
 
 const violations = [
   {
@@ -96,7 +100,7 @@ describe('afterEach', () => {
         a11y: {},
       },
       ...overrides,
-    }) as any;
+    }) as StoryContext;
 
   it('should run accessibility checks and report results', async () => {
     const context = createContext();
@@ -104,7 +108,7 @@ describe('afterEach', () => {
       violations,
     };
 
-    mockedRun.mockResolvedValue(result as any);
+    mockedRun.mockResolvedValue(asAxeResults(result));
 
     await expect(() => afterEach(context)).rejects.toThrow();
 
@@ -124,7 +128,7 @@ describe('afterEach', () => {
       violations,
     };
 
-    mockedRun.mockResolvedValue(result as any);
+    mockedRun.mockResolvedValue(asAxeResults(result));
     mocks.getIsVitestStandaloneRun.mockReturnValue(false);
 
     await afterEach(context);
@@ -151,7 +155,7 @@ describe('afterEach', () => {
       violations,
     };
 
-    mockedRun.mockResolvedValue(result as any);
+    mockedRun.mockResolvedValue(asAxeResults(result));
     mocks.getIsVitestStandaloneRun.mockReturnValue(false);
 
     await afterEach(context);
@@ -171,7 +175,7 @@ describe('afterEach', () => {
     const result = {
       violations: [],
     };
-    mockedRun.mockResolvedValue(result as any);
+    mockedRun.mockResolvedValue(asAxeResults(result));
 
     await afterEach(context);
 

@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { SELECT_STORY } from '@aussieljk/forkbook/internal/core-events';
 
 import { addons } from '@aussieljk/forkbook/preview-api';
@@ -40,8 +41,8 @@ describe('LinkTo', () => {
       cleanup();
     });
     it('should render a link', async () => {
-      const channel = mockChannel() as any;
-      mockAddons.getChannel.mockReturnValue(channel);
+      const channel = mockChannel() as Partial<Channel> as Channel;
+      mockAddons.getChannel.mockReturnValue(channel as Partial<Channel> as Channel);
 
       const { container } = render(
         <LinkTo title="foo" name="bar">
@@ -67,8 +68,8 @@ describe('LinkTo', () => {
       const channel = {
         emit: vi.fn(),
         on: vi.fn(),
-      } as any;
-      mockAddons.getChannel.mockReturnValue(channel);
+      };
+      mockAddons.getChannel.mockReturnValue(channel as Partial<Channel> as Channel);
 
       await act(async () => {
         await render(

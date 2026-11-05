@@ -71,14 +71,15 @@ export default addons.register(ADDON_ID, (api) => {
           },
           duration: 8_000,
         });
-      } catch (error: any) {
+      } catch (error) {
         api.addNotification({
           id: 'save-story-error',
           icon: <CircleXIcon color={color.negative} />,
           content: {
             headline: 'Failed to save story',
             subHeadline:
-              error?.message || 'Check the Forkbook process on the command line for more details.',
+              (error as Error | undefined)?.message ||
+              'Check the Forkbook process on the command line for more details.',
           },
           duration: 8_000,
         });

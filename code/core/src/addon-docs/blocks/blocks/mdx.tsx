@@ -20,7 +20,7 @@ import styles from './mdx.module.css';
 const { document } = globalThis;
 
 // Hacky utility for asserting identifiers in MDX Story elements
-export const assertIsFn = (val: any) => {
+export const assertIsFn = (val: unknown) => {
   if (typeof val !== 'function') {
     throw new Error(`Expected story function, got: ${val}`);
   }

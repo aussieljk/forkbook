@@ -156,7 +156,10 @@ type SourceBlockParameters = {
    */
   of: ModuleExport;
   /** Source code transformations */
-  transform?: (code: string, storyContext: any) => string | Promise<string>;
+  transform?: (
+    code: string,
+    storyContext: ReturnType<DocsContextProps['getStoryContext']>
+  ) => string | Promise<string>;
   /**
    * Specifies how the source code is rendered.
    *

@@ -1,6 +1,15 @@
+import type { KeyboardEvent } from 'react';
 import React, { Component, cloneElement } from 'react';
 
 import type { ClickableElement } from './types/ClickableElement.ts';
+import type {
+  ElementGenerator,
+  HandleUpdateValue,
+  Logger,
+  ReadOnly,
+  SubmitValueParser,
+} from './types/callbacks.ts';
+import { noUpdate } from './types/callbacks.ts';
 import * as inputUsageTypes from './types/inputUsageTypes.ts';
 import { editTriggerProps } from './utils/editTrigger.ts';
 import { isComponentWillChange } from './utils/objectTypes.ts';
@@ -81,7 +90,13 @@ export class JsonValue extends Component<JsonValueProps, JsonValueState> {
   }
 
   handleEdit() {
-    const { handleUpdateValue, originalValue, logger, onSubmitValueParser, keyPath } = this.props;
+    const {
+      handleUpdateValue,
+      originalValue,
+      logger,
+      onSubmitValueParser,
+      keyPath = [],
+    } = this.props;
     const { name, deep } = this.state;
     const { inputRef } = this;
 
@@ -97,7 +112,7 @@ export class JsonValue extends Component<JsonValueProps, JsonValueState> {
     };
 
     // Run update
-    (handleUpdateValue || Promise.resolve.bind(Promise))(result)
+    (handleUpdateValue || noUpdate)(result)
       .then(() => {
         // Cancel edit mode if necessary
         if (!isComponentWillChange(originalValue, newValue)) {
@@ -132,7 +147,7 @@ export class JsonValue extends Component<JsonValueProps, JsonValueState> {
       dataType,
       inputElementGenerator,
       minusMenuElement,
-      keyPath: comeFromKeyPath,
+      keyPath: comeFromKeyPath = [],
     } = this.props;
 
     const isReadOnly = readOnly(name, originalValue, keyPath, deep, dataType);
@@ -188,17 +203,17 @@ export class JsonValue extends Component<JsonValueProps, JsonValueState> {
 
 interface JsonValueProps {
   name: string;
-  value: any;
-  originalValue?: any;
+  value: unknown;
+  originalValue?: unknown;
   keyPath?: string[];
   deep?: number;
-  handleRemove?: (...args: any) => any;
-  handleUpdateValue?: (...args: any) => any;
-  readOnly: (...args: any) => any;
+  handleRemove?: () => void;
+  handleUpdateValue?: HandleUpdateValue;
+  readOnly: ReadOnly;
   dataType?: string;
   cancelButtonElement?: ClickableElement;
-  inputElementGenerator: (...args: any) => any;
+  inputElementGenerator: ElementGenerator;
   minusMenuElement?: ClickableElement;
-  logger: any;
-  onSubmitValueParser: (...args: any) => any;
+  logger: Logger;
+  onSubmitValueParser: SubmitValueParser;
 }

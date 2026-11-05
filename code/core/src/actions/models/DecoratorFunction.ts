@@ -1,1 +1,1 @@
-export type DecoratorFunction = (args: any[]) => any[];
+export type DecoratorFunction = (args: unknown[]) => unknown[];

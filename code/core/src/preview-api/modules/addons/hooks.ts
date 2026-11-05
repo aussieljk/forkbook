@@ -22,8 +22,8 @@ import { addons } from './main.ts';
 
 interface Hook {
   name: string;
-  memoizedState?: any;
-  deps?: any[] | undefined;
+  memoizedState?: unknown;
+  deps?: unknown[] | undefined;
 }
 
 interface Effect {
@@ -31,7 +31,8 @@ interface Effect {
   destroy?: (() => void) | void;
 }
 
-type AbstractFunction = (...args: any[]) => any;
+/** A story function or a decorator. Hooks use it as a key. */
+type AbstractFunction = (...args: never[]) => unknown;
 
 export class HooksContext<TRenderer extends Renderer, TArgs extends Args = Args> {
   // `init()` sets every field below. The constructor calls it.
@@ -136,9 +137,11 @@ function hookify<TRenderer extends Renderer>(
   decorator: DecoratorFunction<TRenderer>
 ): DecoratorFunction<TRenderer>;
 function hookify<TRenderer extends Renderer>(fn: AbstractFunction) {
-  const hookified = (...args: any[]) => {
-    const { hooks }: { hooks: HooksContext<TRenderer> } =
-      typeof args[0] === 'function' ? args[1] : args[0];
+  const hookified = (...args: unknown[]) => {
+    // A decorator gets `(storyFn, context)` and a story function gets `(context)`.
+    const { hooks } = (typeof args[0] === 'function' ? args[1] : args[0]) as {
+      hooks: HooksContext<TRenderer>;
+    };
 
     const prevPhase = hooks.currentPhase;
     const prevHooks = hooks.currentHooks;
@@ -159,7 +162,8 @@ function hookify<TRenderer extends Renderer>(fn: AbstractFunction) {
 
     const prevContext = global.FORKBOOK_HOOKS_CONTEXT;
     global.FORKBOOK_HOOKS_CONTEXT = hooks;
-    const result = fn(...args);
+    // `hookified` gets the same arguments as `fn`.
+    const result = (fn as (...fnArgs: unknown[]) => unknown)(...args);
     global.FORKBOOK_HOOKS_CONTEXT = prevContext;
 
     if (hooks.currentPhase === 'UPDATE' && hooks.getNextHook() != null) {
@@ -215,7 +219,7 @@ export const applyHooks =
     };
   };
 
-const areDepsEqual = (deps: any[], nextDeps: any[]) =>
+const areDepsEqual = (deps: unknown[], nextDeps: unknown[]) =>
   deps.length === nextDeps.length && deps.every((dep, i) => dep === nextDeps[i]);
 
 const invalidHooksError = () =>
@@ -242,7 +246,7 @@ function getHooksContextOrThrow<
   return hooks;
 }
 
-function useHook(name: string, callback: (hook: Hook) => void, deps?: any[] | undefined): Hook {
+function useHook(name: string, callback: (hook: Hook) => void, deps?: unknown[] | undefined): Hook {
   const hooks = getHooksContextOrThrow();
   if (hooks.currentPhase === 'MOUNT') {
     if (deps != null && !Array.isArray(deps)) {
@@ -292,7 +296,7 @@ Incoming: ${deps}`);
   throw invalidHooksError();
 }
 
-function useMemoLike<T>(name: string, nextCreate: () => T, deps: any[] | undefined): T {
+function useMemoLike<T>(name: string, nextCreate: () => T, deps: unknown[] | undefined): T {
   const { memoizedState } = useHook(
     name,
     (hook) => {
@@ -300,7 +304,7 @@ function useMemoLike<T>(name: string, nextCreate: () => T, deps: any[] | undefin
     },
     deps
   );
-  return memoizedState;
+  return memoizedState as T;
 }
 
 /**
@@ -316,11 +320,11 @@ function useMemoLike<T>(name: string, nextCreate: () => T, deps: any[] | undefin
  *
  * @template T The type of the memoized value.
  * @param {() => T} nextCreate A function that returns the memoized value.
- * @param {any[]} [deps] An optional array of dependencies. If any of the dependencies change, the
+ * @param {unknown[]} [deps] An optional array of dependencies. If any of the dependencies change, the
  *   memoized value will be recomputed.
  * @returns {T} The memoized value.
  */
-export function useMemo<T>(nextCreate: () => T, deps?: any[]): T {
+export function useMemo<T>(nextCreate: () => T, deps?: unknown[]): T {
   return useMemoLike('useMemo', nextCreate, deps);
 }
 
@@ -337,12 +341,12 @@ export function useMemo<T>(nextCreate: () => T, deps?: any[]): T {
  *
  * @template T The type of the callback function.
  * @param {T} callback The callback function to memoize.
- * @param {any[]} [deps] An optional array of dependencies. If any of the dependencies change, the
+ * @param {unknown[]} [deps] An optional array of dependencies. If any of the dependencies change, the
  *   memoized callback will be recomputed.
  * @returns {T} The memoized callback.
  */
 /* Returns a memoized callback, see https://reactjs.org/docs/hooks-reference.html#usecallback */
-export function useCallback<T>(callback: T, deps?: any[]): T {
+export function useCallback<T>(callback: T, deps?: unknown[]): T {
   return useMemoLike('useCallback', () => callback, deps);
 }
 
@@ -466,10 +470,10 @@ export function useReducer<S, I, A>(
 ): [S, (action: A) => void];
 export function useReducer<S, A>(
   reducer: (state: S, action: A) => S,
-  initialArg: any,
-  init?: any
+  initialArg: unknown,
+  init?: (initialArg: unknown) => S
 ): [S, (action: A) => void] {
-  const initialState: (() => S) | S = init != null ? () => init(initialArg) : initialArg;
+  const initialState: (() => S) | S = init != null ? () => init(initialArg) : (initialArg as S);
   const [state, setState] = useStateLike('useReducer', initialState);
   const dispatch = (action: A) => setState((prevState) => reducer(prevState, action));
   return [state, dispatch];
@@ -492,11 +496,11 @@ export function useReducer<S, A>(
  *
  * @param {() => (() => void) | void} create A function that creates the effect. It should return a
  *   cleanup function, or nothing.
- * @param {any[]} [deps] An optional array of dependencies. If any of the dependencies change, the
+ * @param {unknown[]} [deps] An optional array of dependencies. If any of the dependencies change, the
  *   effect will be re-run.
  * @returns {void}
  */
-export function useEffect(create: () => (() => void) | void, deps?: any[]): void {
+export function useEffect(create: () => (() => void) | void, deps?: unknown[]): void {
   const hooks = getHooksContextOrThrow();
   const effect = useMemoLike('useEffect', () => ({ create }), deps);
   if (!hooks.currentEffects.includes(effect)) {
@@ -505,6 +509,8 @@ export function useEffect(create: () => (() => void) | void, deps?: any[]): void
 }
 
 export interface Listener {
+  // Listeners declare their own parameter types, so `any` lets each one fit.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (...args: any[]): void;
 }
 
@@ -524,11 +530,11 @@ export interface EventMap {
  * ```
  *
  * @param {EventMap} eventMap A map of event listeners to subscribe to.
- * @param {any[]} [deps=[]] An optional array of dependencies. If any of the dependencies change,
+ * @param {unknown[]} [deps=[]] An optional array of dependencies. If any of the dependencies change,
  *   the event listeners will be re-subscribed. Default is `[]`
- * @returns {(...args: any[]) => void} A function to emit events to the Forkbook channel.
+ * @returns {(...args: unknown[]) => void} A function to emit events to the Forkbook channel.
  */
-export function useChannel(eventMap: EventMap, deps: any[] = []) {
+export function useChannel(eventMap: EventMap, deps: unknown[] = []) {
   const channel = addons.getChannel();
 
   useEffect(() => {

@@ -18,10 +18,10 @@ export type InferArgTypesContext<TRenderer extends Renderer = Renderer> = Pick<
 >;
 
 const inferType = (
-  value: any,
+  value: unknown,
   name: string,
-  visited: Set<any>,
-  cache: Map<any, SBType>
+  visited: Set<unknown>,
+  cache: Map<unknown, SBType>
 ): SBType => {
   const type = typeof value;
   switch (type) {
@@ -63,7 +63,9 @@ const inferType = (
           : { name: 'other', value: 'unknown' };
       result = { name: 'array', value: childType };
     } else {
-      const fieldTypes = mapValues(value, (field) => inferType(field, name, visited, cache));
+      const fieldTypes = mapValues(value as Record<string, unknown>, (field) =>
+        inferType(field, name, visited, cache)
+      );
       result = { name: 'object', value: fieldTypes };
     }
 
@@ -82,7 +84,7 @@ export const inferArgTypes: ((context: InferArgTypesContext) => StrictArgTypes) 
   secondPass?: boolean;
 } = (context) => {
   const { id, argTypes: userArgTypes = {}, initialArgs = {} } = context;
-  const cache = new Map<any, SBType>();
+  const cache = new Map<unknown, SBType>();
   const argTypes = Object.fromEntries(
     Object.entries(initialArgs)
       .filter(([key]) => !userArgTypes[key]?.type)

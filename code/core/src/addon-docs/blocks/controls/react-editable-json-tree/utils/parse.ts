@@ -2,7 +2,7 @@
  * Parse.
  *
  * @param string {String} string to parse
- * @returns {any}
+ * @returns {unknown} The parsed value, or the string when it is not JSON
  */
 export function parse(string: string) {
   let result = string;

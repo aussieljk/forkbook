@@ -1,3 +1,4 @@
+import type { Mock } from 'vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -7,7 +8,13 @@ import {
   UPDATE_GLOBALS,
   UPDATE_STORY_ARGS,
 } from '@aussieljk/forkbook/internal/core-events';
-import type { DecoratorFunction, StoryContextForRender } from '@aussieljk/forkbook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type {
+  DecoratorFunction,
+  LegacyStoryFn,
+  Renderer,
+  StoryContextForRender,
+} from '@aussieljk/forkbook/internal/types';
 
 import {
   HooksContext,
@@ -32,16 +39,22 @@ vi.mock('@aussieljk/forkbook/internal/client-logger', () => ({
 }));
 
 const SOME_EVENT = 'someEvent';
-let mockChannel: any;
-let hooks: any;
-let onSomeEvent: any;
-let removeSomeEventListener: any;
+/** The channel functions that the hooks use. */
+interface MockChannel {
+  emit: Mock;
+  on: (event: string, callback: () => void) => void;
+  removeListener: (event: string, callback: () => void) => void;
+}
+let mockChannel: MockChannel;
+let hooks: HooksContext<Renderer>;
+let onSomeEvent: Mock;
+let removeSomeEventListener: Mock;
 beforeEach(() => {
   onSomeEvent = vi.fn();
   removeSomeEventListener = vi.fn();
   mockChannel = {
     emit: vi.fn(),
-    on(event: any, callback: any) {
+    on(event: string, callback: () => void) {
       switch (event) {
         case STORY_RENDERED:
           callback();
@@ -52,19 +65,19 @@ beforeEach(() => {
         default:
       }
     },
-    removeListener(event: any, callback: any) {
+    removeListener(event: string, callback: () => void) {
       if (event === SOME_EVENT) {
         removeSomeEventListener(event, callback);
       }
     },
   };
   hooks = new HooksContext();
-  addons.setChannel(mockChannel);
+  addons.setChannel(mockChannel as Partial<Channel> as Channel);
 });
 
 const decorateStory = applyHooks(defaultDecorateStory);
 
-const run = (storyFn: any, decorators: DecoratorFunction[] = [], context = {}) =>
+const run = (storyFn: LegacyStoryFn, decorators: DecoratorFunction[] = [], context = {}) =>
   decorateStory(storyFn, decorators)({ ...context, hooks } as StoryContextForRender);
 
 describe('Preview hooks', () => {
@@ -117,7 +130,7 @@ describe('Preview hooks', () => {
     });
     it("doesn't retrigger the effect from decorator if story has changed", () => {
       const effect = vi.fn();
-      const decorator = (storyFn: any) => {
+      const decorator = (storyFn: () => unknown) => {
         useEffect(effect, []);
         return storyFn();
       };
@@ -127,7 +140,7 @@ describe('Preview hooks', () => {
     });
     it("doesn't retrigger the effect from decorator if story has changed and story call comes before useEffect", () => {
       const effect = vi.fn();
-      const decorator = (storyFn: any) => {
+      const decorator = (storyFn: () => unknown) => {
         const story = storyFn();
         useEffect(effect, []);
         return story;
@@ -141,7 +154,7 @@ describe('Preview hooks', () => {
       const story = () => {
         useEffect(effect, []);
       };
-      const decorator = (storyFn: any) => {
+      const decorator = (storyFn: () => unknown) => {
         storyFn();
         return storyFn();
       };
@@ -153,7 +166,7 @@ describe('Preview hooks', () => {
       const story = () => {
         useEffect(effect, []);
       };
-      const decorator = (storyFn: any) => {
+      const decorator = (storyFn: () => unknown) => {
         const [counter, setCounter] = useState(0);
         useEffect(() => {
           setCounter((prevCounter) => prevCounter + 1);
@@ -372,12 +385,12 @@ describe('Preview hooks', () => {
   });
   describe('useRef', () => {
     it('attaches initial value', () => {
-      let ref: any;
+      let ref: { current: string } | undefined;
       const storyFn = () => {
         ref = useRef('foo');
       };
       run(storyFn);
-      expect(ref.current).toBe('foo');
+      expect(ref?.current).toBe('foo');
     });
     it('stores mutations', () => {
       let refValueFromSecondRender;
@@ -455,7 +468,7 @@ describe('Preview hooks', () => {
     });
     it('performs asynchronous state updates', () => {
       let state;
-      let setState: any;
+      let setState: (update: string) => void = () => {};
       const storyFn = vi.fn(() => {
         [state, setState] = useState('foo');
       });
@@ -508,8 +521,8 @@ describe('Preview hooks', () => {
       expect(state).toBe(3);
     });
     it('performs asynchronous state updates', () => {
-      let state: any;
-      let dispatch: any;
+      let state: number | undefined;
+      let dispatch: (action: string) => void = () => {};
       const storyFn = vi.fn(() => {
         [state, dispatch] = useReducer((prevState, action) => {
           switch (action) {

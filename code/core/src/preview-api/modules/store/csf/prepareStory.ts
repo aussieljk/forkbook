@@ -336,9 +336,11 @@ export function prepareContext<
       return acc;
     }
 
-    const mappingFn = (originalValue: any) => {
+    const mappingFn = (originalValue: unknown) => {
       const mapping = targetedContext.argTypes[key].mapping;
-      return mapping && originalValue in mapping ? mapping[originalValue] : originalValue;
+      // `in` turns the value into a string key, as the mapping keys are.
+      const mappingKey = originalValue as string;
+      return mapping && mappingKey in mapping ? mapping[mappingKey] : originalValue;
     };
 
     acc[key] = Array.isArray(val) ? val.map(mappingFn) : mappingFn(val);

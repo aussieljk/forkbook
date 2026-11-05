@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, JSX } from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef, JSX } from 'react';
 import { createElement, forwardRef } from 'react';
 
 import { clsx } from 'clsx';
@@ -8,8 +8,9 @@ export const withClassName = <T extends keyof JSX.IntrinsicElements>(
   tag: T,
   ...classNames: string[]
 ) => {
-  const Component = forwardRef<any, ComponentPropsWithoutRef<T>>(({ className, ...props }, ref) =>
-    createElement(tag, { ...props, ref, className: clsx(...classNames, className) })
+  const Component = forwardRef<ComponentRef<T>, ComponentPropsWithoutRef<T>>(
+    ({ className, ...props }, ref) =>
+      createElement(tag, { ...props, ref, className: clsx(...classNames, className) })
   );
   Component.displayName = tag;
   return Component;

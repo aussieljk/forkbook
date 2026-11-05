@@ -18,14 +18,15 @@ function setInert(inert: boolean) {
   }
 }
 
-function errorListener(args: any) {
-  const error = args.error || args;
+function errorListener(event: ErrorEvent) {
+  // `event.error` is whatever was thrown; it is not always an Error.
+  const error: { fromStorybook?: boolean } = event.error || event;
   if (error.fromStorybook) {
     global.sendTelemetryError(error);
   }
 }
 
-function unhandledRejectionListener({ reason }: any) {
+function unhandledRejectionListener({ reason }: PromiseRejectionEvent) {
   if (reason.fromStorybook) {
     global.sendTelemetryError(reason);
   }
@@ -34,10 +35,10 @@ function unhandledRejectionListener({ reason }: any) {
 export function setup() {
   // Apply all the globals
   globalPackages.forEach((key) => {
-    (global as any)[globalsNameReferenceMap[key]] = globalsNameValueMap[key];
+    Object.assign(global, { [globalsNameReferenceMap[key]]: globalsNameValueMap[key] });
   });
 
-  global.sendTelemetryError = (error: any) => {
+  global.sendTelemetryError = (error) => {
     const channel = getChannel();
     if (!channel) {
       return;

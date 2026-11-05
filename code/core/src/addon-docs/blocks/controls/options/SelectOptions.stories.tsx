@@ -151,7 +151,7 @@ export const ArrayLabelsIsArray: Story = {
   args: {
     value: prototypeCollisionOptions[0],
     argType: { options: prototypeCollisionOptions },
-    labels: ['Reverse', 'Map', 'Filter'] as any,
+    labels: ['Reverse', 'Map', 'Filter'],
   },
   argTypes: {
     value: {
@@ -167,7 +167,7 @@ export const ArrayMultiLabelsIsArray: Story = {
     type: 'multi-select',
     value: [prototypeCollisionOptions[0], prototypeCollisionOptions[1]],
     argType: { options: prototypeCollisionOptions },
-    labels: ['Reverse', 'Map', 'Filter'] as any,
+    labels: ['Reverse', 'Map', 'Filter'],
   },
   argTypes: {
     value: {

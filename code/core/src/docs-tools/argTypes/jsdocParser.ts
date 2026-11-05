@@ -10,13 +10,13 @@ import {
 import type { JsDocParam, JsDocReturns } from './docgen/index.ts';
 
 export interface ExtractedJsDocParam extends JsDocParam {
-  type?: any;
+  type?: JSDocType | null;
   getPrettyName: () => string | undefined;
   getTypeName: () => string | null;
 }
 
 export interface ExtractedJsDocReturns extends JsDocReturns {
-  type?: any;
+  type?: JSDocType | null;
   getTypeName: () => string | null;
 }
 

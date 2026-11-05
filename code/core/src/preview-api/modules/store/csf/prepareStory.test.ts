@@ -1,7 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type {
+  Args,
   ArgsEnhancer,
+  LoaderFunction,
   NormalizedComponentAnnotations,
   NormalizedStoryAnnotations,
   PreparedStory,
@@ -149,7 +152,7 @@ describe('prepareStory', () => {
       const { parameters } = prepareStory(
         { id, name, moduleExport },
         { id, title },
-        { render: (args: any) => {} }
+        { render: (_args: Args) => {} }
       );
 
       expect(parameters).toEqual(expect.objectContaining({ __isArgsStory: true }));
@@ -405,7 +408,7 @@ describe('prepareStory', () => {
     it('awaits the result of a loader', async () => {
       const loader = vi.fn(async () => new Promise((r) => setTimeout(() => r({ foo: 7 }), 100)));
       const { applyLoaders } = prepareStory(
-        { id, name, loaders: [loader as any], moduleExport },
+        { id, name, loaders: [loader as LoaderFunction], moduleExport },
         { id, title },
         { render }
       );
@@ -442,7 +445,7 @@ describe('prepareStory', () => {
     });
 
     it('later loaders override earlier loaders', async () => {
-      const loaders: any[] = [
+      const loaders: LoaderFunction[] = [
         async () => new Promise((r) => setTimeout(() => r({ foo: 7 }), 100)),
         async () => new Promise((r) => setTimeout(() => r({ foo: 3 }), 50)),
       ];
@@ -508,9 +511,14 @@ describe('prepareStory', () => {
         { render: renderMock, decorators: [globalDecorator] }
       );
 
-      addons.setChannel({ on: vi.fn(), removeListener: vi.fn() } as any);
+      addons.setChannel({ on: vi.fn(), removeListener: vi.fn() } as Partial<Channel> as Channel);
       const hooks = new HooksContext();
-      story.unboundStoryFn({ args: story.initialArgs, hooks, ...story } as any);
+      // The story function reads only these fields of the context.
+      story.unboundStoryFn({
+        args: story.initialArgs,
+        hooks,
+        ...story,
+      } as object as StoryContextForRender);
 
       expect(globalDecorator).toHaveBeenCalled();
       expect(componentDecorator).toHaveBeenCalled();
@@ -577,7 +585,7 @@ describe('prepareStory', () => {
           moduleExport,
         },
         { id, title },
-        { render: vi.fn() as any }
+        { render: vi.fn() }
       );
 
       const context = prepareContext({ args: { one: 1 }, globals: {}, ...story });
@@ -597,7 +605,7 @@ describe('prepareStory', () => {
           moduleExport,
         },
         { id, title },
-        { render: vi.fn() as any }
+        { render: vi.fn() }
       );
 
       const context = prepareContext({

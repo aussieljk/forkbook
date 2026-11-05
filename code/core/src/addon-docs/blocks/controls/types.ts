@@ -51,14 +51,14 @@ export interface NumberConfig {
 
 export type RangeConfig = NumberConfig;
 
-export type ObjectValue = any;
+export type ObjectValue = unknown;
 export interface ObjectConfig {}
 
-export type OptionsSingleSelection = any;
-export type OptionsMultiSelection = any[];
+export type OptionsSingleSelection = unknown;
+export type OptionsMultiSelection = unknown[];
 export type OptionsSelection = OptionsSingleSelection | OptionsMultiSelection;
-export type OptionsArray = any[];
-export type OptionsObject = Record<string, any>;
+export type OptionsArray = readonly unknown[];
+export type OptionsObject = Record<string, unknown>;
 export type Options = OptionsArray | OptionsObject;
 export type OptionsControlType =
   | 'radio'
@@ -69,7 +69,8 @@ export type OptionsControlType =
   | 'multi-select';
 
 export interface OptionsConfig {
-  labels?: Record<PropertyKey, string>;
+  /** Some docgen tools give an array here. The controls then show each option as it is. */
+  labels?: Record<PropertyKey, string | undefined> | string[];
   type: OptionsControlType;
 }
 

@@ -1,3 +1,4 @@
+import type { ComponentProps, ComponentType } from 'react';
 import type { PlayFunction, PlayFunctionContext } from '@aussieljk/forkbook/internal/types';
 
 import { ManagerContext } from '@aussieljk/forkbook/manager-api';
@@ -6,7 +7,11 @@ import { expect, fn, screen } from '@aussieljk/forkbook/test';
 import preview from '../../../../.forkbook/preview.tsx';
 import { VisionSimulator } from './VisionSimulator.tsx';
 
-const managerContext: any = {
+/** A manager context with only the state and API that the component uses. */
+const asManagerContext = (value: object) =>
+  value as ComponentProps<typeof ManagerContext.Provider>['value'];
+
+const managerContext = asManagerContext({
   state: {},
   api: {
     getGlobals: fn(() => ({ vision: undefined })),
@@ -14,13 +19,13 @@ const managerContext: any = {
     getStoryGlobals: fn(() => ({ vision: undefined })),
     getUserGlobals: fn(() => ({ vision: undefined })),
   },
-};
+});
 
 const meta = preview.meta({
   title: 'Vision Simulator',
   component: VisionSimulator,
   decorators: [
-    (Story: any) => (
+    (Story: ComponentType) => (
       <ManagerContext.Provider value={managerContext}>
         <Story />
       </ManagerContext.Provider>

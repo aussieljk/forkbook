@@ -20,7 +20,7 @@ const mockedUseA11yContext = vi.mocked(useA11yContext);
 
 mockedManagerApi.useParameter.mockReturnValue({
   manual: false,
-} as any);
+});
 
 const emptyResults: EnhancedResults = {
   passes: [],
@@ -43,7 +43,7 @@ describe('A11YPanel', () => {
       status: 'initial',
       handleManual: vi.fn(),
       error: null,
-    } as Partial<A11yContextStore> as any);
+    } as Partial<A11yContextStore> as A11yContextStore);
 
     const element = render(
       <ThemeProvider theme={convert(themes.light)}>
@@ -62,7 +62,7 @@ describe('A11YPanel', () => {
       status: 'manual',
       handleManual,
       error: null,
-    } as Partial<A11yContextStore> as any);
+    } as Partial<A11yContextStore> as A11yContextStore);
 
     const component = render(
       <ThemeProvider theme={convert(themes.light)}>
@@ -84,7 +84,7 @@ describe('A11YPanel', () => {
       status: 'running',
       handleManual: vi.fn(),
       error: null,
-    } as Partial<A11yContextStore> as any);
+    } as Partial<A11yContextStore> as A11yContextStore);
 
     const component = render(
       <ThemeProvider theme={convert(themes.light)}>
@@ -104,7 +104,7 @@ describe('A11YPanel', () => {
       status: 'error',
       handleManual: vi.fn(),
       error: 'Test error message',
-    } as Partial<A11yContextStore> as any);
+    } as Partial<A11yContextStore> as A11yContextStore);
 
     const component = render(
       <ThemeProvider theme={convert(themes.light)}>
@@ -123,7 +123,7 @@ describe('A11YPanel', () => {
       status: 'error',
       handleManual: vi.fn(),
       error: { message: 'Test error object message' },
-    } as Partial<A11yContextStore> as any);
+    } as Partial<A11yContextStore> as A11yContextStore);
 
     const component = render(
       <ThemeProvider theme={convert(themes.light)}>

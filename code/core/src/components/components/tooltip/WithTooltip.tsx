@@ -1,4 +1,4 @@
-import type { FC, HTMLAttributes, ReactNode } from 'react';
+import type { FC, HTMLAttributes, ReactNode, Ref, SVGProps } from 'react';
 import React, { useCallback, useContext, useEffect, useId, useState } from 'react';
 
 import { deprecate } from '@aussieljk/forkbook/internal/client-logger';
@@ -27,9 +27,9 @@ export interface WrapperProps {
 
 export interface TooltipProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
   children?: React.ReactNode;
-  tooltipRef?: any;
+  tooltipRef?: Ref<HTMLDivElement>;
   hasChrome?: boolean;
-  arrowProps?: any;
+  arrowProps?: HTMLAttributes<HTMLDivElement>;
   placement?: string;
   color?: keyof Color;
   withArrows?: boolean;
@@ -200,7 +200,7 @@ const WithTooltipPure = ({
           <Container
             className={svg ? styles.targetSvg : styles.target}
             data-hover={isHover || undefined}
-            {...(props as any)}
+            {...(props as HTMLAttributes<HTMLDivElement> & Omit<SVGProps<SVGGElement>, 'ref'>)}
           />
         }
       >

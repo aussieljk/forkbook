@@ -23,7 +23,14 @@ export type InferControlsContext<TRenderer extends Renderer = Renderer> = Pick<
   'argTypes' | 'parameters'
 >;
 
-const inferControl = (argType: StrictInputType, name: string, matchers: ControlsMatchers): any => {
+/** The control part of an arg type that {@link inferControls} adds. */
+type InferredControl = Pick<StrictInputType, 'control' | 'options'>;
+
+const inferControl = (
+  argType: StrictInputType,
+  name: string,
+  matchers: ControlsMatchers
+): InferredControl | null | undefined => {
   const { type, options } = argType;
   if (!type) {
     return undefined;

@@ -282,7 +282,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     this.renderSelection();
   }
 
-  onUpdateQueryParams(queryParams: any) {
+  onUpdateQueryParams(queryParams: Record<PropertyKey, unknown>) {
     this.selectionStore.setQueryParams(queryParams);
   }
 

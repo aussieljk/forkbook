@@ -27,8 +27,9 @@ describe('UrlStore', () => {
       expect(pathToId('/docs/story--id')).toEqual('story--id');
     });
     it('should error on invalid ids', () => {
-      [null, '', '/whatever/story/story--id'].forEach((path: any) => {
-        expect(() => pathToId(path)).toThrow(/Invalid/);
+      // `null` is not a valid path, so it needs a cast.
+      [null, '', '/whatever/story/story--id'].forEach((path) => {
+        expect(() => pathToId(path as string)).toThrow(/Invalid/);
       });
     });
   });

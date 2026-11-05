@@ -6,7 +6,10 @@ import { global } from '../../../shared/global.ts';
 import { DEEPLY_EQUAL, combineArgs, deepDiff, mapArgsToTypes, validateOptions } from './args.ts';
 import { inferArgTypes } from './inferArgTypes.ts';
 
-function deleteUndefined(obj: Record<string, any>) {
+/** The fields of a story that the args store reads. */
+type StoryArgsInfo = Pick<PreparedStory, 'id' | 'argTypes' | 'initialArgs'>;
+
+function deleteUndefined(obj: Args) {
   Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
   return obj;
 }
@@ -18,7 +21,7 @@ function deleteUndefined(obj: Record<string, any>) {
  * for `mergeServiceArgTypes`, which leaves plain `args` without a type. Inferring here restores the
  * types those passes need without putting them back on the story.
  */
-const argTypesForValidation = (story: PreparedStory<any>): ArgTypes =>
+const argTypesForValidation = (story: StoryArgsInfo): ArgTypes =>
   global.FEATURES?.docgenServer
     ? inferArgTypes({
         id: story.id,
@@ -40,7 +43,7 @@ export class ArgsStore {
     return this.argsByStoryId[storyId];
   }
 
-  setInitial(story: PreparedStory<any>) {
+  setInitial(story: StoryArgsInfo) {
     if (!this.initialArgsByStoryId[story.id]) {
       this.initialArgsByStoryId[story.id] = story.initialArgs;
       this.argsByStoryId[story.id] = story.initialArgs;
@@ -51,12 +54,12 @@ export class ArgsStore {
       this.initialArgsByStoryId[story.id] = story.initialArgs;
       this.argsByStoryId[story.id] = story.initialArgs;
       if (delta !== DEEPLY_EQUAL) {
-        this.updateFromDelta(story, delta);
+        this.updateFromDelta(story, delta as Args);
       }
     }
   }
 
-  updateFromDelta(story: PreparedStory<any>, delta: Args) {
+  updateFromDelta(story: StoryArgsInfo, delta: Args) {
     // Use the argType to ensure we setting a type with defined options to something outside of that
     const validatedDelta = validateOptions(delta, argTypesForValidation(story));
 
@@ -66,7 +69,7 @@ export class ArgsStore {
     this.argsByStoryId[story.id] = combineArgs(this.argsByStoryId[story.id], validatedDelta);
   }
 
-  updateFromPersisted(story: PreparedStory<any>, persisted: Args) {
+  updateFromPersisted(story: StoryArgsInfo, persisted: Args) {
     // Use the argType to ensure we aren't persisting the wrong type of value to the type.
     // For instance you could try and set a string-valued arg to a number by changing the URL
     const mappedPersisted = mapArgsToTypes(persisted, argTypesForValidation(story));

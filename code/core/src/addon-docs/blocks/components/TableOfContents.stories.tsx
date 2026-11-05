@@ -1,3 +1,4 @@
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
@@ -39,7 +40,7 @@ export default meta;
 export const Default: StoryObj<typeof meta> = {
   args: {
     // Not used here yet. Would need to be mocked to test navigation.
-    channel: {} as any,
+    channel: {} as Channel,
     headingSelector: 'h1, h2, h3',
     contentsSelector: '.local-story-docs',
   },
@@ -73,7 +74,7 @@ export const Default: StoryObj<typeof meta> = {
 
 export const WithTitle: StoryObj<typeof meta> = {
   args: {
-    channel: {} as any,
+    channel: {} as Channel,
     headingSelector: 'h1, h2, h3',
     contentsSelector: '.local-story-docs',
     title: 'In this page',
@@ -100,7 +101,7 @@ export const WithTitle: StoryObj<typeof meta> = {
 
 export const WithReactTitle: StoryObj<typeof meta> = {
   args: {
-    channel: {} as any,
+    channel: {} as Channel,
     headingSelector: 'h1, h2, h3',
     contentsSelector: '.local-story-docs',
     title: (

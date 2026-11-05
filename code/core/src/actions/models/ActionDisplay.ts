@@ -4,7 +4,8 @@ export interface ActionDisplay {
   id: string;
   data: {
     name: string;
-    args: any[];
+    /** One argument on its own, or an array when the action got more than one. */
+    args: unknown;
   };
   count: number;
   options: ActionOptions;

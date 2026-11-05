@@ -3,6 +3,16 @@ import React, { Component } from 'react';
 
 import { JsonNode } from './JsonNode.tsx';
 import type { ClickableElement } from './types/ClickableElement.ts';
+import type {
+  BeforeAction,
+  EditorElementProps,
+  ElementGenerator,
+  IsCollapsed,
+  Logger,
+  OnDeltaUpdate,
+  ReadOnly,
+  SubmitValueParser,
+} from './types/callbacks.ts';
 import * as DATA_TYPES from './types/dataTypes.ts';
 import { ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from './types/deltaTypes.ts';
 import * as INPUT_USAGE_TYPES from './types/inputUsageTypes.ts';
@@ -10,10 +20,11 @@ import { getObjectType } from './utils/objectTypes.ts';
 import { parse } from './utils/parse.ts';
 import { array, object, value } from './utils/styles.ts';
 
-type ElementOrGenerator = ReactElement | ((...args: any) => ReactElement);
+type ElementOrGenerator = ReactElement<EditorElementProps> | ElementGenerator;
 
-const toGenerator = (element?: ElementOrGenerator) =>
-  typeof element === 'function' ? element : () => element;
+// `defaultProps` sets both elements, so `element` is always set here.
+const toGenerator = (element?: ElementOrGenerator): ElementGenerator =>
+  typeof element === 'function' ? element : () => element!;
 
 interface JsonTreeState {
   data: JsonTreeProps['data'];
@@ -34,7 +45,7 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
       _isEditMode: boolean,
       _keyPath: string[],
       _deep: number,
-      _name: string,
+      _name: string | undefined,
       rawValue: string
     ) => parse(rawValue),
     inputElement: () => <input />,
@@ -62,7 +73,7 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
     return null;
   }
 
-  onUpdate(key: string | null, data: any) {
+  onUpdate(key: string | null, data: unknown) {
     this.setState({ data });
     this.props.onFullyUpdate?.(data);
   }
@@ -94,7 +105,7 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
     // Node type
     const dataType = getObjectType(data);
 
-    const readOnlyFunction = typeof readOnly === 'function' ? readOnly : () => readOnly;
+    const readOnlyFunction = typeof readOnly === 'function' ? readOnly : () => Boolean(readOnly);
     const inputElementFunction = toGenerator(inputElement);
     const textareaElementFunction = toGenerator(textareaElement);
 
@@ -131,12 +142,12 @@ export class JsonTree extends Component<JsonTreeProps, JsonTreeState> {
 }
 
 interface JsonTreeProps {
-  data: any;
+  data: unknown;
   rootName?: string;
-  isCollapsed?: (...args: any) => any;
-  onFullyUpdate?: (...args: any) => any;
-  onDeltaUpdate?: (...args: any) => any;
-  readOnly?: boolean | ((...args: any) => any);
+  isCollapsed?: IsCollapsed;
+  onFullyUpdate?: (data: unknown) => void;
+  onDeltaUpdate?: OnDeltaUpdate;
+  readOnly?: boolean | ReadOnly;
   addButtonElement?: ClickableElement;
   cancelButtonElement?: ClickableElement;
   inputElement?: ElementOrGenerator;
@@ -144,11 +155,11 @@ interface JsonTreeProps {
   minusMenuElement?: ClickableElement;
   plusMenuElement?: ClickableElement;
   fallback?: ReactElement;
-  beforeRemoveAction?: (...args: any) => Promise<any>;
-  beforeAddAction?: (...args: any) => Promise<any>;
-  beforeUpdateAction?: (...args: any) => any;
-  logger?: object;
-  onSubmitValueParser?: (...args: any) => any;
+  beforeRemoveAction?: BeforeAction;
+  beforeAddAction?: BeforeAction;
+  beforeUpdateAction?: BeforeAction;
+  logger?: Logger;
+  onSubmitValueParser?: SubmitValueParser;
 }
 
 export {

@@ -1,5 +1,4 @@
-import type { ComponentProps } from 'react';
-import type { ReactElement } from 'react';
+import type { ComponentProps, ReactElement, ReactNode } from 'react';
 import React, { Fragment } from 'react';
 
 import { ScrollArea } from './ScrollArea.tsx';
@@ -44,7 +43,7 @@ const list = (filler: (data: number) => ReactElement) => {
 
 export default {
   component: ScrollArea,
-  decorators: [(storyFn: () => any) => <Wrapper>{storyFn()}</Wrapper>],
+  decorators: [(storyFn: () => ReactNode) => <Wrapper>{storyFn()}</Wrapper>],
 };
 
 export const Vertical = () => (

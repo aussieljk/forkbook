@@ -13,7 +13,10 @@ const LEFT_BUTTON = 0;
 const isPlainLeftClick = (e: MouseEvent<HTMLAnchorElement>) =>
   e.button === LEFT_BUTTON && !e.altKey && !e.ctrlKey && !e.metaKey && !e.shiftKey;
 
-const cancelled = (e: MouseEvent<HTMLAnchorElement>, cb = (_e: any) => {}) => {
+const cancelled = (
+  e: MouseEvent<HTMLAnchorElement>,
+  cb = (_e: MouseEvent<HTMLAnchorElement>) => {}
+) => {
   if (isPlainLeftClick(e)) {
     e.preventDefault();
     cb(e);

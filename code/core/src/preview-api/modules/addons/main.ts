@@ -14,9 +14,10 @@ export class AddonStore {
 
   private channel: Channel | undefined;
 
-  private promise: any;
+  private promise: Promise<Channel>;
 
-  private resolve: any;
+  // The promise executor sets it, and it runs in the constructor.
+  private resolve!: () => void;
 
   getChannel = (): Channel => {
     if (this.channel) {

@@ -60,7 +60,7 @@ export const setPath = (selection?: Selection) => {
 };
 
 type ValueOf<T> = T[keyof T];
-const isObject = (val: Record<string, any>): val is object =>
+const isObject = (val: unknown): val is object =>
   val != null && typeof val === 'object' && Array.isArray(val) === false;
 
 const getFirstString = (v: ValueOf<Record<PropertyKey, unknown>>): string | void => {
@@ -73,7 +73,7 @@ const getFirstString = (v: ValueOf<Record<PropertyKey, unknown>>): string | void
   if (Array.isArray(v)) {
     return getFirstString(v[0]);
   }
-  if (isObject(v as Record<PropertyKey, unknown>)) {
+  if (isObject(v)) {
     return getFirstString(
       Object.values(v as Record<PropertyKey, unknown>).filter(Boolean) as string[]
     );

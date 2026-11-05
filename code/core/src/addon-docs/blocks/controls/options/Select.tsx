@@ -6,7 +6,12 @@ import { logger } from '@aussieljk/forkbook/internal/client-logger';
 import { ChevronDownIcon } from 'lucide-react';
 
 import { getControlId } from '../helpers.ts';
-import type { ControlProps, NormalizedOptionsConfig, OptionsSelection } from '../types.ts';
+import type {
+  ControlProps,
+  NormalizedOptionsConfig,
+  OptionsMultiSelection,
+  OptionsSelection,
+} from '../types.ts';
 import { selectedKey, selectedKeys, selectedValues } from './helpers.ts';
 import styles from './Select.module.css';
 
@@ -76,7 +81,8 @@ const MultiSelect: FC<SelectProps> = ({
       .map((option) => option.value);
     onChange(selectedValues(selection, options));
   };
-  const selection = selectedKeys(value, options);
+  // A multi-select value is always an array.
+  const selection = selectedKeys(value as OptionsMultiSelection | undefined, options);
   const controlId = getControlId(name, storyId, controlsId);
 
   const readonly = !!argType?.table?.readonly;

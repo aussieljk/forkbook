@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import React from 'react';
 
 import type { StoryObj } from '@aussieljk/forkbook/react-vite';
@@ -71,7 +71,7 @@ const Tooltip = ({ onHide }: TooltipProps) => (
 export default {
   component: WithTooltip,
   decorators: [
-    (storyFn: any) => (
+    (storyFn: () => ReactNode) => (
       <ViewPort>
         <BackgroundBox>
           <Spacer />

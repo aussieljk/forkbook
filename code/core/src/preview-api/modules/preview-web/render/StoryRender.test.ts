@@ -10,6 +10,8 @@ import {
 import { ArgTypesRemovedFromStoryContextError } from '@aussieljk/forkbook/internal/preview-errors';
 import type {
   PreparedStory,
+  RenderContextCallbacks,
+  RenderToCanvas,
   Renderer,
   StoryContext,
   StoryIndexEntry,
@@ -39,9 +41,16 @@ const createGate = (): [Promise<void>, () => void] => {
   });
   return [gate, openGate];
 };
+type Callbacks = RenderContextCallbacks<Renderer>;
+
+type StoryContextResult = ReturnType<StoryStore<Renderer>['getStoryContext']>;
+
+/** Callbacks with only the given functions. The tests do not call the others. */
+const callbacks = (overrides: Partial<Callbacks> = {}) => overrides as Callbacks;
+
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-window.location = { reload: vi.fn() } as any;
+(window as { location: unknown }).location = { reload: vi.fn() };
 
 const mountSpy = vi.fn(async (context) => {
   await context.renderToCanvas();
@@ -61,7 +70,7 @@ const buildStory = (overrides: Partial<PreparedStory> = {}): PreparedStory =>
     playFunction: vi.fn(),
     mount: (context: StoryContext) => () => mountSpy(context),
     ...overrides,
-  }) as any;
+  }) as PreparedStory;
 
 const buildStore = (overrides: Partial<StoryStore<Renderer>> = {}): StoryStore<Renderer> =>
   ({
@@ -71,7 +80,7 @@ const buildStore = (overrides: Partial<StoryStore<Renderer>> = {}): StoryStore<R
     addCleanupCallbacks: vi.fn(),
     cleanupStory: vi.fn(),
     ...overrides,
-  }) as any;
+  }) as Partial<StoryStore<Renderer>> as StoryStore<Renderer>;
 
 beforeEach(() => {
   vi.restoreAllMocks();
@@ -83,15 +92,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      {} as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(story.playFunction).toHaveBeenCalled();
   });
 
@@ -100,15 +109,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      {} as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: false },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(story.playFunction).not.toHaveBeenCalled();
   });
 
@@ -118,20 +127,23 @@ describe('StoryRender', () => {
     const renderToScreen = vi.fn();
 
     const story = buildStory({
-      applyLoaders: vi.fn(() => loaderGate as any),
+      applyLoaders: vi.fn(async () => {
+        await loaderGate;
+        return {};
+      }),
     });
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
       renderToScreen,
-      {} as any,
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
     // Arrange - render (blocked by loaders)
-    render.renderToElement({} as any);
+    render.renderToElement({} as HTMLElement);
     expect(story.applyLoaders).toHaveBeenCalledOnce();
     expect(render.phase).toBe('loading');
 
@@ -163,15 +175,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      {} as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(mountSpy).toHaveBeenCalledOnce();
   });
 
@@ -202,17 +214,21 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore({
-        getStoryContext: () => ({ argTypes, reporting: new ReporterAPI() }) as any,
+        getStoryContext: () =>
+          ({
+            argTypes,
+            reporting: new ReporterAPI(),
+          }) as Partial<StoryContextResult> as StoryContextResult,
       }),
       renderToScreen,
-      {} as any,
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
 
     expect(hookContexts).toHaveLength(5);
     for (const context of hookContexts) {
@@ -232,15 +248,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      {} as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(mountSpy).toHaveBeenCalledOnce();
   });
 
@@ -254,15 +270,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      view as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(view),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(view.showException).toHaveBeenCalled();
   });
 
@@ -277,15 +293,15 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn() as any,
-      view as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(view),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(view.showException).toHaveBeenCalled();
   });
 
@@ -296,7 +312,7 @@ describe('StoryRender', () => {
       return context.canvas;
     });
     const story = buildStory({
-      mount: (context) => () => actualMount(context) as any,
+      mount: (context) => () => actualMount(context),
       usesMount: true,
       playFunction: async ({ mount }) => {
         expect(render.phase).toBe('loading');
@@ -307,17 +323,17 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       new Channel({}),
       buildStore(),
-      vi.fn(() => {
+      vi.fn<RenderToCanvas<Renderer>>(async () => {
         expect(render.phase).toBe('rendering');
-      }) as any,
-      {} as any,
+      }),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
       story
     );
 
-    await render.renderToElement({} as any);
+    await render.renderToElement({} as HTMLElement);
     expect(actualMount).toHaveBeenCalled();
   });
 
@@ -337,8 +353,8 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       channel,
       store,
-      vi.fn() as any,
-      {} as any,
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks(),
       entry.id,
       'story',
       { autoplay: true },
@@ -346,7 +362,7 @@ describe('StoryRender', () => {
     );
 
     // Act - render, resolve finish gate, teardown
-    render.renderToElement({} as any);
+    render.renderToElement({} as HTMLElement);
     await tick(); // go from 'loading' to 'rendering' phase
     resolveFinishGate();
     await tick(); // go from 'rendering' to 'finished' phase
@@ -380,10 +396,10 @@ describe('StoryRender', () => {
     const render = new StoryRender(
       channel,
       store,
-      vi.fn() as any,
-      {
+      vi.fn<RenderToCanvas<Renderer>>(),
+      callbacks({
         showException: vi.fn(),
-      } as any,
+      }),
       entry.id,
       'story',
       { autoplay: true },
@@ -391,7 +407,7 @@ describe('StoryRender', () => {
     );
 
     // Act - render, reject finish gate, teardown
-    render.renderToElement({} as any);
+    render.renderToElement({} as HTMLElement);
     await tick(); // go from 'loading' to 'rendering' phase
     rejectFinishGate();
     await tick(); // go from 'rendering' to 'finished' phase
@@ -412,15 +428,15 @@ describe('StoryRender', () => {
       const mockStore = buildStore({
         loadStory: vi.fn(async () => {
           await importGate;
-          return {};
-        }) as any,
+          return buildStory();
+        }),
       });
 
       const render = new StoryRender(
         new Channel({}),
         mockStore,
         vi.fn(),
-        {} as any,
+        callbacks(),
         entry.id,
         'story'
       );
@@ -443,15 +459,15 @@ describe('StoryRender', () => {
       const render = new StoryRender(
         channel,
         buildStore(),
-        vi.fn() as any,
-        {} as any,
+        vi.fn<RenderToCanvas<Renderer>>(),
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
         story
       );
 
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       await vi.waitFor(() => expect(render.phase).toBe('completing'));
       await render.teardown();
       openCompletingGate();
@@ -459,7 +475,7 @@ describe('StoryRender', () => {
 
       const phases = emitSpy.mock.calls
         .filter(([event]) => event === STORY_RENDER_PHASE_CHANGED)
-        .map(([, { newPhase }]) => newPhase);
+        .map(([, payload]) => (payload as { newPhase: string }).newPhase);
       expect(phases).toEqual(['loading', 'rendering', 'completing', 'aborted']);
       expect(emitSpy).not.toHaveBeenCalledWith(STORY_RENDERED, expect.anything());
       expect(emitSpy).not.toHaveBeenCalledWith(STORY_FINISHED, expect.anything());
@@ -481,15 +497,15 @@ describe('StoryRender', () => {
       const render = new StoryRender(
         channel,
         buildStore(),
-        vi.fn() as any,
-        {} as any,
+        vi.fn<RenderToCanvas<Renderer>>(),
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
         story
       );
 
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       await vi.waitFor(() => expect(render.phase).toBe('completing'));
       const remounted = render.remount();
       await vi.waitFor(() => expect(render.phase).toBe('playing'));
@@ -500,7 +516,7 @@ describe('StoryRender', () => {
 
       const phases = emitSpy.mock.calls
         .filter(([event]) => event === STORY_RENDER_PHASE_CHANGED)
-        .map(([, { newPhase }]) => newPhase);
+        .map(([, payload]) => (payload as { newPhase: string }).newPhase);
       expect(phases.slice(phases.lastIndexOf('rendering'))).toEqual([
         'rendering',
         'playing',
@@ -516,14 +532,17 @@ describe('StoryRender', () => {
       // Arrange - setup StoryRender and async gate blocking applyLoaders
       const [loaderGate] = createGate();
       const story = buildStory({
-        applyLoaders: vi.fn(() => loaderGate as any),
+        applyLoaders: vi.fn(async () => {
+          await loaderGate;
+          return {};
+        }),
       });
       const store = buildStore();
       const render = new StoryRender(
         new Channel({}),
         store,
-        vi.fn() as any,
-        {} as any,
+        vi.fn<RenderToCanvas<Renderer>>(),
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
@@ -531,7 +550,7 @@ describe('StoryRender', () => {
       );
 
       // Act - render (blocked by loaders), teardown
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       expect(story.applyLoaders).toHaveBeenCalledOnce();
       expect(render.phase).toBe('loading');
       render.teardown();
@@ -553,8 +572,8 @@ describe('StoryRender', () => {
       const render = new StoryRender(
         new Channel({}),
         store,
-        renderToScreen as any,
-        {} as any,
+        renderToScreen as RenderToCanvas<Renderer>,
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
@@ -562,7 +581,7 @@ describe('StoryRender', () => {
       );
 
       // Act - render (blocked by renderToScreen), teardown
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       await tick(); // go from 'loading' to 'rendering' phase
       expect(renderToScreen).toHaveBeenCalledOnce();
       expect(render.phase).toBe('rendering');
@@ -579,15 +598,15 @@ describe('StoryRender', () => {
       // Arrange - setup StoryRender and async gate blocking playing
       const [playGate] = createGate();
       const story = buildStory({
-        playFunction: vi.fn(() => playGate as any),
+        playFunction: vi.fn(() => playGate),
       });
       const store = buildStore();
 
       const render = new StoryRender(
         new Channel({}),
         store,
-        vi.fn() as any,
-        {} as any,
+        vi.fn<RenderToCanvas<Renderer>>(),
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
@@ -595,7 +614,7 @@ describe('StoryRender', () => {
       );
 
       // Act - render (blocked by playFn), teardown
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       await tick(); // go from 'loading' to 'beforeEach' phase
       await tick(); // go from 'beforeEach' to 'playing' phase
       expect(story.playFunction).toHaveBeenCalledOnce();
@@ -613,15 +632,18 @@ describe('StoryRender', () => {
       // Arrange - setup StoryRender and async gate blocking applyLoaders
       const [loaderGate] = createGate();
       const story = buildStory({
-        applyLoaders: vi.fn(() => loaderGate as any),
+        applyLoaders: vi.fn(async () => {
+          await loaderGate;
+          return {};
+        }),
       });
       const store = buildStore();
 
       const render = new StoryRender(
         new Channel({}),
         store,
-        vi.fn() as any,
-        {} as any,
+        vi.fn<RenderToCanvas<Renderer>>(),
+        callbacks(),
         entry.id,
         'story',
         { autoplay: true },
@@ -629,7 +651,7 @@ describe('StoryRender', () => {
       );
 
       // Act - render, blocked by loaders
-      render.renderToElement({} as any);
+      render.renderToElement({} as HTMLElement);
       expect(story.applyLoaders).toHaveBeenCalledOnce();
       expect(render.phase).toBe('loading');
       // Act - remount

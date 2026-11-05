@@ -36,7 +36,7 @@ import {
 } from './csf/index.ts';
 import { ReporterAPI } from './reporter-api.ts';
 
-export function picky<T extends Record<string, any>, K extends keyof T>(
+export function picky<T extends Record<string, unknown>, K extends keyof T>(
   obj: T,
   keys: K[]
 ): Partial<Pick<T, K>> {
@@ -342,11 +342,12 @@ export class StoryStore<TRenderer extends Renderer> {
         );
         return acc;
       },
-      {} as Record<string, any>
+      {} as Record<StoryId, unknown>
     );
 
     console.log('extract: stories', stories);
 
-    return stories;
+    // Each entry copies every field of its story that is not a function.
+    return stories as Record<StoryId, StoryContextForEnhancers<TRenderer>>;
   }
 }

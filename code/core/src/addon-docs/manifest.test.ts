@@ -60,6 +60,9 @@ interface ManifestResult {
   components?: ComponentsManifestWithDocs;
 }
 
+/** Preset options with only the fields that `manifests` reads. */
+const options = (fields: object) => fields as Parameters<typeof manifests>[1];
+
 describe('experimental_manifests', () => {
   it('should return existing manifests when no docs entries are found', async () => {
     const existingManifests = {
@@ -88,9 +91,12 @@ describe('experimental_manifests', () => {
       },
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     expect(result).toEqual(existingManifests);
   });
@@ -122,9 +128,12 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     // Should return existing manifests unchanged since docs entry was dropped
     expect(result).toEqual(existingManifests);
@@ -158,9 +167,12 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     expect(result).toHaveProperty('components');
     expect(result).not.toHaveProperty('docs');
@@ -189,7 +201,7 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, { manifestEntries } as any)) as ManifestResult;
+    const result = (await manifests(undefined, options({ manifestEntries }))) as ManifestResult;
 
     expect(result).toHaveProperty('docs');
     expect(result.docs?.docs['standalone--docs']).toMatchObject({
@@ -234,7 +246,7 @@ describe('experimental_manifests', () => {
           meta: { docgen: 'react-component-meta', durationMs: 0 },
         },
       },
-      {
+      options({
         manifestEntries,
         presets: {
           apply: vi.fn().mockResolvedValue({
@@ -242,7 +254,7 @@ describe('experimental_manifests', () => {
             componentsManifest: true,
           }),
         },
-      } as any
+      })
     )) as ManifestResult;
 
     // Shallow refs are structural only; summaries are layered into the static index by core from
@@ -279,15 +291,18 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, {
-      manifestEntries,
-      presets: {
-        apply: vi.fn().mockResolvedValue({
-          docgenServer: true,
-          componentsManifest: true,
-        }),
-      },
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      undefined,
+      options({
+        manifestEntries,
+        presets: {
+          apply: vi.fn().mockResolvedValue({
+            docgenServer: true,
+            componentsManifest: true,
+          }),
+        },
+      })
+    )) as ManifestResult;
 
     // No `error` despite the missing file: ref mode is purely structural.
     expect(result.docs?.docs['missing--docs']).toEqual({
@@ -335,9 +350,12 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     // Unattached docs should be in the docs manifest
     expect(result).toHaveProperty('docs');
@@ -388,9 +406,12 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     expect(result).toHaveProperty('components');
     expect(result).toHaveProperty('docs');
@@ -411,7 +432,7 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, { manifestEntries } as any)) as ManifestResult;
+    const result = (await manifests(undefined, options({ manifestEntries }))) as ManifestResult;
 
     expect(result).toHaveProperty('docs');
     expect(result.docs?.docs['missing--docs']).toEqual({
@@ -449,7 +470,7 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, { manifestEntries } as any)) as ManifestResult;
+    const result = (await manifests(undefined, options({ manifestEntries }))) as ManifestResult;
 
     expect(result).toHaveProperty('docs');
     expect(Object.keys(result.docs?.docs ?? {})).toHaveLength(2);
@@ -482,7 +503,7 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, { manifestEntries } as any)) as ManifestResult;
+    const result = (await manifests(undefined, options({ manifestEntries }))) as ManifestResult;
 
     expect(result).toHaveProperty('docs');
     expect(result.docs?.docs['standalone--docs'].summary).toBe('A standalone documentation page');
@@ -515,9 +536,12 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(existingManifests, {
-      manifestEntries,
-    } as any)) as ManifestResult;
+    const result = (await manifests(
+      existingManifests,
+      options({
+        manifestEntries,
+      })
+    )) as ManifestResult;
 
     expect(result.components?.components.example.docs?.['example--docs'].summary).toBe(
       'An example documentation page'
@@ -544,7 +568,7 @@ describe('experimental_manifests', () => {
       } satisfies DocsIndexEntry,
     ];
 
-    const result = (await manifests(undefined, { manifestEntries } as any)) as ManifestResult;
+    const result = (await manifests(undefined, options({ manifestEntries }))) as ManifestResult;
 
     expect(result).toHaveProperty('docs');
     expect(result.docs?.docs['nosummary--docs'].content).toBe(

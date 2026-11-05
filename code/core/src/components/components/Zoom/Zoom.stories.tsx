@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { ComponentProps, CSSProperties } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import { Zoom } from './Zoom.tsx';
@@ -25,30 +25,30 @@ const EXAMPLE_ELEMENT = (
   />
 );
 
-const TemplateElement = (args: any) => <Zoom.Element {...args} />;
+const TemplateElement = (args: ComponentProps<typeof Zoom.Element>) => <Zoom.Element {...args} />;
 
-export const ElementActualSize = TemplateElement.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-ElementActualSize.args = {
-  scale: 1,
-  children: EXAMPLE_ELEMENT,
+export const ElementActualSize = {
+  render: TemplateElement,
+  args: {
+    scale: 1,
+    children: EXAMPLE_ELEMENT,
+  },
 };
 
-export const ElementZoomedIn = TemplateElement.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-ElementZoomedIn.args = {
-  scale: 0.7,
-  children: EXAMPLE_ELEMENT,
+export const ElementZoomedIn = {
+  render: TemplateElement,
+  args: {
+    scale: 0.7,
+    children: EXAMPLE_ELEMENT,
+  },
 };
 
-export const ElementZoomedOut = TemplateElement.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-ElementZoomedOut.args = {
-  scale: 3,
-  children: EXAMPLE_ELEMENT,
+export const ElementZoomedOut = {
+  render: TemplateElement,
+  args: {
+    scale: 3,
+    children: EXAMPLE_ELEMENT,
+  },
 };
 
 const style: CSSProperties = {
@@ -58,7 +58,7 @@ const style: CSSProperties = {
   position: 'relative',
 };
 
-const TemplateIFrame = (args: any) => {
+const TemplateIFrame = (args: { scale: number; active: boolean }) => {
   const iFrameRef = React.useRef<HTMLIFrameElement>(null);
   const [scale, setScale] = useState(1);
   const [loaded, hasLoaded] = useState(false);
@@ -82,43 +82,37 @@ const TemplateIFrame = (args: any) => {
     </Zoom.IFrame>
   );
 };
-export const IFrameActualSize = TemplateIFrame.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-IFrameActualSize.args = {
-  scale: 1,
-  active: true,
-};
-
 // The iFrame stories are disabled because useGlobals works in practice
 // but, for some reason breaks in the stories for Zoom.iFrame
-// @ts-expect-error (to be converted to CSF3)
-IFrameActualSize.parameters = {
-  chromatic: { disableSnapshot: true },
+export const IFrameActualSize = {
+  render: TemplateIFrame,
+  args: {
+    scale: 1,
+    active: true,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
-export const IFrameZoomedIn = TemplateIFrame.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-IFrameZoomedIn.args = {
-  scale: 0.7,
-  active: true,
+export const IFrameZoomedIn = {
+  render: TemplateIFrame,
+  args: {
+    scale: 0.7,
+    active: true,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
-// @ts-expect-error (to be converted to CSF3)
-IFrameZoomedIn.parameters = {
-  chromatic: { disableSnapshot: true },
-};
-
-export const IFrameZoomedOut = TemplateIFrame.bind({});
-
-// @ts-expect-error (to be converted to CSF3)
-IFrameZoomedOut.args = {
-  scale: 3,
-  active: true,
-};
-
-// @ts-expect-error (to be converted to CSF3)
-IFrameZoomedOut.parameters = {
-  chromatic: { disableSnapshot: true },
+export const IFrameZoomedOut = {
+  render: TemplateIFrame,
+  args: {
+    scale: 3,
+    active: true,
+  },
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };

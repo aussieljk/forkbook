@@ -378,11 +378,11 @@ export class Preview<TRenderer extends Renderer> {
         payload: { argTypes: story?.argTypes || {} },
         error: null,
       } satisfies ResponseData<ArgTypesResponsePayload>);
-    } catch (e: any) {
+    } catch (e) {
       this.channel.emit(ARGTYPES_INFO_RESPONSE, {
         id,
         success: false,
-        error: e?.message,
+        error: (e as Error | undefined)?.message as string,
       } satisfies ResponseData<ArgTypesResponsePayload>);
     }
   }

@@ -3,14 +3,14 @@
  * Get Object type.
  *
  * @param obj {*} object to get type
- * @returns {any}
+ * @returns {string} The type name, for example 'Object' or 'Iterable'
  */
-export function getObjectType(obj: any) {
+export function getObjectType(obj: unknown) {
   if (
     obj !== null &&
     typeof obj === 'object' &&
     !Array.isArray(obj) &&
-    typeof obj[Symbol.iterator] === 'function'
+    typeof (obj as Partial<Iterable<unknown>>)[Symbol.iterator] === 'function'
   ) {
     return 'Iterable';
   }

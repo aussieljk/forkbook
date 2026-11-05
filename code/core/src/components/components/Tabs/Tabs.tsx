@@ -71,7 +71,7 @@ export interface TabsProps {
   selected?: string;
   actions?: {
     onSelect: (id: string) => void;
-  } & Record<string, any>;
+  } & Record<string, unknown>;
   backgroundColor?: string;
   absolute?: boolean;
   bordered?: boolean;

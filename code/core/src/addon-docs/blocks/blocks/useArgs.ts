@@ -37,7 +37,7 @@ export const useArgsIfDefined = (
     return () => context.channel.off(STORY_ARGS_UPDATED, onArgsUpdated);
   }, [storyId, context.channel]);
   const updateArgs = useCallback(
-    (updatedArgs: any) => context.channel.emit(UPDATE_STORY_ARGS, { storyId, updatedArgs }),
+    (updatedArgs: Args) => context.channel.emit(UPDATE_STORY_ARGS, { storyId, updatedArgs }),
     [storyId, context.channel]
   );
   const resetArgs = useCallback(

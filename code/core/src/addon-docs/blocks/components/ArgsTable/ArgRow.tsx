@@ -7,12 +7,12 @@ import type { ArgControlProps } from './ArgControl.tsx';
 import { ArgControl } from './ArgControl.tsx';
 import { ArgJsDoc } from './ArgJsDoc.tsx';
 import { ArgValue } from './ArgValue.tsx';
-import type { ArgType, Args, TableAnnotation } from './types.ts';
+import type { ArgRowType, Args, TableAnnotation } from './types.ts';
 import styles from './ArgRow.module.css';
 
 interface ArgRowProps {
-  row: ArgType;
-  arg: any;
+  row: ArgRowType;
+  arg: unknown;
   updateArgs?: (args: Args) => void;
   compact?: boolean;
   expandable?: boolean;
@@ -22,7 +22,7 @@ interface ArgRowProps {
   docsLang?: string;
 }
 
-const toSummary = (value: any) => {
+const toSummary = (value: ArgRowType['type'] | string) => {
   if (!value) {
     return value;
   }
@@ -36,7 +36,7 @@ export const ArgRow: FC<ArgRowProps> = (props) => {
   const table = (row.table || {}) as TableAnnotation;
   const type = table.type || toSummary(row.type);
   const defaultValue = table.defaultValue;
-  const required = row.type?.required;
+  const required = typeof row.type === 'object' ? row.type.required : undefined;
   const hasDescription = description != null && description !== '';
 
   return (

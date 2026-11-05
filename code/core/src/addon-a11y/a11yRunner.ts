@@ -86,12 +86,12 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
   // We do this workaround when Vite projects can't optimize deps in pnpm projects
   // as axe-core is UMD and therefore won't resolve.
   // In that case, we just use the global axe (which will be there as a side effect of UMD import).
-  const axe = axeCore?.default || (globalThis as any).axe;
+  const axe = axeCore?.default || (globalThis as unknown as { axe: typeof axeCore.default }).axe;
 
   const { config = {}, options = {} } = input;
 
-  // @ts-expect-error - the whole point of this is to error if 'element' is passed
-  if (input.element) {
+  // 'element' is not an A11yParameters key, but users may still pass it
+  if ('element' in input && input.element) {
     throw new ElementA11yParameterError();
   }
 
@@ -101,26 +101,27 @@ export const run = async (input: A11yParameters = DEFAULT_PARAMETERS, storyId: s
   };
 
   if (input.context) {
-    const hasInclude =
-      typeof input.context === 'object' &&
-      'include' in input.context &&
-      input.context.include !== undefined;
-    const hasExclude =
-      typeof input.context === 'object' &&
-      'exclude' in input.context &&
-      input.context.exclude !== undefined;
+    const inputContext = input.context;
+    const include =
+      typeof inputContext === 'object' && 'include' in inputContext
+        ? inputContext.include
+        : undefined;
+    const exclude =
+      typeof inputContext === 'object' && 'exclude' in inputContext
+        ? inputContext.exclude
+        : undefined;
 
     // 1. if context.include exists, use it
-    if (hasInclude) {
-      context.include = (input.context as any).include as ContextProp;
-    } else if (!hasInclude && !hasExclude) {
+    if (include !== undefined) {
+      context.include = include as ContextProp;
+    } else if (exclude === undefined) {
       // 2. if context exists, but it's not an object with include or exclude, it's an implicit include to be used directly
-      context.include = input.context as ContextProp;
+      context.include = inputContext as ContextProp;
     }
 
     // 3. if context.exclude exists, merge it with the default exclude
-    if (hasExclude) {
-      context.exclude = (context.exclude as any).concat((input.context as any).exclude);
+    if (exclude !== undefined) {
+      context.exclude = (context.exclude as string[]).concat(exclude as string[]);
     }
   }
 

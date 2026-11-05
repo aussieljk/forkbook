@@ -125,7 +125,7 @@ function renderArgTypesTables({
   const filteredMainRows = filterArgTypes(mainRows, include, exclude);
 
   if (Object.keys(subcomponentRows).length === 0) {
-    return <PureArgsTable rows={filteredMainRows as any} sort={sort} docsLang={docsLang} />;
+    return <PureArgsTable rows={filteredMainRows} sort={sort} docsLang={docsLang} />;
   }
 
   const tabs = {
@@ -141,7 +141,7 @@ function renderArgTypesTables({
     ),
   };
 
-  return <TabbedArgsTable tabs={tabs as any} sort={sort} docsLang={docsLang} />;
+  return <TabbedArgsTable tabs={tabs} sort={sort} docsLang={docsLang} />;
 }
 
 const LegacyArgTypes: FC<ArgTypesProps> = (props) => {

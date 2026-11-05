@@ -9,7 +9,7 @@ export interface DocgenType {
   name: string;
   raw?: string;
   /** For `enum`: the source text of each literal, for example `[{ value: '"small"' }]`. */
-  value?: any;
+  value?: unknown;
 }
 
 export interface DocgenPropDefaultValue {

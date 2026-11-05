@@ -5,30 +5,36 @@ import type { Box, ClickEventDetails, Highlight, HighlightOptions } from './type
 
 const svgElements = 'svg,path,rect,circle,line,polyline,polygon,ellipse,text'.split(',');
 
-export const createElement = (type: string, props: Record<string, any> = {}, children?: any[]) => {
+export const createElement = (
+  type: string,
+  props: Record<string, unknown> = {},
+  children?: unknown[]
+) => {
   const element = svgElements.includes(type)
     ? document.createElementNS('http://www.w3.org/2000/svg', type)
     : document.createElement(type);
 
   Object.entries(props).forEach(([key, val]) => {
     if (/[A-Z]/.test(key)) {
+      // A camel case key, for example `onClick`, holds an event handler.
+      const handler = val as () => void;
       if (key === 'onClick') {
-        element.addEventListener('click', val);
+        element.addEventListener('click', handler);
         (element as HTMLButtonElement).addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            val();
+            handler();
           }
         });
       }
       if (key === 'onMouseEnter') {
-        element.addEventListener('mouseenter', val);
+        element.addEventListener('mouseenter', handler);
       }
       if (key === 'onMouseLeave') {
-        element.addEventListener('mouseleave', val);
+        element.addEventListener('mouseleave', handler);
       }
     } else {
-      element.setAttribute(key, val);
+      element.setAttribute(key, String(val));
     }
   });
 
@@ -73,13 +79,16 @@ export const normalizeOptions = (options: HighlightOptions): Highlight => {
   };
 };
 
-export const isFunction = (obj: unknown): obj is (...args: any[]) => any => obj instanceof Function;
+export const isFunction = (obj: unknown): obj is (...args: never[]) => unknown =>
+  obj instanceof Function;
 
 type Listener<T> = (value: T) => void | (() => void);
 
-const state = new Map<symbol, any>();
-const listeners = new Map<symbol, Listener<any>[]>();
-const teardowns = new Map<Listener<any>, ReturnType<Listener<any>>>();
+// Each store has its own value type, so the shared maps hold `unknown` values. `useStore` reads
+// them back with its own type.
+const state = new Map<symbol, unknown>();
+const listeners = new Map<symbol, Listener<never>[]>();
+const teardowns = new Map<Listener<never>, ReturnType<Listener<never>>>();
 
 export const useStore = <T>(initialValue?: T) => {
   const key = Symbol();
@@ -89,10 +98,10 @@ export const useStore = <T>(initialValue?: T) => {
   const get = () => state.get(key) as T;
   const set = (update: T | ((state: T) => T)) => {
     const current = state.get(key) as T;
-    const next = isFunction(update) ? update(current) : update;
+    const next = update instanceof Function ? update(current) : update;
     if (next !== current) {
       state.set(key, next);
-      listeners.get(key)?.forEach((listener) => {
+      (listeners.get(key) as Listener<T>[] | undefined)?.forEach((listener) => {
         teardowns.get(listener)?.();
         teardowns.set(listener, listener(next));
       });

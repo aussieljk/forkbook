@@ -5,7 +5,7 @@ import { dedent } from 'ts-dedent';
 import { compile, compileSync } from './index.ts';
 
 expect.addSnapshotSerializer({
-  serialize: (val: any) => (typeof val === 'string' ? val : val.toString()),
+  serialize: (val: unknown) => (typeof val === 'string' ? val : String(val)),
   test: (_val) => true,
 });
 

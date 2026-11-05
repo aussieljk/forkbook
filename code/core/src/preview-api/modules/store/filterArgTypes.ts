@@ -1,7 +1,5 @@
 import type { StrictArgTypes } from '@aussieljk/forkbook/internal/types';
 
-import { pickBy } from 'es-toolkit/object';
-
 export type PropDescriptor = string[] | RegExp;
 
 const matches = (name: string, descriptor: PropDescriptor) =>
@@ -17,9 +15,11 @@ export const filterArgTypes = (
   }
   return (
     argTypes &&
-    pickBy(argTypes, (argType, key) => {
-      const name = argType.name || key.toString();
-      return !!(!include || matches(name, include)) && (!exclude || !matches(name, exclude));
-    })
+    Object.fromEntries(
+      Object.entries(argTypes).filter(([key, argType]) => {
+        const name = argType.name || key;
+        return !!(!include || matches(name, include)) && (!exclude || !matches(name, exclude));
+      })
+    )
   );
 };

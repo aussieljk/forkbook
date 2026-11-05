@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 
 import styles from './Spaced.module.css';
 
-const toNumber = (input: any) => (typeof input === 'number' ? input : Number(input));
+const toNumber = (input: unknown) => (typeof input === 'number' ? input : Number(input));
 
 export interface SpacedProps {
   children?: React.ReactNode;

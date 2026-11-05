@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 
@@ -17,7 +18,7 @@ export default {
   // The goal of this decorator is to mimic some CSS reset.
   // Like Tailwind CSS or Bulma do, for example.
   decorators: [
-    (storyFn: any) => (
+    (storyFn: () => ReactNode) => (
       <>
         <style>{'ul, ol { list-style: none; }'}</style>
         {storyFn()}

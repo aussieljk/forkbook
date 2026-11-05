@@ -34,7 +34,11 @@ export function simulateDOMContentLoaded() {
   document.dispatchEvent(DOMContentLoadedEvent);
 }
 
-function insertScript($script: any, callback: any, $scriptRoot: any) {
+function insertScript(
+  $script: HTMLScriptElement,
+  callback: () => void,
+  $scriptRoot: HTMLElement | null
+) {
   const scriptEl = document.createElement('script');
   scriptEl.type = $script.type === 'module' ? 'module' : 'text/javascript';
   if ($script.src) {
@@ -57,7 +61,7 @@ function insertScript($script: any, callback: any, $scriptRoot: any) {
   // clean-up
 
   // clean-up
-  $script.parentNode.removeChild($script);
+  $script.parentNode!.removeChild($script);
 
   // run the callback immediately for inline scripts
 
@@ -69,7 +73,13 @@ function insertScript($script: any, callback: any, $scriptRoot: any) {
 
 // runs an array of async functions in sequential order
 
-function insertScriptsSequentially(scriptsToExecute: any[], callback: any, index = 0) {
+type ScriptRunner = (callback: () => void) => void;
+
+function insertScriptsSequentially(
+  scriptsToExecute: ScriptRunner[],
+  callback: () => void,
+  index = 0
+) {
   scriptsToExecute[index](() => {
     index++;
     if (index === scriptsToExecute.length) {
@@ -80,7 +90,7 @@ function insertScriptsSequentially(scriptsToExecute: any[], callback: any, index
   });
 }
 
-export function simulatePageLoad($container: any) {
+export function simulatePageLoad($container: ParentNode) {
   let $scriptsRoot = document.getElementById(SCRIPTS_ROOT_ID);
   if (!$scriptsRoot) {
     $scriptsRoot = document.createElement('div');
@@ -89,17 +99,17 @@ export function simulatePageLoad($container: any) {
   } else {
     $scriptsRoot.innerHTML = '';
   }
-  const $scripts = Array.from($container.querySelectorAll(SCRIPT));
+  const $scripts = Array.from($container.querySelectorAll<HTMLScriptElement>(SCRIPT));
 
   if ($scripts.length) {
-    const scriptsToExecute: any[] = [];
-    $scripts.forEach(($script: any) => {
+    const scriptsToExecute: ScriptRunner[] = [];
+    $scripts.forEach(($script) => {
       const typeAttr = $script.getAttribute('type');
 
       // only run script tags without the type attribute
       // or with a javascript mime attribute value from the list
       if (!typeAttr || runScriptTypes.includes(typeAttr)) {
-        scriptsToExecute.push((callback: any) => insertScript($script, callback, $scriptsRoot));
+        scriptsToExecute.push((callback) => insertScript($script, callback, $scriptsRoot));
       }
     });
 

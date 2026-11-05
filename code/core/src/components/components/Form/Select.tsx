@@ -34,8 +34,8 @@ export const Select = ({
       {/* TODO Remove condition when this issue is resolved: https://github.com/facebook/react/issues/33609 */}
       {!isTestEnvironment() && (
         <button>
-          {/* @ts-expect-error Not yet supported */}
-          <selectedcontent></selectedcontent>
+          {/* React's JSX types do not have the new `selectedcontent` element yet. */}
+          {React.createElement('selectedcontent')}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

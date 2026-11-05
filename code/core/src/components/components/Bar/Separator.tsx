@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import React, { Fragment } from 'react';
 
 import { clsx } from 'clsx';
@@ -14,15 +14,21 @@ export const Separator = ({ force, className, ...props }: SeparatorProps) => (
 );
 Separator.displayName = 'Separator';
 
-export const interleaveSeparators = (list: any[]) =>
-  list.reduce(
+interface SeparatedItem {
+  id?: string;
+  key?: string;
+  render: () => ReactNode;
+}
+
+export const interleaveSeparators = (list: (SeparatedItem | null | undefined | false)[]) =>
+  list.reduce<ReactNode>(
     (acc, item, index) =>
       item ? (
         <Fragment key={item.id || item.key || `f-${index}`}>
           {acc}
           {}
           {index > 0 ? <Separator key={`s-${index}`} /> : null}
-          {item.render() || item}
+          {item.render()}
         </Fragment>
       ) : (
         acc

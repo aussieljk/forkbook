@@ -68,7 +68,7 @@ export class WebView implements View<HTMLElement> {
 
   // Get ready to render a story, returning the element to render to
   prepareForStory(
-    story: PreparedStory<any>,
+    story: Pick<PreparedStory, 'parameters'>,
     { scrollReset = true }: { scrollReset?: boolean } = {}
   ) {
     this.showStory();

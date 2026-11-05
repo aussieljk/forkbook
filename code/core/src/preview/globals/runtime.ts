@@ -13,7 +13,7 @@ import * as TEST from '@aussieljk/forkbook/test';
 import type { globalsNameReferenceMap } from './globals.ts';
 
 // Here we map the name of a module to their VALUE in the global scope.
-export const globalsNameValueMap: Required<Record<keyof typeof globalsNameReferenceMap, any>> = {
+export const globalsNameValueMap: Record<keyof typeof globalsNameReferenceMap, unknown> = {
   '@storybook/global': GLOBAL,
 
   '@aussieljk/forkbook/test': TEST,

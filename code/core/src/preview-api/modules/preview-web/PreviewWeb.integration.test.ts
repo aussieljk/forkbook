@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import React from 'react';
 
-import type { RenderContext } from '@aussieljk/forkbook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { RenderContext, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../../shared/global.ts';
 
@@ -20,6 +21,9 @@ import {
   waitForRender,
 } from './PreviewWeb.mockdata.ts';
 import { WebView } from './WebView.ts';
+
+/** A stand-in for an element. The tests only check that the preview passes it on. */
+const fakeElement = (name: string) => name as unknown as HTMLElement;
 
 // PreviewWeb.test mocks out all rendering
 //   - ie. from`renderToCanvas()` (stories) or`ReactDOM.render()` (docs) in.
@@ -93,12 +97,12 @@ beforeEach(() => {
 
   // We need to import DocsRenderer async because MDX2 is ESM-only so we inline
   // this in each of the async tests below to get it working in Jest
-  // projectAnnotations.parameters.docs.renderer = () => new DocsRenderer() as any;
+  // projectAnnotations.parameters.docs.renderer = () => new DocsRenderer();
 
-  addons.setChannel(mockChannel as any);
+  addons.setChannel(mockChannel as Partial<Channel> as Channel);
 
-  vi.mocked(WebView.prototype).prepareForDocs.mockReturnValue('docs-element' as any);
-  vi.mocked(WebView.prototype).prepareForStory.mockReturnValue('story-element' as any);
+  vi.mocked(WebView.prototype).prepareForDocs.mockReturnValue(fakeElement('docs-element'));
+  vi.mocked(WebView.prototype).prepareForStory.mockReturnValue(fakeElement('story-element'));
 });
 
 /**
@@ -109,10 +113,10 @@ describe('PreviewWeb', { skip: true }, () => {
   describe('initial render', () => {
     it('renders story mode through the stack', async () => {
       const { DocsRenderer } = await import('../../../addon-docs/index.ts');
-      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer() as any;
+      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer();
 
-      projectAnnotations.renderToCanvas.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
-        storyFn()
+      projectAnnotations.renderToCanvas.mockImplementationOnce(
+        ({ storyFn }: RenderContext<Renderer>) => storyFn()
       );
       document.location.search = '?id=component-one--a';
       await new PreviewWeb(importFn, getProjectAnnotations).ready();
@@ -127,13 +131,13 @@ describe('PreviewWeb', { skip: true }, () => {
 
     it('renders docs mode through docs page', async () => {
       const { DocsRenderer } = await import('../../../addon-docs/index.ts');
-      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer() as any;
+      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer();
 
       document.location.search = '?id=component-one--docs&viewMode=docs';
       const preview = new PreviewWeb(importFn, getProjectAnnotations);
 
       const docsRoot = document.createElement('div');
-      vi.mocked(preview.view.prepareForDocs).mockReturnValue(docsRoot as any);
+      vi.mocked(preview.view.prepareForDocs).mockReturnValue(docsRoot);
       componentOneExports.default.parameters.docs.container.mockImplementationOnce(() =>
         React.createElement('div', {}, 'INSIDE')
       );
@@ -159,13 +163,13 @@ describe('PreviewWeb', { skip: true }, () => {
 
     it('sends docs rendering exceptions to showException', async () => {
       const { DocsRenderer } = await import('../../../addon-docs/index.ts');
-      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer() as any;
+      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer();
 
       document.location.search = '?id=component-one--docs&viewMode=docs';
       const preview = new PreviewWeb(importFn, getProjectAnnotations);
 
       const docsRoot = document.createElement('div');
-      vi.mocked(preview.view.prepareForDocs).mockReturnValue(docsRoot as any);
+      vi.mocked(preview.view.prepareForDocs).mockReturnValue(docsRoot);
       componentOneExports.default.parameters.docs.container.mockImplementation(() => {
         throw new Error('Docs rendering error');
       });
@@ -198,15 +202,15 @@ describe('PreviewWeb', { skip: true }, () => {
 
     it('renders story mode through the updated stack', async () => {
       const { DocsRenderer } = await import('../../../addon-docs/index.ts');
-      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer() as any;
+      projectAnnotations.parameters.docs.renderer = () => new DocsRenderer();
 
       document.location.search = '?id=component-one--a';
       const preview = new PreviewWeb(importFn, getProjectAnnotations);
       await preview.ready();
       await waitForRender();
 
-      projectAnnotations.renderToCanvas.mockImplementationOnce(({ storyFn }: RenderContext<any>) =>
-        storyFn()
+      projectAnnotations.renderToCanvas.mockImplementationOnce(
+        ({ storyFn }: RenderContext<Renderer>) => storyFn()
       );
       projectAnnotations.decorators[0].mockClear();
       mockChannel.emit.mockClear();

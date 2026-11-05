@@ -8,6 +8,7 @@ import { CodeIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 
 import convert from 'color-convert';
+import type { KEYWORD } from 'color-convert/conversions';
 import { debounce } from 'es-toolkit/function';
 import { HexColorPicker, HslaStringColorPicker, RgbaStringColorPicker } from 'react-colorful';
 
@@ -95,7 +96,7 @@ const parseHsl = (value: string): ParsedColor => {
 const parseHexOrKeyword = (value: string): ParsedColor => {
   const plain = value.replace('#', '');
   // Try interpreting as keyword or hex
-  const rgb = convert.keyword.rgb(plain as any) || convert.hex.rgb(plain);
+  const rgb = convert.keyword.rgb(plain as KEYWORD) || convert.hex.rgb(plain);
   const hsl = convert.rgb.hsl(rgb);
 
   let mapped = value;
@@ -111,7 +112,7 @@ const parseHexOrKeyword = (value: string): ParsedColor => {
     valid = HEX_REGEXP.test(mapped);
   } else {
     try {
-      convert.keyword.hex(mapped as any);
+      convert.keyword.hex(mapped as KEYWORD);
     } catch (e) {
       valid = false;
     }
@@ -151,7 +152,7 @@ const getRealValue = (value: string, color: ParsedColor | undefined, colorSpace:
   }
   if (!color.hex.startsWith('#')) {
     try {
-      return `#${convert.keyword.hex(color.hex as any)}`;
+      return `#${convert.keyword.hex(color.hex as KEYWORD)}`;
     } catch (e) {
       return fallbackColor.hex;
     }

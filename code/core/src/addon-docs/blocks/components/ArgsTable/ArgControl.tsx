@@ -14,17 +14,19 @@ import {
   RangeControl,
   TextControl,
 } from '../../controls/index.tsx';
-import type { ArgType, Args } from './types.ts';
+import type { ArgRowType, Args } from './types.ts';
 
 export interface ArgControlProps {
-  row: ArgType;
-  arg: any;
+  row: ArgRowType;
+  arg: unknown;
   updateArgs: (args: Args) => void;
   isRequired: boolean;
   storyId?: string;
   controlsId?: string;
 }
 
+// Each control has its own props, so this map can only hold them as `FC<any>`.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Controls: Record<string, FC<any>> = {
   array: ObjectControl,
   object: ObjectControl,
@@ -53,7 +55,9 @@ export const ArgControl: FC<ArgControlProps> = ({
   storyId,
   controlsId,
 }) => {
-  const { key, control } = row;
+  const { key } = row;
+  // Forkbook normalizes a control name to `{ type }` before it gets here.
+  const control = typeof row.control === 'string' ? { type: row.control } : row.control;
 
   const [isFocused, setFocused] = useState(false);
   // box because arg can be a fn (e.g. actions) and useState calls fn's
@@ -66,7 +70,7 @@ export const ArgControl: FC<ArgControlProps> = ({
   }, [isFocused, arg]);
 
   const onChange = useCallback(
-    (argVal: any) => {
+    (argVal: unknown) => {
       setBoxedValue({ value: argVal });
       updateArgs({ [key]: argVal });
       return argVal;
@@ -78,7 +82,9 @@ export const ArgControl: FC<ArgControlProps> = ({
   const onFocus = useCallback(() => setFocused(true), []);
 
   if (!control || control.disable) {
-    const canBeSetup = control?.disable !== true && row?.type?.name !== 'function';
+    const canBeSetup =
+      (!control || control.disable !== true) &&
+      (typeof row.type === 'object' ? row.type.name : undefined) !== 'function';
     if (!canBeSetup) {
       return <NoControl />;
     }
@@ -110,6 +116,6 @@ export const ArgControl: FC<ArgControlProps> = ({
     onBlur,
     onFocus,
   };
-  const Control = Controls[control.type] || NoControl;
+  const Control = (control.type && Controls[control.type]) || NoControl;
   return <Control {...props} {...control} controlType={control.type} />;
 };

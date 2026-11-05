@@ -1,6 +1,6 @@
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { DOCS_RENDERED } from '@aussieljk/forkbook/internal/core-events';
-import type { Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
+import type { Parameters, Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
 import type { CSFFile, ModuleExports, PreparedStory } from '@aussieljk/forkbook/internal/types';
 import type { IndexEntry } from '@aussieljk/forkbook/internal/types';
 import type { RenderContextCallbacks } from '@aussieljk/forkbook/internal/types';
@@ -135,7 +135,7 @@ export class MdxDocsRender<TRenderer extends Renderer> implements Render<TRender
 
     const docsContext = this.docsContext(renderStoryToElement);
 
-    const { docs } = this.store.projectAnnotations.parameters ?? ({} as { docs: any });
+    const { docs } = this.store.projectAnnotations.parameters ?? ({} as Parameters);
     const baseDocsParameter = this.attachedStory?.parameters?.docs ?? docs;
 
     if (!baseDocsParameter) {
@@ -150,7 +150,7 @@ export class MdxDocsRender<TRenderer extends Renderer> implements Render<TRender
     const renderDocs = async () => {
       try {
         // NOTE: it isn't currently possible to use a docs renderer outside of "web" mode.
-        await render(docsContext, docsParameter, canvasElement as any);
+        await render(docsContext, docsParameter, canvasElement as HTMLElement);
         this.channel.emit(DOCS_RENDERED, this.id);
       } catch (err) {
         this.callbacks.showException(err as Error);

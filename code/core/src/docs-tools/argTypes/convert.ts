@@ -18,7 +18,11 @@ export function convert({ name, raw, value }: DocgenType): SBType {
 
   switch (name) {
     case 'enum':
-      return { ...base, name, value: value.map((v: { value: string }) => parseLiteral(v.value)) };
+      return {
+        ...base,
+        name,
+        value: (value as { value: string }[]).map((v) => parseLiteral(v.value)),
+      };
     case 'string':
     case 'number':
     case 'symbol':

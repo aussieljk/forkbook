@@ -1,4 +1,4 @@
-import type { AfterEach } from '@aussieljk/forkbook/internal/types';
+import type { AfterEach, Renderer } from '@aussieljk/forkbook/internal/types';
 
 import { expect } from '@aussieljk/forkbook/test';
 
@@ -7,11 +7,18 @@ import type { A11yParameters } from './params.ts';
 import { getIsVitestStandaloneRun } from './utils.ts';
 import { withVisionSimulator } from './withVisionSimulator.ts';
 
+declare module '@aussieljk/forkbook/test' {
+  interface Assertion<T> {
+    /** Added by `vitest-axe` with `expect.extend` below. */
+    toHaveNoViolations(): Promise<void>;
+  }
+}
+
 let vitestMatchersExtended = false;
 
 export const decorators = [withVisionSimulator];
 
-export const afterEach: AfterEach<any> = async ({
+export const afterEach: AfterEach<Renderer> = async ({
   id: storyId,
   reporting,
   parameters,
@@ -64,13 +71,13 @@ export const afterEach: AfterEach<any> = async ({
         if (getIsVitestStandaloneRun()) {
           if (hasViolations && getMode() === 'failed') {
             if (!vitestMatchersExtended) {
-              // @ts-expect-error (unknown why vitest-axe is not typed correctly)
-              const { toHaveNoViolations } = await import('vitest-axe/matchers');
+              // vitest-axe/matchers.d.ts uses `export type *`, which drops the value exports.
+              const { toHaveNoViolations } =
+                (await import('vitest-axe/matchers')) as typeof import('vitest-axe/dist/matchers');
               expect.extend({ toHaveNoViolations });
               vitestMatchersExtended = true;
             }
 
-            // @ts-expect-error - todo - fix type extension of expect from @aussieljk/forkbook/test
             expect(result).toHaveNoViolations();
           }
         }

@@ -30,13 +30,12 @@ export default {
 export const Basic = (args: ComponentProps<typeof Icons>) => <Icons {...args} />;
 Basic.args = { icon: 'watch' };
 
-export const Labels = (args: ComponentProps<typeof Icons>) => (
+export const Labels = (args: Partial<ComponentProps<typeof Icons>>) => (
   <>
     <Header>{Object.keys(icons).length} icons</Header>
     <List>
       {Object.keys(icons).map((key) => (
         <Item key={key}>
-          {/* @ts-expect-error (not strict) */}
           <Icons icon={key as IconType} aria-hidden {...args} />
           <div className={styles.meta}>{key}</div>
         </Item>
@@ -45,13 +44,12 @@ export const Labels = (args: ComponentProps<typeof Icons>) => (
   </>
 );
 
-export const NoLabels = (args: ComponentProps<typeof Icons>) => (
+export const NoLabels = (args: Partial<ComponentProps<typeof Icons>>) => (
   <>
     <Header>{Object.keys(icons).length} icons</Header>
     <List>
       {Object.keys(icons).map((key) => (
         <Item minimal key={key}>
-          {/* @ts-expect-error (not strict) */}
           <Icons icon={key as IconType} aria-label={key} {...args} />
         </Item>
       ))}
@@ -59,13 +57,12 @@ export const NoLabels = (args: ComponentProps<typeof Icons>) => (
   </>
 );
 
-export const NoDeprecateWarning = (args: ComponentProps<typeof Icons>) => (
+export const NoDeprecateWarning = (args: Partial<ComponentProps<typeof Icons>>) => (
   <>
     <Header>{Object.keys(icons).length} icons</Header>
     <List>
       {Object.keys(icons).map((key) => (
         <Item minimal key={key}>
-          {/* @ts-expect-error (not strict) */}
           <Icons icon={key as IconType} aria-label={key} __suppressDeprecationWarning {...args} />
         </Item>
       ))}

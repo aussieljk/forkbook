@@ -47,7 +47,7 @@ type TextareaProps = Omit<
   height?: number;
 } & React.RefAttributes<HTMLTextAreaElement>;
 
-export const Textarea = forwardRef<any, TextareaProps>(function Textarea(
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
   { size, valid, align, height = 400, className, style, ...props },
   ref
 ) {

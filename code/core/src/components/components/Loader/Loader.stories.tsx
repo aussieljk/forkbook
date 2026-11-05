@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import { Loader } from './Loader.tsx';
 
-const withBackground = (storyFn: any) => (
+const withBackground = (storyFn: () => ReactNode) => (
   <div
     style={{
       position: 'fixed',

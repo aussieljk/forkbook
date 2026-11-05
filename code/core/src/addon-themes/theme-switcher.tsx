@@ -35,7 +35,9 @@ export const ThemeSwitcher = React.memo(function ThemeSwitcher() {
   const [{ theme: selected }, updateGlobals, storyGlobals] = useGlobals();
 
   const channel = addons.getChannel();
-  const fromLast = channel.last(THEMING_EVENTS.REGISTER_THEMES);
+  const fromLast = channel.last(THEMING_EVENTS.REGISTER_THEMES) as
+    | [{ themes?: string[]; defaultTheme?: string }]
+    | undefined;
   const initializeThemeState = Object.assign({}, DEFAULT_ADDON_STATE, {
     themesList: fromLast?.[0]?.themes || [],
     themeDefault: fromLast?.[0]?.defaultTheme || '',

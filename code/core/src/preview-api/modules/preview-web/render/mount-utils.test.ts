@@ -2,20 +2,23 @@ import { expect, test } from 'vitest';
 
 import { getUsedProps } from './mount-utils.ts';
 
+/** A play context. The tests only read its fields as functions. */
+type Context = Record<string, () => Promise<unknown>>;
+
 const StoryWithContext = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     console.log(context);
   },
 };
 
 const StoryWitCanvasElement = {
-  play: async ({ canvasElement }: any) => {
+  play: async ({ canvasElement }: Context) => {
     console.log(canvasElement);
   },
 };
 
 const MountStory = {
-  play: async ({ mount }: any) => {
+  play: async ({ mount }: Context) => {
     await mount();
   },
 };
@@ -27,7 +30,7 @@ const LongDefinition = {
     over,
     multiple,
     lines,
-  }: any) => {
+  }: Context) => {
     await mount();
   },
 };
@@ -39,13 +42,13 @@ const MethodProperty = {
     over,
     multiple,
     lines,
-  }: any) {
+  }: Context) {
     await mount();
   },
 };
 
 const TranspiledDefinition = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const {
       mount,
       veryLongTranspiledDefinitionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn,
@@ -58,7 +61,7 @@ const TranspiledDefinition = {
 };
 
 const LateDestructuring = {
-  play: async (a: any) => {
+  play: async (a: Context) => {
     console.log(a);
     const {
       mount,
@@ -72,7 +75,7 @@ const LateDestructuring = {
 };
 
 const WithComment = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const {
       // a comment
       mount,
@@ -82,7 +85,7 @@ const WithComment = {
 };
 
 const WithTrailingComment = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const {
       mount, // a comment
     } = context;
@@ -91,7 +94,7 @@ const WithTrailingComment = {
 };
 
 const WithMultipleComments = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const {
       mount, // a comment
       // another comment
@@ -101,7 +104,7 @@ const WithMultipleComments = {
 };
 
 const WithBlockComments = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const { mount /* a comment */ } = context;
     /* another comment */
     await mount();
@@ -110,13 +113,13 @@ const WithBlockComments = {
 };
 
 const testingScope = {
-  mount: async (m: any) => {
+  mount: async (m: unknown) => {
     return 'testingScope.mount';
   },
 };
 
 const IncorrectMount = {
-  play: async (context: any) => {
+  play: async (context: Context) => {
     const { mount } = testingScope;
     const { mount: sbMount } = context;
     mount(await sbMount());

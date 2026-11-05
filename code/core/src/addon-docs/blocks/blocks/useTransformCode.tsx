@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
+import type { Args, Renderer, StoryContext } from '@aussieljk/forkbook/internal/csf';
 
 type ReducedStoryContext = Omit<
-  StoryContext<any, Args>,
+  StoryContext<Renderer, Args>,
   'abortSignal' | 'canvasElement' | 'step' | 'context'
 >;
 

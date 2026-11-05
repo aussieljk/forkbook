@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import React from 'react';
 
 import type { DecoratorFunction, Renderer } from '@aussieljk/forkbook/internal/types';
@@ -7,20 +8,21 @@ import { useMemo } from '@aussieljk/forkbook/preview-api';
 import { PARAM_KEY } from '../constants.ts';
 import { initializeThemeState, pluckThemeFromContext } from './helpers.ts';
 
-type Theme = Record<string, any>;
+type Theme = Record<string, unknown>;
 type ThemeMap = Record<string, Theme>;
 
 export interface ProviderStrategyConfiguration {
-  Provider?: any;
-  GlobalStyles?: any;
+  // A theme provider has its own theme type, so `any` lets any provider fit.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Provider?: ComponentType<any>;
+  GlobalStyles?: ComponentType;
   defaultTheme?: string;
   themes?: ThemeMap;
 }
 
 const pluckThemeFromKeyPairTuple = ([_, themeConfig]: [string, Theme]): Theme => themeConfig;
 
-// TODO check with @kasperpeulen: change the types so they can be correctly inferred from context e.g. <Story extends (...args: any[]) => any>
-export const withThemeFromJSXProvider = <TRenderer extends Renderer = any>({
+export const withThemeFromJSXProvider = <TRenderer extends Renderer = Renderer>({
   Provider,
   GlobalStyles,
   defaultTheme,

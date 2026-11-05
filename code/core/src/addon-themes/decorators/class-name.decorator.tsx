@@ -15,7 +15,6 @@ const DEFAULT_ELEMENT_SELECTOR = 'html';
 
 const classStringToArray = (classString: string) => classString.split(' ').filter(Boolean);
 
-// TODO check with @kasperpeulen: change the types so they can be correctly inferred from context e.g. <Story extends (...args: any[]) => any>
 export const withThemeByClassName = <TRenderer extends Renderer = Renderer>({
   themes,
   defaultTheme,

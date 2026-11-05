@@ -310,7 +310,7 @@ export const Func = {
           },
         },
       },
-      control: false,
+      control: false as const,
     },
   },
 };

@@ -47,7 +47,7 @@ export const DefaultAttached: Story = {
 };
 export const OfUndefinedAttached: Story = {
   args: {
-    // @ts-expect-error this is supposed to be undefined
+    // @ts-expect-error `NotDefined` is not an export, so `of` is undefined on purpose
     of: DefaultButtonStories.NotDefined,
   },
   parameters: {

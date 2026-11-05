@@ -1,6 +1,10 @@
 import type {
+  ArgTypesEnhancer,
+  BeforeAll,
   ModuleExports,
   NormalizedProjectAnnotations,
+  Parameters,
+  StepRunner,
 } from '@aussieljk/forkbook/internal/types';
 import type { Renderer } from '@aussieljk/forkbook/internal/types';
 
@@ -9,46 +13,50 @@ import { composeBeforeAllHooks } from './beforeAll.ts';
 import { normalizeArrays } from './normalizeArrays.ts';
 import { composeStepRunners } from './stepRunners.ts';
 
-export function getField<TFieldType = any>(
-  moduleExportList: ModuleExports[],
-  field: string
-): TFieldType | TFieldType[] {
-  return moduleExportList.map((xs) => xs.default?.[field] ?? xs[field]).filter(Boolean);
-}
-
-export function getArrayField<TFieldType = any>(
+/** Gets the value of a field from each module. The caller names the type of the field. */
+export function getField<TFieldType = unknown>(
   moduleExportList: ModuleExports[],
   field: string
 ): TFieldType[] {
-  return getField(moduleExportList, field).reduce((prev: any, cur: any) => {
-    const normalized = normalizeArrays(cur);
-    return [...prev, ...normalized];
-  }, []);
+  return moduleExportList.map((xs) => xs.default?.[field] ?? xs[field]).filter(Boolean);
 }
 
-export function getObjectField<TFieldType = Record<string, any>>(
+export function getArrayField<TFieldType = unknown>(
+  moduleExportList: ModuleExports[],
+  field: string
+): TFieldType[] {
+  return getField<TFieldType | TFieldType[]>(moduleExportList, field).reduce<TFieldType[]>(
+    (prev, cur) => [...prev, ...normalizeArrays(cur)],
+    []
+  );
+}
+
+export function getObjectField<TFieldType = Record<string, unknown>>(
   moduleExportList: ModuleExports[],
   field: string
 ): TFieldType {
   return Object.assign({}, ...getField(moduleExportList, field));
 }
 
-export function getSingletonField<TFieldType = any>(
+export function getSingletonField<TFieldType = unknown>(
   moduleExportList: ModuleExports[],
   field: string
 ): TFieldType {
-  return getField(moduleExportList, field).pop();
+  return getField<TFieldType>(moduleExportList, field).pop() as TFieldType;
 }
 
 export function composeConfigs<TRenderer extends Renderer>(
   moduleExportList: ModuleExports[]
 ): NormalizedProjectAnnotations<TRenderer> {
-  const allArgTypeEnhancers = getArrayField(moduleExportList, 'argTypesEnhancers');
-  const stepRunners = getField(moduleExportList, 'runStep');
-  const beforeAllHooks = getArrayField(moduleExportList, 'beforeAll');
+  const allArgTypeEnhancers = getArrayField<ArgTypesEnhancer<TRenderer>>(
+    moduleExportList,
+    'argTypesEnhancers'
+  );
+  const stepRunners = getField<StepRunner<TRenderer>>(moduleExportList, 'runStep');
+  const beforeAllHooks = getArrayField<BeforeAll>(moduleExportList, 'beforeAll');
 
   return {
-    parameters: combineParameters(...getField(moduleExportList, 'parameters')),
+    parameters: combineParameters(...getField<Parameters>(moduleExportList, 'parameters')),
     decorators: getArrayField([...moduleExportList].reverse(), 'decorators'),
     args: getObjectField(moduleExportList, 'args'),
     argsEnhancers: getArrayField(moduleExportList, 'argsEnhancers'),

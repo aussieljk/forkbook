@@ -9,9 +9,13 @@ import { PANEL_ID } from './constants.ts';
 import './manager.tsx';
 
 vi.mock('@aussieljk/forkbook/manager-api');
-const mockedApi = vi.mocked<api.API>(api as any);
-mockedApi.useStorybookApi = vi.fn(() => ({ getSelectedPanel: vi.fn() }));
-mockedApi.useAddonState = vi.fn();
+const mockedApi = vi.mocked(api);
+mockedApi.useStorybookApi.mockImplementation(
+  () => ({ getSelectedPanel: vi.fn() }) as Partial<api.API> as api.API
+);
+mockedApi.useAddonState.mockReset();
+/** The test passes the mocked module where the manager expects the API object. */
+const managerApi = api as unknown as api.API;
 const mockedAddons = vi.mocked(api.addons);
 const registrationImpl = mockedAddons.register.mock.calls[0][1];
 
@@ -20,7 +24,7 @@ const isPanel = (input: Parameters<typeof mockedAddons.add>[1]): input is Addon_
 describe('A11yManager', () => {
   it('should register the panels', () => {
     // when
-    registrationImpl(mockedApi);
+    registrationImpl(managerApi);
 
     // then
     expect(mockedAddons.add.mock.calls).toHaveLength(2);
@@ -38,8 +42,8 @@ describe('A11yManager', () => {
 
   it('should compute title with no issues', () => {
     // given
-    mockedApi.useAddonState.mockImplementation(() => [{ results: undefined }]);
-    registrationImpl(api as unknown as api.API);
+    mockedApi.useAddonState.mockImplementation(() => [{ results: undefined }, vi.fn()]);
+    registrationImpl(managerApi);
     const title = mockedAddons.add.mock.calls.map(([_, def]) => def).find(isPanel)
       ?.title as () => void;
 
@@ -70,8 +74,9 @@ describe('A11yManager', () => {
           incomplete: [{}, {}],
         },
       },
+      vi.fn(),
     ]);
-    registrationImpl(mockedApi);
+    registrationImpl(managerApi);
     const title = mockedAddons.add.mock.calls.map(([_, def]) => def).find(isPanel)
       ?.title as () => void;
 

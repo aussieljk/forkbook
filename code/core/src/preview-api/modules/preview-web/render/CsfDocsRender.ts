@@ -143,7 +143,7 @@ export class CsfDocsRender<TRenderer extends Renderer> implements Render<TRender
     const renderDocs = async () => {
       try {
         // NOTE: it isn't currently possible to use a docs renderer outside of "web" mode.
-        await render(docsContext, docsParameter, canvasElement as any);
+        await render(docsContext, docsParameter, canvasElement as HTMLElement);
         this.channel.emit(DOCS_RENDERED, this.id);
       } catch (err) {
         this.callbacks.showException(err as Error);

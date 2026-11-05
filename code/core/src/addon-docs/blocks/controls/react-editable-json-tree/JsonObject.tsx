@@ -4,6 +4,19 @@ import { JsonAddValue } from './JsonAddValue.tsx';
 import { JsonNode } from './JsonNode.tsx';
 import { JsonNodeAccordion } from './JsonNodeAccordion.tsx';
 import type { ClickableElement } from './types/ClickableElement.ts';
+import type {
+  AddedValue,
+  BeforeAction,
+  ElementGenerator,
+  IsCollapsed,
+  Logger,
+  OnDeltaUpdate,
+  OnUpdate,
+  ReadOnly,
+  SubmitValueParser,
+  ValueUpdate,
+} from './types/callbacks.ts';
+import { noBeforeAction } from './types/callbacks.ts';
 import * as deltaTypes from './types/deltaTypes.ts';
 
 interface JsonObjectState {
@@ -53,10 +66,10 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
     return props.data !== state.data ? { data: props.data } : null;
   }
 
-  onChildUpdate(childKey: string, childData: any) {
+  onChildUpdate(childKey: string | null, childData: unknown) {
     const { data, keyPath = [] } = this.state;
     // Update data
-    (data as Record<string, any>)[childKey] = childData;
+    data[String(childKey)] = childData;
     // Put new data
     this.setState({
       data,
@@ -79,11 +92,11 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
     });
   }
 
-  handleAddValueAdd({ key, newValue }: any) {
+  handleAddValueAdd({ key = '', newValue }: AddedValue) {
     const { data, keyPath = [], nextDeep: deep } = this.state;
     const { beforeAddAction, logger } = this.props;
 
-    (beforeAddAction || Promise.resolve.bind(Promise))(key, keyPath, deep, newValue)
+    (beforeAddAction || noBeforeAction)(key, keyPath, deep, newValue)
       .then(() => {
         // Update data
         data[key] = newValue;
@@ -113,7 +126,7 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
       const { data, keyPath = [], nextDeep: deep } = this.state;
       const oldValue = data[key];
       // Before Remove Action
-      (beforeRemoveAction || Promise.resolve.bind(Promise))(key, keyPath, deep, oldValue)
+      (beforeRemoveAction || noBeforeAction)(key, keyPath, deep, oldValue)
         .then(() => {
           const deltaUpdateResult = {
             keyPath,
@@ -142,7 +155,7 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
     }));
   }
 
-  handleEditValue({ key, value }: any) {
+  handleEditValue({ key, value }: ValueUpdate) {
     return new Promise<void>((resolve, reject) => {
       const { beforeUpdateAction } = this.props;
       const { data, keyPath = [], nextDeep: deep } = this.state;
@@ -151,7 +164,7 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
       const oldValue = data[key];
 
       // Before update action
-      (beforeUpdateAction || Promise.resolve.bind(Promise))(key, keyPath, deep, oldValue, value)
+      (beforeUpdateAction || noBeforeAction)(key, keyPath, deep, oldValue, value)
         .then(() => {
           // Update value
           data[key] = value;
@@ -318,25 +331,25 @@ export class JsonObject extends Component<JsonObjectProps, JsonObjectState> {
 }
 
 interface JsonObjectProps {
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   name: string;
-  isCollapsed: (...args: any) => any;
+  isCollapsed: IsCollapsed;
   keyPath?: string[];
   deep?: number;
-  handleRemove?: (...args: any) => any;
-  onUpdate: (...args: any) => any;
-  onDeltaUpdate: (...args: any) => any;
-  readOnly: (...args: any) => any;
+  handleRemove?: () => void;
+  onUpdate: OnUpdate;
+  onDeltaUpdate: OnDeltaUpdate;
+  readOnly: ReadOnly;
   dataType?: string;
   addButtonElement?: ClickableElement;
   cancelButtonElement?: ClickableElement;
-  inputElementGenerator: (...args: any) => any;
-  textareaElementGenerator: (...args: any) => any;
+  inputElementGenerator: ElementGenerator;
+  textareaElementGenerator: ElementGenerator;
   minusMenuElement?: ClickableElement;
   plusMenuElement?: ClickableElement;
-  beforeRemoveAction?: (...args: any) => any;
-  beforeAddAction?: (...args: any) => any;
-  beforeUpdateAction?: (...args: any) => any;
-  logger: any;
-  onSubmitValueParser: (...args: any) => any;
+  beforeRemoveAction?: BeforeAction;
+  beforeAddAction?: BeforeAction;
+  beforeUpdateAction?: BeforeAction;
+  logger: Logger;
+  onSubmitValueParser: SubmitValueParser;
 }

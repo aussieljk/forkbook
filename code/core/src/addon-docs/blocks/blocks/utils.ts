@@ -24,7 +24,7 @@ export const getComponentName = (component: Component): string | undefined => {
   return component.name;
 };
 
-export function scrollToElement(element: any, block = 'start') {
+export function scrollToElement(element: Element, block: ScrollLogicalPosition = 'start') {
   element.scrollIntoView({
     behavior: 'smooth',
     block,

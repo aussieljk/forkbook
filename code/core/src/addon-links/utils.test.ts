@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { SELECT_STORY } from '@aussieljk/forkbook/internal/core-events';
 
 import { addons } from '@aussieljk/forkbook/preview-api';
@@ -20,7 +21,7 @@ const mockAddons = vi.mocked(addons);
 describe('preview', () => {
   const channel = { emit: vi.fn() };
   beforeAll(() => {
-    mockAddons.getChannel.mockReturnValue(channel as any);
+    mockAddons.getChannel.mockReturnValue(channel as Partial<Channel> as Channel);
   });
   beforeEach(() => {
     channel.emit.mockReset();
@@ -48,7 +49,7 @@ describe('preview', () => {
 
     it('should select the story (only) provided', () => {
       // simulate a currently selected, but not found as ID
-      // @ts-expect-error (not strict)
+      // @ts-expect-error `linkTo` needs a title, so `undefined` is a type error
       const handler = linkTo(undefined, 'name');
       handler();
 

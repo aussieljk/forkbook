@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { fn } from '@aussieljk/forkbook/test';
@@ -16,7 +17,7 @@ export default {
 };
 
 export const Input = {
-  render: (args: any) => (
+  render: (args: ComponentProps<typeof FieldComponent>) => (
     <FieldComponent {...args}>
       <InputComponent value="Text" onChange={fn().mockName('onChange')} />
     </FieldComponent>
@@ -24,7 +25,7 @@ export const Input = {
 };
 
 export const Select = {
-  render: (args: any) => (
+  render: (args: ComponentProps<typeof FieldComponent>) => (
     <FieldComponent {...args}>
       <SelectComponent value="val2" onChange={fn().mockName('onChange')}>
         <option value="val1">Value 1</option>
@@ -36,7 +37,7 @@ export const Select = {
 };
 
 export const Textarea = {
-  render: (args: any) => (
+  render: (args: ComponentProps<typeof FieldComponent>) => (
     <FieldComponent {...args}>
       <TextareaComponent value="Content" onChange={fn().mockName('onChange')} />
     </FieldComponent>

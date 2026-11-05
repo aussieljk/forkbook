@@ -25,6 +25,8 @@ export type PropDefaultValue = PropSummaryValue;
 export interface PropDef {
   name: string;
   type: PropType | null;
+  // TODO: type as `SBType` when `react/extractArgTypes.ts` handles a missing `sbType`.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sbType?: any;
   required: boolean;
   description?: string;

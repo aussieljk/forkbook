@@ -5,12 +5,14 @@ import type { Addon_StoryContext } from '@aussieljk/forkbook/internal/types';
 import { makeDecorator } from './make-decorator.ts';
 
 // Copy & paste from internal api: client-api/src/client_api
-type DecoratorFn = (fn: any, context: Addon_StoryContext) => any;
+/** The parts of a story context that these tests set. */
+type Context = Pick<Addon_StoryContext, 'name' | 'kind' | 'parameters'>;
+type StoryFn = (context: Context) => unknown;
+type DecoratorFn = (fn: () => unknown, context: Context) => unknown;
 
-const defaultDecorateStory = (getStory: any, decorators: DecoratorFn[]) =>
-  decorators.reduce(
-    (decorated, decorator) => (context: Addon_StoryContext) =>
-      decorator(() => decorated(context), context),
+const defaultDecorateStory = (getStory: StoryFn, decorators: DecoratorFn[]) =>
+  decorators.reduce<StoryFn>(
+    (decorated, decorator) => (context: Context) => decorator(() => decorated(context), context),
     getStory
   );
 

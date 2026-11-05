@@ -45,22 +45,24 @@ const applyParameter = (rootElement: Element, parameter: PseudoStateConfig = {})
   const add = (target: Element, state: PseudoState) =>
     map.set(target, new Set([...(map.get(target) || []), state]));
 
-  (Object.entries(parameter || {}) as [PseudoState, any]).forEach(([state, value]) => {
-    if (typeof value === 'boolean') {
-      // default API - applying pseudo class to root element.
-      if (value) {
-        add(rootElement, `${state}-all` as PseudoState);
+  (Object.entries(parameter || {}) as [PseudoState, PseudoStateConfig[PseudoState]][]).forEach(
+    ([state, value]) => {
+      if (typeof value === 'boolean') {
+        // default API - applying pseudo class to root element.
+        if (value) {
+          add(rootElement, `${state}-all` as PseudoState);
+        }
+      } else if (typeof value === 'string') {
+        // explicit selectors API - applying pseudo class to a specific element
+        querySelectorPiercingShadowDOM(rootElement, value).forEach((el) => add(el, state));
+      } else if (Array.isArray(value)) {
+        // explicit selectors API - we have an array (of strings) recursively handle each one
+        value.forEach((sel) =>
+          querySelectorPiercingShadowDOM(rootElement, sel).forEach((el) => add(el, state))
+        );
       }
-    } else if (typeof value === 'string') {
-      // explicit selectors API - applying pseudo class to a specific element
-      querySelectorPiercingShadowDOM(rootElement, value).forEach((el) => add(el, state));
-    } else if (Array.isArray(value)) {
-      // explicit selectors API - we have an array (of strings) recursively handle each one
-      value.forEach((sel) =>
-        querySelectorPiercingShadowDOM(rootElement, sel).forEach((el) => add(el, state))
-      );
     }
-  });
+  );
 
   map.forEach((states, target) => {
     const classnames = new Set<string>();

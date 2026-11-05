@@ -7,6 +7,7 @@ import type {
   ComponentAnnotations as Meta,
   Store_CSFExports,
   StoryAnnotationsOrFn as Story,
+  StoryContext,
 } from '@aussieljk/forkbook/internal/types';
 
 import { getCoreAnnotations } from '../../../../csf/core-annotations.ts';
@@ -16,7 +17,7 @@ import * as defaultExportAnnotations from './__mocks__/defaultExportAnnotations.
 import * as namedExportAnnotations from './__mocks__/namedExportAnnotations.mockfile.ts';
 import { composeStories, composeStory, setProjectAnnotations } from './portable-stories.ts';
 
-type StoriesModule = Store_CSFExports & Record<string, any>;
+type StoriesModule = Store_CSFExports & Record<string, unknown>;
 
 // Most integration tests for this functionality are located under renderers/react
 describe('composeStory', () => {
@@ -70,7 +71,7 @@ describe('composeStory', () => {
   });
 
   it('injects the core annotations once for plain (CSF3) project annotations', () => {
-    const coreLoaderCount = getCoreAnnotations().flatMap((it) => (it as any).loaders ?? []).length;
+    const coreLoaderCount = getCoreAnnotations().flatMap((it) => it.loaders ?? []).length;
     const finalAnnotations = setProjectAnnotations([{ render: () => {} }]);
 
     expect(coreLoaderCount).toBeGreaterThan(0);
@@ -81,7 +82,7 @@ describe('composeStory', () => {
     // addon-vitest's setup file calls setProjectAnnotations(getProjectAnnotations()), where the
     // CSF4 codegen returns the already-core-composed `definePreview().composed`.
     const composed = definePreview({ renderToCanvas: () => {} }).composed;
-    const coreLoaderCount = getCoreAnnotations().flatMap((it) => (it as any).loaders ?? []).length;
+    const coreLoaderCount = getCoreAnnotations().flatMap((it) => it.loaders ?? []).length;
 
     const finalAnnotations = setProjectAnnotations(composed);
 
@@ -162,7 +163,7 @@ describe('composeStory', () => {
     Story.args = {
       primary: true,
     };
-    Story.play = async (context: any) => {
+    Story.play = async (context) => {
       spy(context);
     };
 
@@ -183,8 +184,8 @@ describe('composeStory', () => {
   });
 
   it('hides argTypes from the play function but passes them to the render function', async () => {
-    const hookContexts: any[] = [];
-    const renderContexts: any[] = [];
+    const hookContexts: StoryContext[] = [];
+    const renderContexts: StoryContext[] = [];
     const Story: Story = {
       argTypes: { label: { name: 'label' } },
       render: (_args, context) => {
@@ -434,7 +435,7 @@ describe('composeStory', () => {
 
   it('should throw an error if Story is undefined', () => {
     expect(() => {
-      // @ts-expect-error (invalid input)
+      // @ts-expect-error `composeStory` needs a story, so `undefined` is a type error
       composeStory(undefined, meta);
     }).toThrow();
   });
@@ -447,7 +448,7 @@ describe('composeStory', () => {
         },
         CSF3Primary: () => {},
       };
-      const Primary = composeStory(module.CSF3Primary, module.default, {});
+      const Primary = composeStory(module.CSF3Primary as Story, module.default, {});
       expect(Primary.id).toBe('example-button--csf-3-primary');
     });
     it('is exposed correctly when composeStory is used and exportsName is passed', () => {
@@ -457,7 +458,13 @@ describe('composeStory', () => {
         },
         CSF3Primary: () => {},
       };
-      const Primary = composeStory(module.CSF3Primary, module.default, {}, {}, 'overwritten');
+      const Primary = composeStory(
+        module.CSF3Primary as Story,
+        module.default,
+        {},
+        {},
+        'overwritten'
+      );
       expect(Primary.id).toBe('example-button--overwritten');
     });
     it("is not unique when composeStory is used and exportsName isn't passed", () => {

@@ -2,22 +2,27 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { logger } from '@aussieljk/forkbook/internal/client-logger';
 
-import { inferArgTypes } from './inferArgTypes.ts';
+import { type InferArgTypesContext, inferArgTypes } from './inferArgTypes.ts';
 
 vi.mock('@aussieljk/forkbook/internal/client-logger');
+
+/** A context with only the fields that a test sets. */
+const context = (fields: object) => fields as InferArgTypesContext;
 
 describe('inferArgTypes', () => {
   it('infers scalar types', () => {
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: true,
-          b: 'string',
-          c: 1,
-          d: () => {},
-          e: Symbol('foo'),
-        },
-      } as any)
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: true,
+            b: 'string',
+            c: 1,
+            d: () => {},
+            e: Symbol('foo'),
+          },
+        })
+      )
     ).toEqual({
       a: { name: 'a', type: { name: 'boolean' } },
       b: { name: 'b', type: { name: 'string' } },
@@ -29,13 +34,15 @@ describe('inferArgTypes', () => {
 
   it('infers array types', () => {
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: [1, 2, 3],
-          b: ['a', 'b', 'c'],
-          c: [],
-        },
-      } as any)
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: [1, 2, 3],
+            b: ['a', 'b', 'c'],
+            c: [],
+          },
+        })
+      )
     ).toEqual({
       a: { name: 'a', type: { name: 'array', value: { name: 'number' } } },
       b: { name: 'b', type: { name: 'array', value: { name: 'string' } } },
@@ -45,14 +52,16 @@ describe('inferArgTypes', () => {
 
   it('infers object types', () => {
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: {
-            x: 'string',
-            y: 1,
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: {
+              x: 'string',
+              y: 1,
+            },
           },
-        },
-      } as any)
+        })
+      )
     ).toEqual({
       a: {
         name: 'a',
@@ -63,15 +72,17 @@ describe('inferArgTypes', () => {
 
   it('infers nested types', () => {
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: [
-            {
-              x: 'string',
-            },
-          ],
-        },
-      } as any)
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: [
+              {
+                x: 'string',
+              },
+            ],
+          },
+        })
+      )
     ).toEqual({
       a: {
         name: 'a',
@@ -81,16 +92,18 @@ describe('inferArgTypes', () => {
   });
 
   it('avoid cycles', () => {
-    const cyclic: any = {};
+    const cyclic: Record<string, unknown> = {};
     cyclic.foo = cyclic;
 
     vi.mocked(logger.warn).mockClear();
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: cyclic,
-        },
-      } as any)
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: cyclic,
+          },
+        })
+      )
     ).toEqual({
       a: {
         name: 'a',
@@ -103,18 +116,20 @@ describe('inferArgTypes', () => {
   it('ensures names', () => {
     vi.mocked(logger.warn).mockClear();
     expect(
-      inferArgTypes({
-        initialArgs: {
-          a: 1,
-        },
-        argTypes: {
-          a: {
-            control: {
-              type: 'range',
+      inferArgTypes(
+        context({
+          initialArgs: {
+            a: 1,
+          },
+          argTypes: {
+            a: {
+              control: {
+                type: 'range',
+              },
             },
           },
-        },
-      } as any)
+        })
+      )
     ).toEqual({
       a: {
         name: 'a',
@@ -127,15 +142,17 @@ describe('inferArgTypes', () => {
   it('ensures names even with no arg', () => {
     vi.mocked(logger.warn).mockClear();
     expect(
-      inferArgTypes({
-        argTypes: {
-          a: {
-            type: {
-              name: 'string',
+      inferArgTypes(
+        context({
+          argTypes: {
+            a: {
+              type: {
+                name: 'string',
+              },
             },
           },
-        },
-      } as any)
+        })
+      )
     ).toEqual({
       a: {
         name: 'a',
@@ -146,19 +163,21 @@ describe('inferArgTypes', () => {
 
   it('does not infer types for args that already have an argType', () => {
     expect(
-      inferArgTypes({
-        initialArgs: {
-          size: 'large',
-        },
-        argTypes: {
-          size: {
-            type: {
-              name: 'enum',
-              value: ['small', 'medium', 'large'],
+      inferArgTypes(
+        context({
+          initialArgs: {
+            size: 'large',
+          },
+          argTypes: {
+            size: {
+              type: {
+                name: 'enum',
+                value: ['small', 'medium', 'large'],
+              },
             },
           },
-        },
-      } as any)
+        })
+      )
     ).toEqual({
       size: {
         name: 'size',

@@ -103,7 +103,7 @@ const ControlsTables: FC<ControlsTablesProps> = ({
       <PureArgsTable
         storyId={storyId}
         controlsId={controlsId}
-        rows={filteredMainRows as any}
+        rows={filteredMainRows}
         sort={sort}
         args={args}
         globals={globals}
@@ -129,7 +129,7 @@ const ControlsTables: FC<ControlsTablesProps> = ({
 
   return (
     <TabbedArgsTable
-      tabs={tabs as any}
+      tabs={tabs}
       sort={sort}
       args={args}
       globals={globals}

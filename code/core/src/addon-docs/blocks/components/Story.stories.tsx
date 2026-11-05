@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 import React from 'react';
 
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
@@ -19,17 +20,28 @@ import * as ButtonStories from '../examples/Button.stories.tsx';
 import type { StoryProps } from './Story.tsx';
 import { Story as StoryComponent, StorySkeleton } from './Story.tsx';
 
-const preview = (window as any).__FORKBOOK_PREVIEW__ as PreviewWeb<ReactRenderer>;
-const channel = (window as any).__FORKBOOK_ADDONS_CHANNEL__ as Channel;
+// The preview sets these globals before stories run.
+const preview = globalThis.__FORKBOOK_PREVIEW__ as PreviewWeb<ReactRenderer>;
+const channel = globalThis.__FORKBOOK_ADDONS_CHANNEL__ as Channel;
 const renderStoryToElement = preview.renderStoryToElement.bind(preview);
 
-type ExtendedStoryProps = Omit<StoryProps, 'story'> & {
+/**
+ * The args of these stories. `StoryProps` is a union of the inline and iframe props, so the args
+ * list the fields of both, and the render function passes them on as `StoryProps`.
+ */
+type ExtendedStoryProps = {
   storyExport: ModuleExport;
+  inline?: boolean;
+  height?: string;
+  primary?: boolean;
+  autoplay?: boolean;
+  forceInitialArgs?: boolean;
+  renderStoryToElement?: DocsContextProps['renderStoryToElement'];
 };
 
 const meta = {
-  // @ts-expect-error getting too complex with props
-  component: StoryComponent,
+  // The args name the story as `storyExport`, and the render function resolves it to `story`.
+  component: StoryComponent as unknown as ComponentType<ExtendedStoryProps>,
   parameters: {
     layout: 'fullscreen',
     relativeCsfPaths: ['../examples/Button.stories'],
@@ -39,13 +51,12 @@ const meta = {
     height: '100px',
     primary: false,
     // NOTE: the real story arg is a PreparedStory, which we'll get in the render function below
-    storyExport: ButtonStories.Primary as any,
+    storyExport: ButtonStories.Primary,
   },
   render({ storyExport, ...args }, { loaded }) {
     const docsContext = loaded.docsContext as DocsContextProps;
     const resolved = docsContext.resolveOf(storyExport, ['story']);
-    // @ts-expect-error getting too complex with props
-    return <StoryComponent {...args} story={resolved.story} />;
+    return <StoryComponent {...({ ...args, story: resolved.story } as StoryProps)} />;
   },
 } satisfies Meta<ExtendedStoryProps>;
 export default meta;
@@ -60,7 +71,6 @@ export const Loading = {
 export const Inline: Story = {
   args: {
     inline: true,
-    // @ts-expect-error getting too complex with props
     autoplay: false,
     forceInitialArgs: false,
     renderStoryToElement,
@@ -71,7 +81,6 @@ export const InlineError: Story = {
   args: {
     storyExport: ButtonStories.ErrorStory,
     inline: true,
-    // @ts-expect-error getting too complex with props
     autoplay: false,
     forceInitialArgs: false,
     renderStoryToElement,
@@ -124,7 +133,6 @@ export const Autoplay: Story = {
   args: {
     storyExport: ButtonStories.Clicking,
     inline: true,
-    // @ts-expect-error getting too complex with props
     autoplay: true,
     renderStoryToElement,
   },

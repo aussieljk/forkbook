@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
-import type { DocsContextProps, ModuleExport } from '@aussieljk/forkbook/internal/types';
+import type { Args, DocsContextProps, ModuleExport } from '@aussieljk/forkbook/internal/types';
 
 import * as ButtonStories from '../examples/Button.stories.tsx';
 import { Preview, PreviewSkeleton } from './Preview.tsx';
@@ -16,7 +16,8 @@ export default {
   },
 };
 
-const preview = (window as any).__FORKBOOK_PREVIEW__;
+// The preview sets this global before stories run.
+const preview = globalThis.__FORKBOOK_PREVIEW__;
 const renderStoryToElement = preview.renderStoryToElement.bind(preview);
 
 const getPreparedStory = (docsContext: DocsContextProps, moduleExport: ModuleExport) => {
@@ -184,7 +185,7 @@ export const GridWith3Columns = () => (
 );
 
 export const WithToolbar = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar>
@@ -217,7 +218,7 @@ export const Wide = () => (
 );
 
 export const WithToolbarMulti = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar>
@@ -243,7 +244,7 @@ export const WithToolbarMulti = (
 );
 
 export const WithFullscreenSingle = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar layout="fullscreen">
@@ -260,7 +261,7 @@ export const WithFullscreenSingle = (
 );
 
 export const WithFullscreenMulti = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar layout="fullscreen">
@@ -286,7 +287,7 @@ export const WithFullscreenMulti = (
 );
 
 export const WithCenteredSingle = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar layout="centered">
@@ -303,7 +304,7 @@ export const WithCenteredSingle = (
 );
 
 export const WithCenteredIframe = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline={false} withToolbar layout="centered">
@@ -317,7 +318,7 @@ export const WithCenteredIframe = (
 );
 
 export const WithCenteredMulti = (
-  args: any,
+  _args: Args,
   { loaded: { docsContext } }: { loaded: { docsContext: DocsContextProps } }
 ) => (
   <Preview inline withToolbar layout="centered">

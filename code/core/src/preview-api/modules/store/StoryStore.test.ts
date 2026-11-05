@@ -46,7 +46,7 @@ const importFn = vi.fn(async (path) => {
   return path === './src/ComponentOne.stories.js' ? componentOneExports : componentTwoExports;
 });
 
-const projectAnnotations: ProjectAnnotations<any> = composeConfigs([
+const projectAnnotations: ProjectAnnotations<Renderer> = composeConfigs([
   {
     initialGlobals: { a: 'b' },
     globalTypes: { a: { name: 'a' } },
@@ -151,7 +151,7 @@ describe('StoryStore', () => {
 
       // The HMR path (setProjectAnnotations) only re-normalizes the incoming project annotations,
       // it never prepends core, so an already-core-composed CSF4 preview stays at core x1.
-      store.setProjectAnnotations(composed as unknown as ProjectAnnotations<any>);
+      store.setProjectAnnotations(composed as unknown as ProjectAnnotations<Renderer>);
 
       expect(store.projectAnnotations.loaders).toEqual(composed.loaders);
       expect(store.projectAnnotations.loaders).toHaveLength(coreLoaderCount);

@@ -16,35 +16,33 @@ const levels: Record<LogLevel, number> = {
 const currentLogLevelString: LogLevel = LOGLEVEL as LogLevel;
 const currentLogLevelNumber: number = levels[currentLogLevelString] || levels.info;
 
-type LoggingFn = (message: any, ...args: any[]) => void;
-
 export const logger = {
-  trace: (message: any, ...rest: any[]): void => {
+  trace: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber <= levels.trace) {
       console.trace(message, ...rest);
     }
   },
-  debug: (message: any, ...rest: any[]): void => {
+  debug: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber <= levels.debug) {
       console.debug(message, ...rest);
     }
   },
-  info: (message: any, ...rest: any[]): void => {
+  info: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber <= levels.info) {
       console.info(message, ...rest);
     }
   },
-  warn: (message: any, ...rest: any[]): void => {
+  warn: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber <= levels.warn) {
       console.warn(message, ...rest);
     }
   },
-  error: (message: any, ...rest: any[]): void => {
+  error: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber <= levels.error) {
       console.error(message, ...rest);
     }
   },
-  log: (message: any, ...rest: any[]): void => {
+  log: (message: unknown, ...rest: unknown[]): void => {
     if (currentLogLevelNumber < levels.silent) {
       console.log(message, ...rest);
     }
@@ -54,7 +52,7 @@ export const logger = {
 const logged = new Set();
 export const once =
   (type: keyof typeof logger) =>
-  (message: any, ...rest: any[]) => {
+  (message: unknown, ...rest: unknown[]) => {
     if (logged.has(message)) {
       return undefined;
     }
@@ -74,7 +72,7 @@ export const deprecate = once('warn');
 
 export const pretty =
   (type: keyof typeof logger) =>
-  (...args: Parameters<LoggingFn>) => {
+  (...args: [message: string, ...rest: unknown[]]) => {
     const argArray: unknown[] = [];
 
     if (args.length) {

@@ -16,7 +16,7 @@ interface ActionLoggerProps {
   api: API;
 }
 
-const safeDeepEqual = (a: any, b: any): boolean => {
+const safeDeepEqual = (a: unknown, b: unknown): boolean => {
   try {
     return deepEqual(a, b);
   } catch (e) {

@@ -4,6 +4,7 @@ import type {
   ChannelArgsSingle,
   ChannelEvent,
   ChannelLike,
+  ChannelSendOptions,
   ChannelTransport,
   EventsKeyValue,
   Listener,
@@ -25,7 +26,7 @@ export class Channel implements ChannelLike {
 
   private events: EventsKeyValue = {};
 
-  private data: Record<string, any> = {};
+  private data: Record<string, unknown[]> = {};
 
   private readonly transports: ChannelTransport[] = [];
 
@@ -58,11 +59,12 @@ export class Channel implements ChannelLike {
     this.events[eventName].push(listener);
   }
 
-  emit(eventName: string, ...args: any) {
+  emit(eventName: string, ...args: unknown[]) {
     const event: ChannelEvent = { type: eventName, args, from: this.sender };
-    let options = {};
-    if (args.length >= 1 && args[0] && args[0].options) {
-      options = args[0].options;
+    let options: ChannelSendOptions = {};
+    const first = args[0] as { options?: ChannelSendOptions } | null | undefined;
+    if (first?.options) {
+      options = first.options;
     }
 
     const handler = () => {
@@ -144,7 +146,7 @@ export class Channel implements ChannelLike {
   }
 
   private onceListener(eventName: string, listener: Listener) {
-    const onceListener: Listener = (...args: any[]) => {
+    const onceListener: Listener = (...args: unknown[]) => {
       this.removeListener(eventName, onceListener);
       return listener(...args);
     };

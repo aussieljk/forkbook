@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import { Button } from '@aussieljk/forkbook/internal/components';
@@ -51,6 +52,12 @@ function ErrorComponent() {
 }
 
 type Panels = Record<string, Omit<ChildrenList[0], 'id'>>;
+
+/**
+ * `TabsState` reads a function child of a tab as its render function. React's JSX types only allow
+ * nodes as children, so the function needs a cast.
+ */
+const asTabChild = (render: (props: never) => unknown) => render as unknown as ReactNode;
 
 const panels: Panels = {
   test1: {
@@ -110,9 +117,9 @@ const panels: Panels = {
 const onSelect = action('onSelect');
 
 const content = Object.entries(panels).map(([k, v]) => (
-  <div key={k} id={k} title={v.title as any}>
-    {/* @ts-expect-error (we know this is broken) */}
-    {v.render}
+  // Every panel title above is a string.
+  <div key={k} id={k} title={v.title as string}>
+    {asTabChild(v.render)}
   </div>
 ));
 
@@ -128,10 +135,9 @@ export const StatefulStatic = {
   render: (args) => (
     <TabsState {...args} initial={args.initial ?? 'test2'}>
       <div id="test1" title="With a function">
-        {
-          (({ active, selected }: { active: boolean; selected: string }) =>
-            active ? <div>{selected} is selected</div> : null) as any
-        }
+        {asTabChild(({ active, selected }: { active: boolean; selected: string }) =>
+          active ? <div>{selected} is selected</div> : null
+        )}
       </div>
       <div id="test2" title="With markup">
         <div>test2 is always active (but visually hidden)</div>
@@ -145,10 +151,9 @@ export const StatefulStaticWithSetButtonTextColors = {
     <div>
       <TabsState {...args} initial={args.initial ?? 'test2'}>
         <div id="test1" title="With a function" color="#e00000">
-          {
-            (({ active, selected }: { active: boolean; selected: string }) =>
-              active ? <div>{selected} is selected</div> : null) as any
-          }
+          {asTabChild(({ active, selected }: { active: boolean; selected: string }) =>
+            active ? <div>{selected} is selected</div> : null
+          )}
         </div>
         <div id="test2" title="With markup" color="green">
           <div>test2 is always active (but visually hidden)</div>
@@ -167,10 +172,9 @@ export const StatefulStaticWithSetBackgroundColor = {
         backgroundColor={args.backgroundColor ?? 'rgba(0,0,0,.05)'}
       >
         <div id="test1" title="With a function" color="#e00000">
-          {
-            (({ active, selected }: { active: boolean; selected: string }) =>
-              active ? <div>{selected} is selected</div> : null) as any
-          }
+          {asTabChild(({ active, selected }: { active: boolean; selected: string }) =>
+            active ? <div>{selected} is selected</div> : null
+          )}
         </div>
         <div id="test2" title="With markup" color="green">
           <div>test2 is always active (but visually hidden)</div>
@@ -359,13 +363,12 @@ export const WithErrorBoundary = {
     await mount(
       <TabsState {...args} initial="test1">
         <div id="test1" title="Normal Tab">
-          {
-            (({ active }: { active: boolean }) =>
-              active ? <div>This tab renders normally</div> : null) as any
-          }
+          {asTabChild(({ active }: { active: boolean }) =>
+            active ? <div>This tab renders normally</div> : null
+          )}
         </div>
         <div id="errorTab" title="Error Tab">
-          {(({ active }: { active: boolean }) => (active ? <ErrorComponent /> : null)) as any}
+          {asTabChild(({ active }: { active: boolean }) => (active ? <ErrorComponent /> : null))}
         </div>
       </TabsState>
     );

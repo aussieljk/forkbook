@@ -10,8 +10,6 @@ import type {
 
 import { renderElement, unmountElement } from '../react/react-dom-client.tsx';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore (these types only work once the package is compiled)
 import {
   AnchorMdx,
   CodeOrSourceMdx,
@@ -19,8 +17,7 @@ import {
   HeadersMdx,
 } from '@aussieljk/forkbook/addon-docs/blocks';
 
-// TS doesn't like that we export a component with types that it doesn't know about (TS4203)
-export const defaultComponents: Record<string, any> = {
+export const defaultComponents = {
   code: CodeOrSourceMdx,
   a: AnchorMdx,
   ...HeadersMdx,

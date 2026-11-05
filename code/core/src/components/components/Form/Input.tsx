@@ -28,7 +28,7 @@ type InputProps = Omit<
   suffix?: string;
 };
 
-export const Input = forwardRef<any, InputProps>(function Input(
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { size, valid, align, value, suffix, className, ...props },
   ref
 ) {

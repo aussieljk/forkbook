@@ -15,8 +15,8 @@ const partialLabels = {
   Bat: 'Batwoman',
 };
 // `Bat` key exists but has an undefined value — must fall back to String(item), not print "undefined".
-const undefinedValueLabels: Record<string, string> = {
-  Bat: undefined as any,
+const undefinedValueLabels: Record<string, string | undefined> = {
+  Bat: undefined,
   Cat: 'Catwoman',
   Rat: 'Ratwoman',
 };
@@ -143,7 +143,7 @@ export const ArrayLabelsIsArray: Story = {
   args: {
     value: prototypeCollisionOptions[0],
     argType: { options: prototypeCollisionOptions },
-    labels: ['Reverse', 'Map', 'Filter'] as any,
+    labels: ['Reverse', 'Map', 'Filter'],
   },
   argTypes: {
     value: {
@@ -165,7 +165,7 @@ export const ArrayInlineLabelsIsArray: Story = {
     type: 'inline-radio',
     value: prototypeCollisionOptions[1],
     argType: { options: prototypeCollisionOptions },
-    labels: ['Reverse', 'Map', 'Filter'] as any,
+    labels: ['Reverse', 'Map', 'Filter'],
   },
   argTypes: {
     value: {

@@ -12,7 +12,7 @@ import { isEqual as deepEqual, isPlainObject } from 'es-toolkit/predicate';
 import { dedent } from 'ts-dedent';
 
 const INCOMPATIBLE = Symbol('incompatible');
-const map = (arg: unknown, argType: InputType): any => {
+const map = (arg: unknown, argType: InputType): unknown => {
   const type = argType.type as SBType;
 
   if (arg === undefined || arg === null || !type) {
@@ -83,17 +83,17 @@ export const mapArgsToTypes = (args: Args, argTypes: ArgTypes): Args => {
   }, {});
 };
 
-export const combineArgs = (value: any, update: any): Args => {
+const combineValues = (value: unknown, update: unknown): unknown => {
   if (Array.isArray(value) && Array.isArray(update)) {
     return update
       .reduce(
         (acc, upd, index) => {
-          acc[index] = combineArgs(value[index], update[index]);
+          acc[index] = combineValues(value[index], update[index]);
           return acc;
         },
         [...value]
       )
-      .filter((v: any) => v !== undefined);
+      .filter((v: unknown) => v !== undefined);
   }
 
   if (!isPlainObject(value) || !isPlainObject(update)) {
@@ -101,7 +101,7 @@ export const combineArgs = (value: any, update: any): Args => {
   }
   return Object.keys({ ...value, ...update }).reduce((acc, key) => {
     if (key in update) {
-      const combined = combineArgs(value[key], update[key]);
+      const combined = combineValues(value[key], update[key]);
 
       if (combined !== undefined) {
         acc[key] = combined;
@@ -110,8 +110,11 @@ export const combineArgs = (value: any, update: any): Args => {
       acc[key] = value[key];
     }
     return acc;
-  }, {} as any);
+  }, {} as Args);
 };
+
+export const combineArgs = (value: Args, update: Args): Args =>
+  combineValues(value, update) as Args;
 
 export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
   return Object.entries(argTypes).reduce((acc, [key, { options }]) => {
@@ -148,7 +151,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
     }
 
     const isArray = Array.isArray(args[key]);
-    const invalidIndex = isArray && args[key].findIndex((val: any) => !options.includes(val));
+    const invalidIndex = isArray && args[key].findIndex((val: unknown) => !options.includes(val));
     const isValidArray = isArray && invalidIndex === -1;
 
     if (args[key] === undefined || options.includes(args[key]) || isValidArray) {
@@ -157,7 +160,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
 
     const field = isArray ? `${key}[${invalidIndex}]` : key;
     const supportedOptions = options
-      .map((opt: any) => (typeof opt === 'string' ? `'${opt}'` : String(opt)))
+      .map((opt) => (typeof opt === 'string' ? `'${opt}'` : String(opt)))
       .join(', ');
     once.warn(`Received illegal value for '${field}'. Supported options: ${supportedOptions}`);
 
@@ -167,7 +170,7 @@ export const validateOptions = (args: Args, argTypes: ArgTypes): Args => {
 
 // TODO -- copied from router, needs to be in a shared location
 export const DEEPLY_EQUAL = Symbol('Deeply equal');
-export const deepDiff = (value: any, update: any): any => {
+export const deepDiff = (value: unknown, update: unknown): unknown => {
   if (typeof value !== typeof update) {
     return update;
   }
@@ -205,7 +208,7 @@ export function groupArgsByTarget<TArgs extends Args = Args>({
   argTypes,
 }: Pick<StoryContext<Renderer, TArgs>, 'args' | 'argTypes'>) {
   const groupedArgs: Record<string, Partial<TArgs>> = {};
-  (Object.entries(args) as [keyof TArgs, any][]).forEach(([name, value]) => {
+  (Object.entries(args) as [keyof TArgs, TArgs[keyof TArgs]][]).forEach(([name, value]) => {
     const { target = UNTARGETED } = (argTypes[name] || {}) as { target?: string };
 
     groupedArgs[target] = groupedArgs[target] || {};

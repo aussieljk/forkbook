@@ -18,18 +18,16 @@ import { SelectControl } from './Select.tsx';
  * While non-primitive values are deprecated, they might still not be valid object keys, so the
  * resulting object is a Label -> Value mapping.
  */
-export const normalizeOptions = (options: Options, labels?: Record<any, string>) => {
+export const normalizeOptions = (options?: Options, labels?: OptionsConfig['labels']) => {
   if (Array.isArray(options)) {
-    return options.reduce((acc, item) => {
+    return options.reduce<Record<string, unknown>>((acc, item) => {
       // Guard against `labels` being an array (e.g. from Svelte docgen), prototype-chain
       // lookups, and keys present with an undefined value (partial label maps).
       // Checking `typeof === 'string'` covers all three: arrays are skipped by the
       // isArray guard, prototype-chain values are functions (not strings), and an
       // explicitly-undefined label value is also not a string.
-      const label =
-        labels != null && !Array.isArray(labels) && typeof labels[item] === 'string'
-          ? labels[item]
-          : String(item);
+      const mapped = labels != null && !Array.isArray(labels) ? labels[String(item)] : undefined;
+      const label = typeof mapped === 'string' ? mapped : String(item);
       acc[label] = item;
       return acc;
     }, {});
@@ -57,7 +55,8 @@ export const OptionsControl: FC<OptionsProps> = (props) => {
     isMulti: type.includes('multi'),
   };
 
-  const Control = Controls[type];
+  // Each control reads the value in the shape its type gives (one value or an array).
+  const Control = Controls[type] as FC<typeof normalized> | undefined;
 
   if (Control) {
     return <Control {...normalized} />;

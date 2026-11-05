@@ -43,7 +43,8 @@ export const FilesControl: FC<FilesControlProps> = ({
   required,
 }) => {
   const inputElement = useRef<HTMLInputElement>(null);
-  const readonly = argType?.control?.readOnly;
+  const readonly =
+    typeof argType?.control === 'object' ? Boolean(argType.control.readOnly) : undefined;
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files) {

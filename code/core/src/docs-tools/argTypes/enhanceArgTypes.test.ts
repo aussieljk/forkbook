@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ArgTypes, StrictInputType } from '@aussieljk/forkbook/internal/types';
+import type {
+  ArgTypes,
+  StoryContextForEnhancers,
+  StrictInputType,
+} from '@aussieljk/forkbook/internal/types';
 
 import { enhanceArgTypes } from './enhanceArgTypes.ts';
 
 expect.addSnapshotSerializer({
-  print: (val: any) => JSON.stringify(val, null, 2),
+  print: (val: unknown) => JSON.stringify(val, null, 2),
   test: (val) => typeof val !== 'string',
 });
 
@@ -16,7 +20,7 @@ const enhance = ({
   isArgsStory = true,
 }: {
   argType?: StrictInputType;
-  arg?: any;
+  arg?: unknown;
   extractedArgTypes?: ArgTypes;
   isArgsStory?: boolean;
 }) => {
@@ -39,8 +43,8 @@ const enhance = ({
     args: { input: arg },
     globals: {},
   };
-  // @ts-expect-error (not strict)
-  return enhanceArgTypes(context);
+  // The context has only the fields that `enhanceArgTypes` reads.
+  return enhanceArgTypes(context as object as StoryContextForEnhancers);
 };
 
 describe('enhanceArgTypes', () => {

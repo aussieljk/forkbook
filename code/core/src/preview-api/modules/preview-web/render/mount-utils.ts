@@ -1,6 +1,6 @@
 // Inspired by Vitest fixture implementation:
 // https://github.com/vitest-dev/vitest/blob/200a4349a2f85686bc7005dce686d9d1b48b84d2/packages/runner/src/fixture.ts
-export function mountDestructured(playFunction?: (...args: any[]) => any): boolean {
+export function mountDestructured(playFunction?: (...args: never[]) => unknown): boolean {
   return playFunction != null && getUsedProps(playFunction).includes('mount');
 }
 
@@ -11,7 +11,7 @@ export function mountDestructured(playFunction?: (...args: any[]) => any): boole
  * @param fn - The function to extract the properties from.
  * @returns An array of property names.
  */
-export function getUsedProps(fn: (...args: unknown[]) => unknown) {
+export function getUsedProps(fn: (...args: never[]) => unknown) {
   const [, args, body] = fn.toString().match(/[^(]*\(([^)]+)\)(?:.*{([^]+)})?/) || [];
   if (!args) {
     return [];

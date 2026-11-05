@@ -12,7 +12,7 @@ const addGroup = (
   vars: CssVars,
   prefix: string,
   group: Record<string, unknown> | undefined,
-  unit: (value: any) => string | undefined = String
+  unit: (value: string | number) => string | undefined = String
 ) => {
   for (const [key, value] of Object.entries(group ?? {})) {
     if (typeof value === 'string' || typeof value === 'number') {

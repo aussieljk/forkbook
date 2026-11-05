@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 
 import { STORY_FINISHED, STORY_PREPARED } from '@aussieljk/forkbook/internal/core-events';
@@ -12,6 +13,13 @@ import { expect, fn, waitFor, within } from '@aussieljk/forkbook/test';
 import { buildQueryState } from '../../shared/open-service/query-state.ts';
 import type { QueryState } from '../../shared/open-service/types.ts';
 import { ControlsPanel } from './ControlsPanel.tsx';
+
+/** A manager context with only the state and API that the panel uses. */
+const asManagerContext = (value: object) =>
+  value as ComponentProps<typeof ManagerContext.Provider>['value'];
+
+const asDocgenService = (value: object) =>
+  value as ComponentProps<typeof ControlsPanel>['docgenService'];
 
 const refId = 'my-ref';
 const storyData = {
@@ -36,7 +44,7 @@ const serviceStoryData = {
 
 // Reproduces the #34553 condition: the story comes from a composed ref, so the host's
 // global `previewInitialized` stays false while the ref's own flag is true.
-const managerContext: any = {
+const managerContext = asManagerContext({
   state: {
     path: storyData.id,
     previewInitialized: false,
@@ -55,9 +63,9 @@ const managerContext: any = {
     off: fn().mockName('api::off'),
     emit: fn().mockName('api::emit'),
   },
-};
+});
 
-const serviceManagerContext: any = {
+const serviceManagerContext = asManagerContext({
   ...managerContext,
   state: {
     ...managerContext.state,
@@ -68,7 +76,7 @@ const serviceManagerContext: any = {
     ...managerContext.api,
     getCurrentStoryData: fn(() => serviceStoryData).mockName('api::getCurrentStoryData'),
   },
-};
+});
 
 // Same story, but not yet prepared. Used by the build-mode story to prove docgen is fetched
 // immediately, without waiting for prepare or render.
@@ -77,41 +85,41 @@ const serviceUnpreparedStoryData = {
   prepared: false,
 };
 
-const serviceUnpreparedManagerContext: any = {
+const serviceUnpreparedManagerContext = asManagerContext({
   ...serviceManagerContext,
   api: {
     ...serviceManagerContext.api,
     getCurrentStoryData: fn(() => serviceUnpreparedStoryData).mockName('api::getCurrentStoryData'),
   },
-};
+});
 
 // A real (tiny) channel backing `api.on`/`off`/`emit`, so a story's `play` can emit story lifecycle
 // events (STORY_FINISHED / STORY_PREPARED) and drive the dev-only docgen gate in `ControlsPanel`.
 function createApiChannel() {
-  const listeners = new Map<string, Set<(...args: any[]) => void>>();
+  const listeners = new Map<string, Set<(...args: unknown[]) => void>>();
   return {
-    on: fn((type: string, cb: (...args: any[]) => void) => {
+    on: fn((type: string, cb: (...args: unknown[]) => void) => {
       const set = listeners.get(type) ?? new Set();
       set.add(cb);
       listeners.set(type, set);
     }).mockName('api::on'),
-    off: fn((type: string, cb: (...args: any[]) => void) => {
+    off: fn((type: string, cb: (...args: unknown[]) => void) => {
       listeners.get(type)?.delete(cb);
     }).mockName('api::off'),
-    emit: fn((type: string, ...args: any[]) => {
+    emit: fn((type: string, ...args: unknown[]) => {
       listeners.get(type)?.forEach((cb) => cb(...args));
     }).mockName('api::emit'),
   };
 }
 
 const serviceRenderChannel = createApiChannel();
-const serviceRenderManagerContext: any = {
+const serviceRenderManagerContext = asManagerContext({
   ...serviceManagerContext,
   api: {
     ...serviceManagerContext.api,
     ...serviceRenderChannel,
   },
-};
+});
 
 // A prepared story whose annotation argTypes carry no controls — its controls come entirely from
 // docgen. Used to prove the gate shows the loading skeleton (not the "No controls" empty state) while
@@ -121,13 +129,13 @@ const serviceNoControlsStoryData = {
   argTypes: {},
 };
 
-const serviceNoControlsManagerContext: any = {
+const serviceNoControlsManagerContext = asManagerContext({
   ...serviceManagerContext,
   api: {
     ...serviceManagerContext.api,
     getCurrentStoryData: fn(() => serviceNoControlsStoryData).mockName('api::getCurrentStoryData'),
   },
-};
+});
 
 const serviceGetDocgen = Object.assign(
   fn((_input?: { id: string }) => ({
@@ -164,7 +172,8 @@ const serviceGetDocgen = Object.assign(
   }
 );
 
-const docgenService: any = { queries: { docgen: serviceGetDocgen } };
+// The panel only calls the `docgen` query.
+const docgenService = asDocgenService({ queries: { docgen: serviceGetDocgen } });
 
 const meta = {
   component: ControlsPanel,
@@ -440,14 +449,14 @@ const overlapStoryData = {
     Array.from({ length: PROP_COUNT }, (_, i) => [`prop${i + 1}`, i === 0 ? 'edited' : ''])
   ),
 };
-const overlapContext: any = {
+const overlapContext = asManagerContext({
   state: {
     path: overlapStoryData.id,
     previewInitialized: false,
     refs: { [refId]: { id: refId, previewInitialized: true } },
   },
   api: { ...managerContext.api, getCurrentStoryData: fn(() => overlapStoryData) },
-};
+});
 
 /**
  * Regression test for #34531: when the controls overflow the panel, the "save from controls"

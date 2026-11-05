@@ -108,12 +108,6 @@ export const viteFinal = async (
   };
 };
 
-/*
- * This is a workaround for https://github.com/Swatinem/rollup-plugin-dts/issues/162
- * something down the dependency chain is using typescript namespaces, which are not supported by rollup-plugin-dts
- */
-const docsX = docs as any;
-
 /**
  * If the user has not installed react explicitly in their project, the resolvedReact preset will
  * not be set. We then set it here in addon-docs to use addon-docs's react version that always
@@ -148,5 +142,5 @@ const optimizeViteDeps = [
   'react',
 ];
 
-export { docsX as docs, optimizeViteDeps };
+export { docs, optimizeViteDeps };
 export { manifests as experimental_manifests } from './manifest.ts';

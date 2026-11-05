@@ -1,4 +1,4 @@
-import type { Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
+import type { DocsContextProps, Renderer, StoryId } from '@aussieljk/forkbook/internal/types';
 import type { StoryRenderOptions } from '@aussieljk/forkbook/internal/types';
 
 export type RenderType = 'story' | 'docs';
@@ -22,7 +22,7 @@ export interface Render<TRenderer extends Renderer> {
   torndown: boolean;
   renderToElement: (
     canvasElement: TRenderer['canvasElement'],
-    renderStoryToElement?: any,
+    renderStoryToElement: DocsContextProps<TRenderer>['renderStoryToElement'],
     options?: StoryRenderOptions
   ) => Promise<void>;
 }

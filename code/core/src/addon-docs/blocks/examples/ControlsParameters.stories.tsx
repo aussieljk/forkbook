@@ -1,6 +1,18 @@
+import type { ComponentProps } from 'react';
+
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
 
 import { ControlsParameters } from './ControlsParameters.tsx';
+
+/** The props, plus the args that only these stories add arg types for. */
+type StoryArgs = ComponentProps<typeof ControlsParameters> & {
+  extraMetaArgType?: string;
+  extraStoryArgType?: string;
+  c?: unknown;
+  d?: unknown;
+  e?: unknown;
+  f?: unknown;
+};
 
 /** Reference stories to be used by the Controls stories */
 const meta = {
@@ -8,7 +20,6 @@ const meta = {
   component: ControlsParameters,
   args: { b: 'b' },
   argTypes: {
-    // @ts-expect-error Meta type is trying to force us to use real props as args
     extraMetaArgType: {
       type: { name: 'string' },
       name: 'Extra Meta',
@@ -16,14 +27,13 @@ const meta = {
       table: { defaultValue: { summary: "'a default value'" } },
     },
   },
-} satisfies Meta<typeof ControlsParameters>;
+} satisfies Meta<StoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Meta<StoryArgs>>;
 
 export const NoParameters: Story = {
   argTypes: {
-    // @ts-expect-error Story type is trying to force us to use real props as args
     extraStoryArgType: {
       type: { name: 'string' },
       name: 'Extra Story',
@@ -82,5 +92,5 @@ export const Categories: Story = {
         category: 'the second category',
       },
     },
-  } as any,
+  },
 };

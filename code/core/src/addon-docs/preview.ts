@@ -1,4 +1,4 @@
-import type { PreparedStory, TagOptions } from '@aussieljk/forkbook/internal/types';
+import type { Parameters, PreparedStory, TagOptions } from '@aussieljk/forkbook/internal/types';
 
 const excludeTags = Object.entries<Partial<TagOptions>>(globalThis.TAGS_OPTIONS ?? {}).reduce(
   (acc, [tag, option]) => {
@@ -10,10 +10,10 @@ const excludeTags = Object.entries<Partial<TagOptions>>(globalThis.TAGS_OPTIONS 
   {} as Record<string, boolean>
 );
 
-export const parameters: any = {
+export const parameters: Parameters = {
   docs: {
     renderer: async () => {
-      const { DocsRenderer } = (await import('./DocsRenderer')) as any;
+      const { DocsRenderer } = await import('./DocsRenderer');
       return new DocsRenderer();
     },
     stories: {

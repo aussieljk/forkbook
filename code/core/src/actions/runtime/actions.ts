@@ -2,7 +2,7 @@ import type { ActionOptions, ActionsFunction, ActionsMap } from '../models/index
 import { action } from './action.ts';
 import { config } from './configureActions.ts';
 
-export const actions: ActionsFunction = (...args: any[]) => {
+export const actions: ActionsFunction = (...args: unknown[]) => {
   let options: ActionOptions = config;
   let names = args;
   // args argument can be a single argument as an array
@@ -13,17 +13,14 @@ export const actions: ActionsFunction = (...args: any[]) => {
   if (names.length !== 1 && typeof names[names.length - 1] !== 'string') {
     options = {
       ...config,
-      ...names.pop(),
+      ...(names.pop() as ActionOptions),
     };
   }
 
-  let namesObject = names[0];
-  if (names.length !== 1 || typeof namesObject === 'string') {
-    namesObject = {};
-    names.forEach((name) => {
-      namesObject[name] = name;
-    });
-  }
+  const namesObject: Record<string, string> =
+    names.length !== 1 || typeof names[0] === 'string'
+      ? Object.fromEntries((names as string[]).map((name) => [name, name]))
+      : (names[0] as Record<string, string>);
 
   const actionsObject: ActionsMap = {};
   Object.keys(namesObject).forEach((name) => {

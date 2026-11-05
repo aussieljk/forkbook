@@ -2,9 +2,11 @@
 import '@testing-library/jest-dom/vitest';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import type { Parameters } from '@aussieljk/forkbook/internal/types';
+
 import { WebView } from './WebView.ts';
 
-const makeStory = (parameters: Record<string, any> = {}) => ({ parameters }) as any;
+const makeStory = (parameters: Parameters = {}) => ({ parameters });
 
 describe('WebView htmlLang', () => {
   beforeEach(() => {

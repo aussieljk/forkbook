@@ -10,6 +10,8 @@ import { Button } from './CSSAtRules.tsx';
 import './grid.css';
 import { PseudoStateGrid } from './PseudoStateGrid.tsx';
 
+/** Flags on `globalThis` that stop a story from adding its dynamic rule twice. */
+const injectedFlags = globalThis as typeof globalThis & Record<string, boolean | undefined>;
 const meta = {
   title: 'CSSAtRules',
   component: Button,
@@ -53,12 +55,10 @@ export const DynamicStyles: Story = {
   play: async ({ id: storyId }) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // @ts-expect-error We're adding this nonstandard property below
-        if (globalThis[`__dynamicRuleInjected_${storyId}`]) {
+        if (injectedFlags[`__dynamicRuleInjected_${storyId}`]) {
           return;
         }
-        // @ts-expect-error We're adding this nonstandard property
-        globalThis[`__dynamicRuleInjected_${storyId}`] = true;
+        injectedFlags[`__dynamicRuleInjected_${storyId}`] = true;
         const sheet = Array.from(document.styleSheets).at(-1);
         sheet?.insertRule(
           '@layer foo { .dynamic.button:hover { background-color: tomato!important } }'

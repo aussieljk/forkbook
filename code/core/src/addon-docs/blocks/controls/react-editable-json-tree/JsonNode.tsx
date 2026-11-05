@@ -5,6 +5,17 @@ import { JsonFunctionValue } from './JsonFunctionValue.tsx';
 import { JsonObject } from './JsonObject.tsx';
 import { JsonValue } from './JsonValue.tsx';
 import type { ClickableElement } from './types/ClickableElement.ts';
+import type {
+  BeforeAction,
+  ElementGenerator,
+  HandleUpdateValue,
+  IsCollapsed,
+  Logger,
+  OnDeltaUpdate,
+  OnUpdate,
+  ReadOnly,
+  SubmitValueParser,
+} from './types/callbacks.ts';
 import * as dataTypes from './types/dataTypes.ts';
 import { getObjectType } from './utils/objectTypes.ts';
 
@@ -63,7 +74,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
       case dataTypes.ERROR:
         return (
           <JsonObject
-            data={data}
+            data={data as Record<string, unknown>}
             name={name}
             isCollapsed={isCollapsed}
             keyPath={keyPath}
@@ -89,7 +100,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
       case dataTypes.OBJECT:
         return (
           <JsonObject
-            data={data}
+            data={data as Record<string, unknown>}
             name={name}
             isCollapsed={isCollapsed}
             keyPath={keyPath}
@@ -115,7 +126,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
       case dataTypes.ARRAY:
         return (
           <JsonArray
-            data={data}
+            data={data as unknown[]}
             name={name}
             isCollapsed={isCollapsed}
             keyPath={keyPath}
@@ -199,7 +210,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
         return (
           <JsonValue
             name={name}
-            value={data.toISOString()}
+            value={(data as Date).toISOString()}
             originalValue={data}
             keyPath={keyPath}
             deep={deep}
@@ -256,7 +267,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
         return (
           <JsonFunctionValue
             name={name}
-            value={data.toString()}
+            value={String(data)}
             originalValue={data}
             keyPath={keyPath}
             deep={deep}
@@ -275,7 +286,7 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
         return (
           <JsonValue
             name={name}
-            value={data.toString()}
+            value={String(data)}
             originalValue={data}
             keyPath={keyPath}
             deep={deep}
@@ -298,24 +309,24 @@ export class JsonNode extends Component<JsonNodeProps, JsonNodeState> {
 
 interface JsonNodeProps {
   name: string;
-  data?: any;
-  isCollapsed: (...args: any) => any;
+  data?: unknown;
+  isCollapsed: IsCollapsed;
   keyPath?: string[];
   deep?: number;
-  handleRemove?: (...args: any) => any;
-  handleUpdateValue?: (...args: any) => any;
-  onUpdate: (...args: any) => any;
-  onDeltaUpdate: (...args: any) => any;
-  readOnly: (...args: any) => any;
+  handleRemove?: () => void;
+  handleUpdateValue?: HandleUpdateValue;
+  onUpdate: OnUpdate;
+  onDeltaUpdate: OnDeltaUpdate;
+  readOnly: ReadOnly;
   addButtonElement?: ClickableElement;
   cancelButtonElement?: ClickableElement;
-  inputElementGenerator: (...args: any) => any;
-  textareaElementGenerator: (...args: any) => any;
+  inputElementGenerator: ElementGenerator;
+  textareaElementGenerator: ElementGenerator;
   minusMenuElement?: ClickableElement;
   plusMenuElement?: ClickableElement;
-  beforeRemoveAction?: (...args: any) => any;
-  beforeAddAction?: (...args: any) => any;
-  beforeUpdateAction?: (...args: any) => any;
-  logger: object;
-  onSubmitValueParser: (...args: any) => any;
+  beforeRemoveAction?: BeforeAction;
+  beforeAddAction?: BeforeAction;
+  beforeUpdateAction?: BeforeAction;
+  logger: Logger;
+  onSubmitValueParser: SubmitValueParser;
 }

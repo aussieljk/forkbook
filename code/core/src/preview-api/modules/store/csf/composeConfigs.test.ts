@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import type { StoryContext } from '@aussieljk/forkbook/internal/types';
+
 import { composeConfigs } from './composeConfigs.ts';
+
+type Play = (context: StoryContext) => unknown;
 
 describe('composeConfigs', () => {
   it('sets default (empty) values for fields', () => {
@@ -339,16 +343,22 @@ describe('composeConfigs', () => {
     const fn = vi.fn();
 
     const { runStep } = composeConfigs([
-      // @ts-expect-error (not defined)
-      { runStep: (label, play, context) => fn(`${label}1`, play(context)) },
-      // @ts-expect-error (not defined)
-      { runStep: (label, play, context) => fn(`${label}2`, play(context)) },
-      // @ts-expect-error (not defined)
-      { runStep: (label, play, context) => fn(`${label}3`, play(context)) },
+      {
+        runStep: (label: string, play: Play, context: StoryContext) =>
+          fn(`${label}1`, play(context)),
+      },
+      {
+        runStep: (label: string, play: Play, context: StoryContext) =>
+          fn(`${label}2`, play(context)),
+      },
+      {
+        runStep: (label: string, play: Play, context: StoryContext) =>
+          fn(`${label}3`, play(context)),
+      },
     ]);
 
-    // @ts-expect-error We don't care about the context value here
-    runStep('Label', () => {}, {});
+    // The context value does not matter here.
+    runStep('Label', () => {}, {} as StoryContext);
 
     expect(fn).toHaveBeenCalledTimes(3);
     expect(fn).toHaveBeenNthCalledWith(1, 'Label3', expect.anything());

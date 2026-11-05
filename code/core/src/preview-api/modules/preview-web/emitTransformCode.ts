@@ -1,10 +1,10 @@
-import type { Args, StoryContext } from '@aussieljk/forkbook/internal/csf';
+import type { Args, Renderer, StoryContext } from '@aussieljk/forkbook/internal/csf';
 
 import { SNIPPET_RENDERED } from '../../../docs-tools/index.ts';
 import { addons } from '../addons/index.ts';
 
 type ReducedStoryContext = Omit<
-  StoryContext<any, Args>,
+  StoryContext<Renderer, Args>,
   'abortSignal' | 'canvasElement' | 'step' | 'context'
 >;
 

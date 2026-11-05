@@ -15,8 +15,7 @@ export interface DataAttributeStrategyConfiguration {
 const DEFAULT_ELEMENT_SELECTOR = 'html';
 const DEFAULT_DATA_ATTRIBUTE = 'data-theme';
 
-// TODO check with @kasperpeulen: change the types so they can be correctly inferred from context e.g. <Story extends (...args: any[]) => any>
-export const withThemeByDataAttribute = <TRenderer extends Renderer = any>({
+export const withThemeByDataAttribute = <TRenderer extends Renderer = Renderer>({
   themes,
   defaultTheme,
   parentSelector = DEFAULT_ELEMENT_SELECTOR,

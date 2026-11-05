@@ -23,9 +23,9 @@ const entry = {
   tags: [Tag.AUTODOCS],
 } as DocsIndexEntry;
 
-const createGate = (): [Promise<any | undefined>, (_?: any) => void] => {
-  let openGate = (_?: any) => {};
-  const gate = new Promise<any | undefined>((resolve) => {
+const createGate = (): [Promise<unknown>, (value?: unknown) => void] => {
+  let openGate = (_?: unknown) => {};
+  const gate = new Promise<unknown>((resolve) => {
     openGate = resolve;
   });
   return [gate, openGate];

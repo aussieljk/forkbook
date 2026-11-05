@@ -55,7 +55,7 @@ export class WebsocketTransport implements ChannelTransport {
       this.isReady = true;
       this.flush();
     };
-    this.socket.onmessage = ({ data }: { data: any }) => {
+    this.socket.onmessage = ({ data }: { data: unknown }) => {
       const event = typeof data === 'string' && isJSON(data) ? parse(data) : data;
       invariant(this.handler, 'WebsocketTransport handler should be set');
 

@@ -21,6 +21,9 @@ import { A11yContextProvider, useA11yContext } from './A11yContext.tsx';
 vi.mock('@aussieljk/forkbook/manager-api');
 const mockedApi = vi.mocked(api);
 
+/** A value with only the fields that the code under test reads. */
+const partial = <T,>(value: object): T => value as T;
+
 const storyId = 'button--primary';
 const axeResult: Partial<AxeResults> = {
   incomplete: [
@@ -76,25 +79,29 @@ describe('A11yContext', () => {
   const getQueryParam = vi.fn();
 
   beforeEach(() => {
-    mockedApi.experimental_getStatusStore.mockReturnValue({
-      onAllStatusChange,
-      getAll,
-      set,
-      onSelect,
-      unset,
-    } as any);
+    mockedApi.experimental_getStatusStore.mockReturnValue(
+      partial({
+        onAllStatusChange,
+        getAll,
+        set,
+        onSelect,
+        unset,
+      })
+    );
     mockedApi.useAddonState.mockImplementation((_, defaultState) => React.useState(defaultState));
     mockedApi.useChannel.mockReturnValue(vi.fn());
     getCurrentStoryData.mockReturnValue({ id: storyId, type: 'story' });
     getParameters.mockReturnValue({});
-    mockedApi.useStorybookApi.mockReturnValue({
-      getCurrentStoryData,
-      getParameters,
-      getQueryParam,
-    } as any);
+    mockedApi.useStorybookApi.mockReturnValue(
+      partial({
+        getCurrentStoryData,
+        getParameters,
+        getQueryParam,
+      })
+    );
     mockedApi.useParameter.mockReturnValue({ manual: false });
-    mockedApi.useStorybookState.mockReturnValue({ storyId } as any);
-    mockedApi.useGlobals.mockReturnValue([{ a11y: {} }] as any);
+    mockedApi.useStorybookState.mockReturnValue(partial({ storyId }));
+    mockedApi.useGlobals.mockReturnValue(partial([{ a11y: {} }]));
 
     mockedApi.useChannel.mockClear();
     mockedApi.useStorybookApi.mockClear();
@@ -151,7 +158,7 @@ describe('A11yContext', () => {
       reporters: [
         {
           type: 'a11y',
-          result: axeResult as any,
+          result: axeResult,
           status: 'failed',
           version: 1,
         },
@@ -169,7 +176,7 @@ describe('A11yContext', () => {
   });
 
   it('should set discrepancy to cliFailedButModeManual when in manual mode (set via globals)', () => {
-    mockedApi.useGlobals.mockReturnValue([{ a11y: { manual: true } }] as any);
+    mockedApi.useGlobals.mockReturnValue(partial([{ a11y: { manual: true } }]));
     mockedApi.experimental_useStatusStore.mockReturnValue('status-value:error');
 
     const Component = () => {
@@ -207,7 +214,7 @@ describe('A11yContext', () => {
       reporters: [
         {
           type: 'a11y',
-          result: axeResult as any,
+          result: axeResult,
           status: 'failed',
           version: 1,
         },
@@ -248,7 +255,7 @@ describe('A11yContext', () => {
   });
 
   it('should handle STORY_RENDER_PHASE_CHANGED event correctly when in manual mode (set via globals)', () => {
-    mockedApi.useGlobals.mockReturnValue([{ a11y: { manual: true } }] as any);
+    mockedApi.useGlobals.mockReturnValue(partial([{ a11y: { manual: true } }]));
 
     const emit = vi.fn();
     mockedApi.useChannel.mockReturnValue(emit);
@@ -281,7 +288,7 @@ describe('A11yContext', () => {
 
     const Component = () => {
       const { error } = useA11yContext();
-      return <div data-testid="error">{error ? (error as any).message : 'No Error'}</div>;
+      return <div data-testid="error">{error ? (error as Error).message : 'No Error'}</div>;
     };
 
     const { getByTestId } = render(
@@ -301,7 +308,7 @@ describe('A11yContext', () => {
           status: 'failed',
           version: 1,
           type: 'a11y',
-          result: { error: new Error('Test error') } as any,
+          result: { error: new Error('Test error') },
         },
       ],
     };

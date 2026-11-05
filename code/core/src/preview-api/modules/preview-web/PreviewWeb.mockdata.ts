@@ -1,4 +1,4 @@
-import type { Mock, Mocked } from 'vitest';
+import type { Mock } from 'vitest';
 import { vi } from 'vitest';
 
 import {
@@ -10,6 +10,7 @@ import {
   STORY_THREW_EXCEPTION,
 } from '@aussieljk/forkbook/internal/core-events';
 import type {
+  DocsRenderFunction,
   ModuleImportFn,
   ProjectAnnotations,
   Renderer,
@@ -58,7 +59,7 @@ export const extraComponentOneExports = {
   },
   e: {},
 };
-export const importFn: Mocked<ModuleImportFn> = vi.fn(
+export const importFn: Mock<ModuleImportFn> = vi.fn(
   async (path: string) =>
     ({
       './src/ComponentOne.stories.js': componentOneExports,
@@ -70,7 +71,7 @@ export const importFn: Mocked<ModuleImportFn> = vi.fn(
 );
 
 export const docsRenderer = {
-  render: vi.fn().mockImplementation((context, parameters, element) => Promise.resolve()),
+  render: vi.fn<DocsRenderFunction<Renderer>>(() => Promise.resolve()),
   unmount: vi.fn(),
 };
 export const teardownrenderToCanvas: Mock<(teardown: TeardownRenderToCanvas) => void> = vi.fn();
@@ -80,13 +81,21 @@ const rawProjectAnnotations = {
   decorators: [vi.fn((s) => s())],
   render: vi.fn(),
   renderToCanvas: vi.fn().mockReturnValue(teardownrenderToCanvas),
-  parameters: { docs: { renderer: () => docsRenderer } },
+  parameters: {
+    docs: {
+      // Some tests use a real `DocsRenderer` here.
+      renderer: (): {
+        render: DocsRenderFunction<Renderer>;
+        unmount: (element: HTMLElement) => void;
+      } => docsRenderer,
+    },
+  },
 };
 export const projectAnnotations = composeConfigs([
   rawProjectAnnotations,
 ]) as ProjectAnnotations<Renderer> & typeof rawProjectAnnotations;
 
-export const getProjectAnnotations = vi.fn(() => projectAnnotations as any);
+export const getProjectAnnotations = vi.fn((): ProjectAnnotations<Renderer> => projectAnnotations);
 
 export const storyIndex: StoryIndex = {
   v: 5,
@@ -172,24 +181,26 @@ export const mockChannel = {
   // emit: emitter.emit.bind(emitter),
 };
 
-export const waitForEvents = (
+/** `TArgs` is the type of the arguments that the events are emitted with. */
+export const waitForEvents = <TArgs extends unknown[] = unknown[]>(
   events: string[],
-  predicate: (...args: any[]) => boolean = () => true,
+  predicate: (...args: TArgs) => boolean = () => true,
   debugLabel?: string
 ) => {
   // We've already emitted a render event. NOTE if you want to test a second call,
   // ensure you call `mockChannel.emit.mockClear()` before `waitFor...`
   if (
     mockChannel.emit.mock.calls.find(
-      (call: string[]) => events.includes(call[0]) && predicate(...call.slice(1))
+      (call: unknown[]) =>
+        events.includes(call[0] as string) && predicate(...(call.slice(1) as TArgs))
     )
   ) {
     return Promise.resolve(null);
   }
 
   return new Promise((resolve, reject) => {
-    const listener = (...args: any[]) => {
-      if (!predicate(...args)) {
+    const listener = (...args: unknown[]) => {
+      if (!predicate(...(args as TArgs))) {
         return;
       }
       events.forEach((event) => mockChannel.off(event, listener));
@@ -217,7 +228,11 @@ export const waitForRender = () =>
 
 export const waitForRenderPhase = (phase: RenderPhase) => {
   const label = `${STORY_RENDER_PHASE_CHANGED} to ${phase}`;
-  return waitForEvents([STORY_RENDER_PHASE_CHANGED], ({ newPhase }) => newPhase === phase, label);
+  return waitForEvents<[{ newPhase: RenderPhase }]>(
+    [STORY_RENDER_PHASE_CHANGED],
+    ({ newPhase }) => newPhase === phase,
+    label
+  );
 };
 
 // A little trick to ensure that we always call the real `setTimeout` even when timers are mocked

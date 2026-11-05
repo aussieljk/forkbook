@@ -28,10 +28,13 @@ import {
   UPDATE_STORY_ARGS,
 } from '@aussieljk/forkbook/internal/core-events';
 import { ArgTypesRemovedFromStoryContextError } from '@aussieljk/forkbook/internal/preview-errors';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import type {
   ModuleImportFn,
   ProjectAnnotations,
+  RenderContextCallbacks,
   Renderer,
+  StoryContext,
 } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../../../shared/global.ts';
@@ -39,7 +42,6 @@ import { global } from '../../../shared/global.ts';
 import { toMerged } from 'es-toolkit/object';
 
 import { addons } from '../addons/index.ts';
-import type { StoryStore } from '../store/index.ts';
 import { PreviewWeb } from './PreviewWeb.tsx';
 import {
   componentOneExports,
@@ -64,7 +66,13 @@ const { history, document } = global;
 
 const mockStoryIndex = vi.fn(() => storyIndex);
 
-let mockFetchResult: any;
+/** The parts of a fetch `Response` that the preview reads. */
+interface FetchResult {
+  status: number;
+  json?: () => unknown;
+  text?: () => string | Promise<string>;
+}
+let mockFetchResult: FetchResult;
 vi.mock('../../../shared/global.ts', async (importOriginal) => ({
   global: {
     ...(await importOriginal<typeof import('../../../shared/global.ts')>),
@@ -88,13 +96,19 @@ const serializeError = (error: Error) => {
   return { name, message, stack };
 };
 
-const createGate = (): [Promise<any | undefined>, (_?: any) => void] => {
-  let openGate = (_?: any) => {};
-  const gate = new Promise<any | undefined>((resolve) => {
+const createGate = (): [Promise<unknown>, (value?: unknown) => void] => {
+  let openGate = (_?: unknown) => {};
+  const gate = new Promise<unknown>((resolve) => {
     openGate = resolve;
   });
   return [gate, openGate];
 };
+
+/** A stand-in for an element. The tests only check that the preview passes it on. */
+const fakeElement = (name: string) => name as unknown as HTMLElement;
+
+/** A keydown event with only the fields that `onKeydown` reads. */
+const keydownEvent = (event: object) => event as KeyboardEvent;
 
 async function waitForSetCurrentStory() {
   await vi.waitFor(() => {
@@ -133,11 +147,11 @@ beforeEach(() => {
 
   mockStoryIndex.mockReset().mockReturnValue(storyIndex);
 
-  addons.setChannel(mockChannel as any);
+  addons.setChannel(mockChannel as Partial<Channel> as Channel);
   mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
 
-  vi.mocked(WebView.prototype).prepareForDocs.mockReturnValue('docs-element' as any);
-  vi.mocked(WebView.prototype).prepareForStory.mockReturnValue('story-element' as any);
+  vi.mocked(WebView.prototype).prepareForDocs.mockReturnValue(fakeElement('docs-element'));
+  vi.mocked(WebView.prototype).prepareForStory.mockReturnValue(fakeElement('story-element'));
 });
 
 describe('PreviewWeb', () => {
@@ -169,8 +183,7 @@ describe('PreviewWeb', () => {
 
       const preview = await createAndRenderPreview();
 
-      // @ts-expect-error Ignore protected property
-      expect((preview.storyStoreValue as StoryStore<Renderer>)!.userGlobals.get()).toEqual(
+      expect(preview['storyStoreValue']!.userGlobals.get()).toEqual(
         expect.objectContaining({
           a: 'c',
         })
@@ -218,10 +231,7 @@ describe('PreviewWeb', () => {
 
       const preview = await createAndRenderPreview();
 
-      expect(
-        // @ts-expect-error Ignore protected property
-        (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-      ).toEqual({
+      expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
         foo: 'url',
         one: 1,
       });
@@ -247,8 +257,7 @@ describe('PreviewWeb', () => {
       });
       await preview.ready();
 
-      // @ts-expect-error Ignore protected property
-      expect((preview.storyStoreValue as StoryStore<Renderer>)!.userGlobals.get()).toEqual(
+      expect(preview['storyStoreValue']!.userGlobals.get()).toEqual(
         expect.objectContaining({
           a: 'b',
         })
@@ -749,7 +758,7 @@ describe('PreviewWeb', () => {
 
         const context = docsRenderer.render.mock.calls[0][0];
 
-        expect(context.componentStories().map((s: any) => s.id)).toEqual([
+        expect(context.componentStories().map((s) => s.id)).toEqual([
           'component-one--a',
           'component-one--b',
           'component-one--e',
@@ -870,9 +879,10 @@ describe('PreviewWeb', () => {
         return importFn(path);
       });
 
-      const newGetProjectAnnotations = vi.fn(
-        () => ({ ...projectAnnotations, initialGlobals: { a: 'b', c: 'd' } }) as any
-      );
+      const newGetProjectAnnotations = vi.fn(() => ({
+        ...projectAnnotations,
+        initialGlobals: { a: 'b', c: 'd' },
+      }));
 
       it('allows changes to globals the story did not set', async () => {
         document.location.search = '?id=component-one--a';
@@ -919,8 +929,7 @@ describe('PreviewWeb', () => {
 
       emitter.emit(UPDATE_GLOBALS, { globals: { foo: 'bar' } });
 
-      // @ts-expect-error Ignore protected property
-      expect((preview.storyStoreValue as StoryStore<Renderer>)!.userGlobals.get()).toEqual(
+      expect(preview['storyStoreValue']!.userGlobals.get()).toEqual(
         expect.objectContaining({
           a: 'b',
         })
@@ -1005,12 +1014,7 @@ describe('PreviewWeb', () => {
         updatedArgs: { new: 'arg' },
       });
 
-      expect(
-        // @ts-expect-error Ignore protected property
-        (preview.storyStoreValue as StoryStore<Renderer> as StoryStore<Renderer>)?.args.get(
-          'component-one--a'
-        )
-      ).toEqual({
+      expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
         foo: 'a',
         new: 'arg',
         one: 1,
@@ -1062,7 +1066,7 @@ describe('PreviewWeb', () => {
           if (path === './src/ComponentOne.stories.js') {
             return {
               ...componentOneExports,
-              a: { ...componentOneExports.a, play: ({ mount }: any) => mount() },
+              a: { ...componentOneExports.a, play: ({ mount }: StoryContext) => mount() },
             };
           }
           return importFn(path);
@@ -1291,11 +1295,10 @@ describe('PreviewWeb', () => {
           await waitForRender();
 
           mockChannel.emit.mockClear();
-          // @ts-expect-error Ignore protected property
-          const story = await (preview.storyStoreValue as StoryStore<Renderer>)?.loadStory({
+          const story = await preview['storyStoreValue']!.loadStory({
             storyId: 'component-one--a',
           });
-          preview.renderStoryToElement(story, 'story-element' as any, callbacks, {});
+          preview.renderStoryToElement(story, fakeElement('story-element'), callbacks, {});
           await waitForRender();
 
           expect(projectAnnotations.renderToCanvas).toHaveBeenCalledWith(
@@ -1332,11 +1335,10 @@ describe('PreviewWeb', () => {
           await waitForRender();
 
           mockChannel.emit.mockClear();
-          // @ts-expect-error Ignore protected property
-          const story = await (preview.storyStoreValue as StoryStore<Renderer>)?.loadStory({
+          const story = await preview['storyStoreValue']!.loadStory({
             storyId: 'component-one--a',
           });
-          preview.renderStoryToElement(story, 'story-element' as any, callbacks, {
+          preview.renderStoryToElement(story, fakeElement('story-element'), callbacks, {
             forceInitialArgs: true,
           });
           await waitForRender();
@@ -1876,12 +1878,10 @@ describe('PreviewWeb', () => {
           const [gate, openGate] = createGate();
           const [importedGate, openImportedGate] = createGate();
           importFn
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               await gate;
               return importFn(m);
             })
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               // The second time we `import()` we open the "imported" gate
               openImportedGate();
@@ -1923,12 +1923,10 @@ describe('PreviewWeb', () => {
           const [gate, openGate] = createGate();
           const [importedGate, openImportedGate] = createGate();
           importFn
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               await gate;
               return importFn(m);
             })
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               // The second time we `import()` we open the "imported" gate
               openImportedGate();
@@ -1969,12 +1967,10 @@ describe('PreviewWeb', () => {
           const [gate, openGate] = createGate();
           const [importedGate, openImportedGate] = createGate();
           importFn
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               await gate;
               return importFn(m);
             })
-            // @ts-expect-error (mock)
             .mockImplementationOnce(async (m) => {
               // The second time we `import()` we open the "imported" gate
               openImportedGate();
@@ -2317,10 +2313,7 @@ describe('PreviewWeb', () => {
           updatedArgs: { foo: 'updated' },
         });
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'updated',
           one: 1,
         });
@@ -2332,10 +2325,7 @@ describe('PreviewWeb', () => {
         });
         await waitForSetCurrentStory();
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'updated',
           one: 1,
         });
@@ -2347,10 +2337,7 @@ describe('PreviewWeb', () => {
         });
         await waitForSetCurrentStory();
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'updated',
           one: 1,
         });
@@ -2361,16 +2348,20 @@ describe('PreviewWeb', () => {
         beforeEach(() => {
           originalLocation = window.location;
           delete (window as Partial<Window>).location;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore-error
-          window.location = { ...originalLocation, reload: vi.fn() };
+          Object.defineProperty(window, 'location', {
+            configurable: true,
+            writable: true,
+            value: { ...originalLocation, reload: vi.fn() },
+          });
         });
 
         afterEach(() => {
           delete (window as Partial<Window>).location;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore-error
-          window.location = { ...originalLocation, reload: originalLocation.reload };
+          Object.defineProperty(window, 'location', {
+            configurable: true,
+            writable: true,
+            value: { ...originalLocation, reload: originalLocation.reload },
+          });
         });
 
         it('aborts render for initial story', async () => {
@@ -2920,10 +2911,7 @@ describe('PreviewWeb', () => {
         mockFetchResult = { status: 200, json: mockStoryIndex, text: () => 'error text' };
         preview.onStoryIndexChanged();
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'url',
           one: 1,
         });
@@ -3403,10 +3391,7 @@ describe('PreviewWeb', () => {
         });
         await waitForSetCurrentStory();
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'updated',
           one: 1,
         });
@@ -3425,10 +3410,7 @@ describe('PreviewWeb', () => {
         });
         await waitForSetCurrentStory();
         await waitForRender();
-        expect(
-          // @ts-expect-error Ignore protected property
-          (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-        ).toEqual({
+        expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
           foo: 'updated',
           bar: 'edited',
           one: 1,
@@ -3599,8 +3581,7 @@ describe('PreviewWeb', () => {
         preview.onGetProjectAnnotationsChanged({ getProjectAnnotations });
         await waitForRender();
 
-        // @ts-expect-error Ignore protected property
-        expect((preview.storyStoreValue as StoryStore<Renderer>)!.userGlobals.get()).toEqual(
+        expect(preview['storyStoreValue']!.userGlobals.get()).toEqual(
           expect.objectContaining({
             a: 'c',
           })
@@ -3635,7 +3616,7 @@ describe('PreviewWeb', () => {
       expect(mockChannel.emit).toHaveBeenCalledWith(CONFIG_ERROR, err);
     });
 
-    const newGlobalDecorator = vi.fn((s: any) => s());
+    const newGlobalDecorator = vi.fn((s: () => unknown) => s());
     const newGetProjectAnnotations = () => {
       return {
         ...projectAnnotations,
@@ -3653,8 +3634,7 @@ describe('PreviewWeb', () => {
       preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
-      // @ts-expect-error Ignore protected property
-      expect((preview.storyStoreValue as StoryStore<Renderer>)!.userGlobals.get()).toEqual(
+      expect(preview['storyStoreValue']!.userGlobals.get()).toEqual(
         expect.objectContaining({
           a: 'edited',
         })
@@ -3684,10 +3664,7 @@ describe('PreviewWeb', () => {
       preview.onGetProjectAnnotationsChanged({ getProjectAnnotations: newGetProjectAnnotations });
       await waitForRender();
 
-      expect(
-        // @ts-expect-error Ignore protected property
-        (preview.storyStoreValue as StoryStore<Renderer>)?.args.get('component-one--a')
-      ).toEqual({
+      expect(preview['storyStoreValue']?.args.get('component-one--a')).toEqual({
         foo: 'a',
         one: 1,
         global: 'added',
@@ -3751,11 +3728,13 @@ describe('PreviewWeb', () => {
       document.location.search = '?id=component-one--docs&viewMode=docs';
       const preview = await createAndRenderPreview();
 
-      preview.onKeydown({
-        composedPath: vi
-          .fn()
-          .mockReturnValue([{ tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) }]),
-      } as any);
+      preview.onKeydown(
+        keydownEvent({
+          composedPath: vi
+            .fn()
+            .mockReturnValue([{ tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) }]),
+        })
+      );
 
       expect(mockChannel.emit).toHaveBeenCalledWith(PREVIEW_KEYDOWN, expect.objectContaining({}));
     });
@@ -3764,9 +3743,11 @@ describe('PreviewWeb', () => {
       document.location.search = '?id=component-one--docs&viewMode=docs';
       const preview = await createAndRenderPreview();
 
-      preview.onKeydown({
-        target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
-      } as any);
+      preview.onKeydown(
+        keydownEvent({
+          target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
+        })
+      );
 
       expect(mockChannel.emit).toHaveBeenCalledWith(PREVIEW_KEYDOWN, expect.objectContaining({}));
     });
@@ -3775,11 +3756,13 @@ describe('PreviewWeb', () => {
       document.location.search = '?id=component-one--docs&viewMode=docs';
       const preview = await createAndRenderPreview();
 
-      preview.onKeydown({
-        composedPath: vi
-          .fn()
-          .mockReturnValue([{ tagName: 'input', getAttribute: vi.fn().mockReturnValue(null) }]),
-      } as any);
+      preview.onKeydown(
+        keydownEvent({
+          composedPath: vi
+            .fn()
+            .mockReturnValue([{ tagName: 'input', getAttribute: vi.fn().mockReturnValue(null) }]),
+        })
+      );
 
       expect(mockChannel.emit).not.toHaveBeenCalledWith(
         PREVIEW_KEYDOWN,
@@ -3796,9 +3779,11 @@ describe('PreviewWeb', () => {
       await preview.ready();
       await waitForRenderPhase('playing');
 
-      await preview.onKeydown({
-        target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
-      } as any);
+      await preview.onKeydown(
+        keydownEvent({
+          target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
+        })
+      );
 
       expect(mockChannel.emit).not.toHaveBeenCalledWith(
         PREVIEW_KEYDOWN,
@@ -3815,20 +3800,21 @@ describe('PreviewWeb', () => {
       mockChannel.emit.mockClear();
       const [gate, openGate] = createGate();
       componentOneExports.b.play.mockImplementationOnce(async () => gate);
-      // @ts-expect-error (not strict)
       preview.renderStoryToElement(
-        // @ts-expect-error Ignore protected property
-        await (preview.storyStoreValue as StoryStore<Renderer>)?.loadStory({
+        await preview['storyStoreValue']!.loadStory({
           storyId: 'component-one--b',
         }),
-        {} as any,
-        {} as any
+        {} as HTMLElement,
+        {} as RenderContextCallbacks<Renderer>,
+        { autoplay: true, forceInitialArgs: false }
       );
       await waitForRenderPhase('playing');
 
-      await preview.onKeydown({
-        target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
-      } as any);
+      await preview.onKeydown(
+        keydownEvent({
+          target: { tagName: 'div', getAttribute: vi.fn().mockReturnValue(null) },
+        })
+      );
 
       expect(mockChannel.emit).not.toHaveBeenCalledWith(
         PREVIEW_KEYDOWN,

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import React from 'react';
 
 import type { Meta, StoryObj } from '@aussieljk/forkbook/react-vite';
@@ -140,7 +141,7 @@ export const InAddonPanel = {
     inAddonPanel: true,
     rows: SectionsAndSubsections.args.rows,
   },
-  decorators: [(storyFn: any) => <AddonPanelLayout>{storyFn()}</AddonPanelLayout>],
+  decorators: [(storyFn: () => ReactNode) => <AddonPanelLayout>{storyFn()}</AddonPanelLayout>],
   parameters: {
     layout: 'fullscreen',
   },
@@ -151,7 +152,7 @@ export const InAddonPanelNoControls = {
   args: {
     ...InAddonPanel.args,
     rows: Object.fromEntries(
-      Object.entries(InAddonPanel.args.rows).map(([k, v]) => [k, { ...v, control: null as any }])
+      Object.entries(InAddonPanel.args.rows).map(([k, v]) => [k, { ...v, control: false as const }])
     ),
   },
 };

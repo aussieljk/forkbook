@@ -6,7 +6,7 @@ import { TabsView } from '@aussieljk/forkbook/internal/components';
 import type { ArgsTableProps } from './ArgsTable.tsx';
 import { ArgsTable } from './ArgsTable.tsx';
 
-type DistributiveOmit<T, K extends PropertyKey> = T extends any ? Omit<T, K> : never;
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 
 export type TabbedArgsTableProps = DistributiveOmit<ArgsTableProps, 'rows'> & {
   tabs: Record<string, ArgsTableProps>;

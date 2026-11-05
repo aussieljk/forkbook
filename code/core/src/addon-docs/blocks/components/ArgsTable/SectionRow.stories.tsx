@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import React from 'react';
 
 import { ResetWrapper } from '@aussieljk/forkbook/internal/components';
@@ -9,7 +9,7 @@ import { SectionRow } from './SectionRow.tsx';
 export default {
   component: SectionRow,
   decorators: [
-    (getStory: any) => (
+    (getStory: () => ReactNode) => (
       <ResetWrapper>
         <TableWrapper>
           <tbody>{getStory()}</tbody>

@@ -1,14 +1,14 @@
 import type { Component } from '../../types.ts';
 import { str } from './string.ts';
 
-export function hasDocgen<T = any>(
+export function hasDocgen<T = Record<string, unknown>>(
   component: Component
 ): component is object & { __docgenInfo: T } {
-  return !!component.__docgenInfo;
+  return !!(component as { __docgenInfo?: unknown }).__docgenInfo;
 }
 
-export function getDocgenSection(component: Component, section: string): any {
-  return hasDocgen(component) ? component.__docgenInfo[section] : null;
+export function getDocgenSection<T = unknown>(component: Component, section: string): T | null {
+  return hasDocgen<Record<string, T>>(component) ? component.__docgenInfo[section] : null;
 }
 
 export function getDocgenDescription(component: Component): string {

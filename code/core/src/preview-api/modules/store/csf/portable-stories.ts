@@ -43,7 +43,11 @@ import { prepareContext, prepareStory } from './prepareStory.ts';
 
 // TODO we should get to the bottom of the singleton issues caused by dual ESM/CJS modules
 declare global {
+  // These globals hold the annotations of the project's renderer. Each function reads them back as
+  // its own `TRenderer`, which only `any` allows.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   var globalProjectAnnotations: NormalizedProjectAnnotations<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   var defaultProjectAnnotations: ProjectAnnotations<any>;
   // Set by @aussieljk/forkbook/addon-vitest once its setup file has applied the project annotations.
   var __FORKBOOK_ADDON_VITEST_PROJECT_ANNOTATIONS_APPLIED__: boolean | undefined;
@@ -285,24 +289,23 @@ export function composeStories<TModule extends Store_CSFExports>(
   const { default: metaExport, __esModule, __namedExportsOrder, ...stories } = storiesImport;
   let meta = metaExport;
 
-  const composedStories = Object.entries(stories).reduce(
-    (storiesMap, [exportsName, story]: [string, any]) => {
-      const { story: storyAnnotations, meta: componentAnnotations } =
-        getCsfFactoryAnnotations(story);
-      if (!meta && componentAnnotations) {
-        meta = componentAnnotations;
-      }
+  const composedStories = Object.entries(stories).reduce((storiesMap, [exportsName, story]) => {
+    const { story: storyAnnotations, meta: componentAnnotations } = getCsfFactoryAnnotations(
+      // Each named export of a CSF file is a story.
+      story as LegacyStoryAnnotationsOrFn<Renderer>
+    );
+    if (!meta && componentAnnotations) {
+      meta = componentAnnotations;
+    }
 
-      if (!isExportStory(exportsName, meta)) {
-        return storiesMap;
-      }
-      const result = Object.assign(storiesMap, {
-        [exportsName]: composeStoryFn(storyAnnotations, meta, globalConfig, exportsName),
-      });
-      return result;
-    },
-    {}
-  );
+    if (!isExportStory(exportsName, meta)) {
+      return storiesMap;
+    }
+    const result = Object.assign(storiesMap, {
+      [exportsName]: composeStoryFn(storyAnnotations, meta, globalConfig, exportsName),
+    });
+    return result;
+  }, {});
 
   return composedStories;
 }

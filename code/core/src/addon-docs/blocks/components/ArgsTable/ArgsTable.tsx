@@ -8,14 +8,13 @@ import { includeConditionalArg } from '@aussieljk/forkbook/internal/csf';
 import { RotateCcwIcon, FileTextIcon } from 'lucide-react';
 
 import { clsx } from 'clsx';
-import { pickBy } from 'es-toolkit/object';
 
 import { EmptyBlock } from '../EmptyBlock.tsx';
 import { ArgRow } from './ArgRow.tsx';
 import { Empty } from './Empty.tsx';
 import { SectionRow } from './SectionRow.tsx';
 import { Skeleton } from './Skeleton.tsx';
-import type { ArgType, ArgTypes, Args, Globals } from './types.ts';
+import type { ArgRowType, ArgType, ArgTypes, Args, Globals } from './types.ts';
 import styles from './ArgsTable.module.css';
 
 export const TableWrapper = ({
@@ -47,11 +46,12 @@ export enum ArgsTableError {
 export type SortType = 'alpha' | 'requiredFirst' | 'none';
 type SortFn = (a: ArgType, b: ArgType) => number;
 
+const isRequired = (row: ArgType) => typeof row.type === 'object' && !!row.type.required;
+
 const sortFns: Record<SortType, SortFn | null> = {
   alpha: (a: ArgType, b: ArgType) => (a.name ?? '').localeCompare(b.name ?? ''),
   requiredFirst: (a: ArgType, b: ArgType) =>
-    Number(!!b.type?.required) - Number(!!a.type?.required) ||
-    (a.name ?? '').localeCompare(b.name ?? ''),
+    Number(isRequired(b)) - Number(isRequired(a)) || (a.name ?? '').localeCompare(b.name ?? ''),
   none: null,
 };
 
@@ -86,7 +86,7 @@ export interface ArgsTableLoadingProps {
 export type ArgsTableProps = ArgsTableOptionProps &
   (ArgsTableDataProps | ArgsTableErrorProps | ArgsTableLoadingProps);
 
-type Rows = ArgType[];
+type Rows = ArgRowType[];
 type Subsection = Rows;
 type Section = {
   ungrouped: Rows;
@@ -98,7 +98,7 @@ type Sections = {
   sections: Record<string, Section>;
 };
 
-const groupRows = (rows: ArgType, sort: SortType): Sections => {
+const groupRows = (rows: ArgTypes, sort: SortType): Sections => {
   const sections: Sections = { ungrouped: [], ungroupedSubsections: {}, sections: {} };
 
   if (!rows) {
@@ -170,7 +170,7 @@ const groupRows = (rows: ArgType, sort: SortType): Sections => {
  */
 const safeIncludeConditionalArg = (row: ArgType, args: Args, globals: Globals) => {
   try {
-    return includeConditionalArg(row, args, globals);
+    return includeConditionalArg({ if: row.if }, args, globals);
   } catch (err: unknown) {
     once.warn((err as Error).message);
     return false;
@@ -236,9 +236,11 @@ export const ArgsTable: FC<ArgsTableProps> = (props) => {
     return <Skeleton />;
   }
   const groups: Sections = groupRows(
-    pickBy(
-      rows || {},
-      (row) => !row?.table?.disable && safeIncludeConditionalArg(row, args || {}, globals || {})
+    Object.fromEntries(
+      Object.entries(rows || {}).filter(
+        ([, row]) =>
+          !row?.table?.disable && safeIncludeConditionalArg(row, args || {}, globals || {})
+      )
     ),
     sort
   );

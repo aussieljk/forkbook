@@ -11,8 +11,7 @@ const meta = {
   parameters: {
     chromatic: { disableSnapshot: true },
   },
-  // @ts-expect-error We're dealing with a web component here
-  render: (args, context) => <custom-element>{context.name}</custom-element>,
+  render: (args, context) => React.createElement('custom-element', null, context.name),
 } satisfies Meta;
 
 export default meta;
@@ -21,12 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const All: Story = {
   render: () => (
-    <PseudoStateGrid
-      render={(label) => (
-        // @ts-expect-error We're dealing with a web component here
-        <custom-element>{label}</custom-element>
-      )}
-    />
+    <PseudoStateGrid render={(label) => React.createElement('custom-element', null, label)} />
   ),
 };
 

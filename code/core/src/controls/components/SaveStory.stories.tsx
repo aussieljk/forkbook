@@ -49,7 +49,7 @@ export const Created: Story = {
 
 export const CreatingFailed: Story = {
   args: {
-    createStory: fn((...args) => Promise.reject<any>(new Error('Story already exists.'))),
+    createStory: fn(() => Promise.reject(new Error('Story already exists.'))),
   },
   play: Created.play,
 };

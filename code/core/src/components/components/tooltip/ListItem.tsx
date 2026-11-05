@@ -29,7 +29,7 @@ export interface LeftProps {
 export interface ItemProps {
   disabled?: boolean;
   href?: string;
-  onClick?: (event: SyntheticEvent, ...args: any[]) => any;
+  onClick?: (event: SyntheticEvent) => void;
 }
 
 const getItemProps = memoize(100)(({ onClick, input, href, LinkWrapper }) => ({
@@ -52,7 +52,7 @@ const getItemProps = memoize(100)(({ onClick, input, href, LinkWrapper }) => ({
   }),
 }));
 
-export type LinkWrapperType = (props: any) => ReactNode;
+export type LinkWrapperType = (props: { to: string; children?: ReactNode }) => ReactNode;
 
 export interface ListItemProps
   extends ItemProps, Omit<ComponentProps<'button'>, 'title' | 'onClick' | 'ref'> {

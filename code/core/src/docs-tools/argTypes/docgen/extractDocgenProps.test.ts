@@ -1,20 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Component } from '../types.ts';
+import type { DocgenInfo } from './types.ts';
 import { extractComponentProps } from './extractDocgenProps.ts';
 
 const DOCGEN_SECTION = 'props';
 const PROP_NAME = 'propName';
 
-function createStringType(): any {
+function createStringType(): Partial<DocgenInfo> {
   return { type: { name: 'string' } };
 }
 
-function createFuncType(): any {
+function createFuncType(): Partial<DocgenInfo> {
   return { type: { name: '() => void' } };
 }
 
-function createComponent(docgenInfo: Record<string, any>): Component {
+function createComponent(docgenInfo: Record<string, unknown>): Component {
   const component = () => {};
   component.__docgenInfo = {
     [DOCGEN_SECTION]: {

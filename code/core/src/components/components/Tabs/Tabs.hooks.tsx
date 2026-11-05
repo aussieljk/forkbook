@@ -34,7 +34,7 @@ export function useList(list: ChildrenListComplete) {
       menuName: string;
       actions?: {
         onSelect: (id: string) => void;
-      } & Record<string, any>;
+      } & Record<string, unknown>;
     }) => {
       const isAddonsActive = invisibleList.some(({ active }) => active);
       const [isTooltipVisible, setTooltipVisible] = useState(false);
@@ -97,8 +97,8 @@ export function useList(list: ChildrenListComplete) {
                 textColor={color}
                 role="tab"
               >
-                {/* @ts-expect-error (we know this is broken) */}
-                {title}
+                {/* React does not render a function child, so a component title shows nothing here. */}
+                {typeof title === 'function' ? null : title}
               </TabButton>
             );
           })}

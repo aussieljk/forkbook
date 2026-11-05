@@ -1,4 +1,6 @@
-import type { Conditional } from '@aussieljk/forkbook/internal/types';
+import type { Args, Conditional, Globals } from '@aussieljk/forkbook/internal/types';
+
+import type { Options } from '../../controls/types.ts';
 
 // TODO ?
 export interface JsDocParam {
@@ -36,10 +38,22 @@ export interface TableAnnotation {
   category?: string;
 }
 
+/** The control of an args table row. Forkbook normalizes a control name to `{ type }`. */
+export interface ArgControlType {
+  type?: string;
+  disable?: boolean;
+  [key: string]: unknown;
+}
+
+/** One row of the args table: an arg type, with the key of its arg. */
 export interface ArgType {
+  key?: string;
   name?: string;
   description?: string;
   if?: Conditional;
+  type?: { name?: string; required?: boolean } | string;
+  control?: ArgControlType | string | false;
+  options?: Options;
   table?: {
     category?: string;
     disable?: boolean;
@@ -53,17 +67,16 @@ export interface ArgType {
       detail?: string | undefined;
     };
     readonly?: boolean;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
+
+/** An args table row after grouping, which always has its key. */
+export type ArgRowType = ArgType & { key: string };
 
 export interface ArgTypes {
   [key: string]: ArgType;
 }
 
-export interface Args {
-  [key: string]: any;
-}
-
-export type Globals = { [name: string]: any };
+export type { Args, Globals };
