@@ -98,7 +98,9 @@ const Pages: FC<{
             tabs={tabs}
             tools={
               <>
-                <div className={styles.sidebarToggle}><menuTool.render /></div>
+                <div className={styles.sidebarToggle}>
+                  <menuTool.render />
+                </div>
                 {toolsExtra.map((item) => (
                   <item.render key={item.id} />
                 ))}

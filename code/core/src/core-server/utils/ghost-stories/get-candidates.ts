@@ -2,7 +2,6 @@ import { readFile } from 'node:fs/promises';
 
 import { babelParse, traverse } from '@aussieljk/forkbook/internal/babel';
 
-// eslint-disable-next-line depend/ban-dependencies
 import { glob } from 'tinyglobby';
 
 import { getComponentComplexity } from './component-analyzer.ts';
