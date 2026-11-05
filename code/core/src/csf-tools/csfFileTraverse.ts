@@ -181,7 +181,7 @@ export const traverseCsf = (csf: CsfFile) => {
                 csf._storyAnnotations[exportName] = {};
               }
 
-              const parameters: { [key: string]: any } = {};
+              const parameters: Record<string, unknown> = {};
               if (t.isObjectExpression(storyNode)) {
                 parameters.__isArgsStory = true; // assume default render is an args story
                 // CSF3 object export

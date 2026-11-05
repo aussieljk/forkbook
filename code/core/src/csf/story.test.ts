@@ -200,6 +200,7 @@ test('ArgsFromMeta will infer correct args from render/loader/decorators', () =>
 });
 
 test('You can assign a component to Meta, even when you pass a top type', () => {
+  // `any` on purpose: the test checks each top type.
   expectTypeOf({ component: Button }).toMatchTypeOf<XMeta>();
   expectTypeOf({ component: Button }).toMatchTypeOf<XMeta<Record<string, any>>>();
   expectTypeOf({ component: Button }).toMatchTypeOf<XMeta<Record<string, unknown>>>();

@@ -2,8 +2,7 @@ import { type NextConfigComplete, normalizeConfig } from 'next/dist/server/confi
 import nextServerConfig from 'next/dist/server/config.js';
 
 const loadConfig: typeof nextServerConfig =
-  // biome-ignore lint/suspicious/noExplicitAny: CJS support
-  (nextServerConfig as any).default || nextServerConfig;
+  (nextServerConfig as { default?: typeof nextServerConfig }).default || nextServerConfig;
 
 const TURBOPACK_RUST_REACT_COMPILER_ERROR =
   '`experimental.turbopackRustReactCompiler` is only supported with Turbopack.';

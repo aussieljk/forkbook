@@ -40,8 +40,7 @@ const nextConfig: NextConfigComplete = {
   modularizeImports: undefined,
   compiler: undefined,
   distDir: '.next',
-  // biome-ignore lint/suspicious/noExplicitAny: we only need a partial shape for this test
-} as any;
+} as Partial<NextConfigComplete> as NextConfigComplete;
 
 describe('vitePluginNextSwc env detection', () => {
   const setupMocks = async () => {
@@ -69,9 +68,9 @@ describe('vitePluginNextSwc env detection', () => {
     });
 
     const swcTransform = await import('../../utils/swc/transform.ts');
+    type SwcTransformConfig = Awaited<ReturnType<typeof swcTransform.getVitestSWCTransformConfig>>;
     vi.mocked(swcTransform.getVitestSWCTransformConfig).mockResolvedValue(
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      {} as any
+      {} as Partial<SwcTransformConfig> as SwcTransformConfig
     );
   };
 

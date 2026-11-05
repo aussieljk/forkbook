@@ -1,5 +1,6 @@
 export interface PrintResultType {
   code: string;
-  map?: any;
+  /** The source map from recast. */
+  map?: object;
   toString(): string;
 }

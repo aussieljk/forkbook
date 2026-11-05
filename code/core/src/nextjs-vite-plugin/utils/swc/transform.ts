@@ -110,10 +110,7 @@ export const getVitestSWCTransformConfig = async ({
 
 async function getSupportedBrowsers(projectRoot: string, isDevelopment: boolean) {
   try {
-    const getSupportedBrowserModule = await import(
-      // @ts-expect-error This module path is correct since Next.js v16.2.
-      'next/dist/build/get-supported-browsers.js'
-    );
+    const getSupportedBrowserModule = await import('next/dist/build/get-supported-browsers.js');
     return getSupportedBrowserModule.getSupportedBrowsers(projectRoot, isDevelopment);
   } catch (e) {
     // TODO: Remove as soon as we don't have to support Next.js < 16.2 anymore

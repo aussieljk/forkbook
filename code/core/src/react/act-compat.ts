@@ -19,8 +19,10 @@ export function getReactActEnvironment() {
   return globalThis.IS_REACT_ACT_ENVIRONMENT;
 }
 
-function withGlobalActEnvironment(actImplementation: (callback: () => void) => Promise<any>) {
-  return (callback: () => any) => {
+function withGlobalActEnvironment(
+  actImplementation: (callback: () => unknown) => Promise<unknown>
+) {
+  return (callback: () => unknown) => {
     const previousActEnvironment = getReactActEnvironment();
     setReactActEnvironment(true);
     try {
@@ -28,7 +30,12 @@ function withGlobalActEnvironment(actImplementation: (callback: () => void) => P
       let callbackNeedsToBeAwaited = false;
       const actResult = actImplementation(() => {
         const result = callback();
-        if (result !== null && typeof result === 'object' && typeof result.then === 'function') {
+        if (
+          result !== null &&
+          typeof result === 'object' &&
+          'then' in result &&
+          typeof result.then === 'function'
+        ) {
           callbackNeedsToBeAwaited = true;
         }
         return result;
@@ -36,13 +43,13 @@ function withGlobalActEnvironment(actImplementation: (callback: () => void) => P
       if (callbackNeedsToBeAwaited) {
         const thenable = actResult;
         return {
-          then: (resolve: (param: any) => void, reject: (param: any) => void) => {
+          then: (resolve: (param: unknown) => void, reject: (param: unknown) => void) => {
             thenable.then(
-              (returnValue: any) => {
+              (returnValue) => {
                 setReactActEnvironment(previousActEnvironment);
                 resolve(returnValue);
               },
-              (error: any) => {
+              (error) => {
                 setReactActEnvironment(previousActEnvironment);
                 reject(error);
               }
@@ -64,7 +71,7 @@ function withGlobalActEnvironment(actImplementation: (callback: () => void) => P
 
 export const getAct = async ({ disableAct = false }: { disableAct?: boolean } = {}) => {
   if (process.env.NODE_ENV === 'production' || disableAct) {
-    return (cb: (...args: any[]) => any) => cb();
+    return (cb: () => unknown) => cb();
   }
 
   let reactAct: typeof React.act;

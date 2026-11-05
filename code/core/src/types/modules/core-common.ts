@@ -49,7 +49,7 @@ export interface CoreConfig {
     | BuilderName
     | {
         name: BuilderName;
-        options?: Record<string, any>;
+        options?: Record<string, unknown>;
       };
   renderer?: RendererName;
   channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
@@ -99,7 +99,7 @@ export interface Presets {
     args?: Options
   ): Promise<TypescriptOptions>;
   apply(extension: 'framework', config?: {}, args?: unknown): Promise<Preset>;
-  apply(extension: 'babel', config?: {}, args?: unknown): Promise<any>;
+  apply(extension: 'babel', config?: {}, args?: unknown): Promise<unknown>;
   apply(extension: 'swc', config?: {}, args?: unknown): Promise<any>;
   apply(extension: 'entries', config?: [], args?: unknown): Promise<unknown>;
   apply(extension: 'env', config?: {}, args?: unknown): Promise<any>;
@@ -183,7 +183,7 @@ export interface VersionCheck {
   success: boolean;
   cached: boolean;
   data?: any;
-  error?: any;
+  error?: unknown;
   time: number;
 }
 
@@ -714,14 +714,14 @@ export interface StorybookConfigRaw {
   refs?: CoreCommon_StorybookRefs;
 
   // We cannot use a particular Babel type here because we need to support a variety of versions
-  babel?: any;
+  babel?: unknown;
 
-  swc?: any;
+  swc?: unknown;
 
   env?: Record<string, string>;
 
   // We cannot use a particular Babel type here because we need to support a variety of versions
-  babelDefault?: any;
+  babelDefault?: unknown;
 
   previewAnnotations?: Entry[];
 
@@ -942,7 +942,7 @@ export interface CoreCommon_ResolvedAddonVirtual {
   name: string;
   managerEntries?: string[];
   previewAnnotations?: PreviewAnnotation[];
-  presets?: (string | { name: string; options?: any })[];
+  presets?: (string | { name: string; options?: unknown })[];
 }
 
 export type CoreCommon_OptionsEntry = { name: string };

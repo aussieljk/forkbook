@@ -3,7 +3,7 @@ import { ComponentWithError } from './ComponentWithError.tsx';
 
 const meta = {
   title: 'Example/ComponentWithError',
-  component: ComponentWithError as any,
+  component: ComponentWithError,
 } satisfies Meta<typeof ComponentWithError>;
 
 export default meta;

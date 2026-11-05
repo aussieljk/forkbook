@@ -2,8 +2,7 @@ if (typeof Promise.withResolvers === 'undefined') {
   Promise.withResolvers = <T>(): {
     promise: Promise<T>;
     resolve: (value: T | PromiseLike<T>) => void;
-    // biome-ignore lint/suspicious/noExplicitAny: any is needed for the reject function
-    reject: (reason?: any) => void;
+    reject: (reason?: unknown) => void;
   } => {
     // The Promise executor runs at once, so it assigns both.
     let resolve!: (value: T | PromiseLike<T>) => void;

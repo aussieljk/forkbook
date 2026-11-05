@@ -62,7 +62,7 @@ export type API_IframeRenderer = (
   id: string,
   baseUrl: string,
   scale: number,
-  queryParams: Record<string, any>
+  queryParams: Record<string, unknown>
 ) => ReactElement<any, any> | null;
 
 export type FilterFunction = (entry: API_PreparedIndexEntry, excluded?: boolean) => boolean;
@@ -138,7 +138,7 @@ export interface API_SidebarOptions<API = any> {
       isMobile: boolean;
       location: 'sidebar' | 'bottom-bar';
     }
-  ) => any;
+  ) => unknown;
 }
 
 interface OnClearOptions {
@@ -157,7 +157,7 @@ export interface API_Notification {
   id: string;
   content: {
     headline: string;
-    subHeadline?: string | any;
+    subHeadline?: React.ReactNode;
   };
   duration?: number;
   link?: string;

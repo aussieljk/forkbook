@@ -9,8 +9,7 @@ import path, { join } from 'pathe';
 const nextDistPath =
   /(next[\\/]dist[\\/]shared[\\/]lib)|(next[\\/]dist[\\/]client)|(next[\\/]dist[\\/]pages)/;
 
-// biome-ignore lint/suspicious/noExplicitAny: Support for CJS
-const { loadEnvConfig } = ((nextEnv as any).default || nextEnv) as typeof nextEnv;
+const { loadEnvConfig } = (nextEnv as { default?: typeof nextEnv }).default || nextEnv;
 
 /**
  * Set up the environment variables for the Next.js project

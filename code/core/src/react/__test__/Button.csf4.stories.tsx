@@ -11,7 +11,13 @@ const preview = __definePreview({
   addons: [],
 });
 
-const meta = preview.meta({
+// Args that some stories add to the props of `Button`.
+type ExtraArgs = {
+  mockFn?: (val: string) => string;
+  someActionArg?: (val: string) => void;
+};
+
+const meta = preview.type<{ args: ExtraArgs }>().meta({
   id: 'button-component',
   title: 'Example/CSF4/Button',
   component: Button,
@@ -142,7 +148,6 @@ export const CSF3InputFieldFilled = meta.story({
 const mockFn = fn();
 export const LoaderStory = meta.story({
   args: {
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
     mockFn,
   },
   loaders: [
@@ -153,8 +158,8 @@ export const LoaderStory = meta.story({
       };
     },
   ],
-  render: (args: any & { mockFn: (val: string) => string }, { loaded }) => {
-    const data = args.mockFn('render');
+  render: (args, { loaded }) => {
+    const data = args.mockFn!('render');
     return (
       <div>
         <div data-testid="loaded-data">{loaded.value}</div>
@@ -169,17 +174,14 @@ export const LoaderStory = meta.story({
 
 export const MountInPlayFunction = meta.story({
   args: {
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
     mockFn: fn(),
   },
   play: async ({ args, mount, context }) => {
     // equivalent of loaders
     const loadedData = await Promise.resolve('loaded data');
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
-    mocked(args.mockFn).mockReturnValueOnce('mockFn return value');
+    mocked(args.mockFn!).mockReturnValueOnce('mockFn return value');
     // equivalent of render
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
-    const data = args.mockFn('render');
+    const data = args.mockFn!('render');
     // TODO refactor this in the mount args PR
     context.originalStoryFn = () => (
       <div>
@@ -190,7 +192,6 @@ export const MountInPlayFunction = meta.story({
     await mount();
 
     // equivalent of play
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
     expect(args.mockFn).toHaveBeenCalledWith('render');
   },
 });
@@ -203,17 +204,14 @@ export const MountInPlayFunctionThrow = meta.story({
 
 export const WithActionArg = meta.story({
   args: {
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
     someActionArg: action('some-action-arg'),
   },
   render: (args) => {
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
-    args.someActionArg('in render');
+    args.someActionArg!('in render');
     return (
       <button
         onClick={() => {
-          // @ts-expect-error TODO: add a way to provide custom args/argTypes
-          args.someActionArg('on click');
+          args.someActionArg!('on click');
         }}
       />
     );
@@ -227,7 +225,6 @@ export const WithActionArg = meta.story({
 
 export const WithActionArgType = meta.story({
   argTypes: {
-    // @ts-expect-error TODO: add a way to provide custom args/argTypes
     someActionArg: {
       action: true,
     },

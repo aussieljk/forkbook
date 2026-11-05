@@ -1,11 +1,9 @@
 import { fn } from '@aussieljk/forkbook/test';
 import type { Mock } from '@aussieljk/forkbook/test';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-type Callback = (...args: any[]) => Promise<any>;
+type Callback = (...args: unknown[]) => Promise<unknown>;
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-type Procedure = (...args: any[]) => any;
+type Procedure = (...args: unknown[]) => unknown;
 
 // mock utilities/overrides (as of Next v14.2.0)
 const revalidatePath: Mock<Procedure> = fn().mockName('next/cache::revalidatePath');

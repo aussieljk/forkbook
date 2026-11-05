@@ -207,7 +207,9 @@ describe('definePreview composed', () => {
     expect(hasCoreAnnotations(composed)).toBe(true);
 
     // The core annotations are present (the actions/test addons contribute loaders unconditionally).
-    const coreLoaderCount = getCoreAnnotations().flatMap((it) => (it as any).loaders ?? []).length;
+    const coreLoaderCount = getCoreAnnotations().flatMap((it) =>
+      'loaders' in it ? (it.loaders ?? []) : []
+    ).length;
     expect(coreLoaderCount).toBeGreaterThan(0);
     expect(composed.loaders).toHaveLength(coreLoaderCount);
   });

@@ -13,6 +13,12 @@ import { resolveMock } from './resolve.ts';
 
 const DEFAULT_MODULE_DIRECTORIES = ['/node_modules/'];
 
+/**
+ * estree-walker walks any tree of nodes with a `type` field. Its types only allow ESTree nodes, so
+ * this gives it the types of the Babel nodes that it walks here.
+ */
+const walkBabel = walk as unknown as (ast: t.Node, handler: { enter(node: t.Node): void }) => void;
+
 export function isModuleDirectory(path: string) {
   const normalizedPath = normalize(path);
   return DEFAULT_MODULE_DIRECTORIES.some((dir: string) => normalizedPath.includes(dir));
@@ -54,8 +60,8 @@ export const babelParser = (code: string) => {
 export function rewriteSbMockImportCalls(code: string) {
   const ast = babelParser(code);
 
-  walk(ast as any, {
-    enter(node: any) {
+  walkBabel(ast, {
+    enter(node) {
       if (
         node.type === 'CallExpression' &&
         node.callee.type === 'MemberExpression' &&
@@ -110,8 +116,8 @@ export function extractMockCalls(
     const mocks: MockCall[] = [];
 
     /** Helper to check if an ObjectExpression node has spy: true */
-    function hasSpyTrue(objectExpression: any): boolean {
-      if (!objectExpression || !objectExpression.properties) {
+    function hasSpyTrue(objectExpression: t.Node | undefined): boolean {
+      if (!objectExpression || !('properties' in objectExpression)) {
         return false;
       }
       for (const prop of objectExpression.properties) {
@@ -128,9 +134,8 @@ export function extractMockCalls(
       return false;
     }
 
-    walk(ast as any, {
-      // @ts-expect-error The walker types the node as ESTree, but the AST comes from Babel.
-      async enter(node: t.Node) {
+    walkBabel(ast, {
+      async enter(node) {
         if (
           node.type !== 'CallExpression' ||
           node.callee.type !== 'MemberExpression' ||

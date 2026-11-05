@@ -20,11 +20,11 @@ export interface SetStoriesStory {
   parameters: {
     fileName: string;
     options: {
-      [optionName: string]: any;
+      [optionName: string]: unknown;
     };
     docsOnly?: boolean;
     viewMode?: API_ViewMode;
-    [parameterName: string]: any;
+    [parameterName: string]: unknown;
   };
   argTypes?: ArgTypes;
   args?: Args;

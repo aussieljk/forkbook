@@ -378,7 +378,7 @@ export class CsfFile {
         const id =
           story.parameters?.__id ??
           toId((self._meta?.id || self._meta?.title) as string, storyNameFromExport(key));
-        const parameters: Record<string, any> = { ...story.parameters, __id: id };
+        const parameters: Record<string, unknown> = { ...story.parameters, __id: id };
 
         const { includeStories } = self._meta || {};
         if (
@@ -558,7 +558,7 @@ export const loadCsf = (code: string, options: CsfOptions) => {
 
 export const formatCsf = (
   csf: CsfFile,
-  options: GeneratorOptions & { inputSourceMap?: any } = { sourceMaps: false },
+  options: GeneratorOptions & { inputSourceMap?: object } = { sourceMaps: false },
   code?: string
 ): ReturnType<typeof generate> | string => {
   const result = generate(csf._ast, options, code);

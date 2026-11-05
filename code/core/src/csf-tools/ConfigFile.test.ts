@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
 import * as babelParser from '@babel/parser';
-import { babelPrint, parserOptions } from '@aussieljk/forkbook/internal/babel';
+import { babelPrint, parserOptions, type types as t } from '@aussieljk/forkbook/internal/babel';
 
 import { dedent } from 'ts-dedent';
 
 import { ConfigFile, formatConfig, loadConfig, printConfig } from './ConfigFile.ts';
+import type { CsfValue } from './CsfObject.ts';
 
 expect.addSnapshotSerializer({
-  serialize: (val: any) => (typeof val === 'string' ? val : val.toString()),
+  serialize: (val: unknown) => (typeof val === 'string' ? val : String(val)),
   test: (val) => true,
 });
 
@@ -17,13 +18,13 @@ const getField = (path: string[], source: string) => {
   return config.getValue(path);
 };
 
-const setField = (path: string[], value: any, source: string) => {
+const setField = (path: string[], value: CsfValue | t.Expression, source: string) => {
   const config = loadConfig(source).parse();
   expect(config.set(path, value)).toMatchObject({ ok: true });
   return printConfig(config).code;
 };
 
-const appendToArray = (path: string[], value: any, source: string) => {
+const appendToArray = (path: string[], value: unknown, source: string) => {
   const config = loadConfig(source).parse();
   config.appendValueToArray(path, value);
   return printConfig(config).code;

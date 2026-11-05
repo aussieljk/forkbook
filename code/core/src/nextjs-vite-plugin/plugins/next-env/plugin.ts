@@ -24,9 +24,8 @@ export async function vitePluginNextEnv(
     isNext1540 = true;
   } catch (error) {
     // Next.js < 15.4.0
-    getDefineEnv =
-      // @ts-expect-error The installed Next.js types are for >= 15.4.0, where this module moved.
-      (await import('next/dist/build/webpack/plugins/define-env-plugin.js')).getDefineEnv;
+    getDefineEnv = (await import('next/dist/build/webpack/plugins/define-env-plugin.js'))
+      .getDefineEnv;
   }
 
   return {

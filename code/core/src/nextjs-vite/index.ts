@@ -14,8 +14,8 @@ import * as nextPreview from './preview.tsx';
 import type { NextJsTypes } from './types.ts';
 
 export * from '@aussieljk/forkbook/react';
-// @ts-expect-error (double exports)
-export * from './portable-stories.ts';
+// Named exports take precedence over the React versions from the `export *` above.
+export { composeStories, composeStory, setProjectAnnotations } from './portable-stories.ts';
 export * from './types.ts';
 
 export function definePreview<Addons extends PreviewAddonEntry[]>(

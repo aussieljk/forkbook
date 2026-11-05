@@ -22,10 +22,9 @@ export {
   canUpdateVitestConfigFile,
 } from './vitest-config-helpers.ts';
 
-// @ts-expect-error (needed due to it's use of `exports.default`)
-const traverse = (bt.default || bt) as typeof bt;
-// @ts-expect-error (needed due to it's use of `exports.default`)
-const generate = (bg.default || bg) as typeof bg;
+// The CommonJS builds set `exports.default`, so the default import can be the module object.
+const traverse = (bt as { default?: typeof bt }).default || bt;
+const generate = (bg as { default?: typeof bg }).default || bg;
 
 export {
   // main

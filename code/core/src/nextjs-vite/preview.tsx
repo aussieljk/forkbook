@@ -4,11 +4,7 @@ import type { Addon_DecoratorFunction, LoaderFunction } from '@aussieljk/forkboo
 
 import type { ReactRenderer } from '@aussieljk/forkbook/react';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore we must ignore types here as during compilation they are not generated yet
 import { createNavigation } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore we must ignore types here as during compilation they are not generated yet
 import { createRouter } from '@aussieljk/forkbook/nextjs-vite/router.mock';
 
 import { isNextRouterError } from 'next/dist/client/components/is-next-router-error.js';
@@ -53,15 +49,11 @@ globalThis.addEventListener('error', (ev: WindowEventMap['error']): void => {
   }
 });
 
-// Type assertion to handle the decorator type mismatch
-const asDecorator = (decorator: (Story: React.FC, context?: any) => React.ReactNode) =>
-  decorator as unknown as Addon_DecoratorFunction<ReactRenderer>;
-
-export const decorators: Addon_DecoratorFunction<ReactRenderer>[] = [
-  asDecorator(StyledJsxDecorator),
-  asDecorator(ImageDecorator),
-  asDecorator(RouterDecorator),
-  asDecorator(HeadManagerDecorator),
+export const decorators: Addon_DecoratorFunction<React.ReactNode>[] = [
+  StyledJsxDecorator,
+  ImageDecorator,
+  RouterDecorator,
+  HeadManagerDecorator,
 ];
 
 export const loaders: LoaderFunction<ReactRenderer> = async ({ globals, parameters }) => {

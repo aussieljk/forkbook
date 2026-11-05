@@ -10,15 +10,13 @@ import type {
 } from '@aussieljk/forkbook/internal/types';
 
 import type { Options } from 'react-element-to-jsx-string';
-import type reactElementToJSXStringType from 'react-element-to-jsx-string';
-// @ts-expect-error (this is needed, because our bundling prefers the `browser` field, but that yields CJS)
-import reactElementToJSXStringRaw from 'react-element-to-jsx-string/dist/esm/index.js';
+// Import the ESM build: our bundling prefers the `browser` field, but that yields CJS.
+// `react/typings.d.ts` declares the types of this path.
+import reactElementToJSXString from 'react-element-to-jsx-string/dist/esm/index.js';
 import { emitTransformCode, useEffect, useRef } from '@aussieljk/forkbook/preview-api';
 
 import type { ReactRenderer } from '../types';
-import { isForwardRef, isMemo } from './lib/componentTypes';
-
-const reactElementToJSXString = reactElementToJSXStringRaw as typeof reactElementToJSXStringType;
+import { field, isForwardRef, isMemo } from './lib/componentTypes';
 
 const toPascalCase = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -40,9 +38,9 @@ const toPascalCase = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
  * @returns {string | null} A displayName for the Symbol in case elementType is a Symbol; otherwise,
  *   null.
  */
-export const getReactSymbolName = (elementType: any): string => {
-  const elementName = elementType.$$typeof || elementType;
-  const symbolDescription: string = elementName.toString().replace(/^Symbol\((.*)\)$/, '$1');
+export const getReactSymbolName = (elementType: unknown): string => {
+  const elementName = field(elementType, '$$typeof') || elementType;
+  const symbolDescription = String(elementName).replace(/^Symbol\((.*)\)$/, '$1');
 
   const reactComponentName = symbolDescription
     .split('.')
@@ -58,16 +56,13 @@ export const getReactSymbolName = (elementType: any): string => {
 // Note: It may be better to use this function only in development environment.
 function simplifyNodeForStringify(node: ReactNode): ReactNode {
   if (isValidElement<Record<string, ReactNode>>(node)) {
-    const props = Object.keys(node.props).reduce<{ [key: string]: any }>((acc, cur) => {
+    const props = Object.keys(node.props).reduce<Record<string, ReactNode>>((acc, cur) => {
       acc[cur] = simplifyNodeForStringify(node.props[cur]);
       return acc;
     }, {});
-    return {
-      ...node,
-      props,
-      // @ts-expect-error (this is an internal or removed api)
-      _owner: null,
-    };
+    // `_owner` is an internal React field, so the element type does not declare it.
+    const simplified = { ...node, props, _owner: null };
+    return simplified;
   }
   if (Array.isArray(node)) {
     return node.map(simplifyNodeForStringify);
@@ -85,8 +80,10 @@ type JSXOptions = Options & {
   /** Override the display name used for a component */
   displayName?: string | Options['displayName'];
   /** The meta's `component`. Used to recover names for subcomponents attached as parent properties */
-  parentComponent?: any;
+  parentComponent?: React.ComponentType<never>;
 };
+
+type StoryElement = React.ReactElement<{ children?: unknown }>;
 
 /** Apply the users parameters and render the jsx for a story */
 export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
@@ -95,8 +92,8 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
     return null;
   }
 
-  // Story elements can have any props, so the skip loop reads them without a type.
-  let renderedJSX: React.ReactElement<any> = code;
+  // The skip loop only reads the children of each element.
+  let renderedJSX = code as StoryElement;
   const Type = renderedJSX.type;
 
   for (let i = 0; i < (options?.skip ?? 0); i += 1) {
@@ -119,7 +116,7 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
     } else if (typeof renderedJSX.props.children === 'function') {
       renderedJSX = renderedJSX.props.children();
     } else {
-      renderedJSX = renderedJSX.props.children;
+      renderedJSX = renderedJSX.props.children as StoryElement;
     }
   }
 
@@ -139,44 +136,45 @@ export const renderJsx = (code: React.ReactElement, options?: JSXOptions) => {
   } else {
     displayNameDefaults = {
       // To get exotic component names resolving properly
-      displayName: (el: any): string => {
-        if (el.type.displayName) {
-          return el.type.displayName;
-        } else if (getDocgenSection(el.type, 'displayName')) {
-          return getDocgenSection(el.type, 'displayName');
-        } else if (el.type.render?.displayName) {
-          return el.type.render.displayName;
-        } else if (
-          typeof el.type === 'symbol' ||
-          (el.type.$$typeof && typeof el.type.$$typeof === 'symbol')
-        ) {
-          return getReactSymbolName(el.type);
-        } else if (el.type.name && el.type.name !== '_default') {
-          return el.type.name;
-        } else if (typeof el.type === 'function') {
+      // The element type can be a string, a function, a class, a symbol, or an exotic object
+      // (memo, forwardRef), so `field` reads its fields.
+      displayName: (el: ReactNode): string => {
+        const type = field(el, 'type');
+        const typeName = field(type, 'name');
+        if (field(type, 'displayName')) {
+          return field(type, 'displayName') as string;
+        } else if (getDocgenSection(type, 'displayName')) {
+          return getDocgenSection(type, 'displayName') as string;
+        } else if (field(field(type, 'render'), 'displayName')) {
+          return field(field(type, 'render'), 'displayName') as string;
+        } else if (typeof type === 'symbol' || typeof field(type, '$$typeof') === 'symbol') {
+          return getReactSymbolName(type);
+        } else if (typeName && typeName !== '_default') {
+          return typeName as string;
+        } else if (typeof type === 'function') {
           const parent = options?.parentComponent;
           if (parent) {
-            for (const key of Object.keys(parent)) {
-              if (/^[A-Z]/.test(key) && (parent as any)[key] === el.type) {
-                const parentName = (parent as any).displayName || parent.name || '';
+            for (const [key, value] of Object.entries(parent)) {
+              if (/^[A-Z]/.test(key) && value === type) {
+                const parentName = parent.displayName || parent.name || '';
                 return parentName ? `${parentName}.${key}` : key;
               }
             }
           }
           return 'No Display Name';
-        } else if (isForwardRef(el.type)) {
-          return el.type.render.name;
-        } else if (isMemo(el.type)) {
-          return el.type.type.name;
+        } else if (isForwardRef(type)) {
+          return field(field(type, 'render'), 'name') as string;
+        } else if (isMemo(type)) {
+          return field(field(type, 'type'), 'name') as string;
         } else {
-          return el.type;
+          return type as string;
         }
       },
     };
   }
 
   const filterDefaults = {
-    filterProps: (value: any, key: string): boolean => value !== undefined,
+    filterProps: (value: unknown, key: string): boolean => value !== undefined,
   };
 
   const opts = {
@@ -237,9 +235,18 @@ export const skipJsxRender = (context: StoryContext<ReactRenderer>) => {
   return !isArgsStory || sourceParams?.code || sourceParams?.type === SourceType.CODE;
 };
 
-const isMdx = (node: any) => node.type?.displayName === 'MDXCreateElement' && !!node.props?.mdxType;
+/** An element that MDX 1 made. It keeps the real element type in `originalType`. */
+type MdxElement = ReactElement<{
+  mdxType: string;
+  originalType: React.ElementType;
+  children?: ReactElement | ReactElement[];
+}>;
 
-const mdxToJsx = (node: any) => {
+const isMdx = (node: unknown): node is MdxElement =>
+  field(field(node, 'type'), 'displayName') === 'MDXCreateElement' &&
+  !!field(field(node, 'props'), 'mdxType');
+
+const mdxToJsx = (node: ReactElement): ReactElement => {
   if (!isMdx(node)) {
     return node;
   }

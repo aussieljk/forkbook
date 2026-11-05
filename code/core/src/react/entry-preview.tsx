@@ -111,7 +111,7 @@ function getActiveJestFakeTimers(
   const fakeTimersEnabled =
     // legacy timers
 
-    (setTimeout as any)._isMockFunction === true || // modern timers
+    Reflect.get(setTimeout, '_isMockFunction') === true || // modern timers
     Object.prototype.hasOwnProperty.call(setTimeout, 'clock');
 
   return fakeTimersEnabled ? jest : undefined;

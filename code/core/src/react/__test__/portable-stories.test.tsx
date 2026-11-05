@@ -175,7 +175,7 @@ describe('CSF3', () => {
 it('should pass with decorators that need addons channel', () => {
   const PrimaryWithChannels = composeStory(ButtonStories.CSF3Primary, ButtonStories.default, {
     decorators: [
-      (StoryFn: any) => {
+      (StoryFn) => {
         addons.getChannel();
         return StoryFn();
       },
@@ -192,7 +192,7 @@ it('should pass with decorators that need addons channel', () => {
 it('flushes preview-api useEffect side-effects from decorators after run', async () => {
   const WithThemeEffect = composeStory(ButtonStories.CSF3Primary, ButtonStories.default, {
     decorators: [
-      (StoryFn: any) => {
+      (StoryFn) => {
         useEffect(() => {
           document.documentElement.setAttribute('data-theme', 'dark');
           return () => document.documentElement.removeAttribute('data-theme');

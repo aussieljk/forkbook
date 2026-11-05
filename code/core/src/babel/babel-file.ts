@@ -60,8 +60,12 @@ export function createBabelFile({
     },
     buildError,
   };
-  file.path = (NodePath as any)
-    .get({ hub, parentPath: null, parent: ast, container: ast, key: 'program' })
-    .setContext();
+  file.path = NodePath.get({
+    hub,
+    parentPath: null,
+    parent: ast,
+    container: ast,
+    key: 'program',
+  }).setContext();
   return file;
 }

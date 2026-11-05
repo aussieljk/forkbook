@@ -80,7 +80,7 @@ export const CSF3Button: CSF3Story<ButtonProps> = {
 
 export const CSF3ButtonWithRender: CSF3Story<ButtonProps> = {
   ...CSF3Button,
-  render: (args: any) => (
+  render: (args) => (
     <div>
       <p data-testid="custom-render">I am a custom render function</p>
       <Button {...args} />

@@ -1,3 +1,5 @@
+import type estree from 'estree';
+
 export enum InspectionType {
   IDENTIFIER = 'Identifier',
   LITERAL = 'Literal',
@@ -40,7 +42,7 @@ export interface InspectionClass extends InspectionInferedType {
 export interface InspectionFunction extends InspectionInferedType {
   type: InspectionType.FUNCTION;
   identifier?: string;
-  params: any[];
+  params: estree.Pattern[];
   hasParams: boolean;
 }
 
@@ -59,7 +61,15 @@ export type InspectionIdentifiableInferedType =
   | InspectionFunction
   | InspectionElement;
 
+/** A JSX element node. acorn-jsx makes these, but the ESTree types do not include JSX. */
+export interface JSXElementNode {
+  type: 'JSXElement';
+  openingElement: { name: object };
+}
+
+export type InspectionAst = estree.Node | JSXElementNode;
+
 export interface InspectionResult {
   inferredType: InspectionInferedType;
-  ast?: any;
+  ast?: InspectionAst;
 }

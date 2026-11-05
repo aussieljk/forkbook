@@ -1,6 +1,8 @@
 import { generate } from 'escodegen';
 import { dedent } from 'ts-dedent';
 
+import type { InspectionAst } from './inspection/types';
+
 const BASIC_OPTIONS = {
   format: {
     indent: {
@@ -21,15 +23,15 @@ const PRETTY_OPTIONS = {
   ...BASIC_OPTIONS,
 };
 
-export function generateCode(ast: any, compact = false): string {
+export function generateCode(ast: InspectionAst | undefined, compact = false): string {
   return generate(ast, compact ? COMPACT_OPTIONS : PRETTY_OPTIONS);
 }
 
-export function generateObjectCode(ast: any, compact = false): string {
+export function generateObjectCode(ast: InspectionAst | undefined, compact = false): string {
   return !compact ? generateCode(ast) : generateCompactObjectCode(ast);
 }
 
-function generateCompactObjectCode(ast: any): string {
+function generateCompactObjectCode(ast: InspectionAst | undefined): string {
   let result = generateCode(ast, true);
 
   // Cannot get escodegen to add a space before the last } with the compact mode settings.
@@ -41,11 +43,11 @@ function generateCompactObjectCode(ast: any): string {
   return result;
 }
 
-export function generateArrayCode(ast: any, compact = false): string {
+export function generateArrayCode(ast: InspectionAst | undefined, compact = false): string {
   return !compact ? generateMultilineArrayCode(ast) : generateCompactArrayCode(ast);
 }
 
-function generateMultilineArrayCode(ast: any): string {
+function generateMultilineArrayCode(ast: InspectionAst | undefined): string {
   let result = generateCode(ast);
 
   // escodegen add extra spacing before the closing bracket of a multiple line array with a nested object.
@@ -57,7 +59,7 @@ function generateMultilineArrayCode(ast: any): string {
   return result;
 }
 
-function generateCompactArrayCode(ast: any): string {
+function generateCompactArrayCode(ast: InspectionAst | undefined): string {
   let result = generateCode(ast, true);
 
   // escodegen add extra an extra before the opening bracket of a compact array that contains primitive values.

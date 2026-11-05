@@ -39,7 +39,7 @@ export interface API_DocsEntry extends API_BaseEntry {
   importPath: Path;
   prepared: boolean;
   parameters?: {
-    [parameterName: string]: any;
+    [parameterName: string]: unknown;
   };
   anchors?: DocsAnchor[];
 }
@@ -53,7 +53,7 @@ export interface API_StoryEntry extends API_BaseEntry {
   exportName: string;
   prepared: boolean;
   parameters?: {
-    [parameterName: string]: any;
+    [parameterName: string]: unknown;
   };
   args?: Args;
   argTypes?: ArgTypes;
@@ -124,12 +124,12 @@ export interface API_Settings {
 export interface API_Version {
   version: string;
   info?: { plain: string };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface API_UnknownEntries {
   [key: string]: {
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 

@@ -254,7 +254,7 @@ export class ConfigFile implements CsfObject {
 
   _code: string;
 
-  _exports: Record<string, t.Expression> = {};
+  _exports: Record<string, t.Expression | undefined> = {};
 
   // FIXME: this is a hack. this is only used in the case where the user is
   // modifying a named export that's a scalar. The _exports map is not suitable
@@ -287,7 +287,7 @@ export class ConfigFile implements CsfObject {
   }
 
   /** Unwraps TS assertions/satisfies from a node, to get the underlying node. */
-  _unwrap = (node: t.Node | undefined | null): any => {
+  _unwrap = (node: t.Node | undefined | null): t.Node | undefined | null => {
     if (t.isTSAsExpression(node) || t.isTSSatisfiesExpression(node)) {
       return this._unwrap(node.expression);
     }
@@ -297,14 +297,17 @@ export class ConfigFile implements CsfObject {
   /**
    * Resolve a declaration node by unwrapping TS assertions/satisfies and following identifiers to
    * resolve the correct node in case it's an identifier.
+   *
+   * The result is typed as an expression, because callers keep it as an export value. A default
+   * export can also be a function or class declaration, which callers check for.
    */
-  _resolveDeclaration = (node: t.Node, parent: t.Node = this._ast.program) => {
+  _resolveDeclaration = (node: t.Node, parent: t.Node = this._ast.program): t.Expression => {
     const decl = this._unwrap(node);
     if (t.isIdentifier(decl) && t.isProgram(parent)) {
       const initialization = findVarInitialization(decl.name, parent);
-      return initialization ? this._unwrap(initialization) : decl;
+      return (initialization ? this._unwrap(initialization) : decl) as t.Expression;
     }
-    return decl;
+    return decl as t.Expression;
   };
 
   parse() {
@@ -661,7 +664,7 @@ export class ConfigFile implements CsfObject {
     }
   }
 
-  appendValueToArray(path: string[], value: any) {
+  appendValueToArray(path: string[], value: unknown) {
     const node = this.valueToNode(value);
 
     if (node) {
@@ -734,7 +737,7 @@ export class ConfigFile implements CsfObject {
     return this._quotes;
   }
 
-  valueToNode(value: any): t.Expression | undefined {
+  valueToNode(value: unknown): t.Expression | undefined {
     const quotes = this._inferQuotes();
     let valueNode;
     // we do this rather than types.valueToNode because apparently

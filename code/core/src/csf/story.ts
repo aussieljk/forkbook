@@ -56,7 +56,11 @@ type ControlType =
   | 'date'
   | 'text';
 
-type ConditionalTest = { truthy?: boolean } | { exists: boolean } | { eq: any } | { neq: any };
+type ConditionalTest =
+  | { truthy?: boolean }
+  | { exists: boolean }
+  | { eq: unknown }
+  | { neq: unknown };
 type ConditionalValue = { arg: string } | { global: string };
 export type Conditional = ConditionalValue & ConditionalTest;
 
@@ -119,11 +123,11 @@ export interface InputType {
   /** @see https://forkbook.ljk.dev/docs/api/arg-types#if */
   if?: Conditional;
   /** @see https://forkbook.ljk.dev/docs/api/arg-types#mapping */
-  mapping?: { [key: string]: any };
+  mapping?: { [key: string]: unknown };
   /** @see https://forkbook.ljk.dev/docs/api/arg-types#name */
   name?: string;
   /** @see https://forkbook.ljk.dev/docs/api/arg-types#options */
-  options?: readonly any[];
+  options?: readonly unknown[];
   /** @see https://forkbook.ljk.dev/docs/api/arg-types#table */
   table?: {
     [key: string]: unknown;
@@ -252,7 +256,7 @@ export type ViewMode = 'story' | 'docs';
 
 export type LoaderFunction<TRenderer extends Renderer = Renderer, TArgs = Args> = (
   context: StoryContextForLoaders<TRenderer, TArgs>
-) => Promise<Record<string, any> | void> | Record<string, any> | void;
+) => Promise<Record<string, unknown> | void> | Record<string, unknown> | void;
 
 type Awaitable<T> = T | PromiseLike<T>;
 export type CleanupCallback = () => Awaitable<unknown>;

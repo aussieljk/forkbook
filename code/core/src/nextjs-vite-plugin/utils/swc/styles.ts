@@ -13,8 +13,7 @@ import type { StyledComponentsConfig } from 'next/dist/server/config-shared.js';
 
 export function getStyledComponentsOptions(
   styledComponentsConfig: undefined | boolean | StyledComponentsConfig,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  development: any
+  development: unknown
 ) {
   if (!styledComponentsConfig) {
     return null;

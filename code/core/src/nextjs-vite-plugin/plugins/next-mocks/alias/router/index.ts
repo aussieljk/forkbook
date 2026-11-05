@@ -1,8 +1,5 @@
-import type { NextComponentType, NextPageContext } from 'next';
 import singletonRouter, * as originalRouter from 'next/dist/client/router.js';
-import type { ExcludeRouterProps, WithRouterProps } from 'next/dist/client/with-router';
 import type { NextRouter, SingletonRouter } from 'next/router.js';
-import type { ComponentType } from 'react';
 import { NextjsRouterMocksNotAvailable } from '@aussieljk/forkbook/internal/preview-errors';
 import type { Mock } from '@aussieljk/forkbook/test';
 import { fn } from '@aussieljk/forkbook/test';
@@ -34,13 +31,16 @@ let routerAPI: {
   };
 } & typeof defaultRouterState;
 
+type RouterActions = Omit<typeof routerAPI, keyof typeof defaultRouterState | 'events'>;
+type RouterEvents = (typeof routerAPI)['events'];
+
 /**
  * Creates a next/router router API mock. Used internally.
  * @ignore
  * @internal
  * */
 export const createRouter = (overrides: Partial<NextRouter>) => {
-  const routerActions: Partial<NextRouter> = {
+  const routerActions: RouterActions = {
     push: fn((..._args: unknown[]) => {
       return Promise.resolve(true);
     }).mockName('next/router::useRouter().push'),
@@ -58,33 +58,29 @@ export const createRouter = (overrides: Partial<NextRouter>) => {
     ),
   };
 
-  const routerEvents: NextRouter['events'] = {
+  const routerEvents: RouterEvents = {
     on: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.on'),
     off: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.off'),
     emit: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.emit'),
   };
 
   if (overrides) {
-    for (const key of Object.keys(routerActions)) {
-      if (key in overrides) {
-        // biome-ignore lint/suspicious/noExplicitAny: simply casting to any for convenience
-        (routerActions as any)[key] = fn((...args: unknown[]) => {
-          // biome-ignore lint/suspicious/noExplicitAny: simply casting to any for convenience
-          return (overrides as any)[key](...args);
+    for (const key of Object.keys(routerActions) as (keyof RouterActions)[]) {
+      const override = overrides[key];
+      if (override) {
+        routerActions[key] = fn((...args: unknown[]) => {
+          return Reflect.apply(override, overrides, args);
         }).mockName(`useRouter().${key}`);
       }
     }
   }
 
-  if (overrides?.events) {
-    for (const key of Object.keys(routerEvents)) {
-      if (key in routerEvents) {
-        // biome-ignore lint/suspicious/noExplicitAny: simply casting to any for convenience
-        (routerEvents as any)[key] = fn((...args: unknown[]) => {
-          // biome-ignore lint/suspicious/noExplicitAny: simply casting to any for convenience
-          return (overrides.events as any)[key](...args);
-        }).mockName(`useRouter().events.${key}`);
-      }
+  const overrideEvents = overrides?.events;
+  if (overrideEvents) {
+    for (const key of Object.keys(routerEvents) as (keyof RouterEvents)[]) {
+      routerEvents[key] = fn((...args: unknown[]) => {
+        return Reflect.apply(overrideEvents[key], overrideEvents, args);
+      }).mockName(`useRouter().events.${key}`);
     }
   }
 
@@ -92,13 +88,12 @@ export const createRouter = (overrides: Partial<NextRouter>) => {
     ...defaultRouterState,
     ...overrides,
     ...routerActions,
-    // @ts-expect-error The mock events are `vi.fn` mocks, not a `MittEmitter`.
     events: routerEvents,
   };
 
   // overwrite the singleton router from next/router
-  // biome-ignore lint/suspicious/noExplicitAny: simply casting to any for convenience
-  (singletonRouter as unknown as SingletonRouter).router = routerAPI as any;
+  (singletonRouter as unknown as SingletonRouter).router =
+    routerAPI as unknown as SingletonRouter['router'];
 
   for (const cb of (singletonRouter as unknown as SingletonRouter).readyCallbacks) {
     cb();
@@ -132,9 +127,6 @@ export default singletonRouter;
 export const useRouter: Mock<() => NextRouter> = fn(originalRouter.useRouter).mockName(
   'next/router::useRouter'
 );
-export const withRouter: Mock<
-  (
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    ComposedComponent: NextComponentType<NextPageContext, any, WithRouterProps>
-  ) => ComponentType<ExcludeRouterProps<WithRouterProps>>
-> = fn(originalRouter.withRouter).mockName('next/router::withRouter');
+export const withRouter: Mock<typeof originalRouter.withRouter> = fn(
+  originalRouter.withRouter
+).mockName('next/router::withRouter');

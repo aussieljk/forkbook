@@ -68,29 +68,23 @@ export function hasCoreAnnotations(annotations: unknown): boolean {
   );
 }
 
+/** Calls a default export. A CommonJS build can put it in a `default` field. */
+function callDefault<T>(annotations: () => T): T {
+  return ((annotations as { default?: () => T }).default ?? annotations)();
+}
+
 export function getCoreAnnotations() {
   return [
-    // @ts-expect-error CJS fallback
-    (measureAnnotations.default ?? measureAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (backgroundsAnnotations.default ?? backgroundsAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (highlightAnnotations.default ?? highlightAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (outlineAnnotations.default ?? outlineAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (viewportAnnotations.default ?? viewportAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (actionAnnotations.default ?? actionAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (componentTestingAnnotations.default ?? componentTestingAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (testAnnotations.default ?? testAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (ghostStoriesAnnotations.default ?? ghostStoriesAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (docgenAnnotations.default ?? docgenAnnotations)(),
-    // @ts-expect-error CJS fallback
-    (storyDocsAnnotations.default ?? storyDocsAnnotations)(),
+    callDefault(measureAnnotations),
+    callDefault(backgroundsAnnotations),
+    callDefault(highlightAnnotations),
+    callDefault(outlineAnnotations),
+    callDefault(viewportAnnotations),
+    callDefault(actionAnnotations),
+    callDefault(componentTestingAnnotations),
+    callDefault(testAnnotations),
+    callDefault(ghostStoriesAnnotations),
+    callDefault(docgenAnnotations),
+    callDefault(storyDocsAnnotations),
   ];
 }

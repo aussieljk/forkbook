@@ -2,7 +2,6 @@ import { fetchCSSFromGoogleFonts } from 'next/dist/compiled/@next/font/dist/goog
 import { getFontAxes } from 'next/dist/compiled/@next/font/dist/google/get-font-axes.js';
 import { getGoogleFontsUrl } from 'next/dist/compiled/@next/font/dist/google/get-google-fonts-url.js';
 import { validateGoogleFontFunctionCall } from 'next/dist/compiled/@next/font/dist/google/validate-google-font-function-call.js';
-// @ts-expect-error no types
 import loaderUtils from 'next/dist/compiled/loader-utils3/index.js';
 
 const cssCache = new Map<string, string>();

@@ -21,8 +21,10 @@ let navigationAPI: {
  * @ignore
  * @internal
  */
-export const createNavigation = (overrides: any) => {
-  const navigationActions = {
+type NavigationActions = typeof navigationAPI & Record<string, unknown>;
+
+export const createNavigation = (overrides?: Record<string, (...params: unknown[]) => unknown>) => {
+  const navigationActions: NavigationActions = {
     push: fn().mockName('next/navigation::useRouter().push'),
     replace: fn().mockName('next/navigation::useRouter().replace'),
     forward: fn().mockName('next/navigation::useRouter().forward'),
@@ -34,8 +36,8 @@ export const createNavigation = (overrides: any) => {
   if (overrides) {
     Object.keys(navigationActions).forEach((key) => {
       if (key in overrides) {
-        (navigationActions as any)[key] = fn((...args: any[]) => {
-          return (overrides as any)[key](...args);
+        navigationActions[key] = fn((...args: unknown[]) => {
+          return overrides[key](...args);
         }).mockName(`useRouter().${key}`);
       }
     });

@@ -15,8 +15,7 @@ const excluded = /[\\/]((cache[\\/][^\\/]+\.zip[\\/])|virtual:)[\\/]/;
 const included = /\.((c|m)?(j|t)sx?)$/;
 
 const loadJsConfig: typeof nextLoadJsConfig =
-  // biome-ignore lint/suspicious/noExplicitAny: CJS support
-  (nextLoadJsConfig as any).default || nextLoadJsConfig;
+  (nextLoadJsConfig as { default?: typeof nextLoadJsConfig }).default || nextLoadJsConfig;
 
 export function vitePluginNextSwc(
   rootDir: string,

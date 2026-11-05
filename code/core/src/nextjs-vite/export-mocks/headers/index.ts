@@ -10,5 +10,7 @@ export { headers } from './headers.ts';
 export { cookies } from './cookies.ts';
 
 // passthrough mocks - keep original implementation but allow for spying
-const draftMode = fn(originalDraftMode ?? (headers as any).draftMode).mockName('draftMode');
+const draftMode = fn(
+  originalDraftMode ?? (headers as { draftMode?: typeof originalDraftMode }).draftMode
+).mockName('draftMode');
 export { draftMode };

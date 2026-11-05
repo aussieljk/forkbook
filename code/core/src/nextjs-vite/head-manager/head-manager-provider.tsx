@@ -1,18 +1,10 @@
-import type { JSX, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import React, { useMemo } from 'react';
 
 import initHeadManager from 'next/dist/client/head-manager.js';
 import { HeadManagerContext } from 'next/dist/shared/lib/head-manager-context.shared-runtime.js';
 
-type HeadManagerValue = {
-  updateHead?: ((state: JSX.Element[]) => void) | undefined;
-  mountedInstances?: Set<unknown>;
-  updateScripts?: ((state: any) => void) | undefined;
-  scripts?: any;
-  getIsSsr?: () => boolean;
-  appDir?: boolean | undefined;
-  nonce?: string | undefined;
-};
+type HeadManagerValue = React.ContextType<typeof HeadManagerContext>;
 
 const HeadManagerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const headManager: HeadManagerValue = useMemo(initHeadManager, []);

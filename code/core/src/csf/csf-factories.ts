@@ -226,7 +226,8 @@ function defineMeta<TRenderer extends Renderer>(
       story: StoryAnnotations<TRenderer, TRenderer['args']> | (() => TRenderer['storyResult']) = {}
     ) {
       const annotations = typeof story === 'function' ? { render: story } : story;
-      // The overloads of `Meta['story']` type the story's input.
+      // The overloads of `Meta['story']` type the story's input. `any`: this one implementation
+      // must return the story type of every overload, and `never` or `unknown` do not fit them all.
       return defineStory(annotations, this) as Story<TRenderer, any>;
     },
   };

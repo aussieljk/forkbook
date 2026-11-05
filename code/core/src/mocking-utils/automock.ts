@@ -47,12 +47,12 @@ export function getAutomockCode(originalCode: string, isSpy: boolean, parse: Par
 export function automockModule(
   code: string,
   mockType: 'automock' | 'autospy',
-  parse: (code: string) => any,
-  options: any = {}
+  parse: ParseFn,
+  options: { globalThisAccessor?: string } = {}
 ): MagicString {
   const globalThisAccessor =
     options.globalThisAccessor || JSON.stringify(__FORKBOOK_GLOBAL_THIS_ACCESSOR__);
-  const ast = parse(code) as Program;
+  const ast = parse(code);
 
   const m = new MagicString(code);
 

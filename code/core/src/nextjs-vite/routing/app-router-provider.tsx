@@ -3,8 +3,6 @@ import React, { useMemo } from 'react';
 // We need this import to be a singleton, and because it's used in multiple entrypoints
 // both in ESM and CJS, importing it via the package name instead of having a local import
 // is the only way to achieve it actually being a singleton
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore we must ignore types here as during compilation they are not generated yet
 import { getRouter } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
 
 import type { FlightRouterState } from 'next/dist/server/app-render/types';
@@ -20,7 +18,7 @@ import {
 } from 'next/dist/shared/lib/hooks-client-context.shared-runtime.js';
 import { PAGE_SEGMENT_KEY } from 'next/dist/shared/lib/segment.js';
 
-import type { RouteParams } from './types.tsx';
+import type { RouteParams, RouteSegment } from './types.tsx';
 
 // Using an inline type so we can support Next 14 and lower
 // from https://github.com/vercel/next.js/blob/v15.0.3/packages/next/src/server/request/params.ts#L25
@@ -59,14 +57,13 @@ function getSelectedParams(currentTree: FlightRouterState, params: Params = {}):
   return params;
 }
 
-const getParallelRoutes = (segmentsList: Array<string>): FlightRouterState => {
+// A story gives segment names or `[param, value]` pairs, and an empty tree ends the list.
+// Next.js reads these at runtime, but its `FlightRouterState` type does not allow them.
+const getParallelRoutes = (segmentsList: RouteSegment[]): FlightRouterState => {
   const segment = segmentsList.shift();
+  const tree = segment ? [segment, { children: getParallelRoutes(segmentsList) }] : [];
 
-  if (segment) {
-    return [segment, { children: getParallelRoutes(segmentsList) }];
-  }
-
-  return [] as any;
+  return tree as unknown as FlightRouterState;
 };
 
 export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProviderProps>> = ({
@@ -115,6 +112,40 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
     loading: null,
   };
 
+  // Fields for other Next.js versions than the installed types describe. A spread object
+  // has no excess property check, so the context types accept them.
+  const otherVersionsGlobalLayoutFields = {
+    changeByServerResponse() {
+      // NOOP
+    },
+    buildId: 'forkbook',
+  };
+  // The value has the fields of several Next.js versions, so it does not match the installed
+  // Next.js types (for example, it has no `parentSegmentPath` or `navigatedAt`).
+  const layoutRouterValue = {
+    // TODO Remove when dropping Next.js < v15.1.1
+    childNodes: new Map(),
+    tree,
+    // TODO END
+
+    // START Next.js v15.2 support
+    parentTree: tree,
+    parentCacheNode: newLazyCacheNode,
+    // END
+
+    // START Next.js v16.4 support
+    // The route tree of the root segment. `useRouter` reads `data.bfcacheId`, and
+    // a layout router reads `slots` (null: a story has no child segments).
+    parentRenderTree: {
+      segment: '',
+      data: { ...newLazyCacheNode, bfcacheId: 0 },
+      slots: null,
+    },
+    // END
+    url: pathname,
+    loading: null,
+  } as unknown as React.ContextType<typeof LayoutRouterContext>;
+
   // https://github.com/vercel/next.js/blob/canary/packages/next/src/client/components/app-router.tsx#L436
   return (
     <PathParamsContext.Provider value={pathParams}>
@@ -122,12 +153,7 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
         <SearchParamsContext.Provider value={new URLSearchParams(query)}>
           <GlobalLayoutRouterContext.Provider
             value={{
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore (Only available in Next.js >= v15.1.1)
-              changeByServerResponse() {
-                // NOOP
-              },
-              buildId: 'forkbook',
+              ...otherVersionsGlobalLayoutFields,
               tree,
               focusAndScrollRef: {
                 apply: false,
@@ -139,37 +165,7 @@ export const AppRouterProvider: React.FC<React.PropsWithChildren<AppRouterProvid
             }}
           >
             <AppRouterContext.Provider value={getRouter()}>
-              <LayoutRouterContext.Provider
-                value={{
-                  // TODO Remove when dropping Next.js < v15.1.1
-                  childNodes: new Map(),
-                  tree,
-                  // TODO END
-
-                  // START Next.js v15.2 support
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore Only available in Next.js >= v15.1.1
-                  parentTree: tree,
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore Only available in Next.js >= v15.1.1
-                  parentCacheNode: newLazyCacheNode,
-                  // END
-
-                  // START Next.js v16.4 support
-                  // The route tree of the root segment. `useRouter` reads `data.bfcacheId`, and
-                  // a layout router reads `slots` (null: a story has no child segments).
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore Only available in Next.js >= v16.4.0
-                  parentRenderTree: {
-                    segment: '',
-                    data: { ...newLazyCacheNode, bfcacheId: 0 },
-                    slots: null,
-                  },
-                  // END
-                  url: pathname,
-                  loading: null,
-                }}
-              >
+              <LayoutRouterContext.Provider value={layoutRouterValue}>
                 {children}
               </LayoutRouterContext.Provider>
             </AppRouterContext.Provider>

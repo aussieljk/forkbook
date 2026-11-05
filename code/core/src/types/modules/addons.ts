@@ -50,7 +50,7 @@ export interface Addon_StorySortObjectParameter {
 
 // The `any` here is the story store's `StoreItem` record. Ideally we should probably only
 // pass a defined subset of that full data, but we pass it all so far :shrug:
-export type IndexEntryLegacy = [StoryId, any, Parameters, Parameters];
+export type IndexEntryLegacy = [StoryId, unknown, Parameters, Parameters];
 export type Addon_StorySortComparator = Addon_Comparator<IndexEntryLegacy>;
 export type Addon_StorySortParameter = Addon_StorySortComparator | Addon_StorySortObjectParameter;
 export type Addon_StorySortComparatorV7 = Addon_Comparator<IndexEntry>;
@@ -74,7 +74,7 @@ export interface Addon_OptionsParameterV7 extends Object {
     base: string;
     brandTitle?: string;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export type Addon_StoryContext<TRenderer extends Renderer = Renderer> =
@@ -82,9 +82,9 @@ export type Addon_StoryContext<TRenderer extends Renderer = Renderer> =
 export type Addon_StoryContextUpdate = Partial<Addon_StoryContext>;
 
 interface Addon_ReturnTypeFramework<ReturnType> extends Renderer {
-  component: any;
+  component: unknown;
   storyResult: ReturnType;
-  canvasElement: any;
+  canvasElement: unknown;
 }
 export type Addon_PartialStoryFn<ReturnType = unknown> = PartialStoryFnForFramework<
   Addon_ReturnTypeFramework<ReturnType>
@@ -115,7 +115,7 @@ export type Addon_StoryWrapper = (
   storyFn: Addon_LegacyStoryFn,
   context: Addon_StoryContext,
   settings: Addon_WrapperSettings
-) => any;
+) => unknown;
 
 export type Addon_MakeDecoratorResult = (...args: any) => any;
 
@@ -128,7 +128,7 @@ export interface Addon_AddStoryArgs<StoryFnReturnType = unknown> {
 }
 
 export type Addon_ClientApiAddon<StoryFnReturnType = unknown> = Addon_Type & {
-  apply: (a: Addon_StoryApi<StoryFnReturnType>, b: any[]) => any;
+  apply: (a: Addon_StoryApi<StoryFnReturnType>, b: unknown[]) => unknown;
 };
 
 export interface Addon_ClientApiAddons<StoryFnReturnType> {
@@ -156,8 +156,8 @@ export interface Addon_StoryApi<StoryFnReturnType = unknown> {
 
 export interface Addon_ClientStoryApi<StoryFnReturnType = unknown> {}
 
-export type Addon_LoadFn = () => any;
-export type Addon_RequireContext = any; // FIXME
+export type Addon_LoadFn = () => unknown;
+export type Addon_RequireContext = unknown; // FIXME
 export type Addon_Loadable = Addon_RequireContext | [Addon_RequireContext] | Addon_LoadFn;
 
 // CSF types, to be re-org'ed in 6.1
@@ -475,7 +475,7 @@ export interface Addon_Config {
   };
   sidebar?: API_SidebarOptions;
   ui?: Partial<API_UI>;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export enum Addon_TypesEnum {

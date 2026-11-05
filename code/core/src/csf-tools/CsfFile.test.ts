@@ -15,7 +15,7 @@ import {
 } from './CsfFile.ts';
 
 expect.addSnapshotSerializer({
-  print: (val: any) => yaml.dump(val).trimEnd(),
+  print: (val: unknown) => yaml.dump(val).trimEnd(),
   test: (val) => typeof val !== 'string' && !(val instanceof Error),
 });
 

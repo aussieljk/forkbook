@@ -5,7 +5,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import MockLink from './index.tsx';
 
-const renderHref = (props: Record<string, unknown>) => {
+type MockLinkProps = React.ComponentProps<typeof MockLink>;
+
+const renderHref = (props: MockLinkProps) => {
   const html = renderToStaticMarkup(React.createElement(MockLink, props, 'User'));
   return /href="([^"]*)"/.exec(html)?.[1];
 };
@@ -20,10 +22,16 @@ const makeClickEvent = () => {
   return e as unknown as React.MouseEvent<HTMLAnchorElement>;
 };
 
-const getAnchorOnClick = (props: Record<string, unknown>) =>
-  (MockLink as any).render(props, null).props.onClick as (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => void;
+// `forwardRef` keeps the render function on the component, but its type does not show it.
+type ForwardRefRender = {
+  render: (
+    props: MockLinkProps,
+    ref: null
+  ) => React.ReactElement<{ onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void }>;
+};
+
+const getAnchorOnClick = (props: MockLinkProps) =>
+  (MockLink as unknown as ForwardRefRender).render(props, null).props.onClick;
 
 describe('next/link mock', () => {
   it('renders the resolved `as` URL instead of the `href` template when `as` is provided', () => {

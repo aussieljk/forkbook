@@ -75,7 +75,7 @@ export function esmWalker(
   const parentStack: Node[] = [];
   const varKindStack: VariableDeclaration['kind'][] = [];
   const scopeMap = new WeakMap<_Node, Set<string>>();
-  const identifiers: [id: any, stack: Node[]][] = [];
+  const identifiers: [id: Positioned<Identifier>, stack: Node[]][] = [];
 
   const setScope = (node: _Node, name: string) => {
     let scopeIds = scopeMap.get(node);
@@ -115,7 +115,8 @@ export function esmWalker(
     } else if (p.type === 'AssignmentPattern') {
       handlePattern(p.left, parentScope);
     } else {
-      setScope(parentScope, (p as any).name);
+      // A member expression has no name, so this adds `undefined`, as in the Vitest original.
+      setScope(parentScope, Reflect.get(p, 'name'));
     }
   }
 
@@ -149,7 +150,7 @@ export function esmWalker(
       if (node.type === 'Identifier') {
         if (!isInScope(node.name, parentStack) && isRefIdentifier(node, parent!, parentStack)) {
           // record the identifier, for DFS -> BFS
-          identifiers.push([node, parentStack.slice(0)]);
+          identifiers.push([node as Positioned<Identifier>, parentStack.slice(0)]);
         }
       } else if (isFunctionNode(node)) {
         // If it is a function declaration, it could be shadowing an import
@@ -167,8 +168,8 @@ export function esmWalker(
             handlePattern(p, node);
             return;
           }
-          (eswalk as any)(p.type === 'AssignmentPattern' ? p.left : p, {
-            enter(child: Node, parent: Node) {
+          eswalk(p.type === 'AssignmentPattern' ? p.left : p, {
+            enter(child, parent) {
               // skip params default value of destructure
               if (parent?.type === 'AssignmentPattern' && parent?.right === child) {
                 return this.skip();
@@ -261,7 +262,7 @@ function isRefIdentifier(id: Identifier, parent: _Node, parentStack: _Node[]) {
 
   if (isFunctionNode(parent)) {
     // function declaration/expression id
-    if ((parent as any).id === id) {
+    if ('id' in parent && parent.id === id) {
       return false;
     }
 
@@ -308,11 +309,11 @@ function isRefIdentifier(id: Identifier, parent: _Node, parentStack: _Node[]) {
   return true;
 }
 
-export function isStaticProperty(node: _Node): node is Property {
-  return node && node.type === 'Property' && !node.computed;
+export function isStaticProperty(node: _Node | null | undefined): node is Property {
+  return !!node && node.type === 'Property' && !node.computed;
 }
 
-export function isStaticPropertyKey(node: _Node, parent: _Node): boolean {
+export function isStaticPropertyKey(node: _Node, parent: _Node | null): boolean {
   return isStaticProperty(parent) && parent.key === node;
 }
 

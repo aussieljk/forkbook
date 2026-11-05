@@ -5,6 +5,7 @@ import { Tag } from '@aussieljk/forkbook/internal/core-server';
 import { vol } from 'memfs';
 import { dedent } from 'ts-dedent';
 
+import type { ReactComponentManifest } from './buildReactComponentDocgen.ts';
 import { ComponentMetaManager } from './componentMeta/ComponentMetaManager.ts';
 import { indexJson } from './fixtures.ts';
 import { manifests } from './generator.ts';
@@ -616,7 +617,9 @@ test('includes declared subcomponents that are already used in JSX', async () =>
   ];
 
   const result = await runManifests(manifestEntries);
-  const button = result?.components?.components?.['example-button'] as any;
+  const button = result?.components?.components?.['example-button'] as
+    | ReactComponentManifest
+    | undefined;
 
   expect(button?.subcomponents?.ButtonIcon?.name).toBe('ButtonIcon');
   expect(button?.subcomponents?.ButtonIcon?.path).toContain('ButtonIcon.tsx');
@@ -682,7 +685,9 @@ test('includes declared subcomponents even when they are not used in JSX', async
   ];
 
   const result = await runManifests(manifestEntries);
-  const button = result?.components?.components?.['example-button'] as any;
+  const button = result?.components?.components?.['example-button'] as
+    | ReactComponentManifest
+    | undefined;
 
   expect(button?.subcomponents?.ButtonIcon?.reactComponentMeta?.props?.textValue).toBeDefined();
   expect(button?.subcomponents?.ButtonIcon?.description).toBe('Supplemental child docs');
@@ -791,7 +796,9 @@ test('includes aliased member-expression subcomponents', async () => {
   ];
 
   const result = await runManifestsWithOptions(manifestEntries, { presets });
-  const comboBox = result?.components?.components?.['example-combo-box'] as any;
+  const comboBox = result?.components?.components?.['example-combo-box'] as
+    | ReactComponentManifest
+    | undefined;
 
   expect(comboBox?.subcomponents?.Item?.name).toBe('Item');
   expect(comboBox?.subcomponents?.Item?.reactComponentMeta?.props?.textValue).toBeDefined();
@@ -846,7 +853,9 @@ test('keeps the parent manifest when a declared subcomponent cannot be resolved'
   ];
 
   const result = await runManifests(manifestEntries);
-  const button = result?.components?.components?.['example-button'] as any;
+  const button = result?.components?.components?.['example-button'] as
+    | ReactComponentManifest
+    | undefined;
 
   expect(button?.error).toBeUndefined();
   expect(button?.description).toBe('Parent button docs');
@@ -887,7 +896,7 @@ test('generator uses reactComponentMeta displayName from batch extraction', asyn
 
   expect(
     header && 'reactComponentMeta' in header
-      ? (header as any).reactComponentMeta?.displayName
+      ? (header as ReactComponentManifest).reactComponentMeta?.displayName
       : undefined
   ).toBe('Header');
   expect(batchExtract).toHaveBeenCalled();

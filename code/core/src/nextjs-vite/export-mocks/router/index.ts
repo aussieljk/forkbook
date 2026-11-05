@@ -32,6 +32,9 @@ let routerAPI: {
   };
 } & typeof defaultRouterState;
 
+type RouterActions = Omit<typeof routerAPI, keyof typeof defaultRouterState | 'events'>;
+type RouterEvents = (typeof routerAPI)['events'];
+
 /**
  * Creates a next/router router API mock. Used internally.
  *
@@ -39,58 +42,60 @@ let routerAPI: {
  * @internal
  */
 export const createRouter = (overrides: Partial<NextRouter>) => {
-  const routerActions: Partial<NextRouter> = {
-    push: fn((..._args: any[]) => {
+  const routerActions: RouterActions = {
+    push: fn((..._args: unknown[]) => {
       return Promise.resolve(true);
     }).mockName('next/router::useRouter().push'),
-    replace: fn((..._args: any[]) => {
+    replace: fn((..._args: unknown[]) => {
       return Promise.resolve(true);
     }).mockName('next/router::useRouter().replace'),
-    reload: fn((..._args: any[]) => {}).mockName('next/router::useRouter().reload'),
-    back: fn((..._args: any[]) => {}).mockName('next/router::useRouter().back'),
+    reload: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().reload'),
+    back: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().back'),
     forward: fn(() => {}).mockName('next/router::useRouter().forward'),
-    prefetch: fn((..._args: any[]) => {
+    prefetch: fn((..._args: unknown[]) => {
       return Promise.resolve();
     }).mockName('next/router::useRouter().prefetch'),
-    beforePopState: fn((..._args: any[]) => {}).mockName('next/router::useRouter().beforePopState'),
+    beforePopState: fn((..._args: unknown[]) => {}).mockName(
+      'next/router::useRouter().beforePopState'
+    ),
   };
 
-  const routerEvents: NextRouter['events'] = {
-    on: fn((..._args: any[]) => {}).mockName('next/router::useRouter().events.on'),
-    off: fn((..._args: any[]) => {}).mockName('next/router::useRouter().events.off'),
-    emit: fn((..._args: any[]) => {}).mockName('next/router::useRouter().events.emit'),
+  const routerEvents: RouterEvents = {
+    on: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.on'),
+    off: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.off'),
+    emit: fn((..._args: unknown[]) => {}).mockName('next/router::useRouter().events.emit'),
   };
 
   if (overrides) {
-    Object.keys(routerActions).forEach((key) => {
-      if (key in overrides) {
-        (routerActions as any)[key] = fn((...args: any[]) => {
-          return (overrides as any)[key](...args);
+    for (const key of Object.keys(routerActions) as (keyof RouterActions)[]) {
+      const override = overrides[key];
+      if (override) {
+        routerActions[key] = fn((...args: unknown[]) => {
+          return Reflect.apply(override, overrides, args);
         }).mockName(`useRouter().${key}`);
       }
-    });
+    }
   }
 
-  if (overrides?.events) {
-    Object.keys(routerEvents).forEach((key) => {
-      if (key in routerEvents) {
-        (routerEvents as any)[key] = fn((...args: any[]) => {
-          return (overrides.events as any)[key](...args);
-        }).mockName(`useRouter().events.${key}`);
-      }
-    });
+  const overrideEvents = overrides?.events;
+  if (overrideEvents) {
+    for (const key of Object.keys(routerEvents) as (keyof RouterEvents)[]) {
+      routerEvents[key] = fn((...args: unknown[]) => {
+        return Reflect.apply(overrideEvents[key], overrideEvents, args);
+      }).mockName(`useRouter().events.${key}`);
+    }
   }
 
   routerAPI = {
     ...defaultRouterState,
     ...overrides,
     ...routerActions,
-    // @ts-expect-error The mock events are `vi.fn` mocks, not a `MittEmitter`.
     events: routerEvents,
   };
 
   // overwrite the singleton router from next/router
-  (singletonRouter as unknown as SingletonRouter).router = routerAPI as any;
+  (singletonRouter as unknown as SingletonRouter).router =
+    routerAPI as unknown as SingletonRouter['router'];
   (singletonRouter as unknown as SingletonRouter).readyCallbacks.forEach((cb) => cb());
   (singletonRouter as unknown as SingletonRouter).readyCallbacks = [];
 

@@ -66,6 +66,8 @@ export function __definePreview<Addons extends PreviewAddonEntry[]>(
   preview.meta = (_input) => {
     const meta = defineMeta(_input);
     const defineStory = meta.story.bind(meta);
+    // `any`: this wraps every overload of `meta.story`, and one of them takes a rest tuple from a
+    // conditional type, so no narrower input type is assignable to them all.
     meta.story = (__input?: any) => {
       const story = defineStory(__input);
       // TODO: [test-syntax] Are we sure we want this? the Component construct was for
@@ -116,6 +118,7 @@ export interface ReactPreview<T extends AddonTypes> extends Omit<
 
   meta<
     TArgs extends Args,
+    // `any`: a decorator can declare its own args. `never` and `unknown` lose the inferred args.
     Decorators extends DecoratorFunction<ReactTypes & T, any>,
     TMetaArgKeys extends PropertyKey = never,
   >(

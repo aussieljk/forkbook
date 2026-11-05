@@ -17,7 +17,7 @@ vi.mock('@aussieljk/forkbook/internal/common', async (importOriginal) => {
 });
 
 expect.addSnapshotSerializer({
-  serialize: (val: any) => (typeof val === 'string' ? val : val.toString()),
+  serialize: (val: unknown) => (typeof val === 'string' ? val : String(val)),
   test: (val) => true,
 });
 

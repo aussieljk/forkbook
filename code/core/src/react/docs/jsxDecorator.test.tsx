@@ -8,7 +8,8 @@ import React, { Profiler, StrictMode, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { addons, emitTransformCode, useState } from '@aussieljk/forkbook/preview-api';
 
-import type { StoryContextForRender } from '@aussieljk/forkbook/internal/types';
+import type { Channel } from '@aussieljk/forkbook/internal/channels';
+import type { Args, Parameters, StoryContextForRender } from '@aussieljk/forkbook/internal/types';
 
 import type { ReactRenderer } from '../types';
 import { getReactSymbolName, jsxDecorator, renderJsx } from './jsxDecorator';
@@ -27,7 +28,7 @@ const mockedGetChannel = vi.mocked(addons.getChannel);
 const mockedEmitTransformCode = vi.mocked(emitTransformCode);
 
 expect.addSnapshotSerializer({
-  print: (val: any) => val,
+  print: (val: unknown) => String(val),
   test: (val) => typeof val === 'string',
 });
 
@@ -74,8 +75,7 @@ describe('renderJsx', () => {
     `);
   });
   it('large objects', () => {
-    const obj = Array.from({ length: 20 }).reduce((acc, _, i) => {
-      // @ts-expect-error (Converted from ts-ignore)
+    const obj = Array.from({ length: 20 }).reduce<Record<string, string>>((acc, _, i) => {
       acc[`key_${i}`] = `val_${i}`;
       return acc;
     }, {});
@@ -159,9 +159,7 @@ describe('renderJsx', () => {
           return <div>{props.children}</div>;
         }
       );
-      (MyExoticComponentRef as any).__docgenInfo = {
-        displayName: 'ExoticComponent',
-      };
+      Object.assign(MyExoticComponentRef, { __docgenInfo: { displayName: 'ExoticComponent' } });
       expect(renderJsx(<MyExoticComponentRef>I am forwardRef!</MyExoticComponentRef>))
         .toMatchInlineSnapshot(`
           <ExoticComponent>
@@ -174,7 +172,7 @@ describe('renderJsx', () => {
       // oxlint-disable-next-line react/display-name -- displayName is assigned via Object.assign below
       const MyExoticComponentRef = React.forwardRef<FC, PropsWithChildren>(
         Object.assign(
-          function MyExoticComponent(props: any, _ref: any) {
+          function MyExoticComponent(props: PropsWithChildren, _ref: React.ForwardedRef<FC>) {
             return <div>{props.children}</div>;
           },
           { displayName: 'ExoticComponent' }
@@ -201,9 +199,7 @@ describe('renderJsx', () => {
     `);
 
     // if docgenInfo is present, it should use the displayName from there
-    (MyMemoComponentRef as any).__docgenInfo = {
-      displayName: 'MyMemoComponentRef',
-    };
+    Object.assign(MyMemoComponentRef, { __docgenInfo: { displayName: 'MyMemoComponentRef' } });
     expect(renderJsx(<MyMemoComponentRef>I am memo!</MyMemoComponentRef>)).toMatchInlineSnapshot(`
       <MyMemoComponentRef>
         I am memo!
@@ -240,7 +236,7 @@ describe('renderJsx', () => {
   });
 
   it('displayName coming from docgenInfo', () => {
-    function BasicComponent({ label }: any) {
+    function BasicComponent({ label }: { label?: React.ReactNode }) {
       return <button>{label}</button>;
     }
     BasicComponent.__docgenInfo = {
@@ -307,7 +303,7 @@ describe('renderJsx', () => {
 
   // arrow functions with an empty .name, so without help they rendered as <No Display Name>.
   it('resolves subcomponents attached as properties of a parent component', () => {
-    const Modal: any = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>;
+    const Modal = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>;
     Modal.Title = ({ children }: { children?: React.ReactNode }) => <h2>{children}</h2>;
     Modal.Content = ({ children }: { children?: React.ReactNode }) => <p>{children}</p>;
 
@@ -344,21 +340,22 @@ describe('renderJsx', () => {
   });
 });
 
+// The tests only need these fields of the context.
 const makeContext = (
   name: string,
-  parameters: any,
-  args: any,
+  parameters: Parameters,
+  args: Args,
   extra?: object
-  // @ts-expect-error (Converted from ts-ignore)
-): StoryContextForRender<ReactRenderer> => ({
-  id: `jsx-test--${name}`,
-  kind: 'js-text',
-  name,
-  parameters,
-  unmappedArgs: args,
-  args,
-  ...extra,
-});
+): StoryContextForRender<ReactRenderer> =>
+  ({
+    id: `jsx-test--${name}`,
+    kind: 'js-text',
+    name,
+    parameters,
+    unmappedArgs: args,
+    args,
+    ...extra,
+  }) as Partial<StoryContextForRender<ReactRenderer>> as StoryContextForRender<ReactRenderer>;
 
 describe('jsxDecorator', () => {
   const channel = { emit: vi.fn() };
@@ -369,7 +366,7 @@ describe('jsxDecorator', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockedGetChannel.mockReturnValue(channel as any);
+    mockedGetChannel.mockReturnValue(channel as Partial<Channel> as Channel);
     vi.mocked(useState).mockReturnValue([undefined, mockSetSource]);
 
     mockContext = makeContext('test', {}, { foo: 'bar' });
@@ -405,6 +402,7 @@ describe('jsxDecorator', () => {
   });
 
   it('should handle MDX elements correctly', () => {
+    // MDX 1 makes plain objects like this one, not real React elements.
     const mdxElement = {
       type: { displayName: 'MDXCreateElement' },
       props: {
@@ -419,10 +417,10 @@ describe('jsxDecorator', () => {
       parameters: {
         __isArgsStory: true,
       },
-      originalStoryFn: () => mdxElement,
+      originalStoryFn: () => mdxElement as unknown as React.ReactElement,
     };
 
-    jsxDecorator(mockStoryFn, context as any);
+    jsxDecorator(mockStoryFn, context);
 
     // First verify that useState was called with the correct JSX string
     expect(mockedEmitTransformCode).toHaveBeenCalledWith(

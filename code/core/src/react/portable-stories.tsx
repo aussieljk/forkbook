@@ -45,8 +45,8 @@ import type { ReactRenderer } from './types.ts';
  */
 export function setProjectAnnotations(
   projectAnnotations:
-    | NamedOrDefaultProjectAnnotations<any>
-    | NamedOrDefaultProjectAnnotations<any>[]
+    | NamedOrDefaultProjectAnnotations<ReactRenderer>
+    | NamedOrDefaultProjectAnnotations<ReactRenderer>[]
 ): NormalizedProjectAnnotations<ReactRenderer> {
   setDefaultProjectAnnotations(INTERNAL_DEFAULT_PROJECT_ANNOTATIONS);
   return originalSetProjectAnnotations(
@@ -105,6 +105,7 @@ export const INTERNAL_DEFAULT_PROJECT_ANNOTATIONS: ProjectAnnotations<ReactRende
  */
 export function composeStory<TArgs extends Args = Args>(
   story: StoryAnnotationsOrFn<ReactRenderer, TArgs>,
+  // `any`: a meta for a component has args of the component props, not `TArgs`.
   componentAnnotations: Meta<TArgs | any>,
   projectAnnotations?: ProjectAnnotations<ReactRenderer>,
   exportsName?: string
@@ -145,12 +146,16 @@ export function composeStory<TArgs extends Args = Args>(
  * @param [projectAnnotations] - E.g. (import * as projectAnnotations from '../.forkbook/preview')
  *   this can be applied automatically if you use `setProjectAnnotations` in your setup files.
  */
-export function composeStories<TModule extends Store_CSFExports<ReactRenderer, any>>(
-  csfExports: TModule,
-  projectAnnotations?: ProjectAnnotations<ReactRenderer>
-) {
-  // @ts-expect-error The React types of the arguments are narrower than the generic Renderer types.
-  const composedStories = originalComposeStories(csfExports, projectAnnotations, composeStory);
+export function composeStories<
+  // `any`: the default export is a meta for a component, whose args are the component props.
+  TModule extends Store_CSFExports<ReactRenderer, any>,
+>(csfExports: TModule, projectAnnotations?: ProjectAnnotations<ReactRenderer>) {
+  // `composeStory` reads missing project annotations as `{}`.
+  const composedStories = originalComposeStories(
+    csfExports,
+    projectAnnotations ?? {},
+    composeStory
+  );
 
   return composedStories as unknown as Omit<
     StoriesWithPartialProps<ReactRenderer, TModule>,

@@ -1,10 +1,12 @@
 import { Parser } from 'acorn';
+import type * as acorn from 'acorn';
 import jsx from 'acorn-jsx';
 import * as acornWalk from 'acorn-walk';
 import type estree from 'estree';
 
 import type {
   InspectionArray,
+  InspectionAst,
   InspectionClass,
   InspectionElement,
   InspectionFunction,
@@ -12,29 +14,39 @@ import type {
   InspectionInferedType,
   InspectionLiteral,
   InspectionObject,
-  InspectionUnknown,
+  JSXElementNode,
 } from './types';
 import { InspectionType } from './types';
 
 interface ParsingResult<T> {
   inferredType: T;
-  ast: any;
+  ast: InspectionAst;
 }
 
-const ACORN_WALK_VISITORS = {
-  // @ts-expect-error `base` exists at runtime, but the acorn-walk types do not export it.
-  ...acornWalk.base,
+const ACORN_WALK_VISITORS: acornWalk.RecursiveVisitors<unknown> = {
+  // `base` exists at runtime, but the acorn-walk 7 types do not declare it.
+  ...(Reflect.get(acornWalk, 'base') as acornWalk.RecursiveVisitors<unknown>),
   JSXElement: () => {},
 };
+
+/**
+ * acorn parsed every node, so each one is an acorn node with `start` and `end`. The ESTree types
+ * do not show these fields, and acorn-walk wants acorn nodes.
+ */
+function toAcornNode(node: estree.Node): acorn.Node {
+  return node as unknown as acorn.Node;
+}
 
 const acornParser = Parser.extend(jsx());
 
 // Cannot use "estree.Identifier" type because this function also support "JSXIdentifier".
-function extractIdentifierName(identifierNode: any) {
-  return identifierNode != null ? identifierNode.name : null;
+function extractIdentifierName(identifierNode: object | null | undefined): string | null {
+  return identifierNode != null && 'name' in identifierNode
+    ? (identifierNode.name as string)
+    : null;
 }
 
-function filterAncestors(ancestors: estree.Node[]): estree.Node[] {
+function filterAncestors(ancestors: acorn.Node[]): acorn.Node[] {
   return ancestors.filter((x) => x.type === 'ObjectExpression' || x.type === 'ArrayExpression');
 }
 
@@ -42,13 +54,12 @@ function calculateNodeDepth(node: estree.Expression): number {
   const depths: number[] = [];
 
   acornWalk.ancestor(
-    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
-    node,
+    toAcornNode(node),
     {
-      ObjectExpression(_: any, ancestors: estree.Node[]) {
+      ObjectExpression(_, __, ancestors) {
         depths.push(filterAncestors(ancestors).length);
       },
-      ArrayExpression(_: any, ancestors: estree.Node[]) {
+      ArrayExpression(_, __, ancestors) {
         depths.push(filterAncestors(ancestors).length);
       },
     },
@@ -62,7 +73,7 @@ function parseIdentifier(identifierNode: estree.Identifier): ParsingResult<Inspe
   return {
     inferredType: {
       type: InspectionType.IDENTIFIER,
-      identifier: extractIdentifierName(identifierNode),
+      identifier: identifierNode.name,
     },
     ast: identifierNode,
   };
@@ -78,14 +89,13 @@ function parseLiteral(literalNode: estree.Literal): ParsingResult<InspectionLite
 function parseFunction(
   funcNode: estree.FunctionExpression | estree.ArrowFunctionExpression
 ): ParsingResult<InspectionFunction | InspectionElement> {
-  let innerJsxElementNode;
+  let innerJsxElementNode: acorn.Node | undefined;
 
   // If there is at least a JSXElement in the body of the function, then it's a React component.
   acornWalk.simple(
-    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
-    funcNode.body,
+    toAcornNode(funcNode.body),
     {
-      JSXElement(node: any) {
+      JSXElement(node) {
         innerJsxElementNode = node;
       },
     },
@@ -114,23 +124,23 @@ function parseFunction(
 function parseClass(
   classNode: estree.ClassExpression
 ): ParsingResult<InspectionClass | InspectionElement> {
-  let innerJsxElementNode;
+  let innerJsxElementNode: acorn.Node | undefined;
 
   // If there is at least a JSXElement in the body of the class, then it's a React component.
   acornWalk.simple(
-    // @ts-expect-error acorn-walk wants acorn nodes, and these are ESTree nodes.
-    classNode.body,
+    toAcornNode(classNode.body),
     {
-      JSXElement(node: any) {
+      JSXElement(node) {
         innerJsxElementNode = node;
       },
     },
     ACORN_WALK_VISITORS
   );
 
-  const inferredType: any = {
+  const inferredType: InspectionClass | InspectionElement = {
     type: innerJsxElementNode != null ? InspectionType.ELEMENT : InspectionType.CLASS,
-    identifier: extractIdentifierName(classNode.id),
+    // An anonymous class gives null. Callers check the identifier for null before they use it.
+    identifier: extractIdentifierName(classNode.id) as string,
   };
 
   return {
@@ -139,7 +149,7 @@ function parseClass(
   };
 }
 
-function parseJsxElement(jsxElementNode: any): ParsingResult<InspectionElement> {
+function parseJsxElement(jsxElementNode: JSXElementNode): ParsingResult<InspectionElement> {
   const inferredType: InspectionElement = {
     type: InspectionType.ELEMENT,
   };
@@ -181,8 +191,10 @@ function parseArray(arrayNode: estree.ArrayExpression): ParsingResult<Inspection
   };
 }
 
-// Cannot set "expression" type to "estree.Expression" because the type doesn't include JSX.
-function parseExpression(expression: any): ParsingResult<InspectionInferedType> | null {
+// "estree.Expression" does not include JSX, so the JSX element type is added.
+function parseExpression(
+  expression: estree.Expression | JSXElementNode
+): ParsingResult<InspectionInferedType> | null {
   switch (expression.type) {
     case 'Identifier':
       return parseIdentifier(expression);
@@ -209,7 +221,7 @@ function parseExpression(expression: any): ParsingResult<InspectionInferedType> 
 export function parse(value: string): ParsingResult<InspectionInferedType> {
   const ast = acornParser.parse(`(${value})`, { ecmaVersion: 2020 }) as unknown as estree.Program;
 
-  let parsingResult: ParsingResult<InspectionUnknown> = {
+  let parsingResult: ParsingResult<InspectionInferedType> = {
     inferredType: { type: InspectionType.UNKNOWN },
     ast,
   };
@@ -221,7 +233,7 @@ export function parse(value: string): ParsingResult<InspectionInferedType> {
       case 'ExpressionStatement': {
         const expressionResult = parseExpression(rootNode.expression);
         if (expressionResult != null) {
-          parsingResult = expressionResult as any;
+          parsingResult = expressionResult;
         }
         break;
       }

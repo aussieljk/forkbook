@@ -1,5 +1,4 @@
 import { validateLocalFontFunctionCall } from 'next/dist/compiled/@next/font/dist/local/validate-local-font-function-call.js';
-// @ts-expect-error no types
 import loaderUtils from 'next/dist/compiled/loader-utils3/index.js';
 import { dedent } from 'ts-dedent';
 

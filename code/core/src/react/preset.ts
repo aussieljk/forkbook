@@ -56,13 +56,20 @@ export const previewAnnotations: PresetProperty<'previewAnnotations'> = async (
     );
 };
 
+/** Paths to the React packages. `@aussieljk/forkbook/addon-docs` also sets `mdx`. */
+interface ResolvedReact {
+  react?: string;
+  reactDom?: string;
+  mdx?: string;
+}
+
 /**
  * Try to resolve react and react-dom from the root node_modules of the project addon-docs uses this
  * to alias react and react-dom to the project's version when possible If the user doesn't have an
  * explicit dependency on react this will return the existing values Which will be the versions
  * shipped with addon-docs
  */
-export const resolvedReact = async (existing: any) => {
+export const resolvedReact = async (existing: ResolvedReact) => {
   try {
     return {
       ...existing,

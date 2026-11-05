@@ -46,7 +46,7 @@ export type StoryFn<TCmpOrArgs = Args> = [TCmpOrArgs] extends [ComponentType<any
  */
 export type StoryObj<TMetaOrCmpOrArgs = Args> = [TMetaOrCmpOrArgs] extends [
   {
-    render?: ArgsStoryFn<ReactRenderer, any>;
+    render?: ArgsStoryFn<ReactRenderer, never>;
     component?: infer Component;
     args?: infer DefaultArgs;
   },
@@ -68,7 +68,7 @@ export type StoryObj<TMetaOrCmpOrArgs = Args> = [TMetaOrCmpOrArgs] extends [
 // This performs a downcast to function types that are mocks, when a mock fn is given to meta args.
 export type AddMocks<TArgs, DefaultArgs> = Simplify<{
   [T in keyof TArgs]: T extends keyof DefaultArgs
-    ? DefaultArgs[T] extends (...args: any) => any & { mock: {} } // allow any function with a mock object
+    ? DefaultArgs[T] extends (...args: never) => unknown // allow any function, such as a mock
       ? DefaultArgs[T]
       : TArgs[T]
     : TArgs[T];

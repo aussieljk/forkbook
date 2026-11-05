@@ -5,8 +5,6 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import type { Addon_StoryContext } from '@aussieljk/forkbook/internal/types';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore we must ignore types here as during compilation they are not generated yet
 import { createNavigation } from '@aussieljk/forkbook/nextjs-vite/navigation.mock';
 
 import { useRouter } from 'next/navigation';

@@ -8,8 +8,11 @@ import { dedent } from 'ts-dedent';
 
 import { enrichCsf } from './enrichCsf.ts';
 
+// The default export of the mocked `my-preset` module, so a test can spy on it.
+const myPreset = vi.hoisted(() => ({ features: { experimentalCodeExamples: true } }));
+
 vi.mock('my-preset', () => ({
-  default: { experimental_enrichCsf: enrichCsf, features: { experimentalCodeExamples: true } },
+  default: Object.assign(myPreset, { experimental_enrichCsf: enrichCsf }),
 }));
 
 test('should enrich csf with code parameters', async () => {
@@ -69,8 +72,7 @@ test('should enrich csf with code parameters', async () => {
 });
 
 test('should not enrich when experimentalCodeExamples is disabled', async () => {
-  // @ts-expect-error module does not exist
-  vi.spyOn((await import('my-preset')).default, 'features', 'get').mockImplementation(() => ({
+  vi.spyOn(myPreset, 'features', 'get').mockImplementation(() => ({
     experimentalCodeExamples: false,
   }));
   const presets = await getPresets(['my-preset'], { isCritical: true } as InterPresetOptions);

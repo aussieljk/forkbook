@@ -1,3 +1,4 @@
+import type { LinkProps } from 'next/link';
 import React from 'react';
 
 import { fn } from '@aussieljk/forkbook/test';
@@ -45,7 +46,10 @@ const normalizePathTrailingSlash = (path: string) => {
   return `${removeTrailingSlash(pathname)}${query}${hash}`;
 };
 
-const MockLink = React.forwardRef<HTMLAnchorElement, any>(function MockLink(
+type MockLinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
+  LinkProps & { children?: React.ReactNode };
+
+const MockLink = React.forwardRef<HTMLAnchorElement, MockLinkProps>(function MockLink(
   {
     href,
     as,
@@ -65,7 +69,7 @@ const MockLink = React.forwardRef<HTMLAnchorElement, any>(function MockLink(
   const resolvedHref = as ?? href;
   const rawHref =
     typeof resolvedHref === 'object'
-      ? `${resolvedHref.pathname || ''}${resolvedHref.query ? '?' + new URLSearchParams(resolvedHref.query).toString() : ''}${resolvedHref.hash || ''}`
+      ? `${resolvedHref.pathname || ''}${resolvedHref.query ? '?' + new URLSearchParams(resolvedHref.query as string | Record<string, string>).toString() : ''}${resolvedHref.hash || ''}`
       : resolvedHref;
   const hrefString = typeof rawHref === 'string' ? normalizePathTrailingSlash(rawHref) : rawHref;
 
@@ -83,8 +87,8 @@ const MockLink = React.forwardRef<HTMLAnchorElement, any>(function MockLink(
   };
 
   if (legacyBehavior) {
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    const childProps: Record<string, any> = {
+    const child = React.Children.only(children) as React.ReactElement<{ onClick?: unknown }>;
+    const childProps: Record<string, unknown> = {
       ref,
       onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
         if (child.props && typeof child.props.onClick === 'function') {

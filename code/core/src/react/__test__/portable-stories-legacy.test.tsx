@@ -156,7 +156,7 @@ describe('Legacy Portable Stories API', () => {
   it('should pass with decorators that need addons channel', () => {
     const PrimaryWithChannels = composeStory(stories.CSF3Primary, stories.default, {
       decorators: [
-        (StoryFn: any) => {
+        (StoryFn) => {
           addons.getChannel();
           return StoryFn();
         },

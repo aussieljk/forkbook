@@ -127,7 +127,7 @@ export { postCssLoadConfig };
       // Retry loading the config
       await postCssLoadConfig({}, searchPath, { stopDir: getProjectRoot() });
       return true; // Success with modified config!
-    } catch (e: any) {
+    } catch {
       // We were unable to fix the config, so we change the file back to the original content
       await writeFile(configPath, originalContent, 'utf8');
       // and throw an error
