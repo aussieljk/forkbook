@@ -9,6 +9,7 @@ import nextjsVite from './build-config/nextjs-vite.ts';
 import nextjsVitePlugin from './build-config/nextjs-vite-plugin.ts';
 import builderVite from './build-config/builder-vite.ts';
 import addonA11y from './build-config/addon-a11y.ts';
+import addonComments from './build-config/addon-comments.ts';
 import addonDocs from './build-config/addon-docs.ts';
 import addonLinks from './build-config/addon-links.ts';
 import addonMcp from './build-config/addon-mcp.ts';
@@ -288,6 +289,7 @@ const areas: BuildEntries[] = [
   nextjsVitePlugin,
   builderVite,
   addonA11y,
+  addonComments,
   addonDocs,
   addonLinks,
   addonMcp,

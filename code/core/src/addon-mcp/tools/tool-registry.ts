@@ -11,7 +11,8 @@ import {
   addGetUIBuildingInstructionsTool,
   getStorybookStoryInstructionsToolMetadata,
 } from './get-storybook-story-instructions.ts';
-import { addPreviewStoriesResource, PREVIEW_STORIES_RESOURCE_URI } from './preview-stories.ts';
+import { addCommentTools } from './comments.ts';
+import { addPreviewStoriesResource,PREVIEW_STORIES_RESOURCE_URI } from './preview-stories.ts';
 // The error class must come from the same entry as `getToolset` (which throws it, via
 // `toolset-tools.ts`); a copy from another core entry is a different constructor and
 // `instanceof` would silently fail.
@@ -248,6 +249,12 @@ export async function registerAddonMcpTools(
   // gate the tool's own registration uses below.
   if (isToolsetEnabled('dev', context.toolsets)) {
     await addPreviewStoriesResource(server);
+  }
+
+  // Comment tools read `.forkbook/comments.json` directly, so they need no toolset. They are part
+  // of the dev group, but not of the metadata list, because no core toolset backs them.
+  if (isToolsetEnabled('dev', context.toolsets)) {
+    addCommentTools(server, createToolsetEnabled(server, 'dev'));
   }
 
   for (const definition of addonToolDefinitions) {
