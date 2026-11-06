@@ -115,13 +115,37 @@ export async function storybookDevServer(
     useStatics(app, options),
   ]);
 
+  // Listen before the builders start. The manager and index.json can then answer as soon as they
+  // are ready, and the preview does not hold them back.
+  const listening = new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    // SECURITY: If no host is set, listen on 127.0.0.1. Node binds to 0.0.0.0 by default, which
+    // makes Forkbook accessible on LAN (e.g. conference WiFi). `localhost` is not used because
+    // Node binds it to one address only, often ::1, which refuses clients that connect to 127.0.0.1.
+    app.listen({ port: options.port, host: getListenHost(options.host) }, resolve);
+  }).then(() => addLoopbackListener(server));
+  // A listen error is also awaited below. This stops an unhandled rejection if a builder fails first.
+  listening.catch(() => {});
+  // Start to make the index now. The builders do not need it first.
+  void storyIndexGeneratorPromise.then((generator) => generator?.getIndex()).catch(() => {});
+
   if (options.debugWebpack) {
     logConfig('Preview webpack config', await previewBuilder.getConfig(options));
   }
 
-  const managerResult = options.previewOnly
-    ? undefined
-    : await withSpan('forkbook.manager-start', {}, () =>
+  const bailBuilders = async () => {
+    await disposeChangeDetectionRuntime();
+    await managerBuilder?.bail().catch(() => undefined);
+    // For some reason, even when the builder fails e.g. wrong main.js config,
+    // the preview may continue to print to stdout, which can affect output
+    // when we catch this error and process those errors (e.g. telemetry)
+    // gets overwritten by preview progress output. Therefore, we should bail the preview too.
+    await previewBuilder?.bail().catch(() => undefined);
+  };
+
+  const managerPromise = options.previewOnly
+    ? Promise.resolve(undefined)
+    : withSpan('forkbook.manager-start', {}, () =>
         managerBuilder.start({
           startTime: process.hrtime(),
           options,
@@ -131,35 +155,29 @@ export async function storybookDevServer(
         })
       );
 
-  let previewResult: Awaited<ReturnType<(typeof previewBuilder)['start']>> =
-    await Promise.resolve();
-
   logger.debug('Starting preview..');
-  previewResult = await withSpan('forkbook.preview-start', {}, () =>
-    previewBuilder
-      .start({
-        startTime: process.hrtime(),
-        options,
-        router: app,
-        server,
-        channel: options.channel,
-      })
-      .catch(async (e: unknown) => {
-        logger.error('Failed to build the preview');
-        process.exitCode = 1;
+  const previewPromise = withSpan('forkbook.preview-start', {}, () =>
+    previewBuilder.start({
+      startTime: process.hrtime(),
+      options,
+      router: app,
+      server,
+      channel: options.channel,
+    })
+  ).catch((e: unknown) => {
+    logger.error('Failed to build the preview');
+    process.exitCode = 1;
+    throw e;
+  });
 
-        await disposeChangeDetectionRuntime();
-        await managerBuilder?.bail().catch(() => undefined);
-        // For some reason, even when the builder fails e.g. wrong main.js config,
-        // the preview may continue to print to stdout, which can affect output
-        // when we catch this error and process those errors (e.g. telemetry)
-        // gets overwritten by preview progress output. Therefore, we should bail the preview too.
-        await previewBuilder?.bail().catch(() => undefined);
-
-        // re-throw the error
-        throw e;
-      })
-  );
+  let managerResult: Awaited<typeof managerPromise>;
+  let previewResult: Awaited<typeof previewPromise>;
+  try {
+    [managerResult, previewResult] = await Promise.all([managerPromise, previewPromise]);
+  } catch (e) {
+    await bailBuilders();
+    throw e;
+  }
 
   let adapter: ChangeDetectionAdapter | undefined;
   try {
@@ -172,14 +190,6 @@ export async function storybookDevServer(
   resolveChangeDetectionAdapter(adapter);
 
   changeDetectionService.start();
-
-  const listening = new Promise<void>((resolve, reject) => {
-    server.once('error', reject);
-    // SECURITY: If no host is set, listen on 127.0.0.1. Node binds to 0.0.0.0 by default, which
-    // makes Forkbook accessible on LAN (e.g. conference WiFi). `localhost` is not used because
-    // Node binds it to one address only, often ::1, which refuses clients that connect to 127.0.0.1.
-    app.listen({ port: options.port, host: getListenHost(options.host) }, resolve);
-  }).then(() => addLoopbackListener(server));
 
   try {
     const [indexGenerator] = await Promise.all([storyIndexGeneratorPromise, listening]);
@@ -197,9 +207,7 @@ export async function storybookDevServer(
       });
     }
   } catch (e) {
-    await disposeChangeDetectionRuntime();
-    await managerBuilder?.bail().catch(() => undefined);
-    await previewBuilder?.bail().catch(() => undefined);
+    await bailBuilders();
     throw e;
   }
 

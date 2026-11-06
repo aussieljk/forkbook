@@ -1,17 +1,20 @@
-import { loadPreviewOrConfigFile } from '@aussieljk/forkbook/internal/common';
-import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
+import { loadPreviewOrConfigFile, normalizeStories } from '@aussieljk/forkbook/internal/common';
 import {
   babelParser,
   extractMockCalls,
   findMockRedirect,
 } from '@aussieljk/forkbook/internal/mocking-utils';
-import type { Options, PreviewAnnotation, StoryIndex } from '@aussieljk/forkbook/internal/types';
+import type {
+  NormalizedStoriesSpecifier,
+  Options,
+  PreviewAnnotation,
+  StoriesEntry,
+} from '@aussieljk/forkbook/internal/types';
 
 import { resolve } from 'pathe';
 import { type Plugin } from 'vite';
 
 import { processPreviewAnnotation } from '../utils/process-preview-annotation.ts';
-import { getUniqueImportPaths } from '../utils/unique-import-paths.ts';
 
 /**
  * Escapes special glob characters in a file path so Vite's dep optimizer treats it as a literal
@@ -37,6 +40,19 @@ export function getMockRedirectIncludeEntries(
   );
 }
 
+/**
+ * Converts the `stories` specifiers into absolute globs for the dep optimizer. The directory is
+ * escaped, so special characters in it are literal. The `files` part stays a glob.
+ */
+export function getStoryGlobEntries(
+  specifiers: NormalizedStoriesSpecifier[],
+  workingDir: string
+): string[] {
+  return specifiers.map(
+    ({ directory, files }) => `${escapeGlobPath(resolve(workingDir, directory))}/${files}`
+  );
+}
+
 /** A Vite plugin that configures dependency optimization for Forkbook's dev server. */
 export function storybookOptimizeDepsPlugin(options: Options): Plugin {
   return {
@@ -49,13 +65,20 @@ export function storybookOptimizeDepsPlugin(options: Options): Plugin {
 
       const projectRoot = resolve(options.configDir, '..');
 
-      const [extraOptimizeDeps, storyIndexGenerator, previewAnnotations] = await Promise.all([
+      // Use the `stories` globs, not the story index. The index reads every story file, and the
+      // dev server must not wait for it before Vite starts. The globs give the same files.
+      const [extraOptimizeDeps, stories, previewAnnotations] = await Promise.all([
         options.presets.apply<string[]>('optimizeViteDeps', []),
-        options.presets.apply<StoryIndexGenerator>('storyIndexGenerator'),
+        options.presets.apply<StoriesEntry[]>('stories', []),
         options.presets.apply<PreviewAnnotation[]>('previewAnnotations', [], options),
       ]);
-
-      const index: StoryIndex = await storyIndexGenerator.getIndex();
+      const workingDir = process.cwd();
+      const storyGlobEntries = stories.length
+        ? getStoryGlobEntries(
+            normalizeStories(stories, { configDir: options.configDir, workingDir }),
+            workingDir
+          )
+        : [];
 
       // Include the user's preview file and all addon/framework/renderer preview annotations
       // as optimizer entries so Vite can discover all transitive CJS dependencies automatically.
@@ -92,7 +115,7 @@ export function storybookOptimizeDepsPlugin(options: Options): Plugin {
               ? [config.optimizeDeps.entries]
               : (config.optimizeDeps?.entries ?? [])),
             ...mockRedirectIncludeEntries,
-            ...getUniqueImportPaths(index).map(escapeGlobPath),
+            ...storyGlobEntries,
             ...previewAnnotationEntries.map(escapeGlobPath),
           ],
           // Extra deps explicitly included by Forkbook presets (e.g. framework-specific packages).
