@@ -188,7 +188,17 @@ export interface StoryIndexV3 {
   stories: Record<StoryId, V3CompatIndexEntry>;
 }
 
+/** A story file that failed to index. The dev server lists these next to the entries it could index. */
+export interface StoryIndexFileError {
+  /** The first import path of the error, the file to show to the user. */
+  importPath: Path;
+  importPaths: Path[];
+  message: string;
+}
+
 export interface StoryIndex {
   v: number;
   entries: Record<StoryId, IndexEntry>;
+  /** Story files that failed to index. Only the dev server sets this. */
+  errors?: StoryIndexFileError[];
 }

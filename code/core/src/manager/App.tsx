@@ -8,6 +8,7 @@ import { addons } from '@aussieljk/forkbook/manager-api';
 import { cssVarsToString, globalCss, themeToCssVars, useTheme } from '@aussieljk/forkbook/theming';
 
 import { ManagerErrorBoundary } from './components/error-boundary/ManagerErrorBoundary.tsx';
+import { SectionErrorBoundary } from './components/error-boundary/SectionErrorBoundary.tsx';
 import { Layout } from './components/layout/Layout.tsx';
 import { useLayout } from './components/layout/LayoutProvider.tsx';
 import { ReviewPersistentLayer } from './components/review/components/ReviewPersistentLayer.tsx';
@@ -83,11 +84,25 @@ export const App = ({ managerLayoutState, setManagerLayoutState, pages }: Props)
       managerLayoutState={managerLayoutState}
       setManagerLayoutState={setManagerLayoutState}
       slotOverlay={<ReviewPersistentLayer />}
-      slotMain={<MainPreview />}
-      slotSidebar={<Sidebar onMenuClick={() => setMobileAboutOpen((state) => !state)} />}
-      slotPanel={<Panel />}
+      slotMain={
+        <SectionErrorBoundary name="Preview area">
+          <MainPreview />
+        </SectionErrorBoundary>
+      }
+      slotSidebar={
+        <SectionErrorBoundary name="Sidebar">
+          <Sidebar onMenuClick={() => setMobileAboutOpen((state) => !state)} />
+        </SectionErrorBoundary>
+      }
+      slotPanel={
+        <SectionErrorBoundary name="Addon panel">
+          <Panel />
+        </SectionErrorBoundary>
+      }
       slotPages={pages.map(({ id, render: Content }) => (
-        <Content key={id} />
+        <SectionErrorBoundary key={id} name="Page">
+          <Content />
+        </SectionErrorBoundary>
       ))}
     />
   );

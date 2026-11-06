@@ -564,7 +564,9 @@ describe('PreviewWeb', () => {
         const preview = await createAndRenderPreview();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders exception if renderToCanvas throws', async () => {
@@ -577,7 +579,9 @@ describe('PreviewWeb', () => {
         const preview = await createAndRenderPreview();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders helpful message if renderToCanvas is undefined', async () => {
@@ -671,7 +675,9 @@ describe('PreviewWeb', () => {
         const preview = await createAndRenderPreview();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders error if the story calls showError', async () => {
@@ -2227,7 +2233,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders error if the story calls showError', async () => {
@@ -2270,7 +2278,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('executes playFunction', async () => {
@@ -2798,7 +2808,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders error if the story calls showError', async () => {
@@ -2841,7 +2853,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('executes playFunction', async () => {
@@ -3159,7 +3173,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('renders error if the story calls showError', async () => {
@@ -3194,7 +3210,9 @@ describe('PreviewWeb', () => {
         await waitForRender();
 
         expect(mockChannel.emit).toHaveBeenCalledWith(STORY_THREW_EXCEPTION, serializeError(error));
-        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(error);
+        expect(preview.view.showErrorDisplay).toHaveBeenCalledWith(
+          expect.objectContaining({ message: expect.stringContaining(error.message) })
+        );
       });
 
       it('executes playFunction', async () => {

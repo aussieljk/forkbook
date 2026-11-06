@@ -2104,6 +2104,29 @@ describe('StoryIndexGenerator', () => {
           `[Error: Unable to index ./src/docs2/MetaOf.mdx]`
         );
       });
+
+      it('keeps the entries of the other files and lists the bad file in getIndexWithFileErrors', async () => {
+        const generator = new StoryIndexGenerator(
+          [
+            normalizeStoriesEntry('./src/B.stories.ts', options),
+            normalizeStoriesEntry('./src/docs2/MetaOf.mdx', options),
+          ],
+          options
+        );
+        await generator.initialize();
+
+        await expect(generator.getIndex()).rejects.toThrow('Unable to index');
+        const index = await generator.getIndexWithFileErrors();
+
+        expect(Object.keys(index.entries)).toContain('b--story-one');
+        expect(index.errors).toEqual([
+          expect.objectContaining({
+            importPath: './src/docs2/MetaOf.mdx',
+            importPaths: ['./src/docs2/MetaOf.mdx'],
+            message: expect.any(String),
+          }),
+        ]);
+      });
     });
 
     describe('warnings', () => {

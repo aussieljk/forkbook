@@ -41,10 +41,21 @@ export function createBrowserChannel({ page, extraTransports = [] }: Options): C
   if (globalThis.CONFIG_TYPE === 'DEVELOPMENT') {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     const { hostname, port } = window.location;
+    const urlFor = (token: string | undefined) =>
+      `${protocol}://${hostname}:${port}${SERVER_CHANNEL_PATH}?token=${token}&page=${page}`;
     const { wsToken } = globalThis.CHANNEL_OPTIONS || {};
-    const channelUrl = `${protocol}://${hostname}:${port}${SERVER_CHANNEL_PATH}?token=${wsToken}&page=${page}`;
 
-    transports.push(new WebsocketTransport({ url: channelUrl, onError: () => {}, page }));
+    transports.push(
+      new WebsocketTransport({
+        url: urlFor(wsToken),
+        onError: () => {},
+        page,
+        reconnect: {
+          // A restarted dev server makes a new token. Read it from the page HTML again.
+          getUrl: async () => urlFor((await fetchCurrentWsToken()) ?? wsToken),
+        },
+      })
+    );
   }
 
   const channel = new Channel({ transports });
@@ -55,6 +66,22 @@ export function createBrowserChannel({ page, extraTransports = [] }: Options): C
 
   return channel;
 }
+
+/** Reads the channel token from the HTML of the current page, as the dev server serves it now. */
+export async function fetchCurrentWsToken(): Promise<string | undefined> {
+  try {
+    const response = await fetch(window.location.href, { cache: 'no-store' });
+    if (!response.ok) {
+      return undefined;
+    }
+    return parseWsToken(await response.text());
+  } catch {
+    return undefined;
+  }
+}
+
+export const parseWsToken = (html: string): string | undefined =>
+  /"wsToken"\s*:\s*"([^"]+)"/.exec(html)?.[1];
 
 export type {
   Listener,

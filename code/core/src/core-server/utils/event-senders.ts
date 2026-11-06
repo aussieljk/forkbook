@@ -7,6 +7,7 @@ export type EventSender = 'manager' | 'preview' | 'server' | 'any';
 // the event's sender; 'server' events never legitimately arrive from a browser at all.
 export const CORE_EVENT_SENDERS: Record<events, EventSender> = {
   [events.CHANNEL_WS_DISCONNECT]: 'any',
+  [events.CHANNEL_WS_RECONNECT]: 'any',
   [events.CHANNEL_CREATED]: 'manager',
   [events.CONFIG_ERROR]: 'preview',
   [events.STORY_INDEX_INVALIDATED]: 'server',
