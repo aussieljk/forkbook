@@ -60,7 +60,7 @@ export function registerIndexJsonRoute({
 
   app.use('/index.json', async (_req, res) => {
     try {
-      const index = await (await storyIndexGeneratorPromise).getIndex();
+      const index = await (await storyIndexGeneratorPromise).getIndexWithFileErrors();
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader(

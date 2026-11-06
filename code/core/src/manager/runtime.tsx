@@ -2,11 +2,15 @@ import React from 'react';
 
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import { createBrowserChannel } from '@aussieljk/forkbook/internal/channels';
-import { CHANNEL_CREATED, CHANNEL_WS_DISCONNECT } from '@aussieljk/forkbook/internal/core-events';
+import {
+  CHANNEL_CREATED,
+  CHANNEL_WS_DISCONNECT,
+  CHANNEL_WS_RECONNECT,
+} from '@aussieljk/forkbook/internal/core-events';
 import type { Addon_Config } from '@aussieljk/forkbook/internal/types';
 
 import { global } from '../shared/global.ts';
-import { CircleXIcon } from 'lucide-react';
+import { CircleXIcon, RefreshCwIcon } from 'lucide-react';
 
 import type { API, AddonStore } from '@aussieljk/forkbook/manager-api';
 import { addons, types } from '@aussieljk/forkbook/manager-api';
@@ -60,18 +64,35 @@ class ReactProvider extends Provider {
   handleAPI(api: API) {
     this.addons.loadAddons(api);
 
-    this.channel.on(CHANNEL_WS_DISCONNECT, () => {
+    this.channel.on(CHANNEL_WS_DISCONNECT, (event?: { reconnecting?: boolean }) => {
       this.wsDisconnected = true;
 
       api.addNotification({
         id: WS_DISCONNECTED_NOTIFICATION_ID,
-        content: {
-          headline: 'Connection lost',
-          subHeadline: 'Please restart your Forkbook server and reload the page',
-        },
-        icon: <CircleXIcon color={color.negative} />,
+        content: event?.reconnecting
+          ? {
+              headline: 'Reconnecting',
+              subHeadline: 'Lost the connection to the Forkbook server. Trying again.',
+            }
+          : {
+              headline: 'Connection lost',
+              subHeadline: 'Please restart your Forkbook server and reload the page',
+            },
+        icon: event?.reconnecting ? (
+          <RefreshCwIcon color={color.warning} />
+        ) : (
+          <CircleXIcon color={color.negative} />
+        ),
         link: undefined,
       });
+    });
+
+    // The server is back (for example after a restart). Stories may have changed while it was
+    // down, so get the index again.
+    this.channel.on(CHANNEL_WS_RECONNECT, () => {
+      this.wsDisconnected = false;
+      api.clearNotification(WS_DISCONNECTED_NOTIFICATION_ID);
+      void api.fetchIndex();
     });
   }
 }

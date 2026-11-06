@@ -111,3 +111,85 @@ describe('WebsocketTransport heartbeat', () => {
     expect(sentEvents(socket)).toContainEqual({ type: 'pong' });
   });
 });
+
+describe('WebsocketTransport reconnect', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubGlobal('WebSocket', MockWebSocket);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.clearAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  const createReconnectingTransport = (getUrl?: () => string) => {
+    const handler = vi.fn();
+    const transport = new WebsocketTransport({
+      url: 'ws://localhost:6006/?token=old',
+      page: 'manager',
+      onError: vi.fn(),
+      reconnect: { getUrl, initialDelay: 100, maxDelay: 400 },
+    });
+    transport.setHandler(handler);
+    socketRef.current.onopen?.();
+    return { transport, handler };
+  };
+
+  const eventTypes = (handler: ReturnType<typeof vi.fn>) =>
+    handler.mock.calls.map(([event]) => event.type);
+
+  it('opens a new socket after the socket closes and sends CHANNEL_WS_RECONNECT', async () => {
+    const { handler } = createReconnectingTransport(() => 'ws://localhost:6006/?token=new');
+    const first = socketRef.current;
+
+    first.onclose?.({ code: 1006, reason: '' });
+    expect(eventTypes(handler)).toEqual(['channelWSDisconnect']);
+    expect(handler.mock.calls[0][0].args[0]).toMatchObject({ reconnecting: true });
+
+    await vi.advanceTimersByTimeAsync(100);
+    const second = socketRef.current;
+    expect(second).not.toBe(first);
+    expect(second.url).toBe('ws://localhost:6006/?token=new');
+
+    second.onopen?.();
+    expect(eventTypes(handler)).toEqual(['channelWSDisconnect', 'channelWSReconnect']);
+  });
+
+  it('sends one disconnect event for each outage and backs off between attempts', async () => {
+    const { handler } = createReconnectingTransport();
+
+    socketRef.current.onclose?.({ code: 1006, reason: '' });
+    await vi.advanceTimersByTimeAsync(100);
+    socketRef.current.onclose?.({ code: 1006, reason: '' });
+    const failed = socketRef.current;
+    await vi.advanceTimersByTimeAsync(100);
+    expect(socketRef.current).toBe(failed);
+    await vi.advanceTimersByTimeAsync(100);
+    expect(socketRef.current).not.toBe(failed);
+
+    expect(eventTypes(handler)).toEqual(['channelWSDisconnect']);
+  });
+
+  it('keeps messages sent while disconnected and sends them when the socket is open again', async () => {
+    const { transport } = createReconnectingTransport();
+
+    socketRef.current.onclose?.({ code: 1006, reason: '' });
+    transport.send({ type: 'later', args: [], from: 'manager' });
+    await vi.advanceTimersByTimeAsync(100);
+    const socket = socketRef.current;
+    expect(socket.sent).toEqual([]);
+
+    socket.onopen?.();
+    expect(sentEvents(socket)).toContainEqual(expect.objectContaining({ type: 'later' }));
+  });
+
+  it('stays closed without the reconnect option', async () => {
+    const { handler, socket } = createConnectedTransport();
+    socket.onclose?.({ code: 1006, reason: '' });
+    await vi.advanceTimersByTimeAsync(10_000);
+    expect(socketRef.current).toBe(socket);
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+});

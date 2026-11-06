@@ -53,6 +53,7 @@ import { PREPARE_ABORTED } from './render/Render.ts';
 import { StoryRender } from './render/StoryRender.ts';
 import { setupContentResizeBroadcast } from './setupContentResizeBroadcast.ts';
 import { setupStoryFreezer } from './setupStoryFreezer.ts';
+import { withFilePath } from './withFilePath.ts';
 
 const globalWindow = globalThis;
 
@@ -579,10 +580,18 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     this.channel.emit(STORY_MISSING);
   }
 
+  /** The story file of a story, so an error can say which file to fix. */
+  importPathOf(storySpecifier: StorySpecifier): string | undefined {
+    if (typeof storySpecifier !== 'string') {
+      return undefined;
+    }
+    return this.storyStoreValue?.storyIndex.entries[storySpecifier]?.importPath;
+  }
+
   renderStoryLoadingException(storySpecifier: StorySpecifier, err: Error) {
     // logger.error(`Unable to load story '${storySpecifier}':`);
     logger.error(err);
-    this.view.showErrorDisplay(err);
+    this.view.showErrorDisplay(withFilePath(err, this.importPathOf(storySpecifier)));
     this.channel.emit(STORY_MISSING, storySpecifier);
   }
 
@@ -593,7 +602,7 @@ export class PreviewWithSelection<TRenderer extends Renderer> extends Preview<TR
     this.channel.emit(STORY_THREW_EXCEPTION, { name, message, stack });
     this.channel.emit(STORY_RENDER_PHASE_CHANGED, { newPhase: 'errored', renderId, storyId });
 
-    this.view.showErrorDisplay(error);
+    this.view.showErrorDisplay(withFilePath(error, this.importPathOf(storyId)));
     logger.error(`Error rendering story '${storyId}':`);
     logger.error(error);
   }

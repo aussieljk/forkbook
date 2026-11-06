@@ -134,6 +134,10 @@ export class StoryIndexGenerator {
   // Same as the above but for the error case
   private lastError?: Error | null;
 
+  // When some files fail to index, the index of the files that did not fail. The dev server serves
+  // it, so one bad file does not hide every other story.
+  private lastPartialIndex?: StoryIndex | null;
+
   private invalidationListeners: Set<InvalidationListener> = new Set();
 
   constructor(
@@ -763,6 +767,56 @@ export class StoryIndexGenerator {
     return (await this.getIndexAndStats()).storyIndex;
   }
 
+  /**
+   * Like `getIndex`, but when some story files fail to index, return the entries of the other files
+   * and list the bad files in `errors`. Errors that affect the whole index (for example duplicate
+   * story ids) still throw.
+   */
+  async getIndexWithFileErrors(): Promise<StoryIndex> {
+    try {
+      return await this.getIndex();
+    } catch (err) {
+      if (this.lastPartialIndex) {
+        return this.lastPartialIndex;
+      }
+      throw err;
+    }
+  }
+
+  private async buildPartialIndex(
+    storiesList: (IndexEntry | ErrorEntry)[],
+    projectTags: Tag[] | undefined,
+    fileErrors: IndexingError[]
+  ): Promise<StoryIndex | null> {
+    const indexEntries: StoryIndex['entries'] = {};
+    try {
+      for (const entry of storiesList) {
+        if (entry.type === 'error') {
+          continue;
+        }
+        const existing = indexEntries[entry.id];
+        indexEntries[entry.id] = existing
+          ? this.chooseDuplicate(existing, entry, projectTags ?? [])
+          : entry;
+      }
+      const sorted = await this.sortStories(
+        indexEntries,
+        combineStorySorts(this.options.storySorts ?? [])
+      );
+      return {
+        v: 5,
+        entries: sorted,
+        errors: fileErrors.map((err) => ({
+          importPath: slash(err.importPaths[0] ?? ''),
+          importPaths: err.importPaths.map((path) => slash(path)),
+          message: err.message,
+        })),
+      };
+    } catch {
+      return null;
+    }
+  }
+
   async getIndexAndStats(): Promise<{ storyIndex: StoryIndex; stats: IndexStatsSummary }> {
     if (this.lastIndex && this.lastStats) {
       return { storyIndex: this.lastIndex, stats: this.lastStats };
@@ -783,7 +837,9 @@ export class StoryIndexGenerator {
       const errorEntries = storiesList.filter((entry) => entry.type === 'error');
 
       if (errorEntries.length) {
-        throw new MultipleIndexingError(errorEntries.map((entry) => (entry as ErrorEntry).err));
+        const fileErrors = errorEntries.map((entry) => (entry as ErrorEntry).err);
+        this.lastPartialIndex = await this.buildPartialIndex(storiesList, projectTags, fileErrors);
+        throw new MultipleIndexingError(fileErrors);
       }
 
       const duplicateErrors: IndexingError[] = [];
@@ -840,6 +896,7 @@ export class StoryIndexGenerator {
     });
     this.lastIndex = null;
     this.lastError = null;
+    this.lastPartialIndex = null;
     this.invalidationListeners.forEach((listener) => listener());
   }
 
@@ -896,6 +953,7 @@ export class StoryIndexGenerator {
     }
     this.lastIndex = null;
     this.lastError = null;
+    this.lastPartialIndex = null;
     const event: InvalidationEvent = { importPath, added, removed: wasRemoved };
     this.invalidationListeners.forEach((listener) => listener(event));
   }

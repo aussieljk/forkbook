@@ -1,5 +1,7 @@
 enum events {
   CHANNEL_WS_DISCONNECT = 'channelWSDisconnect',
+  // The websocket is open again after a CHANNEL_WS_DISCONNECT (for example after a server restart)
+  CHANNEL_WS_RECONNECT = 'channelWSReconnect',
   CHANNEL_CREATED = 'channelCreated',
   // There was an error executing the config, likely an bug in the user's preview.js
   CONFIG_ERROR = 'configError',
@@ -111,6 +113,7 @@ export default events;
 // This is the preferred method
 export const {
   CHANNEL_WS_DISCONNECT,
+  CHANNEL_WS_RECONNECT,
   CHANNEL_CREATED,
   CONFIG_ERROR,
   CURRENT_STORY_WAS_SET,

@@ -16,6 +16,7 @@ import { useLandmark } from '../../hooks/useLandmark.ts';
 import { useLayout } from '../layout/LayoutProvider.tsx';
 import { Explorer } from './Explorer.tsx';
 import { Filter } from './Filter.tsx';
+import { IndexFileErrors } from './IndexFileErrors.tsx';
 import type { HeadingProps } from './Heading.tsx';
 import { Heading } from './Heading.tsx';
 import type { MenuList } from './Menu.tsx';
@@ -135,6 +136,7 @@ export const Sidebar = React.memo(function Sidebar({
           </div>
           <PageLinks />
           {!isLoading && showReviewWidget ? <ReviewWidget /> : null}
+          <IndexFileErrors errors={indexJson?.errors} />
           <Search
             dataset={dataset}
             enableShortcuts={enableShortcuts}
