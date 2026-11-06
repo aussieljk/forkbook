@@ -93,6 +93,10 @@ const config = defineMain({
       titlePrefix: 'addons/themes',
     },
     {
+      directory: '../core/src/addon-comments/components',
+      titlePrefix: 'addons/comments',
+    },
+    {
       directory: '../core/src/addon-pseudo-states',
       titlePrefix: 'addons/pseudo-states',
     },
@@ -122,6 +126,7 @@ const config = defineMain({
     '@aussieljk/forkbook/addon-a11y',
     '@aussieljk/forkbook/addon-mcp',
     '@aussieljk/forkbook/addon-pseudo-states',
+    '@aussieljk/forkbook/addon-comments',
     './services-preset.ts',
   ],
   previewAnnotations: [

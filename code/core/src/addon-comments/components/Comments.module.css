@@ -1,0 +1,89 @@
+.panel {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.muted {
+  font-size: var(--fb-size-s1);
+  color: var(--fb-text-muted-color);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.input {
+  width: 100%;
+  min-height: 64px;
+  box-sizing: border-box;
+  padding: 8px;
+  font: inherit;
+  font-size: var(--fb-size-s2);
+  color: var(--fb-color-default-text);
+  background: var(--fb-input-background);
+  border: 1px solid var(--fb-input-border);
+  border-radius: var(--fb-app-border-radius);
+}
+
+.error {
+  color: var(--fb-color-negative-text);
+  font-size: var(--fb-size-s1);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  border: 1px solid var(--fb-app-border-color);
+  border-radius: var(--fb-app-border-radius);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.current {
+  border-color: var(--fb-color-secondary);
+}
+
+.resolved {
+  opacity: 0.6;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--fb-size-s2);
+  white-space: pre-wrap;
+}
+
+.code {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-size-s1);
+  word-break: break-all;
+}
+
+.link {
+  all: unset;
+  cursor: pointer;
+  color: var(--fb-color-secondary);
+}

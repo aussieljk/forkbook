@@ -72,6 +72,18 @@
       "types": "./dist/addon-a11y/preview.d.ts",
       "default": "./dist/addon-a11y/preview.js"
     },
+    "./addon-comments/manager": {
+      "code": "./src/addon-comments/manager.tsx",
+      "default": "./dist/addon-comments/manager.js"
+    },
+    "./addon-comments/preset": {
+      "code": "./src/addon-comments/preset.ts",
+      "default": "./dist/addon-comments/preset.js"
+    },
+    "./addon-comments/preview": {
+      "code": "./src/addon-comments/preview.ts",
+      "default": "./dist/addon-comments/preview.js"
+    },
     "./addon-docs": {
       "code": "./src/addon-docs/index.ts",
       "types": "./dist/addon-docs/index.d.ts",
