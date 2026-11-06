@@ -2303,6 +2303,20 @@ describe('StoryIndexGenerator', () => {
         ]
       `);
     });
+    it('uses parameters.options.storySort from the preview file', async () => {
+      const storiesSpecifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
+        './src/**/*.stories.(ts|js|mjs|jsx)',
+        options
+      );
+      const generator = new StoryIndexGenerator([storiesSpecifier], options);
+      vi.spyOn(generator, 'getPreviewCode').mockResolvedValue(
+        `export default { parameters: { options: { storySort: (a: any, b: any) => b.id.localeCompare(a.id) } } };`
+      );
+      await generator.initialize();
+
+      const ids = Object.keys((await generator.getIndex()).entries);
+      expect(ids).toEqual([...ids].sort((a, b) => b.localeCompare(a)));
+    });
   });
 
   describe('caching', () => {
@@ -2455,6 +2469,27 @@ describe('StoryIndexGenerator', () => {
     });
 
     describe('file removed', () => {
+      it('tells listeners if a file was added, changed or removed', async () => {
+        const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
+          './src/**/*.stories.(ts|js|mjs|jsx)',
+          options
+        );
+        const generator = new StoryIndexGenerator([specifier], options);
+        await generator.initialize();
+        const listener = vi.fn();
+        generator.onInvalidated(listener);
+
+        generator.invalidate('./src/B.stories.ts', false);
+        generator.invalidate('./src/B.stories.ts', true);
+        generator.invalidate('./src/B.stories.ts', false);
+
+        expect(listener.mock.calls.map(([event]) => event)).toEqual([
+          { importPath: './src/B.stories.ts', added: false, removed: false },
+          { importPath: './src/B.stories.ts', added: false, removed: true },
+          { importPath: './src/B.stories.ts', added: true, removed: false },
+        ]);
+      });
+
       it('does not extract csf files a second time', async () => {
         const specifier: NormalizedStoriesSpecifier = normalizeStoriesEntry(
           './src/**/*.stories.(ts|js|mjs|jsx)',

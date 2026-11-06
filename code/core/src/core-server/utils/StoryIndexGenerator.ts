@@ -37,6 +37,7 @@ import * as TsconfigPaths from 'tsconfig-paths';
 import { resolveImport, supportedExtensions } from '../../common/index.ts';
 import { anchorBlockIdFromId } from '../../docs-tools/shared.ts';
 import { userOrAutoTitleFromSpecifier } from '../../shared/story-index/autoTitle.ts';
+import { getStorySortParameter } from './get-story-sort-parameter.ts';
 import { combineStorySorts, sortStoriesV7 } from '../../shared/story-index/sortStories.ts';
 import { Tag } from '../../shared/constants/tags.ts';
 import { isMdxEntry } from '../../shared/utils/story-index-filters.ts';
@@ -101,6 +102,19 @@ const makeAbsolute = (otherImport: Path, normalizedPath: Path, workingDir: Path)
  * The entries are "uniq"-ed and sorted. Stories entries are preferred to docs entries and MDX docs
  * entries are preferred to CSF templates (with warnings).
  */
+/**
+ * Information about one invalidated file. `invalidateAll` sends no event, so the listener must
+ * treat a missing event as a change to the set of story files.
+ */
+export interface InvalidationEvent {
+  importPath: Path;
+  /** The file was not in the index before. */
+  added: boolean;
+  /** The file was in the index and is now removed. */
+  removed: boolean;
+}
+export type InvalidationListener = (event?: InvalidationEvent) => void;
+
 export class StoryIndexGenerator {
   // An internal cache mapping specifiers to a set of path=><set of stories>
   // Later, we'll combine each of these subsets together to form the full index
@@ -120,7 +134,7 @@ export class StoryIndexGenerator {
   // Same as the above but for the error case
   private lastError?: Error | null;
 
-  private invalidationListeners: Set<() => void> = new Set();
+  private invalidationListeners: Set<InvalidationListener> = new Set();
 
   constructor(
     public readonly specifiers: NormalizedStoriesSpecifier[],
@@ -793,9 +807,14 @@ export class StoryIndexGenerator {
         throw new MultipleIndexingError(duplicateErrors);
       }
 
+      // `storySorts` from main.js come first. The preview `parameters.options.storySort` breaks ties.
+      const previewStorySort = getStorySortParameter(previewCode);
       const sorted = await this.sortStories(
         indexEntries,
-        combineStorySorts(this.options.storySorts ?? [])
+        combineStorySorts([
+          ...(this.options.storySorts ?? []),
+          ...(previewStorySort ? [previewStorySort] : []),
+        ])
       );
 
       this.lastStats = stats;
@@ -825,6 +844,8 @@ export class StoryIndexGenerator {
   }
 
   invalidate(importPath: Path, removed: boolean) {
+    let added = false;
+    let wasRemoved = false;
     const absolutePath = slash(resolve(this.options.workingDir, importPath));
     const specifier = Array.from(this.specifierToCache.keys()).find((ns) =>
       ns.importPathMatcher.exec(importPath)
@@ -867,16 +888,19 @@ export class StoryIndexGenerator {
           dep.dependents.splice(dep.dependents.indexOf(absolutePath), 1)
         );
       }
+      wasRemoved = absolutePath in cache;
       delete cache[absolutePath];
     } else {
+      added = !(absolutePath in cache);
       cache[absolutePath] = false;
     }
     this.lastIndex = null;
     this.lastError = null;
-    this.invalidationListeners.forEach((listener) => listener());
+    const event: InvalidationEvent = { importPath, added, removed: wasRemoved };
+    this.invalidationListeners.forEach((listener) => listener(event));
   }
 
-  onInvalidated(listener: () => void) {
+  onInvalidated(listener: InvalidationListener) {
     this.invalidationListeners.add(listener);
     return () => {
       this.invalidationListeners.delete(listener);

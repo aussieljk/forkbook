@@ -1,6 +1,28 @@
 import { describe, expect, it } from 'vitest';
 
-import { escapeGlobPath, getMockRedirectIncludeEntries } from './storybook-optimize-deps-plugin.ts';
+import {
+  escapeGlobPath,
+  getMockRedirectIncludeEntries,
+  getStoryGlobEntries,
+} from './storybook-optimize-deps-plugin.ts';
+
+describe('getStoryGlobEntries', () => {
+  it('makes absolute globs and escapes only the directory', () => {
+    expect(
+      getStoryGlobEntries(
+        [
+          {
+            directory: './src/(group)',
+            files: '**/*.@(mdx|stories.@(ts|tsx))',
+            titlePrefix: '',
+            importPathMatcher: /./,
+          },
+        ],
+        '/project'
+      )
+    ).toEqual(['/project/src/\\(group\\)/**/*.@(mdx|stories.@(ts|tsx))']);
+  });
+});
 
 describe('escapeGlobPath', () => {
   it('should not modify a plain path without special characters', () => {
