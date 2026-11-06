@@ -3,6 +3,13 @@ import { expect, vi } from 'vitest';
 
 import { dedent } from 'ts-dedent';
 
+// Tests must not send telemetry. Without this, tests that throw on purpose (for example in
+// withTelemetry.test.ts) send real error spans to SigNoz and real events to Sentry. A test that
+// checks the exporters sets these variables itself.
+delete process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
+delete process.env.OTEL_EXPORTER_OTLP_HEADERS;
+process.env.FORKBOOK_SENTRY_DSN = '';
+
 import './core/src/shared/utils/toHaveLiveRegion.ts';
 import { toHaveLiveRegion } from './core/src/shared/utils/toHaveLiveRegion.ts';
 
