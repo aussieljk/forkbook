@@ -91,6 +91,25 @@ export function nodeStandInsPlugin(projectRoot: string): Plugin {
   return {
     name: 'forkbook:nextjs-node-stand-ins',
     enforce: 'pre',
+    // The dependency scanner runs its own plugins and cannot load the stand-ins, which do not exist
+    // on disk. That failure stopped all pre-bundling, so the first story loaded slowly. The
+    // stand-ins have no dependencies to find, so the scanner skips them.
+    config() {
+      return {
+        optimizeDeps: {
+          rolldownOptions: {
+            plugins: [
+              {
+                name: 'forkbook:nextjs-node-stand-ins-scan',
+                resolveId(id: string) {
+                  return FS_IDS.has(id) || PATH_IDS.has(id) ? { id, external: true } : null;
+                },
+              },
+            ],
+          },
+        },
+      };
+    },
     resolveId(id, _importer, options) {
       if (options?.ssr) return null;
       if (id === 'fs/promises' || id === 'node:fs/promises') return fsPromisesId;
