@@ -34,10 +34,10 @@ These tools read the notes that users leave on stories with
 [`@aussieljk/forkbook/addon-comments`](./addon-comments.md). They read and write
 `.forkbook/comments.json` in the project root. They are in the `dev` toolset.
 
-| Tool | Input | What it does |
-| --- | --- | --- |
-| `list_comments` | `status` (`open`, `resolved` or `all`, default `open`), optional `storyId` | Returns a ready prompt and the comments as JSON: story id, title, name, file path, element selector and text, args, note. |
-| `resolve_comment` | `id`, optional `reply` | Marks the comment as resolved. The reply shows in the Comments panel. |
+| Tool              | Input                                                                      | What it does                                                                                                              |
+| ----------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `list_comments`   | `status` (`open`, `resolved` or `all`, default `open`), optional `storyId` | Returns a ready prompt and the comments as JSON: story id, title, name, file path, element selector and text, args, note. |
+| `resolve_comment` | `id`, optional `reply`                                                     | Marks the comment as resolved. The reply shows in the Comments panel.                                                     |
 
 A typical flow: ask Claude Code to "address the open Forkbook comments". It calls
 `list_comments`, changes the code, then calls `resolve_comment` for each comment.

@@ -135,6 +135,17 @@ export async function buildDevStandalone(
     corePresets.push(join(frameworkName, 'preset'));
   }
 
+  // Comments are on by default in dev. Skip when the project already lists the addon.
+  const hasCommentsAddon = (config.addons ?? []).some((addon) =>
+    (typeof addon === 'string' ? addon : addon.name).includes('addon-comments')
+  );
+  if (!hasCommentsAddon) {
+    corePresets.push({
+      name: '@aussieljk/forkbook/addon-comments/preset',
+      options: { forkbookDefaultComments: true },
+    });
+  }
+
   frameworkName = frameworkName || 'custom';
 
   const packageManager = JsPackageManagerFactory.getPackageManager({

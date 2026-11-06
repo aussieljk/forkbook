@@ -23,7 +23,7 @@ const CopyForClaude = ({ comment }: { comment: StoryComment }) => {
     ariaLabel: false,
   });
   return (
-    <Button size="small" variant="outline" ariaLabel={false} {...buttonProps}>
+    <Button size="small" variant="outline" {...buttonProps}>
       {children}
     </Button>
   );
@@ -37,13 +37,7 @@ export const CopyAllOpen = ({ comments }: { comments: StoryComment[] }) => {
     ariaLabel: false,
   });
   return (
-    <Button
-      size="small"
-      variant="solid"
-      ariaLabel={false}
-      disabled={open.length === 0}
-      {...buttonProps}
-    >
+    <Button size="small" variant="solid" disabled={open.length === 0} {...buttonProps}>
       {children}
     </Button>
   );

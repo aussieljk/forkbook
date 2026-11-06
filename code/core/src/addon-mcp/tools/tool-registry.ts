@@ -12,7 +12,7 @@ import {
   getStorybookStoryInstructionsToolMetadata,
 } from './get-storybook-story-instructions.ts';
 import { addCommentTools } from './comments.ts';
-import { addPreviewStoriesResource,PREVIEW_STORIES_RESOURCE_URI } from './preview-stories.ts';
+import { addPreviewStoriesResource, PREVIEW_STORIES_RESOURCE_URI } from './preview-stories.ts';
 // The error class must come from the same entry as `getToolset` (which throws it, via
 // `toolset-tools.ts`); a copy from another core entry is a different constructor and
 // `instanceof` would silently fail.

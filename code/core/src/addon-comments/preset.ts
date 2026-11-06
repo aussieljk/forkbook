@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
+import { fileURLToPath } from 'node:url';
 import { buffer } from 'node:stream/consumers';
 
 import { getProjectRoot } from '@aussieljk/forkbook/internal/common';
@@ -50,3 +51,23 @@ export const experimental_devServer: PresetPropertyFn<'experimental_devServer'> 
   app!.post(COMMENTS_API_PATH, (req, res) => handleCommentsRequest(store, req, res));
   return app;
 };
+
+/**
+ * Forkbook adds this preset by itself in `forkbook dev` (see `build-dev.ts`), so the preset must
+ * also give the manager and preview entries that the addon loader gives when it is in `addons`.
+ * `build-dev.ts` does not add the preset when `addons` already has the addon.
+ */
+export const DEFAULT_ADDON = '@aussieljk/forkbook/addon-comments';
+
+export const managerEntries = async (entries: string[] = [], options: unknown) =>
+  (options as { forkbookDefaultComments?: boolean }).forkbookDefaultComments
+    ? [...entries, fileURLToPath(import.meta.resolve(`${DEFAULT_ADDON}/manager`))]
+    : entries;
+
+export const previewAnnotations: PresetPropertyFn<'previewAnnotations'> = async (
+  entries = [],
+  options
+) =>
+  (options as { forkbookDefaultComments?: boolean }).forkbookDefaultComments
+    ? [...entries, fileURLToPath(import.meta.resolve(`${DEFAULT_ADDON}/preview`))]
+    : entries;
