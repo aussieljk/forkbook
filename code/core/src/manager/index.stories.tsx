@@ -40,6 +40,8 @@ const mockStoryIndex: API_PreparedStoryIndex = {
       name: 'Primary',
       importPath: './example-button.stories.tsx',
       parameters: {},
+      args: { label: 'Button' },
+      argTypes: { label: { name: 'label', control: { type: 'text' } } },
     },
   },
 };

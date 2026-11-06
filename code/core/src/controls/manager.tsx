@@ -24,6 +24,7 @@ import { ControlsPanel } from './components/ControlsPanel.tsx';
 import { Title } from './components/Title.tsx';
 import { ADDON_ID, PARAM_KEY } from './constants.ts';
 import { trySelectStory } from '../manager/utils/trySelectStory.ts';
+import { hasControllableArgs } from '../manager/utils/visible-panels.ts';
 import { stringifyArgs } from './stringifyArgs.tsx';
 
 export default addons.register(ADDON_ID, (api) => {
@@ -127,6 +128,8 @@ export default addons.register(ADDON_ID, (api) => {
       title: Title,
       type: types.PANEL,
       paramKey: PARAM_KEY,
+      // Hide the tab when the story has no arg that a control can change.
+      disabled: (_parameters, story) => (story ? !hasControllableArgs(story) : false),
       render: ({ active }) => {
         if (!active || !api.getCurrentStoryData()) {
           return null;

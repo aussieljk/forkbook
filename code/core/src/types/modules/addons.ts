@@ -341,7 +341,9 @@ export interface Addon_BaseType {
   /** @unstable */
   paramKey?: string;
   /** @unstable */
-  disabled?: boolean | ((parameters: API_StoryEntry['parameters']) => boolean);
+  disabled?:
+    | boolean
+    | ((parameters: API_StoryEntry['parameters'], story?: API_StoryEntry) => boolean);
 }
 
 export interface Addon_PageType {

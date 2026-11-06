@@ -8,6 +8,7 @@ import { useChannel, useStorybookApi, useStorybookState } from '@aussieljk/forkb
 import { STORY_PREPARED } from '../../core-events/index.ts';
 import { focusableUIElements } from '../../manager-api/modules/layout.ts';
 import { AddonPanel } from '../components/panel/Panel.tsx';
+import { getVisiblePanels } from '../utils/visible-panels.ts';
 
 const Panel: FC<Partial<ComponentProps<typeof AddonPanel>>> = (props) => {
   const api = useStorybookApi();
@@ -22,8 +23,6 @@ const Panel: FC<Partial<ComponentProps<typeof AddonPanel>>> = (props) => {
     },
     []
   );
-
-  const { parameters, type } = story ?? {};
 
   const panelActions = useMemo(
     () => ({
@@ -44,32 +43,10 @@ const Panel: FC<Partial<ComponentProps<typeof AddonPanel>>> = (props) => {
     [api]
   );
 
-  const panels = useMemo(() => {
-    const allPanels = api.getElements(Addon_TypesEnum.PANEL);
-
-    if (!allPanels || type !== 'story') {
-      return allPanels;
-    }
-
-    const filteredPanels: typeof allPanels = {};
-    Object.entries(allPanels).forEach(([id, p]) => {
-      const panelParameter = p.paramKey ? parameters?.[p.paramKey] : undefined;
-      if (
-        typeof panelParameter === 'object' &&
-        panelParameter !== null &&
-        'disable' in panelParameter &&
-        panelParameter.disable
-      ) {
-        return;
-      }
-      if (p.disabled === true || (typeof p.disabled === 'function' && p.disabled(parameters))) {
-        return;
-      }
-      filteredPanels[id] = p;
-    });
-
-    return filteredPanels;
-  }, [api, type, parameters]);
+  const panels = useMemo(
+    () => getVisiblePanels(api.getElements(Addon_TypesEnum.PANEL), story),
+    [api, story]
+  );
 
   return (
     <AddonPanel

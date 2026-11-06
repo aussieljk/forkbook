@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import type { API_Layout, API_ViewMode } from '@aussieljk/forkbook/internal/types';
+import { Addon_TypesEnum } from '@aussieljk/forkbook/internal/types';
 
 import { useStorybookApi, useStorybookState, type API } from '@aussieljk/forkbook/manager-api';
 import { isPagesViewMode } from '../../../manager-api/modules/layout.ts';
@@ -9,6 +10,7 @@ import { isPagesViewMode } from '../../../manager-api/modules/layout.ts';
 import { MINIMUM_CONTENT_WIDTH_PX } from '../../constants.ts';
 import { Notifications } from '../../container/Notifications.tsx';
 import { MobileNavigation } from '../mobile/navigation/MobileNavigation.tsx';
+import { getVisiblePanels } from '../../utils/visible-panels.ts';
 import { useLayout } from './LayoutProvider.tsx';
 import { MainAreaContainer } from './MainAreaContainer.tsx';
 import { PanelContainer } from './PanelContainer.tsx';
@@ -110,7 +112,7 @@ const useLayoutSyncingState = ({
   }, [internalDraggingSizeState, setManagerLayoutState]);
 
   const isPagesShown = isPagesViewMode(managerLayoutState.viewMode);
-  const isPanelShown = managerLayoutState.viewMode === 'story';
+  const isPanelShown = managerLayoutState.viewMode === 'story' && hasVisiblePanels(api);
 
   const { navSize, rightPanelWidth, bottomPanelHeight } = internalDraggingSizeState.isDragging
     ? internalDraggingSizeState
@@ -142,6 +144,23 @@ const useLayoutSyncingState = ({
     isDragging: internalDraggingSizeState.isDragging,
     dragCursor: internalDraggingSizeState.dragCursor,
   };
+};
+
+/**
+ * False when the current story disables every addon panel (for example a story with no controls
+ * and no other panels). Then the panel area is not shown.
+ */
+const hasVisiblePanels = (api: API) => {
+  const story = api.getCurrentStoryData?.();
+  if (story?.type !== 'story') {
+    return true;
+  }
+  const all = api.getElements?.(Addon_TypesEnum.PANEL);
+  // With no panels at all, keep the panel area so it can show its empty state.
+  if (!all || Object.keys(all).length === 0) {
+    return true;
+  }
+  return Object.keys(getVisiblePanels(all, story)).length > 0;
 };
 
 /** The grid areas of the desktop layout. */
