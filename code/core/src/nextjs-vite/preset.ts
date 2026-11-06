@@ -9,6 +9,7 @@ import type { StorybookConfigVite } from '@aussieljk/forkbook/builder-vite';
 import semver from 'semver';
 import vitePluginForkbookNextjs from '@aussieljk/forkbook/internal/nextjs-vite-plugin';
 
+import { tailwindRefreshPlugin } from '../react-vite/tailwind-refresh/plugin.ts';
 import { nodeStandInsPlugin } from './node-stand-ins/plugin.ts';
 import { normalizePostCssConfig } from './find-postcss-config.ts';
 import type { FrameworkOptions } from './types.ts';
@@ -80,6 +81,7 @@ export const viteFinal: StorybookConfigVite['viteFinal'] = async (config, option
       ...(config.plugins ?? []),
       vitePluginForkbookNextjs(vitePluginOptions),
       nodeStandInsPlugin(nextDir ?? config.root ?? process.cwd()),
+      tailwindRefreshPlugin(),
     ],
   };
 };
