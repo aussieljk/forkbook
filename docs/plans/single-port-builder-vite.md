@@ -4,27 +4,27 @@ Status: replaced by [builder-next.md](./builder-next.md). Its phase 0 keeps the 
 
 ## Decisions
 
-| Topic | Decision |
-| --- | --- |
-| Single port | `withForkbook(nextConfig)` with dev-only rewrites first. Forkbook running inside `next dev` comes later. |
-| Ports | The helper starts Forkbook on a free port itself. Random portless ports do not matter. |
-| Base path | `/_forkbook` by default. `--base-path` or `basePath` in `main.ts`. Applies to `dev` and `build`. |
-| Static build | `forkbook-static` by default. An option writes it to `public/_forkbook`. |
-| Next.js target | Latest Next.js (16.x) with Turbopack only. |
-| Next.js features | Read the app's real `next.config`. Support App Router and Server Components. |
-| Test app | `~/p/app/toolweight` (Next 16.4, dev through `scripts/dev.ts`) |
+| Topic            | Decision                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| Single port      | `withForkbook(nextConfig)` with dev-only rewrites first. Forkbook running inside `next dev` comes later. |
+| Ports            | The helper starts Forkbook on a free port itself. Random portless ports do not matter.                   |
+| Base path        | `/_forkbook` by default. `--base-path` or `basePath` in `main.ts`. Applies to `dev` and `build`.         |
+| Static build     | `forkbook-static` by default. An option writes it to `public/_forkbook`.                                 |
+| Next.js target   | Latest Next.js (16.x) with Turbopack only.                                                               |
+| Next.js features | Read the app's real `next.config`. Support App Router and Server Components.                             |
+| Test app         | `~/p/app/toolweight` (Next 16.4, dev through `scripts/dev.ts`)                                           |
 
 ## WebSocket finding
 
 Next 16.4.5 `next dev` (Turbopack) proxies WebSocket upgrades through an external `rewrites()` destination, `beforeFiles` and `fallback` alike, with no experimental flag. Trailing slashes break it unless `skipTrailingSlashRedirect: true` is set.
 
-| Request through the Next port | Result |
-| --- | --- |
-| GET `/_forkbook/foo`, `/_forkbook/@vite/client` | Proxied |
-| WS `/_forkbook/ws` | Echoed, twice |
-| WS `/_forkbook/ws/` or `/_forkbook/?token=abc` | Timed out. Fixed by `skipTrailingSlashRedirect: true` |
-| GET `/_forkbook/` | Redirected to `/_forkbook` |
-| Same app with `basePath: '/bp'` | Proxied. Next strips `/bp` first |
+| Request through the Next port                   | Result                                                |
+| ----------------------------------------------- | ----------------------------------------------------- |
+| GET `/_forkbook/foo`, `/_forkbook/@vite/client` | Proxied                                               |
+| WS `/_forkbook/ws`                              | Echoed, twice                                         |
+| WS `/_forkbook/ws/` or `/_forkbook/?token=abc`  | Timed out. Fixed by `skipTrailingSlashRedirect: true` |
+| GET `/_forkbook/`                               | Redirected to `/_forkbook`                            |
+| Same app with `basePath: '/bp'`                 | Proxied. Next strips `/bp` first                      |
 
 Source: `next/dist/server/lib/router-server.js:730-806` sends any upgrade that resolves to an external URL to `proxyRequest`, which is httpxy with `ws: true` and `changeOrigin: true` (`router-utils/proxy-request.js:30-38,104`).
 
@@ -37,17 +37,17 @@ Source: `next/dist/server/lib/router-server.js:730-806` sends any upgrade that r
 
 Forkbook assumes it owns `/`. Only the manager works under a sub-path. Toolweight goes around this with a second portless host (`forkbook.toolweight.localhost`), started by `scripts/dev.ts`.
 
-| Place | Fixed to the root | Change |
-| --- | --- | --- |
-| `channels/websocket/index.ts:50` | `SERVER_CHANNEL_PATH = '/storybook-server-channel'` | `<base>/fb-channel` |
-| `core-server/utils/get-server-channel.ts:58` | `upgrade` handler matches the fixed path | Match `<base>/fb-channel` |
-| `builder-vite/vite-server.ts:21` | `hmr: { port, server }`, no `path` | `hmr.path` under the base path |
-| `builder-vite/vite-config.ts:102` | `base: './'` | `base: '<base>/'` in dev and build |
-| `builder-vite/index.ts:73` | `router.get('/iframe.html')` | Mount the router under the base path |
-| `core-server/utils/index-json.ts:61`, `manifests.ts:390`, `thumbnails.ts:12`, `server-statics.ts:82,131` | `/index.json`, `/manifests/...`, thumbnails, favicon, statics | Mount the app under the base path once |
-| `preview/preview-navigator.ts:24` | `./index.json` (relative) | Already correct |
-| `core-server/utils/getHostValidationMiddleware.ts` | `allowedHosts` in `core` config | Add the Next host when the helper starts Forkbook |
-| `nextjs-vite-plugin/utils/next-config.ts` | `loadNextConfig` loads the real config; only `images` and `distDir` are used | Use more of it (phase 3) |
+| Place                                                                                                    | Fixed to the root                                                            | Change                                            |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------- |
+| `channels/websocket/index.ts:50`                                                                         | `SERVER_CHANNEL_PATH = '/storybook-server-channel'`                          | `<base>/fb-channel`                               |
+| `core-server/utils/get-server-channel.ts:58`                                                             | `upgrade` handler matches the fixed path                                     | Match `<base>/fb-channel`                         |
+| `builder-vite/vite-server.ts:21`                                                                         | `hmr: { port, server }`, no `path`                                           | `hmr.path` under the base path                    |
+| `builder-vite/vite-config.ts:102`                                                                        | `base: './'`                                                                 | `base: '<base>/'` in dev and build                |
+| `builder-vite/index.ts:73`                                                                               | `router.get('/iframe.html')`                                                 | Mount the router under the base path              |
+| `core-server/utils/index-json.ts:61`, `manifests.ts:390`, `thumbnails.ts:12`, `server-statics.ts:82,131` | `/index.json`, `/manifests/...`, thumbnails, favicon, statics                | Mount the app under the base path once            |
+| `preview/preview-navigator.ts:24`                                                                        | `./index.json` (relative)                                                    | Already correct                                   |
+| `core-server/utils/getHostValidationMiddleware.ts`                                                       | `allowedHosts` in `core` config                                              | Add the Next host when the helper starts Forkbook |
+| `nextjs-vite-plugin/utils/next-config.ts`                                                                | `loadNextConfig` loads the real config; only `images` and `distDir` are used | Use more of it (phase 3)                          |
 
 ## Phases
 
@@ -61,18 +61,18 @@ Forkbook assumes it owns `/`. Only the manager works under a sub-path. Toolweigh
 
 ## Agents
 
-| Agent | Folders | Phase |
-| --- | --- | --- |
-| Set-up | `core-server`, `builder-vite`, `channels`, `cli`, `types` | 1 |
-| B | new `src/next`, `build-config/next.ts`, docs | 2 |
-| C | `nextjs-vite-plugin` | 3 |
-| D | `nextjs-vite`, `react` (rsc entry) | 4 |
+| Agent  | Folders                                                   | Phase |
+| ------ | --------------------------------------------------------- | ----- |
+| Set-up | `core-server`, `builder-vite`, `channels`, `cli`, `types` | 1     |
+| B      | new `src/next`, `build-config/next.ts`, docs              | 2     |
+| C      | `nextjs-vite-plugin`                                      | 3     |
+| D      | `nextjs-vite`, `react` (rsc entry)                        | 4     |
 
 ## Risks
 
-| Risk | Fallback |
-| --- | --- |
-| Vite HMR through the rewrite fails on a real server | Point `hmr.clientPort`/`path` straight at the Forkbook port |
+| Risk                                                    | Fallback                                                        |
+| ------------------------------------------------------- | --------------------------------------------------------------- |
+| Vite HMR through the rewrite fails on a real server     | Point `hmr.clientPort`/`path` straight at the Forkbook port     |
 | Next reloads `next.config` and starts a second Forkbook | Lock file under `node_modules/.cache/forkbook`, reuse the child |
-| Turbopack aliases do not map to Vite | Map the plain string aliases, warn for the rest |
-| Async server components need a real server | Client-rendered with mocks; true RSC out of scope |
+| Turbopack aliases do not map to Vite                    | Map the plain string aliases, warn for the rest                 |
+| Async server components need a real server              | Client-rendered with mocks; true RSC out of scope               |

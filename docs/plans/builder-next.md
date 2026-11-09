@@ -6,17 +6,17 @@ Status: ready. 9 Nov 2026. Replaces [single-port-builder-vite.md](./single-port-
 
 builder-next makes `next dev` serve the story preview with the app's real config. Vite stays for static builds and Vitest.
 
-| Topic | Decision |
-| --- | --- |
-| Role | Hybrid: builder-next for `forkbook dev` only. builder-vite stays for `forkbook build` and the Vitest story tests. |
-| Route | Virtual: `withForkbook` adds the preview route. No files in the user's repo. |
-| Server Components | Rendered in the browser with mocks, as today. Real server rendering is in `MAYBE.md`. |
-| Dev and build differences | A parity check renders the same stories both ways and compares screenshots. |
-| `next/*` mocks | Test both approaches (module aliases, context providers). Document the pros and cons, then pick one. |
-| Setup | `withForkbook` in `next.config` is the recommended way. `forkbook dev --builder next` also works without it and then starts `next dev` itself. |
-| Base path | `/_forkbook` by default, configurable. |
-| Static build | Goes to `forkbook-static` by default. An option writes it to `public/_forkbook`. |
-| Target | Latest Next.js (16.x), Turbopack. Test app: `~/p/app/toolweight`. |
+| Topic                     | Decision                                                                                                                                       |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Role                      | Hybrid: builder-next for `forkbook dev` only. builder-vite stays for `forkbook build` and the Vitest story tests.                              |
+| Route                     | Virtual: `withForkbook` adds the preview route. No files in the user's repo.                                                                   |
+| Server Components         | Rendered in the browser with mocks, as today. Real server rendering is in `MAYBE.md`.                                                          |
+| Dev and build differences | A parity check renders the same stories both ways and compares screenshots.                                                                    |
+| `next/*` mocks            | Test both approaches (module aliases, context providers). Document the pros and cons, then pick one.                                           |
+| Setup                     | `withForkbook` in `next.config` is the recommended way. `forkbook dev --builder next` also works without it and then starts `next dev` itself. |
+| Base path                 | `/_forkbook` by default, configurable.                                                                                                         |
+| Static build              | Goes to `forkbook-static` by default. An option writes it to `public/_forkbook`.                                                               |
+| Target                    | Latest Next.js (16.x), Turbopack. Test app: `~/p/app/toolweight`.                                                                              |
 
 ## Architecture
 
@@ -64,13 +64,13 @@ Phase 1 decides whether the virtual route works. If it fails, the plan stops and
 
 Both are built in phase 3 and judged on the same 10 toolweight stories. The expected trade-off is below. The bake-off replaces it with measured results.
 
-| | A: Turbopack aliases | B: Context providers |
-| --- | --- | --- |
-| How | `withForkbook` points `next/navigation`, `next/headers`, `next/cache` at Forkbook mocks with `turbopack.resolveAlias` | Stories are wrapped in Next's own providers (`AppRouterContext`, `PathnameContext`, `SearchParamsContext`) filled with story values |
-| Covers | Every import, including `headers()`, `cookies()`, `redirect()`, `notFound()` | Only hooks that read context. `headers()`, `cookies()`, `redirect()` are not covered |
-| Main risk | Aliases are global: they may leak into the real app routes unless scoped to the preview route | Next's context names are internal and change between versions |
-| Per-story values | Shared mock store, like `nextjs-vite` today | Provider props |
-| Code reuse | Reuses `nextjs-vite-plugin/mocks` | New code |
+|                  | A: Turbopack aliases                                                                                                  | B: Context providers                                                                                                                |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| How              | `withForkbook` points `next/navigation`, `next/headers`, `next/cache` at Forkbook mocks with `turbopack.resolveAlias` | Stories are wrapped in Next's own providers (`AppRouterContext`, `PathnameContext`, `SearchParamsContext`) filled with story values |
+| Covers           | Every import, including `headers()`, `cookies()`, `redirect()`, `notFound()`                                          | Only hooks that read context. `headers()`, `cookies()`, `redirect()` are not covered                                                |
+| Main risk        | Aliases are global: they may leak into the real app routes unless scoped to the preview route                         | Next's context names are internal and change between versions                                                                       |
+| Per-story values | Shared mock store, like `nextjs-vite` today                                                                           | Provider props                                                                                                                      |
+| Code reuse       | Reuses `nextjs-vite-plugin/mocks`                                                                                     | New code                                                                                                                            |
 
 Judged on: stories that render correctly, whether the real app at `/` still works, hot reload time, and lines of Forkbook code needed.
 
@@ -78,24 +78,24 @@ Judged on: stories that render correctly, whether the real app at `/` still work
 
 Phase 0 runs first, alone. Phases 1 and 2 run as one agent, because the spike decides the route design. Then three agents run in parallel.
 
-| Agent | Folders | Phases |
-| --- | --- | --- |
-| Set-up | `core-server`, `channels`, `builder-vite`, `cli`, `types`, new `src/next` (helper) | 0 |
-| A | new `src/builder-next` | 1, 2 |
-| B | `src/builder-next/mocks-aliases`, `src/builder-next/mocks-context` | 3 |
-| C | `src/nextjs-vite/preset.ts`, `src/cli` | 4 |
-| D | `scripts/parity.ts`, docs | 5, 6 |
+| Agent  | Folders                                                                            | Phases |
+| ------ | ---------------------------------------------------------------------------------- | ------ |
+| Set-up | `core-server`, `channels`, `builder-vite`, `cli`, `types`, new `src/next` (helper) | 0      |
+| A      | new `src/builder-next`                                                             | 1, 2   |
+| B      | `src/builder-next/mocks-aliases`, `src/builder-next/mocks-context`                 | 3      |
+| C      | `src/nextjs-vite/preset.ts`, `src/cli`                                             | 4      |
+| D      | `scripts/parity.ts`, docs                                                          | 5, 6   |
 
 ## Risks
 
-| Risk | Fallback |
-| --- | --- |
-| Next has no supported way to add a route with no files | Gitignored `app/(forkbook)` folder that `withForkbook` writes and removes |
-| Turbopack aliases leak into the real app | Use context providers (approach B) |
-| The story loader module makes Turbopack recompile everything on each story change | One loader module per story file |
-| Next reloads `next.config` and starts a second Forkbook | Lock file under `node_modules/.cache/forkbook`, reuse the child |
-| Parity check is flaky (fonts, animations) | Turn off animations, wait for fonts, set a diff limit per story |
-| Next changes its internals between minor versions | Pin the tested Next range in `peerDependencies`, run the spike test in CI |
+| Risk                                                                              | Fallback                                                                  |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Next has no supported way to add a route with no files                            | Gitignored `app/(forkbook)` folder that `withForkbook` writes and removes |
+| Turbopack aliases leak into the real app                                          | Use context providers (approach B)                                        |
+| The story loader module makes Turbopack recompile everything on each story change | One loader module per story file                                          |
+| Next reloads `next.config` and starts a second Forkbook                           | Lock file under `node_modules/.cache/forkbook`, reuse the child           |
+| Parity check is flaky (fonts, animations)                                         | Turn off animations, wait for fonts, set a diff limit per story           |
+| Next changes its internals between minor versions                                 | Pin the tested Next range in `peerDependencies`, run the spike test in CI |
 
 ## Tests
 
