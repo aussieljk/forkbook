@@ -230,7 +230,10 @@ describe('withForkbook', () => {
   });
 
   it('starts Forkbook and adds the rewrites in next dev', async () => {
-    const extendConfig = vi.fn((config) => ({ ...config, extended: true }));
+    const extendConfig = vi.fn((config: object, _context: unknown) => ({
+      ...config,
+      extended: true,
+    }));
     const config = await withForkbook(async (phase) => ({ fromFunction: phase }), {
       cwd,
       port: 6200,
