@@ -1,0 +1,5 @@
+/* The story checks that the CSS of the app reaches the preview route. */
+.fixture-button {
+  background: rgb(10, 20, 30);
+  color: white;
+}

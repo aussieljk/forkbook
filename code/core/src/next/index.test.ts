@@ -1,6 +1,7 @@
 import { EventEmitter } from 'node:events';
 import type { ChildProcess } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -47,6 +48,25 @@ describe('getForkbookRewrites', () => {
 
   it('does not allow the root, which would hide the app', () => {
     expect(() => getForkbookRewrites('/', 'http://127.0.0.1:6006')).toThrow(/basePath/);
+  });
+});
+
+describe('getForkbookRewrites with excluded segments', () => {
+  // The path-to-regexp copy of Next.js, which compiles the rewrite sources.
+  const require = createRequire(import.meta.url);
+  const { pathToRegexp } = require('next/dist/compiled/path-to-regexp') as {
+    pathToRegexp: (path: string, keys?: unknown[]) => RegExp;
+  };
+  const [, rewrite] = getForkbookRewrites('/_forkbook', 'http://127.0.0.1:6006', ['iframe']);
+  const matches = (path: string) => pathToRegexp(rewrite.source, []).test(path);
+
+  it('sends every path to Forkbook except <base>/iframe', () => {
+    expect(matches('/_forkbook/index.json')).toBe(true);
+    expect(matches('/_forkbook/iframe.html')).toBe(true);
+    expect(matches('/_forkbook/iframes')).toBe(true);
+    expect(matches('/_forkbook/fb-channel')).toBe(true);
+    expect(matches('/_forkbook/iframe')).toBe(false);
+    expect(matches('/_forkbook/iframe/x')).toBe(false);
   });
 });
 
@@ -237,7 +257,7 @@ describe('withForkbook', () => {
     const config = await withForkbook(async (phase) => ({ fromFunction: phase }), {
       cwd,
       port: 6200,
-      enablePreviewRoute: true,
+      configDir: '.fb',
       extendConfig,
       spawnServer: () => fakeChild(process.pid),
     })(PHASE_DEVELOPMENT_SERVER, context);
@@ -255,7 +275,42 @@ describe('withForkbook', () => {
     expect(extendConfig.mock.calls[0][1]).toMatchObject({
       basePath: '/_forkbook',
       destination: 'http://127.0.0.1:6200',
-      options: { enablePreviewRoute: true },
+      options: { configDir: '.fb' },
+    });
+  });
+
+  it('writes the preview route and leaves <base>/iframe to Next.js', async () => {
+    const project = join(cwd, 'web');
+    mkdirSync(join(project, 'app'), { recursive: true });
+    vi.spyOn(process, 'cwd').mockReturnValue(project);
+    const spawnServer = vi.fn((_args: string[], _env: NodeJS.ProcessEnv) => fakeChild(process.pid));
+    const config = await withForkbook(
+      { turbopack: { root: cwd } },
+      {
+        cwd,
+        port: 6201,
+        enablePreviewRoute: true,
+        previewMocks: { resolveAlias: { 'node:fs': { browser: join(cwd, 'mocks', 'fs.ts') } } },
+        spawnServer,
+      }
+    )(PHASE_DEVELOPMENT_SERVER, context);
+    vi.mocked(process.cwd).mockRestore();
+
+    const routeDir = join(project, 'app', '(forkbook)', '%5Fforkbook', 'iframe');
+    expect(existsSync(join(routeDir, 'page.tsx'))).toBe(true);
+    expect(spawnServer.mock.calls[0][1]).toMatchObject({
+      FORKBOOK_NEXT_PROJECT_DIR: project,
+      FORKBOOK_NEXT_APP_DIR: join(project, 'app'),
+    });
+    const rewrites = (await (config.rewrites as () => Promise<{ beforeFiles: unknown[] }>)())
+      .beforeFiles;
+    expect(rewrites[1]).toEqual({
+      source: '/_forkbook/:path((?!(?:iframe)(?:/|$)).*)',
+      destination: 'http://127.0.0.1:6201/_forkbook/:path',
+    });
+    expect(config.turbopack).toEqual({
+      root: cwd,
+      resolveAlias: { 'node:fs': { browser: '../mocks/fs.ts' } },
     });
   });
 

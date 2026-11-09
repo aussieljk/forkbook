@@ -28,6 +28,8 @@
     "src/react-native-ui-common/**",
     "src/react-native-theming/**",
     "src/addon-ondevice-controls/**",
-    "src/addon-ondevice-actions/**"
+    "src/addon-ondevice-actions/**",
+    // A Next.js 16 app that the builder-next e2e test copies and installs on its own.
+    "src/builder-next/__fixtures__/**"
   ]
 }

@@ -249,6 +249,11 @@
       "types": "./dist/backgrounds/index.d.ts",
       "default": "./dist/backgrounds/index.js"
     },
+    "./builder-next": {
+      "code": "./src/builder-next/index.ts",
+      "types": "./dist/builder-next/index.d.ts",
+      "default": "./dist/builder-next/index.js"
+    },
     "./builder-vite": {
       "code": "./src/builder-vite/index.ts",
       "types": "./dist/builder-vite/index.d.ts",

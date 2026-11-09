@@ -54,13 +54,31 @@ export function normalizeNextBasePath(basePath: string | undefined): string {
  * everything under the same base path, so the destination keeps it.
  *
  * @param destination The origin of the Forkbook server, for example `http://127.0.0.1:6006`.
+ * @param exclude Path segments under the base path that Next.js serves itself, for example
+ *   `['iframe']` for the builder-next preview route. `<base>/iframe` and `<base>/iframe/*` then
+ *   do not go to Forkbook. `<base>/iframe.html` still does.
  */
-export function getForkbookRewrites(basePath: string, destination: string): NextRewrite[] {
+export function getForkbookRewrites(
+  basePath: string,
+  destination: string,
+  exclude: string[] = []
+): NextRewrite[] {
   const base = normalizeNextBasePath(basePath);
   const origin = destination.replace(/\/+$/, '');
+  if (exclude.length === 0) {
+    return [
+      { source: base, destination: `${origin}${joinBasePath(base)}` },
+      { source: `${base}/:path*`, destination: `${origin}${base}/:path*` },
+    ];
+  }
+  const names = exclude.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
   return [
     { source: base, destination: `${origin}${joinBasePath(base)}` },
-    { source: `${base}/:path*`, destination: `${origin}${base}/:path*` },
+    {
+      // path-to-regexp: a parameter with a pattern. The lookahead skips the excluded segments.
+      source: `${base}/:path((?!(?:${names})(?:/|$)).*)`,
+      destination: `${origin}${base}/:path`,
+    },
   ];
 }
 
@@ -113,6 +131,8 @@ export interface ForkbookDevConfigOptions {
   /** The origin of the Forkbook server, for example `http://127.0.0.1:6006`. */
   destination: string;
   siteHosts?: string[];
+  /** See `getForkbookRewrites`. */
+  excludeFromRewrites?: string[];
 }
 
 /**
@@ -122,9 +142,9 @@ export interface ForkbookDevConfigOptions {
  */
 export function applyForkbookDevConfig(
   config: NextConfigObject,
-  { basePath, destination, siteHosts }: ForkbookDevConfigOptions
+  { basePath, destination, siteHosts, excludeFromRewrites }: ForkbookDevConfigOptions
 ): NextConfigObject {
-  const rewrites = getForkbookRewrites(basePath, destination);
+  const rewrites = getForkbookRewrites(basePath, destination, excludeFromRewrites);
   const userRewrites = config.rewrites;
   const allowedDevOrigins = [
     ...new Set([...(config.allowedDevOrigins ?? []), ...getSiteHosts(siteHosts)]),

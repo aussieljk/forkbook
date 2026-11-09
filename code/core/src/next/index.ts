@@ -21,6 +21,14 @@ import {
   resolveNextConfig,
 } from './config.ts';
 import { type ForkbookServerHandle, ensureForkbookServer } from './server.ts';
+import {
+  PREVIEW_ROUTE_SEGMENT,
+  type PreviewRoute,
+  type PreviewRouteMocks,
+  applyPreviewRouteMocks,
+  removePreviewRoute,
+  writePreviewRoute,
+} from '../builder-next/route.ts';
 
 export * from './config.ts';
 export {
@@ -36,13 +44,14 @@ export {
   resolveForkbookBin,
 } from './server.ts';
 export { DEFAULT_BASE_PATH };
+export type { PreviewAlias, PreviewRoute, PreviewRouteMocks } from '../builder-next/route.ts';
 
 export interface WithForkbookOptions {
   /** The URL path of Forkbook. Default: `/_forkbook`. */
   basePath?: string;
   /** The Forkbook config folder, from the project root. Default: `.forkbook`. */
   configDir?: string;
-  /** The project root. Default: `process.cwd()`. */
+  /** The Forkbook project root (where `configDir` is). Default: `process.cwd()`. The preview route always goes in the Next.js project (`process.cwd()`). */
   cwd?: string;
   /** The port of the Forkbook server. Default: `FORKBOOK_PORT`, else a free port that is not `PORT`. */
   port?: number;
@@ -56,10 +65,17 @@ export interface WithForkbookOptions {
    */
   startServer?: boolean;
   /**
-   * Reserved for builder-next: serve the story preview from a virtual Next.js route at
-   * `<basePath>/iframe`. Phase 0 does not use it. Pass it to `extendConfig` code.
+   * builder-next: Next.js serves the story preview at `<basePath>/iframe`. `withForkbook` writes
+   * the route to `<app>/(forkbook)` (ignored through `.git/info/exclude`) and removes it when
+   * `next dev` stops. The Forkbook server must use builder-next
+   * (`core.builder: '@aussieljk/forkbook/builder-next'`).
    */
   enablePreviewRoute?: boolean;
+  /**
+   * The seam for `next/*` mocks of the preview route (phase 3). `resolveAlias` entries are added
+   * to `turbopack.resolveAlias`. Only used with `enablePreviewRoute`.
+   */
+  previewMocks?: PreviewRouteMocks;
   /**
    * Changes the dev config after Forkbook has added its settings, for example to add the preview
    * route or `turbopack.resolveAlias` entries.
@@ -78,7 +94,26 @@ export interface ForkbookNextContext {
   /** The origin of the Forkbook server, for example `http://127.0.0.1:6006`. */
   destination: string;
   server?: ForkbookServerHandle;
+  /** The preview route folders, when `enablePreviewRoute` is set. */
+  previewRoute?: PreviewRoute;
   options: WithForkbookOptions;
+}
+
+let removeOnExit: PreviewRoute | undefined;
+
+/** Removes the preview route when `next dev` stops. Registered once per process. */
+function removeRouteOnExit(route: PreviewRoute) {
+  if (!removeOnExit) {
+    const remove = () => removeOnExit && removePreviewRoute(removeOnExit);
+    process.once('exit', remove);
+    for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP'] as const) {
+      process.once(signal, () => {
+        remove();
+        process.exit(128 + (signal === 'SIGINT' ? 2 : signal === 'SIGTERM' ? 15 : 1));
+      });
+    }
+  }
+  removeOnExit = route;
 }
 
 /**
@@ -97,6 +132,13 @@ export function withForkbook(
       return config;
     }
     const basePath = normalizeNextBasePath(options.basePath ?? DEFAULT_BASE_PATH);
+    const cwd = options.cwd ?? process.cwd();
+
+    let previewRoute: PreviewRoute | undefined;
+    if (options.enablePreviewRoute) {
+      previewRoute = writePreviewRoute({ projectDir: process.cwd(), basePath });
+      removeRouteOnExit(previewRoute);
+    }
 
     let server: ForkbookServerHandle | undefined;
     let destination: string;
@@ -107,23 +149,41 @@ export function withForkbook(
       destination = `http://127.0.0.1:${options.port}`;
     } else {
       server = await ensureForkbookServer({
-        cwd: options.cwd ?? process.cwd(),
+        cwd,
         basePath,
         configDir: options.configDir ?? '.forkbook',
         port: options.port,
         args: options.args,
         spawnServer: options.spawnServer,
+        env: previewRoute
+          ? {
+              ...process.env,
+              FORKBOOK_NEXT_PROJECT_DIR: process.cwd(),
+              FORKBOOK_NEXT_APP_DIR: previewRoute.appDir,
+            }
+          : undefined,
       });
       destination = server.origin;
     }
 
-    const devConfig = applyForkbookDevConfig(config, {
+    let devConfig = applyForkbookDevConfig(config, {
       basePath,
       destination,
       siteHosts: options.siteHosts,
+      excludeFromRewrites: previewRoute ? [PREVIEW_ROUTE_SEGMENT] : undefined,
     });
+    if (previewRoute && options.previewMocks) {
+      devConfig = applyPreviewRouteMocks(devConfig, options.previewMocks, process.cwd());
+    }
     return options.extendConfig
-      ? options.extendConfig(devConfig, { phase, basePath, destination, server, options })
+      ? options.extendConfig(devConfig, {
+          phase,
+          basePath,
+          destination,
+          server,
+          previewRoute,
+          options,
+        })
       : devConfig;
   };
 }
