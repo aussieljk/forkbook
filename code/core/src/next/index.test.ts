@@ -11,6 +11,7 @@ import {
   PHASE_DEVELOPMENT_SERVER,
   applyForkbookDevConfig,
   ensureForkbookServer,
+  findFreePort,
   getForkbookDevArgs,
   getForkbookRewrites,
   getLockPath,
@@ -222,6 +223,61 @@ describe('ensureForkbookServer', () => {
     });
     expect(spawnServer).toHaveBeenCalledTimes(1);
     expect(handle).toMatchObject({ reused: false, port: 6123 });
+  });
+
+  it('starts a new child when the locked process runs but its port does not answer', async () => {
+    const lockPath = getLockPath(cwd);
+    const closedPort = await findFreePort();
+    // The pid runs (this process), but nothing listens on the port, and the start was long ago.
+    mkdirSync(join(cwd, 'node_modules', '.cache', 'forkbook'), { recursive: true });
+    writeFileSync(
+      lockPath,
+      JSON.stringify({
+        pid: process.pid,
+        ownerPid: process.pid,
+        port: closedPort,
+        basePath: '/_forkbook',
+        configDir: join(cwd, '.forkbook'),
+        startedAt: new Date(Date.now() - 10 * 60_000).toISOString(),
+      })
+    );
+    const spawnServer = vi.fn(() => fakeChild(process.pid));
+    const handle = await ensureForkbookServer({
+      cwd,
+      basePath: '/_forkbook',
+      configDir: '.forkbook',
+      port: 6124,
+      env: {},
+      spawnServer,
+    });
+    expect(spawnServer).toHaveBeenCalledTimes(1);
+    expect(handle).toMatchObject({ reused: false, port: 6124 });
+  });
+
+  it('reuses a locked child that still starts, before its port answers', async () => {
+    const lockPath = getLockPath(cwd);
+    mkdirSync(join(cwd, 'node_modules', '.cache', 'forkbook'), { recursive: true });
+    writeFileSync(
+      lockPath,
+      JSON.stringify({
+        pid: process.pid,
+        ownerPid: process.pid,
+        port: await findFreePort(),
+        basePath: '/_forkbook',
+        configDir: join(cwd, '.forkbook'),
+        startedAt: new Date().toISOString(),
+      })
+    );
+    const spawnServer = vi.fn(() => fakeChild(process.pid));
+    const handle = await ensureForkbookServer({
+      cwd,
+      basePath: '/_forkbook',
+      configDir: '.forkbook',
+      env: {},
+      spawnServer,
+    });
+    expect(spawnServer).not.toHaveBeenCalled();
+    expect(handle.reused).toBe(true);
   });
 });
 
