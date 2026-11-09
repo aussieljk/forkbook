@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useSyncExternalStore } from 'react';
 
 import { global } from '../shared/global.ts';
 
@@ -8,7 +8,12 @@ import * as R from 'react-router-dom';
 import { NAVIGATE_URL } from '@aussieljk/forkbook/internal/core-events';
 import { addons } from '@aussieljk/forkbook/manager-api';
 import type { LinkProps, NavigateOptions, RenderData } from './types.ts';
-import { fromUrlPath, toUrlPath } from './story-paths.ts';
+import {
+  fromUrlPath,
+  getStoryPathEntriesVersion,
+  subscribeStoryPathEntries,
+  toUrlPath,
+} from './story-paths.ts';
 import { getMatch, parsePath, queryFromLocation, stringifyQuery } from './utils.ts';
 
 const { document } = global;
@@ -122,6 +127,13 @@ Link.displayName = 'QueryLink';
 export const Location = ({ children }: LocationProps) => {
   const location = R.useLocation();
   const navigate = R.useNavigate();
+  // The URL path gives a story ID only after the index loads. Render again when it loads, so a
+  // story whose name is not its export name gets the correct ID.
+  useSyncExternalStore(
+    subscribeStoryPathEntries,
+    getStoryPathEntriesVersion,
+    getStoryPathEntriesVersion
+  );
   const { path: legacyPath, singleStory, ...otherQuery } = queryFromLocation(location);
   const path = legacyPath || fromUrlPath(location.pathname);
   const { viewMode, storyId, refId } = parsePath(path);
