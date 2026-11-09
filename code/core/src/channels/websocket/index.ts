@@ -47,7 +47,8 @@ interface WebsocketTransportArgs extends Partial<Config> {
 }
 
 export const HEARTBEAT_INTERVAL = 15000;
-export const SERVER_CHANNEL_PATH = '/storybook-server-channel';
+/** The channel path for the default base path. Use `getChannelPath(basePath)` for another base. */
+export const SERVER_CHANNEL_PATH = '/_forkbook/fb-channel';
 export const RECONNECT_INITIAL_DELAY = 500;
 export const RECONNECT_MAX_DELAY = 5000;
 /** The most messages kept while the socket is not open. Older messages are dropped. */

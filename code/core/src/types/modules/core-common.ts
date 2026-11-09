@@ -53,7 +53,21 @@ export interface CoreConfig {
         options?: Record<string, unknown>;
       };
   renderer?: RendererName;
-  channelOptions?: Partial<TelejsonOptions> & { wsToken?: string };
+  channelOptions?: Partial<TelejsonOptions> & { wsToken?: string; basePath?: string };
+  /**
+   * The URL path that Forkbook mounts everything under (manager, index.json, manifests, statics and
+   * the channel at `<basePath>/fb-channel`). The `--base-path` CLI flag has priority.
+   *
+   * @default '/_forkbook'
+   */
+  basePath?: string;
+  /**
+   * When true, `forkbook build` writes the static build to `public<basePath>` (for example
+   * `public/_forkbook`), so the host app serves it at the base path. An `--output-dir` has priority.
+   *
+   * @default false
+   */
+  buildToPublic?: boolean;
   /**
    * Disables Forkbook telemetry
    *
@@ -276,6 +290,10 @@ export interface CLIOptions extends CLIBaseOptions {
   statsJson?: string | boolean;
   outputDir?: string;
   previewOnly?: boolean;
+  /** See `CoreConfig.basePath`. After the config loads, this is the normalised base path. */
+  basePath?: string;
+  /** See `CoreConfig.buildToPublic`. */
+  buildToPublic?: boolean;
 }
 
 export interface BuilderOptions {

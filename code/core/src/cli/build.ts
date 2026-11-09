@@ -11,7 +11,8 @@ export const build = async (cliOptions: CLIOptions & { outputDir?: string }) => 
   const options = {
     ...cliOptions,
     configDir: cliOptions.configDir || defaultConfigDir(),
-    outputDir: cliOptions.outputDir || './forkbook-static',
+    // Without --output-dir, the build picks `forkbook-static` or `public<basePath>`.
+    outputDir: cliOptions.outputDir || undefined,
     configType: 'PRODUCTION',
     cache,
     packageJson,

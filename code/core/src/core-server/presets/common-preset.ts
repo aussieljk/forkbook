@@ -72,6 +72,7 @@ import { initializeSaveStory } from '../utils/save-story/save-story.ts';
 import { mapStaticDir, parseStaticDir } from '../utils/server-statics.ts';
 import { type OptionsWithRequiredCache, initializeWhatsNew } from '../utils/whats-new.ts';
 import { rootMdxPath } from '../../shared/root-page.ts';
+import { normalizeBasePath } from '../../channels/base-path.ts';
 import { getWsToken } from './wsToken.ts';
 
 const interpolate = (string: string, data: Record<string, string> = {}) =>
@@ -222,7 +223,9 @@ export const core = async (existing: CoreConfig, options: Options): Promise<Core
   ...existing,
   channelOptions: {
     ...(existing?.channelOptions ?? {}),
-    ...(options.configType === 'DEVELOPMENT' ? { wsToken: getWsToken() } : {}),
+    ...(options.configType === 'DEVELOPMENT'
+      ? { wsToken: getWsToken(), basePath: normalizeBasePath(options.basePath) }
+      : {}),
   },
   disableTelemetry:
     options.disableTelemetry || optionalEnvToBoolean(process.env.FORKBOOK_DISABLE_TELEMETRY),

@@ -34,6 +34,20 @@ function iframeHandler(options: Options, server: ViteDevServer): Middleware {
   };
 }
 
+/**
+ * The Forkbook server removes the base path from each request before routing. Vite uses the base
+ * path as its `base`, so add the prefix again for requests that came in under it.
+ */
+export function withBasePrefix(middlewares: Middleware): Middleware {
+  return (req, res, next) => {
+    const basePath = (req as { forkbookBasePath?: string }).forkbookBasePath;
+    if (basePath && req.url && !req.url.startsWith(`${basePath}/`)) {
+      req.url = `${basePath}${req.url}`;
+    }
+    return middlewares(req, res, next);
+  };
+}
+
 let server: ViteDevServer;
 
 export async function bail(): Promise<void> {
@@ -71,7 +85,7 @@ export const start: ViteBuilder['start'] = async ({
   server = await createViteServer(options as Options, devServer);
 
   router.get('/iframe.html', iframeHandler(options as Options, server));
-  router.use(server.middlewares);
+  router.use(withBasePrefix(server.middlewares));
 
   return {
     bail,

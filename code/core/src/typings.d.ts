@@ -61,7 +61,7 @@ declare module '@aussieljk/forkbook/internal/bin/loader' {
 
 declare var STORIES: unknown;
 
-declare var CHANNEL_OPTIONS: { wsToken?: string; maxDepth?: number } | undefined;
+declare var CHANNEL_OPTIONS: { wsToken?: string; basePath?: string; maxDepth?: number } | undefined;
 declare var INSECURE_IFRAME_MESSAGING: boolean | undefined;
 // `autodocs` is the old `docs.autodocs` option, which the preview still reads.
 declare var DOCS_OPTIONS:

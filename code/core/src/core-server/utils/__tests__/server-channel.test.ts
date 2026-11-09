@@ -88,7 +88,7 @@ function connectClient(server: Server, transport: ServerChannelTransport, page?:
     (request, _socket, _head, callback) => callback(client as unknown as WebSocket, request)
   );
   const query = page ? `&page=${page}` : '';
-  const request = { url: `/storybook-server-channel?token=${mockToken}${query}`, headers: {} };
+  const request = { url: `/_forkbook/fb-channel?token=${mockToken}${query}`, headers: {} };
   server.emit('upgrade', request, { end: vi.fn() }, Buffer.from(''));
   return client;
 }
@@ -215,7 +215,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request without token
     const request = {
-      url: '/storybook-server-channel',
+      url: '/_forkbook/fb-channel',
       headers: {
         origin: 'http://localhost:6006',
       },
@@ -235,7 +235,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request with wrong token
     const request = {
-      url: '/storybook-server-channel?token=wrong-token',
+      url: '/_forkbook/fb-channel?token=wrong-token',
       headers: {
         origin: 'http://localhost:6006',
       },
@@ -258,7 +258,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request with correct token and valid origin
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}&page=manager`,
+      url: `/_forkbook/fb-channel?token=${mockToken}&page=manager`,
       headers: {
         origin: 'http://localhost:6006',
       },
@@ -279,7 +279,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request with invalid origin
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}`,
+      url: `/_forkbook/fb-channel?token=${mockToken}`,
       headers: {
         origin: 'http://malicious-site.com',
       },
@@ -301,7 +301,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}`,
+      url: `/_forkbook/fb-channel?token=${mockToken}`,
       headers: {
         origin: 'http://203.0.113.5',
       },
@@ -324,7 +324,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}`,
+      url: `/_forkbook/fb-channel?token=${mockToken}`,
       headers: {},
     };
     const head = Buffer.from('');
@@ -345,7 +345,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: '/storybook-server-channel?token=wrong-token',
+      url: '/_forkbook/fb-channel?token=wrong-token',
       headers: {},
     };
     const head = Buffer.from('');
@@ -366,7 +366,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: '/storybook-server-channel',
+      url: '/_forkbook/fb-channel',
       headers: {},
     };
     const head = Buffer.from('');
@@ -388,7 +388,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request with network address origin
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}&page=manager`,
+      url: `/_forkbook/fb-channel?token=${mockToken}&page=manager`,
       headers: {
         origin: 'http://192.168.1.100:6006',
       },
@@ -412,7 +412,7 @@ describe('ServerChannelTransport', () => {
 
       upgradeListener(server)(
         {
-          url: `/storybook-server-channel?token=${mockToken}&page=manager`,
+          url: `/_forkbook/fb-channel?token=${mockToken}&page=manager`,
           headers: { origin },
         },
         socket,
@@ -470,7 +470,7 @@ describe('ServerChannelTransport', () => {
 
     // Simulate upgrade request with 127.0.0.1 origin
     const request = {
-      url: `/storybook-server-channel?token=${mockToken}&page=manager`,
+      url: `/_forkbook/fb-channel?token=${mockToken}&page=manager`,
       headers: {
         origin: 'http://127.0.0.1:6006',
       },
@@ -518,7 +518,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: '/storybook-server-channel?page=manager',
+      url: '/_forkbook/fb-channel?page=manager',
       headers: {
         origin: 'http://localhost:6006',
       },
@@ -541,7 +541,7 @@ describe('ServerChannelTransport', () => {
       .mockImplementation(() => {});
 
     const request = {
-      url: '/storybook-server-channel?token=wrong-token&page=manager',
+      url: '/_forkbook/fb-channel?token=wrong-token&page=manager',
       headers: {
         origin: 'http://malicious-site.com',
       },
@@ -556,7 +556,7 @@ describe('ServerChannelTransport', () => {
 
   it('flushes HTTP 401 to a real client when the token is missing', async () => {
     const response = await readRejectedUpgrade([
-      'GET /storybook-server-channel HTTP/1.1',
+      'GET /_forkbook/fb-channel HTTP/1.1',
       'Host: 127.0.0.1',
       'Connection: Upgrade',
       'Upgrade: websocket',
@@ -566,7 +566,7 @@ describe('ServerChannelTransport', () => {
 
   it('flushes HTTP 403 to a real client when Origin is invalid', async () => {
     const response = await readRejectedUpgrade([
-      `GET /storybook-server-channel?token=${mockToken} HTTP/1.1`,
+      `GET /_forkbook/fb-channel?token=${mockToken} HTTP/1.1`,
       'Host: 127.0.0.1',
       'Connection: Upgrade',
       'Upgrade: websocket',
@@ -686,7 +686,7 @@ describe('ServerChannelTransport', () => {
         .mockImplementation(() => {});
 
       const request = {
-        url: `/storybook-server-channel?token=${mockToken}`,
+        url: `/_forkbook/fb-channel?token=${mockToken}`,
         headers: { origin: 'http://localhost:6006' },
       };
 
@@ -706,7 +706,7 @@ describe('ServerChannelTransport', () => {
         .mockImplementation(() => {});
 
       const request = {
-        url: `/storybook-server-channel?token=${mockToken}&page=admin`,
+        url: `/_forkbook/fb-channel?token=${mockToken}&page=admin`,
         headers: { origin: 'http://localhost:6006' },
       };
 

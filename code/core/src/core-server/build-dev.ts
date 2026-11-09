@@ -32,6 +32,7 @@ import invariant from 'tiny-invariant';
 import { dedent } from 'ts-dedent';
 
 import Channel from '../channels/index.ts';
+import { joinBasePath } from '../channels/base-path.ts';
 import { resolvePackageDir } from '../shared/utils/module.ts';
 import { storybookDevServer } from './dev-server.ts';
 import { getWsToken } from './presets/wsToken.ts';
@@ -52,6 +53,7 @@ import {
   getServerPort,
   withInitialPath,
 } from './utils/server-address.ts';
+import { resolveBasePath } from './utils/base-path.ts';
 import { getServer } from './utils/server-init.ts';
 import { stripCommentsAndStrings } from './utils/strip-comments-and-strings.ts';
 import { updateCheck } from './utils/update-check.ts';
@@ -120,12 +122,19 @@ export async function buildDevStandalone(
   options.configDir = configDir;
   options.cacheKey = cacheKey;
   options.outputDir = outputDir;
-  options.serverChannelUrl = getServerChannelUrl(port, options);
   options.localAddress = localAddress;
   options.networkAddress = networkAddress;
 
   const config = await loadMainConfig(options);
   const { core, framework } = config;
+
+  // `core` can also be a function. Its base path then comes from `--base-path` or the default.
+  options.basePath = resolveBasePath(
+    options.basePath,
+    typeof core === 'object' ? core.basePath : undefined
+  );
+  options.serverChannelUrl = getServerChannelUrl(port, options);
+  watchParentProcess();
 
   const corePresets = [];
 
@@ -229,6 +238,7 @@ export async function buildDevStandalone(
     skipValidation: isWebContainer(),
     localAddress,
     networkAddress,
+    basePath: options.basePath,
   });
 
   // Load second pass: all presets are applied in order
@@ -268,7 +278,7 @@ export async function buildDevStandalone(
   const mcp: RuntimeInstanceRecord['mcp'] = getMcpMetadataFromMainConfig(config);
 
   await writeStorybookRuntimeInstanceRecord({
-    address: localAddress,
+    address: `${new URL(localAddress).origin}${joinBasePath(options.basePath)}`,
     configDir: options.configDir,
     mcp,
     port,
@@ -331,9 +341,9 @@ export async function buildDevStandalone(
         updateInfo: versionCheck,
         version: storybookVersion,
         name,
-        address: withInitialPath(localAddress, options.initialPath),
+        address: withInitialPath(localAddress, options.initialPath, options.basePath),
         host: options.host,
-        networkAddress: withInitialPath(networkAddress, options.initialPath),
+        networkAddress: withInitialPath(networkAddress, options.initialPath, options.basePath),
         allowedHosts,
         managerTotalTime,
         previewTotalTime,
@@ -341,4 +351,23 @@ export async function buildDevStandalone(
     }
   }
   return { port, address: localAddress, networkAddress };
+}
+
+/**
+ * A parent process (for example `next dev` through `withForkbook`) sets `FORKBOOK_PARENT_PID`.
+ * Forkbook then stops when that process is gone, also after a hard kill of the parent.
+ */
+function watchParentProcess() {
+  const parentPid = Number(process.env.FORKBOOK_PARENT_PID);
+  if (!Number.isInteger(parentPid) || parentPid <= 0) {
+    return;
+  }
+  const timer = globalThis.setInterval(() => {
+    try {
+      process.kill(parentPid, 0);
+    } catch {
+      process.exit(0);
+    }
+  }, 2000);
+  (timer as unknown as { unref?: () => void }).unref?.();
 }

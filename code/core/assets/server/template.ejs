@@ -10,9 +10,13 @@
       // /_story/<id>) before it loads index.json.
       (function () {
         var depth = /*FORKBOOK_ROUTE_DEPTH*/ 0;
+        // The server sets the root when it is mounted under a base path (for example /_forkbook/).
+        var root = /*FORKBOOK_ROOT*/ '';
         var parts = location.pathname.replace(/\/+$/, '').split('/');
         var base = document.createElement('base');
-        base.href = depth
+        base.href = root
+          ? root
+          : depth
           ? parts.slice(0, Math.max(1, parts.length - depth)).join('/') + '/'
           : new URL('.', location.href).pathname;
         document.head.appendChild(base);

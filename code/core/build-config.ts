@@ -17,6 +17,7 @@ import addonPseudoStates from './build-config/addon-pseudo-states.ts';
 import addonThemes from './build-config/addon-themes.ts';
 import addonVitest from './build-config/addon-vitest.ts';
 import mcp from './build-config/mcp.ts';
+import next from './build-config/next.ts';
 import create from './build-config/create.ts';
 import cliCommands from './build-config/cli-commands.ts';
 import reactNative from './build-config/react-native.ts';
@@ -297,6 +298,7 @@ const areas: BuildEntries[] = [
   addonThemes,
   addonVitest,
   mcp,
+  next,
   create,
   cliCommands,
   reactNative,

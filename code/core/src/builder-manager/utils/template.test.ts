@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 
 import type { Options } from '@aussieljk/forkbook/internal/types';
 
-import { customHeadHasFavicon, renderHTML } from './template.ts';
+import { customHeadHasFavicon, renderHTML, withRootPath } from './template.ts';
 
 const template = `
 <head>
@@ -52,4 +52,10 @@ it('does not render the default manager favicon when custom head provides an ico
 it('detects shortcut icon links without treating touch icons as favicons', () => {
   expect(customHeadHasFavicon('<link rel="shortcut icon" href="./favicon.ico" />')).toBe(true);
   expect(customHeadHasFavicon('<link rel="apple-touch-icon" href="./touch.png" />')).toBe(false);
+});
+
+it('sets the root path for a base path, and keeps the page when there is none', () => {
+  const html = "var root = /*FORKBOOK_ROOT*/ '';";
+  expect(withRootPath(html, '/_forkbook/')).toBe('var root = /*FORKBOOK_ROOT*/ "/_forkbook/";');
+  expect(withRootPath(html, undefined)).toBe(html);
 });

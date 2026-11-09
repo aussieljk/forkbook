@@ -6,6 +6,7 @@ import { StorybookDevServerDisconnectedError } from '../../../server-errors.ts';
 import { UniversalStore } from '../../../shared/universal-store/index.ts';
 import { getChannel, setChannel } from '../../../channels/channel-slot.ts';
 import { Channel } from '../../../channels/main.ts';
+import { getChannelPath } from '../../../channels/base-path.ts';
 import { SERVER_CHANNEL_PATH, WebsocketTransport } from '../../../channels/websocket/index.ts';
 
 const LOOPBACK_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
@@ -72,7 +73,12 @@ function uninstallNodeChannel(channel: Channel): void {
 export function createNodeChannel({ url, token }: NodeChannelOptions): NodeChannelConnection {
   const socketUrl = new URL(url);
   socketUrl.protocol = socketUrl.protocol === 'https:' ? 'wss:' : 'ws:';
-  socketUrl.pathname = SERVER_CHANNEL_PATH;
+  // The instance URL holds the base path (for example `/_forkbook`). A URL with no path uses the
+  // default base path.
+  socketUrl.pathname =
+    socketUrl.pathname === '/' || socketUrl.pathname === ''
+      ? SERVER_CHANNEL_PATH
+      : getChannelPath(socketUrl.pathname);
   socketUrl.search = new URLSearchParams({ token }).toString();
 
   // Loopback only: a local `wss://` Forkbook often uses a self-signed dev certificate.

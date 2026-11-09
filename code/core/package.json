@@ -575,6 +575,11 @@
       "types": "./dist/mcp/index.d.ts",
       "default": "./dist/mcp/index.js"
     },
+    "./next": {
+      "code": "./src/next/index.ts",
+      "types": "./dist/next/index.d.ts",
+      "default": "./dist/next/index.js"
+    },
     "./nextjs-vite": {
       "code": "./src/nextjs-vite/index.ts",
       "types": "./dist/nextjs-vite/index.d.ts",

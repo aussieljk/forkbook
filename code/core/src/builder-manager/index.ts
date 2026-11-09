@@ -22,7 +22,7 @@ import { readOrderedFiles } from './utils/files.ts';
 import { buildFrameworkGlobalsFromOptions } from './utils/framework.ts';
 import { wrapManagerEntries } from './utils/managerEntries.ts';
 import { urlPathDepth } from '../router/story-paths.ts';
-import { getTemplatePath, renderHTML, withRouteDepth } from './utils/template.ts';
+import { getTemplatePath, renderHTML, withRootPath, withRouteDepth } from './utils/template.ts';
 
 export { BROWSER_TARGETS, NODE_TARGET } from '../shared/constants/environments-support.ts';
 
@@ -172,7 +172,13 @@ const starter: StarterFunction = async function* starterGeneratorFn({
     }
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
-    res.write(withRouteDepth(html, pathname === '/index.html' ? 0 : urlPathDepth(pathname)));
+    const mountedAt = (req as { forkbookBasePath?: string }).forkbookBasePath;
+    res.write(
+      withRootPath(
+        withRouteDepth(html, pathname === '/index.html' ? 0 : urlPathDepth(pathname)),
+        mountedAt ? `${mountedAt}/` : undefined
+      )
+    );
     res.end();
   });
 
@@ -254,7 +260,12 @@ const builder: BuilderFunction = async function* builderGeneratorFn({ startTime,
     globals
   );
 
-  await Promise.all([writeFile(join(options.outputDir, 'index.html'), html), managerFiles]);
+  // A build into `public<basePath>` is served at the base path, so the root is known.
+  const root = options.buildToPublic && options.basePath ? `${options.basePath}/` : undefined;
+  await Promise.all([
+    writeFile(join(options.outputDir, 'index.html'), withRootPath(html, root)),
+    managerFiles,
+  ]);
 
   logger.trace({ message: 'Manager built', time: process.hrtime(startTime) });
 

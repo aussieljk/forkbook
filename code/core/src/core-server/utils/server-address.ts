@@ -1,7 +1,11 @@
 import net, { type AddressInfo } from 'node:net';
 import os from 'node:os';
 
-import { SERVER_CHANNEL_PATH } from '@aussieljk/forkbook/internal/channels';
+import {
+  getChannelPath,
+  joinBasePath,
+  normalizeBasePath,
+} from '@aussieljk/forkbook/internal/channels';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { NoFreePortError } from '@aussieljk/forkbook/internal/server-errors';
 
@@ -52,14 +56,19 @@ export function getServerAddresses(
  * Adds the `--initial-path` to a server address. `/story/<id>` and `/docs/<id>` are internal paths,
  * so they change to `/_story/<id>` and `/_docs/<id>`.
  */
-export function withInitialPath(address: string, initialPath?: string) {
-  if (!initialPath) {
+export function withInitialPath(address: string, initialPath?: string, basePath?: string) {
+  if (!initialPath && !basePath) {
     return address;
   }
   const url = new URL(address);
-  url.pathname = decodeURIComponent(
-    initialPath.startsWith('/') ? initialPath : `/${initialPath}`
-  ).replace(/^\/(story|docs)\//, '/_$1/');
+  if (initialPath) {
+    url.pathname = decodeURIComponent(
+      initialPath.startsWith('/') ? initialPath : `/${initialPath}`
+    ).replace(/^\/(story|docs)\//, '/_$1/');
+  }
+  if (basePath) {
+    url.pathname = joinBasePath(basePath, url.pathname);
+  }
   return url.href;
 }
 
@@ -88,8 +97,11 @@ export const getServerPort = (port?: number, { exactPort }: PortOptions = {}) =>
       return freePort;
     });
 
-export const getServerChannelUrl = (port: number, { https }: { https?: boolean }) => {
-  return `${https ? 'wss' : 'ws'}://127.0.0.1:${port}${SERVER_CHANNEL_PATH}`;
+export const getServerChannelUrl = (
+  port: number,
+  { https, basePath }: { https?: boolean; basePath?: string }
+) => {
+  return `${https ? 'wss' : 'ws'}://127.0.0.1:${port}${getChannelPath(normalizeBasePath(basePath))}`;
 };
 
 const getExternalIpv4Addresses = () =>
