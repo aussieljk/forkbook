@@ -165,3 +165,29 @@ export async function resolveNextConfig(
 ): Promise<NextConfigObject> {
   return typeof input === 'function' ? await input(phase, context) : input;
 }
+
+/**
+ * The public origin of the Next.js app, for example `https://app.localhost`: `FORKBOOK_PUBLIC_URL`,
+ * else `PORTLESS_URL`, else `http://localhost:<PORT or 3000>`. The child gets it as
+ * `FORKBOOK_PUBLIC_URL`, so builder-vite can point the HMR client at the app and not at the child.
+ */
+export function getPublicOrigin(env: Record<string, string | undefined> = process.env): string {
+  for (const value of [env.FORKBOOK_PUBLIC_URL, env.PORTLESS_URL]) {
+    if (value) {
+      try {
+        return new URL(value).origin;
+      } catch {
+        // Not a URL. Try the next one.
+      }
+    }
+  }
+  return `http://localhost:${env.PORT || 3000}`;
+}
+
+/** The URL of Forkbook in the app, for example `https://app.localhost/_forkbook`. */
+export function getForkbookPublicUrl(
+  basePath: string,
+  env: Record<string, string | undefined> = process.env
+): string {
+  return `${getPublicOrigin(env)}${normalizeNextBasePath(basePath)}`;
+}

@@ -17,10 +17,13 @@ import {
   type NextConfigObject,
   PHASE_DEVELOPMENT_SERVER,
   applyForkbookDevConfig,
+  getForkbookPublicUrl,
+  getPublicOrigin,
   normalizeNextBasePath,
   resolveNextConfig,
 } from './config.ts';
-import { type ForkbookServerHandle, ensureForkbookServer } from './server.ts';
+import { type ForkbookServerHandle, ensureForkbookServer, waitForPort } from './server.ts';
+import { forwardUpgrades } from './upgrade.ts';
 import {
   PREVIEW_ROUTE_SEGMENT,
   type PreviewRoute,
@@ -39,10 +42,14 @@ export {
   findFreePort,
   getForkbookDevArgs,
   getLockPath,
+  isLockStale,
+  isPortOpen,
   isProcessAlive,
   readLock,
   resolveForkbookBin,
+  waitForPort,
 } from './server.ts';
+export { forwardUpgrades, isUnderBasePath } from './upgrade.ts';
 export { DEFAULT_BASE_PATH };
 export type { PreviewAlias, PreviewRoute, PreviewRouteMocks } from '../builder-next/route.ts';
 
@@ -84,6 +91,11 @@ export interface WithForkbookOptions {
     config: NextConfigObject,
     context: ForkbookNextContext
   ) => NextConfigObject | Promise<NextConfigObject>;
+  /**
+   * When true (the default), WebSocket upgrades under `basePath` (Vite HMR, the Forkbook channel)
+   * go straight to the Forkbook server. See `./upgrade.ts`.
+   */
+  forwardWebSockets?: boolean;
   /** Replaces the start of the child. Tests use it. */
   spawnServer?: Parameters<typeof ensureForkbookServer>[0]['spawnServer'];
 }
@@ -97,6 +109,30 @@ export interface ForkbookNextContext {
   /** The preview route folders, when `enablePreviewRoute` is set. */
   previewRoute?: PreviewRoute;
   options: WithForkbookOptions;
+}
+
+/** The URLs that this process has logged. */
+const announced = new Set<string>();
+
+/** Logs `Forkbook: <url>` once per URL, when the port of the child answers. */
+function announceWhenReady(
+  port: number,
+  publicUrl: string,
+  child?: ForkbookServerHandle['child']
+): void {
+  if (announced.has(publicUrl)) {
+    return;
+  }
+  announced.add(publicUrl);
+  let exited = false;
+  child?.once('exit', () => {
+    exited = true;
+  });
+  void waitForPort(port, { stop: () => exited }).then((ready) => {
+    if (ready) {
+      console.log(`Forkbook: ${publicUrl}`);
+    }
+  });
 }
 
 let removeOnExit: PreviewRoute | undefined;
@@ -155,15 +191,22 @@ export function withForkbook(
         port: options.port,
         args: options.args,
         spawnServer: options.spawnServer,
-        env: previewRoute
-          ? {
-              ...process.env,
-              FORKBOOK_NEXT_PROJECT_DIR: process.cwd(),
-              FORKBOOK_NEXT_APP_DIR: previewRoute.appDir,
-            }
-          : undefined,
+        env: {
+          ...process.env,
+          FORKBOOK_PUBLIC_URL: getPublicOrigin(),
+          ...(previewRoute && {
+            FORKBOOK_NEXT_PROJECT_DIR: process.cwd(),
+            FORKBOOK_NEXT_APP_DIR: previewRoute.appDir,
+          }),
+        },
       });
       destination = server.origin;
+      if (!server.reused) {
+        announceWhenReady(server.port, getForkbookPublicUrl(basePath), server.child);
+      }
+    }
+    if (options.forwardWebSockets !== false) {
+      forwardUpgrades(basePath, Number(new URL(destination).port));
     }
 
     let devConfig = applyForkbookDevConfig(config, {

@@ -82,6 +82,11 @@ export interface ForkbookServerOptions {
   /** Starts the child. Tests replace it. Default: `node <forkbook bin> dev ...`. */
   spawnServer?: (args: string[], env: NodeJS.ProcessEnv, cwd: string) => ChildProcess;
   env?: NodeJS.ProcessEnv;
+  /**
+   * A locked child whose port does not answer this long after its start is stale. It is stopped
+   * and a new child starts. Default: 60 s.
+   */
+  startupGraceMs?: number;
 }
 
 export interface ForkbookServerHandle {
@@ -148,6 +153,56 @@ function installExitHook(lockPath: string) {
 
 const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
 
+/** True when something accepts TCP connections on `127.0.0.1:<port>`. */
+export function isPortOpen(port: number, timeoutMs = 500): Promise<boolean> {
+  return new Promise((done) => {
+    const socket = net.connect({ host: '127.0.0.1', port });
+    const finish = (open: boolean) => {
+      socket.destroy();
+      done(open);
+    };
+    socket.setTimeout(timeoutMs, () => finish(false));
+    socket.once('connect', () => finish(true));
+    socket.once('error', () => finish(false));
+  });
+}
+
+/** Waits until the port answers. Gives false after `timeoutMs`, or when `stop()` is true. */
+export async function waitForPort(
+  port: number,
+  {
+    timeoutMs = 120_000,
+    intervalMs = 250,
+    stop,
+  }: { timeoutMs?: number; intervalMs?: number; stop?: () => boolean } = {}
+): Promise<boolean> {
+  const end = Date.now() + timeoutMs;
+  while (Date.now() < end && !stop?.()) {
+    if (await isPortOpen(port)) {
+      return true;
+    }
+    await sleep(intervalMs);
+  }
+  return false;
+}
+
+/**
+ * True when the locked child cannot be used: its process is gone, or it is older than
+ * `startupGraceMs` and its port does not answer (for example a killed child whose pid is used
+ * again, or a child that hangs).
+ */
+export async function isLockStale(lock: ForkbookLock, startupGraceMs: number): Promise<boolean> {
+  if (!isProcessAlive(lock.pid)) {
+    return true;
+  }
+  if (await isPortOpen(lock.port)) {
+    return false;
+  }
+  const age = Date.now() - Date.parse(lock.startedAt);
+  // A new child (or one that is still starting) gets time to open its port.
+  return !(age < startupGraceMs);
+}
+
 /**
  * Starts Forkbook for `next dev`, or reuses the child in the lock file when it runs with the same
  * base path and config folder. The child gets `FORKBOOK_PARENT_PID`, so it stops when this
@@ -164,7 +219,8 @@ export async function ensureForkbookServer(
 
   for (let attempt = 0; attempt < 20; attempt++) {
     const lock = readLock(lockPath);
-    if (lock && isProcessAlive(lock.pid)) {
+    const stale = lock ? await isLockStale(lock, options.startupGraceMs ?? 60_000) : true;
+    if (lock && !stale) {
       if (lock.basePath === options.basePath && lock.configDir === configDir) {
         return {
           port: lock.port,
@@ -174,6 +230,13 @@ export async function ensureForkbookServer(
         };
       }
       // A child for other settings. Stop it and start a new one.
+      try {
+        process.kill(lock.pid, 'SIGTERM');
+      } catch {
+        // It stopped already.
+      }
+    } else if (lock && lock.pid !== process.pid && isProcessAlive(lock.pid)) {
+      // The process runs but its port does not answer. Stop it, so it does not take the port later.
       try {
         process.kill(lock.pid, 'SIGTERM');
       } catch {
