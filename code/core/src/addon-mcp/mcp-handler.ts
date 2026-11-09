@@ -17,6 +17,11 @@ import {
 import { buildServerInstructions } from '@aussieljk/forkbook/internal/skills';
 import type { CompositionAuth } from './auth/index.ts';
 import { DEFAULT_MCP_ENDPOINT } from './constants.ts';
+import {
+  type BasePathRequest,
+  getPublicOrigin,
+  isForwardedForOrigin,
+} from '../core-server/utils/base-path.ts';
 import { registerAddonMcpTools } from './tools/tool-registry.ts';
 
 let transport: HttpTransport<AddonContext> | undefined;
@@ -142,7 +147,7 @@ export const mcpServerHandler = async ({
     options,
     endpoint,
     toolsets: getToolsets(webRequest, addonOptions),
-    origin: origin!,
+    origin: getRequestOrigin(req, origin!),
     disableTelemetry: disableTelemetry!,
     a11yEnabled,
     request: webRequest,
@@ -163,7 +168,9 @@ export const mcpServerHandler = async ({
           status: 401,
           headers: {
             'Content-Type': 'text/plain',
-            'WWW-Authenticate': compositionAuth.buildWwwAuthenticate(origin!),
+            'WWW-Authenticate': compositionAuth.buildWwwAuthenticate(
+              getRequestOrigin(req, origin!)
+            ),
           },
         })
       : new Response(body, { status: response.status, headers: response.headers });
@@ -173,13 +180,28 @@ export const mcpServerHandler = async ({
 };
 
 /**
+ * The origin for absolute URLs in tool results and `WWW-Authenticate`. A local proxy (for example
+ * `next dev` through `withForkbook`) sends the site host in `x-forwarded-host`, so the links use
+ * the site host. Other requests keep the trusted origin of the dev server, because a client can
+ * set `Host` to any value.
+ */
+export function getRequestOrigin(req: IncomingMessage, trustedOrigin: string): string {
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const host = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost)
+    ?.split(',')[0]
+    ?.trim();
+  return host && isForwardedForOrigin(req, host) ? getPublicOrigin(req) : trustedOrigin;
+}
+
+/**
  * Converts a Node.js IncomingMessage to a Web Request.
  */
 export async function incomingMessageToWebRequest(req: IncomingMessage): Promise<Request> {
-  // Construct URL from request, using host header if available for accuracy
-  const host = req.headers.host || 'localhost';
-  const protocol = 'encrypted' in req.socket && req.socket.encrypted ? 'https' : 'http';
-  const url = new URL(req.url || '/', `${protocol}://${host}`);
+  // The URL that the browser sees: a proxy in front of Forkbook (for example `next dev` through a
+  // rewrite) sends the site host in `x-forwarded-host`. The base path mount removed the base from
+  // `req.url`, so it is added back.
+  const base = (req as BasePathRequest).forkbookBasePath ?? '';
+  const url = new URL(`${base}${req.url || '/'}`, getPublicOrigin(req));
 
   const bodyBuffer = await buffer(req);
 
