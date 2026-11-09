@@ -13,7 +13,8 @@
     "vite",
     "next",
     "next.js",
-    "react-native"
+    "react-native",
+    "tanstack-intent"
   ],
   "homepage": "https://forkbook.ljk.dev",
   "bugs": {
@@ -769,7 +770,8 @@
     "assets/**/*",
     "template/*/cli/**/*",
     "README.md",
-    "!src/**/*"
+    "!src/**/*",
+    "skills/**/*"
   ],
   "dependencies": {
     "@mdx-js/react": "^3.0.0",
