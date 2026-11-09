@@ -83,3 +83,11 @@ export const renderHTML = async (
  */
 export const withRouteDepth = (html: string, depth: number) =>
   html.replace('/*FORKBOOK_ROUTE_DEPTH*/ 0', `/*FORKBOOK_ROUTE_DEPTH*/ ${depth}`);
+
+/**
+ * Sets the Forkbook root URL path in the manager HTML, for example `/_forkbook/`. The page then
+ * uses it for its `<base>` element, so `/_forkbook` without a trailing slash also works. An empty
+ * root keeps the depth logic of {@link withRouteDepth}.
+ */
+export const withRootPath = (html: string, root: string | undefined) =>
+  root ? html.replace("/*FORKBOOK_ROOT*/ ''", `/*FORKBOOK_ROOT*/ ${JSON.stringify(root)}`) : html;

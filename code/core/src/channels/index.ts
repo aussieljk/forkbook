@@ -4,7 +4,8 @@ import { UniversalStore } from '../shared/universal-store/index.ts';
 import { Channel } from './main.ts';
 import { PostMessageTransport } from './postmessage/index.ts';
 import type { ChannelTransport, Config } from './types.ts';
-import { SERVER_CHANNEL_PATH, WebsocketTransport } from './websocket/index.ts';
+import { getChannelUrl, normalizeBasePath } from './base-path.ts';
+import { WebsocketTransport } from './websocket/index.ts';
 
 export * from './main.ts';
 export {
@@ -20,6 +21,16 @@ export default Channel;
 
 export { PostMessageTransport } from './postmessage/index.ts';
 export { WebsocketTransport, HEARTBEAT_INTERVAL, SERVER_CHANNEL_PATH } from './websocket/index.ts';
+export {
+  CHANNEL_PATH_SEGMENT,
+  DEFAULT_BASE_PATH,
+  getChannelPath,
+  getChannelUrl,
+  joinBasePath,
+  normalizeBasePath,
+  stripBasePath,
+} from './base-path.ts';
+export type { ChannelUrlOptions } from './base-path.ts';
 export type { ChannelWebSocket } from './websocket/index.ts';
 
 type Options = Config & {
@@ -39,11 +50,17 @@ export function createBrowserChannel({ page, extraTransports = [] }: Options): C
   const transports: ChannelTransport[] = [new PostMessageTransport({ page }), ...extraTransports];
 
   if (globalThis.CONFIG_TYPE === 'DEVELOPMENT') {
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const { hostname, port } = window.location;
+    const { wsToken, basePath } = globalThis.CHANNEL_OPTIONS || {};
+    // `location.host` is the host the browser sees, so a proxy (for example `next dev`) in front of
+    // Forkbook also gets the channel.
     const urlFor = (token: string | undefined) =>
-      `${protocol}://${hostname}:${port}${SERVER_CHANNEL_PATH}?token=${token}&page=${page}`;
-    const { wsToken } = globalThis.CHANNEL_OPTIONS || {};
+      getChannelUrl({
+        protocol: window.location.protocol,
+        host: window.location.host,
+        basePath: normalizeBasePath(basePath),
+        token: String(token),
+        page,
+      });
 
     transports.push(
       new WebsocketTransport({

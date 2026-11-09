@@ -10,7 +10,7 @@ import type { Options, Presets } from '@aussieljk/forkbook/internal/types';
 import { loadConfigFromFile } from 'vite';
 
 import { storybookConfigPlugin } from './plugins/storybook-config-plugin.ts';
-import { commonConfig, resolveVitePublicDir } from './vite-config.ts';
+import { commonConfig, getViteBase, resolveVitePublicDir } from './vite-config.ts';
 
 vi.mock('node:fs', { spy: true });
 vi.mock('vite', async (importOriginal) => ({
@@ -185,5 +185,20 @@ describe('resolveVitePublicDir', () => {
     mockUserConfig({});
 
     expect(await resolveVitePublicDir(options, 'build')).toBeUndefined();
+  });
+});
+
+describe('getViteBase', () => {
+  it('uses the base path in dev', () => {
+    expect(getViteBase({}, 'development')).toBe('/_forkbook/');
+    expect(getViteBase({ basePath: '/sb' }, 'development')).toBe('/sb/');
+    expect(getViteBase({ basePath: '' }, 'development')).toBe('/');
+  });
+
+  it('uses the base path for a build into public, else a relative base', () => {
+    expect(getViteBase({ basePath: '/_forkbook' }, 'build')).toBe('./');
+    expect(getViteBase({ basePath: '/_forkbook', buildToPublic: true }, 'build')).toBe(
+      '/_forkbook/'
+    );
   });
 });

@@ -25,8 +25,11 @@ export const buildFrameworkGlobalsFromOptions = async (options: Options) => {
   const renderer = frameworkToRenderer[framework];
 
   if (options.configType === 'DEVELOPMENT') {
-    // Manager only needs the token currently, so we don't pass any other channel options.
-    globals.CHANNEL_OPTIONS = { wsToken: channelOptions?.wsToken };
+    // The manager only needs the token and the base path, so other channel options stay out.
+    globals.CHANNEL_OPTIONS = {
+      wsToken: channelOptions?.wsToken,
+      basePath: channelOptions?.basePath,
+    };
   }
   globals.FORKBOOK_BUILDER = builder;
   globals.FORKBOOK_FRAMEWORK = framework;

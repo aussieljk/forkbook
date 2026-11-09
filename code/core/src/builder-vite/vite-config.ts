@@ -5,6 +5,7 @@ import {
   getBuilderOptions,
   resolvePathInStorybookCache,
 } from '@aussieljk/forkbook/internal/common';
+import { normalizeBasePath } from '@aussieljk/forkbook/internal/channels';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type {
@@ -72,6 +73,22 @@ export async function resolveVitePublicDir(
   return existsSync(resolved) ? resolved : undefined;
 }
 
+/**
+ * The Vite `base`. In dev it is the Forkbook base path (for example `/_forkbook/`), because the
+ * Forkbook server mounts the preview there. A static build into `public<basePath>` uses the base
+ * path too. Other static builds use `./`, so they work in any folder.
+ */
+export function getViteBase(
+  options: Pick<Options, 'basePath' | 'buildToPublic'>,
+  type: PluginConfigType
+): string {
+  const basePath = normalizeBasePath(options.basePath);
+  if (type === 'development') {
+    return `${basePath}/`;
+  }
+  return options.buildToPublic && basePath ? `${basePath}/` : './';
+}
+
 // Vite config that is common to development and production mode
 export async function commonConfig(
   options: Options,
@@ -98,8 +115,7 @@ export async function commonConfig(
     configFile: false,
     plugins: await pluginConfig(options),
     root: projectRoot,
-    // Allow storybook deployed as subfolder. See https://github.com/storybookjs/builder-vite/issues/238
-    base: './',
+    base: getViteBase(options, _type),
     ...(options.cacheKey
       ? { cacheDir: resolvePathInStorybookCache('fb-vite', options.cacheKey) }
       : {}),

@@ -89,11 +89,11 @@ describe('createNodeChannel', () => {
     expect(originHeaders).toEqual([undefined]);
   });
 
-  it('replaces the path and query of the given base url', async () => {
+  it('uses the path of the given url as the base path and replaces the query', async () => {
     openChannel(`${baseUrl}/some/base/path?existing=param`);
 
     await firstConnection();
-    expect(upgradeUrls).toEqual([`${SERVER_CHANNEL_PATH}?token=${TOKEN}`]);
+    expect(upgradeUrls).toEqual([`/some/base/path/fb-channel?token=${TOKEN}`]);
   });
 
   it('replies to a server ping with a pong', async () => {

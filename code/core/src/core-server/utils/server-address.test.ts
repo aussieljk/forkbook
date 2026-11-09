@@ -151,7 +151,7 @@ describe('getServerChannelUrl', () => {
   const port = 3000;
   it('should return WebSocket URL with HTTP', () => {
     const options = { https: false };
-    const expectedUrl = `ws://127.0.0.1:${port}/storybook-server-channel`;
+    const expectedUrl = `ws://127.0.0.1:${port}/_forkbook/fb-channel`;
 
     const result = getServerChannelUrl(port, options);
 
@@ -160,7 +160,7 @@ describe('getServerChannelUrl', () => {
 
   it('should return WebSocket URL with HTTPS', () => {
     const options = { https: true };
-    const expectedUrl = `wss://127.0.0.1:${port}/storybook-server-channel`;
+    const expectedUrl = `wss://127.0.0.1:${port}/_forkbook/fb-channel`;
 
     const result = getServerChannelUrl(port, options);
 

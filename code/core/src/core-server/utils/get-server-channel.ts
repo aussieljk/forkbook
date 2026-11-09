@@ -4,7 +4,8 @@ import type { ChannelHandler } from '@aussieljk/forkbook/internal/channels';
 import {
   Channel,
   HEARTBEAT_INTERVAL,
-  SERVER_CHANNEL_PATH,
+  getChannelPath,
+  normalizeBasePath,
   setChannel,
 } from '@aussieljk/forkbook/internal/channels';
 
@@ -16,6 +17,7 @@ import { logger } from '../../node-logger/index.ts';
 import { UniversalStore } from '../../shared/universal-store/index.ts';
 import { CORE_EVENT_SENDERS } from './event-senders.ts';
 import { type HostValidationOptions, isValidHost } from './getHostValidationMiddleware.ts';
+import { isForwardedForOrigin } from './base-path.ts';
 import { isValidToken } from './validate-token.ts';
 
 type Server = NonNullable<NonNullable<ConstructorParameters<typeof WebSocketServer>[0]>['server']>;
@@ -23,6 +25,8 @@ type Server = NonNullable<NonNullable<ConstructorParameters<typeof WebSocketServ
 type ServerChannelTransportOptions = HostValidationOptions & {
   skipValidation?: boolean;
   token: string;
+  /** The base path. The channel listens at `<basePath>/fb-channel`. Default: `/_forkbook`. */
+  basePath?: string;
 };
 
 // A browser client declares its role through the `page` query parameter on the channel URL.
@@ -54,11 +58,12 @@ export class ServerChannelTransport {
 
   constructor(server: Server, options: ServerChannelTransportOptions) {
     this.socket = new WebSocketServer({ noServer: true });
+    const channelPath = getChannelPath(normalizeBasePath(options.basePath));
 
     server.on('upgrade', (request: IncomingMessage, socket, head) => {
       try {
         const url = request.url && new URL(request.url, options.localAddress);
-        if (!url || url.pathname !== SERVER_CHANNEL_PATH) {
+        if (!url || url.pathname !== channelPath) {
           return;
         }
 
@@ -66,7 +71,14 @@ export class ServerChannelTransport {
           // Browsers always send Origin on upgrades, so an absent one means a non-browser client,
           // which the token alone authenticates.
           const { origin } = request.headers;
-          if (origin && !isValidHost(new URL(origin).host, options)) {
+          // A local proxy (for example `next dev`) sends the site host in `x-forwarded-host`. The
+          // origin of the page is then that site host.
+          const originHost = origin ? new URL(origin).host : undefined;
+          if (
+            originHost &&
+            !isValidHost(originHost, options) &&
+            !isForwardedForOrigin(request, originHost)
+          ) {
             socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n');
             return;
           }

@@ -34,6 +34,7 @@ import { copyAllStaticFilesRelativeToMain } from './utils/copy-all-static-files.
 import { getBuilders } from './utils/get-builders.ts';
 import { writeIndexJson } from './utils/index-json.ts';
 import { copyThumbnails } from './utils/thumbnails.ts';
+import { resolveBasePath } from './utils/base-path.ts';
 import { writeRoutePages } from './utils/write-route-pages.ts';
 import { writeManifests } from './utils/manifests/manifests.ts';
 import { outputStats } from './utils/output-stats.ts';
@@ -41,26 +42,66 @@ import { summarizeIndex } from './utils/summarizeIndex.ts';
 
 export type BuildStaticStandaloneOptions = CLIOptions &
   LoadOptions &
-  BuilderOptions & { outputDir: string };
+  BuilderOptions & { outputDir?: string };
+
+/** The default output folder of `forkbook build`. */
+export const DEFAULT_STATIC_OUTPUT_DIR = './forkbook-static';
+
+/**
+ * Gives the output folder of the static build. An explicit `outputDir` has priority. With
+ * `buildToPublic`, the build goes to `public<basePath>` (for example `public/_forkbook`).
+ */
+export function resolveStaticOutputDir({
+  outputDir,
+  buildToPublic,
+  basePath,
+}: {
+  outputDir?: string;
+  buildToPublic?: boolean;
+  basePath: string;
+}) {
+  if (outputDir) {
+    return outputDir;
+  }
+  if (buildToPublic) {
+    if (!basePath) {
+      // `public` itself would be removed before the build.
+      throw new Error('buildToPublic needs a base path other than "/".');
+    }
+    return join('public', basePath);
+  }
+  return DEFAULT_STATIC_OUTPUT_DIR;
+}
 
 export async function buildStaticStandalone(options: BuildStaticStandaloneOptions) {
   options.configType = 'PRODUCTION';
+  options.configDir = resolve(options.configDir);
 
-  if (options.outputDir === '') {
+  const config = await loadMainConfig(options);
+  // `core` can also be a function. Its settings then come from the CLI or the defaults.
+  const mainCore = typeof config.core === 'object' ? config.core : undefined;
+  options.basePath = resolveBasePath(options.basePath, mainCore?.basePath);
+  options.buildToPublic = options.buildToPublic ?? mainCore?.buildToPublic ?? false;
+  const outputDir = resolveStaticOutputDir({
+    outputDir: options.outputDir,
+    buildToPublic: options.buildToPublic,
+    basePath: options.basePath,
+  });
+
+  if (outputDir === '') {
     throw new Error("Won't remove current directory. Check your outputDir!");
   }
 
-  options.outputDir = resolve(options.outputDir);
-  options.configDir = resolve(options.configDir);
+  const outputDirPath = resolve(outputDir);
+  options.outputDir = outputDirPath;
 
-  logger.step(`Cleaning outputDir: ${picocolors.cyan(relative(process.cwd(), options.outputDir))}`);
-  if (options.outputDir === '/') {
+  logger.step(`Cleaning outputDir: ${picocolors.cyan(relative(process.cwd(), outputDirPath))}`);
+  if (outputDirPath === '/') {
     throw new Error("Won't remove directory '/'. Check your outputDir!");
   }
-  await rm(options.outputDir, { recursive: true, force: true }).catch(() => {});
-  await mkdir(options.outputDir, { recursive: true });
+  await rm(outputDirPath, { recursive: true, force: true }).catch(() => {});
+  await mkdir(outputDirPath, { recursive: true });
 
-  const config = await loadMainConfig(options);
   const { framework } = config;
   const corePresets = [];
 
@@ -149,13 +190,11 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
   }
 
   if (staticDirs) {
-    effects.push(
-      copyAllStaticFilesRelativeToMain(staticDirs, options.outputDir, options.configDir)
-    );
+    effects.push(copyAllStaticFilesRelativeToMain(staticDirs, outputDirPath, options.configDir));
   }
 
   const coreServerPublicDir = join(resolvePackageDir('@aussieljk/forkbook'), 'assets/browser');
-  effects.push(cp(coreServerPublicDir, options.outputDir, { recursive: true, force: true }));
+  effects.push(cp(coreServerPublicDir, outputDirPath, { recursive: true, force: true }));
 
   const hasRegisteredServices = getRegisteredServices().length > 0;
   const shouldWriteManifests = features?.componentsManifest;
@@ -165,13 +204,13 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
       (async () => {
         if (hasRegisteredServices) {
           logger.info('Building open services..');
-          await writeOpenServiceStaticFiles(options.outputDir);
+          await writeOpenServiceStaticFiles(outputDirPath);
         }
 
         if (shouldWriteManifests) {
           // Ref-based components.json reads docgen snapshots from outputDir/services/ — manifests
           // must run after open-service static files are written.
-          await writeManifests(options.outputDir, presets);
+          await writeManifests(outputDirPath, presets);
         }
       })()
     );
@@ -179,7 +218,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
 
   const storyIndexGeneratorPromise = presets.apply<StoryIndexGenerator>('storyIndexGenerator');
 
-  effects.push(writeIndexJson(join(options.outputDir, 'index.json'), storyIndexGeneratorPromise));
+  effects.push(writeIndexJson(join(outputDirPath, 'index.json'), storyIndexGeneratorPromise));
 
   if (!options.previewOnly) {
     // Each story URL gets its own copy of the manager page, so a static host serves deep links.
@@ -187,8 +226,8 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
       (async () => {
         const index = await (await storyIndexGeneratorPromise)?.getIndex();
         if (index) {
-          await writeRoutePages(options.outputDir, index);
-          await copyThumbnails(options.outputDir, index, process.cwd());
+          await writeRoutePages(outputDirPath, index);
+          await copyThumbnails(outputDirPath, index, process.cwd());
         }
       })()
     );
@@ -212,7 +251,7 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
 
         const statsOption = options.statsJson;
         if (statsOption) {
-          const target = statsOption === true ? options.outputDir : statsOption;
+          const target = statsOption === true ? outputDirPath : statsOption;
           await outputStats(target, previewStats || undefined);
         }
       })
@@ -237,5 +276,5 @@ export async function buildStaticStandalone(options: BuildStaticStandaloneOption
     }
   }
 
-  logger.step(`Output directory: ${options.outputDir}`);
+  logger.step(`Output directory: ${outputDirPath}`);
 }

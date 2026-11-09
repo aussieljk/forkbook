@@ -1,3 +1,5 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
+
 import { logConfig, normalizeStories } from '@aussieljk/forkbook/internal/common';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import { MissingBuilderError } from '@aussieljk/forkbook/internal/server-errors';
@@ -19,6 +21,8 @@ import { getManagerBuilder, getPreviewBuilder } from './utils/get-builders.ts';
 import { getCachingMiddleware } from './utils/get-caching-middleware.ts';
 import { getAccessControlMiddleware } from './utils/getAccessControlMiddleware.ts';
 import { getHostValidationMiddleware } from './utils/getHostValidationMiddleware.ts';
+import { normalizeBasePath } from '../channels/base-path.ts';
+import { createBasePathMount } from './utils/base-path.ts';
 import { registerIndexJsonRoute } from './utils/index-json.ts';
 import { registerThumbnailRoute } from './utils/thumbnails.ts';
 import { registerManifests } from './utils/manifests/manifests.ts';
@@ -38,6 +42,17 @@ export async function storybookDevServer(
   const security = await options.presets.apply<SecurityConfig | undefined>('security');
 
   const app = polka({ server });
+  // Mount every route under the base path once, before polka reads the URL.
+  const basePath = normalizeBasePath(options.basePath);
+  const mountBasePath = createBasePathMount(basePath);
+  // `attach` is the request listener that polka adds to the server in `listen()`.
+  type RequestListener = (req: IncomingMessage, res: ServerResponse) => void;
+  const handle = app.handler as unknown as RequestListener;
+  (app as unknown as { attach: RequestListener }).attach = (req, res) => {
+    if (!mountBasePath(req, res)) {
+      setImmediate(handle, req, res);
+    }
+  };
 
   const workingDir = process.cwd();
   const configDir = options.configDir;
@@ -200,8 +215,8 @@ export async function storybookDevServer(
         options.host && options.host !== '0.0.0.0' ? options.networkAddress : options.localAddress;
       openInBrowser(
         options.previewOnly
-          ? `${url}iframe.html?navigator=true`
-          : withInitialPath(url!, options.initialPath)
+          ? `${withInitialPath(url!, '/iframe.html', basePath)}?navigator=true`
+          : withInitialPath(url!, options.initialPath, basePath)
       ).catch(() => {
         // the browser window could not be opened, this is non-critical, we just ignore the error
       });

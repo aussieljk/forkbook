@@ -122,6 +122,7 @@ command('dev')
     'URL path to be appended when visiting Forkbook for the first time'
   )
   .option('--preview-only', 'Use the preview without the manager UI')
+  .option('--base-path <path>', 'URL path to mount Forkbook under (default: /_forkbook)')
   .action(async (options) => {
     const { default: packageJson } = await import('@aussieljk/forkbook/package.json', {
       with: { type: 'json' },
@@ -151,6 +152,8 @@ command('build')
   .option('--docs', 'Build a documentation-only site using addon-docs')
   .option('--test', 'Build stories optimized for testing purposes.')
   .option('--preview-only', 'Use the preview without the manager UI')
+  .option('--base-path <path>', 'URL path the build is served under (default: /_forkbook)')
+  .option('--build-to-public', 'Write the build to public/<base path> (when no --output-dir)')
   .action(async (options) => {
     const { env } = process;
     env.NODE_ENV = env.NODE_ENV || 'production';
