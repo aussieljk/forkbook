@@ -96,6 +96,7 @@ describe.skipIf(!enabled)('builder-next with next dev (Next.js 16)', () => {
           type: 'module',
           dependencies: {
             '@aussieljk/forkbook': `file:${join(appDir, tarball.replace(/^.*[\\/]/, ''))}`,
+            'fixture-greeting': 'file:./fixture-greeting',
             next: NEXT_VERSION,
             react: reactVersion,
             'react-dom': reactVersion,
@@ -139,7 +140,11 @@ describe.skipIf(!enabled)('builder-next with next dev (Next.js 16)', () => {
 
   it('keeps the real app, writes the route and hides it from git', async () => {
     const home = await fetch(`${origin}/`);
-    expect(await home.text()).toContain('The real app');
+    const html = await home.text();
+    expect(html).toContain('The real app');
+    // The app uses the same Button as the story, but the story mock does not leak into the app.
+    expect(html).toContain('Real greeting');
+    expect(html).not.toContain('Mock greeting');
     expect(existsSync(join(appDir, 'app', '(forkbook)', '%5Fforkbook', 'iframe', 'page.tsx'))).toBe(
       true
     );
@@ -159,6 +164,8 @@ describe.skipIf(!enabled)('builder-next with next dev (Next.js 16)', () => {
       const label = frame.locator('[data-testid=label]');
       await label.waitFor({ timeout: 180_000 });
       expect(await label.textContent()).toBe('Hello from Next');
+      // previewMocks replace the module in the story graph only.
+      expect(await frame.locator('[data-testid=greeting]').textContent()).toBe('Mock greeting');
 
       const preview = page.frames().find((f) => f.url().includes('/_forkbook/iframe?'))!;
       expect(preview, 'the preview iframe is served by Next.js at <base>/iframe').toBeTruthy();

@@ -364,10 +364,13 @@ describe('withForkbook', () => {
       source: '/_forkbook/:path((?!(?:iframe)(?:/|$)).*)',
       destination: 'http://127.0.0.1:6201/_forkbook/:path',
     });
-    expect(config.turbopack).toEqual({
-      root: cwd,
-      resolveAlias: { 'node:fs': { browser: '../mocks/fs.ts' } },
-    });
+    // The mocks apply only to the story graph, through a loader rule, not a global alias.
+    const turbopack = config.turbopack as { root: string; resolveAlias?: unknown; rules: object };
+    expect(turbopack.root).toBe(cwd);
+    expect(turbopack.resolveAlias).toBeUndefined();
+    expect(JSON.stringify(turbopack.rules['*.tsx' as keyof object])).toContain(
+      'preview-mocks-loader.cjs'
+    );
   });
 
   it('can point at a Forkbook that runs on its own', async () => {

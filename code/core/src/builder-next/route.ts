@@ -71,6 +71,33 @@ export function toImportSpecifier(fromDir: string, target: string): string {
   return path.startsWith('.') ? path : `./${path}`;
 }
 
+/**
+ * The query that marks a module of the story graph: `./Button.stories.tsx?forkbook`. Turbopack
+ * keeps a module with a query apart from the same file with no query, so the story graph gets its
+ * own copies of the app modules. The preview mocks loader runs only on modules with this query
+ * (see `applyPreviewRouteMocks`), so the pages of the app keep the real modules.
+ */
+export const PREVIEW_GRAPH_QUERY = 'forkbook';
+
+/** Matches a query string that has the story graph marker. */
+export const PREVIEW_GRAPH_QUERY_PATTERN = /[?&]forkbook(?=&|$)/;
+
+/**
+ * Adds the story graph query to a relative or absolute specifier of a local file. Package
+ * specifiers and files in `node_modules` keep one copy, so React and Forkbook stay single.
+ */
+export function tagPreviewImport(specifier: string): string {
+  if (!/^(?:\.{1,2}\/|\/)/.test(specifier) || /[\\/]node_modules[\\/]/.test(specifier)) {
+    return specifier;
+  }
+  if (specifier.includes('?')) {
+    return PREVIEW_GRAPH_QUERY_PATTERN.test(specifier)
+      ? specifier
+      : `${specifier}&${PREVIEW_GRAPH_QUERY}`;
+  }
+  return `${specifier}?${PREVIEW_GRAPH_QUERY}`;
+}
+
 /** The part of a story index entry that the loader needs. */
 export interface StoryLoaderEntry {
   importPath: string;
@@ -99,7 +126,7 @@ export function generateStoryLoaderCode(
   const lines = getStoryImportPaths(entries).map((importPath) => {
     const specifier = importPath.startsWith('virtual:')
       ? importPath
-      : toImportSpecifier(routeDir, resolve(workingDir, importPath));
+      : tagPreviewImport(toImportSpecifier(routeDir, resolve(workingDir, importPath)));
     return `  ${JSON.stringify(importPath)}: () => import(${JSON.stringify(specifier)}),`;
   });
   return `${GENERATED_HEADER}
@@ -123,7 +150,9 @@ export async function importFn(path) {
  * preview (`definePreview`) gives `default.composed`, which is used as it is.
  */
 export function generateAnnotationsCode(annotationPaths: string[], routeDir: string): string {
-  const specifiers = annotationPaths.map((path) => toImportSpecifier(routeDir, path));
+  const specifiers = annotationPaths.map((path) =>
+    tagPreviewImport(toImportSpecifier(routeDir, path))
+  );
   const imports = specifiers.map(
     (specifier, index) => `import * as annotations${index} from ${JSON.stringify(specifier)};`
   );
@@ -383,41 +412,201 @@ export function ignoreInGit(groupDir: string): boolean {
 
 /** The part of a Next.js config that `applyPreviewRouteMocks` changes. */
 export interface TurbopackConfigLike {
-  turbopack?: { resolveAlias?: Record<string, unknown>; [key: string]: unknown };
+  turbopack?: {
+    resolveAlias?: Record<string, unknown>;
+    rules?: Record<string, unknown>;
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
 }
 
 /**
- * A `turbopack.resolveAlias` value: a module, or modules for each condition. Use
- * `{ browser: '…' }` to change only the browser graph, so the server code of the app keeps the
- * real module (for example `node:fs`).
+ * A mock for a module specifier: a module, or modules for each condition. `browser` is used in
+ * the browser graph of the preview, and `node` (or `default`) on the server. With only
+ * `{ browser: '…' }`, the server code keeps the real module (for example `node:fs`).
  */
 export type PreviewAlias = string | Record<string, string>;
 
 export interface PreviewRouteMocks {
+  /**
+   * Module specifiers to replace in the story graph only: the story files, the preview files and
+   * the local modules that they import. The pages of the app keep the real modules.
+   */
   resolveAlias?: Record<string, PreviewAlias>;
 }
 
-/**
- * Turbopack did not apply alias targets with an absolute path in the spike (Next.js 16.4.5). A
- * path relative to the Next.js project folder works, so absolute paths are made relative.
- */
-export function toProjectRelativeAlias(alias: PreviewAlias, projectDir: string): PreviewAlias {
-  if (typeof alias === 'string') {
-    return isAbsolute(alias) ? toImportSpecifier(projectDir, alias) : alias;
-  }
-  return Object.fromEntries(
-    Object.entries(alias).map(([condition, target]) => [
-      condition,
-      toProjectRelativeAlias(target, projectDir) as string,
-    ])
-  );
+/** The file name of the generated Turbopack loader, in `<project>/node_modules/.cache/forkbook`. */
+export const PREVIEW_MOCKS_LOADER_FILE = 'preview-mocks-loader.cjs';
+
+/** The file types that the mocks loader changes. */
+export const PREVIEW_MOCKS_RULE_GLOBS = [
+  '*.js',
+  '*.jsx',
+  '*.mjs',
+  '*.cjs',
+  '*.ts',
+  '*.tsx',
+  '*.mts',
+  '*.cts',
+];
+
+/** Specifier prefixes of local files that are not relative paths. */
+const DEFAULT_LOCAL_PREFIXES = ['@/', '~/', '#'];
+
+/** The options that the mocks loader gets. Turbopack needs JSON values here. */
+export interface PreviewMocksLoaderOptions {
+  /** Specifier to the mock: an absolute path or a package name. */
+  aliases: Record<string, string>;
+  /** Specifier prefixes of local files (tsconfig `paths`). They get the story graph query. */
+  localPrefixes: string[];
 }
 
 /**
- * The seam for `next/*` mocks done with module aliases (phase 3, approach A). It adds the aliases
- * to `turbopack.resolveAlias`. Aliases of the app win over Forkbook aliases. The input is not
- * changed.
+ * The Turbopack loader (webpack loader API). It runs only on local modules with the story graph
+ * query. It replaces each mocked specifier with a path to the mock, and adds the query to each
+ * import of a local module, so the query goes down the graph. A mock file has no query, so a mock
+ * can import the real module. It is plain CommonJS with no packages, for the loader runner of
+ * Next.js.
+ */
+export const PREVIEW_MOCKS_LOADER_CODE = String.raw`'use strict';
+// Generated by Forkbook (builder-next). Do not edit.
+const path = require('node:path');
+
+const QUERY = /[?&]forkbook(?=&|$)/;
+const IMPORT = /(\bfrom\s*|\bimport\s*\(\s*|\bimport\s*|\brequire\s*\(\s*)(['"])([^'"\r\n]+)\2/g;
+
+function isCode(specifier) {
+  const bare = specifier.replace(/\?.*$/, '');
+  return !/\.[a-z0-9]+$/i.test(bare) || /\.[cm]?[jt]sx?$/i.test(bare);
+}
+
+function tag(specifier) {
+  if (QUERY.test(specifier)) return specifier;
+  return specifier + (specifier.includes('?') ? '&' : '?') + 'forkbook';
+}
+
+function isLocal(specifier, localPrefixes) {
+  return (
+    /^\.{1,2}\//.test(specifier) ||
+    specifier.startsWith('/') ||
+    localPrefixes.some((prefix) => specifier === prefix || specifier.startsWith(prefix))
+  );
+}
+
+function rewriteImports(source, options, resourcePath) {
+  const aliases = options.aliases || {};
+  const localPrefixes = options.localPrefixes || [];
+  const dir = path.dirname(resourcePath);
+  return source.replace(IMPORT, (match, before, quote, specifier) => {
+    let next = specifier;
+    if (Object.prototype.hasOwnProperty.call(aliases, specifier)) {
+      next = aliases[specifier];
+      if (path.isAbsolute(next)) {
+        next = path.relative(dir, next).split(path.sep).join('/');
+        if (!next.startsWith('.')) next = './' + next;
+      }
+    } else if (
+      !/[\\/]node_modules[\\/]/.test(specifier) &&
+      isCode(specifier) &&
+      isLocal(specifier, localPrefixes)
+    ) {
+      next = tag(specifier);
+    }
+    return next === specifier ? match : before + quote + next + quote;
+  });
+}
+
+module.exports = function forkbookPreviewMocksLoader(source) {
+  const options = (this.getOptions ? this.getOptions() : this.query) || {};
+  return rewriteImports(String(source), options, this.resourcePath);
+};
+module.exports.rewriteImports = rewriteImports;
+`;
+
+/**
+ * Reads the local specifier prefixes from `compilerOptions.paths` of `tsconfig.json` or
+ * `jsconfig.json` (`@/*` gives `@/`), and adds `@/`, `~/` and `#`.
+ */
+export function getLocalPrefixes(projectDir: string): string[] {
+  const prefixes = new Set(DEFAULT_LOCAL_PREFIXES);
+  for (const name of ['tsconfig.json', 'jsconfig.json']) {
+    const file = join(projectDir, name);
+    if (!existsSync(file)) {
+      continue;
+    }
+    try {
+      const text = readFileSync(file, 'utf8')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/^\s*\/\/.*$/gm, '')
+        .replace(/,(\s*[}\]])/g, '$1');
+      const paths: Record<string, unknown> = JSON.parse(text)?.compilerOptions?.paths ?? {};
+      for (const key of Object.keys(paths)) {
+        const prefix = key.replace(/\*.*$/, '');
+        if (prefix) {
+          prefixes.add(prefix);
+        }
+      }
+    } catch {
+      // The file is not plain JSON. Keep the default prefixes.
+    }
+  }
+  return [...prefixes];
+}
+
+/** The mock for one environment: `browser`, or `node` / `default` for the server. */
+function pickAlias(alias: PreviewAlias, browser: boolean): string | undefined {
+  if (typeof alias === 'string') {
+    return alias;
+  }
+  return browser ? (alias.browser ?? alias.default) : (alias.node ?? alias.default);
+}
+
+/** The loader options for one environment. Paths are made absolute from the project folder. */
+export function getPreviewMocksLoaderOptions(
+  resolveAlias: Record<string, PreviewAlias>,
+  { browser, projectDir }: { browser: boolean; projectDir: string }
+): PreviewMocksLoaderOptions {
+  const aliases: Record<string, string> = {};
+  for (const [name, alias] of Object.entries(resolveAlias)) {
+    const target = pickAlias(alias, browser);
+    if (target) {
+      aliases[name] =
+        isAbsolute(target) || /^\.{1,2}[\\/]/.test(target) ? resolve(projectDir, target) : target;
+    }
+  }
+  return { aliases, localPrefixes: getLocalPrefixes(projectDir) };
+}
+
+/** Writes the loader file and gives its absolute path. */
+export function writePreviewMocksLoader(projectDir: string): string {
+  const file = join(projectDir, 'node_modules', '.cache', 'forkbook', PREVIEW_MOCKS_LOADER_FILE);
+  writeIfChanged(file, PREVIEW_MOCKS_LOADER_CODE);
+  return file;
+}
+
+/** The rules of a `turbopack.rules` value, as a list. */
+function toRuleList(value: unknown): unknown[] {
+  if (value === undefined) {
+    return [];
+  }
+  if (Array.isArray(value)) {
+    const isRuleList = value.every(
+      (item) => item && typeof item === 'object' && ('loaders' in item || 'condition' in item)
+    );
+    return isRuleList ? value : [{ loaders: value }];
+  }
+  return [value];
+}
+
+/**
+ * Scopes the mocks to the story graph of the preview route (phase 3, approach A).
+ *
+ * Turbopack `resolveAlias` is global. A mock there replaces the module for every page of the app
+ * and for each package that imports it, so Forkbook does not use it. The generated story loader
+ * and annotations modules import local files with the `?forkbook` query (`tagPreviewImport`), and
+ * Turbopack keeps those modules apart from the modules of the app. A `turbopack.rules` loader with
+ * a `{ query }` condition runs only on them. It replaces the mocked specifiers and adds the query
+ * to each local import. The rules of the app run first. The input is not changed.
  */
 export function applyPreviewRouteMocks<T extends TurbopackConfigLike>(
   config: T,
@@ -427,17 +616,23 @@ export function applyPreviewRouteMocks<T extends TurbopackConfigLike>(
   if (Object.keys(resolveAlias).length === 0) {
     return config;
   }
-  const aliases = Object.fromEntries(
-    Object.entries(resolveAlias).map(([name, alias]) => [
-      name,
-      toProjectRelativeAlias(alias, projectDir),
-    ])
-  );
-  return {
-    ...config,
-    turbopack: {
-      ...config.turbopack,
-      resolveAlias: { ...aliases, ...config.turbopack?.resolveAlias },
+  const loader = writePreviewMocksLoader(projectDir);
+  const rule = (browser: boolean) => ({
+    condition: {
+      all: [
+        { not: 'foreign' },
+        { query: PREVIEW_GRAPH_QUERY_PATTERN },
+        browser ? 'browser' : { not: 'browser' },
+      ],
     },
-  };
+    loaders: [
+      { loader, options: getPreviewMocksLoaderOptions(resolveAlias, { browser, projectDir }) },
+    ],
+  });
+  const forkbookRules = [rule(true), rule(false)];
+  const rules: Record<string, unknown> = { ...config.turbopack?.rules };
+  for (const glob of PREVIEW_MOCKS_RULE_GLOBS) {
+    rules[glob] = [...toRuleList(rules[glob]), ...forkbookRules];
+  }
+  return { ...config, turbopack: { ...config.turbopack, rules } };
 }
