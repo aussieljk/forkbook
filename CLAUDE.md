@@ -19,7 +19,7 @@ Run these from the repo root.
 | `bun run test:ui` | Only the browser project (`forkbook-ui`, Playwright Chromium). | about 1 min |
 | `bun x vitest run --project core path/to/file.test.ts` | One test file. | |
 | `bun run merge-agent <branch>` | Merges an agent branch into master, fixes a `bun.lock` conflict, and removes the worktree and the branch. A fast-forward to a tree that passed verify skips verify. Other merges run `verify --changed=<old master>`. | seconds to 1 min |
-| `bun run browsers` | Installs the Playwright browsers (`pw-browsers`). | |
+| `bun run browsers` | Installs the Playwright browsers (Playwright CLI under the Bun runtime). | |
 | `bun x oxfmt <files>` | Formats files. | |
 
 While you work, use `verify --changed` or one test file. Run the full `bun run verify` once at the end.
@@ -59,7 +59,7 @@ Data goes to `https://signoz.ljk.dev` when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 
 - Some browser stories (Tabs, Popover, Modal) can fail once under full-suite load and pass alone. Run the one story file again before you change code.
 - The browser tests use the built `dist` files, not the source. Build first. The build removes `node_modules/.cache/storybook`, because Vite does not see a new build in its pre-bundle cache.
-- Do not run `playwright install`. Under Node 26 it can hang. Use `pw-browsers` (`bun run browsers`).
+- Do not run `playwright install`. Under Node 26 it can hang. Use `bun run browsers`, which runs it under Bun.
 - `code/tsconfig.json` must keep `"jsx": "react-jsx"`. Vite 8 follows it, and `preserve` breaks every JSX test.
 - `memfs` is pinned to 4.56.11. Later versions resolve relative paths from `/`, not from the current folder, which breaks many tests.
 - oxfmt finds its config by walking up from the file. In this repo it finds the root `.oxfmtrc.json`, so tests that format files see this config.

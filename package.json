@@ -11,7 +11,7 @@
     ]
   },
   "scripts": {
-    "browsers": "pw-browsers",
+    "browsers": "bun --bun node_modules/playwright/cli.js install chromium-headless-shell",
     "build": "bun --cwd=scripts ./build-package.ts --all --no-watch --prod",
     "build:changed": "bun --cwd=scripts ./build-package.ts --changed --no-watch --prod",
     "fmt:check": "oxfmt --check .",
