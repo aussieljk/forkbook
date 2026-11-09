@@ -53,7 +53,7 @@ describe('createStoryLoaderWriter', () => {
     expect(writer.writeStories(index as never)).toBe(true);
     expect(writer.writeStories(index as never)).toBe(false);
     const text = readFileSync(join(writer.route.routeDir, PREVIEW_ROUTE_FILES.stories), 'utf8');
-    expect(text).toContain('import("../../../../src/a.stories.tsx")');
+    expect(text).toContain('import("../../../../src/a.stories.tsx?forkbook")');
   });
 });
 

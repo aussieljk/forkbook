@@ -50,9 +50,9 @@ export const BUILDER_NEXT_ENV = {
 
 /**
  * The seam for `next/*` mocks (phase 3). A mocks approach adds preview annotation files (for
- * example a decorator that wraps each story in Next.js context providers). Module aliases go in
- * `turbopack.resolveAlias` on the Next.js side (see `getPreviewRouteNextConfig` in
- * `@aussieljk/forkbook/next`).
+ * example a decorator that wraps each story in Next.js context providers). Module mocks are set
+ * on the Next.js side (`previewMocks` of `withForkbook`). `applyPreviewRouteMocks` scopes them to
+ * the story graph with a `turbopack.rules` loader, not the global `turbopack.resolveAlias`.
  */
 export interface BuilderNextMocks {
   /** Absolute paths or package names, added after the framework annotations. */

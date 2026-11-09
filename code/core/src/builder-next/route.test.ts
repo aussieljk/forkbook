@@ -1,12 +1,16 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import {
   PREVIEW_ROUTE_FILES,
+  PREVIEW_MOCKS_LOADER_CODE,
   applyPreviewRouteMocks,
+  getLocalPrefixes,
+  tagPreviewImport,
   findAppDir,
   generateAnnotationsCode,
   generateStoryLoaderCode,
@@ -69,8 +73,12 @@ describe('generateStoryLoaderCode', () => {
       workingDir: '/repo',
       routeDir: '/repo/app/(forkbook)/%5Fforkbook/iframe',
     });
-    expect(code).toContain(`"./src/A.stories.tsx": () => import("../../../../src/A.stories.tsx"),`);
-    expect(code).toContain(`"./src/B.stories.tsx": () => import("../../../../src/B.stories.tsx"),`);
+    expect(code).toContain(
+      `"./src/A.stories.tsx": () => import("../../../../src/A.stories.tsx?forkbook"),`
+    );
+    expect(code).toContain(
+      `"./src/B.stories.tsx": () => import("../../../../src/B.stories.tsx?forkbook"),`
+    );
     expect(code).toContain(`"virtual:some-stories": () => import("virtual:some-stories"),`);
     expect(code.match(/A\.stories/g)).toHaveLength(2);
     expect(code).toContain('export async function importFn(path)');
@@ -111,7 +119,9 @@ describe('generateAnnotationsCode', () => {
     expect(code).toContain(
       `import * as annotations0 from "@aussieljk/forkbook/react/entry-preview";`
     );
-    expect(code).toContain(`import * as annotations1 from "../../../../.forkbook/preview.tsx";`);
+    expect(code).toContain(
+      `import * as annotations1 from "../../../../.forkbook/preview.tsx?forkbook";`
+    );
     expect(code).toContain('const modules = [annotations0, annotations1];');
   });
 });
@@ -197,24 +207,170 @@ describe('ignoreInGit', () => {
   });
 });
 
+describe('tagPreviewImport', () => {
+  it('tags local files and leaves packages and node_modules as they are', () => {
+    expect(tagPreviewImport('../src/Button.stories.tsx')).toBe(
+      '../src/Button.stories.tsx?forkbook'
+    );
+    expect(tagPreviewImport('./a.ts?raw')).toBe('./a.ts?raw&forkbook');
+    expect(tagPreviewImport('./a.ts?forkbook')).toBe('./a.ts?forkbook');
+    expect(tagPreviewImport('@aussieljk/forkbook/react/preview')).toBe(
+      '@aussieljk/forkbook/react/preview'
+    );
+    expect(tagPreviewImport('../../node_modules/x/preview.js')).toBe(
+      '../../node_modules/x/preview.js'
+    );
+  });
+
+  it('tags the story and preview imports of the generated modules', () => {
+    const routeDir = join(dir, 'app', '(forkbook)', 'iframe');
+    expect(
+      generateStoryLoaderCode(
+        { a: { importPath: './src/A.stories.tsx' } },
+        { workingDir: dir, routeDir }
+      )
+    ).toContain('import("../../../src/A.stories.tsx?forkbook")');
+    const annotations = generateAnnotationsCode(
+      ['@aussieljk/forkbook/react/preview', join(dir, '.forkbook', 'preview.tsx')],
+      routeDir
+    );
+    expect(annotations).toContain('from "@aussieljk/forkbook/react/preview";');
+    expect(annotations).toContain('from "../../../.forkbook/preview.tsx?forkbook";');
+  });
+});
+
+/** Loads the generated loader as a CommonJS module. */
+function loadMocksLoader() {
+  const file = join(dir, 'loader.cjs');
+  writeFileSync(file, PREVIEW_MOCKS_LOADER_CODE);
+  return createRequire(import.meta.url)(file) as ((
+    this: { getOptions(): unknown; resourcePath: string },
+    source: string
+  ) => string) & {
+    rewriteImports(source: string, options: unknown, resourcePath: string): string;
+  };
+}
+
+describe('preview mocks loader', () => {
+  const options = {
+    aliases: { 'convex/react': '/p/web/mocks/convex-react.ts', 'node:fs': 'memfs' },
+    localPrefixes: ['@/', '~/', '#'],
+  };
+
+  it('replaces the mocked imports and tags the local imports of a story graph module', () => {
+    const loader = loadMocksLoader();
+    const source = [
+      `import { useQuery } from 'convex/react';`,
+      `import * as fs from "node:fs";`,
+      `import { Button } from './Button';`,
+      `import { cn } from '@/lib/utils';`,
+      `import './styles.css';`,
+      `import logo from './logo.svg';`,
+      `import React from 'react';`,
+      `export * from '../shared';`,
+      `const lazy = () => import('./Lazy.tsx');`,
+      `const { a } = require("convex/react");`,
+    ].join('\n');
+    const result = loader.call(
+      { getOptions: () => options, resourcePath: '/p/web/src/components/Button.stories.tsx' },
+      source
+    );
+    expect(result.split('\n')).toEqual([
+      `import { useQuery } from '../../mocks/convex-react.ts';`,
+      `import * as fs from "memfs";`,
+      `import { Button } from './Button?forkbook';`,
+      `import { cn } from '@/lib/utils?forkbook';`,
+      `import './styles.css';`,
+      `import logo from './logo.svg';`,
+      `import React from 'react';`,
+      `export * from '../shared?forkbook';`,
+      `const lazy = () => import('./Lazy.tsx?forkbook');`,
+      `const { a } = require("../../mocks/convex-react.ts");`,
+    ]);
+  });
+
+  it('leaves a module with no mocked or local imports as it is', () => {
+    const { rewriteImports } = loadMocksLoader();
+    const source = `import { useQuery } from 'convex/react';\n`;
+    expect(rewriteImports(source, { aliases: {}, localPrefixes: [] }, '/p/a.ts')).toBe(source);
+  });
+});
+
+describe('getLocalPrefixes', () => {
+  it('reads tsconfig paths with comments', () => {
+    writeFileSync(
+      join(dir, 'tsconfig.json'),
+      `{\n  // paths\n  "compilerOptions": { "paths": { "@app/*": ["./src/*"], "lib": ["./lib"], }, },\n}\n`
+    );
+    expect(getLocalPrefixes(dir)).toEqual(['@/', '~/', '#', '@app/', 'lib']);
+  });
+});
+
 describe('applyPreviewRouteMocks', () => {
-  it('adds aliases, keeps the aliases of the app and makes absolute paths relative', () => {
-    const config = { turbopack: { root: '/r', resolveAlias: { 'next/link': './app-link.ts' } } };
+  it('scopes the mocks to the story graph with query rules, not the global resolveAlias', () => {
+    const config = {
+      turbopack: {
+        root: '/r',
+        resolveAlias: { 'next/link': './app-link.ts' },
+        rules: { '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' }, '*.tsx': { loaders: ['x'] } },
+      },
+    };
     const result = applyPreviewRouteMocks(
       config,
       {
         resolveAlias: {
-          'next/link': '/p/mocks/link.ts',
-          'node:fs': { browser: '/p/mocks/fs.ts' },
+          'convex/react': join(dir, 'mocks', 'convex-react.ts'),
+          'node:fs': { browser: './mocks/fs.ts' },
         },
       },
-      '/p/web'
+      dir
     );
-    expect(result.turbopack).toEqual({
-      root: '/r',
-      resolveAlias: { 'next/link': './app-link.ts', 'node:fs': { browser: '../mocks/fs.ts' } },
+    const turbopack = result.turbopack as { resolveAlias: unknown; rules: Record<string, any> };
+    // The global alias map keeps only the aliases of the app, so the app pages keep the real modules.
+    expect(turbopack.resolveAlias).toEqual({ 'next/link': './app-link.ts' });
+    expect(turbopack.rules['*.svg']).toEqual({ loaders: ['@svgr/webpack'], as: '*.js' });
+    const tsx = turbopack.rules['*.tsx'];
+    expect(tsx).toHaveLength(3);
+    expect(tsx[0]).toEqual({ loaders: ['x'] });
+    const [browser, server] = tsx.slice(1);
+    expect(browser.condition.all).toEqual([
+      { not: 'foreign' },
+      { query: /[?&]forkbook(?=&|$)/ },
+      'browser',
+    ]);
+    expect(server.condition.all[2]).toEqual({ not: 'browser' });
+    const loader = join(dir, 'node_modules', '.cache', 'forkbook', 'preview-mocks-loader.cjs');
+    expect(browser.loaders[0].loader).toBe(loader);
+    expect(readFileSync(loader, 'utf8')).toBe(PREVIEW_MOCKS_LOADER_CODE);
+    expect(browser.loaders[0].options.aliases).toEqual({
+      'convex/react': join(dir, 'mocks', 'convex-react.ts'),
+      'node:fs': join(dir, 'mocks', 'fs.ts'),
     });
-    expect(config.turbopack.resolveAlias).toEqual({ 'next/link': './app-link.ts' });
+    // A browser-only mock keeps the real module on the server.
+    expect(server.loaders[0].options.aliases).toEqual({
+      'convex/react': join(dir, 'mocks', 'convex-react.ts'),
+    });
+    expect(Object.keys(turbopack.rules)).toEqual(
+      expect.arrayContaining(['*.js', '*.jsx', '*.mjs', '*.ts', '*.tsx'])
+    );
+    expect(config.turbopack.rules['*.tsx']).toEqual({ loaders: ['x'] });
+  });
+
+  it('runs the loader only on the story graph, so app code keeps the real module', () => {
+    const result = applyPreviewRouteMocks(
+      {},
+      { resolveAlias: { 'convex/react': './mocks/convex-react.ts' } },
+      dir
+    );
+    expect(result.turbopack?.resolveAlias).toBeUndefined();
+    const rule = (result.turbopack!.rules!['*.tsx'] as any[])[0];
+    const query = rule.condition.all[1].query as RegExp;
+    // Story graph modules are imported with the query.
+    expect(query.test('?forkbook')).toBe(true);
+    expect(query.test('?raw&forkbook')).toBe(true);
+    // An app page imports its modules with no query, so the loader does not run on them.
+    expect(query.test('')).toBe(false);
+    expect(query.test('?forkbooks')).toBe(false);
   });
 
   it('returns the config as it is with no aliases', () => {
