@@ -72,6 +72,8 @@ export const entryUrlPath = (entry: Pick<StoryPathEntry, 'title' | 'name'>): str
 interface StoryPathMap {
   byId: Map<string, string>;
   byUrl: Map<string, { id: string; viewMode: ViewMode }>;
+  /** The view mode of every story and docs entry in the index, by ID. */
+  entries: Map<string, ViewMode>;
 }
 
 /**
@@ -79,11 +81,12 @@ interface StoryPathMap {
  * keeps it and the second entry uses `/_story/<id>`.
  */
 export const buildStoryPathMap = (entries: Iterable<StoryPathEntry>): StoryPathMap => {
-  const map: StoryPathMap = { byId: new Map(), byUrl: new Map() };
+  const map: StoryPathMap = { byId: new Map(), byUrl: new Map(), entries: new Map() };
   for (const entry of entries) {
     if (entry.type !== 'story' && entry.type !== 'docs') {
       continue;
     }
+    map.entries.set(entry.id, entry.type === 'docs' ? 'docs' : 'story');
     const urlPath = entryUrlPath(entry);
     if (!urlPath || map.byUrl.has(urlPath)) {
       continue;
@@ -95,11 +98,29 @@ export const buildStoryPathMap = (entries: Iterable<StoryPathEntry>): StoryPathM
 };
 
 let currentMap: StoryPathMap = buildStoryPathMap([]);
+let mapVersion = 0;
+const listeners = new Set<() => void>();
 
 /** Sets the index entries that the URL helpers use. The manager calls this when the index loads. */
 export const setStoryPathEntries = (entries: Iterable<StoryPathEntry>) => {
   currentMap = buildStoryPathMap(entries);
+  mapVersion += 1;
+  listeners.forEach((listener) => listener());
 };
+
+/**
+ * Calls the listener when the index entries change. The result of {@link fromUrlPath} can change
+ * then, so a component that reads the URL path must render again. Returns an unsubscribe function.
+ */
+export const subscribeStoryPathEntries = (listener: () => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+};
+
+/** A number that changes each time the index entries change. */
+export const getStoryPathEntriesVersion = () => mapVersion;
 
 const storyRouteRegex = /^\/(story|docs)\/(.+)$/;
 
@@ -170,8 +191,15 @@ export const fromUrlPath = (urlPath: string | undefined, map = currentMap): stri
     return '/';
   }
   const name = segments[segments.length - 1];
+  const guessedId = `${segments.slice(0, -1).join('-')}--${name}`;
+  // An old link can use the export name (the story ID) and not the story name. When the index has
+  // an entry with this ID, use its view mode.
+  const indexed = map.entries.get(guessedId);
+  if (indexed) {
+    return `/${indexed}/${guessedId}`;
+  }
   const viewMode: ViewMode = name === 'docs' ? 'docs' : 'story';
-  return `/${viewMode}/${segments.slice(0, -1).join('-')}--${name}`;
+  return `/${viewMode}/${guessedId}`;
 };
 
 /**

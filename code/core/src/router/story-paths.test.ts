@@ -7,7 +7,10 @@ import {
   buildStoryPathMap,
   entryUrlPath,
   fromUrlPath,
+  getStoryPathEntriesVersion,
   isReservedUrlPath,
+  setStoryPathEntries,
+  subscribeStoryPathEntries,
   toUrlPath,
   urlPathDepth,
 } from './story-paths.ts';
@@ -48,6 +51,66 @@ describe('story paths', () => {
     expect(fromUrlPath('/all', map)).toBe('/all/');
     expect(fromUrlPath('/index.html', map)).toBe('/');
     expect(fromUrlPath('/other/thing/one', map)).toBe('/story/other-thing--one');
+  });
+
+  it('resolves stories whose name is not the export name', () => {
+    const named = buildStoryPathMap([
+      {
+        id: 'playground-components--table',
+        title: 'Playground/Components',
+        name: 'Main Table',
+        type: 'story',
+      },
+      {
+        id: 'playground-components--default',
+        title: 'Playground/Components',
+        name: 'Home',
+        type: 'story',
+      },
+      {
+        id: 'playground-components--docs',
+        title: 'Playground/Components',
+        name: 'Docs',
+        type: 'docs',
+      },
+    ]);
+    expect(toUrlPath('/story/playground-components--table', named)).toBe(
+      '/playground/components/main-table'
+    );
+    expect(fromUrlPath('/playground/components/main-table', named)).toBe(
+      '/story/playground-components--table'
+    );
+    expect(fromUrlPath('/playground/components/home', named)).toBe(
+      '/story/playground-components--default'
+    );
+    // Old links that use the export name still work.
+    expect(fromUrlPath('/playground/components/table', named)).toBe(
+      '/story/playground-components--table'
+    );
+    expect(fromUrlPath('/playground/components/default', named)).toBe(
+      '/story/playground-components--default'
+    );
+  });
+
+  it('tells listeners when the index entries change', () => {
+    const calls: number[] = [];
+    const unsubscribe = subscribeStoryPathEntries(() => calls.push(getStoryPathEntriesVersion()));
+    const before = getStoryPathEntriesVersion();
+    setStoryPathEntries([
+      {
+        id: 'playground-components--table',
+        title: 'Playground/Components',
+        name: 'Main Table',
+        type: 'story',
+      },
+    ]);
+    expect(calls).toEqual([before + 1]);
+    expect(fromUrlPath('/playground/components/main-table')).toBe(
+      '/story/playground-components--table'
+    );
+    unsubscribe();
+    setStoryPathEntries([]);
+    expect(calls).toHaveLength(1);
   });
 
   it('builds hrefs and depths', () => {
