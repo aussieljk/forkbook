@@ -31,6 +31,20 @@ describe('transformIframeHtml', () => {
     expect(html).toContain('window["INSECURE_IFRAME_MESSAGING"] = true;');
   });
 
+  it('puts the dev app entry under the base path', async () => {
+    const options = { ...createOptions(), configType: 'DEVELOPMENT', basePath: '/forkbook' };
+    const html = await transformIframeHtml(template, options as unknown as Options);
+
+    expect(html).toContain('/forkbook/@id/__x00__virtual:/@storybook/builder-vite/vite-app.js');
+  });
+
+  it('uses the root for the dev app entry with an empty base path', async () => {
+    const options = { ...createOptions(), configType: 'DEVELOPMENT', basePath: '' };
+    const html = await transformIframeHtml(template, options as unknown as Options);
+
+    expect(html).toContain('src="/@id/__x00__virtual:/@storybook/builder-vite/vite-app.js');
+  });
+
   it('leaves the preview unflagged by default', async () => {
     const html = await transformIframeHtml(template, createOptions());
 

@@ -1,3 +1,4 @@
+import { normalizeBasePath } from '@aussieljk/forkbook/internal/channels';
 import { normalizeStories } from '@aussieljk/forkbook/internal/common';
 import type {
   DocsOptions,
@@ -59,7 +60,7 @@ export async function transformIframeHtml(html: string, options: Options) {
   if (configType === 'DEVELOPMENT') {
     return transformedHtml.replace(
       'virtual:/@storybook/builder-vite/vite-app.js',
-      `/@id/__x00__${FB_VIRTUAL_FILES.VIRTUAL_APP_FILE}`
+      `${normalizeBasePath(options.basePath)}/@id/__x00__${FB_VIRTUAL_FILES.VIRTUAL_APP_FILE}`
     );
   }
 

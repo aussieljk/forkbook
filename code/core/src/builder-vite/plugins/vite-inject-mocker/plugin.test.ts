@@ -48,6 +48,22 @@ describe('vite-inject-mocker plugin — transformIndexHtml', () => {
     expect(result).not.toContain('src="/vite-inject-mocker-entry.js"');
   });
 
+  it('puts the dev path under the Vite base', () => {
+    const plugin = viteInjectMockerRuntime({ previewConfigPath: null }) as unknown as {
+      configResolved: (config: Pick<ResolvedConfig, 'command' | 'base'>) => void;
+      transformIndexHtml: (html: string) => string;
+      resolveId: { handler: (source: string) => string | undefined };
+    };
+    plugin.configResolved({ command: 'serve', base: '/forkbook/' });
+
+    expect(plugin.transformIndexHtml(makeHtml())).toContain(
+      'src="/forkbook/vite-inject-mocker-entry.js"'
+    );
+    expect(plugin.resolveId.handler('/forkbook/vite-inject-mocker-entry.js')).toBe(
+      '/fake/mocker-runtime.js'
+    );
+  });
+
   it('uses an absolute path (/…) in dev mode', () => {
     const plugin = createPlugin('serve');
     const html = makeHtml();

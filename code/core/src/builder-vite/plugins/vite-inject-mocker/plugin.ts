@@ -44,7 +44,10 @@ export const viteInjectMockerRuntime = (options: {
     resolveId: {
       filter: { id: /\/vite-inject-mocker-entry\.js/ },
       handler(source) {
-        if (source === ENTRY_PATH) {
+        if (
+          source === ENTRY_PATH ||
+          source === `${viteConfig?.base ?? '/'}${ENTRY_PATH.slice(1)}`
+        ) {
           return mockerRuntimePath;
         }
         return undefined;
@@ -57,8 +60,12 @@ export const viteInjectMockerRuntime = (options: {
         // Use a relative path for production builds so the script loads
         // correctly when artifacts are hosted at non-root paths (e.g.,
         // GitHub Pages subdirectories).  In dev mode, the absolute path
-        // is required so Vite's dev server can match it in resolveId.
-        const src = viteConfig.command === 'build' ? `.${ENTRY_PATH}` : ENTRY_PATH;
+        // is required so Vite's dev server can match it in resolveId. It goes under the Vite
+        // `base`, so it loads when Forkbook runs under a base path.
+        const src =
+          viteConfig.command === 'build'
+            ? `.${ENTRY_PATH}`
+            : `${viteConfig.base ?? '/'}${ENTRY_PATH.slice(1)}`;
         const entryCode = `<script type="module" src="${src}"></script>`;
         const headTagIndex = html.indexOf(headTag[0]);
         const newHtml =
