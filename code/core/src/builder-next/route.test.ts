@@ -9,6 +9,7 @@ import {
   PREVIEW_ROUTE_FILES,
   PREVIEW_MOCKS_LOADER_CODE,
   applyPreviewRouteMocks,
+  type TurbopackConfigLike,
   getLocalPrefixes,
   tagPreviewImport,
   findAppDir,
@@ -358,7 +359,7 @@ describe('applyPreviewRouteMocks', () => {
 
   it('runs the loader only on the story graph, so app code keeps the real module', () => {
     const result = applyPreviewRouteMocks(
-      {},
+      {} as TurbopackConfigLike,
       { resolveAlias: { 'convex/react': './mocks/convex-react.ts' } },
       dir
     );
