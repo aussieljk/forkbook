@@ -59,3 +59,9 @@ it('sets the root path for a base path, and keeps the page when there is none', 
   expect(withRootPath(html, '/_forkbook/')).toBe('var root = /*FORKBOOK_ROOT*/ "/_forkbook/";');
   expect(withRootPath(html, undefined)).toBe(html);
 });
+
+it('adds a static base element when the root is known', () => {
+  const html = "<html><head><script>var root = /*FORKBOOK_ROOT*/ '';</script></head></html>";
+  expect(withRootPath(html, '/forkbook/')).toContain('<head>\n    <base href="/forkbook/" />');
+  expect(withRootPath(html, undefined)).not.toContain('<base');
+});

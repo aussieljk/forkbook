@@ -97,15 +97,27 @@ export const buildStoryPathMap = (entries: Iterable<StoryPathEntry>): StoryPathM
   return map;
 };
 
-let currentMap: StoryPathMap = buildStoryPathMap([]);
-let mapVersion = 0;
-const listeners = new Set<() => void>();
+/**
+ * The state is shared through `globalThis`, because the manager bundles contain more than one copy
+ * of this module (the manager API sets the entries and the router reads them).
+ */
+interface StoryPathState {
+  map: StoryPathMap;
+  version: number;
+  listeners: Set<() => void>;
+}
+const STATE_KEY = '__FORKBOOK_STORY_PATHS__';
+const state: StoryPathState = ((globalThis as Record<string, unknown>)[STATE_KEY] ??= {
+  map: buildStoryPathMap([]),
+  version: 0,
+  listeners: new Set(),
+}) as StoryPathState;
 
 /** Sets the index entries that the URL helpers use. The manager calls this when the index loads. */
 export const setStoryPathEntries = (entries: Iterable<StoryPathEntry>) => {
-  currentMap = buildStoryPathMap(entries);
-  mapVersion += 1;
-  listeners.forEach((listener) => listener());
+  state.map = buildStoryPathMap(entries);
+  state.version += 1;
+  state.listeners.forEach((listener) => listener());
 };
 
 /**
@@ -113,14 +125,14 @@ export const setStoryPathEntries = (entries: Iterable<StoryPathEntry>) => {
  * then, so a component that reads the URL path must render again. Returns an unsubscribe function.
  */
 export const subscribeStoryPathEntries = (listener: () => void) => {
-  listeners.add(listener);
+  state.listeners.add(listener);
   return () => {
-    listeners.delete(listener);
+    state.listeners.delete(listener);
   };
 };
 
 /** A number that changes each time the index entries change. */
-export const getStoryPathEntriesVersion = () => mapVersion;
+export const getStoryPathEntriesVersion = () => state.version;
 
 const storyRouteRegex = /^\/(story|docs)\/(.+)$/;
 
@@ -131,7 +143,7 @@ const storyRouteRegex = /^\/(story|docs)\/(.+)$/;
  * - `/docs/example-button--docs` gives `/example/button/docs`.
  * - `/settings/about` gives `/settings/about`.
  */
-export const toUrlPath = (internalPath: string | undefined, map = currentMap): string => {
+export const toUrlPath = (internalPath: string | undefined, map = state.map): string => {
   if (!internalPath || internalPath === '/' || internalPath === HOME_PATH) {
     return '/';
   }
@@ -156,7 +168,7 @@ export const toUrlPath = (internalPath: string | undefined, map = currentMap): s
  * When the index has not loaded, the path segments give the story ID: `/example/button/primary`
  * gives `example-button--primary`. A last segment of `docs` gives the docs view.
  */
-export const fromUrlPath = (urlPath: string | undefined, map = currentMap): string => {
+export const fromUrlPath = (urlPath: string | undefined, map = state.map): string => {
   let path = urlPath || '/';
   try {
     path = decodeURI(path);

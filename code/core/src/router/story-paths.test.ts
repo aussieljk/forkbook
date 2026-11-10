@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   ALL_STORIES_PATH,
@@ -154,5 +154,25 @@ describe('story paths', () => {
       expect(entryUrlPath({ title: 'All', name: 'X' })).toBe('/all/x');
       expect(toUrlPath('/story/all--x', reserved)).toBe('/all/x');
     });
+  });
+});
+
+describe('shared story path state', () => {
+  it('shares the entries between copies of the module', async () => {
+    vi.resetModules();
+    // A query makes a second copy of the module, as the manager bundles do.
+    // @ts-expect-error TypeScript does not resolve a module path with a query.
+    const copy: typeof import('./story-paths.ts') = await import('./story-paths.ts?copy');
+    setStoryPathEntries([
+      {
+        id: 'playground-components--table',
+        title: 'Playground/Components',
+        name: 'Main Table',
+        type: 'story',
+      },
+    ]);
+    expect(copy.fromUrlPath('/playground/components/main-table')).toBe(
+      '/story/playground-components--table'
+    );
   });
 });

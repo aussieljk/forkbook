@@ -263,8 +263,25 @@ export const listenToStoryEvents = ({
     api.setPreviewInitialized(ref);
   });
 
-  provider.channel?.on(STORY_MISSING, function handleStoryMissing(this: EventMeta) {
-    const { ref } = getEventMetadata(this, fullAPI)!;
-    api.setPreviewInitialized(ref);
-  });
+  provider.channel?.on(
+    STORY_MISSING,
+    function handleStoryMissing(this: EventMeta, missingId?: string) {
+      const { ref } = getEventMetadata(this, fullAPI)!;
+      api.setPreviewInitialized(ref);
+      // Before the index loads, the manager guesses the story ID from the URL path, and the
+      // preview starts with that guess. When the index gives a different story for the path, the
+      // manager sends it, but the preview can miss it while it starts. Send it again.
+      const { storyId, viewMode, index } = store.getState();
+      if (
+        !ref &&
+        missingId &&
+        storyId &&
+        storyId !== missingId &&
+        index?.[storyId] &&
+        (viewMode === 'story' || viewMode === 'docs')
+      ) {
+        provider.channel?.emit(SET_CURRENT_STORY, { storyId, viewMode });
+      }
+    }
+  );
 };

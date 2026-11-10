@@ -90,4 +90,13 @@ export const withRouteDepth = (html: string, depth: number) =>
  * root keeps the depth logic of {@link withRouteDepth}.
  */
 export const withRootPath = (html: string, root: string | undefined) =>
-  root ? html.replace("/*FORKBOOK_ROOT*/ ''", `/*FORKBOOK_ROOT*/ ${JSON.stringify(root)}`) : html;
+  root
+    ? html
+        .replace("/*FORKBOOK_ROOT*/ ''", `/*FORKBOOK_ROOT*/ ${JSON.stringify(root)}`)
+        // A static `<base>` element also applies to the browser's preload scanner, which fetches
+        // the module scripts before the script above runs. The first `<base>` element wins.
+        .replace('<head>', `<head>\n    <base href="${escapeAttribute(root)}" />`)
+    : html;
+
+const escapeAttribute = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
