@@ -47,7 +47,7 @@
     },
     "code/core": {
       "name": "@aussieljk/forkbook",
-      "version": "0.0.1-18",
+      "version": "0.0.1-19",
       "bin": {
         "forkbook": "dist/bin/dispatcher.js",
       },
