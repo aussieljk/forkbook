@@ -404,15 +404,6 @@
       ]
     },
     {
-      "url": "https://forkbook.ljk.dev/docs/configure/integration/eslint-plugin",
-      "note": "Docs page: configure > integration > eslint plugin",
-      "uses": [
-        "code/core/src/cli/eslintPlugin.test.ts:384",
-        "code/core/src/cli/eslintPlugin.ts:300",
-        "code/core/src/cli/eslintPlugin.ts:469"
-      ]
-    },
-    {
       "url": "https://forkbook.ljk.dev/docs/configure/integration/frameworks-feature-support",
       "note": "Docs page: configure > integration > frameworks feature support",
       "uses": ["code/core/src/viewport/README.md:5"]

@@ -209,4 +209,15 @@ program.on('command:*', ([invalidCmd]) => {
   process.exit(1);
 });
 
+// The dispatcher sends these commands to other CLIs, so this program does not define them.
+program.addHelpText(
+  'after',
+  `
+Other commands:
+  init [options]    Initialize Forkbook into your project (\`init --pages\` is the same as \`pages\`)
+  dev [options]     Start the Forkbook development server
+  build [options]   Build the Forkbook static files
+  index [options]   Write the Forkbook index file`
+);
+
 program.usage('<command> [options]').version(String(version)).parse(process.argv);
