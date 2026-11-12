@@ -779,6 +779,51 @@ describe('experimental_devServer', () => {
       expect(res.writeHead).not.toHaveBeenCalled();
       expect(handler).toHaveBeenCalledOnce();
     });
+
+    it.each(['cross-site', 'same-site'])(
+      'rejects a POST whose Sec-Fetch-Site is %s',
+      async (fetchSite) => {
+        const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
+        await runDevServer(mockApp, mockOptions);
+        const res = createResponse();
+
+        await mcpHandler(createRequest({ 'sec-fetch-site': fetchSite }), res);
+
+        expect(res.writeHead).toHaveBeenCalledWith(403, { 'Content-Type': 'text/plain' });
+        expect(handler).not.toHaveBeenCalled();
+      }
+    );
+
+    it('rejects a cross-site POST even when core.allowedHosts is true', async () => {
+      const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
+      await runDevServer(mockApp, createOptionsWithCore({ allowedHosts: true }));
+      const res = createResponse();
+
+      await mcpHandler(
+        createRequest({ origin: 'http://malicious-site.com', 'sec-fetch-site': 'cross-site' }),
+        res
+      );
+
+      expect(res.writeHead).toHaveBeenCalledWith(403, { 'Content-Type': 'text/plain' });
+      expect(handler).not.toHaveBeenCalled();
+    });
+
+    it.each(['same-origin', 'none'])(
+      'accepts a POST whose Sec-Fetch-Site is %s',
+      async (fetchSite) => {
+        const handler = vi.spyOn(mcpHandlerModule, 'mcpServerHandler').mockResolvedValue(undefined);
+        await runDevServer(mockApp, mockOptions);
+        const res = createResponse();
+
+        await mcpHandler(
+          createRequest({ origin: 'http://localhost:6006', 'sec-fetch-site': fetchSite }),
+          res
+        );
+
+        expect(res.writeHead).not.toHaveBeenCalled();
+        expect(handler).toHaveBeenCalledOnce();
+      }
+    );
   });
 
   describe('media type validation', () => {

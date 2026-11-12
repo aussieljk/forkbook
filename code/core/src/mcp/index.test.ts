@@ -2,7 +2,7 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { createStorybookMcpHandler } from './index.ts';
-import type { StorybookContext } from './types.ts';
+import type { ForkbookContext } from './types.ts';
 import smallManifestFixture from './fixtures/small-manifest.fixture.json' with { type: 'json' };
 import smallDocsManifestFixture from './fixtures/small-docs-manifest.fixture.json' with { type: 'json' };
 
@@ -47,7 +47,7 @@ describe('createStorybookMcpHandler', () => {
    */
   async function setupClient(
     handler: Awaited<ReturnType<typeof createStorybookMcpHandler>>,
-    context?: StorybookContext
+    context?: ForkbookContext
   ) {
     // Mock global fetch to route to our handler
     fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {

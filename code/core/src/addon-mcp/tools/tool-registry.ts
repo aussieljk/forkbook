@@ -9,8 +9,8 @@ import type { AddonContext, AddonMcpServer } from '../types.ts';
 import { withFriendlyErrors } from '../utils/format-validation-issues.ts';
 import {
   addGetUIBuildingInstructionsTool,
-  getStorybookStoryInstructionsToolMetadata,
-} from './get-storybook-story-instructions.ts';
+  getForkbookStoryInstructionsToolMetadata,
+} from './get-forkbook-story-instructions.ts';
 import { addCommentTools } from './comments.ts';
 import { addPreviewStoriesResource, PREVIEW_STORIES_RESOURCE_URI } from './preview-stories.ts';
 // The error class must come from the same entry as `getToolset` (which throws it, via
@@ -166,7 +166,7 @@ const addonToolDefinitions: AddonToolDefinition[] = [
     toolset: 'dev',
     getMetadata: ({ availability, toolsets }) => {
       const testSupported = isToolsetEnabled('test', toolsets) && availability.testSupported;
-      return getStorybookStoryInstructionsToolMetadata({
+      return getForkbookStoryInstructionsToolMetadata({
         testSupported,
         a11yAvailable: testSupported && availability.a11yEnabled,
       });

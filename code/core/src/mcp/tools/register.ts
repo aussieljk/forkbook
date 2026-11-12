@@ -27,7 +27,7 @@ import {
   type ToolsetOutcome,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
 
-import type { StorybookContext } from '../types.ts';
+import type { ForkbookContext } from '../types.ts';
 import { errorToMCPContent } from '../utils/error-to-mcp-content.ts';
 import { toSourceManifests } from '../utils/multi-source-manifests.ts';
 
@@ -35,7 +35,7 @@ export const LIST_TOOL_NAME = toMcpToolName('docs.list');
 export const GET_TOOL_NAME = toMcpToolName('docs.show');
 export const GET_STORY_TOOL_NAME = toMcpToolName('docs.showStory');
 
-type Server = McpServer<GenericSchema, StorybookContext>;
+type Server = McpServer<GenericSchema, ForkbookContext>;
 type ToolEnabled = Parameters<Server['tool']>[0]['enabled'];
 
 const ctx: ToolsetCtx = {
@@ -52,7 +52,7 @@ const ctx: ToolsetCtx = {
  * this Forkbook itself. Building the accesses is the shared helper's job, so hosted and dev-server
  * compositions cannot drift apart.
  */
-function getSources(context: StorybookContext | undefined): DocsSource[] | undefined {
+function getSources(context: ForkbookContext | undefined): DocsSource[] | undefined {
   const sources = context?.sources;
   if (!sources?.some((source) => source.url)) {
     return undefined;
@@ -73,7 +73,7 @@ function getSources(context: StorybookContext | undefined): DocsSource[] | undef
  * the toolset is assembled per call. It is a plain object of schemas and functions, which is why
  * that is cheap enough to do rather than threading request state through a shared instance.
  */
-function toolsetFor(context: StorybookContext | undefined): DocsToolset {
+function toolsetFor(context: ForkbookContext | undefined): DocsToolset {
   const sources = getSources(context);
   if (sources) {
     return createDocsToolset({ sources });

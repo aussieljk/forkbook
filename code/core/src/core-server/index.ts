@@ -15,7 +15,9 @@ export { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';
 export { getStoriesPathsFromConfig } from './utils/get-stories-paths-from-config.ts';
 export type { ComponentArgTypesData } from '../csf-tools/get-dummy-args-from-argtypes.ts';
 
-export { loadStorybook as experimental_loadStorybook } from './load.ts';
+export { loadForkbook as experimental_loadForkbook } from './load.ts';
+/** @deprecated Old name. Use `experimental_loadForkbook`. Kept until `cli/` moves to the new name. */
+export { loadForkbook as experimental_loadStorybook } from './load.ts';
 
 export { Tag } from '../shared/constants/tags.ts';
 export { analyzeMdx } from './utils/analyze-mdx.ts';
@@ -126,6 +128,12 @@ export { resolveChangeDetectionAdapter } from '../shared/open-service/services/m
 export { getBuilders } from './utils/get-builders.ts';
 export { prepareHeadlessUniversalStores } from './utils/get-server-channel.ts';
 export { isValidHost, type HostValidationOptions } from './utils/getHostValidationMiddleware.ts';
+export {
+  isCrossSiteRequest,
+  readRequestBody,
+  RequestBodyTooLargeError,
+  sendPayloadTooLarge,
+} from './utils/request-guards.ts';
 export { resetServicesPresetOnce as experimental_resetServicesPresetOnce } from './utils/apply-services-preset-once.ts';
 export {
   getTestProviderStoreById as experimental_getTestProviderStore,

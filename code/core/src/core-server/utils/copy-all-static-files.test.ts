@@ -53,14 +53,12 @@ describe('copyAllStaticFilesRelativeToMain', () => {
         'index.html': 'public',
         'iframe.html': 'public',
         'index.json': 'public',
-        'project.json': 'public',
         'asset.txt': 'public',
       },
       [outputDir]: {
         'index.html': 'storybook',
         'iframe.html': 'storybook',
         'index.json': 'storybook',
-        'project.json': 'storybook',
       },
     });
 
@@ -70,7 +68,6 @@ describe('copyAllStaticFilesRelativeToMain', () => {
       'index.html': 'storybook',
       'iframe.html': 'storybook',
       'index.json': 'storybook',
-      'project.json': 'storybook',
       'asset.txt': 'public',
     });
   });

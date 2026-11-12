@@ -14,7 +14,7 @@ import { dirname, join } from 'pathe';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { resolvePackageDir, safeResolveModule } from '../shared/utils/module.ts';
-import { loadStorybook } from './load.ts';
+import { loadForkbook } from './load.ts';
 import { applyServicesPresetOnce } from './utils/apply-services-preset-once.ts';
 
 vi.mock('@aussieljk/forkbook/internal/common', { spy: true });
@@ -48,11 +48,11 @@ beforeEach(() => {
     .mockResolvedValueOnce({ apply: vi.fn().mockResolvedValue({}) });
 });
 
-describe('loadStorybook', () => {
+describe('loadForkbook', () => {
   it('loads the builder preset when the builder ships one', async () => {
     vi.mocked(safeResolveModule).mockReturnValue(builderPresetPath);
 
-    await loadStorybook({ configDir: '/config', channel: new Channel({}) });
+    await loadForkbook({ configDir: '/config', channel: new Channel({}) });
 
     expect(vi.mocked(safeResolveModule)).toHaveBeenCalledWith({
       specifier: builderPresetPath,
@@ -67,7 +67,7 @@ describe('loadStorybook', () => {
   it('skips the builder preset when the builder ships none', async () => {
     vi.mocked(safeResolveModule).mockReturnValue(undefined);
 
-    await loadStorybook({ configDir: '/config', channel: new Channel({}) });
+    await loadForkbook({ configDir: '/config', channel: new Channel({}) });
 
     expect(secondPassPresets()).toEqual([
       '/storybook/dist/core-server/presets/common-preset.js',

@@ -299,10 +299,12 @@ export class StoryRender<TRenderer extends Renderer> implements Render<TRenderer
         return;
       }
 
-      const cleanupCallbacks = await applyBeforeEach(hookContext);
-      this.store.addCleanupCallbacks(story, ...cleanupCallbacks);
+      await this.runPhase(abortSignal, 'beforeEach', async () => {
+        const cleanupCallbacks = await applyBeforeEach(hookContext);
+        this.store.addCleanupCallbacks(story, ...cleanupCallbacks);
+      });
 
-      if (this.checkIfAborted(abortSignal)) {
+      if (abortSignal.aborted) {
         return;
       }
 

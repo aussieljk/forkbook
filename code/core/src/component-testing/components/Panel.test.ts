@@ -672,5 +672,24 @@ describe('Panel', () => {
         'page--logged-in:completed',
       ]);
     });
+
+    it('ignores the setup phases of a rerender of the same story', () => {
+      const handled = replay(
+        [
+          { storyId: 'page--logged-in', newPhase: 'rendering', renderId: 1 },
+          { storyId: 'page--logged-in', newPhase: 'completed', renderId: 1 },
+          { storyId: 'page--logged-in', newPhase: 'loading', renderId: 1 },
+          { storyId: 'page--logged-in', newPhase: 'beforeEach', renderId: 1 },
+          { storyId: 'page--logged-in', newPhase: 'rendering', renderId: 1 },
+        ],
+        'page--logged-in'
+      );
+
+      expect(handled).toEqual([
+        'page--logged-in:rendering',
+        'page--logged-in:completed',
+        'page--logged-in:rendering',
+      ]);
+    });
   });
 });

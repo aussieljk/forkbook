@@ -4,7 +4,7 @@ import actionAnnotations, { type ActionsTypes } from '../actions/preview.ts';
 import backgroundsAnnotations, { type BackgroundTypes } from '../backgrounds/preview.ts';
 import componentTestingAnnotations from '../component-testing/preview.ts';
 import { type ControlsTypes } from '../controls/preview.ts';
-import ghostStoriesAnnotations from '../core-server/utils/ghost-stories/test-annotations.ts';
+import renderAnalysisAnnotations from './render-analysis-annotations.ts';
 import highlightAnnotations, { type HighlightTypes } from '../highlight/preview.ts';
 import measureAnnotations, { type MeasureTypes } from '../measure/preview.ts';
 import outlineAnnotations, { type OutlineTypes } from '../outline/preview.ts';
@@ -83,7 +83,7 @@ export function getCoreAnnotations() {
     callDefault(actionAnnotations),
     callDefault(componentTestingAnnotations),
     callDefault(testAnnotations),
-    callDefault(ghostStoriesAnnotations),
+    callDefault(renderAnalysisAnnotations),
     callDefault(docgenAnnotations),
     callDefault(storyDocsAnnotations),
   ];

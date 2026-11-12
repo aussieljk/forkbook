@@ -15,7 +15,7 @@ import {
   ManifestGetError,
 } from '@aussieljk/forkbook/internal/toolsets-docs';
 
-import type { ComponentManifestMap, StorybookContext } from '../types.ts';
+import type { ComponentManifestMap, ForkbookContext } from '../types.ts';
 import smallManifestFixtureRaw from '../fixtures/small-manifest.fixture.json' with { type: 'json' };
 import { addListAllDocumentationTool, LIST_TOOL_NAME } from './register.ts';
 
@@ -49,7 +49,7 @@ async function createServer() {
   const server = new McpServer(
     { name: 'test-server', version: '1.0.0', description: 'Test server for outcome unwrap' },
     { adapter: new ValibotJsonSchemaAdapter(), capabilities: { tools: { listChanged: true } } }
-  ).withContext<StorybookContext>();
+  ).withContext<ForkbookContext>();
 
   await server.receive(
     {
@@ -77,7 +77,7 @@ function createManifestProvider() {
   });
 }
 
-async function callListTool(server: McpServer<v.GenericSchema, StorybookContext>) {
+async function callListTool(server: McpServer<v.GenericSchema, ForkbookContext>) {
   const response = await server.receive(
     {
       jsonrpc: '2.0' as const,

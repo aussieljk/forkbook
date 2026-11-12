@@ -315,7 +315,7 @@ describe('StoryRender', () => {
       mount: (context) => () => actualMount(context),
       usesMount: true,
       playFunction: async ({ mount }) => {
-        expect(render.phase).toBe('loading');
+        expect(render.phase).toBe('beforeEach');
         await mount();
         expect(render.phase).toBe('playing');
       },
@@ -476,10 +476,86 @@ describe('StoryRender', () => {
       const phases = emitSpy.mock.calls
         .filter(([event]) => event === STORY_RENDER_PHASE_CHANGED)
         .map(([, payload]) => (payload as { newPhase: string }).newPhase);
-      expect(phases).toEqual(['loading', 'rendering', 'completing', 'aborted']);
+      expect(phases).toEqual(['loading', 'beforeEach', 'rendering', 'completing', 'aborted']);
       expect(emitSpy).not.toHaveBeenCalledWith(STORY_RENDERED, expect.anything());
       expect(emitSpy).not.toHaveBeenCalledWith(STORY_FINISHED, expect.anything());
       expect(story.applyAfterEach).not.toHaveBeenCalled();
+    });
+
+    it('reports the beforeEach phase and stops when torn down during it', async () => {
+      const [beforeEachGate, openBeforeEachGate] = createGate();
+      const cleanup = vi.fn();
+      const story = buildStory({
+        applyBeforeEach: vi.fn(async () => {
+          await beforeEachGate;
+          return [cleanup];
+        }),
+      });
+      const store = buildStore();
+      const channel = new Channel({});
+      const emitSpy = vi.spyOn(channel, 'emit');
+      const renderToScreen = vi.fn<RenderToCanvas<Renderer>>();
+      const render = new StoryRender(
+        channel,
+        store,
+        renderToScreen,
+        callbacks(),
+        entry.id,
+        'story',
+        { autoplay: true },
+        story
+      );
+
+      const rendered = render.renderToElement({} as HTMLElement);
+      await vi.waitFor(() => expect(render.phase).toBe('beforeEach'));
+      expect(render.isPending()).toBe(true);
+      render.cancelRender();
+      openBeforeEachGate();
+      await rendered;
+
+      const phases = emitSpy.mock.calls
+        .filter(([event]) => event === STORY_RENDER_PHASE_CHANGED)
+        .map(([, payload]) => (payload as { newPhase: string }).newPhase);
+      expect(phases).toEqual(['loading', 'beforeEach', 'aborted']);
+      // The cleanup of the hooks that ran is still registered, so teardown can call it.
+      expect(store.addCleanupCallbacks).toHaveBeenCalledWith(story, cleanup);
+      expect(renderToScreen).not.toHaveBeenCalled();
+      expect(story.playFunction).not.toHaveBeenCalled();
+    });
+
+    it('enqueues a rerender while in the beforeEach phase', async () => {
+      const [beforeEachGate, openBeforeEachGate] = createGate();
+      const renderToScreen = vi.fn();
+      const story = buildStory({
+        applyBeforeEach: vi
+          .fn()
+          .mockImplementationOnce(async () => {
+            await beforeEachGate;
+            return [];
+          })
+          .mockImplementation(async () => []),
+      });
+      const render = new StoryRender(
+        new Channel({}),
+        buildStore(),
+        renderToScreen,
+        callbacks(),
+        entry.id,
+        'story',
+        { autoplay: true },
+        story
+      );
+
+      render.renderToElement({} as HTMLElement);
+      await vi.waitFor(() => expect(render.phase).toBe('beforeEach'));
+      render.rerender();
+      render.rerender();
+      expect(renderToScreen).not.toHaveBeenCalled();
+      openBeforeEachGate();
+
+      await vi.waitFor(() => expect(renderToScreen).toHaveBeenCalledTimes(2));
+      await vi.waitFor(() => expect(render.phase).toBe('finished'));
+      expect(renderToScreen).toHaveBeenCalledTimes(2);
     });
 
     it('does not report a remounted render as aborted when its previous cycle finishes late', async () => {
@@ -517,7 +593,8 @@ describe('StoryRender', () => {
       const phases = emitSpy.mock.calls
         .filter(([event]) => event === STORY_RENDER_PHASE_CHANGED)
         .map(([, payload]) => (payload as { newPhase: string }).newPhase);
-      expect(phases.slice(phases.lastIndexOf('rendering'))).toEqual([
+      expect(phases.slice(phases.lastIndexOf('beforeEach'))).toEqual([
+        'beforeEach',
         'rendering',
         'playing',
         'played',

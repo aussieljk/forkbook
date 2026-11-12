@@ -3,7 +3,7 @@ import { McpServer } from 'tmcp';
 import type { GenericSchema } from 'valibot';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { addGetDocumentationTool, GET_TOOL_NAME } from './register.ts';
-import type { Source, StorybookContext } from '../types.ts';
+import type { Source, ForkbookContext } from '../types.ts';
 import smallManifestFixture from '../fixtures/small-manifest.fixture.json' with { type: 'json' };
 import smallDocsManifestFixture from '../fixtures/small-docs-manifest.fixture.json' with { type: 'json' };
 import {
@@ -49,7 +49,7 @@ function createManifestProvider(served: Record<string, ServedManifests>) {
 }
 
 describe('getDocumentationTool', () => {
-  let server: McpServer<GenericSchema, StorybookContext>;
+  let server: McpServer<GenericSchema, ForkbookContext>;
   let served: Record<string, ServedManifests>;
   let manifestProvider: ReturnType<typeof createManifestProvider>;
 
@@ -67,7 +67,7 @@ describe('getDocumentationTool', () => {
           tools: { listChanged: true },
         },
       }
-    ).withContext<StorybookContext>();
+    ).withContext<ForkbookContext>();
 
     // initialize test session
     await server.receive(
@@ -640,7 +640,7 @@ describe('getDocumentationTool', () => {
           adapter,
           capabilities: { tools: { listChanged: true } },
         }
-      ).withContext<StorybookContext>();
+      ).withContext<ForkbookContext>();
 
       await server.receive(
         {

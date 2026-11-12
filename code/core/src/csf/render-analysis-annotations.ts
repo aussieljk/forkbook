@@ -1,5 +1,5 @@
-import type { AfterEach } from '@aussieljk/forkbook/internal/csf';
-import { definePreviewAddon } from '@aussieljk/forkbook/internal/csf';
+import { definePreviewAddon } from './csf-factories.ts';
+import type { AfterEach } from './story.ts';
 
 const isEmptyRender = (element: Element) => {
   const style = getComputedStyle(element);
