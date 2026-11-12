@@ -21,7 +21,9 @@ import { globalSettings } from '../cli/globalSettings.ts';
 import { resolveDevCommandOptions } from './dev-options.ts';
 
 addToGlobalContext('cliVersion', version);
+// Third-party packages read STORYBOOK to know that they run inside Storybook, so keep it.
 process.env.STORYBOOK = 'true';
+process.env.FORKBOOK = 'true';
 
 /**
  * Core CLI for Forkbook.
@@ -164,12 +166,12 @@ command('build')
 
     logger.intro(`Building ${packageJson.name} v${packageJson.version}`);
 
-    // The key is the field created in `options` variable for
-    // each command line argument. Value is the env variable.
+    // The key is the field created in `options` variable for each command line argument. Value is
+    // the env variable. The env variable is used only when the option is not given.
     getEnvConfig(options, {
-      staticDir: 'SBCONFIG_STATIC_DIR',
-      outputDir: 'SBCONFIG_OUTPUT_DIR',
-      configDir: 'SBCONFIG_CONFIG_DIR',
+      staticDir: 'FORKBOOK_STATIC_DIR',
+      outputDir: 'FORKBOOK_OUTPUT_DIR',
+      configDir: 'FORKBOOK_CONFIG_DIR',
     });
 
     await build({
@@ -198,11 +200,11 @@ command('index')
 
     logger.log(picocolors.bold(`${packageJson.name} v${packageJson.version}\n`));
 
-    // The key is the field created in `options` variable for
-    // each command line argument. Value is the env variable.
+    // The key is the field created in `options` variable for each command line argument. Value is
+    // the env variable. The env variable is used only when the option is not given.
     getEnvConfig(options, {
-      configDir: 'SBCONFIG_CONFIG_DIR',
-      outputFile: 'SBCONFIG_OUTPUT_FILE',
+      configDir: 'FORKBOOK_CONFIG_DIR',
+      outputFile: 'FORKBOOK_OUTPUT_FILE',
     });
 
     await index({

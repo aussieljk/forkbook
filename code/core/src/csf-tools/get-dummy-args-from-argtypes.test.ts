@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ArgTypes, SBType } from '../../types/index.ts';
+import type { ArgTypes, SBType } from '../types/index.ts';
 import {
   generateDummyArgsFromArgTypes,
   generateDummyValueFromSBType,

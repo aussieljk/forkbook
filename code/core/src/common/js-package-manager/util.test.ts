@@ -97,13 +97,7 @@ describe('js package manager util', () => {
   });
 
   it('detects when Forkbook minimum-age exclusions are already configured', () => {
-    expect(
-      hasStorybookMinimumAgeExclusions([
-        '@aussieljk/forkbook',
-        '@storybook/*',
-        'eslint-plugin-storybook',
-      ])
-    ).toBe(true);
+    expect(hasStorybookMinimumAgeExclusions(['@aussieljk/forkbook', '@storybook/*'])).toBe(true);
     expect(hasStorybookMinimumAgeExclusions(['storybook', '@storybook/react-vite'])).toBe(false);
     expect(hasStorybookMinimumAgeExclusions(['*forkbook*', '*storybook*'])).toBe(true);
   });

@@ -314,7 +314,7 @@ describe('Yarn 2 Proxy', () => {
             'set',
             'npmPreapprovedPackages',
             '--json',
-            JSON.stringify(['@aussieljk/forkbook', '@storybook/*', 'eslint-plugin-storybook']),
+            JSON.stringify(['@aussieljk/forkbook', '@storybook/*']),
           ],
         })
       );
@@ -393,7 +393,6 @@ describe('Yarn 2 Proxy', () => {
               '@storybook/preset-react-webpack',
               '@aussieljk/forkbook',
               '@storybook/*',
-              'eslint-plugin-storybook',
             ]),
           ],
         })
@@ -481,8 +480,7 @@ describe('Yarn 2 Proxy', () => {
         .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
         .mockResolvedValueOnce(
           commandResult({
-            stdout:
-              "[\n  '@aussieljk/forkbook',\n  '@storybook/*',\n  'eslint-plugin-storybook',\n]\n",
+            stdout: "[\n  '@aussieljk/forkbook',\n  '@storybook/*',\n]\n",
           })
         );
 

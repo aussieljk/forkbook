@@ -1,10 +1,16 @@
-import type { ExecProcess } from '../common/utils/exec.ts';
+import type { Readable } from 'node:stream';
 
 import { CLI_COLORS, log } from './logger/index.ts';
 import { logTracker } from './logger/log-tracker.ts';
 import { spinner } from './prompts/prompt-functions.ts';
 
-type ChildProcessFactory = (signal?: AbortSignal) => ExecProcess;
+/**
+ * A running command, such as the `ExecProcess` that `exec` in common returns. node-logger is below
+ * common, so it does not import that type.
+ */
+type RunningProcess = PromiseLike<unknown> & { stdout: Readable | null };
+
+type ChildProcessFactory = (signal?: AbortSignal) => RunningProcess;
 
 interface SetupAbortControllerResult {
   abortController: AbortController;

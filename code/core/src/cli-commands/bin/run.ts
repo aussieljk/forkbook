@@ -21,6 +21,10 @@ import { add } from '../add.ts';
 import { migrate } from '../migrate.ts';
 import { pages } from '../pages.ts';
 
+/** The packages that `forkbook info` lists. */
+const FORKBOOK_INFO_PACKAGES =
+  '{@aussieljk/forkbook,vite,@vitejs/*,react,react-dom,react-native,next,vitest,@vitest/*,playwright,typescript}';
+
 addToGlobalContext('cliVersion', versions['@aussieljk/forkbook']);
 
 // Return a failed exit code but write the logs to a file first
@@ -83,23 +87,6 @@ const command = (name: string) =>
         logger.outro(CLI_COLORS.success('Done!'));
       }
     });
-
-command('init')
-  .description('Initialize Forkbook into your project')
-  .option('-f --force', 'Force add Forkbook')
-  .option('-s --skip-install', 'Skip installing deps')
-  .addOption(
-    new Option('--package-manager <type>', 'Force package manager for installing deps').choices(
-      Object.values(PackageManagerName)
-    )
-  )
-  .option('-t --type <type>', 'Add Forkbook for a specific project type')
-  .option('-y --yes', 'Answer yes to all prompts')
-  .option('--dev', 'Launch the development server after completing initialization')
-  .option(
-    '--no-dev',
-    'Do not launch the Forkbook development server after completing initialization (default)'
-  );
 
 command('add <addon>')
   .description('Add an addon to your Forkbook')
@@ -192,15 +179,15 @@ command('pages')
 command('info')
   .description('Prints debugging information about the local environment')
   .action(async () => {
-    logger.log(picocolors.bold('\nStorybook Environment Info:'));
+    logger.log(picocolors.bold('\nForkbook Environment Info:'));
     const pkgManager = JsPackageManagerFactory.getPackageManager();
     const activePackageManager = pkgManager.type.replace(/\d/, ''); // 'yarn1' -> 'yarn'
     const output = await envinfo.run({
       System: ['OS', 'CPU', 'Shell'],
       Binaries: ['Node', 'Bun', 'Yarn', 'npm', 'pnpm'],
       Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-      npmPackages: '{@storybook/*,*storybook*,sb,chromatic}',
-      npmGlobalPackages: '{@storybook/*,*storybook*,sb,chromatic}',
+      npmPackages: FORKBOOK_INFO_PACKAGES,
+      npmGlobalPackages: '{@aussieljk/forkbook}',
     });
     const activePackageManagerLine = output.match(new RegExp(`${activePackageManager}:.*`, 'i'));
     logger.log(
@@ -221,5 +208,16 @@ program.on('command:*', ([invalidCmd]) => {
   logger.error(errorMessage);
   process.exit(1);
 });
+
+// The dispatcher sends these commands to other CLIs, so this program does not define them.
+program.addHelpText(
+  'after',
+  `
+Other commands:
+  init [options]    Initialize Forkbook into your project (\`init --pages\` is the same as \`pages\`)
+  dev [options]     Start the Forkbook development server
+  build [options]   Build the Forkbook static files
+  index [options]   Write the Forkbook index file`
+);
 
 program.usage('<command> [options]').version(String(version)).parse(process.argv);

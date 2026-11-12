@@ -5,6 +5,8 @@ import type { UserConfig as ViteConfig } from 'vite';
 
 // Allowed env variables on the client
 const allowedEnvVariables = [
+  'FORKBOOK',
+  // Third-party packages read STORYBOOK, so keep it.
   'STORYBOOK',
   // Vite `import.meta.env` default variables
   // @see https://github.com/vitejs/vite/blob/6b8d94dca2a1a8b4952e3e3fcd0aed1aedb94215/packages/vite/types/importMeta.d.ts#L68-L75

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { getManifestStatus } from './manifest-status.ts';
-import type { Options } from '../../types/index.ts';
+import type { Options } from '../../../types/index.ts';
 
 function createMockOptions({
   featureFlag = false,

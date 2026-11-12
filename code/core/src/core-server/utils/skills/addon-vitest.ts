@@ -1,4 +1,4 @@
-import type { Options } from '../../types/index.ts';
+import type { Options } from '../../../types/index.ts';
 
 /**
  * Whether `@aussieljk/forkbook/addon-vitest` is enabled in this project.

@@ -193,7 +193,7 @@ describe('BUN Proxy', () => {
         [
           '[install]',
           'minimumReleaseAge = 3600',
-          'minimumReleaseAgeExcludes = ["@aussieljk/forkbook", "@storybook/*", "eslint-plugin-storybook"]',
+          'minimumReleaseAgeExcludes = ["@aussieljk/forkbook", "@storybook/*"]',
           '',
         ].join('\n')
       );
@@ -240,7 +240,6 @@ describe('BUN Proxy', () => {
             'minimumReleaseAgeExcludes = [',
             '  "@aussieljk/forkbook",',
             '  "@storybook/*",',
-            '  "eslint-plugin-storybook",',
             ']',
             '[test]',
             'coverageThreshold = 0.9',

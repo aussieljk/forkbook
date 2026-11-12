@@ -1,9 +1,6 @@
-export interface Report<T = unknown> {
-  type: string;
-  version?: number;
-  result: T;
-  status: 'failed' | 'passed' | 'warning';
-}
+import type { Report } from '@aussieljk/forkbook/internal/core-events';
+
+export type { Report };
 
 export class ReporterAPI {
   reports: Report[] = [];

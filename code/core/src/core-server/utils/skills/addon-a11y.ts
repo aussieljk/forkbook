@@ -1,4 +1,4 @@
-import type { Options } from '../../types/index.ts';
+import type { Options } from '../../../types/index.ts';
 
 /**
  * Check if @aussieljk/forkbook/addon-a11y is enabled in the Forkbook configuration.

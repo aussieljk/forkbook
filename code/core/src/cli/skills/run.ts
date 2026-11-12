@@ -9,7 +9,7 @@ import { buildStoriesSkill } from './content/build-stories-skill.ts';
 import { buildStoryInstructions } from './content/build-story-instructions.ts';
 import type { getSetupMarkdownOutput } from './content/setup-prompts/index.ts';
 import { SKILLS, SKILL_IDS, isSkillId, type SkillId } from './content/skills.ts';
-import type { SkillInputs, resolveSkillInputs } from './inputs.ts';
+import type { SkillInputs, resolveSkillInputs } from '@aussieljk/forkbook/internal/core-server';
 import type { ProjectInfo, getProjectInfo } from './project-info.ts';
 import { getSetupSupportError } from './setup-support.ts';
 

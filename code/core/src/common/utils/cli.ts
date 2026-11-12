@@ -72,7 +72,8 @@ export function getEnvConfig(
   Object.keys(configEnv).forEach((fieldName) => {
     const envVarName = configEnv[fieldName];
     const envVarValue = process.env[envVarName];
-    if (envVarValue) {
+    // An explicit CLI option wins over the env variable.
+    if (envVarValue && !program[fieldName]) {
       program[fieldName] = envVarValue;
     }
   });

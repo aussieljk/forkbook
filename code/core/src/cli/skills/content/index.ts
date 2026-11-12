@@ -9,4 +9,4 @@ export {
   buildStoryInstructions,
   type StoryInstructionsInputs,
 } from './build-story-instructions.ts';
-export { frameworkToRendererMap } from './framework-renderer.ts';
+export { frameworkToRendererMap } from '../../../shared/utils/framework-renderer.ts';

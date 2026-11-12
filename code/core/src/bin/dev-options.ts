@@ -6,10 +6,10 @@ import { isClaudePreviewLaunch, type AgentEnvironment } from '../shared/utils/ag
 type DevCommandEnvironment = AgentEnvironment & {
   CI?: string;
   PORT?: string;
-  SBCONFIG_CONFIG_DIR?: string;
-  SBCONFIG_HOSTNAME?: string;
-  SBCONFIG_PORT?: string;
-  SBCONFIG_STATIC_DIR?: string;
+  FORKBOOK_CONFIG_DIR?: string;
+  FORKBOOK_HOSTNAME?: string;
+  FORKBOOK_PORT?: string;
+  FORKBOOK_STATIC_DIR?: string;
 };
 
 type DevCommandOptions = {
@@ -46,17 +46,20 @@ export function resolveDevCommandOptions<TOptions extends DevCommandOptions>(
 ) {
   const isClaudePreview = isClaudePreviewLaunch(env);
   const PORT = env.PORT ?? undefined;
-  const SBCONFIG_PORT = env.SBCONFIG_PORT ?? undefined;
+  const FORKBOOK_PORT = env.FORKBOOK_PORT ?? undefined;
 
+  // An explicit CLI option wins over the FORKBOOK_* env vars. Child processes inherit these env
+  // vars (addon-vitest sets FORKBOOK_CONFIG_DIR for its test runner, and the Next.js server
+  // helper reads FORKBOOK_PORT), so a command that gives `--config-dir` must keep it.
   const result = v.safeParse(DevOptionsSchema, {
     ...options,
-    host: env.SBCONFIG_HOSTNAME || options.host,
-    staticDir: env.SBCONFIG_STATIC_DIR || options.staticDir,
-    configDir: env.SBCONFIG_CONFIG_DIR || options.configDir,
+    host: options.host || env.FORKBOOK_HOSTNAME,
+    staticDir: options.staticDir || env.FORKBOOK_STATIC_DIR,
+    configDir: options.configDir || env.FORKBOOK_CONFIG_DIR,
     ci: env.CI || options.ci,
     port: isClaudePreview
-      ? (PORT ?? options.port ?? SBCONFIG_PORT)
-      : (options.port ?? SBCONFIG_PORT ?? PORT),
+      ? (PORT ?? options.port ?? FORKBOOK_PORT)
+      : (options.port ?? FORKBOOK_PORT ?? PORT),
     open: options.open ?? false,
   });
 

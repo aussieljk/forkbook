@@ -1,13 +1,13 @@
 import { relative } from 'node:path';
 
-import type { Options } from '../../types/index.ts';
-import { defaultConfigDir } from '../../common/utils/default-config-dir.ts';
-import { extractFrameworkPackageName } from '../../common/utils/get-framework-name.ts';
-import { findConfigFile } from '../../common/utils/get-storybook-info.ts';
-import { isCsfFactoryPreview, readConfig } from '../../csf-tools/ConfigFile.ts';
+import type { Options } from '../../../types/index.ts';
+import { defaultConfigDir } from '../../../common/utils/default-config-dir.ts';
+import { extractFrameworkPackageName } from '../../../common/utils/get-framework-name.ts';
+import { findConfigFile } from '../../../common/utils/get-storybook-info.ts';
+import { isCsfFactoryPreview, readConfig } from '../../../csf-tools/ConfigFile.ts';
 
 import { getToolAvailability, type ToolAvailability } from './availability.ts';
-import { frameworkToRendererMap } from './content/framework-renderer.ts';
+import { frameworkToRendererMap } from '../../../shared/utils/framework-renderer.ts';
 
 export type SkillInputs = ToolAvailability & {
   framework: string;

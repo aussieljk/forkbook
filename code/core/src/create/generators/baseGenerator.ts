@@ -1,17 +1,11 @@
 import { mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import {
-  type NpmOptions,
-  configureEslintPlugin,
-  copyTemplateFiles,
-  extractEslintInfo,
-} from '@aussieljk/forkbook/internal/cli';
+import { type NpmOptions, copyTemplateFiles } from '@aussieljk/forkbook/internal/cli';
 import {
   type JsPackageManager,
   frameworkPackages,
   getPackageDetails,
-  isCI,
   isCorePackage,
 } from '@aussieljk/forkbook/internal/common';
 import { prompt } from '@aussieljk/forkbook/internal/node-logger';
@@ -182,27 +176,6 @@ export async function baseGenerator(
     (packageToInstall) =>
       !installedDependencies.has(getPackageDetails(packageToInstall as string)[0])
   );
-
-  let eslintPluginPackage: string | null = null;
-  try {
-    if (!isCI()) {
-      const { hasEslint, isStorybookPluginInstalled, isFlatConfig, eslintConfigFile } =
-        await extractEslintInfo(packageManager);
-
-      if (hasEslint && !isStorybookPluginInstalled) {
-        eslintPluginPackage = 'eslint-plugin-storybook';
-        packagesToInstall.push(eslintPluginPackage);
-        taskLog.message(`- Configuring ESLint plugin`);
-        await configureEslintPlugin({
-          eslintConfigFile,
-          packageManager,
-          isFlatConfig,
-        });
-      }
-    }
-  } catch (err) {
-    // any failure regarding configuring the eslint plugin should not fail the whole generator
-  }
 
   const versionedPackages = await packageManager.getVersionedPackages(
     packagesToInstall as string[],

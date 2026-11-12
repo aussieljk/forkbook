@@ -285,7 +285,7 @@ export class Yarn2Proxy extends JsPackageManager {
         dedent`
           yarn npmMinimalAgeGate would block storybook@${storybookVersion} from being installed because it was released within the configured npmMinimalAgeGate window, so Forkbook updated npmPreapprovedPackages for this project automatically.
 
-          Added patterns: storybook, @storybook/*, eslint-plugin-storybook
+          Added patterns: ${FORKBOOK_PACKAGE_PATTERNS.join(', ')}
 
           Read more:
           - https://yarnpkg.com/configuration/yarnrc#npmMinimalAgeGate

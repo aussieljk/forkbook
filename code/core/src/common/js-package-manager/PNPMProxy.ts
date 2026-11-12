@@ -441,7 +441,7 @@ export class PNPMProxy extends JsPackageManager {
         dedent`
           pnpm minimumReleaseAge would block storybook@${storybookVersion} from being installed because it was released within the configured minimumReleaseAge window, so Forkbook updated minimumReleaseAgeExclude for this project automatically.
 
-          Added patterns: storybook, @storybook/*, eslint-plugin-storybook
+          Added patterns: ${FORKBOOK_PACKAGE_PATTERNS.join(', ')}
 
           Read more:
           - https://pnpm.io/settings#minimumreleaseage

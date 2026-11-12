@@ -3,11 +3,7 @@ import { gt, prerelease, valid } from 'semver';
 import type { JsPackageManager } from './JsPackageManager.ts';
 import { PackageManagerName } from './JsPackageManager.ts';
 
-export const FORKBOOK_PACKAGE_PATTERNS = [
-  '@aussieljk/forkbook',
-  '@storybook/*',
-  'eslint-plugin-storybook',
-] as const;
+export const FORKBOOK_PACKAGE_PATTERNS = ['@aussieljk/forkbook', '@storybook/*'] as const;
 
 const escapePatternForRegex = (pattern: string) => pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 

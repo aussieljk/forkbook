@@ -11,7 +11,7 @@ let forkbookProcess: ChildProcess | null = null;
 const getIsVitestStandaloneRun = () => {
   try {
     const env = (import.meta.env || process?.env) as Record<string, string | undefined>;
-    return env.STORYBOOK !== 'true';
+    return env.FORKBOOK !== 'true';
   } catch (e) {
     return false;
   }
