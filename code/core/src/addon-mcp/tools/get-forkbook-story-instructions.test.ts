@@ -3,8 +3,8 @@ import { McpServer } from 'tmcp';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import {
   addGetUIBuildingInstructionsTool,
-  buildStorybookStoryInstructions,
-} from './get-storybook-story-instructions.ts';
+  buildForkbookStoryInstructions,
+} from './get-forkbook-story-instructions.ts';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 
 import type { AddonContext, AddonMcpServer } from '../types.ts';
@@ -15,7 +15,7 @@ import {
 } from './tool-names.ts';
 
 // Review/addon-vitest availability resolve through core's `resolveSkillInputs` (inside
-// `buildStorybookStoryInstructions`'s adapter), so tests below drive them through the
+// `buildForkbookStoryInstructions`'s adapter), so tests below drive them through the
 // `options.presets` fixture or the `addonVitestAvailable` override instead of mocking an
 // addon-local probe.
 /** Forkbook options with only the presets that the instructions read. */
@@ -222,7 +222,7 @@ describe('getUIBuildingInstructionsTool', () => {
       },
     };
 
-    const instructions = await buildStorybookStoryInstructions(asOptions(mockOptions), {
+    const instructions = await buildForkbookStoryInstructions(asOptions(mockOptions), {
       docsEnabled: true,
     });
 
@@ -243,7 +243,7 @@ describe('getUIBuildingInstructionsTool', () => {
       },
     };
 
-    const instructions = await buildStorybookStoryInstructions(asOptions(mockOptions), {
+    const instructions = await buildForkbookStoryInstructions(asOptions(mockOptions), {
       docsEnabled: true,
       toolsets: { dev: true, docs: false, test: true },
     });
@@ -421,13 +421,13 @@ describe('getUIBuildingInstructionsTool', () => {
       },
     });
 
-    const withDocs = await buildStorybookStoryInstructions(mockOptions, { docsEnabled: true });
+    const withDocs = await buildForkbookStoryInstructions(mockOptions, { docsEnabled: true });
     expect(withDocs).toContain('## Using library components');
     expect(withDocs).toContain('docs-list');
 
     // Without the docs manifest the tools are not registered, so the
     // instructions must not tell agents to call them.
-    const withoutDocs = await buildStorybookStoryInstructions(mockOptions, {
+    const withoutDocs = await buildForkbookStoryInstructions(mockOptions, {
       docsEnabled: false,
     });
     expect(withoutDocs).not.toContain('## Using library components');

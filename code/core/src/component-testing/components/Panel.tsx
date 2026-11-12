@@ -183,7 +183,10 @@ export const trackRenderPhase = (
 
   // A rerender cycle may not actually make it to the rendering phase.
   // We don't want to update any state until it does.
-  if (tracker.storyId === event.storyId && ['preparing', 'loading'].includes(event.newPhase)) {
+  if (
+    tracker.storyId === event.storyId &&
+    ['preparing', 'loading', 'beforeEach'].includes(event.newPhase)
+  ) {
     return { tracker, isCurrentRender: false };
   }
 

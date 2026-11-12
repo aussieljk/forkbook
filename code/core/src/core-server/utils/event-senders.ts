@@ -62,8 +62,6 @@ export const CORE_EVENT_SENDERS: Record<events, EventSender> = {
   [events.SAVE_STORY_RESPONSE]: 'server',
   [events.ARGTYPES_INFO_REQUEST]: 'manager',
   [events.ARGTYPES_INFO_RESPONSE]: 'preview',
-  [events.GHOST_STORIES_REQUEST]: 'manager',
-  [events.GHOST_STORIES_RESPONSE]: 'server',
   [events.AI_SETUP_ANALYTICS_RESPONSE]: 'server',
   [events.AI_SETUP_ANALYTICS_REQUEST]: 'server',
   [events.OPEN_IN_EDITOR_REQUEST]: 'manager',

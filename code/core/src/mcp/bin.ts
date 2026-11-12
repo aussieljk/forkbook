@@ -17,7 +17,7 @@ import {
   addListAllDocumentationTool,
 } from './tools/register.ts';
 import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from '@aussieljk/forkbook/internal/toolsets-docs';
-import type { StorybookContext } from './types.ts';
+import type { ForkbookContext } from './types.ts';
 import { parseArgs } from 'node:util';
 import * as fs from 'node:fs/promises';
 import { resolve, dirname, sep } from 'node:path';
@@ -46,7 +46,7 @@ const server = new McpServer(
       tools: { listChanged: true },
     },
   }
-).withContext<StorybookContext>();
+).withContext<ForkbookContext>();
 
 await addListAllDocumentationTool(server);
 await addGetStoryDocumentationTool(server);

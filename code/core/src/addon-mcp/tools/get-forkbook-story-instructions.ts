@@ -6,7 +6,7 @@ import type { AddonContext, AddonMcpServer } from '../types.ts';
 import { errorToMCPContent } from '../utils/errors.ts';
 import { GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME } from './tool-names.ts';
 
-type BuildStorybookStoryInstructionsOptions = {
+type BuildForkbookStoryInstructionsOptions = {
   toolsets?: AddonContext['toolsets'];
   a11yEnabled?: boolean;
   addonVitestAvailable?: boolean;
@@ -31,7 +31,7 @@ export async function addGetUIBuildingInstructionsTool(
         const testSupported = (server.ctx.custom?.toolsets?.test ?? true) && addonVitestAvailable;
         const a11yAvailable = testSupported && (server.ctx.custom?.a11yEnabled ?? false);
 
-        return getStorybookStoryInstructionsDescription({
+        return getForkbookStoryInstructionsDescription({
           testSupported,
           a11yAvailable,
         });
@@ -53,7 +53,7 @@ export async function addGetUIBuildingInstructionsTool(
           });
         }
 
-        const uiInstructions = await buildStorybookStoryInstructions(options, {
+        const uiInstructions = await buildForkbookStoryInstructions(options, {
           toolsets: server.ctx.custom?.toolsets,
           a11yEnabled: server.ctx.custom?.a11yEnabled,
           addonVitestAvailable,
@@ -70,7 +70,7 @@ export async function addGetUIBuildingInstructionsTool(
   );
 }
 
-export function getStorybookStoryInstructionsDescription({
+export function getForkbookStoryInstructionsDescription({
   testSupported,
   a11yAvailable,
 }: {
@@ -113,14 +113,14 @@ This tool provides essential Forkbook-specific guidance including:
 Even if you're familiar with Forkbook, call this tool to ensure you're following the correct patterns, import paths, and conventions for this specific Forkbook setup.`;
 }
 
-export function getStorybookStoryInstructionsToolMetadata(options: {
+export function getForkbookStoryInstructionsToolMetadata(options: {
   testSupported: boolean;
   a11yAvailable: boolean;
 }) {
   return {
     name: GET_UI_BUILDING_INSTRUCTIONS_TOOL_NAME,
     title: 'Forkbook Story Development Instructions',
-    description: getStorybookStoryInstructionsDescription(options),
+    description: getForkbookStoryInstructionsDescription(options),
   };
 }
 
@@ -132,14 +132,14 @@ export function getStorybookStoryInstructionsToolMetadata(options: {
  * priority when provided; omitted fields fall back to the probe so callers cannot silently get
  * the wrong prose by leaving a field off.
  */
-export async function buildStorybookStoryInstructions(
+export async function buildForkbookStoryInstructions(
   options: Options,
   {
     toolsets,
     a11yEnabled,
     addonVitestAvailable,
     docsEnabled,
-  }: BuildStorybookStoryInstructionsOptions = {}
+  }: BuildForkbookStoryInstructionsOptions = {}
 ): Promise<string> {
   const inputs = await resolveSkillInputs(options);
 

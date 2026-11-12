@@ -4,13 +4,13 @@ import { normalizeStories } from '@aussieljk/forkbook/internal/common';
 import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import type { BuilderOptions, CLIOptions, LoadOptions } from '@aussieljk/forkbook/internal/types';
 
-import { loadStorybook } from './load.ts';
+import { loadForkbook } from './load.ts';
 import { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';
 
 export type BuildIndexOptions = CLIOptions & LoadOptions & BuilderOptions;
 
 export const buildIndex = async (options: BuildIndexOptions) => {
-  const { presets } = await loadStorybook(options);
+  const { presets } = await loadForkbook(options);
   const [indexers, stories, docsOptions, features] = await Promise.all([
     presets.apply('experimental_indexers', []),
     presets.apply('stories', []),

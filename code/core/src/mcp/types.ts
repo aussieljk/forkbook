@@ -42,7 +42,7 @@ export type SourceManifests = {
  * Custom context passed to MCP server and tools.
  * Contains the request object and optional manifest provider.
  */
-export type StorybookContext = {
+export type ForkbookContext = {
   /**
    * The incoming HTTP request being processed.
    */
@@ -71,7 +71,7 @@ export type StorybookContext = {
    * Receives the context and the component manifest.
    */
   onListAllDocumentation?: (params: {
-    context: StorybookContext;
+    context: ForkbookContext;
     manifests: AllManifests;
     resultText: string;
     /** Present in multi-source mode — all source manifests including errors */
@@ -83,7 +83,7 @@ export type StorybookContext = {
    */
   onGetDocumentation?: (
     params: {
-      context: StorybookContext;
+      context: ForkbookContext;
       input: { id: string; storybookId?: string };
     } & (
       | { foundDocumentation: ComponentManifest | Doc; resultText: string }
@@ -104,8 +104,11 @@ export type StorybookContext = {
   resolveEntry?: (id: string, source?: Source) => Promise<ResolvedEntry | undefined>;
 };
 
+/** The same type as {@link ForkbookContext}. Kept because `docs/mcp.md` documents this name. */
+export type StorybookContext = ForkbookContext;
+
 /**
- * Result of resolving a single id via {@link StorybookContext.resolveEntry}: either a
+ * Result of resolving a single id via {@link ForkbookContext.resolveEntry}: either a
  * fully-resolved component manifest or a standalone docs entry.
  */
 export type ResolvedEntry =

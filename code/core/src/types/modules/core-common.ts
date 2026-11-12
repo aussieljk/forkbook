@@ -1,7 +1,6 @@
 // should be node:http, but that caused the ui/manager to fail to build, might be able to switch this back once ui/manager is in the core
 import type { ChannelLike } from '@aussieljk/forkbook/internal/channels';
 import type { FileSystemCache } from '@aussieljk/forkbook/internal/common';
-import type { StoryIndexGenerator } from '@aussieljk/forkbook/internal/core-server';
 import type { CsfFile } from '@aussieljk/forkbook/internal/csf-tools';
 import type { LogLevel } from '@aussieljk/forkbook/internal/node-logger';
 
@@ -14,7 +13,7 @@ import type { DocgenProviderDescriptor } from '../../shared/open-service/service
 import type { StoryDocsProvider } from '../../shared/open-service/services/story-docs/types.ts';
 import type { SupportedBuilder } from './builders.ts';
 import type { SupportedFramework } from './frameworks.ts';
-import type { Indexer, StoriesEntry } from './indexer.ts';
+import type { Indexer, StoriesEntry, StoryIndex } from './indexer.ts';
 import type { SupportedRenderer } from './renderers.ts';
 import type { Addon_StorySortParameterV7 } from './addons.ts';
 import type { API_Versions } from './api-stories.ts';
@@ -714,6 +713,28 @@ export type RootPageOptions =
       mode?: 'above' | 'replace';
     };
 
+/** A change to one file of the story index. */
+export interface StoryIndexInvalidationEvent {
+  importPath: string;
+  /** The file was not in the index before. */
+  added: boolean;
+  /** The file was in the index and is now removed. */
+  removed: boolean;
+}
+
+export type StoryIndexInvalidationListener = (event?: StoryIndexInvalidationEvent) => void;
+
+/**
+ * The parts of the story index generator (the `storyIndexGenerator` preset) that presets and
+ * builders use. The `StoryIndexGenerator` class in `core-server` implements it.
+ */
+export interface StoryIndexGeneratorApi {
+  getIndex(): Promise<StoryIndex>;
+  invalidate(importPath: string, removed: boolean): void;
+  invalidateAll(): void;
+  onInvalidated(listener: StoryIndexInvalidationListener): () => void;
+}
+
 export interface StorybookConfigRaw {
   /**
    * Sets the addons you want to use with Forkbook.
@@ -783,7 +804,7 @@ export interface StorybookConfigRaw {
             import('../../shared/open-service/services/module-graph/engine/parser-registry/types.ts').ImportParser[]
           >);
 
-  storyIndexGenerator?: StoryIndexGenerator;
+  storyIndexGenerator?: StoryIndexGeneratorApi;
 
   experimental_devServer?: ServerApp;
 

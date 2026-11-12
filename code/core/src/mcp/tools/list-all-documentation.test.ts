@@ -3,7 +3,7 @@ import { McpServer } from 'tmcp';
 import type { GenericSchema } from 'valibot';
 import { ValibotJsonSchemaAdapter } from '@tmcp/adapter-valibot';
 import { addListAllDocumentationTool, LIST_TOOL_NAME } from './register.ts';
-import type { ComponentManifestMap, DocsManifestMap, Source, StorybookContext } from '../types.ts';
+import type { ComponentManifestMap, DocsManifestMap, Source, ForkbookContext } from '../types.ts';
 import smallManifestFixtureRaw from '../fixtures/small-manifest.fixture.json' with { type: 'json' };
 import smallDocsManifestFixtureRaw from '../fixtures/small-docs-manifest.fixture.json' with { type: 'json' };
 import {
@@ -54,7 +54,7 @@ function createManifestProvider(served: Record<string, ServedManifests>) {
 }
 
 describe('listAllDocumentationTool', () => {
-  let server: McpServer<GenericSchema, StorybookContext>;
+  let server: McpServer<GenericSchema, ForkbookContext>;
   let served: Record<string, ServedManifests>;
   let manifestProvider: ReturnType<typeof createManifestProvider>;
 
@@ -72,7 +72,7 @@ describe('listAllDocumentationTool', () => {
           tools: { listChanged: true },
         },
       }
-    ).withContext<StorybookContext>();
+    ).withContext<ForkbookContext>();
 
     // initialize test session
     await server.receive(

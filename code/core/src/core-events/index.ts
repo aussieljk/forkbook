@@ -88,9 +88,6 @@ enum events {
   SAVE_STORY_RESPONSE = 'saveStoryResponse',
   ARGTYPES_INFO_REQUEST = 'argtypesInfoRequest',
   ARGTYPES_INFO_RESPONSE = 'argtypesInfoResponse',
-  // Story discovery and testing flow
-  GHOST_STORIES_REQUEST = 'ghostStoriesRequest',
-  GHOST_STORIES_RESPONSE = 'ghostStoriesResponse',
   // AI analytics - skills setup command
   AI_SETUP_ANALYTICS_RESPONSE = 'aiSetupAnalyticsResponse',
   AI_SETUP_ANALYTICS_REQUEST = 'aiSetupAnalyticsRequest',
@@ -168,8 +165,6 @@ export const {
   SAVE_STORY_RESPONSE,
   ARGTYPES_INFO_REQUEST,
   ARGTYPES_INFO_RESPONSE,
-  GHOST_STORIES_REQUEST,
-  GHOST_STORIES_RESPONSE,
   AI_SETUP_ANALYTICS_RESPONSE,
   AI_SETUP_ANALYTICS_REQUEST,
   OPEN_IN_EDITOR_REQUEST,

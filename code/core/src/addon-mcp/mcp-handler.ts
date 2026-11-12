@@ -5,7 +5,6 @@ import pkgJson from '../../package.json' with { type: 'json' };
 import type { Source } from '@aussieljk/forkbook/internal/toolsets-docs';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { buffer } from 'node:stream/consumers';
 import { collectTelemetry } from './telemetry.ts';
 import type { DocsAccess } from '@aussieljk/forkbook/internal/toolsets-docs';
 import type { AddonContext, AddonMcpServer, AddonOptionsOutput } from './types.ts';
@@ -13,10 +12,13 @@ import { logger } from '@aussieljk/forkbook/internal/node-logger';
 import {
   getEffectiveToolAvailability,
   getToolAvailability,
+  readRequestBody,
+  RequestBodyTooLargeError,
+  sendPayloadTooLarge,
 } from '@aussieljk/forkbook/internal/core-server';
 import { buildServerInstructions } from '@aussieljk/forkbook/internal/skills';
 import type { CompositionAuth } from './auth/index.ts';
-import { DEFAULT_MCP_ENDPOINT } from './constants.ts';
+import { DEFAULT_MCP_ENDPOINT, MCP_MAX_BODY_BYTES } from './constants.ts';
 import {
   type BasePathRequest,
   getPublicOrigin,
@@ -131,6 +133,19 @@ export const mcpServerHandler = async ({
   localAccess,
   compositionAuth,
 }: McpServerHandlerParams) => {
+  // Convert Node.js request to Web API Request. The body is read first, so a body that is too
+  // large gets 413 before the MCP server starts.
+  let webRequest: Request;
+  try {
+    webRequest = await incomingMessageToWebRequest(req);
+  } catch (error) {
+    if (error instanceof RequestBodyTooLargeError) {
+      sendPayloadTooLarge(res, error);
+      return;
+    }
+    throw error;
+  }
+
   // Initialize MCP server and transport on first request, with concurrency safety
   if (!initialize) {
     initialize = initializeMCPServer(
@@ -139,9 +154,6 @@ export const mcpServerHandler = async ({
     );
   }
   await initialize;
-
-  // Convert Node.js request to Web API Request
-  const webRequest = await incomingMessageToWebRequest(req);
 
   const addonContext: AddonContext = {
     options,
@@ -196,14 +208,17 @@ export function getRequestOrigin(req: IncomingMessage, trustedOrigin: string): s
 /**
  * Converts a Node.js IncomingMessage to a Web Request.
  */
-export async function incomingMessageToWebRequest(req: IncomingMessage): Promise<Request> {
+export async function incomingMessageToWebRequest(
+  req: IncomingMessage,
+  maxBodyBytes = MCP_MAX_BODY_BYTES
+): Promise<Request> {
   // The URL that the browser sees: a proxy in front of Forkbook (for example `next dev` through a
   // rewrite) sends the site host in `x-forwarded-host`. The base path mount removed the base from
   // `req.url`, so it is added back.
   const base = (req as BasePathRequest).forkbookBasePath ?? '';
   const url = new URL(`${base}${req.url || '/'}`, getPublicOrigin(req));
 
-  const bodyBuffer = await buffer(req);
+  const bodyBuffer = await readRequestBody(req, maxBodyBytes);
 
   return new Request(url, {
     method: req.method,

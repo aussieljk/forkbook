@@ -112,14 +112,21 @@ describe('formatCommentsPrompt', () => {
   });
 });
 
-const request = (method: string, body?: unknown, contentType = 'application/json') => {
+const request = (
+  method: string,
+  body?: unknown,
+  contentType = 'application/json',
+  headers: Record<string, string> = {}
+) => {
   const req = new PassThrough() as unknown as IncomingMessage;
   Object.assign(req, {
     method,
     url: '/__forkbook/comments',
-    headers: { 'content-type': contentType },
+    headers: { 'content-type': contentType, ...headers },
   });
-  (req as unknown as PassThrough).end(body === undefined ? undefined : JSON.stringify(body));
+  (req as unknown as PassThrough).end(
+    body === undefined ? undefined : typeof body === 'string' ? body : JSON.stringify(body)
+  );
   let status = 0;
   let text = '';
   const res = {
@@ -148,6 +155,64 @@ describe('handleCommentsRequest', () => {
     const post = request('POST', { action: 'add' }, 'text/plain');
     await handleCommentsRequest(store, post.req, post.res);
     expect(post.result().status).toBe(415);
+  });
+
+  it('accepts a POST from the same origin', async () => {
+    const post = request(
+      'POST',
+      { action: 'add', comment: { ...base, note: 'Hi' } },
+      'application/json',
+      { 'sec-fetch-site': 'same-origin', origin: 'http://localhost:6006' }
+    );
+    await handleCommentsRequest(store, post.req, post.res);
+    expect(post.result().status).toBe(200);
+  });
+
+  it.each<Record<string, string>>([
+    { 'sec-fetch-site': 'cross-site' },
+    { 'sec-fetch-site': 'same-site' },
+    { origin: 'http://evil.example.com' },
+  ])('rejects a cross-site POST with 403 (%o)', async (headers) => {
+    const post = request(
+      'POST',
+      { action: 'add', comment: { ...base, note: 'Hi' } },
+      'application/json',
+      headers
+    );
+    await handleCommentsRequest(store, post.req, post.res);
+    expect(post.result().status).toBe(403);
+    expect(await store.list({ status: 'all' })).toHaveLength(0);
+  });
+
+  it('accepts an Origin that allowedHosts lists', async () => {
+    const post = request(
+      'POST',
+      { action: 'add', comment: { ...base, note: 'Hi' } },
+      'application/json',
+      { origin: 'https://app.example.com' }
+    );
+    await handleCommentsRequest(store, post.req, post.res, {
+      hostValidation: { allowedHosts: ['app.example.com'] },
+    });
+    expect(post.result().status).toBe(200);
+  });
+
+  it('rejects a body larger than the limit with 413', async () => {
+    const post = request('POST', { action: 'add', comment: { ...base, note: 'x'.repeat(200) } });
+    await handleCommentsRequest(store, post.req, post.res, {
+      hostValidation: {},
+      maxBodyBytes: 100,
+    });
+    expect(post.result().status).toBe(413);
+    expect(await store.list({ status: 'all' })).toHaveLength(0);
+  });
+
+  it('rejects a Content-Length larger than the default limit with 413', async () => {
+    const post = request('POST', '{}', 'application/json', {
+      'content-length': String(2 * 1024 * 1024),
+    });
+    await handleCommentsRequest(store, post.req, post.res);
+    expect(post.result().status).toBe(413);
   });
 
   it('returns 400 for a bad action', async () => {

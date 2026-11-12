@@ -6,7 +6,7 @@ import {
   createLocalDocsAccess,
   getEffectiveToolAvailability,
   getToolAvailability,
-  isValidHost,
+  isCrossSiteRequest,
   loadManifests,
 } from '@aussieljk/forkbook/internal/core-server';
 import { isWebContainer } from '@aussieljk/forkbook/internal/common';
@@ -51,26 +51,14 @@ export const experimental_devServer: PresetPropertyFn<
   // Needed for e.g. StackBlitz. Not running on developer machines so skipping validation is ok.
   const skipOriginValidation = isWebContainer();
 
-  // Request middleware rejecting invalid origin or host configuration.
+  // Request middleware rejecting cross-site requests: a `Sec-Fetch-Site` other than same-origin
+  // or none, or an `Origin` that is not an allowed host (DNS rebinding). MCP clients are not
+  // browsers and send neither header, so they pass.
+  // See https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http.
   const rejectDisallowedOrigin = (req: IncomingMessage, res: ServerResponse): boolean => {
-    if (skipOriginValidation) {
+    if (skipOriginValidation || !isCrossSiteRequest(req, hostValidation)) {
       return false;
     }
-
-    // MCP clients are not browsers and send no Origin header. We only need to check the Origin
-    // of Web clients for DNS rebinding attacks, which browsers will attach for us.
-    // See https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http.
-    const { origin: requestOrigin } = req.headers;
-    if (!requestOrigin) {
-      return false;
-    }
-
-    // Check host validity.
-    try {
-      if (isValidHost(new URL(requestOrigin).host, hostValidation)) {
-        return false;
-      }
-    } catch {}
 
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Invalid origin');

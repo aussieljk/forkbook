@@ -138,6 +138,18 @@ describe('mcp-handler conversion utilities', () => {
       expect(webRequest.headers.get('x-custom-header')).toBe('custom-value');
       expect(webRequest.headers.get('authorization')).toBe('Bearer token123');
     });
+
+    it('fails when the body is larger than the limit', async () => {
+      const mockReq = createMockIncomingMessage({
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: 'x'.repeat(20),
+      });
+
+      await expect(incomingMessageToWebRequest(mockReq, 10)).rejects.toMatchObject({
+        name: 'RequestBodyTooLargeError',
+      });
+    });
   });
 
   describe('webResponseToServerResponse', () => {
@@ -282,6 +294,30 @@ describe('mcpServerHandler', () => {
     const parsed = JSON.parse(dataLine!.replace(/^data: /, '').trim());
     return parsed.result.tools.map((t: { name: string }) => t.name);
   }
+
+  it('returns 413 for a body larger than 4 MB, before the MCP server starts', async () => {
+    const mockOptions = createMockOptions();
+    const mockReq = createMockIncomingMessage({
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'content-length': String(5 * 1024 * 1024) },
+      body: createMCPInitializeRequest(),
+    });
+    const response = { writeHead: vi.fn(), end: vi.fn() } as unknown as ServerResponse;
+
+    await mcpServerHandler({
+      req: mockReq,
+      res: response,
+      options: mockOptions,
+      addonOptions: { toolsets: { dev: true, docs: true, test: true } },
+      compositionAuth: new CompositionAuth(),
+    });
+
+    expect(response.writeHead).toHaveBeenCalledWith(413, {
+      'Content-Type': 'text/plain',
+      Connection: 'close',
+    });
+    expect(mockOptions.presets.apply).not.toHaveBeenCalled();
+  });
 
   it('should initialize MCP server and handle requests', async () => {
     const mockOptions = createMockOptions();

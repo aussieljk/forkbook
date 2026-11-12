@@ -23,6 +23,7 @@ import type {
   Path,
   StoryIndex,
   StoryIndexEntry,
+  StoryIndexGeneratorApi,
   StoryIndexInput,
   StorybookConfigRaw,
 } from '@aussieljk/forkbook/internal/types';
@@ -115,7 +116,7 @@ export interface InvalidationEvent {
 }
 export type InvalidationListener = (event?: InvalidationEvent) => void;
 
-export class StoryIndexGenerator {
+export class StoryIndexGenerator implements StoryIndexGeneratorApi {
   // An internal cache mapping specifiers to a set of path=><set of stories>
   // Later, we'll combine each of these subsets together to form the full index
   private specifierToCache: Map<NormalizedStoriesSpecifier, SpecifierStoriesCache>;

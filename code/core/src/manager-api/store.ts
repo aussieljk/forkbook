@@ -7,7 +7,7 @@ import type { State } from './root.tsx';
 // setting up the store, overriding set and get to use telejson
 storeSetup(store._);
 
-export const STORAGE_KEY = '@storybook/manager/store';
+export const STORAGE_KEY = '@aussieljk/forkbook/manager/store';
 
 function get(storage: StoreAPI) {
   const data = storage.get(STORAGE_KEY);

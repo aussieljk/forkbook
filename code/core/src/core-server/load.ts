@@ -23,7 +23,7 @@ import { dirname, isAbsolute, join, relative, resolve } from 'pathe';
 
 import { resolvePackageDir, safeResolveModule } from '../shared/utils/module.ts';
 
-export async function loadStorybook(
+export async function loadForkbook(
   options: CLIOptions &
     LoadOptions &
     BuilderOptions & {

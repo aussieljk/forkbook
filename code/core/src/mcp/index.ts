@@ -7,7 +7,7 @@ import {
   addGetStoryDocumentationTool,
   addListAllDocumentationTool,
 } from './tools/register.ts';
-import type { StorybookContext } from './types.ts';
+import type { ForkbookContext } from './types.ts';
 import { DOCS_TOOLSET_INSTRUCTIONS as serverInstructions } from '@aussieljk/forkbook/internal/toolsets-docs';
 
 export { serverInstructions as FORKBOOK_MCP_INSTRUCTIONS };
@@ -44,6 +44,7 @@ export { getMultiSourceManifests } from './utils/multi-source-manifests.ts';
 // Export types for reuse
 export type {
   RequiresOwnMcpNotice,
+  ForkbookContext,
   StorybookContext,
   ResolvedEntry,
   Source,
@@ -88,9 +89,9 @@ type InitializeRequestParams = {
 
 /**
  * Options for creating a Forkbook MCP handler.
- * Extends StorybookContext with server-level configuration.
+ * Extends ForkbookContext with server-level configuration.
  */
-export interface StorybookMcpHandlerOptions extends StorybookContext {
+export interface StorybookMcpHandlerOptions extends ForkbookContext {
   /**
    * Optional handler called when an MCP session is initialized.
    * This is only valid at the handler creation level, not per-request.
@@ -101,7 +102,7 @@ export interface StorybookMcpHandlerOptions extends StorybookContext {
 export type { ComponentManifest } from './types.ts';
 export { ComponentManifestMap, DocsManifestMap } from './types.ts';
 
-type Handler = (req: Request, context?: StorybookContext) => Promise<Response>;
+type Handler = (req: Request, context?: ForkbookContext) => Promise<Response>;
 
 export const createStorybookMcpHandler = async (
   options: StorybookMcpHandlerOptions = {}
@@ -122,7 +123,7 @@ export const createStorybookMcpHandler = async (
         tools: { listChanged: true },
       },
     }
-  ).withContext<StorybookContext>();
+  ).withContext<ForkbookContext>();
 
   if (onSessionInitialize) {
     server.on('initialize', onSessionInitialize);

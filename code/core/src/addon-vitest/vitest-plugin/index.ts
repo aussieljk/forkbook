@@ -18,7 +18,7 @@ import {
 import {
   StoryIndexGenerator,
   Tag,
-  experimental_loadStorybook,
+  experimental_loadForkbook,
   mapStaticDir,
 } from '@aussieljk/forkbook/internal/core-server';
 import {
@@ -236,7 +236,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
     workingDir: WORKING_DIR,
   };
 
-  const { presets } = await experimental_loadStorybook({
+  const { presets } = await experimental_loadForkbook({
     configDir: finalOptions.configDir,
     packageJson: {},
   });

@@ -5,7 +5,7 @@ import type { InlineConfig } from 'vitest/node';
 import { validateConfigurationFiles } from '@aussieljk/forkbook/internal/common';
 import {
   StoryIndexGenerator,
-  experimental_loadStorybook,
+  experimental_loadForkbook,
 } from '@aussieljk/forkbook/internal/core-server';
 import { isTelemetryModuleEnabled } from '@aussieljk/forkbook/internal/telemetry';
 
@@ -41,9 +41,9 @@ beforeEach(() => {
     }
   });
 
-  vi.mocked(experimental_loadStorybook).mockResolvedValue({
+  vi.mocked(experimental_loadForkbook).mockResolvedValue({
     presets: { apply: presetApply },
-  } as unknown as Awaited<ReturnType<typeof experimental_loadStorybook>>);
+  } as unknown as Awaited<ReturnType<typeof experimental_loadForkbook>>);
   vi.mocked(StoryIndexGenerator.findMatchingFilesForSpecifiers).mockResolvedValue([]);
   vi.mocked(validateConfigurationFiles).mockResolvedValue(undefined as never);
   vi.mocked(isTelemetryModuleEnabled).mockReturnValue(false);

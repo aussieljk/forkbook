@@ -5,6 +5,9 @@ export const TOOL_ID = `${ADDON_ID}/tool` as const;
 /** REST route that the dev server serves. The manager reads and writes comments through it. */
 export const COMMENTS_API_PATH = '/__forkbook/comments' as const;
 
+/** The largest request body that the comments route reads. A larger body gets 413. */
+export const COMMENTS_MAX_BODY_BYTES = 1024 * 1024;
+
 /** File, relative to the project root, that keeps the comments between restarts. */
 export const COMMENTS_FILE = '.forkbook/comments.json' as const;
 
