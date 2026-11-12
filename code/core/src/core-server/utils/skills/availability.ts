@@ -1,5 +1,5 @@
-import { getService } from '../../shared/open-service/server.ts';
-import type { Options } from '../../types/index.ts';
+import { getService } from '../../../shared/open-service/server.ts';
+import type { Options } from '../../../types/index.ts';
 
 import { isAddonA11yEnabled } from './addon-a11y.ts';
 import { isAddonVitestEnabled } from './addon-vitest.ts';

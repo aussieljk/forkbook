@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getService } from '../../shared/open-service/server.ts';
-import type { Options } from '../../types/index.ts';
+import { getService } from '../../../shared/open-service/server.ts';
+import type { Options } from '../../../types/index.ts';
 
 import { isAddonA11yEnabled } from './addon-a11y.ts';
 import { isAddonVitestEnabled } from './addon-vitest.ts';
@@ -16,7 +16,7 @@ import { getManifestStatus } from './manifest-status.ts';
 vi.mock('./manifest-status.ts', () => ({ getManifestStatus: vi.fn() }));
 vi.mock('./addon-vitest.ts', () => ({ isAddonVitestEnabled: vi.fn() }));
 vi.mock('./addon-a11y.ts', () => ({ isAddonA11yEnabled: vi.fn() }));
-vi.mock('../../shared/open-service/server.ts', () => ({ getService: vi.fn() }));
+vi.mock('../../../shared/open-service/server.ts', () => ({ getService: vi.fn() }));
 
 function createOptions(): Options {
   return {

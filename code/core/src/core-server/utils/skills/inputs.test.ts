@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { fs as memfs, vol } from 'memfs';
 
-import type { Options } from '../../types/index.ts';
+import type { Options } from '../../../types/index.ts';
 
 import { resolveSkillInputs } from './inputs.ts';
 

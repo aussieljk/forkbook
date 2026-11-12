@@ -13,7 +13,7 @@ export { default as build } from './standalone.ts';
 export { mapStaticDir } from './utils/server-statics.ts';
 export { StoryIndexGenerator } from './utils/StoryIndexGenerator.ts';
 export { getStoriesPathsFromConfig } from './utils/get-stories-paths-from-config.ts';
-export type { ComponentArgTypesData } from './utils/get-dummy-args-from-argtypes.ts';
+export type { ComponentArgTypesData } from '../csf-tools/get-dummy-args-from-argtypes.ts';
 
 export { loadStorybook as experimental_loadStorybook } from './load.ts';
 
@@ -146,14 +146,14 @@ export {
   getEffectiveToolAvailability,
   getToolAvailability,
   isModuleGraphSupported,
-} from '../cli/skills/availability.ts';
-export type { ToolAvailability } from '../cli/skills/availability.ts';
-export { isAddonA11yEnabled } from '../cli/skills/addon-a11y.ts';
-export { isAddonVitestEnabled } from '../cli/skills/addon-vitest.ts';
-export { resolveSkillInputs } from '../cli/skills/inputs.ts';
-export type { SkillInputs } from '../cli/skills/inputs.ts';
-export { getManifestStatus } from '../cli/skills/manifest-status.ts';
-export type { ManifestFeatures, ManifestStatus } from '../cli/skills/manifest-status.ts';
+} from './utils/skills/availability.ts';
+export type { ToolAvailability } from './utils/skills/availability.ts';
+export { isAddonA11yEnabled } from './utils/skills/addon-a11y.ts';
+export { isAddonVitestEnabled } from './utils/skills/addon-vitest.ts';
+export { resolveSkillInputs } from './utils/skills/inputs.ts';
+export type { SkillInputs } from './utils/skills/inputs.ts';
+export { getManifestStatus } from './utils/skills/manifest-status.ts';
+export type { ManifestFeatures, ManifestStatus } from './utils/skills/manifest-status.ts';
 
 export { analyzeTestResults } from '../shared/utils/analyze-test-results.ts';
 export type {

@@ -13,7 +13,7 @@ import type { ArgTypes } from '@aussieljk/forkbook/internal/csf';
 import {
   FORKBOOK_FN_PLACEHOLDER,
   generateDummyArgsFromArgTypes,
-} from '../../core-server/utils/get-dummy-args-from-argtypes.ts';
+} from '../get-dummy-args-from-argtypes.ts';
 import { createTestGuardDeclaration } from './transformer.ts';
 
 const VITEST_IMPORT_SOURCE = 'vitest';

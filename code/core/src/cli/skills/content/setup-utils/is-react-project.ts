@@ -1,5 +1,5 @@
 import type { ProjectInfo } from '../../project-info.ts';
-import { frameworkToRendererMap } from '../framework-renderer.ts';
+import { frameworkToRendererMap } from '../../../../shared/utils/framework-renderer.ts';
 
 export function isReactProject(projectInfo: ProjectInfo): boolean {
   const renderer =

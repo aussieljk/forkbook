@@ -16,6 +16,7 @@ vi.mock('./record-setup-run.ts', () => ({ recordSetupRun: vi.fn() }));
 vi.mock('@aussieljk/forkbook/internal/core-server', () => ({
   withTelemetry: vi.fn(async (_event, _options, run: () => Promise<unknown>) => run()),
   experimental_loadStorybook: vi.fn(),
+  resolveSkillInputs: vi.fn(),
 }));
 vi.mock('@aussieljk/forkbook/internal/telemetry', { spy: true });
 

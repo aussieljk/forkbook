@@ -1,7 +1,7 @@
 import { getToolName } from '../../../shared/open-service/toolset-names.ts';
 
 import { getFinalLinksGuidance } from './build-server-instructions.ts';
-import { frameworkToRendererMap } from './framework-renderer.ts';
+import { frameworkToRendererMap } from '../../../shared/utils/framework-renderer.ts';
 import a11yInstructionsTemplate from './instructions/a11y-instructions.md';
 import storyTestingInstructionsTemplate from './instructions/story-testing-instructions.md';
 import storyInstructionsTemplate from './instructions/storybook-story-instructions.md';

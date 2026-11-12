@@ -1,5 +1,6 @@
 import {
   experimental_loadStorybook,
+  resolveSkillInputs,
   withTelemetry,
 } from '@aussieljk/forkbook/internal/core-server';
 import { telemetry } from '@aussieljk/forkbook/internal/telemetry';
@@ -13,7 +14,6 @@ import { resolveStorybookConfigDir } from '../tools/config-dir.ts';
 import { toCatalogEntry } from '../tools/sdk/catalog.ts';
 import type { CommandFailureHandler } from '../tools/register.ts';
 import { getSetupMarkdownOutput } from './content/setup-prompts/index.ts';
-import { resolveSkillInputs } from './inputs.ts';
 import { getProjectInfo } from './project-info.ts';
 import { recordSetupRun } from './record-setup-run.ts';
 import {
