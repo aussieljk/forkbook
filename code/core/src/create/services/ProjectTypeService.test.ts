@@ -193,7 +193,6 @@ describe('ProjectTypeService', () => {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
-          'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] };
       });
@@ -208,7 +207,6 @@ describe('ProjectTypeService', () => {
           typescript: '4.8.4',
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
-          'eslint-plugin-storybook': '0.6.7',
         };
         return { version: versions[name] };
       });
@@ -223,27 +221,11 @@ describe('ProjectTypeService', () => {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
-          'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       await expect(service.detectLanguage()).resolves.toBe('javascript');
-    });
-
-    it('returns typescript with canary eslint-plugin-storybook versions', async () => {
-      vi.mocked(pm.getAllDependencies).mockImplementation(() => ({ typescript: '^5.0.0' }));
-      vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
-        const versions: Record<string, string> = {
-          typescript: '5.2.0',
-          '@babel/plugin-transform-typescript': '7.23.0',
-          '@typescript-eslint/parser': '6.7.0',
-          'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',
-        };
-        return { version: versions[name] };
-      });
-      const service = new ProjectTypeService(pm);
-      await expect(service.detectLanguage()).resolves.toBe('typescript');
     });
   });
 
@@ -254,7 +236,6 @@ describe('ProjectTypeService', () => {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '6.7.0',
-          'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] };
       });
@@ -269,7 +250,6 @@ describe('ProjectTypeService', () => {
           typescript: '4.8.4',
           '@babel/plugin-transform-typescript': '7.19.0',
           '@typescript-eslint/parser': '5.43.0',
-          'eslint-plugin-storybook': '0.6.7',
         };
         return { version: versions[name] };
       });
@@ -284,7 +264,6 @@ describe('ProjectTypeService', () => {
           typescript: '5.2.0',
           '@babel/plugin-transform-typescript': '7.23.0',
           '@typescript-eslint/parser': '5.43.0', // only the parser is below 5.44.0
-          'eslint-plugin-storybook': '0.7.0',
         };
         return { version: versions[name] };
       });
@@ -295,19 +274,18 @@ describe('ProjectTypeService', () => {
       ]);
     });
 
-    it('treats canary eslint-plugin-storybook versions as compatible', async () => {
+    it('does not check eslint-plugin-storybook', async () => {
       vi.mocked(pm.getModulePackageJSON).mockImplementation(async (name) => {
         const versions: Record<string, string> = {
           typescript: '5.2.0',
-          '@babel/plugin-transform-typescript': '7.23.0',
-          '@typescript-eslint/parser': '6.7.0',
-          'eslint-plugin-storybook': '0.0.0-pr-34552-sha-a34e9165',
+          'eslint-plugin-storybook': '0.6.7',
         };
         return { version: versions[name] };
       });
       const service = new ProjectTypeService(pm);
       const reasons = await service.detectIncompatiblePackageVersions();
       expect(reasons).toEqual([]);
+      expect(pm.getModulePackageJSON).not.toHaveBeenCalledWith('eslint-plugin-storybook');
     });
   });
 });

@@ -40,7 +40,6 @@ const expectedMinimumReleaseAgeExcludePackages = [
   'webpack',
   '@aussieljk/forkbook',
   '@storybook/*',
-  'eslint-plugin-storybook',
 ];
 
 describe('PNPM Proxy', () => {
@@ -733,11 +732,7 @@ describe('PNPM Proxy', () => {
         .mockResolvedValueOnce(commandResult({ stdout: '1440\n' }))
         .mockResolvedValueOnce(
           commandResult({
-            stdout: JSON.stringify([
-              '@aussieljk/forkbook',
-              '@storybook/*',
-              'eslint-plugin-storybook',
-            ]),
+            stdout: JSON.stringify(['@aussieljk/forkbook', '@storybook/*']),
           })
         );
 

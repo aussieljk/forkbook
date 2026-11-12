@@ -47,17 +47,12 @@ export async function detectIncompatiblePackageVersions(
     return (await packageManager.getModulePackageJSON(pkg))?.version ?? null;
   };
 
-  const [
-    typescriptVersion,
-    babelPluginTransformTypescriptVersion,
-    typescriptEslintParserVersion,
-    eslintPluginStorybookVersion,
-  ] = await Promise.all([
-    getModulePackageJSONVersion('typescript'),
-    getModulePackageJSONVersion('@babel/plugin-transform-typescript'),
-    getModulePackageJSONVersion('@typescript-eslint/parser'),
-    getModulePackageJSONVersion('eslint-plugin-storybook'),
-  ]);
+  const [typescriptVersion, babelPluginTransformTypescriptVersion, typescriptEslintParserVersion] =
+    await Promise.all([
+      getModulePackageJSONVersion('typescript'),
+      getModulePackageJSONVersion('@babel/plugin-transform-typescript'),
+      getModulePackageJSONVersion('@typescript-eslint/parser'),
+    ]);
 
   const satisfies = (version: string | null, range: string) => {
     if (!version) {
@@ -84,16 +79,5 @@ export async function detectIncompatiblePackageVersions(
       `@typescript-eslint/parser ${typescriptEslintParserVersion} is below 5.44.0`
     );
   }
-  // Treat Forkbook canary/prerelease versions (e.g. 0.0.0-pr-*) as compatible
-  if (
-    eslintPluginStorybookVersion &&
-    !eslintPluginStorybookVersion.startsWith('0.0.0-') &&
-    !satisfies(eslintPluginStorybookVersion, '>=0.6.8')
-  ) {
-    incompatibleReasons.push(
-      `eslint-plugin-storybook ${eslintPluginStorybookVersion} is below 0.6.8`
-    );
-  }
-
   return incompatibleReasons;
 }

@@ -25,7 +25,8 @@ Other variables are not in the browser. This keeps secrets out of the build.
 | `FORKBOOK_DISABLE_TELEMETRY` | Sends no telemetry: no error reports and no OpenTelemetry data. |
 | `FORKBOOK_SENTRY_DSN` | Sends error reports to this Sentry DSN. An empty string stops error reports. See [Telemetry](/docs/configure/telemetry). |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | Sends telemetry with OpenTelemetry to this address. Without it, Forkbook sends no OpenTelemetry data. See [Telemetry](/docs/configure/telemetry). |
-| `SBCONFIG_PORT`, `SBCONFIG_HOSTNAME`, `SBCONFIG_CONFIG_DIR`, `SBCONFIG_STATIC_DIR`, `SBCONFIG_OUTPUT_DIR` | The same as the CLI options. See [CLI options](/docs/api/cli-options). |
+| `FORKBOOK_PORT`, `FORKBOOK_HOSTNAME`, `FORKBOOK_CONFIG_DIR`, `FORKBOOK_STATIC_DIR`, `FORKBOOK_OUTPUT_DIR`, `FORKBOOK_OUTPUT_FILE` | The same as the CLI options. A CLI option wins over its variable. See [CLI options](/docs/api/cli-options). |
+| `FORKBOOK` | Forkbook sets it to `true` while it runs. It also sets `STORYBOOK` to `true` for third-party packages. |
 | `FORKBOOK_ENABLED` | (React Native) Shows Forkbook in the app. See [React Native](/docs/get-started/frameworks/react-native). |
 
-In Storybook these names started with `STORYBOOK_`. Forkbook does not read the old names.
+In Storybook these names started with `STORYBOOK_` or `SBCONFIG_`. Forkbook does not read the old names.

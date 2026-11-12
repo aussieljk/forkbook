@@ -16,6 +16,8 @@ export async function loadEnvs(options: { production?: boolean } = {}): Promise<
   const baseEnv: Record<string, string> = {
     NODE_ENV: process.env.NODE_ENV || defaultNodeEnv,
     NODE_PATH: process.env['NODE_PATH'] || '',
+    FORKBOOK: process.env['FORKBOOK'] || 'true',
+    // Third-party packages read STORYBOOK, so keep it.
     STORYBOOK: process.env['STORYBOOK'] || 'true',
     // This is to support CRA's public folder feature.
     // In production we set this to dot(.) to allow the browser to access these assets

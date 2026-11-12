@@ -12,16 +12,16 @@ const getErrorMessage = (callback: () => unknown) => {
 };
 
 describe('resolveDevCommandOptions', () => {
-  it('preserves truthy getEnvConfig-style env overrides for existing dev options', () => {
+  it('uses the FORKBOOK_* env vars when the options are not given', () => {
     expect(
       resolveDevCommandOptions(
-        { ci: false, configDir: 'cli-config', host: 'cli-host', staticDir: 'cli-static' },
+        { ci: false },
         {
           env: {
             CI: 'false',
-            SBCONFIG_CONFIG_DIR: 'env-config',
-            SBCONFIG_HOSTNAME: 'env-host',
-            SBCONFIG_STATIC_DIR: 'env-static',
+            FORKBOOK_CONFIG_DIR: 'env-config',
+            FORKBOOK_HOSTNAME: 'env-host',
+            FORKBOOK_STATIC_DIR: 'env-static',
           },
         }
       )
@@ -33,7 +33,28 @@ describe('resolveDevCommandOptions', () => {
     });
   });
 
-  it('uses PORT when no explicit port or SBCONFIG_PORT was provided', () => {
+  it('keeps explicit options over the FORKBOOK_* env vars', () => {
+    // addon-vitest sets FORKBOOK_CONFIG_DIR for its child process. A dev command started from
+    // there with --config-dir must keep its own config dir.
+    expect(
+      resolveDevCommandOptions(
+        { configDir: 'cli-config', host: 'cli-host', staticDir: 'cli-static' },
+        {
+          env: {
+            FORKBOOK_CONFIG_DIR: 'env-config',
+            FORKBOOK_HOSTNAME: 'env-host',
+            FORKBOOK_STATIC_DIR: 'env-static',
+          },
+        }
+      )
+    ).toMatchObject({
+      configDir: 'cli-config',
+      host: 'cli-host',
+      staticDir: 'cli-static',
+    });
+  });
+
+  it('uses PORT when no explicit port or FORKBOOK_PORT was provided', () => {
     expect(resolveDevCommandOptions({}, { env: { PORT: '6123' } })).toMatchObject({
       port: 6123,
     });
@@ -45,17 +66,17 @@ describe('resolveDevCommandOptions', () => {
     });
   });
 
-  it('uses SBCONFIG_PORT over PORT outside Claude preview', () => {
+  it('uses FORKBOOK_PORT over PORT outside Claude preview', () => {
     expect(
-      resolveDevCommandOptions({}, { env: { PORT: '6123', SBCONFIG_PORT: '7008' } })
+      resolveDevCommandOptions({}, { env: { PORT: '6123', FORKBOOK_PORT: '7008' } })
     ).toMatchObject({
       port: 7008,
     });
   });
 
-  it('keeps explicit --port precedence over SBCONFIG_PORT outside Claude preview', () => {
+  it('keeps explicit --port precedence over FORKBOOK_PORT outside Claude preview', () => {
     expect(
-      resolveDevCommandOptions({ port: '7007' }, { env: { SBCONFIG_PORT: '7008' } })
+      resolveDevCommandOptions({ port: '7007' }, { env: { FORKBOOK_PORT: '7008' } })
     ).toMatchObject({
       port: 7007,
     });
@@ -72,22 +93,22 @@ describe('resolveDevCommandOptions', () => {
     });
   });
 
-  it('uses explicit --port over SBCONFIG_PORT in Claude preview when PORT is absent', () => {
+  it('uses explicit --port over FORKBOOK_PORT in Claude preview when PORT is absent', () => {
     expect(
       resolveDevCommandOptions(
         { port: '7007' },
-        { env: { CLAUDE_AGENT_SDK_VERSION: '0.1.0', SBCONFIG_PORT: '7008' } }
+        { env: { CLAUDE_AGENT_SDK_VERSION: '0.1.0', FORKBOOK_PORT: '7008' } }
       )
     ).toMatchObject({
       port: 7007,
     });
   });
 
-  it('uses SBCONFIG_PORT in Claude preview when PORT and explicit --port are absent', () => {
+  it('uses FORKBOOK_PORT in Claude preview when PORT and explicit --port are absent', () => {
     expect(
       resolveDevCommandOptions(
         {},
-        { env: { CLAUDE_AGENT_SDK_VERSION: '0.1.0', SBCONFIG_PORT: '7008' } }
+        { env: { CLAUDE_AGENT_SDK_VERSION: '0.1.0', FORKBOOK_PORT: '7008' } }
       )
     ).toMatchObject({
       port: 7008,
@@ -154,9 +175,9 @@ describe('resolveDevCommandOptions', () => {
     expect(message).toContain('at port');
   });
 
-  it('rejects invalid selected SBCONFIG_PORT values', () => {
+  it('rejects invalid selected FORKBOOK_PORT values', () => {
     const message = getErrorMessage(() =>
-      resolveDevCommandOptions({}, { env: { SBCONFIG_PORT: '7007abc' } })
+      resolveDevCommandOptions({}, { env: { FORKBOOK_PORT: '7007abc' } })
     );
 
     expect(message).toContain('Port must be a valid number from 1 to 65535, received "7007abc".');
