@@ -9,7 +9,7 @@ import {
   loadAllPresets,
   loadMainConfig,
   resolveAddonName,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
   validateFrameworkName,
   versions,
 } from '@aussieljk/forkbook/internal/common';
@@ -110,7 +110,7 @@ export async function buildDevStandalone(
     options.https ? 'https' : 'http'
   );
 
-  const cacheOutputDir = resolvePathInStorybookCache('public', cacheKey);
+  const cacheOutputDir = resolvePathInForkbookCache('public', cacheKey);
   let outputDir = resolve(options.outputDir || cacheOutputDir);
   if (options.smokeTest) {
     outputDir = cacheOutputDir;

@@ -263,7 +263,7 @@ async function run() {
 
   // The browser tests pre-bundle the built packages into this cache, and Vite does not see when
   // they are built again. Remove it so the next test run uses the new build.
-  rmSync(join(ROOT_DIRECTORY, 'node_modules', '.cache', 'storybook'), {
+  rmSync(join(ROOT_DIRECTORY, 'node_modules', '.cache', 'forkbook'), {
     recursive: true,
     force: true,
   });

@@ -10,7 +10,7 @@ import { cache } from '@aussieljk/forkbook/internal/common';
  *
  * Both flags are scoped to a Forkbook project via `configDir`. In monorepos
  * with hoisted `node_modules`, multiple Forkbook projects share the same
- * `node_modules/.cache/storybook/...` directory — without scoping, running
+ * `node_modules/.cache/forkbook/...` directory — without scoping, running
  * `forkbook skills setup` (or `forkbook init` with AI accepted) in package A
  * would falsely flip package B's checklist or copy-prompt UI.
  *

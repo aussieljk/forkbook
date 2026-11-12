@@ -1,7 +1,7 @@
 import { mkdir } from 'node:fs/promises';
 
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
-import { resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import { resolvePathInForkbookCache } from '@aussieljk/forkbook/internal/common';
 import {
   type StoryIndexGenerator,
   registerToolset,
@@ -188,7 +188,7 @@ export const staticDirs: PresetPropertyFn<'staticDirs'> = async (values = [], op
     return values;
   }
 
-  const coverageDirectory = resolvePathInStorybookCache(COVERAGE_DIRECTORY);
+  const coverageDirectory = resolvePathInForkbookCache(COVERAGE_DIRECTORY);
   await mkdir(coverageDirectory, { recursive: true });
   return [
     {

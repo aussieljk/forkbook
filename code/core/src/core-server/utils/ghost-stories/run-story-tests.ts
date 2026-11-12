@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { mkdir, readFile } from 'node:fs/promises';
 
-import { executeCommand, resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import { executeCommand, resolvePathInForkbookCache } from '@aussieljk/forkbook/internal/common';
 
 import { join } from 'pathe';
 
@@ -22,7 +22,7 @@ export async function runStoryTests(
   const cwd = options?.cwd;
   try {
     // Create the cache directory for story discovery tests
-    const cacheDir = resolvePathInStorybookCache('story-tests');
+    const cacheDir = resolvePathInForkbookCache('story-tests');
     await mkdir(cacheDir, { recursive: true });
 
     // Create timestamped output file

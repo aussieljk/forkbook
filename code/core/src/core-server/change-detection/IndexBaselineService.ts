@@ -1,6 +1,6 @@
 import {
   createFileSystemCache,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
 } from '@aussieljk/forkbook/internal/common';
 import type { StoryIndex } from '@aussieljk/forkbook/internal/types';
 
@@ -50,7 +50,7 @@ export class IndexBaselineService {
     this.cache =
       options.cache ??
       createFileSystemCache({
-        basePath: resolvePathInStorybookCache(DEFAULT_CACHE_KEY),
+        basePath: resolvePathInForkbookCache(DEFAULT_CACHE_KEY),
         ns: 'storybook',
       });
   }

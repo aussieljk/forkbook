@@ -12,7 +12,7 @@ import {
   getInterpretedFile,
   normalizeStories,
   optionalEnvToBoolean,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
   validateConfigurationFiles,
 } from '@aussieljk/forkbook/internal/common';
 import {
@@ -366,7 +366,7 @@ export const storybookTest = async (options?: UserOptions): Promise<Plugin[]> =>
       userApiPermissions = getUserApiPermissions(testConfig);
 
       const baseConfig: Omit<ViteUserConfig, 'plugins'> = {
-        cacheDir: resolvePathInStorybookCache('fb-vitest', projectId),
+        cacheDir: resolvePathInForkbookCache('fb-vitest', projectId),
         test: {
           expect: { requireAssertions: false },
 

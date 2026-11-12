@@ -289,7 +289,7 @@
     },
     "scripts": {
       "name": "forkbook-scripts",
-      "version": "7.0.0-alpha.16",
+      "version": "0.0.0",
       "dependencies": {
         "@aussieljk/forkbook": "workspace:*",
         "@fal-works/esbuild-plugin-global-externals": "^2.1.2",

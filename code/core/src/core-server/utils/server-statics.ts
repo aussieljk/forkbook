@@ -5,7 +5,7 @@ import { basename, dirname, isAbsolute, join, posix, resolve, sep, win32 } from 
 import {
   getDirectoryFromWorkingDir,
   getProjectRoot,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
 } from '@aussieljk/forkbook/internal/common';
 import { CLI_COLORS, logger, once } from '@aussieljk/forkbook/internal/node-logger';
 import type { Options, StorybookConfigRaw } from '@aussieljk/forkbook/internal/types';
@@ -18,7 +18,7 @@ import { dedent } from 'ts-dedent';
 
 import { resolvePackageDir } from '../../shared/utils/module.ts';
 
-const cacheDir = resolvePathInStorybookCache('', 'ignored-sub').split('ignored-sub')[0];
+const cacheDir = resolvePathInForkbookCache('', 'ignored-sub').split('ignored-sub')[0];
 
 const files = new Map<string, { data: string; mtime: number }>();
 const readFileOnce = async (path: string) => {

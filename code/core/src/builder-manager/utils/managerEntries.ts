@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, parse, relative, sep } from 'node:path';
 
-import { resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import { resolvePathInForkbookCache } from '@aussieljk/forkbook/internal/common';
 
 import slash from 'slash';
 
@@ -44,7 +44,7 @@ export async function wrapManagerEntries(entrypoints: string[], uniqueId?: strin
   return Promise.all(
     entrypoints.map(async (entry, i) => {
       const { name, dir } = parse(entry);
-      const cacheLocation = resolvePathInStorybookCache('fb-manager', uniqueId);
+      const cacheLocation = resolvePathInForkbookCache('fb-manager', uniqueId);
 
       if (!cacheLocation) {
         throw new Error('Could not create/find cache directory');

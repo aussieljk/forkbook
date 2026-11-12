@@ -1,6 +1,6 @@
 import {
   createFileSystemCache,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
 } from '@aussieljk/forkbook/internal/common';
 import type {
   StoryTestResult,
@@ -10,7 +10,7 @@ import type {
 const CACHE_KEY = 'agent-self-healing-story-history';
 
 const historyCache = createFileSystemCache({
-  basePath: resolvePathInStorybookCache('agent-self-healing'),
+  basePath: resolvePathInForkbookCache('agent-self-healing'),
   ns: 'forkbook',
 });
 

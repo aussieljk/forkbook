@@ -1,7 +1,7 @@
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
   createFileSystemCache,
-  resolvePathInStorybookCache,
+  resolvePathInForkbookCache,
 } from '@aussieljk/forkbook/internal/common';
 import {
   internal_UniversalStore,
@@ -62,7 +62,7 @@ const createTestRunnerStore = async ({ channel, options }: ResponderOptions): Pr
     undefined;
 
   const fsCache = createFileSystemCache({
-    basePath: resolvePathInStorybookCache(ADDON_ID.replace('/', '-')),
+    basePath: resolvePathInForkbookCache(ADDON_ID.replace('/', '-')),
     ns: 'forkbook',
     ttl: 14 * 24 * 60 * 60 * 1000, // 14 days
   });

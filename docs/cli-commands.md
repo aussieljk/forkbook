@@ -20,9 +20,9 @@ Use `-h` to see all commands and options.
 
 ## Core APIs
 
-This package has multiple sub-exports to can be used to gain access to storybook's APIs.
+This package has multiple sub-exports that give access to the Forkbook APIs.
 
-### `@aussieljk/forkbook/components`
+### `@aussieljk/forkbook/internal/components`
 
 This export contains a list of components very useful for building out addons.
 We recommend addon-authors to use these components to ensure a consistent look and feel, and to reduce the amount of code they need to write.
@@ -40,8 +40,8 @@ This export contains the API that is available in the preview iframe.
 
 This export contains the API that is available in the manager iframe.
 
-### `@aussieljk/forkbook/types`
+### `@aussieljk/forkbook/internal/types`
 
-This export exposes a lot of TypeScript interfaces used throughout storybook, including for storybook configuration, addons etc.
+This export exposes a lot of TypeScript interfaces used throughout Forkbook, including for Forkbook configuration, addons etc.
 
 Learn more about Forkbook at [forkbook.ljk.dev](https://forkbook.ljk.dev).

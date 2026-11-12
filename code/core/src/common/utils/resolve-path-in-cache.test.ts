@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as pkg from 'empathic/package';
 
 import versions from '../versions.ts';
-import { resolvePathInStorybookCache } from './resolve-path-in-sb-cache.ts';
+import { resolvePathInForkbookCache } from './resolve-path-in-cache.ts';
 
 vi.mock('empathic/package', () => ({
   cache: vi.fn(),
@@ -17,16 +17,16 @@ vi.mock('../versions.ts', () => ({
   },
 }));
 
-describe('resolvePathInStorybookCache', () => {
+describe('resolvePathInForkbookCache', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('should include version in the cache path when using empathic cache', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
-    const result = resolvePathInStorybookCache('test-file', 'test-sub');
+    const result = resolvePathInForkbookCache('test-file', 'test-sub');
 
     expect(result).toContain(versions['@aussieljk/forkbook']);
     expect(result).toBe(
@@ -38,7 +38,7 @@ describe('resolvePathInStorybookCache', () => {
     vi.mocked(pkg.cache).mockReturnValue(undefined);
     const cwd = process.cwd();
 
-    const result = resolvePathInStorybookCache('test-file', 'test-sub');
+    const result = resolvePathInForkbookCache('test-file', 'test-sub');
 
     expect(result).toContain(versions['@aussieljk/forkbook']);
     expect(result).toBe(
@@ -46,7 +46,7 @@ describe('resolvePathInStorybookCache', () => {
         cwd,
         'node_modules',
         '.cache',
-        'storybook',
+        'forkbook',
         versions['@aussieljk/forkbook'],
         'test-sub',
         'test-file'
@@ -55,10 +55,10 @@ describe('resolvePathInStorybookCache', () => {
   });
 
   it('should use default sub directory when not provided', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
-    const result = resolvePathInStorybookCache('test-file');
+    const result = resolvePathInForkbookCache('test-file');
 
     expect(result).toBe(
       join(mockCacheDir, versions['@aussieljk/forkbook'], 'default', 'test-file')
@@ -66,21 +66,21 @@ describe('resolvePathInStorybookCache', () => {
   });
 
   it('should handle empty file or directory name', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
-    const result = resolvePathInStorybookCache('', 'test-sub');
+    const result = resolvePathInForkbookCache('', 'test-sub');
 
     // Note: path.join() normalizes away the trailing slash for empty strings
     expect(result).toBe(join(mockCacheDir, versions['@aussieljk/forkbook'], 'test-sub'));
   });
 
   it('should create consistent paths for the same version', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
-    const result1 = resolvePathInStorybookCache('file1', 'sub1');
-    const result2 = resolvePathInStorybookCache('file2', 'sub1');
+    const result1 = resolvePathInForkbookCache('file1', 'sub1');
+    const result2 = resolvePathInForkbookCache('file2', 'sub1');
 
     expect(result1).toContain(versions['@aussieljk/forkbook']);
     expect(result2).toContain(versions['@aussieljk/forkbook']);
@@ -91,11 +91,11 @@ describe('resolvePathInStorybookCache', () => {
   });
 
   it('should handle different subdirectories', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
-    const result1 = resolvePathInStorybookCache('test-file', 'dev-server');
-    const result2 = resolvePathInStorybookCache('test-file', 'telemetry');
+    const result1 = resolvePathInForkbookCache('test-file', 'dev-server');
+    const result2 = resolvePathInForkbookCache('test-file', 'telemetry');
 
     expect(result1).toBe(
       join(mockCacheDir, versions['@aussieljk/forkbook'], 'dev-server', 'test-file')
@@ -106,13 +106,13 @@ describe('resolvePathInStorybookCache', () => {
   });
 
   it('should use "unknown" as version when storybook version is not available', () => {
-    const mockCacheDir = '/mock/node_modules/.cache/storybook';
+    const mockCacheDir = '/mock/node_modules/.cache/forkbook';
     vi.mocked(pkg.cache).mockReturnValue(mockCacheDir);
 
     // Mock the versions module to return a falsy value
     (versions as Record<string, string>)['@aussieljk/forkbook'] = '';
 
-    const result = resolvePathInStorybookCache('test-file', 'test-sub');
+    const result = resolvePathInForkbookCache('test-file', 'test-sub');
 
     expect(result).toContain('unknown');
     expect(result).toBe(join(mockCacheDir, 'unknown', 'test-sub', 'test-file'));

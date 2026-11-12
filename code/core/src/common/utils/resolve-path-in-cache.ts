@@ -7,8 +7,8 @@ import versions from '../versions.ts';
 /**
  * Get the path of the file or directory with input name inside the Forkbook cache directory:
  *
- * - `node_modules/.cache/storybook/{version}/{directoryName}` in a Node.js project or npm package
- * - `.cache/storybook/{version}/{directoryName}` otherwise
+ * - `node_modules/.cache/forkbook/{version}/{directoryName}` in a Node.js project or npm package
+ * - `.cache/forkbook/{version}/{directoryName}` otherwise
  *
  * The cache directory includes the Forkbook version to ensure that upgrading Forkbook
  * automatically invalidates the cache, preventing stale cache issues.
@@ -17,11 +17,11 @@ import versions from '../versions.ts';
  * @param sub {string} Optional subdirectory name (defaults to 'default')
  * @returns {string} Absolute path to the file or directory
  */
-export function resolvePathInStorybookCache(fileOrDirectoryName: string, sub = 'default'): string {
-  let cacheDirectory = pkg.cache('storybook');
-  cacheDirectory ||= join(process.cwd(), 'node_modules', '.cache', 'storybook');
+export function resolvePathInForkbookCache(fileOrDirectoryName: string, sub = 'default'): string {
+  let cacheDirectory = pkg.cache('forkbook');
+  cacheDirectory ||= join(process.cwd(), 'node_modules', '.cache', 'forkbook');
 
-  // Include the storybook version in the cache path to automatically invalidate
+  // Include the Forkbook version in the cache path to automatically invalidate
   // cache when upgrading to a new version
   const version = versions['@aussieljk/forkbook'] || 'unknown';
 

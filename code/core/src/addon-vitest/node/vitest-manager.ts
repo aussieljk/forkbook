@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 
 import type { CoverageOptions, TestProject, TestSpecification, Vitest } from 'vitest/node';
 
-import { getProjectRoot, resolvePathInStorybookCache } from '@aussieljk/forkbook/internal/common';
+import { getProjectRoot, resolvePathInForkbookCache } from '@aussieljk/forkbook/internal/common';
 import { Tag } from '@aussieljk/forkbook/internal/core-server';
 import type { StoryId, StoryIndexEntry } from '@aussieljk/forkbook/internal/types';
 
@@ -65,7 +65,7 @@ export class VitestManager {
             cleanOnRerun: true,
             reportOnFailure: true,
             reporter: [['html', {}], forkbookCoverageReporter],
-            reportsDirectory: resolvePathInStorybookCache(COVERAGE_DIRECTORY),
+            reportsDirectory: resolvePathInForkbookCache(COVERAGE_DIRECTORY),
           }
         : { enabled: false }
     ) as CoverageOptions;

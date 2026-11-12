@@ -1,10 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import {
-  getBuilderOptions,
-  resolvePathInStorybookCache,
-} from '@aussieljk/forkbook/internal/common';
+import { getBuilderOptions, resolvePathInForkbookCache } from '@aussieljk/forkbook/internal/common';
 import { normalizeBasePath } from '@aussieljk/forkbook/internal/channels';
 import type { Options } from '@aussieljk/forkbook/internal/types';
 
@@ -117,7 +114,7 @@ export async function commonConfig(
     root: projectRoot,
     base: getViteBase(options, _type),
     ...(options.cacheKey
-      ? { cacheDir: resolvePathInStorybookCache('fb-vite', options.cacheKey) }
+      ? { cacheDir: resolvePathInForkbookCache('fb-vite', options.cacheKey) }
       : {}),
     // Pass build.target option from user's vite config
     build: {
