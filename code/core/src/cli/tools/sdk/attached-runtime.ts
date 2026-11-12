@@ -57,7 +57,7 @@ export type AttachRuntimeDeps = {
     url: string;
     token: string;
   }) => NodeChannelConnection | Promise<NodeChannelConnection>;
-  loadStorybook?: (options: { configDir: string; channel: unknown }) => Promise<unknown>;
+  loadForkbook?: (options: { configDir: string; channel: unknown }) => Promise<unknown>;
   getService?: ToolsetGetService;
   setDelegatedMode?: typeof setDelegatedMode;
   getRegisteredToolsets?: typeof getRegisteredToolsets;
@@ -154,9 +154,9 @@ export async function bootstrapAttachedRuntime(
   enableDelegatedMode(true);
 
   const configDir = record.configDir ?? resolve(record.cwd, defaultConfigDir());
-  const { loadStorybook, getService } = await resolveLoaders(deps);
+  const { loadForkbook, getService } = await resolveLoaders(deps);
   try {
-    await loadStorybook({ configDir, channel: connection.channel });
+    await loadForkbook({ configDir, channel: connection.channel });
   } catch (error) {
     enableDelegatedMode(false);
     connection.close();
@@ -184,19 +184,19 @@ export async function bootstrapAttachedRuntime(
 }
 
 async function resolveLoaders(deps: AttachRuntimeDeps): Promise<{
-  loadStorybook: (options: { configDir: string; channel: unknown }) => Promise<unknown>;
+  loadForkbook: (options: { configDir: string; channel: unknown }) => Promise<unknown>;
   getService: ToolsetGetService;
 }> {
-  if (deps.loadStorybook && deps.getService) {
-    return { loadStorybook: deps.loadStorybook, getService: deps.getService };
+  if (deps.loadForkbook && deps.getService) {
+    return { loadForkbook: deps.loadForkbook, getService: deps.getService };
   }
   // Status stores are constructed when this module evaluates; the channel must already be prepared.
   const core = await import('@aussieljk/forkbook/internal/core-server');
   return {
-    loadStorybook:
-      deps.loadStorybook ??
+    loadForkbook:
+      deps.loadForkbook ??
       ((options) =>
-        core.experimental_loadStorybook({
+        core.experimental_loadForkbook({
           configDir: options.configDir,
           channel: options.channel as never,
         })),

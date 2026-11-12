@@ -14,14 +14,14 @@ instead — `forkbook dev` serves one at `/mcp` through `@aussieljk/forkbook/add
 ### Prerequisites
 
 - Node.js 22.12+
-- A [manifests](https://storybook.js.org/docs/next/ai/manifests) source containing:
+- A manifests source containing:
   - `components.json` (required)
   - `docs.json` (optional)
 
 ### Example implementation
 
-The Forkbook repository has a local HTTP server built on this package,
-[`serve.ts`](https://github.com/storybookjs/storybook/blob/next/code/lib/mcp/serve.ts), that loads
+The Forkbook repository has a local stdio server built on this package,
+[`bin.ts`](https://github.com/aussieljk/forkbook/blob/master/code/core/src/mcp/bin.ts), that loads
 manifests from a directory or URL. It is a development harness and is not part of the published
 package.
 
@@ -30,13 +30,13 @@ The snippets below cover the common self-hosting patterns.
 #### Minimal implementation
 
 ```ts
-import { createStorybookMcpHandler } from '@aussieljk/forkbook/mcp';
+import { createForkbookMcpHandler } from '@aussieljk/forkbook/mcp';
 
-const storybookMcpHandler = await createStorybookMcpHandler();
+const forkbookMcpHandler = await createForkbookMcpHandler();
 
 export async function handleRequest(request: Request): Promise<Response> {
   if (new URL(request.url).pathname === '/mcp') {
-    return storybookMcpHandler(request);
+    return forkbookMcpHandler(request);
   }
 
   return new Response('Not found', { status: 404 });
@@ -48,7 +48,7 @@ export async function handleRequest(request: Request): Promise<Response> {
 Use `manifestProvider` when your manifests are not available from the same origin/path layout:
 
 ```ts
-const storybookMcpHandler = await createStorybookMcpHandler({
+const forkbookMcpHandler = await createForkbookMcpHandler({
   manifestProvider: async (_request, path) => {
     return asyncReadManifestFromSomewhere(path);
   },
@@ -57,14 +57,14 @@ const storybookMcpHandler = await createStorybookMcpHandler({
 
 ### API reference
 
-#### `createStorybookMcpHandler`
+#### `createForkbookMcpHandler`
 
 Type:
 
 ```ts
-(options?: StorybookMcpHandlerOptions) => Promise<Handler>;
+(options?: ForkbookMcpHandlerOptions) => Promise<Handler>;
 
-type Handler = (req: Request, context?: StorybookContext) => Promise<Response>;
+type Handler = (req: Request, context?: ForkbookContext) => Promise<Response>;
 ```
 
 Creates and configures an MCP HTTP handler with all built-in docs tools registered.
@@ -73,7 +73,7 @@ Creates and configures an MCP HTTP handler with all built-in docs tools register
 
 ###### `options`
 
-Type: [`StorybookMcpHandlerOptions`](#handler-options-and-request-context)
+Type: [`ForkbookMcpHandlerOptions`](#handler-options-and-request-context)
 
 Default: `{}`
 
@@ -88,9 +88,9 @@ A fetch-compatible request handler for your `/mcp` endpoint.
 ##### Behavior
 
 - Registers these MCP tools:
-  - [`docs-list`](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-list)
-  - [`docs-show`](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-show)
-  - [`docs-show-story`](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-show-story)
+  - [`docs-list`](https://forkbook.ljk.dev/docs/ai/mcp/overview)
+  - [`docs-show`](https://forkbook.ljk.dev/docs/ai/mcp/overview)
+  - [`docs-show-story`](https://forkbook.ljk.dev/docs/ai/mcp/overview)
 - Uses HTTP transport from [`@tmcp/transport-http`](https://github.com/paoloricciuti/tmcp/).
 - For each request, the handler always passes the current `Request` as `context.request`.
 - Per-request `context` overrides handler-level `options` for:
@@ -103,9 +103,9 @@ A fetch-compatible request handler for your `/mcp` endpoint.
 ##### Example
 
 ```ts
-import { createStorybookMcpHandler } from '@aussieljk/forkbook/mcp';
+import { createForkbookMcpHandler } from '@aussieljk/forkbook/mcp';
 
-const mcp = await createStorybookMcpHandler({
+const mcp = await createForkbookMcpHandler({
   manifestProvider: async (_request, path) => {
     return await fetchManifest(path);
   },
@@ -124,13 +124,13 @@ export async function handleRequest(request: Request) {
 
 `@aussieljk/forkbook/mcp` uses the same core fields in two places:
 
-- Handler creation (`createStorybookMcpHandler(options)`)
+- Handler creation (`createForkbookMcpHandler(options)`)
 - Per-request override (`handler(request, context)`)
 
 Type:
 
 ```ts
-type StorybookContext = {
+type ForkbookContext = {
   request?: Request;
   manifestProvider?: (
     request: Request | undefined,
@@ -139,7 +139,7 @@ type StorybookContext = {
   ) => Promise<string>;
   sources?: Source[];
   onListAllDocumentation?: (params: {
-    context: StorybookContext;
+    context: ForkbookContext;
     manifests: AllManifests;
     resultText: string;
     sources?: SourceManifests[];
@@ -147,25 +147,25 @@ type StorybookContext = {
   onGetDocumentation?: (
     params:
       | {
-          context: StorybookContext;
+          context: ForkbookContext;
           input: { id: string; storybookId?: string };
           foundDocumentation: ComponentManifest | Doc;
           resultText: string;
         }
       | {
-          context: StorybookContext;
+          context: ForkbookContext;
           input: { id: string; storybookId?: string };
         },
   ) => void | Promise<void>;
 };
 
-type StorybookMcpHandlerOptions = StorybookContext & {
+type ForkbookMcpHandlerOptions = ForkbookContext & {
   onSessionInitialize?: (initializeRequestParams: InitializeRequestParams) => void | Promise<void>;
 };
 ```
 
 > [!NOTE]
-> `onSessionInitialize` is only used when provided at handler creation time (`createStorybookMcpHandler(options)`). It is ignored in per-request `context`.
+> `onSessionInitialize` is only used when provided at handler creation time (`createForkbookMcpHandler(options)`). It is ignored in per-request `context`.
 >
 > `InitializeRequestParams` is the [`tmcp`](https://github.com/paoloricciuti/tmcp/) initialize payload type, and its exact structure may change in patch versions. Prefer treating it as an opaque protocol payload unless you need specific fields.
 
@@ -196,7 +196,7 @@ The incoming HTTP request for the current call, as a Web Fetch API (`WHATWG`) `R
 
 This is **not** a Node.js `http.IncomingMessage`. In Node runtimes, pass a fetch-compatible `Request` (for example, Node's global `Request` from Undici in modern Node versions), or convert your server's native request object before calling the handler.
 
-`createStorybookMcpHandler` automatically sets this field when you invoke the returned handler with `(request, context?)`.
+`createForkbookMcpHandler` automatically sets this field when you invoke the returned handler with `(request, context?)`.
 
 ##### `onListAllDocumentation`
 
@@ -204,7 +204,7 @@ Type:
 
 ```ts
 (params: {
-  context: StorybookContext;
+  context: ForkbookContext;
   manifests: AllManifests;
   resultText: string;
   sources?: SourceManifests[];
@@ -221,13 +221,13 @@ Type:
 (
   params:
     | {
-        context: StorybookContext;
+        context: ForkbookContext;
         input: { id: string; storybookId?: string };
         foundDocumentation: ComponentManifest | Doc;
         resultText: string;
       }
     | {
-        context: StorybookContext;
+        context: ForkbookContext;
         input: { id: string; storybookId?: string };
       },
 ) => void | Promise<void>
@@ -289,7 +289,7 @@ Indicates that a composed Forkbook source cannot be read through the local MCP p
 
 #### Tool registration exports
 
-Use these when you want to build your own [`tmcp`](https://github.com/paoloricciuti/tmcp/) server instead of using `createStorybookMcpHandler`, while still reusing Forkbook's docs tools.
+Use these when you want to build your own [`tmcp`](https://github.com/paoloricciuti/tmcp/) server instead of using `createForkbookMcpHandler`, while still reusing Forkbook's docs tools.
 
 This approach is useful when you need to:
 
@@ -309,7 +309,7 @@ import {
   addGetStoryDocumentationTool,
   addGetDocumentationTool,
   addListAllDocumentationTool,
-  type StorybookContext,
+  type ForkbookContext,
 } from '@aussieljk/forkbook/mcp';
 
 const adapter = new ValibotJsonSchemaAdapter();
@@ -321,25 +321,25 @@ const server = new McpServer(
       tools: { listChanged: true },
     },
   },
-).withContext<StorybookContext>();
+).withContext<ForkbookContext>();
 
 await addListAllDocumentationTool(server);
 await addGetDocumentationTool(server);
 await addGetStoryDocumentationTool(server);
 ```
 
-After registration, wire your own transport and pass `StorybookContext` per request so tools can resolve manifests (`request`, `manifestProvider`, and optional `sources`).
+After registration, wire your own transport and pass `ForkbookContext` per request so tools can resolve manifests (`request`, `manifestProvider`, and optional `sources`).
 
 #### `addListAllDocumentationTool`
 
 Type:
 
 ```ts
-(server: McpServer<any, StorybookContext>, enabled?: () => boolean | Promise<boolean>) =>
+(server: McpServer<any, ForkbookContext>, enabled?: () => boolean | Promise<boolean>) =>
   Promise<void>;
 ```
 
-Registers the [list tool](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-list) that returns all component/docs IDs from manifests.
+Registers the [list tool](https://forkbook.ljk.dev/docs/ai/mcp/overview) that returns all component/docs IDs from manifests.
 
 #### `addGetDocumentationTool`
 
@@ -347,13 +347,13 @@ Type:
 
 ```ts
 (
-  server: McpServer<any, StorybookContext>,
+  server: McpServer<any, ForkbookContext>,
   enabled?: () => boolean | Promise<boolean>,
   options?: { multiSource?: boolean },
 ) => Promise<void>;
 ```
 
-Registers [documentation lookup](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-show) by component/docs `id`.
+Registers [documentation lookup](https://forkbook.ljk.dev/docs/ai/mcp/overview) by component/docs `id`.
 
 When `options.multiSource` is `true`, the tool schema takes an optional `storybookId` input, defaulting to `local`.
 
@@ -363,10 +363,10 @@ Type:
 
 ```ts
 (
-  server: McpServer<any, StorybookContext>,
+  server: McpServer<any, ForkbookContext>,
   enabled?: () => boolean | Promise<boolean>,
   options?: { multiSource?: boolean },
 ) => Promise<void>;
 ```
 
-Registers [story-level documentation lookup](https://storybook.js.org/docs/next/ai/mcp/overview/#docs-show-story) for a specific story variant by `componentId` and `storyName`.
+Registers [story-level documentation lookup](https://forkbook.ljk.dev/docs/ai/mcp/overview) for a specific story variant by `componentId` and `storyName`.

@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import {
   ChangeDetectionService,
   experimental_getStatusStore,
-  experimental_loadStorybook,
+  experimental_loadForkbook,
   experimental_resetChangeDetectionReadiness,
   experimental_resetServicesPresetOnce,
   experimental_setChangeDetectionHost,
@@ -71,7 +71,7 @@ export async function bootstrapToolsRuntime(
   // only hear events on the channel they were prepared with.
   const channel = prepareHeadlessUniversalStores();
 
-  const options = await experimental_loadStorybook({ configDir, channel });
+  const options = await experimental_loadForkbook({ configDir, channel });
 
   const setChangeDetectionHost = deps.setChangeDetectionHost ?? experimental_setChangeDetectionHost;
   setChangeDetectionHost(() => startChangeDetectionInProcess(options));

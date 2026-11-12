@@ -25,7 +25,7 @@ const describedTools = (output: string) =>
   );
 
 const deps = () => ({
-  loadStorybook: vi.fn().mockResolvedValue({ presets: { apply: vi.fn() } }),
+  loadForkbook: vi.fn().mockResolvedValue({ presets: { apply: vi.fn() } }),
   resolveSkillInputs: vi.fn().mockResolvedValue({
     framework: '@aussieljk/forkbook/react-vite',
     renderer: '@aussieljk/forkbook/react',
@@ -111,7 +111,7 @@ describe('runSkillsCommand', () => {
     expect(result.output).toContain('stories');
     expect(result.output).toContain('write-story');
     expect(result.output).toContain('setup');
-    expect(d.loadStorybook).not.toHaveBeenCalled();
+    expect(d.loadForkbook).not.toHaveBeenCalled();
   });
 
   it('stories prints the workflow with CLI commands', async () => {
@@ -179,7 +179,7 @@ describe('runSkillsCommand', () => {
     const result = await runSkillsCommand({ tokens: ['setup'], target: {} }, d);
     expect(result.exitCode).toBe(0);
     expect(result.output).toBe('# Forkbook Setup');
-    expect(d.loadStorybook).not.toHaveBeenCalled();
+    expect(d.loadForkbook).not.toHaveBeenCalled();
   });
 
   it('reports the setup run only when the setup skill itself was requested', async () => {
@@ -293,7 +293,7 @@ describe('runSkillsCommand', () => {
 
   it('reports a clean one-line message when loading the target Forkbook fails, no stack trace', async () => {
     const d = deps();
-    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
+    d.loadForkbook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
     const result = await runSkillsCommand({ tokens: ['stories'], target: {} }, d);
     expect(result.exitCode).toBe(1);
     expect(result.errorOutput).toBe(
@@ -317,13 +317,13 @@ describe('runSkillsCommand', () => {
     expect(result.output).toContain('# Forkbook Setup');
     expect(result.output).toContain('npx forkbook tools stories changed');
     expect(result.output).toContain('@aussieljk/forkbook/react');
-    expect(d.loadStorybook).toHaveBeenCalledTimes(1);
+    expect(d.loadForkbook).toHaveBeenCalledTimes(1);
     expect(d.getProjectInfo).toHaveBeenCalledTimes(1);
   });
 
   it('--all fails as a whole when the configuration cannot be loaded', async () => {
     const d = deps();
-    d.loadStorybook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
+    d.loadForkbook.mockRejectedValue(new Error('Cannot find module .forkbook/main.ts'));
     const result = await runSkillsCommand({ tokens: [], all: true, target: {} }, d);
     expect(result.exitCode).toBe(1);
     expect(result.output).toBe('');

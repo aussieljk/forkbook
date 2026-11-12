@@ -49,7 +49,7 @@ function makeConnection(): NodeChannelConnection {
 
 function makeRuntimeDeps(records: StorybookInstanceRecord[], extras: Record<string, unknown> = {}) {
   const connection = makeConnection();
-  const loadStorybook = vi.fn(async () => ({}));
+  const loadForkbook = vi.fn(async () => ({}));
   const getService = vi.fn(() => {
     throw new Error('no services in this test');
   });
@@ -60,7 +60,7 @@ function makeRuntimeDeps(records: StorybookInstanceRecord[], extras: Record<stri
     deps: {
       readRegistry: async () => records,
       createNodeChannel: vi.fn(async () => connection),
-      loadStorybook,
+      loadForkbook,
       getService,
       setDelegatedMode,
       getRegisteredToolsets,
@@ -114,12 +114,12 @@ describe('bootstrapAttachedRuntime', () => {
       token: RECORD.token,
     });
     expect(deps.setDelegatedMode).toHaveBeenCalledWith(true);
-    expect(deps.loadStorybook).toHaveBeenCalledWith({
+    expect(deps.loadForkbook).toHaveBeenCalledWith({
       configDir: RECORD.configDir,
       channel: connection.channel,
     });
     expect(deps.setDelegatedMode.mock.invocationCallOrder[0]).toBeLessThan(
-      deps.loadStorybook.mock.invocationCallOrder[0]
+      deps.loadForkbook.mock.invocationCallOrder[0]
     );
     expect(result.kind).toBe('in-process');
     expect(result.record).toEqual(RECORD);
@@ -405,7 +405,7 @@ describe('bootstrapAttachedRuntime', () => {
 
   it('wraps a configuration that cannot be loaded', async () => {
     const { connection, deps } = makeRuntimeDeps([RECORD], {
-      loadStorybook: vi.fn(async () => {
+      loadForkbook: vi.fn(async () => {
         throw new Error('No configuration files found');
       }),
     });

@@ -1,6 +1,6 @@
 import type { Channel } from '@aussieljk/forkbook/internal/channels';
 import {
-  experimental_loadStorybook,
+  experimental_loadForkbook,
   experimental_resetChangeDetectionReadiness,
   experimental_resetServicesPresetOnce,
   experimental_setChangeDetectionHost,
@@ -24,7 +24,7 @@ vi.mock('@aussieljk/forkbook/internal/core-server', { spy: true });
 beforeEach(() => {
   clearToolsetRegistry();
   vi.mocked(prepareHeadlessUniversalStores).mockReset();
-  vi.mocked(experimental_loadStorybook).mockReset();
+  vi.mocked(experimental_loadForkbook).mockReset();
   vi.mocked(experimental_resetServicesPresetOnce).mockReset();
   vi.mocked(experimental_resetChangeDetectionReadiness).mockReset();
   vi.mocked(experimental_setChangeDetectionHost).mockReset();
@@ -40,14 +40,14 @@ describe('bootstrapToolsRuntime', () => {
     const options = {};
     const setChangeDetectionHost = vi.fn();
     vi.mocked(prepareHeadlessUniversalStores).mockReturnValue(channel);
-    vi.mocked(experimental_loadStorybook).mockResolvedValue(options as never);
+    vi.mocked(experimental_loadForkbook).mockResolvedValue(options as never);
 
     await bootstrapToolsRuntime(
       { cwd: process.cwd(), configDir: '.forkbook' },
       { setChangeDetectionHost }
     );
 
-    expect(experimental_loadStorybook).toHaveBeenCalledWith(expect.objectContaining({ channel }));
+    expect(experimental_loadForkbook).toHaveBeenCalledWith(expect.objectContaining({ channel }));
     expect(setChangeDetectionHost).toHaveBeenCalledOnce();
     expect(setChangeDetectionHost).toHaveBeenCalledWith(expect.any(Function));
   });
@@ -55,7 +55,7 @@ describe('bootstrapToolsRuntime', () => {
   it('does not change process.cwd()', async () => {
     const cwdBefore = process.cwd();
     vi.mocked(prepareHeadlessUniversalStores).mockReturnValue({} as Channel);
-    vi.mocked(experimental_loadStorybook).mockResolvedValue({} as never);
+    vi.mocked(experimental_loadForkbook).mockResolvedValue({} as never);
 
     await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.forkbook' });
 
@@ -69,13 +69,13 @@ describe('bootstrapToolsRuntime', () => {
       bootstrapToolsRuntime({ cwd: '/elsewhere', configDir: '.forkbook' })
     ).rejects.toThrow('requires process.cwd()');
     expect(process.cwd()).toBe(cwdBefore);
-    expect(experimental_loadStorybook).not.toHaveBeenCalled();
+    expect(experimental_loadForkbook).not.toHaveBeenCalled();
   });
 
   it('clears process-global registries when closed so a later host can target another project', async () => {
     const channel = {} as Channel;
     vi.mocked(prepareHeadlessUniversalStores).mockReturnValue(channel);
-    vi.mocked(experimental_loadStorybook).mockResolvedValue({} as never);
+    vi.mocked(experimental_loadForkbook).mockResolvedValue({} as never);
 
     const runtime = await bootstrapToolsRuntime({ cwd: process.cwd(), configDir: '.forkbook' });
     registerToolset(

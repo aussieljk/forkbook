@@ -44,15 +44,15 @@ export type SetupRun = { projectInfo: ProjectInfo; prompt: string };
 
 export type SkillsRunDeps = {
   /**
-   * `experimental_loadStorybook`, injected so this module stays testable without loading a real
+   * `experimental_loadForkbook`, injected so this module stays testable without loading a real
    * Forkbook configuration. Typed to the `Options` surface `resolveSkillInputs` consumes, so no
    * cast is needed at either call site.
    */
-  loadStorybook: (args: { configDir: string }) => Promise<Options>;
+  loadForkbook: (args: { configDir: string }) => Promise<Options>;
   resolveSkillInputs: typeof resolveSkillInputs;
   getProjectInfo: typeof getProjectInfo;
   getSetupMarkdown: typeof getSetupMarkdownOutput;
-  // Reads the toolsets `loadStorybook` registered, so call it after the configuration has loaded.
+  // Reads the toolsets `loadForkbook` registered, so call it after the configuration has loaded.
   describeToolsets: () => ToolsetCatalogEntry[];
 };
 
@@ -175,7 +175,7 @@ async function serveSetup(
 
 async function loadInputs(configDir: string, deps: SkillsRunDeps): Promise<SkillInputs> {
   try {
-    return await deps.resolveSkillInputs(await deps.loadStorybook({ configDir }));
+    return await deps.resolveSkillInputs(await deps.loadForkbook({ configDir }));
   } catch (error) {
     // Reduce to one clean line, matching `cli/tools/run.ts`'s equivalent bootstrap failure: an
     // agent piping this output should not see a raw Node stack trace for an everyday "wrong

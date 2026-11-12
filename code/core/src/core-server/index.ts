@@ -16,8 +16,6 @@ export { getStoriesPathsFromConfig } from './utils/get-stories-paths-from-config
 export type { ComponentArgTypesData } from '../csf-tools/get-dummy-args-from-argtypes.ts';
 
 export { loadForkbook as experimental_loadForkbook } from './load.ts';
-/** @deprecated Old name. Use `experimental_loadForkbook`. Kept until `cli/` moves to the new name. */
-export { loadForkbook as experimental_loadStorybook } from './load.ts';
 
 export { Tag } from '../shared/constants/tags.ts';
 export { analyzeMdx } from './utils/analyze-mdx.ts';

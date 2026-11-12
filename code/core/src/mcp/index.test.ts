@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { createStorybookMcpHandler } from './index.ts';
+import { createForkbookMcpHandler } from './index.ts';
 import type { ForkbookContext } from './types.ts';
 import smallManifestFixture from './fixtures/small-manifest.fixture.json' with { type: 'json' };
 import smallDocsManifestFixture from './fixtures/small-docs-manifest.fixture.json' with { type: 'json' };
@@ -37,7 +37,7 @@ function createManifestProviderMockWithDocs() {
   });
 }
 
-describe('createStorybookMcpHandler', () => {
+describe('createForkbookMcpHandler', () => {
   let client: Client;
   let transport: StreamableHTTPClientTransport;
   let fetchMock: ReturnType<typeof vi.fn>;
@@ -46,7 +46,7 @@ describe('createStorybookMcpHandler', () => {
    * Helper to setup client with a mock fetch that routes to our handler
    */
   async function setupClient(
-    handler: Awaited<ReturnType<typeof createStorybookMcpHandler>>,
+    handler: Awaited<ReturnType<typeof createForkbookMcpHandler>>,
     context?: ForkbookContext
   ) {
     // Mock global fetch to route to our handler
@@ -77,7 +77,7 @@ describe('createStorybookMcpHandler', () => {
   });
 
   it('should handle initialize and list tools', async () => {
-    const handler = await createStorybookMcpHandler();
+    const handler = await createForkbookMcpHandler();
     await setupClient(handler);
 
     const tools = await client.listTools();
@@ -102,7 +102,7 @@ describe('createStorybookMcpHandler', () => {
   });
 
   it('should include server instructions in initialize response', async () => {
-    const handler = await createStorybookMcpHandler();
+    const handler = await createForkbookMcpHandler();
     await setupClient(handler);
 
     const instructions = client.getInstructions();
@@ -127,7 +127,7 @@ describe('createStorybookMcpHandler', () => {
 
   it('should call onSessionInitialize handler when provided', async () => {
     const onSessionInitialize = vi.fn();
-    const handler = await createStorybookMcpHandler({ onSessionInitialize });
+    const handler = await createForkbookMcpHandler({ onSessionInitialize });
     await setupClient(handler);
 
     // The handler should be called during connect
@@ -147,7 +147,7 @@ describe('createStorybookMcpHandler', () => {
   it('should use manifestProvider when calling docs-list', async () => {
     const manifestProvider = createManifestProviderMock();
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
     });
     await setupClient(handler);
@@ -176,7 +176,7 @@ describe('createStorybookMcpHandler', () => {
       { id: 'remote', title: 'Remote', url: 'https://example.com/storybook' },
     ];
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
       sources,
     });
@@ -218,7 +218,7 @@ describe('createStorybookMcpHandler', () => {
       { id: 'request', title: 'Request', url: 'https://request.example.com' },
     ];
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
       sources: handlerSources,
     });
@@ -252,7 +252,7 @@ describe('createStorybookMcpHandler', () => {
     const onListAllDocumentation = vi.fn();
     const manifestProvider = createManifestProviderMock();
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
       onListAllDocumentation,
     });
@@ -277,7 +277,7 @@ describe('createStorybookMcpHandler', () => {
     const onGetDocumentation = vi.fn();
     const manifestProvider = createManifestProviderMock();
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
       onGetDocumentation,
     });
@@ -311,7 +311,7 @@ describe('createStorybookMcpHandler', () => {
   });
 
   it('should handle errors gracefully when manifest is not available', async () => {
-    const handler = await createStorybookMcpHandler();
+    const handler = await createForkbookMcpHandler();
     await setupClient(handler);
 
     const result = await client.callTool({
@@ -330,7 +330,7 @@ describe('createStorybookMcpHandler', () => {
     const onGetDocumentation = vi.fn();
     const manifestProvider = createManifestProviderMock();
 
-    const handler = await createStorybookMcpHandler({
+    const handler = await createForkbookMcpHandler({
       manifestProvider,
       onGetDocumentation,
     });
@@ -363,7 +363,7 @@ describe('createStorybookMcpHandler', () => {
     it('should return docs entries in docs-list when docs manifest is available', async () => {
       const manifestProvider = createManifestProviderMockWithDocs();
 
-      const handler = await createStorybookMcpHandler({
+      const handler = await createForkbookMcpHandler({
         manifestProvider,
       });
       await setupClient(handler);
@@ -395,7 +395,7 @@ describe('createStorybookMcpHandler', () => {
       const onListAllDocumentation = vi.fn();
       const manifestProvider = createManifestProviderMockWithDocs();
 
-      const handler = await createStorybookMcpHandler({
+      const handler = await createForkbookMcpHandler({
         manifestProvider,
         onListAllDocumentation,
       });
@@ -423,7 +423,7 @@ describe('createStorybookMcpHandler', () => {
       const onGetDocumentation = vi.fn();
       const manifestProvider = createManifestProviderMockWithDocs();
 
-      const handler = await createStorybookMcpHandler({
+      const handler = await createForkbookMcpHandler({
         manifestProvider,
         onGetDocumentation,
       });

@@ -1,5 +1,5 @@
 import {
-  experimental_loadStorybook,
+  experimental_loadForkbook,
   resolveSkillInputs,
   withTelemetry,
 } from '@aussieljk/forkbook/internal/core-server';
@@ -90,7 +90,7 @@ export function registerSkillsCommand(
 
 function defaultDeps(): SkillsRunDeps {
   return {
-    loadStorybook: experimental_loadStorybook,
+    loadForkbook: experimental_loadForkbook,
     resolveSkillInputs,
     getProjectInfo,
     getSetupMarkdown: getSetupMarkdownOutput,

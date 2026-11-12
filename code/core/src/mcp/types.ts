@@ -104,9 +104,6 @@ export type ForkbookContext = {
   resolveEntry?: (id: string, source?: Source) => Promise<ResolvedEntry | undefined>;
 };
 
-/** The same type as {@link ForkbookContext}. Kept because `docs/mcp.md` documents this name. */
-export type StorybookContext = ForkbookContext;
-
 /**
  * Result of resolving a single id via {@link ForkbookContext.resolveEntry}: either a
  * fully-resolved component manifest or a standalone docs entry.

@@ -45,7 +45,6 @@ export { getMultiSourceManifests } from './utils/multi-source-manifests.ts';
 export type {
   RequiresOwnMcpNotice,
   ForkbookContext,
-  StorybookContext,
   ResolvedEntry,
   Source,
   SourceManifests,
@@ -91,7 +90,7 @@ type InitializeRequestParams = {
  * Options for creating a Forkbook MCP handler.
  * Extends ForkbookContext with server-level configuration.
  */
-export interface StorybookMcpHandlerOptions extends ForkbookContext {
+export interface ForkbookMcpHandlerOptions extends ForkbookContext {
   /**
    * Optional handler called when an MCP session is initialized.
    * This is only valid at the handler creation level, not per-request.
@@ -104,8 +103,8 @@ export { ComponentManifestMap, DocsManifestMap } from './types.ts';
 
 type Handler = (req: Request, context?: ForkbookContext) => Promise<Response>;
 
-export const createStorybookMcpHandler = async (
-  options: StorybookMcpHandlerOptions = {}
+export const createForkbookMcpHandler = async (
+  options: ForkbookMcpHandlerOptions = {}
 ): Promise<Handler> => {
   const { onSessionInitialize, ...defaultContext } = options;
   const adapter = new ValibotJsonSchemaAdapter();
