@@ -69,3 +69,5 @@ Data goes to `https://signoz.ljk.dev` when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
 - Babel is version 7. Do not add Babel 8 packages.
 - Patched dependencies are in `patches/` (`patchedDependencies` in the root `package.json`). Make a patch with `bun patch <pkg>`.
 - The workspace uses `linker = "hoisted"` (`bunfig.toml`), because some packages import dependencies that only core declares.
+
+If you change files matched by a section's `sources` in `docs/system-map/sections/`, update that section in the same commit.
