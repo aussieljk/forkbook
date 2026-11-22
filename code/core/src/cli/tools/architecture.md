@@ -17,7 +17,7 @@ config and presets (registering every service), connects to the instance channel
 syncs service state, runs the toolset handler in the caller, and dispatches every service command
 to the instance. Cold-boot work (docgen, tests) runs where the warm resources already live.
 
-The caller connects to `/storybook-server-channel` over WebSocket. The instance writes its channel
+The caller connects to `<basePath>/fb-channel` (default `/_forkbook/fb-channel`) over WebSocket. The instance writes its channel
 token into `~/.forkbook/instances/<id>.json` (file `0600`, dir `0700`). The endpoint is
 `record.url` plus that path. The upgrade handler accepts a missing `Origin` when the token is
 valid.
@@ -134,7 +134,7 @@ consumer amortizes config load across many calls on the live synced runtime.
    (the record's `storybookPath` realpath-equals the caller's own package root) → in-process; a
    different installation → child host from the recorded installation; unverifiable or may not
    respawn → `EnvironmentMismatchError`.
-3. **Connect.** Node WebSocket to `record.url` + `/storybook-server-channel?token=…`, no
+3. **Connect.** Node WebSocket to `record.url` + `<basePath>/fb-channel?token=…`, no
    Origin. `UniversalStore.__prepare(channel, follower)`.
 4. **Register.** Load config from `record.configDir`. Set delegated mode. `services:sync-request`
    pulls a snapshot from the server; later writes arrive as `services:entry` patches.

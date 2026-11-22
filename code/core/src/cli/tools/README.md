@@ -85,7 +85,7 @@ npx forkbook tools --port 6007 stories preview --stories '[{"storyId":"example-b
 ## Modes
 
 **Attached.** Discover `~/.forkbook/instances/*.json`, connect a Node WebSocket to
-`/storybook-server-channel?token=…` (no Origin), load the instance config as a **leaf** and
+`<basePath>/fb-channel?token=…` (no Origin), load the instance config as a **leaf** and
 **follower**, set `setDelegatedMode(true)` before the first `registerService`. This path never
 `chdir`s the host process. Two processes never attach across `storybook` installations: when the
 caller is the instance's installation (the record's `storybookPath` versus the caller's own

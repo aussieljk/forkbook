@@ -34,7 +34,7 @@ import type { getServer } from './utils/server-init.ts';
 import { useStatics } from './utils/server-statics.ts';
 import { summarizeIndex } from './utils/summarizeIndex.ts';
 
-export async function storybookDevServer(
+export async function forkbookDevServer(
   options: Options,
   server: Awaited<ReturnType<typeof getServer>>
 ) {

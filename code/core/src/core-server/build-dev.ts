@@ -34,7 +34,7 @@ import { dedent } from 'ts-dedent';
 import Channel from '../channels/index.ts';
 import { joinBasePath } from '../channels/base-path.ts';
 import { resolvePackageDir } from '../shared/utils/module.ts';
-import { storybookDevServer } from './dev-server.ts';
+import { forkbookDevServer } from './dev-server.ts';
 import { getWsToken } from './presets/wsToken.ts';
 import { buildOrThrow } from './utils/build-or-throw.ts';
 import { getManagerBuilder, getPreviewBuilder } from './utils/get-builders.ts';
@@ -272,7 +272,7 @@ export async function buildDevStandalone(
   };
 
   const { managerResult, previewResult } = await buildOrThrow(async () =>
-    storybookDevServer(fullOptions, server)
+    forkbookDevServer(fullOptions, server)
   );
 
   const mcp: RuntimeInstanceRecord['mcp'] = getMcpMetadataFromMainConfig(config);
