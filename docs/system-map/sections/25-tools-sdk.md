@@ -6,6 +6,7 @@ sources:
   - code/core/src/cli/skills/**
   - code/core/src/shared/open-service/**
   - code/core/src/oxc-parser/**
+  - code/core/src/core-server/utils/skills/**
 ---
 Paths are relative to `code/core/src`. `forkbook tools` and the `internal/tools` export give agents the same toolsets without MCP. `createTools({cwd, configDir, port, mode})` returns `.describe()`, `.call('docs.show', ...)` and `.close()` (`cli/tools/sdk/index.ts`).
 
@@ -29,7 +30,8 @@ sequenceDiagram
 ```
 
 - Child host IPC: `hello`, `init`, `describe`, `call`, `cancel`, `close`, `result`, `error` (`cli/tools/sdk/child-protocol.ts`).
-- Skills: `forkbook skills <id>` prints `stories`, `write-story` or `setup` (`cli/skills/content/index.ts`).
+- Skills: `forkbook skills <id>` prints `stories`, `write-story` or `setup` (`SKILL_IDS` in `cli/skills/content/skills.ts:7`, run by `cli/skills/run.ts`).
+- Tool gates: `getToolAvailability` (`core-server/utils/skills/availability.ts`) decides which toolsets exist (`moduleGraphSupported`, `docsEnabled`, `testSupported`, `a11yEnabled`). `addon-mcp/preset.ts:90` calls it, and the skills CLI reaches it through `resolveSkillInputs` (`core-server/utils/skills/inputs.ts:49`), so the two channels list the same tools.
 
 ### Long-lived helpers
 | Helper | Kind | File |
